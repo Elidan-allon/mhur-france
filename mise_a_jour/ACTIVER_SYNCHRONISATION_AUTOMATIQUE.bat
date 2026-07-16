@@ -2,7 +2,7 @@
 setlocal EnableExtensions
 cd /d "%~dp0.."
 title Activer la synchronisation automatique UltraRumble
-if not exist "index.html" goto INCOMPLETE
+if not exist "public\index.html" goto INCOMPLETE
 if not exist "mise_a_jour\outils\surveiller_ultrarumble.py" goto INCOMPLETE
 set "PY_CMD="
 where py >nul 2>&1 && set "PY_CMD=py -3"

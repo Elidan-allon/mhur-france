@@ -1,0 +1,41 @@
+MHUR FRANCE V342 — VERSION PRODUCTION CLOUDFLARE
+================================================
+
+STRUCTURE
+---------
+public/          Fichiers publiés sur Internet par Cloudflare.
+configuration/   Installation Supabase et configuration locale.
+mise_a_jour/     Outils locaux de synchronisation UltraRumble.
+docs/            Documentation.
+wrangler.jsonc   Configuration Cloudflare Workers Static Assets.
+
+IMPORTANT
+---------
+Cloudflare ne publie que le dossier public/. Les scripts .bat, Python et SQL
+restent donc hors du site public.
+
+DÉPLOIEMENT CLOUDFLARE
+----------------------
+1. Remplace le contenu de ton dépôt GitHub par cette version.
+2. Commit puis Push origin.
+3. Dans Cloudflare Workers & Pages, connecte le dépôt GitHub.
+4. Build command : laisser vide.
+5. Deploy command : npx wrangler deploy.
+6. Path : /.
+7. Clique sur Deploy.
+
+MISE À JOUR LOCALE
+------------------
+Les outils du dossier mise_a_jour modifient maintenant public/index.html et
+public/data. Après une mise à jour locale :
+1. Ouvre GitHub Desktop.
+2. Commit les changements.
+3. Push origin.
+4. Cloudflare redéploie automatiquement.
+
+SUPABASE
+--------
+Lance configuration/CONFIGURER_COMMUNAUTE.bat. Il écrit la configuration dans
+public/js/community-config.js. Commit et Push origin ensuite.
+
+Ne publie jamais une clé service_role Supabase ni un Client Secret Google ou Discord.

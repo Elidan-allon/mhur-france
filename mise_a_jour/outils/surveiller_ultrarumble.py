@@ -45,6 +45,8 @@ CORE_URLS = [
     f"{BASE}/tuning",
     f"{FR_BASE}/costumes",
 ]
+TOOLS_DIR = Path(__file__).resolve().parent
+
 BACKUP_FILES = [
     "index.html",
     "data/local_style_map.json",
@@ -262,7 +264,7 @@ def synchronize(root: Path, log_path: Path) -> Path:
     # le long scan des personnages/costumes afin que la nouveauté soit visible
     # immédiatement, même si la synchronisation complète prend plusieurs minutes.
     log("Étape 1/3 : mise à jour rapide de l'accueil et des événements...", log_path)
-    run_tool(root, ["mise_a_jour/outils/update_home_data.py", "--site-root", "."], log_path)
+    run_tool(root, [str(TOOLS_DIR / "update_home_data.py"), "--site-root", "."], log_path)
 
     # La sauvegarde est créée après l'accueil : si le scan complet échoue, la
     # restauration conserve tout de même les nouveaux événements déjà récupérés.
@@ -272,7 +274,7 @@ def synchronize(root: Path, log_path: Path) -> Path:
         run_tool(
             root,
             [
-                "mise_a_jour/outils/update_ultrarumble_data.py",
+                str(TOOLS_DIR / "update_ultrarumble_data.py"),
                 "--site-root", ".",
                 "--apply-index",
                 "--costume-mode", "weekly",
@@ -282,7 +284,7 @@ def synchronize(root: Path, log_path: Path) -> Path:
         log("Étape 3/3 : vérification finale des costumes...", log_path)
         run_tool(
             root,
-            ["mise_a_jour/outils/check_costume_data.py", "--site-root", "."],
+            [str(TOOLS_DIR / "check_costume_data.py"), "--site-root", "."],
             log_path,
             accepted={0, 2},
         )

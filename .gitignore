@@ -1,0 +1,21 @@
+# Fichiers temporaires locaux
+__pycache__/
+*.pyc
+*.pyo
+*.log
+*.lock
+
+# Sauvegardes créées par la synchronisation
+sauvegardes/
+**/sauvegardes/
+public/data/ultrarumble/synchronisation_state.json
+public/data/ultrarumble/derniere_synchronisation.json
+public/data/ultrarumble/synchronisation_ultrarumble.log
+public/data/ultrarumble/synchronisation_en_cours.lock
+
+# Outils Node locaux
+node_modules/
+.wrangler/
+.dev.vars
+.env
+.env.*

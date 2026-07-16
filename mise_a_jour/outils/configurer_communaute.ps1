@@ -1,6 +1,6 @@
 $ErrorActionPreference = "Stop"
 $root = (Resolve-Path (Join-Path $PSScriptRoot "..\..")).Path
-$configPath = Join-Path $root "js\community-config.js"
+$configPath = Join-Path $root "public\js\community-config.js"
 
 Write-Host "============================================================" -ForegroundColor Cyan
 Write-Host "CONFIGURATION DES BUILDS COMMUNAUTAIRES" -ForegroundColor Cyan
@@ -34,4 +34,5 @@ $content = "window.MHUR_COMMUNITY_CONFIG = $config;`r`n"
 
 Write-Host ""
 Write-Host "[OK] La communaute en ligne est configuree." -ForegroundColor Green
-Write-Host "Ferme puis rouvre index.html."
+Write-Host "La configuration a été écrite dans public/js/community-config.js.
+Commit puis Push origin avec GitHub Desktop."

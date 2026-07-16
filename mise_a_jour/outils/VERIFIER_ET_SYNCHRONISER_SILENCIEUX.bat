@@ -15,5 +15,5 @@ if errorlevel 1 (
   %PY_CMD% -m pip install -r "mise_a_jour\requirements.txt" >>"%LOG%" 2>&1
   if errorlevel 1 exit /b 4
 )
-%PY_CMD% "mise_a_jour\outils\surveiller_ultrarumble.py" --site-root .
+%PY_CMD% "mise_a_jour\outils\surveiller_ultrarumble.py" --site-root public
 exit /b %ERRORLEVEL%

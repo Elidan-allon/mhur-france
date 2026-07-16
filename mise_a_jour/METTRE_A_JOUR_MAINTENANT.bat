@@ -3,7 +3,7 @@ setlocal EnableExtensions
 cd /d "%~dp0.."
 title Mettre a jour MHUR France maintenant
 
-if not exist "index.html" goto INCOMPLETE
+if not exist "public\index.html" goto INCOMPLETE
 if not exist "mise_a_jour\outils\surveiller_ultrarumble.py" goto INCOMPLETE
 
 set "PY_CMD="
@@ -28,12 +28,12 @@ echo ===============================================
 echo.
 echo Verification et synchronisation complete en cours...
 echo Les evenements sont mis a jour en premier. Ne ferme pas cette fenetre avant [OK].
-%PY_CMD% "mise_a_jour\outils\surveiller_ultrarumble.py" --site-root . --force --wait-lock 300
+%PY_CMD% "mise_a_jour\outils\surveiller_ultrarumble.py" --site-root public --force --wait-lock 300
 if errorlevel 1 goto ERROR
 
 echo.
 echo [OK] Le site a ete mis a jour immediatement.
-echo Ferme puis rouvre index.html pour voir les changements.
+echo Ouvre public\index.html pour voir les changements.
 echo.
 pause
 exit /b 0
