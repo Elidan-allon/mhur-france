@@ -1,0 +1,13 @@
+{
+  "name":"My Hero Ultra Rumble France",
+  "short_name":"MHUR France",
+  "start_url":"./index.html#home",
+  "display":"standalone",
+  "background_color":"#080d17",
+  "theme_color":"#ffe100",
+  "description":"Base de données, costumes, T.U.N.I.N.G et builds communautaires MHUR.",
+  "icons":[
+    {"src":"assets/home/icons/release_character.png","sizes":"192x192","type":"image/png","purpose":"any maskable"},
+    {"src":"assets/home/icons/release_character.png","sizes":"512x512","type":"image/png","purpose":"any maskable"}
+  ]
+}

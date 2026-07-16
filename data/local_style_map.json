@@ -1,0 +1,1394 @@
+[
+  {
+    "style_key": "assault",
+    "character_id": "midoriya",
+    "character_name": "Izuku Midoriya",
+    "style_name": "Original",
+    "role": "assault",
+    "pv": 300,
+    "skill_names": [
+      {
+        "letter": "α",
+        "name": "Delaware Smash Air Force"
+      },
+      {
+        "letter": "β",
+        "name": "St. Louis Smash"
+      },
+      {
+        "letter": "γ",
+        "name": "Fouet Noir"
+      }
+    ],
+    "special_name": "Transporter"
+  },
+  {
+    "style_key": "fullbullet",
+    "character_id": "midoriya",
+    "character_name": "Izuku Midoriya",
+    "style_name": "Full Bullet",
+    "role": "strike",
+    "pv": 300,
+    "skill_names": [
+      {
+        "letter": "α",
+        "name": "Delaware Smash Full Bullet"
+      },
+      {
+        "letter": "β",
+        "name": "Manchester Smash"
+      },
+      {
+        "letter": "γ",
+        "name": "Impact au sol"
+      }
+    ],
+    "special_name": "Transporter"
+  },
+  {
+    "style_key": "ofa",
+    "character_id": "midoriya_ofa",
+    "character_name": "Izuku Midoriya OFA",
+    "style_name": "OFA",
+    "role": "speed",
+    "pv": 300,
+    "skill_names": [
+      {
+        "letter": "α",
+        "name": "Delaware Smash Airblast"
+      },
+      {
+        "letter": "β",
+        "name": "Impact 45 % Detroit Smash"
+      },
+      {
+        "letter": "γ",
+        "name": "2e Embrayage"
+      }
+    ],
+    "special_name": "Écran de fumée / Fa Jin"
+  },
+  {
+    "style_key": "bakugo_attack",
+    "character_id": "bakugo",
+    "character_name": "Katsuki Bakugo",
+    "style_name": "Original",
+    "role": "strike",
+    "pv": 350,
+    "skill_names": [
+      {
+        "letter": "α",
+        "name": "Tir anti-blindage"
+      },
+      {
+        "letter": "β",
+        "name": "Grenades improvisées"
+      },
+      {
+        "letter": "γ",
+        "name": "Howitzer Impact"
+      }
+    ],
+    "special_name": "Vitesse Turbo Explosive"
+  },
+  {
+    "style_key": "bakugo_rapid",
+    "character_id": "bakugo",
+    "character_name": "Katsuki Bakugo",
+    "style_name": "Machine-Gun",
+    "role": "speed",
+    "pv": 250,
+    "skill_names": [
+      {
+        "letter": "α",
+        "name": "Mitrailleuse Anti-Blindage"
+      },
+      {
+        "letter": "β",
+        "name": "Bombardement d'obus"
+      },
+      {
+        "letter": "γ",
+        "name": "Mine terrestre"
+      }
+    ],
+    "special_name": "Vitesse Turbo Explosive"
+  },
+  {
+    "style_key": "bakugo_technical",
+    "character_id": "bakugo",
+    "character_name": "Katsuki Bakugo",
+    "style_name": "Cluster",
+    "role": "technical",
+    "pv": 300,
+    "skill_names": [
+      {
+        "letter": "α",
+        "name": "Tir anti-blindage Cluster"
+      },
+      {
+        "letter": "β",
+        "name": "Nitro Cluster"
+      },
+      {
+        "letter": "γ",
+        "name": "Howitzer Impact Cluster"
+      }
+    ],
+    "special_name": "Vitesse Turbo Explosive"
+  },
+  {
+    "style_key": "ochaco_rapid",
+    "character_id": "ochaco",
+    "character_name": "Ochaco Uraraka",
+    "style_name": "Original",
+    "role": "speed",
+    "pv": 300,
+    "skill_names": [
+      {
+        "letter": "α",
+        "name": "Câble céleste"
+      },
+      {
+        "letter": "β",
+        "name": "Service comète"
+      },
+      {
+        "letter": "γ",
+        "name": "Nébuleuse galactique"
+      }
+    ],
+    "special_name": "Gravité Zéro"
+  },
+  {
+    "style_key": "ochaco_assault",
+    "character_id": "ochaco",
+    "character_name": "Ochaco Uraraka",
+    "style_name": "Zéro satellites",
+    "role": "assault",
+    "pv": 350,
+    "skill_names": [
+      {
+        "letter": "α",
+        "name": "Service comète"
+      },
+      {
+        "letter": "β",
+        "name": "Zéro satellites"
+      },
+      {
+        "letter": "γ",
+        "name": "Envol nébuleux"
+      }
+    ],
+    "special_name": "Gravité Zéro"
+  },
+  {
+    "style_key": "tenya_rapid",
+    "character_id": "tenya",
+    "character_name": "Tenya Iida",
+    "style_name": "Original",
+    "role": "speed",
+    "pv": 300,
+    "skill_names": [
+      {
+        "letter": "α",
+        "name": "Recipro Wheel"
+      },
+      {
+        "letter": "β",
+        "name": "Recipro Burst"
+      },
+      {
+        "letter": "γ",
+        "name": "Recipro Turbo"
+      }
+    ],
+    "special_name": "Transporter / Courir sur un mur"
+  },
+  {
+    "style_key": "shoto_attack",
+    "character_id": "shoto",
+    "character_name": "Shoto Todoroki",
+    "style_name": "Original",
+    "role": "strike",
+    "pv": 350,
+    "skill_names": [
+      {
+        "letter": "α",
+        "name": "Feu féroce"
+      },
+      {
+        "letter": "β",
+        "name": "Mur de glace céleste"
+      },
+      {
+        "letter": "γ",
+        "name": "Stalagmite"
+      }
+    ],
+    "special_name": "Enfer de flammes"
+  },
+  {
+    "style_key": "shoto_technical",
+    "character_id": "shoto",
+    "character_name": "Shoto Todoroki",
+    "style_name": "Fœhn glacial",
+    "role": "technical",
+    "pv": 350,
+    "skill_names": [
+      {
+        "letter": "α",
+        "name": "Fœhn glacial"
+      },
+      {
+        "letter": "β",
+        "name": "Cascade de glace céleste"
+      },
+      {
+        "letter": "γ",
+        "name": "Prison de flammes"
+      }
+    ],
+    "special_name": "Enfer de flammes"
+  },
+  {
+    "style_key": "tsuyu_rapid",
+    "character_id": "tsuyu",
+    "character_name": "Tsuyu Asui",
+    "style_name": "Original",
+    "role": "speed",
+    "pv": "250",
+    "skill_names": [
+      {
+        "letter": "α",
+        "name": "Tir Coassement"
+      },
+      {
+        "letter": "β",
+        "name": "Balancement Coassement"
+      },
+      {
+        "letter": "γ",
+        "name": "Camofrog"
+      }
+    ],
+    "special_name": "Attrape-Grenouille"
+  },
+  {
+    "style_key": "kirishima_assault",
+    "character_id": "kirishima",
+    "character_name": "Eijiro Kirishima",
+    "style_name": "Assaut",
+    "role": "assault",
+    "pv": "400",
+    "skill_names": [
+      {
+        "letter": "α",
+        "name": "Épée Chambara"
+      },
+      {
+        "letter": "β",
+        "name": "Red Counter"
+      },
+      {
+        "letter": "γ",
+        "name": "Red Burst"
+      }
+    ],
+    "special_name": "Durcissement"
+  },
+  {
+    "style_key": "kirishima_strike",
+    "character_id": "kirishima",
+    "character_name": "Eijiro Kirishima",
+    "style_name": "Guerrier enragé",
+    "role": "strike",
+    "pv": "300",
+    "skill_names": [
+      {
+        "letter": "α",
+        "name": "Guerrier enragé"
+      },
+      {
+        "letter": "β",
+        "name": "Bastion enragé"
+      },
+      {
+        "letter": "γ",
+        "name": "Saut enragé"
+      }
+    ],
+    "special_name": "Durcissement"
+  },
+  {
+    "style_key": "momo_support",
+    "character_id": "momo",
+    "character_name": "Momo Yaoyorozu",
+    "style_name": "Original",
+    "role": "support",
+    "pv": "350",
+    "skill_names": [
+      {
+        "letter": "α",
+        "name": "Création : Croiser le fer"
+      },
+      {
+        "letter": "β",
+        "name": "Création : Forteresse imprenable"
+      },
+      {
+        "letter": "γ",
+        "name": "Alter γ"
+      }
+    ],
+    "special_name": "Création spéciale"
+  },
+  {
+    "style_key": "tokoyami_assault",
+    "character_id": "tokoyami",
+    "character_name": "Fumikage Tokoyami",
+    "style_name": "Original",
+    "role": "assault",
+    "pv": "300",
+    "skill_names": [
+      {
+        "letter": "α",
+        "name": "Ragnarök"
+      },
+      {
+        "letter": "β",
+        "name": "Spirale d'ombres du crépuscule"
+      },
+      {
+        "letter": "γ",
+        "name": "Bouclier sombre de jais"
+      }
+    ],
+    "special_name": "Black Ânkh / Ailes jumelles de jais"
+  },
+  {
+    "style_key": "kaminari_strike",
+    "character_id": "kaminari",
+    "character_name": "Denki Kaminari",
+    "style_name": "Original",
+    "role": "strike",
+    "pv": "350",
+    "skill_names": [
+      {
+        "letter": "α",
+        "name": "Target Electo"
+      },
+      {
+        "letter": "β",
+        "name": "Décharge Universelle, 1 300 000 volts"
+      },
+      {
+        "letter": "γ",
+        "name": "Taser humain"
+      }
+    ],
+    "special_name": "Électricité"
+  },
+  {
+    "style_key": "kaminari_technical",
+    "character_id": "kaminari",
+    "character_name": "Denki Kaminari",
+    "style_name": "Attaque éclair",
+    "role": "technical",
+    "pv": "350",
+    "skill_names": [
+      {
+        "letter": "α",
+        "name": "Trident Electo"
+      },
+      {
+        "letter": "α",
+        "name": "Verrouillage électrique"
+      },
+      {
+        "letter": "β",
+        "name": "Explosion à tête chercheuse"
+      },
+      {
+        "letter": "γ",
+        "name": "Solution éclair"
+      }
+    ],
+    "special_name": "Électricité"
+  },
+  {
+    "style_key": "monoma_technical",
+    "character_id": "monoma",
+    "character_name": "Neito Monoma",
+    "style_name": "Original",
+    "role": "technical",
+    "pv": "300",
+    "skill_names": [
+      {
+        "letter": "α",
+        "name": "Copie : Giant Fist"
+      },
+      {
+        "letter": "β",
+        "name": "Copie : Tourbillon"
+      },
+      {
+        "letter": "γ",
+        "name": "Copie : Acier"
+      }
+    ],
+    "special_name": "Skill Switch / Scanners"
+  },
+  {
+    "style_key": "kendo_assault",
+    "character_id": "kendo",
+    "character_name": "Itsuka Kendo",
+    "style_name": "Original",
+    "role": "assault",
+    "pv": "400",
+    "skill_names": [
+      {
+        "letter": "α",
+        "name": "Lancer de pierre"
+      },
+      {
+        "letter": "β",
+        "name": "Bouclier Giant Fist"
+      },
+      {
+        "letter": "γ",
+        "name": "Micro Fist"
+      }
+    ],
+    "special_name": "Lucky Giant Fist"
+  },
+  {
+    "style_key": "kendo_strike",
+    "character_id": "kendo",
+    "character_name": "Itsuka Kendo",
+    "style_name": "Double Giant Palm",
+    "role": "strike",
+    "pv": "350",
+    "skill_names": [
+      {
+        "letter": "α",
+        "name": "Violente bourrasque"
+      },
+      {
+        "letter": "β",
+        "name": "Double Giant Palm"
+      },
+      {
+        "letter": "γ",
+        "name": "Poing tourbillon"
+      }
+    ],
+    "special_name": "Lucky Giant Fist"
+  },
+  {
+    "style_key": "ibara_support",
+    "character_id": "ibara",
+    "character_name": "Ibara Shiozaki",
+    "style_name": "Original",
+    "role": "support",
+    "pv": "400",
+    "skill_names": [
+      {
+        "letter": "α",
+        "name": "Purification"
+      },
+      {
+        "letter": "β",
+        "name": "Via Dolorosa"
+      },
+      {
+        "letter": "γ",
+        "name": "Crucifixion"
+      }
+    ],
+    "special_name": "Bouclier de la Foi"
+  },
+  {
+    "style_key": "mirio_rapid",
+    "character_id": "mirio",
+    "character_name": "Mirio Togata",
+    "style_name": "Original",
+    "role": "speed",
+    "pv": "250",
+    "skill_names": [
+      {
+        "letter": "α",
+        "name": "Rupture ophtalmique invisible"
+      },
+      {
+        "letter": "β",
+        "name": "Plongée spectrale"
+      },
+      {
+        "letter": "γ",
+        "name": "Garde spectrale"
+      }
+    ],
+    "special_name": "Perméabilité"
+  },
+  {
+    "style_key": "mirio_technical",
+    "character_id": "mirio",
+    "character_name": "Mirio Togata",
+    "style_name": "Contre éclatant",
+    "role": "technical",
+    "pv": "300",
+    "skill_names": [
+      {
+        "letter": "α",
+        "name": "Phantom Smash"
+      },
+      {
+        "letter": "β",
+        "name": "Phantom Rush"
+      },
+      {
+        "letter": "γ",
+        "name": "Contre éclatant"
+      }
+    ],
+    "special_name": "Perméabilité"
+  },
+  {
+    "style_key": "tamaki_strike",
+    "character_id": "tamaki",
+    "character_name": "Tamaki Amajiki",
+    "style_name": "Original",
+    "role": "strike",
+    "pv": "350",
+    "skill_names": [
+      {
+        "letter": "α",
+        "name": "Épée de marlin"
+      },
+      {
+        "letter": "β",
+        "name": "Octopus Mirage"
+      },
+      {
+        "letter": "γ",
+        "name": "Canon plasma"
+      }
+    ],
+    "special_name": "Griffe ailée"
+  },
+  {
+    "style_key": "nejire_technical",
+    "character_id": "nejire",
+    "character_name": "Nejire Hado",
+    "style_name": "Original",
+    "role": "technical",
+    "pv": "300",
+    "skill_names": [
+      {
+        "letter": "α",
+        "name": "Spirale de choc"
+      },
+      {
+        "letter": "β",
+        "name": "Onde de choc"
+      },
+      {
+        "letter": "γ",
+        "name": "Vague de choc"
+      }
+    ],
+    "special_name": "Onde de choc"
+  },
+  {
+    "style_key": "nejire_support",
+    "character_id": "nejire",
+    "character_name": "Nejire Hado",
+    "style_name": "Fée",
+    "role": "support",
+    "pv": "300",
+    "skill_names": [
+      {
+        "letter": "α",
+        "name": "Wring pike"
+      },
+      {
+        "letter": "β",
+        "name": "Wring fairy"
+      },
+      {
+        "letter": "γ",
+        "name": "Wring veil"
+      }
+    ],
+    "special_name": "Onde de choc"
+  },
+  {
+    "style_key": "shinso_strike",
+    "character_id": "shinso",
+    "character_name": "Hitoshi Shinso",
+    "style_name": "Original",
+    "role": "strike",
+    "pv": "300",
+    "skill_names": [
+      {
+        "letter": "α",
+        "name": "Bandes de tissus entravantes - Attaque piquée"
+      },
+      {
+        "letter": "β",
+        "name": "Bandes de tissus entravantes - Rupture ascendante"
+      },
+      {
+        "letter": "γ",
+        "name": "Lavage de cerveau"
+      }
+    ],
+    "special_name": "Persona Chords / Persona Commando"
+  },
+  {
+    "style_key": "all_might_assault",
+    "character_id": "all_might",
+    "character_name": "All Might",
+    "style_name": "Original",
+    "role": "assault",
+    "pv": "350",
+    "skill_names": [
+      {
+        "letter": "α",
+        "name": "Texas Smash"
+      },
+      {
+        "letter": "β",
+        "name": "United States of Smash"
+      },
+      {
+        "letter": "γ",
+        "name": "Oklahoma Smash"
+      }
+    ],
+    "special_name": "Transporter / Bond géant"
+  },
+  {
+    "style_key": "all_might_rapid",
+    "character_id": "all_might",
+    "character_name": "All Might",
+    "style_name": "Gatling",
+    "role": "speed",
+    "pv": "300",
+    "skill_names": [
+      {
+        "letter": "α",
+        "name": "Texas Smash Gatling"
+      },
+      {
+        "letter": "β",
+        "name": "Carolina Smash"
+      },
+      {
+        "letter": "γ",
+        "name": "Arizona Smash"
+      }
+    ],
+    "special_name": "Transporter / Bond géant"
+  },
+  {
+    "style_key": "armored_all_might_technical",
+    "character_id": "armored_all_might",
+    "character_name": "Armored All Might",
+    "style_name": "Technique",
+    "role": "technical",
+    "pv": "350",
+    "skill_names": [
+      {
+        "letter": "α",
+        "name": "Tir de balle de glace"
+      },
+      {
+        "letter": "β (Maintenir)",
+        "name": "Black Whip Cellophane"
+      },
+      {
+        "letter": "β",
+        "name": "Black Whip Chargéclair"
+      },
+      {
+        "letter": "γ",
+        "name": "Drone Anima"
+      }
+    ],
+    "special_name": "Propulseurs"
+  },
+  {
+    "style_key": "aizawa_technical",
+    "character_id": "aizawa",
+    "character_name": "Shota Aizawa",
+    "style_name": "Original",
+    "role": "technical",
+    "pv": "300",
+    "skill_names": [
+      {
+        "letter": "α",
+        "name": "Bandes de tissu entravantes - Rubans"
+      },
+      {
+        "letter": "β",
+        "name": "Coups de pied puissants"
+      },
+      {
+        "letter": "γ",
+        "name": "Bandes de tissu entravantes - Serpent"
+      }
+    ],
+    "special_name": "Effacement"
+  },
+  {
+    "style_key": "aizawa_strike",
+    "character_id": "aizawa",
+    "character_name": "Shota Aizawa",
+    "style_name": "Dissipation",
+    "role": "strike",
+    "pv": "300",
+    "skill_names": [
+      {
+        "letter": "α",
+        "name": "Bandes de tissu entravantes - Messager"
+      },
+      {
+        "letter": "β",
+        "name": "Bandes de tissu entravantes - Dissipation"
+      },
+      {
+        "letter": "γ",
+        "name": "Bandes de tissu entravantes - Vélocité"
+      }
+    ],
+    "special_name": "Effacement"
+  },
+  {
+    "style_key": "present_mic_strike",
+    "character_id": "present_mic",
+    "character_name": "Present Mic",
+    "style_name": "Original",
+    "role": "strike",
+    "pv": "300",
+    "skill_names": [
+      {
+        "letter": "α",
+        "name": "Voix tonitruante"
+      },
+      {
+        "letter": "β",
+        "name": "Voix assourdissante"
+      },
+      {
+        "letter": "γ",
+        "name": "Coup de poing du DJ"
+      }
+    ],
+    "special_name": "Parasites audio"
+  },
+  {
+    "style_key": "present_mic_technical",
+    "character_id": "present_mic",
+    "character_name": "Present Mic",
+    "style_name": "Console DJ",
+    "role": "technical",
+    "pv": "300",
+    "skill_names": [
+      {
+        "letter": "α",
+        "name": "Voix résonnante"
+      },
+      {
+        "letter": "β",
+        "name": "Console DJ"
+      },
+      {
+        "letter": "γ",
+        "name": "Haut-parleur"
+      }
+    ],
+    "special_name": "Parasites audio"
+  },
+  {
+    "style_key": "endeavor_strike",
+    "character_id": "endeavor",
+    "character_name": "Endeavor",
+    "style_name": "Original",
+    "role": "strike",
+    "pv": "350",
+    "skill_names": [
+      {
+        "letter": "α",
+        "name": "Rayons incandescents"
+      },
+      {
+        "letter": "β",
+        "name": "Flèche Enflammée"
+      },
+      {
+        "letter": "γ",
+        "name": "Prominence Burn"
+      }
+    ],
+    "special_name": "Vol / Bond géant"
+  },
+  {
+    "style_key": "endeavor_assault",
+    "character_id": "endeavor",
+    "character_name": "Endeavor",
+    "style_name": "Brilliant Scorching Fist",
+    "role": "assault",
+    "pv": "350",
+    "skill_names": [
+      {
+        "letter": "α",
+        "name": "Brilliant Scorching Fist : Jet Burn"
+      },
+      {
+        "letter": "β",
+        "name": "Vanishing Storm / (Maintenir) Hell Curtain"
+      },
+      {
+        "letter": "γ",
+        "name": "Prominence Nova"
+      }
+    ],
+    "special_name": "Vol / Bond géant"
+  },
+  {
+    "style_key": "hawks_rapid",
+    "character_id": "hawks",
+    "character_name": "Hawks",
+    "style_name": "Original",
+    "role": "speed",
+    "pv": "250",
+    "skill_names": [
+      {
+        "letter": "α",
+        "name": "Vague de plumes"
+      },
+      {
+        "letter": "β",
+        "name": "Bourrasque éclair"
+      },
+      {
+        "letter": "γ",
+        "name": "Bal de plumes"
+      }
+    ],
+    "special_name": "Ailes puissantes / Transport + Vol"
+  },
+  {
+    "style_key": "hawks_strike",
+    "character_id": "hawks",
+    "character_name": "Hawks",
+    "style_name": "Lame de vent déchirant",
+    "role": "strike",
+    "pv": "300",
+    "skill_names": [
+      {
+        "letter": "α",
+        "name": "Puissants vents d'hiver"
+      },
+      {
+        "letter": "β",
+        "name": "Lame de vent déchirant"
+      },
+      {
+        "letter": "γ",
+        "name": "Rotation"
+      }
+    ],
+    "special_name": "Ailes puissantes / Transport + Vol"
+  },
+  {
+    "style_key": "mirko_rapid",
+    "character_id": "mirko",
+    "character_name": "Mirko",
+    "style_name": "Original",
+    "role": "speed",
+    "pv": "300",
+    "skill_names": [
+      {
+        "letter": "α",
+        "name": "Luna Strike"
+      },
+      {
+        "letter": "β",
+        "name": "Luna Arc"
+      },
+      {
+        "letter": "γ",
+        "name": "Luna Crescent"
+      }
+    ],
+    "special_name": "Luna Step / Luna Turn"
+  },
+  {
+    "style_key": "star_and_stripe_strike",
+    "character_id": "star_stripe",
+    "character_name": "Star and Stripe",
+    "style_name": "Original",
+    "role": "strike",
+    "pv": "350",
+    "skill_names": [
+      {
+        "letter": "α",
+        "name": "Diffusion laser"
+      },
+      {
+        "letter": "β",
+        "name": "Air Zéro"
+      },
+      {
+        "letter": "γ",
+        "name": "Keraunos"
+      }
+    ],
+    "special_name": "Inversement de zone"
+  },
+  {
+    "style_key": "mt_lady_assault",
+    "character_id": "mt_lady",
+    "character_name": "Mt. Lady",
+    "style_name": "Original",
+    "role": "assault",
+    "pv": "350",
+    "skill_names": [
+      {
+        "letter": "α",
+        "name": "Poing infernal"
+      },
+      {
+        "letter": "β",
+        "name": "Écrasement Caldera"
+      },
+      {
+        "letter": "γ",
+        "name": "Canyon Canon"
+      }
+    ],
+    "special_name": "Gigantisme"
+  },
+  {
+    "style_key": "cementoss_support",
+    "character_id": "cementoss",
+    "character_name": "Cementoss",
+    "style_name": "Original",
+    "role": "support",
+    "pv": 350,
+    "skill_names": [
+      {
+        "letter": "α",
+        "name": "Pilier de bravoure"
+      },
+      {
+        "letter": "β",
+        "name": "Mur porteur"
+      },
+      {
+        "letter": "γ",
+        "name": "Base solide"
+      }
+    ],
+    "special_name": "Mur protecteur"
+  },
+  {
+    "style_key": "shigaraki_strike",
+    "character_id": "shigaraki",
+    "character_name": "Tomura Shigaraki",
+    "style_name": "Original",
+    "role": "strike",
+    "pv": "300",
+    "skill_names": [
+      {
+        "letter": "α",
+        "name": "Fissure terrestre"
+      },
+      {
+        "letter": "β",
+        "name": "Destruction de masse"
+      },
+      {
+        "letter": "γ",
+        "name": "Glitch"
+      }
+    ],
+    "special_name": "Main de la destruction"
+  },
+  {
+    "style_key": "shigaraki_assault",
+    "character_id": "shigaraki",
+    "character_name": "Tomura Shigaraki",
+    "style_name": "Catastrophe",
+    "role": "assault",
+    "pv": "300",
+    "skill_names": [
+      {
+        "letter": "α",
+        "name": "Cataclysme terrestre"
+      },
+      {
+        "letter": "β",
+        "name": "Tir de rancune"
+      },
+      {
+        "letter": "γ",
+        "name": "Catastrophe"
+      }
+    ],
+    "special_name": "Main de la destruction"
+  },
+  {
+    "style_key": "shigaraki_technical",
+    "character_id": "shigaraki",
+    "character_name": "Tomura Shigaraki",
+    "style_name": "Mille mains destructrices",
+    "role": "technical",
+    "pv": "350",
+    "skill_names": [
+      {
+        "letter": "α",
+        "name": "Mille mains destructrices"
+      },
+      {
+        "letter": "β",
+        "name": "Secousse fatale"
+      },
+      {
+        "letter": "γ",
+        "name": "Super Régénération"
+      }
+    ],
+    "special_name": "Main de la destruction"
+  },
+  {
+    "style_key": "all_for_one_technical",
+    "character_id": "all_for_one",
+    "character_name": "All For One",
+    "style_name": "Original",
+    "role": "technical",
+    "pv": "400",
+    "skill_names": [
+      {
+        "letter": "α",
+        "name": "Coup fatal"
+      },
+      {
+        "letter": "β",
+        "name": "Manipulation des griffes"
+      },
+      {
+        "letter": "γ",
+        "name": "Zone noire"
+      }
+    ],
+    "special_name": "Pillage"
+  },
+  {
+    "style_key": "all_for_one_strike",
+    "character_id": "all_for_one",
+    "character_name": "All For One",
+    "style_name": "Multi-facteurs",
+    "role": "strike",
+    "pv": "350",
+    "skill_names": [
+      {
+        "letter": "α",
+        "name": "Zéphyr"
+      },
+      {
+        "letter": "β",
+        "name": "Éden perdu"
+      },
+      {
+        "letter": "γ",
+        "name": "Multi-facteurs « Je vais t'anéantir »"
+      }
+    ],
+    "special_name": "Pillage"
+  },
+  {
+    "style_key": "all_for_one_young_assault",
+    "character_id": "all_for_one_young",
+    "character_name": "All For One jeune",
+    "style_name": "Original",
+    "role": "assault",
+    "pv": "300",
+    "skill_names": [
+      {
+        "letter": "α",
+        "name": "Éclair funèbre"
+      },
+      {
+        "letter": "β",
+        "name": "Annihilation"
+      },
+      {
+        "letter": "γ",
+        "name": "Jugement divin"
+      }
+    ],
+    "special_name": "Voltige / Perforation du néant"
+  },
+  {
+    "style_key": "dabi_technical",
+    "character_id": "dabi",
+    "character_name": "Dabi",
+    "style_name": "Original",
+    "role": "technical",
+    "pv": "350",
+    "skill_names": [
+      {
+        "letter": "α",
+        "name": "Feu mystérieux"
+      },
+      {
+        "letter": "β",
+        "name": "Feu follet"
+      },
+      {
+        "letter": "γ",
+        "name": "Combustion"
+      }
+    ],
+    "special_name": "Flammes indéfectibles"
+  },
+  {
+    "style_key": "dabi_strike",
+    "character_id": "dabi",
+    "character_name": "Dabi",
+    "style_name": "Feu frénétique",
+    "role": "strike",
+    "pv": "350",
+    "skill_names": [
+      {
+        "letter": "α",
+        "name": "Flammes enragées"
+      },
+      {
+        "letter": "β",
+        "name": "Préceptes ardents"
+      },
+      {
+        "letter": "γ",
+        "name": "Feu frénétique"
+      }
+    ],
+    "special_name": "Flammes indéfectibles"
+  },
+  {
+    "style_key": "toga_technical",
+    "character_id": "toga",
+    "character_name": "Himiko Toga",
+    "style_name": "Original",
+    "role": "technical",
+    "pv": "350",
+    "skill_names": [
+      {
+        "letter": "α",
+        "name": "Lancer de couteau"
+      },
+      {
+        "letter": "β",
+        "name": "Lame d'assassin"
+      },
+      {
+        "letter": "γ",
+        "name": "Seringue de métamorphose"
+      }
+    ],
+    "special_name": "Sang pour sang / Métamorphose"
+  },
+  {
+    "style_key": "toga_rapid",
+    "character_id": "toga",
+    "character_name": "Himiko Toga",
+    "style_name": "Danse des piqûres",
+    "role": "speed",
+    "pv": "300",
+    "skill_names": [
+      {
+        "letter": "α",
+        "name": "Couteau boomerang"
+      },
+      {
+        "letter": "β",
+        "name": "Danse des piqûres"
+      },
+      {
+        "letter": "γ",
+        "name": "Seringue sanglante"
+      }
+    ],
+    "special_name": "Sang pour sang / Métamorphose"
+  },
+  {
+    "style_key": "twice_rapid",
+    "character_id": "twice",
+    "character_name": "Twice",
+    "style_name": "Original",
+    "role": "speed",
+    "pv": "300",
+    "skill_names": [
+      {
+        "letter": "α",
+        "name": "Coup de poignard"
+      },
+      {
+        "letter": "β",
+        "name": "Auto-clonage"
+      },
+      {
+        "letter": "γ",
+        "name": "Feet Boost"
+      }
+    ],
+    "special_name": "Folle imitation"
+  },
+  {
+    "style_key": "mr_compress_support",
+    "character_id": "mr_compress",
+    "character_name": "Mr. Compress",
+    "style_name": "Original",
+    "role": "support",
+    "pv": "300",
+    "skill_names": [
+      {
+        "letter": "α",
+        "name": "Décompression magique"
+      },
+      {
+        "letter": "β",
+        "name": "Tour de passe-passe"
+      },
+      {
+        "letter": "γ",
+        "name": "Choix du magicien"
+      }
+    ],
+    "special_name": "Résurrection magique"
+  },
+  {
+    "style_key": "kurogiri_support",
+    "character_id": "kurogiri",
+    "character_name": "Kurogiri",
+    "style_name": "Original",
+    "role": "support",
+    "pv": "300",
+    "skill_names": [
+      {
+        "letter": "α",
+        "name": "Matière noire"
+      },
+      {
+        "letter": "β",
+        "name": "Portail"
+      },
+      {
+        "letter": "γ",
+        "name": "Ombre chercheuse"
+      },
+      {
+        "letter": "γ",
+        "name": "Raid d'ombres chercheuses"
+      }
+    ],
+    "special_name": "Issue de secours"
+  },
+  {
+    "style_key": "lady_nagant_strike",
+    "character_id": "lady_nagant",
+    "character_name": "Lady Nagant",
+    "style_name": "Original",
+    "role": "strike",
+    "pv": "250",
+    "skill_names": [
+      {
+        "letter": "α",
+        "name": "Balle à pointe creuse"
+      },
+      {
+        "letter": "β",
+        "name": "Munition à angle élevé"
+      },
+      {
+        "letter": "γ",
+        "name": "Tir arrière"
+      }
+    ],
+    "special_name": "Mode lunette / Lévitation"
+  },
+  {
+    "style_key": "overhaul_support",
+    "character_id": "overhaul",
+    "character_name": "Overhaul",
+    "style_name": "Original",
+    "role": "support",
+    "pv": "350",
+    "skill_names": [
+      {
+        "letter": "α",
+        "name": "Broyeur des enfers"
+      },
+      {
+        "letter": "β",
+        "name": "Orage perçant"
+      },
+      {
+        "letter": "γ",
+        "name": "Cercueil de roche"
+      }
+    ],
+    "special_name": "Réassembler / Désassembler"
+  },
+  {
+    "style_key": "overhaul_assault",
+    "character_id": "overhaul",
+    "character_name": "Overhaul",
+    "style_name": "Précipice de la mort",
+    "role": "assault",
+    "pv": "300",
+    "skill_names": [
+      {
+        "letter": "α",
+        "name": "Averse d'automne / Tir funèbre"
+      },
+      {
+        "letter": "β",
+        "name": "Précipice de la mort"
+      },
+      {
+        "letter": "γ",
+        "name": "Tir en bière"
+      }
+    ],
+    "special_name": "Réassembler / Désassembler"
+  },
+  {
+    "style_key": "gentle_criminal_support",
+    "character_id": "",
+    "character_name": "",
+    "style_name": "Original",
+    "role": "support",
+    "pv": "À compléter",
+    "skill_names": [
+      {
+        "letter": "α",
+        "name": "Alter α"
+      },
+      {
+        "letter": "β",
+        "name": "Alter β"
+      },
+      {
+        "letter": "γ",
+        "name": "Alter γ"
+      }
+    ],
+    "special_name": "Action spéciale"
+  }
+]

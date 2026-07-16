@@ -1,0 +1,2 @@
+Ce dossier est volontairement vide dans le patch.
+Copie tout le patch dans ton dossier actuel : tes photos existantes seront conservees.

@@ -1,0 +1,24 @@
+DIAGNOSTIC DE SYNCHRONISATION — MHUR FRANCE
+
+Le diagnostic a été retiré du menu du site.
+Les informations restent disponibles dans les fichiers du projet.
+
+1. Vérifier sans modifier le site
+   Lance : mise_a_jour\VERIFIER_MAINTENANT.bat
+
+2. Mettre à jour immédiatement
+   Lance : mise_a_jour\METTRE_A_JOUR_MAINTENANT.bat
+
+3. Lire le résultat détaillé
+   Ouvre : data\ultrarumble\synchronisation_ultrarumble.log
+
+4. Données résumées du dernier diagnostic
+   Ouvre : data\diagnostic_data.js
+
+Dans le journal, cherche surtout :
+- Changement détecté : une page UltraRumble a changé.
+- Aucun changement : le site est déjà à jour.
+- [OK] : la vérification ou la mise à jour s'est terminée correctement.
+- [ERREUR] : consulte les dernières lignes du journal.
+
+Le fichier data\diagnostic_data.js est conservé pour l'historique technique, mais il n'est plus affiché dans le site.
