@@ -1,3 +1,10 @@
-// V359: service worker intentionally disabled to prevent stale OAuth returns.
-self.addEventListener('install',()=>self.skipWaiting());
-self.addEventListener('activate',event=>event.waitUntil((async()=>{for(const k of await caches.keys())await caches.delete(k);await self.registration.unregister();const clients=await self.clients.matchAll({type:'window'});for(const c of clients)c.navigate(c.url)})()));
+const RELEASE='362';
+self.addEventListener('install',event=>event.waitUntil(self.skipWaiting()));
+self.addEventListener('activate',event=>event.waitUntil((async()=>{
+  for(const key of await caches.keys())await caches.delete(key);
+  await self.clients.claim();
+})()));
+// Network-only: required for PWA installation, but never serves an old site version.
+self.addEventListener('fetch',event=>{
+  if(event.request.method==='GET')event.respondWith(fetch(event.request,{cache:'no-store'}));
+});
