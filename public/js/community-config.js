@@ -1,6 +1,4 @@
 window.MHUR_COMMUNITY_CONFIG = {
-  // Laisse vide pour tester les builds uniquement dans ce navigateur.
-  // Après avoir créé le projet Supabase, lance 0_CONFIGURER_COMMUNAUTE.bat.
-  supabaseUrl: "",
-  supabaseKey: ""
+  supabaseUrl: "https://ypaivlgghfqbddqridyq.supabase.co",
+  supabaseAnonKey: "sb_publishable_K4k1_ToJ_HpN3L7RlsRh1w_w37r4b1H
 };

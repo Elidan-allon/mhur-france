@@ -301,7 +301,7 @@ function cbCharacterWidget(styleId){
   cbEnsureLoaded(char.id,styleId);
   return `<section class="cbCharacterWidget">
     <div class="cbWidgetHead">
-      <div><h2>Builds recommandés par la communauté</h2><p>${cbEsc(char.name)} · ${cbEsc(cbStyleName(styleId))}</p></div>
+      <div><h2>${tr('communityBuildsTitle')}</h2><p>${cbEsc(char.name)} · ${cbEsc(cbStyleName(styleId))}</p></div>
       <div class="cbWidgetActions">
         <button onclick="openCommunityBuildCreator('${cbEsc(char.id)}','${cbEsc(styleId)}')">+ Créer un build</button>
         <button class="secondary" onclick="openCommunityBuildsPage('${cbEsc(char.id)}','${cbEsc(styleId)}')">Voir tous</button>
@@ -339,18 +339,18 @@ window.communityReloadBuilds=function(charId,styleId){
 
 buildsPage=function(){
   if(!selectedChar){
-    return `<h1 class="title">Builds recommandés</h1>
-      <div class="builderHero"><h2>Builds de la communauté</h2><p>Choisis un personnage. Les builds sont séparés par personnage et par style, puis classés selon le nombre de cœurs.</p></div>
+    return `<h1 class="title">${tr('recommendedBuildsTitle')}</h1>
+      <div class="builderHero"><h2>${tr('communityBuildsTitle')}</h2><p>${tr('communityBuildsIntro')}</p></div>
       ${rosterSections(false,'builds')}`;
   }
   const char=cbCharacter(selectedChar);
-  if(!char) return `<div class="homeBox">Personnage introuvable.</div>`;
+  if(!char) return `<div class="homeBox">${tr('characterNotFound')}</div>`;
   if(!selectedStyle||!char.styles.includes(selectedStyle)) selectedStyle=char.styles[0];
   cbEnsureLoaded(char.id,selectedStyle);
   return `<button class="back" onclick="selectedChar=null;selectedStyle=null;render()">← ${tr('back')}</button>
     <div class="cbPageHead">
-      <div><h1 class="title">Builds — ${cbEsc(char.name)}</h1><p>Chaque style possède son propre classement.</p></div>
-      <button class="cbAddBuild" onclick="openCommunityBuildCreator('${cbEsc(char.id)}','${cbEsc(selectedStyle)}')"><span>+</span> Créer un build complet</button>
+      <div><h1 class="title">${tr('communityBuildsTitle')} — ${cbEsc(char.name)}</h1><p>${tr('eachStyleRanking')}</p></div>
+      <button class="cbAddBuild" onclick="openCommunityBuildCreator('${cbEsc(char.id)}','${cbEsc(selectedStyle)}')"><span>+</span> ${tr('createFullBuild')}</button>
     </div>
     <div class="styleChoiceCompact cbStyleTabs">${char.styles.map(styleId=>{
       const style=cbStyle(styleId)||{};
