@@ -2,7 +2,7 @@
   "name": "My Hero Ultra Rumble France",
   "short_name": "MHUR France",
   "id": "/",
-  "start_url": "/?release=361#home",
+  "start_url": "/?release=363#home",
   "scope": "/",
   "display": "standalone",
   "orientation": "any",
