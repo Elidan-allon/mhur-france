@@ -12,3 +12,14 @@ Sur Cloudflare Workers Builds :
 - Build command : laisser vide
 - Deploy command : npx wrangler deploy
 - Path : /
+
+V346 — MISE À JOUR AUTOMATIQUE DU SITE
+Le navigateur vérifie automatiquement version.json dès l'ouverture, toutes les 60 secondes,
+au retour sur l'onglet et lorsque la connexion Internet revient. Lorsqu'une nouvelle version
+est publiée sur Cloudflare, la page se recharge automatiquement sans demander à l'utilisateur
+de vider le cache.
+
+
+V348 : traduction FR/EN des titres, catégories et libellés des événements, bonus et tirages de l'accueil.
+
+V350 : en-tête Tier List contenu dans le cadre et auteur (avatar + pseudo) affiché sur les Tier Lists publiées.

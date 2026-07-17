@@ -197,38 +197,41 @@ function cbFormatDate(value){
       .format(new Date(value));
   }catch(_){return ''}
 }
+function cbUiIcon(kind,filled=false){
+  if(kind==='heart') return `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.8 4.7a5.35 5.35 0 0 0-7.57 0L12 5.93 10.77 4.7a5.35 5.35 0 1 0-7.57 7.57L12 21.05l8.8-8.78a5.35 5.35 0 0 0 0-7.57Z" ${filled?'fill="currentColor"':'fill="none"'} stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>`;
+  return `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 2.9 2.8 5.67 6.26.91-4.53 4.42 1.07 6.23L12 17.19l-5.6 2.94 1.07-6.23-4.53-4.42 6.26-.91L12 2.9Z" ${filled?'fill="currentColor"':'fill="none"'} stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>`;
+}
 function cbHeartHtml(build,compact=false){
   const liked=cbLikedSet().has(build.id);
-  return `<button class="cbHeart ${liked?'liked':''} ${compact?'compact':''}" onclick="event.stopPropagation();communityToggleHeart('${cbEsc(build.id)}')"><span>${liked?'♥':'♡'}</span><b>${build.likes_count||0}</b></button>`;
+  return `<button class="cbHeart cbModernAction ${liked?'liked':''} ${compact?'compact':''}" title="${liked?'Retirer le like':'Aimer'}" onclick="event.stopPropagation();communityToggleHeart('${cbEsc(build.id)}')"><span class="cbModernIcon">${cbUiIcon('heart',liked)}</span><b>${build.likes_count||0}</b></button>`;
 }
 function cbSlotEntries(build){
   return Array.isArray(build.tuning_slots)?build.tuning_slots:[];
 }
-function cbBuildTuningCardV306(entry,size='normal',clickable=false){
+function cbBuildTuningCardV306(entry,size='normal',clickable=false,costume=null){
   const tuning=entry.tuning||{};
   const color=entry.color||tuning.slot||'gray';
   const isSp=entry.kind==='sp';
   const condition=entry.condition||'';
   const nm=safeTuningName(tuning.name||'');
   const fs=slotFontSize(nm);
-  const text=tuning&&Object.keys(tuning).length
+  const filled=tuning&&Object.keys(tuning).length;
+  const text=filled
     ?(isSp
       ?`<span class="equippedChar">${cbEsc(tuning.character||'')}</span><span class="equippedName" style="--equip-font:${Math.max(14,fs-1)}px">${cbEsc(nm)}</span>`
       :`<span class="equippedName" style="--equip-font:${fs}px">${cbEsc(nm)}</span>`)
     :'';
   const tag=clickable?'button':'div';
   const click=clickable?` type="button" onclick="communitySelectDraftSlot('${cbEsc(entry.id)}');return false;"`:'';
-  return `<${tag}${click} class="gameSlot cbOfficialBuildTuningSlot ${isSp?'spBand':''} ${tuning&&Object.keys(tuning).length?'filled':'empty'} ${size}" style="--slot-color:${slotHex(color)}">
-    <div class="slotBandText">${text}</div>
-    ${slotGem(color,isSp?condition:'',tuning.img||'')}
-  </${tag}>`;
+  const max=costume&&typeof costumeMaxLevel==='function'
+    ?costumeMaxLevel(costume,entry.kind,entry.side,Number(entry.index||0))
+    :(isSp?(entry.side==='left'?3:4):3);
+  return `<${tag}${click} class="gameSlot ${slotColorClass(color)} cbOfficialBuildTuningSlot ${isSp?'spBand':''} ${filled?'filled':'empty'} ${size}" style="--slot-color:${slotHex(color)}"><div class="slotBandText">${text}</div><span class="slotMax">MAX ${max}</span>${slotGem(color,isSp?condition:'',tuning.img||'')}</${tag}>`;
 }
 function cbBuildTuningColumnsV306(build,size='normal'){
   const entries=cbSlotEntries(build);
-  const column=side=>`<section class="cbCostumeTuningColumnV306 ${size}">
-    <h4>${side==='left'?'Gauche':'Droite'}</h4>
-    <div>${entries.filter(entry=>entry.side===side).map(entry=>cbBuildTuningCardV306(entry,size)).join('')}</div>
-  </section>`;
+  const costume=cbBuildCostumeData(build);
+  const column=side=>`<section class="cbCostumeTuningColumnV306 ${size}"><h4>${side==='left'?'Gauche':'Droite'}</h4><div>${entries.filter(entry=>entry.side===side).map(entry=>cbBuildTuningCardV306(entry,size,false,costume)).join('')}</div></section>`;
   return `<div class="cbCostumeTuningGridV306 ${size}">${column('left')}${column('right')}</div>`;
 }
 function cbMiniSlots(build){
@@ -236,12 +239,22 @@ function cbMiniSlots(build){
 }
 function cbAuthorProfile(build){
   const p=build.author_profile||{};
+  const currentUser=window.MHUR_AUTH?.getUser?.();
+  const currentProfile=window.MHUR_AUTH?.getProfile?.();
+  if(currentUser&&String(build.creator_id||'')===String(currentUser.id||'')){
+    return {id:currentProfile?.id||currentUser.id||'',username:currentProfile?.username||build.author||'Anonyme',avatar_url:currentProfile?.avatar_url||currentUser.user_metadata?.avatar_url||currentUser.user_metadata?.picture||'',provider:currentProfile?.provider||currentUser.app_metadata?.provider||''};
+  }
   return {id:p.id||build.creator_id||'',username:p.username||build.author||'Anonyme',avatar_url:p.avatar_url||'',provider:p.provider||''};
 }
-function cbInitials(name){return String(name||'?').split(/\s+/).slice(0,2).map(x=>x[0]||'').join('').toUpperCase()||'?'}
-function cbAuthorAvatar(profile){return profile.avatar_url?`<img class="cbAuthorAvatar" src="${cbEsc(profile.avatar_url)}" alt="">`:`<span class="cbAuthorAvatar">${cbEsc(cbInitials(profile.username))}</span>`}
-function cbAuthorButton(build){const p=cbAuthorProfile(build);return p.id?`<button class="cbAuthorButton" onclick="event.stopPropagation();MHUR_PROFILES?.open('${cbEsc(p.id)}')">${cbAuthorAvatar(p)}<span>${cbEsc(p.username)}</span></button>`:`<span>${cbEsc(p.username)}</span>`}
-function cbFavoriteHtml(build){const active=window.MHUR_PROFILES?.isFavorite?.(build.id);return `<button class="cbFavorite ${active?'active':''}" title="${active?'Retirer des favoris':'Ajouter aux favoris'}" onclick="event.stopPropagation();communityToggleFavorite('${cbEsc(build.id)}')">${active?'★':'☆'}</button>`}
+function cbAuthorAvatar(profile){
+  const fallback=`<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 12a4.25 4.25 0 1 0 0-8.5 4.25 4.25 0 0 0 0 8.5Zm-7.5 8.5c.55-4.2 3.05-6.3 7.5-6.3s6.95 2.1 7.5 6.3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`;
+  return profile.avatar_url?`<img class="cbAuthorAvatar" src="${cbEsc(profile.avatar_url)}" alt="${cbEsc(profile.username||'')}">`:`<span class="cbAuthorAvatar cbAuthorAvatarFallback">${fallback}</span>`;
+}
+function cbAuthorButton(build){const p=cbAuthorProfile(build);return p.id?`<button class="cbAuthorButton" onclick="event.stopPropagation();MHUR_PROFILES?.open('${cbEsc(p.id)}')">${cbAuthorAvatar(p)}<span>${cbEsc(p.username)}</span></button>`:`<span class="cbAuthorPlain">${cbAuthorAvatar(p)}<span>${cbEsc(p.username)}</span></span>`}
+function cbFavoriteHtml(build){
+  const active=window.MHUR_PROFILES?.isFavorite?.(build.id);
+  return `<button class="cbFavorite cbModernAction ${active?'active':''}" title="${active?'Retirer des favoris':'Ajouter aux favoris'}" onclick="event.stopPropagation();communityToggleFavorite('${cbEsc(build.id)}')"><span class="cbModernIcon">${cbUiIcon('star',active)}</span></button>`;
+}
 window.communityToggleFavorite=async function(id){await window.MHUR_PROFILES?.toggleFavorite?.(id);cbRefreshVisible()};
 function cbBuildCard(build,index=0,compact=false){
   const char=cbCharacter(build.character_id);
@@ -590,12 +603,13 @@ function cbBuilderOfficialSlotV308(spec){
       :`<span class="equippedName" style="--equip-font:${fs}px">${cbEsc(nm)}</span>`;
   }
 
+  const costume=cbDraftCostume();
+  const max=costume&&typeof costumeMaxLevel==='function'?costumeMaxLevel(costume,spec.kind,spec.side,Number(spec.index||0)):(isSp?(spec.side==='left'?3:4):3);
   return `<button type="button"
-      class="gameSlot ${isSp?'spBand':''} ${active?'active':''} ${tuning?'filled':'empty'}"
+      class="gameSlot ${slotColorClass(spec.color)} ${isSp?'spBand':''} ${active?'active':''} ${tuning?'filled':'empty'}"
       style="--slot-color:${slotHex(spec.color)}"
       onclick="communitySelectDraftSlot('${cbEsc(spec.id)}');return false;">
-    <div class="slotBandText">${text}</div>
-    ${slotGem(spec.color,isSp?(spec.condition||''):'',tuning?tuning.img:'')}
+    <div class="slotBandText">${text}</div><span class="slotMax">MAX ${max}</span>${slotGem(spec.color,isSp?(spec.condition||''):'',tuning?tuning.img:'')}
   </button>`;
 }
 function cbBuilderSlot(spec){
@@ -603,7 +617,14 @@ function cbBuilderSlot(spec){
 }
 function cbBuilderPicker(costume,spec){
   const used=cbUsedStyles(spec.id);
-  const options=compatibleTunings(spec.color,spec.kind,spec.condition).slice(0,80);
+  const ownChar=cbCharacter(CB_STATE.draft?.characterId);
+  const ownStyles=new Set(ownChar?.styles||[]);
+  const ownName=String(ownChar?.name||'').toLowerCase().replace(/[^a-z0-9]+/g,'');
+  const options=compatibleTunings(spec.color,spec.kind,spec.condition).filter(t=>{
+    const tuningStyle=String(t.styleKey||'');
+    const tuningName=String(t.character||'').toLowerCase().replace(/[^a-z0-9]+/g,'');
+    return !ownStyles.has(tuningStyle) && (!ownName || tuningName!==ownName);
+  }).slice(0,80);
   window.__cbTuningOptions=options;
 
   const kindLabel=spec.kind==='sp'

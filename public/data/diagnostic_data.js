@@ -1,1 +1,1 @@
-window.MHUR_SYNC_STATUS = {"status": "inconnu", "checked_at": null, "updated_at": null, "changed_urls": [], "message": "Aucune synchronisation exécutée dans cette copie."};
+window.MHUR_SYNC_STATUS = {"status": "mis_à_jour", "updated_at": "2026-07-17T02:59:17.816064+00:00", "changed_urls": ["synchronisation_forcée"], "backup": "sauvegardes\\sync_auto_20260717_055620", "message": "Le site local a été synchronisé avec UltraRumble."};

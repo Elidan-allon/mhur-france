@@ -21,102 +21,108 @@ const search={open(){document.getElementById('drawer')?.classList.remove('open')
 const comments={buildId:null,async mount(buildId){this.buildId=String(buildId);const content=document.getElementById('cbDetailContent');if(!content)return;content.querySelector('.mhurCommentBox')?.remove();content.insertAdjacentHTML('beforeend',`<section class="mhurCommentBox"><h3>💬 ${t('Commentaires','Comments')}</h3><div class="mhurCommentComposer"><textarea id="mhurCommentText" class="mhurHubInput" maxlength="700" placeholder="${t('Écris un commentaire…','Write a comment…')}"></textarea><button onclick="MHUR_HUB.comments.send()">${t('Publier','Post')}</button></div><div id="mhurCommentList" class="mhurCommentList"><div>${t('Chargement…','Loading…')}</div></div></section>`);await this.load()},async load(){const out=document.getElementById('mhurCommentList');if(!out)return;if(!remote){out.innerHTML=`<div>${t('Configure Supabase pour activer les commentaires.','Configure Supabase to enable comments.')}</div>`;return}try{const rows=await req(`/rest/v1/community_build_comments?build_id=eq.${encodeURIComponent(this.buildId)}&is_hidden=eq.false&select=*,profile:profiles(id,username,avatar_url,role)&order=created_at.asc`);out.innerHTML=(rows||[]).map(c=>{const p=c.profile||{},mine=user()?.id===c.user_id,admin=window.MHUR_MODERATION?.isAdmin?.();const av=p.avatar_url?`<img class="mhurCommentAvatar" src="${esc(p.avatar_url)}">`:`<span class="mhurCommentAvatar">${esc((p.username||'?').slice(0,2).toUpperCase())}</span>`;return `<article class="mhurComment"> <div class="mhurCommentHead">${av}<b>${esc(p.username||'Utilisateur')}</b><small>${new Date(c.created_at).toLocaleString(typeof lang!=='undefined'&&lang==='en'?'en-GB':'fr-FR')}</small>${mine||admin?`<button class="mhurCommentDelete" onclick="MHUR_HUB.comments.remove('${c.id}')">×</button>`:''}</div><p>${esc(c.content)}</p></article>`}).join('')||`<div>${t('Aucun commentaire.','No comments yet.')}</div>`}catch(e){out.textContent=e.message}},async send(){if(!window.MHUR_AUTH?.requireLogin?.(t('Connecte-toi pour commenter.','Sign in to comment.')))return;const input=document.getElementById('mhurCommentText'),content=String(input?.value||'').trim();if(content.length<2)return;try{await req('/rest/v1/community_build_comments',{method:'POST',headers:{Prefer:'return=minimal'},body:JSON.stringify({build_id:this.buildId,user_id:user().id,content})});input.value='';await this.load()}catch(e){alert(e.message)}},async remove(id){if(!confirm(t('Supprimer ce commentaire ?','Delete this comment?')))return;try{await req(`/rest/v1/community_build_comments?id=eq.${encodeURIComponent(id)}`,{method:'DELETE'});await this.load()}catch(e){alert(e.message)}}};
 const oldOpenDetail=window.openCommunityBuildDetail;window.openCommunityBuildDetail=function(...a){const r=oldOpenDetail?.apply(this,a);setTimeout(()=>comments.mount(a[0]),80);return r};
 
-// Tier list — page complète
+// Tier list — personnelle, avec publication volontaire
 const tier={
-  votes:{},
   ownVotes:{},
+  storageKey(){return `mhur_personal_tier_v347_${user()?.id||'guest'}`},
+  loadLocal(){try{this.ownVotes=JSON.parse(localStorage.getItem(this.storageKey())||'{}')||{}}catch(_){this.ownVotes={}}},
+  saveLocal(){localStorage.setItem(this.storageKey(),JSON.stringify(this.ownVotes))},
   async open(){
     const app=document.getElementById('app');
     if(!app)return;
     document.getElementById('drawer')?.classList.remove('open');
+    this.loadLocal();
     app.innerHTML=`<section class="mhurTierPage">
       <div class="mhurTierPageTop">
         <button type="button" class="mhurTierBack" onclick="MHUR_HUB.tier.closePage()">← ${t('Retour','Back')}</button>
         <div>
-          <span class="mhurTierKicker">COMMUNAUTÉ</span>
+          <span class="mhurTierKicker">${t('COMMUNAUTÉ','COMMUNITY')}</span>
           <h1>🏆 Tier List</h1>
-          <p>${t('Classe les styles en les faisant glisser dans le rang souhaité.','Rank styles by dragging them into the desired tier.')}</p>
+          <p>${t('Ta Tier List est personnelle. Elle ne sera visible par les autres que lorsque tu la publies.','Your Tier List is personal. Other users can only see it after you publish it.')}</p>
         </div>
-        <label class="mhurTierFilter">${t('Rôle','Role')}
-          <select id="mhurTierRole">
-            <option value="">${t('Tous les rôles','All roles')}</option>
-            <option value="assault">${t('Assaut','Assault')}</option>
-            <option value="strike">${t('Attaque','Strike')}</option>
-            <option value="speed">${t('Rapide','Rapid')}</option>
-            <option value="technical">${t('Technique','Technical')}</option>
-            <option value="support">${t('Soutien','Support')}</option>
-          </select>
-        </label>
+        <div class="mhurTierTopActions">
+          <label class="mhurTierFilter">${t('Rôle','Role')}
+            <select id="mhurTierRole">
+              <option value="">${t('Tous les rôles','All roles')}</option>
+              <option value="assault">${t('Assaut','Assault')}</option>
+              <option value="strike">${t('Attaque','Strike')}</option>
+              <option value="speed">${t('Rapide','Rapid')}</option>
+              <option value="technical">${t('Technique','Technical')}</option>
+              <option value="support">${t('Soutien','Support')}</option>
+            </select>
+          </label>
+          <div class="mhurTierActionButtons">
+            <button class="mhurTierPublishedBtn" onclick="MHUR_HUB.tier.openPublished()">🌍 ${t('Tier Lists publiées','Published Tier Lists')}</button>
+            <button class="mhurTierPublishBtn" onclick="MHUR_HUB.tier.publish()">📤 ${t('Publier ma Tier List','Publish my Tier List')}</button>
+            <button class="mhurTierResetBtn" onclick="MHUR_HUB.tier.reset()">↺ ${t('Réinitialiser','Reset')}</button>
+          </div>
+        </div>
       </div>
       <div id="mhurTierList" class="mhurTierList mhurTierListPage"></div>
     </section>`;
     document.getElementById('mhurTierRole').onchange=()=>this.render();
     window.scrollTo({top:0,behavior:'instant'});
-    await this.load();
-  },
-  closePage(){
-    if(typeof render==='function')render();
-    window.scrollTo({top:0,behavior:'instant'});
-  },
-  async load(){
-    this.votes={};
-    this.ownVotes={};
-    if(remote)try{
-      const rows=await req('/rest/v1/community_tier_votes?select=style_id,tier');
-      for(const r of rows||[]){
-        this.votes[r.style_id]=this.votes[r.style_id]||{};
-        this.votes[r.style_id][r.tier]=(this.votes[r.style_id][r.tier]||0)+1;
-      }
-      if(user()?.id){
-        const mine=await req(`/rest/v1/community_tier_votes?user_id=eq.${encodeURIComponent(user().id)}&select=style_id,tier`);
-        for(const r of mine||[])this.ownVotes[r.style_id]=r.tier;
-      }
-    }catch(_){}
     this.render();
   },
-  voteCount(id){return Object.values(this.votes[id]||{}).reduce((sum,count)=>sum+Number(count||0),0)},
-  score(id){const v=this.votes[id]||{},w={S:5,A:4,B:3,C:2,D:1};let n=0,d=0;Object.entries(v).forEach(([k,c])=>{n+=(w[k]||0)*c;d+=c});return d?n/d:null},
-  letter(id){const s=this.score(id);if(s===null)return 'U';return s>=4.5?'S':s>=3.7?'A':s>=2.8?'B':s>=1.8?'C':'D'},
+  closePage(){if(typeof render==='function')render();window.scrollTo({top:0,behavior:'instant'})},
   dragStart(event,styleId){event.dataTransfer.setData('text/plain',styleId);event.dataTransfer.effectAllowed='move';event.currentTarget.classList.add('dragging')},
   dragEnd(event){event.currentTarget.classList.remove('dragging')},
   dragOver(event){event.preventDefault();event.dataTransfer.dropEffect='move';event.currentTarget.classList.add('dragOver')},
   dragLeave(event){event.currentTarget.classList.remove('dragOver')},
-  async drop(event,tierLetter){event.preventDefault();event.currentTarget.classList.remove('dragOver');const styleId=event.dataTransfer.getData('text/plain');if(!styleId)return;if(tierLetter==='U')await this.unvote(styleId);else await this.vote(styleId,tierLetter)},
-  async unvote(styleId){
-    if(!window.MHUR_AUTH?.requireLogin?.(t('Connecte-toi pour modifier ton vote.','Sign in to change your vote.')))return;
+  drop(event,tierLetter){event.preventDefault();event.currentTarget.classList.remove('dragOver');const styleId=event.dataTransfer.getData('text/plain');if(!styleId)return;if(tierLetter==='U')delete this.ownVotes[styleId];else this.ownVotes[styleId]=tierLetter;this.saveLocal();this.render()},
+  reset(){if(!confirm(t('Réinitialiser entièrement ta Tier List ?','Reset your entire Tier List?')))return;this.ownVotes={};this.saveLocal();this.render()},
+  rankings(){const out={S:[],A:[],B:[],C:[],D:[]};for(const [styleId,letter] of Object.entries(this.ownVotes)){if(out[letter])out[letter].push(styleId)}return out},
+  async publish(){
+    if(!window.MHUR_AUTH?.requireLogin?.(t('Connecte-toi pour publier ta Tier List.','Sign in to publish your Tier List.')))return;
+    if(!remote){alert(t('Supabase doit être configuré pour publier.','Supabase must be configured to publish.'));return}
+    const rankings=this.rankings();
+    if(!Object.values(rankings).some(a=>a.length)){alert(t('Classe au moins un style avant de publier.','Rank at least one style before publishing.'));return}
     try{
-      await req(`/rest/v1/community_tier_votes?user_id=eq.${encodeURIComponent(user().id)}&style_id=eq.${encodeURIComponent(styleId)}`,{method:'DELETE',headers:{Prefer:'return=minimal'}});
-      await this.load();
+      await req('/rest/v1/community_tier_lists?on_conflict=user_id',{method:'POST',headers:{Prefer:'resolution=merge-duplicates,return=minimal'},body:JSON.stringify({user_id:user().id,title:`Tier List de ${profile()?.username||user()?.email?.split('@')[0]||'Utilisateur'}`,rankings,updated_at:new Date().toISOString()})});
+      alert(t('Ta Tier List a été publiée.','Your Tier List has been published.'));
+    }catch(e){alert(e.message)}
+  },
+  async openPublished(){
+    const m=overlay('mhurPublishedTierModal',t('Tier Lists publiées','Published Tier Lists'),t('Les classements publiés volontairement par la communauté.','Rankings voluntarily published by the community.'));
+    const body=m.querySelector('.mhurHubBody');body.innerHTML=`<div>${t('Chargement…','Loading…')}</div>`;open(m.id);
+    if(!remote){body.innerHTML=`<div>${t('Supabase non configuré.','Supabase is not configured.')}</div>`;return}
+    try{
+      const rows=await req('/rest/v1/community_tier_lists?select=id,user_id,title,rankings,updated_at,profile:profiles(username,avatar_url)&order=updated_at.desc&limit=50');
+      body.innerHTML=(rows||[]).map(r=>{
+        const rawProfile=Array.isArray(r.profile)?r.profile[0]:r.profile;
+        const p=rawProfile||{};
+        const username=p.username||t('Utilisateur','User');
+        const avatar=p.avatar_url
+          ? `<img src="${esc(p.avatar_url)}" alt="${esc(username)}">`
+          : `<span class="mhurPublishedTierAvatarFallback" aria-hidden="true">👤</span>`;
+        const counts=['S','A','B','C','D'].map(k=>`<b class="${k}">${k}: ${(r.rankings?.[k]||[]).length}</b>`).join('');
+        return `<article class="mhurPublishedTierCard">
+          <div class="mhurPublishedTierAuthor">${avatar}<div class="mhurPublishedTierIdentity"><span class="mhurPublishedTierBy">${t('Publié par','Published by')}</span><strong>${esc(username)}</strong><small>${new Date(r.updated_at).toLocaleString(typeof lang!=='undefined'&&lang==='en'?'en-GB':'fr-FR')}</small></div></div>
+          <div class="mhurPublishedTierMeta"><span class="mhurPublishedTierTitle">${esc(r.title||'Tier List')}</span><div class="mhurPublishedTierCounts">${counts}</div></div>
+          <button onclick="MHUR_HUB.tier.viewPublished('${r.id}')">${t('Voir la Tier List','View Tier List')}</button>
+        </article>`
+      }).join('')||`<div>${t('Aucune Tier List publiée.','No published Tier Lists.')}</div>`;
+    }catch(e){body.textContent=e.message}
+  },
+  async viewPublished(id){
+    try{
+      const rows=await req(`/rest/v1/community_tier_lists?id=eq.${encodeURIComponent(id)}&select=title,rankings,updated_at,profile:profiles(username,avatar_url)&limit=1`);const r=rows?.[0];if(!r)return;
+      const rawProfile=Array.isArray(r.profile)?r.profile[0]:r.profile;
+      const p=rawProfile||{};
+      const username=p.username||t('Utilisateur','User');
+      const m=overlay('mhurPublishedTierView',esc(r.title||'Tier List'),t('Tier List publiée — lecture seule','Published Tier List — read only'));const body=m.querySelector('.mhurHubBody');
+      const getStyle=id=>{const s=typeof styles!=='undefined'?styles[id]:null;const c=(typeof characters!=='undefined'?characters:[]).find(x=>(x.styles||[]).includes(id));return s&&c?{id,s,c}:null};
+      const avatar=p.avatar_url?`<img src="${esc(p.avatar_url)}" alt="${esc(username)}">`:`<span aria-hidden="true">👤</span>`;
+      const authorHead=`<div class="mhurPublishedTierViewAuthor">${avatar}<div><small>${t('Publié par','Published by')}</small><strong>${esc(username)}</strong><span>${new Date(r.updated_at||Date.now()).toLocaleString(typeof lang!=='undefined'&&lang==='en'?'en-GB':'fr-FR')}</span></div></div>`;
+      body.innerHTML=authorHead+['S','A','B','C','D'].map(letter=>`<div class="mhurPublishedTierRow"><div class="mhurTierLabel ${letter}">${letter}</div><div>${(r.rankings?.[letter]||[]).map(id=>{const x=getStyle(id);return x?`<div class="mhurPublishedMini"><img src="${esc(x.s.portrait||x.c.portrait||'')}"><small>${esc(x.c.name)}</small></div>`:''}).join('')}</div></div>`).join('');open(m.id)
     }catch(e){alert(e.message)}
   },
   render(){
     const out=document.getElementById('mhurTierList');if(!out)return;
-    const role=document.getElementById('mhurTierRole')?.value||'';
-    const items=[];
-    ((typeof characters!=='undefined'?characters:[])).filter(c=>String(c.name||'').toLowerCase()!=='all for one (youth age)').forEach(c=>(c.styles||[]).forEach(id=>{
-      const s=(typeof styles!=='undefined'?styles[id]:null);if(!s||role&&s.role!==role)return;
-      items.push({id,c,s,tier:this.ownVotes[id]||'U',votes:this.voteCount(id)});
-    }));
-    const row=letter=>`<div class="mhurTierRow ${letter==='U'?'unranked':''}">
-      <div class="mhurTierLabel ${letter}">${letter==='U'?t('Non classés','Unranked'):letter}</div>
-      <div class="mhurTierItems" ondragover="MHUR_HUB.tier.dragOver(event)" ondragleave="MHUR_HUB.tier.dragLeave(event)" ondrop="MHUR_HUB.tier.drop(event,'${letter}')">
-        ${items.filter(x=>x.tier===letter).map(x=>`<div class="mhurTierItem" draggable="true" ondragstart="MHUR_HUB.tier.dragStart(event,'${x.id}')" ondragend="MHUR_HUB.tier.dragEnd(event)" title="${t('Glisse cette carte vers le rang souhaité','Drag this card to the desired tier')}">
-          <img src="${esc(x.s.portrait||x.c.portrait||'')}" alt="${esc(x.c.name)}">
-          <small>${esc(x.c.name)}</small>
-          <span class="mhurTierStyleName">${esc(typeof label==='function'?label(x.s.name||''):x.id)}</span>
-          <span class="mhurTierVoteCount">${x.votes?`${x.votes} vote${x.votes>1?'s':''}`:t('Aucun vote','No votes')}</span>
-        </div>`).join('')}
-        <div class="mhurTierDropHint">${t('Dépose ici','Drop here')}</div>
-      </div>
-    </div>`;
-    out.innerHTML=`<div class="mhurTierDragHelp">${t('Maintiens une carte et glisse-la dans S, A, B, C ou D. Glisse-la dans Non classés pour retirer ton vote.','Hold a card and drag it into S, A, B, C or D. Drag it into Unranked to remove your vote.')}</div>`+['S','A','B','C','D','U'].map(row).join('');
-  },
-  async vote(styleId,tierLetter){
-    if(!window.MHUR_AUTH?.requireLogin?.(t('Connecte-toi pour voter.','Sign in to vote.')))return;
-    try{
-      await req('/rest/v1/community_tier_votes?on_conflict=user_id,style_id',{method:'POST',headers:{Prefer:'resolution=merge-duplicates,return=minimal'},body:JSON.stringify({user_id:user().id,style_id:styleId,tier:tierLetter})});
-      await this.load();
-    }catch(e){alert(e.message)}
+    const role=document.getElementById('mhurTierRole')?.value||'';const items=[];
+    ((typeof characters!=='undefined'?characters:[])).filter(c=>String(c.name||'').toLowerCase()!=='all for one (youth age)').forEach(c=>(c.styles||[]).forEach(id=>{const s=(typeof styles!=='undefined'?styles[id]:null);if(!s||role&&s.role!==role)return;items.push({id,c,s,tier:this.ownVotes[id]||'U'})}));
+    const row=letter=>`<div class="mhurTierRow ${letter==='U'?'unranked':''}"><div class="mhurTierLabel ${letter}">${letter==='U'?t('Non classés','Unranked'):letter}</div><div class="mhurTierItems" ondragover="MHUR_HUB.tier.dragOver(event)" ondragleave="MHUR_HUB.tier.dragLeave(event)" ondrop="MHUR_HUB.tier.drop(event,'${letter}')">${items.filter(x=>x.tier===letter).map(x=>`<div class="mhurTierItem" draggable="true" ondragstart="MHUR_HUB.tier.dragStart(event,'${x.id}')" ondragend="MHUR_HUB.tier.dragEnd(event)"><img src="${esc(x.s.portrait||x.c.portrait||'')}" alt="${esc(x.c.name)}"><small>${esc(x.c.name)}</small><span class="mhurTierStyleName">${esc(typeof label==='function'?label(x.s.name||''):x.id)}</span></div>`).join('')}<div class="mhurTierDropHint">${t('Dépose ici','Drop here')}</div></div></div>`;
+    out.innerHTML=`<div class="mhurTierDragHelp">${t('Les déplacements sont enregistrés uniquement dans ton navigateur. Publie ta Tier List lorsque tu veux la partager.','Changes are saved only in your browser. Publish your Tier List when you want to share it.')}</div>`+['S','A','B','C','D','U'].map(row).join('');
   }
 };
 

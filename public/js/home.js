@@ -5,6 +5,39 @@ const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&
 const locale=()=>typeof lang!=='undefined'&&lang==='en'?'en-GB':'fr-FR';
 const ht=(fr,en)=>typeof lang!=='undefined'&&lang==='en'?en:fr;
 const isEn=()=>typeof lang!=='undefined'&&lang==='en';
+const homeTerms={
+  'Événement':'Event','ÉVÉNEMENT':'EVENT','Mission':'Mission','MISSION':'MISSION','Débutant':'Beginner','DÉBUTANT':'BEGINNER',
+  'Connexion':'Login','Anniversaire':'Birthday','Tirage':'Banner','Tirage Personnage PLUS ULTRA':'PLUS ULTRA Character Banner',
+  'Tirage Alters':'Quirk Skill Banner','Événement de missions débutant':'Beginner Mission Event',
+  'Événement de licence Vol. 3':'License Event Vol. 3','Événement de missions T.U.N.I.N.G Vol. 4':'T.U.N.I.N.G Mission Event Vol. 4',
+  'Bonus de connexion spécial — Saison 17 Vol. 2':'Special Login Bonus — Season 17 Vol. 2',
+  'Campagne anniversaire Izuku Midoriya 2026':'Izuku Midoriya Birthday Campaign 2026',
+  'Campagne anniversaire Mirio Togata 2026':'Mirio Togata Birthday Campaign 2026'
+};
+function homeText(v){
+  let out=String(v??'');
+  if(!isEn())return out;
+  if(homeTerms[out])return homeTerms[out];
+  const reps=[
+    [/Événement de missions débutant/gi,'Beginner Mission Event'],
+    [/Événement de licence/gi,'License Event'],
+    [/Événement de missions T\.U\.N\.I\.N\.G/gi,'T.U.N.I.N.G Mission Event'],
+    [/Événement de missions/gi,'Mission Event'],
+    [/Bonus de connexion spécial/gi,'Special Login Bonus'],
+    [/Campagne anniversaire ([^0-9]+) (\d{4})/gi,'$1 Birthday Campaign $2'],
+    [/Tirage Personnage PLUS ULTRA/gi,'PLUS ULTRA Character Banner'],
+    [/Tirage Alters/gi,'Quirk Skill Banner'],
+    [/ et /gi,' & '],
+    [/Saison/gi,'Season'],
+    [/Débutant/gi,'Beginner'],
+    [/Connexion/gi,'Login'],
+    [/Anniversaire/gi,'Birthday'],
+    [/Événement/gi,'Event'],
+    [/Tirage/gi,'Banner']
+  ];
+  reps.forEach(([a,b])=>{out=out.replace(a,b)});
+  return out;
+}
 const patchTerms={
   'PV':'HP','Dégâts':'Damage','Rechargement et munitions':'Cooldown and ammo','T.U.N.I.N.G':'T.U.N.I.N.G',
   'Original':'Original','Technique':'Technical','Assaut':'Assault','Attaque':'Strike','Soutien':'Support','Vitesse':'Rapid',
@@ -93,18 +126,18 @@ function gachaCard(g){
   return `<article class="gachaCardV303">
     <div class="gachaBannerV296">${img(g.image,g.title)}</div>
     <div class="gachaOverlayV296"></div>
-    <span class="gachaKindV296">${esc(g.type||ht('Tirage','Gacha'))}</span>
+    <span class="gachaKindV296">${esc(homeText(g.type||ht('Tirage','Gacha')))}</span>
     <span class="gachaViewV303">${ht('DISPONIBLE','AVAILABLE')}</span>
     <div class="gachaCaptionV296">
-      <b>${esc(g.title)}</b>
+      <b>${esc(homeText(g.title))}</b>
       <small>${fmt(g.start)} → ${fmt(g.end)} <em>${remain(g.end)}</em></small>
     </div>
   </article>`;
 }
 function eventCard(e){
-  return `<article class="eventCardV296">${img(e.image,e.title)}<span class="eventTypeV296">${esc(e.type||ht('ÉVÉNEMENT','EVENT'))}</span><div><b>${esc(e.title)}</b><small>${fmt(e.start,true)} → ${fmt(e.end,true)}</small><em>${remain(e.end)}</em></div></article>`;
+  return `<article class="eventCardV296">${img(e.image,e.title)}<span class="eventTypeV296">${esc(homeText(e.type||ht('ÉVÉNEMENT','EVENT')))}</span><div><b>${esc(homeText(e.title))}</b><small>${fmt(e.start,true)} → ${fmt(e.end,true)}</small><em>${remain(e.end)}</em></div></article>`;
 }
-function bonusCard(x){return `<article class="bonusCardV296">${img(x.image,x.title)}<div><span>${esc(x.type||'BONUS')}</span><b>${esc(patchText(x.title))}</b><small>${fmt(x.start)} → ${fmt(x.end)} · ${remain(x.end)}</small></div></article>`}
+function bonusCard(x){return `<article class="bonusCardV296">${img(x.image,x.title)}<div><span>${esc(homeText(x.type||'BONUS'))}</span><b>${esc(homeText(x.title))}</b><small>${fmt(x.start)} → ${fmt(x.end)} · ${remain(x.end)}</small></div></article>`}
 function discountCard(x){return `<article class="discountCardV296">${img(x.image,x.name)}<b>${esc(x.name)}</b><span>${esc(x.points)} Pts.</span></article>`}
 function latestPatchCard(x){
   if(!x)return `<div class="emptyV296">${ht('Aucune note de mise à jour.','No patch note available.')}</div>`;

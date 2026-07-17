@@ -1390,5 +1390,31 @@
       }
     ],
     "special_name": "Action spéciale"
+  },
+  {
+    "style_key": "all_for_one_youth_age_youth_age",
+    "character_id": "all_for_one_youth_age",
+    "character_name": "All For One (Youth age)",
+    "style_name": "Youth age",
+    "role": "assault",
+    "pv": 300,
+    "skill_names": [
+      {
+        "letter": "α",
+        "name": "Thunder Sepulture"
+      },
+      {
+        "letter": "β",
+        "name": "Meteor Annihilation"
+      },
+      {
+        "letter": "γ",
+        "name": "Divine Judgment"
+      }
+    ],
+    "special_name": "Action spéciale",
+    "source_url": "https://ultrarumble.com/character/201",
+    "generated": true,
+    "side": "villain"
   }
 ]
