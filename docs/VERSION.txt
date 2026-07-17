@@ -1,1 +1,4 @@
-MHUR France V350 — Tier List header + published author profile
+V358
+- Tier List contenue sans découpe
+- pages personnages protégées contre les styles manquants
+- cache/PWA supprimés après OAuth Google/Discord

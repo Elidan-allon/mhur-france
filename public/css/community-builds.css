@@ -1107,24 +1107,3 @@
     flex-basis:66px!important;
   }
 }
-
-/* V349 — cartes de builds identiques aux T.U.N.I.N.G officiels */
-.cbBuildActions{display:flex;align-items:center;gap:9px}
-.cbModernAction{display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:7px!important;height:44px!important;min-width:44px!important;padding:0 12px!important;border:3px solid #050b14!important;border-radius:12px!important;box-shadow:0 3px 0 #050b14!important;transition:.13s transform,.13s filter!important}
-.cbModernAction:hover{transform:translateY(-2px);filter:brightness(1.06)}
-.cbModernAction:active{transform:translateY(2px);box-shadow:none!important}
-.cbModernIcon,.cbModernIcon svg{display:block;width:22px;height:22px}
-.cbFavorite.cbModernAction{background:#192b45!important;color:#9edfff!important}
-.cbFavorite.cbModernAction.active{background:#ffd91a!important;color:#111!important}
-.cbHeart.cbModernAction{background:#192b45!important;color:#ff7ca5!important}
-.cbHeart.cbModernAction.liked{background:#ff407c!important;color:#fff!important}
-.cbHeart.cbModernAction b{font-size:17px!important;color:inherit!important}
-.cbHeart.cbModernAction.compact{height:38px!important;min-width:50px!important;padding:0 9px!important}
-.cbHeart.cbModernAction.compact .cbModernIcon,.cbHeart.cbModernAction.compact svg{width:19px;height:19px}
-.cbAuthorButton,.cbAuthorPlain{display:inline-flex!important;align-items:center!important;gap:7px!important}
-.cbAuthorButton{padding:4px 10px 4px 5px!important}
-.cbAuthorAvatar{width:30px!important;height:30px!important;min-width:30px!important;border-radius:50%!important;object-fit:cover!important;border:2px solid #42d8ff!important;background:#0c2038!important;overflow:hidden!important;display:grid!important;place-items:center!important;color:#fff!important}
-.cbAuthorAvatarFallback svg{width:20px!important;height:20px!important}
-.cbOfficialBuildTuningSlot{position:relative!important;width:100%!important;padding:0!important;text-align:left!important;box-sizing:border-box!important}
-.cbOfficialBuildTuningSlot .slotMax{display:block!important}
-.cbOfficialBuildTuningSlot.red,.cbOfficialBuildTuningSlot.yellow,.cbOfficialBuildTuningSlot.cyan,.cbOfficialBuildTuningSlot.violet,.cbOfficialBuildTuningSlot.green{border-color:#222!important}

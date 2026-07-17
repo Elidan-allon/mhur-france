@@ -24,7 +24,7 @@ document.addEventListener('click',e=>{
 });
 // Empêche le navigateur d'afficher le curseur interdit entre deux zones de tier list.
 document.addEventListener('dragover',e=>{if(e.target.closest('.mhurTierPage')){e.preventDefault();if(e.dataTransfer)e.dataTransfer.dropEffect='move'}},true);
-// La mise à jour est gérée uniquement par js/auto-update.js afin d'éviter les rechargements en boucle.
+// V354 : aucune actualisation automatique. Les mises à jour passent uniquement par la synchronisation GitHub/Cloudflare.
 new MutationObserver(decorate).observe(document.documentElement,{childList:true,subtree:true});
 document.addEventListener('DOMContentLoaded',decorate);setTimeout(decorate,0);
 })();

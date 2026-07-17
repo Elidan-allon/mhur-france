@@ -21,5 +21,3 @@ de vider le cache.
 
 
 V348 : traduction FR/EN des titres, catégories et libellés des événements, bonus et tirages de l'accueil.
-
-V350 : en-tête Tier List contenu dans le cadre et auteur (avatar + pseudo) affiché sur les Tier Lists publiées.

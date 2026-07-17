@@ -803,6 +803,14 @@ def ensure_generated_characters(root: Path, session: requests.Session, chars: Li
     """
     map_path = root / "data" / "local_style_map.json"
     local_rows = load_local_styles(root)
+    # Character 201 is the existing playable Young All For One. Never create a
+    # second generated character/style for the English label “Youth age”.
+    local_rows = [x for x in local_rows if x.get("style_key") != "all_for_one_youth_age_youth_age" and x.get("character_id") != "all_for_one_youth_age"]
+    for x in local_rows:
+        if x.get("style_key") == "all_for_one_young_assault":
+            x["source_url"] = f"{BASE_URL}/character/201"
+            x.pop("generated", None)
+    map_path.write_text(json.dumps(local_rows, ensure_ascii=False, indent=2), encoding="utf-8")
     exact_before = build_exact_by_style(root, chars)
     used_urls = {str(x.get("source_url") or "") for x in exact_before.values()}
     by_name = {norm(x.get("character_name", "")): x.get("character_id", "") for x in local_rows if x.get("character_name") and x.get("character_id")}
@@ -818,6 +826,14 @@ def ensure_generated_characters(root: Path, session: requests.Session, chars: Li
         base_name = clean(row.get("base_name") or row.get("name") or "")
         if not base_name:
             continue
+        is_young_afo = bool(re.search(r"/character/201(?:#|$)", source_url)) or ("all_for_one" in norm(base_name) and any(x in norm(base_name) for x in ("young", "youth", "jeune")))
+        if is_young_afo:
+            # The hand-made site already contains this character and style.
+            existing = next((x for x in local_rows if x.get("style_key") == "all_for_one_young_assault"), None)
+            if existing is not None:
+                existing["source_url"] = source_url or f"{BASE_URL}/character/201"
+                used_urls.add(source_url)
+                continue
         char_id = by_name.get(norm(base_name)) or norm(base_name)
         role = ROLE_MAP.get(norm(row.get("role", "")), norm(row.get("role", "")) or "support")
         style_name = clean(row.get("style_name") or "Original")
@@ -1737,7 +1753,7 @@ def parse_costume_detail(item: Dict[str, Any], html: str, chars: List[Dict[str, 
         "normalCondLeft": [normal_conditions.get(i, "") for i in range(1, 6)],
         "normalCondRight": [normal_conditions.get(i, "") for i in range(6, 11)],
         "starting_slots": start_slots,
-        "notes": desc,
+        "notes": "",
         "acquisition": acquisition,
         "slot_debug": slot_debug,
     }
@@ -2593,7 +2609,7 @@ def merge_remote_costumes(root: Path, session: requests.Session, remotes: List[D
                 "condition": remote.get("condition") or "Tous", "normal": None,
                 "normalLeft": copy.deepcopy(remote.get("normalLeft")), "normalRight": copy.deepcopy(remote.get("normalRight")),
                 "normalCondLeft": copy.deepcopy(remote.get("normalCondLeft")), "normalCondRight": copy.deepcopy(remote.get("normalCondRight")),
-                "notes": remote.get("notes", ""), "acquisition": remote.get("acquisition", ""),
+                "notes": "", "acquisition": remote.get("acquisition", ""),
                 "urId": rid, "sourceUrl": remote.get("url") or f"{COSTUME_BASE_URL}/costume/{rid}",
                 "source_order": remote.get("source_order", 0),
             }
@@ -3268,11 +3284,20 @@ def main() -> int:
 
     tuning_level_stats = enrich_character_tuning_levels(session, chars)
     generated = ensure_generated_characters(root, session, chars)
+    # Final safety: map source character 201 onto the existing local style and
+    # remove every obsolete generated Youth-age artifact before writing files.
+    young_remote = next((x for x in chars if re.search(r"/character/201(?:#|$)", str(x.get("source_url") or ""))), None)
+    generated.get("generated_styles", {}).pop("all_for_one_youth_age_youth_age", None)
+    generated.get("generated_tunings", {}).pop("all_for_one_youth_age_youth_age", None)
+    generated["generated_characters"] = [x for x in generated.get("generated_characters", []) if x.get("id") != "all_for_one_youth_age"]
     exact = generated.get("exact") or build_exact_by_style(root, chars)
+    exact.pop("all_for_one_youth_age_youth_age", None)
+    if young_remote:
+        exact["all_for_one_young_assault"] = young_remote
     payload = {
         "meta": {
             "updated_at": datetime.now(timezone.utc).isoformat(),
-            "updater_version": "v292_weekly_locked_costumes_visual_fallback",
+            "updater_version": "v354_afo_young_mapped",
             "source": BASE_URL,
             "new_styles_added": generated.get("new_styles_added", 0),
             "tuning_level_stats": tuning_level_stats,
@@ -3284,7 +3309,6 @@ def main() -> int:
         "generated_characters": generated.get("generated_characters", []),
     }
     (out_dir / "site_data_latest.json").write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
-    chars = [row for row in chars if clean(row.get("name", "")).lower() != "all for one (youth age)"]
     (out_dir / "characters_exact.json").write_text(json.dumps(chars, ensure_ascii=False, indent=2), encoding="utf-8")
     (out_dir / "update_report.json").write_text(json.dumps({
         "characters": len(chars),

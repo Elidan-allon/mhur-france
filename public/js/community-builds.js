@@ -32,6 +32,31 @@ function cbEsc(value){
 function cbPlain(value, max=500){
   return String(value ?? '').replace(/\s+/g,' ').trim().slice(0,max);
 }
+function cbIsEnglish(){return typeof lang!=='undefined'&&lang==='en'}
+function cbGameText(value){
+  const fn=window.MHUR_TRANSLATE_GAME_TEXT;
+  return cbIsEnglish()&&typeof fn==='function'?fn(value):String(value??'');
+}
+function cbCostumeText(value){
+  const fn=window.MHUR_TRANSLATE_COSTUME_TEXT;
+  return cbIsEnglish()&&typeof fn==='function'?fn(value):String(value??'');
+}
+function cbTuningName(tuning){return cbGameText(tuning?.name||'')}
+function cbTuningDesc(tuning){return cbGameText(tuning?.desc||'')}
+function cbCharacterFamilyId(charId){
+  const id=String(charId||'');
+  if(id==='midoriya'||id==='midoriya_ofa')return 'midoriya';
+  return id;
+}
+function cbTuningFamilyId(tuning){
+  const styleKey=String(tuning?.styleKey||'');
+  if(styleKey==='ofa'||styleKey==='assault'||styleKey==='fullbullet')return 'midoriya';
+  const ch=characters.find(c=>(c.styles||[]).includes(styleKey));
+  return cbCharacterFamilyId(ch?.id||'');
+}
+const cbIconStar=filled=>`<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.7l2.78 5.63 6.22.9-4.5 4.39 1.06 6.2L12 16.9l-5.56 2.92 1.06-6.2L3 9.23l6.22-.9L12 2.7z" ${filled?'fill="currentColor"':'fill="none"'} stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/></svg>`;
+const cbIconHeart=filled=>`<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z" ${filled?'fill="currentColor"':'fill="none"'} stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/></svg>`;
+const cbGenericAvatar=`<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 12a4.25 4.25 0 1 0 0-8.5 4.25 4.25 0 0 0 0 8.5Zm-7.5 8.5c.55-4.2 3.05-6.3 7.5-6.3s6.95 2.1 7.5 6.3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`;
 function cbUuid(){
   if(window.crypto && typeof window.crypto.randomUUID === 'function'){
     return window.crypto.randomUUID();
@@ -76,7 +101,7 @@ function cbStyleName(styleId){
 }
 function cbRoleName(styleId){
   const role=cbStyle(styleId)?.role||'';
-  return roles[role]?.fr||role;
+  return label(roles[role]||role);
 }
 function cbNormalizeBuild(row){
   const slots=Array.isArray(row.tuning_slots)?row.tuning_slots:(Array.isArray(row.slots)?row.slots:[]);
@@ -197,41 +222,42 @@ function cbFormatDate(value){
       .format(new Date(value));
   }catch(_){return ''}
 }
-function cbUiIcon(kind,filled=false){
-  if(kind==='heart') return `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.8 4.7a5.35 5.35 0 0 0-7.57 0L12 5.93 10.77 4.7a5.35 5.35 0 1 0-7.57 7.57L12 21.05l8.8-8.78a5.35 5.35 0 0 0 0-7.57Z" ${filled?'fill="currentColor"':'fill="none"'} stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>`;
-  return `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 2.9 2.8 5.67 6.26.91-4.53 4.42 1.07 6.23L12 17.19l-5.6 2.94 1.07-6.23-4.53-4.42 6.26-.91L12 2.9Z" ${filled?'fill="currentColor"':'fill="none"'} stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>`;
-}
 function cbHeartHtml(build,compact=false){
   const liked=cbLikedSet().has(build.id);
-  return `<button class="cbHeart cbModernAction ${liked?'liked':''} ${compact?'compact':''}" title="${liked?'Retirer le like':'Aimer'}" onclick="event.stopPropagation();communityToggleHeart('${cbEsc(build.id)}')"><span class="cbModernIcon">${cbUiIcon('heart',liked)}</span><b>${build.likes_count||0}</b></button>`;
+  const title=cbIsEnglish()?(liked?'Remove like':'Like'):(liked?'Retirer le cœur':'Ajouter un cœur');
+  return `<button class="cbHeart cbIconAction ${liked?'liked':''} ${compact?'compact':''}" title="${title}" aria-label="${title}" onclick="event.stopPropagation();communityToggleHeart('${cbEsc(build.id)}')"><span class="cbActionIcon">${cbIconHeart(liked)}</span><b>${build.likes_count||0}</b></button>`;
 }
 function cbSlotEntries(build){
   return Array.isArray(build.tuning_slots)?build.tuning_slots:[];
 }
-function cbBuildTuningCardV306(entry,size='normal',clickable=false,costume=null){
+function cbBuildTuningCardV306(entry,size='normal',clickable=false){
   const tuning=entry.tuning||{};
   const color=entry.color||tuning.slot||'gray';
   const isSp=entry.kind==='sp';
   const condition=entry.condition||'';
-  const nm=safeTuningName(tuning.name||'');
+  const nm=safeTuningName(cbTuningName(tuning));
   const fs=slotFontSize(nm);
-  const filled=tuning&&Object.keys(tuning).length;
-  const text=filled
+  const text=tuning&&Object.keys(tuning).length
     ?(isSp
       ?`<span class="equippedChar">${cbEsc(tuning.character||'')}</span><span class="equippedName" style="--equip-font:${Math.max(14,fs-1)}px">${cbEsc(nm)}</span>`
       :`<span class="equippedName" style="--equip-font:${fs}px">${cbEsc(nm)}</span>`)
     :'';
   const tag=clickable?'button':'div';
   const click=clickable?` type="button" onclick="communitySelectDraftSlot('${cbEsc(entry.id)}');return false;"`:'';
-  const max=costume&&typeof costumeMaxLevel==='function'
-    ?costumeMaxLevel(costume,entry.kind,entry.side,Number(entry.index||0))
-    :(isSp?(entry.side==='left'?3:4):3);
-  return `<${tag}${click} class="gameSlot ${slotColorClass(color)} cbOfficialBuildTuningSlot ${isSp?'spBand':''} ${filled?'filled':'empty'} ${size}" style="--slot-color:${slotHex(color)}"><div class="slotBandText">${text}</div><span class="slotMax">MAX ${max}</span>${slotGem(color,isSp?condition:'',tuning.img||'')}</${tag}>`;
+  const max=Number(entry.max||0)||(isSp?(entry.side==='left'?3:4):3);
+  return `<${tag}${click} class="gameSlot ${slotColorClass(color)} ${isSp?'spBand':''} ${tuning&&Object.keys(tuning).length?'filled':'empty'}" style="--slot-color:${slotHex(color)}">
+    <div class="slotBandText">${text}</div><span class="slotMax">MAX ${max}</span>
+    ${slotGem(color,isSp?condition:'',tuning.img||'')}
+  </${tag}>`;
 }
 function cbBuildTuningColumnsV306(build,size='normal'){
   const entries=cbSlotEntries(build);
   const costume=cbBuildCostumeData(build);
-  const column=side=>`<section class="cbCostumeTuningColumnV306 ${size}"><h4>${side==='left'?'Gauche':'Droite'}</h4><div>${entries.filter(entry=>entry.side===side).map(entry=>cbBuildTuningCardV306(entry,size,false,costume)).join('')}</div></section>`;
+  const enrich=entry=>({...entry,max:entry.max||(costume?costumeMaxLevel(costume,entry.kind,entry.side,Number(entry.index)||0):0)});
+  const column=side=>`<section class="cbCostumeTuningColumnV306 ${size}">
+    <h4>${side==='left'?(cbIsEnglish()?'Left':'Gauche'):(cbIsEnglish()?'Right':'Droite')}</h4>
+    <div>${entries.filter(entry=>entry.side===side).map(entry=>cbBuildTuningCardV306(enrich(entry),size)).join('')}</div>
+  </section>`;
   return `<div class="cbCostumeTuningGridV306 ${size}">${column('left')}${column('right')}</div>`;
 }
 function cbMiniSlots(build){
@@ -239,21 +265,19 @@ function cbMiniSlots(build){
 }
 function cbAuthorProfile(build){
   const p=build.author_profile||{};
-  const currentUser=window.MHUR_AUTH?.getUser?.();
-  const currentProfile=window.MHUR_AUTH?.getProfile?.();
-  if(currentUser&&String(build.creator_id||'')===String(currentUser.id||'')){
-    return {id:currentProfile?.id||currentUser.id||'',username:currentProfile?.username||build.author||'Anonyme',avatar_url:currentProfile?.avatar_url||currentUser.user_metadata?.avatar_url||currentUser.user_metadata?.picture||'',provider:currentProfile?.provider||currentUser.app_metadata?.provider||''};
-  }
-  return {id:p.id||build.creator_id||'',username:p.username||build.author||'Anonyme',avatar_url:p.avatar_url||'',provider:p.provider||''};
+  const u=window.MHUR_AUTH?.getUser?.();
+  const own=u&&String(build.creator_id||'')===String(u.id||'');
+  const m=u?.user_metadata||{};
+  const profile=window.MHUR_AUTH?.getProfile?.()||{};
+  return {id:p.id||build.creator_id||'',username:(own?(profile.username||m.full_name||m.name):p.username)||build.author||'Anonyme',avatar_url:(own?(profile.avatar_url||m.avatar_url||m.picture):p.avatar_url)||'',provider:p.provider||u?.app_metadata?.provider||''};
 }
-function cbAuthorAvatar(profile){
-  const fallback=`<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 12a4.25 4.25 0 1 0 0-8.5 4.25 4.25 0 0 0 0 8.5Zm-7.5 8.5c.55-4.2 3.05-6.3 7.5-6.3s6.95 2.1 7.5 6.3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`;
-  return profile.avatar_url?`<img class="cbAuthorAvatar" src="${cbEsc(profile.avatar_url)}" alt="${cbEsc(profile.username||'')}">`:`<span class="cbAuthorAvatar cbAuthorAvatarFallback">${fallback}</span>`;
-}
-function cbAuthorButton(build){const p=cbAuthorProfile(build);return p.id?`<button class="cbAuthorButton" onclick="event.stopPropagation();MHUR_PROFILES?.open('${cbEsc(p.id)}')">${cbAuthorAvatar(p)}<span>${cbEsc(p.username)}</span></button>`:`<span class="cbAuthorPlain">${cbAuthorAvatar(p)}<span>${cbEsc(p.username)}</span></span>`}
+function cbInitials(name){return String(name||'?').split(/\s+/).slice(0,2).map(x=>x[0]||'').join('').toUpperCase()||'?'}
+function cbAuthorAvatar(profile){return profile.avatar_url?`<img class="cbAuthorAvatar" src="${cbEsc(profile.avatar_url)}" alt="${cbEsc(profile.username||'')}">`:`<span class="cbAuthorAvatar cbAuthorAvatarFallback">${cbGenericAvatar}</span>`}
+function cbAuthorButton(build){const p=cbAuthorProfile(build);return p.id?`<button class="cbAuthorButton" onclick="event.stopPropagation();MHUR_PROFILES?.open('${cbEsc(p.id)}')">${cbAuthorAvatar(p)}<span>${cbEsc(p.username)}</span></button>`:`<span>${cbEsc(p.username)}</span>`}
 function cbFavoriteHtml(build){
   const active=window.MHUR_PROFILES?.isFavorite?.(build.id);
-  return `<button class="cbFavorite cbModernAction ${active?'active':''}" title="${active?'Retirer des favoris':'Ajouter aux favoris'}" onclick="event.stopPropagation();communityToggleFavorite('${cbEsc(build.id)}')"><span class="cbModernIcon">${cbUiIcon('star',active)}</span></button>`;
+  const title=cbIsEnglish()?(active?'Remove from favorites':'Add to favorites'):(active?'Retirer des favoris':'Ajouter aux favoris');
+  return `<button class="cbFavorite cbIconAction ${active?'active':''}" title="${title}" aria-label="${title}" onclick="event.stopPropagation();communityToggleFavorite('${cbEsc(build.id)}')"><span class="cbActionIcon">${cbIconStar(active)}</span></button>`;
 }
 window.communityToggleFavorite=async function(id){await window.MHUR_PROFILES?.toggleFavorite?.(id);cbRefreshVisible()};
 function cbBuildCard(build,index=0,compact=false){
@@ -264,7 +288,7 @@ function cbBuildCard(build,index=0,compact=false){
     <div class="cbRank">${index+1}</div>
     <div class="cbBuildCostume">${asset(build.costume_img,build.costume_name+' '+build.costume_variant)}${cbCostumeRarityBadge(costumeData)}</div>
     <div class="cbBuildMain">
-      <div class="cbBuildTitleLine"><h3>${cbEsc(build.title)}${window.MHUR_MODERATION?.verifiedBadge?.(build)||''}</h3><div class="cbBuildActions">${cbFavoriteHtml(build)}${cbHeartHtml(build,compact)}</div></div>
+      <div class="cbBuildTitleLine"><h3>${cbEsc(build.title)}${window.MHUR_MODERATION?.verifiedBadge?.(build)||''}</h3><div class="cbBuildActions">${cbFavoriteHtml(build)}${cbHeartHtml(build,compact)}${cbOwnDeleteHtml(build,true)}</div></div>
       <div class="cbBuildMeta">
         ${cbAuthorButton(build)}
         <span>${cbEsc(char?.name||build.character_id)}</span>
@@ -395,7 +419,7 @@ function cbCostumes(charId){
   });
 }
 function cbCostumeName(costume){
-  return `${costume.group||costume.name||'Costume'} — ${costume.variant||'Original'}`;
+  return `${cbCostumeText(costume.group||costume.name||'Costume')} — ${cbCostumeText(costume.variant||'Original')}`;
 }
 
 function cbRarityMeta(code){
@@ -417,14 +441,9 @@ function cbFilteredCostumes(costumes){
   );
 }
 function cbColorOptions(selected=''){
-  return [
-    ['','Tous'],
-    ['yellow','Assaut'],
-    ['red','Attaque'],
-    ['cyan','Vitesse'],
-    ['violet','Technique'],
-    ['green','Soutien']
-  ].map(([value,name])=>`<option value="${value}" ${selected===value?'selected':''}>${name}</option>`).join('');
+  const names=cbIsEnglish()?{all:'All',yellow:'Assault',red:'Strike',cyan:'Rapid',violet:'Technical',green:'Support'}:{all:'Tous',yellow:'Assaut',red:'Attaque',cyan:'Vitesse',violet:'Technique',green:'Soutien'};
+  return [['',names.all],['yellow',names.yellow],['red',names.red],['cyan',names.cyan],['violet',names.violet],['green',names.green]]
+    .map(([value,name])=>`<option value="${value}" ${selected===value?'selected':''}>${name}</option>`).join('');
 }
 function cbBuildCostumeData(build){
   return cbCostumes(build.character_id).find(item=>item.id===build.costume_id)||null;
@@ -450,10 +469,10 @@ function cbSlotSpecs(costume){
   const left=normalSlots(costume,'left');
   const right=normalSlots(costume,'right');
   return [
-    {id:'sp|left|0',kind:'sp',side:'left',index:0,color:costume.spLeft,condition:slotFactionCondition(costume,'left','sp',0)},
-    ...left.map((color,index)=>({id:`normal|left|${index}`,kind:'normal',side:'left',index,color,condition:slotFactionCondition(costume,'left','normal',index)})),
-    {id:'sp|right|0',kind:'sp',side:'right',index:0,color:costume.spRight,condition:slotFactionCondition(costume,'right','sp',0)},
-    ...right.map((color,index)=>({id:`normal|right|${index}`,kind:'normal',side:'right',index,color,condition:slotFactionCondition(costume,'right','normal',index)}))
+    {id:'sp|left|0',kind:'sp',side:'left',index:0,color:costume.spLeft,condition:slotFactionCondition(costume,'left','sp',0),max:costumeMaxLevel(costume,'sp','left',0)},
+    ...left.map((color,index)=>({id:`normal|left|${index}`,kind:'normal',side:'left',index,color,condition:slotFactionCondition(costume,'left','normal',index),max:costumeMaxLevel(costume,'normal','left',index)})),
+    {id:'sp|right|0',kind:'sp',side:'right',index:0,color:costume.spRight,condition:slotFactionCondition(costume,'right','sp',0),max:costumeMaxLevel(costume,'sp','right',0)},
+    ...right.map((color,index)=>({id:`normal|right|${index}`,kind:'normal',side:'right',index,color,condition:slotFactionCondition(costume,'right','normal',index),max:costumeMaxLevel(costume,'normal','right',index)}))
   ];
 }
 function cbTuningSnapshot(tuning){
@@ -465,8 +484,8 @@ function cbTuningSnapshot(tuning){
     side:tuning.side||'',
     role:tuning.role||'',
     slot:tuning.slot||'',
-    name:tuning.name||'',
-    desc:cbPlain(tuning.desc||'',400),
+    name:cbTuningName(tuning),
+    desc:cbPlain(cbTuningDesc(tuning),400),
     img:tuning.img||''
   };
 }
@@ -596,20 +615,19 @@ function cbBuilderOfficialSlotV308(spec){
   let text='';
 
   if(tuning){
-    const nm=safeTuningName(tuning.name||'');
+    const nm=safeTuningName(cbTuningName(tuning));
     const fs=slotFontSize(nm);
     text=isSp
       ?`<span class="equippedChar">${cbEsc(tuning.character||'')}</span><span class="equippedName" style="--equip-font:${Math.max(14,fs-1)}px">${cbEsc(nm)}</span>`
       :`<span class="equippedName" style="--equip-font:${fs}px">${cbEsc(nm)}</span>`;
   }
 
-  const costume=cbDraftCostume();
-  const max=costume&&typeof costumeMaxLevel==='function'?costumeMaxLevel(costume,spec.kind,spec.side,Number(spec.index||0)):(isSp?(spec.side==='left'?3:4):3);
   return `<button type="button"
-      class="gameSlot ${slotColorClass(spec.color)} ${isSp?'spBand':''} ${active?'active':''} ${tuning?'filled':'empty'}"
+      class="gameSlot ${isSp?'spBand':''} ${active?'active':''} ${tuning?'filled':'empty'}"
       style="--slot-color:${slotHex(spec.color)}"
       onclick="communitySelectDraftSlot('${cbEsc(spec.id)}');return false;">
-    <div class="slotBandText">${text}</div><span class="slotMax">MAX ${max}</span>${slotGem(spec.color,isSp?(spec.condition||''):'',tuning?tuning.img:'')}
+    <div class="slotBandText">${text}</div>
+    ${slotGem(spec.color,isSp?(spec.condition||''):'',tuning?tuning.img:'')}
   </button>`;
 }
 function cbBuilderSlot(spec){
@@ -617,14 +635,10 @@ function cbBuilderSlot(spec){
 }
 function cbBuilderPicker(costume,spec){
   const used=cbUsedStyles(spec.id);
-  const ownChar=cbCharacter(CB_STATE.draft?.characterId);
-  const ownStyles=new Set(ownChar?.styles||[]);
-  const ownName=String(ownChar?.name||'').toLowerCase().replace(/[^a-z0-9]+/g,'');
-  const options=compatibleTunings(spec.color,spec.kind,spec.condition).filter(t=>{
-    const tuningStyle=String(t.styleKey||'');
-    const tuningName=String(t.character||'').toLowerCase().replace(/[^a-z0-9]+/g,'');
-    return !ownStyles.has(tuningStyle) && (!ownName || tuningName!==ownName);
-  }).slice(0,80);
+  const ownFamily=cbCharacterFamilyId(CB_STATE.draft?.characterId);
+  const options=compatibleTunings(spec.color,spec.kind,spec.condition)
+    .filter(t=>cbTuningFamilyId(t)!==ownFamily)
+    .slice(0,80);
   window.__cbTuningOptions=options;
 
   const kindLabel=spec.kind==='sp'
@@ -641,9 +655,9 @@ function cbBuilderPicker(costume,spec){
       <div class="tuningOptions">
         ${options.map((tuning,index)=>{
           const isUsed=used.has(tuning.styleKey||tuning.character);
-          const nm=safeTuningName(tuning.name||'');
+          const nm=safeTuningName(cbTuningName(tuning));
           const fs=tuningFontSize(nm,21);
-          const ds=compactDesc(tuning);
+          const ds=cbPlain(cbTuningDesc(tuning),180);
           return `<button type="button"
               class="tuningOption ${slotColorClass(tuning.slot)} ${isUsed?'alreadyUsed':''}"
               ${isUsed?'disabled':''}
@@ -712,7 +726,7 @@ function cbRenderBuilder(){
     </div>
     <div class="cbCostumeChoices" onscroll="communityRememberCostumeScroll(this.scrollLeft)">${filteredCostumes.map(item=>`<button class="${draft.costumeId===item.id?'selected':''}" onclick="communityChooseCostume('${cbEsc(item.id)}')">
       <div class="cbCostumeChoiceImage">${asset(item.img,cbCostumeName(item))}${cbCostumeRarityBadge(item)}${cbCostumeSlotBadges(item)}</div>
-      <b>${cbEsc(item.group||item.name||'Costume')}</b><span>${cbEsc(item.variant||'Original')}</span>
+      <b>${cbEsc(cbCostumeText(item.group||item.name||'Costume'))}</b><span>${cbEsc(cbCostumeText(item.variant||'Original'))}</span>
     </button>`).join('')||'<div class="cbEmpty cbCostumeFilterEmpty">Aucun costume ne correspond aux filtres.</div>'}</div>
     ${costume?`<h3 class="cbSectionTitle">2. T.U.N.I.N.G <span>${filled}/${specs.length}</span></h3>
       <div class="gameCostumeScreen cbOfficialCreatorScreenV308">
@@ -824,16 +838,43 @@ function cbFindBuild(id,charId='',styleId=''){
   }
   return cbLocalAll().map(cbNormalizeBuild).find(x=>x.id===id)||null;
 }
-function cbDetailSlot(entry){
-  return cbBuildTuningCardV306(entry,'detail');
+function cbDetailSlot(entry,build){
+  const costume=cbBuildCostumeData(build);
+  const enriched={...entry,max:entry.max||(costume?costumeMaxLevel(costume,entry.kind,entry.side,Number(entry.index)||0):0)};
+  return cbBuildTuningCardV306(enriched,'detail');
 }
 function cbDetailColumn(build,side){
   const entries=cbSlotEntries(build).filter(entry=>entry.side===side);
   return `<section class="cbCostumeTuningColumnV306 detail">
-    <h4>${side==='left'?'Gauche':'Droite'}</h4>
-    <div>${entries.map(cbDetailSlot).join('')}</div>
+    <h4>${side==='left'?(cbIsEnglish()?'Left':'Gauche'):(cbIsEnglish()?'Right':'Droite')}</h4>
+    <div>${entries.map(entry=>cbDetailSlot(entry,build)).join('')}</div>
   </section>`;
 }
+
+
+function cbOwnDeleteHtml(build,compact=false){
+  const uid=window.MHUR_AUTH?.getUser?.()?.id||'';
+  const own=uid&&String(uid)===String(build.creator_id||'');
+  if(!own) return '';
+  const txt=(typeof lang!=='undefined'&&lang==='en')?'Delete build':'Supprimer le build';
+  return `<button class="cbDeleteOwn ${compact?'compact':''}" title="${txt}" aria-label="${txt}" onclick="event.stopPropagation();communityDeleteOwnBuild('${cbEsc(build.id)}')">🗑 ${txt}</button>`;
+}
+window.communityDeleteOwnBuild=async function(id){
+  const build=cbFindBuild(id);
+  const uid=window.MHUR_AUTH?.getUser?.()?.id||'';
+  if(!build||!uid||String(uid)!==String(build.creator_id||'')) return;
+  const en=typeof lang!=='undefined'&&lang==='en';
+  if(!confirm(en?'Delete this build permanently?':'Supprimer définitivement ce build ?')) return;
+  try{
+    if(CB_REMOTE&&/^[0-9a-f-]{36}$/i.test(id)){
+      await cbRequest(`/rest/v1/community_builds?id=eq.${encodeURIComponent(id)}&creator_id=eq.${encodeURIComponent(uid)}`,{method:'DELETE',headers:{Prefer:'return=minimal'}});
+    }else{
+      cbSaveLocal(cbLocalAll().filter(x=>String(x.id)!==String(id)));
+    }
+    Object.keys(CB_STATE.cache).forEach(k=>CB_STATE.cache[k]=(CB_STATE.cache[k]||[]).filter(x=>String(x.id)!==String(id)));
+    closeCommunityBuildDetail(); cbRefreshVisible();
+  }catch(e){alert((en?'Unable to delete build: ':'Suppression impossible : ')+(e.message||e));}
+};
 
 function cbRenderBuildDetail(id){
   const build=cbFindBuild(id);
@@ -846,7 +887,7 @@ function cbRenderBuildDetail(id){
         <p>${cbEsc(char?.name||build.character_id)} · ${cbEsc(cbStyleName(build.style_id))}</p>
         <p>${cbEsc(build.costume_name)} — ${cbEsc(build.costume_variant)}</p>
         <div class="cbDetailAuthor">Par ${cbAuthorButton(build)} · ${cbFormatDate(build.created_at)}</div>
-        <div class="cbBuildActions">${cbFavoriteHtml(build)}${cbHeartHtml(build)}${window.MHUR_MODERATION?.detailActions?.(build)||''}</div>
+        <div class="cbBuildActions">${cbFavoriteHtml(build)}${cbHeartHtml(build)}${cbOwnDeleteHtml(build)}${window.MHUR_MODERATION?.detailActions?.(build)||''}</div>
       </div>
     </div>
     <div class="cbDetailDescription">${cbEsc(build.description||'Aucune description.')}</div>

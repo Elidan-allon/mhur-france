@@ -1,9 +1,9 @@
 {
   "meta": {
-    "updated_at": "2026-07-17T03:21:01.390659+00:00",
-    "updater_version": "v292_weekly_locked_costumes_visual_fallback",
+    "updated_at": "2026-07-17T02:28:58.505788+00:00",
+    "updater_version": "v354_afo_young_mapped",
     "source": "https://ultrarumble.com",
-    "new_styles_added": 0,
+    "new_styles_added": 1,
     "tuning_level_stats": {
       "normal_cards": 59,
       "special_cards": 59,
@@ -24083,278 +24083,6 @@
     }
   ],
   "exact_by_style": {
-    "all_for_one_youth_age_youth_age": {
-      "source_url": "https://ultrarumble.com/character/201",
-      "name": "All For One (Youth age)",
-      "base_name": "All For One (Youth age)",
-      "style_header": "All For One (Youth age)",
-      "style_name": "Youth age",
-      "variant_index": 0,
-      "side": "villain",
-      "role": "assault",
-      "stats": {
-        "Max Main Health": 300,
-        "Max Guard Point": 250,
-        "Max Armor": 100,
-        "Max Break Down": 500,
-        "Max Freeze": 100,
-        "Max Shock": 100,
-        "Guard Break Rate": 1.0,
-        "Take Damage Rate Special": 1.0,
-        "Giant Armor Resistance Rate": 1.0,
-        "Giant Break Down Resistance Rate": 1.0,
-        "Giant Nagative Condition Resistance Rate": 1.0,
-        "Body Size": 3
-      },
-      "skills": {
-        "α": {
-          "name": "Thunder Sepulture",
-          "description": "Thunder Sepulture",
-          "level_up_effects": {
-            "columns": [
-              "Level",
-              "Level Up Effect"
-            ],
-            "rows": []
-          },
-          "base_values": {
-            "columns": [
-              "Level",
-              "Damage",
-              "Ammo",
-              "Use Ammo",
-              "Reload",
-              "Down Power"
-            ],
-            "rows": [
-              [
-                "Lv.1",
-                "56",
-                "x6",
-                "x1",
-                "2s",
-                "100"
-              ],
-              [
-                "Lv.2",
-                "57",
-                "x6",
-                "x1",
-                "2s",
-                "100"
-              ],
-              [
-                "Lv.3",
-                "58",
-                "x6",
-                "x1",
-                "2s",
-                "100"
-              ],
-              [
-                "Lv.4",
-                "60",
-                "x7",
-                "x1",
-                "2s",
-                "100"
-              ],
-              [
-                "Lv.5",
-                "62",
-                "x7",
-                "x1",
-                "2s",
-                "100"
-              ],
-              [
-                "Lv.6",
-                "63",
-                "x7",
-                "x1",
-                "2s",
-                "100"
-              ],
-              [
-                "Lv.7",
-                "65",
-                "x7",
-                "x1",
-                "2s",
-                "100"
-              ],
-              [
-                "Lv.8",
-                "67",
-                "x7",
-                "x1",
-                "2s",
-                "100"
-              ],
-              [
-                "Lv.9",
-                "68",
-                "x8",
-                "x1",
-                "2s",
-                "100"
-              ]
-            ]
-          },
-          "additional_values": {
-            "columns": [
-              "Type",
-              "Level",
-              "Damage",
-              "Down Power"
-            ],
-            "rows": [
-              [
-                "Explosion (爆発)",
-                "Lv.1",
-                "35",
-                "100"
-              ],
-              [
-                "Explosion (爆発)",
-                "Lv.2",
-                "36",
-                "100"
-              ],
-              [
-                "Explosion (爆発)",
-                "Lv.3",
-                "37",
-                "100"
-              ],
-              [
-                "Explosion (爆発)",
-                "Lv.4",
-                "38",
-                "100"
-              ],
-              [
-                "Explosion (爆発)",
-                "Lv.5",
-                "39",
-                "100"
-              ],
-              [
-                "Explosion (爆発)",
-                "Lv.6",
-                "40",
-                "100"
-              ],
-              [
-                "Explosion (爆発)",
-                "Lv.7",
-                "41",
-                "100"
-              ],
-              [
-                "Explosion (爆発)",
-                "Lv.8",
-                "42",
-                "100"
-              ],
-              [
-                "Explosion (爆発)",
-                "Lv.9",
-                "43",
-                "100"
-              ]
-            ]
-          }
-        },
-        "β": {
-          "name": "Meteor Annihilation",
-          "description": "Meteor Annihilation",
-          "level_up_effects": {
-            "columns": [],
-            "rows": []
-          },
-          "base_values": {
-            "columns": [],
-            "rows": []
-          },
-          "additional_values": {
-            "columns": [],
-            "rows": []
-          }
-        },
-        "γ": {
-          "name": "Divine Judgment",
-          "description": "Divine Judgment",
-          "level_up_effects": {
-            "columns": [],
-            "rows": []
-          },
-          "base_values": {
-            "columns": [],
-            "rows": []
-          },
-          "additional_values": {
-            "columns": [],
-            "rows": []
-          }
-        }
-      },
-      "special_action": {
-        "values": {
-          "columns": [],
-          "rows": []
-        }
-      },
-      "normal_tuning": [
-        {
-          "name": "Quirk Skill γ Defense+",
-          "description": "Decreases damage taken from Quirk Skill γ",
-          "levels": [
-            "Lv.1 : 0.99",
-            "Lv.2 : 0.985",
-            "Lv.3 : 0.98",
-            "Lv.4 : 0.975"
-          ]
-        },
-        {
-          "name": "PU/PC Reload+",
-          "description": "Increases PU/PC Gauge filling speed",
-          "levels": [
-            "Lv.1 : 1.01",
-            "Lv.2 : 1.015",
-            "Lv.3 : 1.02",
-            "Lv.4 : 1.025"
-          ]
-        }
-      ],
-      "special_tuning": {
-        "name": "Quirk Factor Release",
-        "description": "Breaking an opponent's Guard increases Reload Speed for a limited time.",
-        "levels": [
-          "Lv.1 : 120",
-          "Lv.2 : 110",
-          "Lv.3 : 100",
-          "Lv.4 : 90",
-          "Lv.5 : 80",
-          "Lv.6 : 60",
-          "Lv.7 : 55",
-          "Lv.8 : 50",
-          "Lv.9 : 45",
-          "Lv.10 : 40",
-          "Lv.11 : 35",
-          "Sub Effect 1 : 10",
-          "Sub Effect 2 : 2"
-        ]
-      },
-      "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch201/GUI/FaceIcon/T_ui_Ch201_CharaImage.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch201_00.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch201/GUI/Skill/T_ui_Skill_Ch201_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch201/GUI/Skill/T_ui_Skill_Ch201_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch201/GUI/Skill/T_ui_Skill_Ch201_Unique3.png",
-        "special": "https://ultrarumble.com/assets/Character/Ch201/GUI/Skill/T_ui_SpecialSkill_Ch201.png"
-      }
-    },
     "kaminari_technical": {
       "source_url": "https://ultrarumble.com/character/7#Variant-1",
       "name": "Denki Kaminari",
@@ -48152,232 +47880,254 @@
         "beta": "https://ultrarumble.com/assets/Character/Ch034/Variation/Var01/GUI/Skill/T_ui_Skill_Ch034_Unique2.png",
         "gamma": "https://ultrarumble.com/assets/Character/Ch034/Variation/Var01/GUI/Skill/T_ui_Skill_Ch034_Unique3.png"
       }
-    }
-  },
-  "generated_styles": {
-    "all_for_one_youth_age_youth_age": {
-      "name": {
-        "fr": "Youth age",
-        "en": "Youth age"
-      },
+    },
+    "all_for_one_young_assault": {
+      "source_url": "https://ultrarumble.com/character/201",
+      "name": "All For One (Youth age)",
+      "base_name": "All For One (Youth age)",
+      "style_header": "All For One (Youth age)",
+      "style_name": "Youth age",
+      "variant_index": 0,
+      "side": "villain",
       "role": "assault",
-      "portrait": "assets/all_for_one_youth_age/all_for_one_youth_age_youth_age/portrait.png",
-      "pv": 300,
-      "description": {
-        "fr": "Données mises à jour automatiquement depuis UltraRumble pour All For One (Youth age).",
-        "en": "Automatically updated data."
+      "stats": {
+        "Max Main Health": 300,
+        "Max Guard Point": 250,
+        "Max Armor": 100,
+        "Max Break Down": 500,
+        "Max Freeze": 100,
+        "Max Shock": 100,
+        "Guard Break Rate": 1.0,
+        "Take Damage Rate Special": 1.0,
+        "Giant Armor Resistance Rate": 1.0,
+        "Giant Break Down Resistance Rate": 1.0,
+        "Giant Nagative Condition Resistance Rate": 1.0,
+        "Body Size": 3
       },
-      "roleDesc": {
-        "fr": "Données du rôle mises à jour automatiquement.",
-        "en": "Automatically updated role data."
-      },
-      "special": {
-        "name": {
-          "fr": "Action spéciale",
-          "en": "Special Action"
-        },
-        "img": "assets/all_for_one_youth_age/all_for_one_youth_age_youth_age/special.png",
-        "desc": {
-          "fr": "Consulte les valeurs ci-dessous.",
-          "en": "See values below."
-        },
-        "tables": []
-      },
-      "skills": [
-        {
-          "letter": "α",
+      "skills": {
+        "α": {
           "name": "Thunder Sepulture",
-          "img": "assets/all_for_one_youth_age/all_for_one_youth_age_youth_age/alpha.png",
-          "desc": {
-            "fr": "Thunder Sepulture",
-            "en": "Thunder Sepulture"
+          "description": "Thunder Sepulture",
+          "level_up_effects": {
+            "columns": [
+              "Level",
+              "Level Up Effect"
+            ],
+            "rows": []
           },
-          "tables": [
-            {
-              "title": "Valeurs α",
-              "cols": [
-                "Level",
-                "Damage",
-                "Ammo",
-                "Use Ammo",
-                "Reload",
-                "Down Power"
+          "base_values": {
+            "columns": [
+              "Level",
+              "Damage",
+              "Ammo",
+              "Use Ammo",
+              "Reload",
+              "Down Power"
+            ],
+            "rows": [
+              [
+                "Lv.1",
+                "56",
+                "x6",
+                "x1",
+                "2s",
+                "100"
               ],
-              "rows": [
-                [
-                  "Lv.1",
-                  "56",
-                  "x6",
-                  "x1",
-                  "2s",
-                  "100"
-                ],
-                [
-                  "Lv.2",
-                  "57",
-                  "x6",
-                  "x1",
-                  "2s",
-                  "100"
-                ],
-                [
-                  "Lv.3",
-                  "58",
-                  "x6",
-                  "x1",
-                  "2s",
-                  "100"
-                ],
-                [
-                  "Lv.4",
-                  "60",
-                  "x7",
-                  "x1",
-                  "2s",
-                  "100"
-                ],
-                [
-                  "Lv.5",
-                  "62",
-                  "x7",
-                  "x1",
-                  "2s",
-                  "100"
-                ],
-                [
-                  "Lv.6",
-                  "63",
-                  "x7",
-                  "x1",
-                  "2s",
-                  "100"
-                ],
-                [
-                  "Lv.7",
-                  "65",
-                  "x7",
-                  "x1",
-                  "2s",
-                  "100"
-                ],
-                [
-                  "Lv.8",
-                  "67",
-                  "x7",
-                  "x1",
-                  "2s",
-                  "100"
-                ],
-                [
-                  "Lv.9",
-                  "68",
-                  "x8",
-                  "x1",
-                  "2s",
-                  "100"
-                ]
-              ]
-            },
-            {
-              "title": "Valeurs supplémentaires α",
-              "cols": [
-                "Type",
-                "Level",
-                "Damage",
-                "Down Power"
+              [
+                "Lv.2",
+                "57",
+                "x6",
+                "x1",
+                "2s",
+                "100"
               ],
-              "rows": [
-                [
-                  "Explosion (爆発)",
-                  "Lv.1",
-                  "35",
-                  "100"
-                ],
-                [
-                  "Explosion (爆発)",
-                  "Lv.2",
-                  "36",
-                  "100"
-                ],
-                [
-                  "Explosion (爆発)",
-                  "Lv.3",
-                  "37",
-                  "100"
-                ],
-                [
-                  "Explosion (爆発)",
-                  "Lv.4",
-                  "38",
-                  "100"
-                ],
-                [
-                  "Explosion (爆発)",
-                  "Lv.5",
-                  "39",
-                  "100"
-                ],
-                [
-                  "Explosion (爆発)",
-                  "Lv.6",
-                  "40",
-                  "100"
-                ],
-                [
-                  "Explosion (爆発)",
-                  "Lv.7",
-                  "41",
-                  "100"
-                ],
-                [
-                  "Explosion (爆発)",
-                  "Lv.8",
-                  "42",
-                  "100"
-                ],
-                [
-                  "Explosion (爆発)",
-                  "Lv.9",
-                  "43",
-                  "100"
-                ]
+              [
+                "Lv.3",
+                "58",
+                "x6",
+                "x1",
+                "2s",
+                "100"
+              ],
+              [
+                "Lv.4",
+                "60",
+                "x7",
+                "x1",
+                "2s",
+                "100"
+              ],
+              [
+                "Lv.5",
+                "62",
+                "x7",
+                "x1",
+                "2s",
+                "100"
+              ],
+              [
+                "Lv.6",
+                "63",
+                "x7",
+                "x1",
+                "2s",
+                "100"
+              ],
+              [
+                "Lv.7",
+                "65",
+                "x7",
+                "x1",
+                "2s",
+                "100"
+              ],
+              [
+                "Lv.8",
+                "67",
+                "x7",
+                "x1",
+                "2s",
+                "100"
+              ],
+              [
+                "Lv.9",
+                "68",
+                "x8",
+                "x1",
+                "2s",
+                "100"
               ]
-            }
+            ]
+          },
+          "additional_values": {
+            "columns": [
+              "Type",
+              "Level",
+              "Damage",
+              "Down Power"
+            ],
+            "rows": [
+              [
+                "Explosion (爆発)",
+                "Lv.1",
+                "35",
+                "100"
+              ],
+              [
+                "Explosion (爆発)",
+                "Lv.2",
+                "36",
+                "100"
+              ],
+              [
+                "Explosion (爆発)",
+                "Lv.3",
+                "37",
+                "100"
+              ],
+              [
+                "Explosion (爆発)",
+                "Lv.4",
+                "38",
+                "100"
+              ],
+              [
+                "Explosion (爆発)",
+                "Lv.5",
+                "39",
+                "100"
+              ],
+              [
+                "Explosion (爆発)",
+                "Lv.6",
+                "40",
+                "100"
+              ],
+              [
+                "Explosion (爆発)",
+                "Lv.7",
+                "41",
+                "100"
+              ],
+              [
+                "Explosion (爆発)",
+                "Lv.8",
+                "42",
+                "100"
+              ],
+              [
+                "Explosion (爆発)",
+                "Lv.9",
+                "43",
+                "100"
+              ]
+            ]
+          }
+        },
+        "β": {
+          "name": "Meteor Annihilation",
+          "description": "Meteor Annihilation",
+          "level_up_effects": {
+            "columns": [],
+            "rows": []
+          },
+          "base_values": {
+            "columns": [],
+            "rows": []
+          },
+          "additional_values": {
+            "columns": [],
+            "rows": []
+          }
+        },
+        "γ": {
+          "name": "Divine Judgment",
+          "description": "Divine Judgment",
+          "level_up_effects": {
+            "columns": [],
+            "rows": []
+          },
+          "base_values": {
+            "columns": [],
+            "rows": []
+          },
+          "additional_values": {
+            "columns": [],
+            "rows": []
+          }
+        }
+      },
+      "special_action": {
+        "values": {
+          "columns": [],
+          "rows": []
+        }
+      },
+      "normal_tuning": [
+        {
+          "name": "Quirk Skill γ Defense+",
+          "description": "Decreases damage taken from Quirk Skill γ",
+          "levels": [
+            "Lv.1 : 0.99",
+            "Lv.2 : 0.985",
+            "Lv.3 : 0.98",
+            "Lv.4 : 0.975"
           ]
         },
         {
-          "letter": "β",
-          "name": "Meteor Annihilation",
-          "img": "assets/all_for_one_youth_age/all_for_one_youth_age_youth_age/beta.png",
-          "desc": {
-            "fr": "Meteor Annihilation",
-            "en": "Meteor Annihilation"
-          },
-          "tables": []
-        },
-        {
-          "letter": "γ",
-          "name": "Divine Judgment",
-          "img": "assets/all_for_one_youth_age/all_for_one_youth_age_youth_age/gamma.png",
-          "desc": {
-            "fr": "Divine Judgment",
-            "en": "Divine Judgment"
-          },
-          "tables": []
+          "name": "PU/PC Reload+",
+          "description": "Increases PU/PC Gauge filling speed",
+          "levels": [
+            "Lv.1 : 1.01",
+            "Lv.2 : 1.015",
+            "Lv.3 : 1.02",
+            "Lv.4 : 1.025"
+          ]
         }
       ],
-      "__generated": true,
-      "__sourceUrl": "https://ultrarumble.com/character/201"
-    }
-  },
-  "generated_tunings": {
-    "all_for_one_youth_age_youth_age": [
-      {
-        "role": "assault",
-        "img": "assets/all_for_one_youth_age/all_for_one_youth_age_youth_age/tuning.png",
-        "type": "SP",
+      "special_tuning": {
         "name": "Quirk Factor Release",
-        "desc": "Breaking an opponent's Guard increases Reload Speed for a limited time.",
+        "description": "Breaking an opponent's Guard increases Reload Speed for a limited time.",
         "levels": [
           "Lv.1 : 120",
           "Lv.2 : 110",
@@ -48394,45 +48144,17 @@
           "Sub Effect 2 : 2"
         ]
       },
-      {
-        "role": "assault",
-        "type": "normal",
-        "name": "Quirk Skill γ Defense+, PU/PC Reload+",
-        "desc": "Decreases damage taken from Quirk Skill γ<br><br>Increases PU/PC Gauge filling speed",
-        "effects": [
-          {
-            "name": "Quirk Skill γ Defense+",
-            "desc": "Decreases damage taken from Quirk Skill γ",
-            "levels": [
-              "Lv.1 : 0.99",
-              "Lv.2 : 0.985",
-              "Lv.3 : 0.98",
-              "Lv.4 : 0.975"
-            ]
-          },
-          {
-            "name": "PU/PC Reload+",
-            "desc": "Increases PU/PC Gauge filling speed",
-            "levels": [
-              "Lv.1 : 1.01",
-              "Lv.2 : 1.015",
-              "Lv.3 : 1.02",
-              "Lv.4 : 1.025"
-            ]
-          }
-        ]
+      "assets": {
+        "portrait": "https://ultrarumble.com/assets/Character/Ch201/GUI/FaceIcon/T_ui_Ch201_CharaImage.png",
+        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch201_00.png",
+        "alpha": "https://ultrarumble.com/assets/Character/Ch201/GUI/Skill/T_ui_Skill_Ch201_Unique1.png",
+        "beta": "https://ultrarumble.com/assets/Character/Ch201/GUI/Skill/T_ui_Skill_Ch201_Unique2.png",
+        "gamma": "https://ultrarumble.com/assets/Character/Ch201/GUI/Skill/T_ui_Skill_Ch201_Unique3.png",
+        "special": "https://ultrarumble.com/assets/Character/Ch201/GUI/Skill/T_ui_SpecialSkill_Ch201.png"
       }
-    ]
-  },
-  "generated_characters": [
-    {
-      "id": "all_for_one_youth_age",
-      "name": "All For One (Youth age)",
-      "side": "villain",
-      "portrait": "assets/all_for_one_youth_age/all_for_one_youth_age_youth_age/portrait.png",
-      "styles": [
-        "all_for_one_youth_age_youth_age"
-      ]
     }
-  ]
+  },
+  "generated_styles": {},
+  "generated_tunings": {},
+  "generated_characters": []
 }

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://mhur-france.eallon01.workers.dev/sitemap.xml

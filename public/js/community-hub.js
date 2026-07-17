@@ -36,7 +36,7 @@ const tier={
       <div class="mhurTierPageTop">
         <button type="button" class="mhurTierBack" onclick="MHUR_HUB.tier.closePage()">← ${t('Retour','Back')}</button>
         <div>
-          <span class="mhurTierKicker">${t('COMMUNAUTÉ','COMMUNITY')}</span>
+          <span class="mhurTierKicker">COMMUNAUTÉ</span>
           <h1>🏆 Tier List</h1>
           <p>${t('Ta Tier List est personnelle. Elle ne sera visible par les autres que lorsque tu la publies.','Your Tier List is personal. Other users can only see it after you publish it.')}</p>
         </div>
@@ -88,33 +88,15 @@ const tier={
     if(!remote){body.innerHTML=`<div>${t('Supabase non configuré.','Supabase is not configured.')}</div>`;return}
     try{
       const rows=await req('/rest/v1/community_tier_lists?select=id,user_id,title,rankings,updated_at,profile:profiles(username,avatar_url)&order=updated_at.desc&limit=50');
-      body.innerHTML=(rows||[]).map(r=>{
-        const rawProfile=Array.isArray(r.profile)?r.profile[0]:r.profile;
-        const p=rawProfile||{};
-        const username=p.username||t('Utilisateur','User');
-        const avatar=p.avatar_url
-          ? `<img src="${esc(p.avatar_url)}" alt="${esc(username)}">`
-          : `<span class="mhurPublishedTierAvatarFallback" aria-hidden="true">👤</span>`;
-        const counts=['S','A','B','C','D'].map(k=>`<b class="${k}">${k}: ${(r.rankings?.[k]||[]).length}</b>`).join('');
-        return `<article class="mhurPublishedTierCard">
-          <div class="mhurPublishedTierAuthor">${avatar}<div class="mhurPublishedTierIdentity"><span class="mhurPublishedTierBy">${t('Publié par','Published by')}</span><strong>${esc(username)}</strong><small>${new Date(r.updated_at).toLocaleString(typeof lang!=='undefined'&&lang==='en'?'en-GB':'fr-FR')}</small></div></div>
-          <div class="mhurPublishedTierMeta"><span class="mhurPublishedTierTitle">${esc(r.title||'Tier List')}</span><div class="mhurPublishedTierCounts">${counts}</div></div>
-          <button onclick="MHUR_HUB.tier.viewPublished('${r.id}')">${t('Voir la Tier List','View Tier List')}</button>
-        </article>`
-      }).join('')||`<div>${t('Aucune Tier List publiée.','No published Tier Lists.')}</div>`;
+      body.innerHTML=(rows||[]).map(r=>{const p=r.profile||{},av=p.avatar_url?`<img src="${esc(p.avatar_url)}">`:`<span>${esc((p.username||'?').slice(0,1).toUpperCase())}</span>`;const counts=['S','A','B','C','D'].map(k=>`<b class="${k}">${k}: ${(r.rankings?.[k]||[]).length}</b>`).join('');return `<article class="mhurPublishedTierCard"><div class="mhurPublishedTierAuthor">${av}<div><strong>${esc(r.title||'Tier List')}</strong><small>${esc(p.username||'Utilisateur')} · ${new Date(r.updated_at).toLocaleString(lang==='en'?'en-GB':'fr-FR')}</small></div></div><div class="mhurPublishedTierCounts">${counts}</div><button onclick="MHUR_HUB.tier.viewPublished('${r.id}')">${t('Voir','View')}</button></article>`}).join('')||`<div>${t('Aucune Tier List publiée.','No published Tier Lists.')}</div>`;
     }catch(e){body.textContent=e.message}
   },
   async viewPublished(id){
     try{
-      const rows=await req(`/rest/v1/community_tier_lists?id=eq.${encodeURIComponent(id)}&select=title,rankings,updated_at,profile:profiles(username,avatar_url)&limit=1`);const r=rows?.[0];if(!r)return;
-      const rawProfile=Array.isArray(r.profile)?r.profile[0]:r.profile;
-      const p=rawProfile||{};
-      const username=p.username||t('Utilisateur','User');
+      const rows=await req(`/rest/v1/community_tier_lists?id=eq.${encodeURIComponent(id)}&select=title,rankings,profile:profiles(username,avatar_url)&limit=1`);const r=rows?.[0];if(!r)return;
       const m=overlay('mhurPublishedTierView',esc(r.title||'Tier List'),t('Tier List publiée — lecture seule','Published Tier List — read only'));const body=m.querySelector('.mhurHubBody');
       const getStyle=id=>{const s=typeof styles!=='undefined'?styles[id]:null;const c=(typeof characters!=='undefined'?characters:[]).find(x=>(x.styles||[]).includes(id));return s&&c?{id,s,c}:null};
-      const avatar=p.avatar_url?`<img src="${esc(p.avatar_url)}" alt="${esc(username)}">`:`<span aria-hidden="true">👤</span>`;
-      const authorHead=`<div class="mhurPublishedTierViewAuthor">${avatar}<div><small>${t('Publié par','Published by')}</small><strong>${esc(username)}</strong><span>${new Date(r.updated_at||Date.now()).toLocaleString(typeof lang!=='undefined'&&lang==='en'?'en-GB':'fr-FR')}</span></div></div>`;
-      body.innerHTML=authorHead+['S','A','B','C','D'].map(letter=>`<div class="mhurPublishedTierRow"><div class="mhurTierLabel ${letter}">${letter}</div><div>${(r.rankings?.[letter]||[]).map(id=>{const x=getStyle(id);return x?`<div class="mhurPublishedMini"><img src="${esc(x.s.portrait||x.c.portrait||'')}"><small>${esc(x.c.name)}</small></div>`:''}).join('')}</div></div>`).join('');open(m.id)
+      body.innerHTML=['S','A','B','C','D'].map(letter=>`<div class="mhurPublishedTierRow"><div class="mhurTierLabel ${letter}">${letter}</div><div>${(r.rankings?.[letter]||[]).map(id=>{const x=getStyle(id);return x?`<div class="mhurPublishedMini"><img src="${esc(x.s.portrait||x.c.portrait||'')}"><small>${esc(x.c.name)}</small></div>`:''}).join('')}</div></div>`).join('');open(m.id)
     }catch(e){alert(e.message)}
   },
   render(){
@@ -144,7 +126,7 @@ const notifications={
   open(){
     const m=overlay('mhurNoticesModal',t('Notifications','Notifications'),t('Nouveautés du site et de la communauté','Site and community updates'));
     const a=this.list();
-    const items=a.map(n=>`<article class="mhurNoticeItem ${n.read?'':'unread'}"><b>${esc(n.title)}</b><small>${esc(n.text)} · ${new Date(n.date).toLocaleString()}</small></article>`).join('');
+    const items=a.map(n=>`<article class="mhurNoticeItem ${n.read?'':'unread'}"><b>${esc(n.title)}</b><small>${esc(n.text).replace(/\n/g,'<br>')}<br>${new Date(n.date).toLocaleString()}</small></article>`).join('');
     m.querySelector('.mhurHubBody').innerHTML=`<div class="mhurHubButtons"><button onclick="MHUR_HUB.notifications.request()">${t('Activer les notifications du navigateur','Enable browser notifications')}</button><button onclick="MHUR_HUB.notifications.readAll()">${t('Tout marquer comme lu','Mark all read')}</button></div>${items||`<div>${t('Aucune notification.','No notifications.')}</div>`}`;
     open(m.id);
   },
@@ -155,12 +137,29 @@ const notifications={
     const n=this.list().filter(x=>!x.read).length;
     if(n)b.dataset.count=n;else b.removeAttribute('data-count');
   },
-  check(){
-    const d=window.MHUR_HOME_DATA||{};
-    const sig=JSON.stringify({r:d.latest_releases?.[0]?.title,p:d.patch_notes?.[0]?.id,e:d.events?.[0]?.id});
-    const old=localStorage.getItem('mhur_data_signature_v327');
-    if(old&&old!==sig)this.add(t('Nouveauté MHUR détectée','New MHUR update detected'),t('Le contenu du site a été actualisé.','The site content has been updated.'));
-    localStorage.setItem('mhur_data_signature_v327',sig);
+  async check(){
+    try{
+      const response=await fetch(`version.json?t=${Date.now()}`,{cache:'no-store'});
+      if(!response.ok)throw new Error(`HTTP ${response.status}`);
+      const info=await response.json();
+      const current=String(info.version||'').trim();
+      if(!current)return;
+      const key='mhur_seen_version_v354';
+      const previous=localStorage.getItem(key);
+      if(previous&&previous!==current){
+        const changes=(typeof lang!=='undefined'&&lang==='en'?info.changes_en:info.changes_fr)||info.changes||[];
+        const details=(Array.isArray(changes)?changes:[]).map(x=>`• ${x}`).join('\n');
+        this.add(
+          t(`Mise à jour ${current}`,`${current} update`),
+          details||t('Consulte les notes de version pour voir les changements.','Check the release notes to see what changed.')
+        );
+      }
+      localStorage.setItem(key,current);
+    }catch(_){
+      const d=window.MHUR_HOME_DATA||{};
+      const sig=JSON.stringify({r:d.latest_releases?.[0]?.title,p:d.patch_notes?.[0]?.id,e:d.events?.[0]?.id});
+      localStorage.setItem('mhur_data_signature_v327',sig);
+    }
   }
 };
 

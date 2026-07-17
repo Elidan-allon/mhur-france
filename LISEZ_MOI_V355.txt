@@ -1,0 +1,22 @@
+MHUR FRANCE V355 — GROSSES AMÉLIORATIONS
+
+Nouveautés :
+- favicon Midoriya ;
+- référencement Google complet ;
+- classement des créateurs ;
+- badges de profils ;
+- installation PWA améliorée ;
+- aperçu du lien sur Discord et WhatsApp.
+
+Publication :
+1. Remplace les fichiers dans ton dépôt local.
+2. Commit to main.
+3. Push origin.
+4. Attends le déploiement Cloudflare.
+
+Google Search Console :
+- ajoute la propriété URL : https://mhur-france.eallon01.workers.dev
+- ajoute le sitemap : sitemap.xml
+- demande l'indexation de la page d'accueil.
+
+Aucun script SQL supplémentaire n'est nécessaire.
