@@ -1,4 +1,4 @@
-const CACHE='mhur-v351';
+const CACHE='mhur-v352';
 const CORE=['./','./index.html','./css/home.css','./js/home.js','./css/community-builds.css','./js/community-builds.js','./css/community-auth.css','./js/community-auth.js','./css/community-profiles.css','./js/community-profiles.js','./css/community-moderation.css','./js/community-moderation.js','./css/launch.css','./js/launch.js','./css/community-hub.css','./js/community-hub.js','./css/v344-fixes.css','./js/v344-fixes.js','./css/v345-fixes.css','./js/v345-fixes.js','./js/community-config.js','./js/auto-update.js','./manifest.webmanifest'];
 
 self.addEventListener('install',event=>{
