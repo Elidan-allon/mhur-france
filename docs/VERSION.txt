@@ -1,4 +1,1 @@
-V358
-- Tier List contenue sans découpe
-- pages personnages protégées contre les styles manquants
-- cache/PWA supprimés après OAuth Google/Discord
+360
