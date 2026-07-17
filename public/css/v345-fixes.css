@@ -1,0 +1,39 @@
+/* MHUR France V345 — icônes et traductions de fiches */
+.cbBuildActions{display:flex;align-items:center;gap:10px!important}
+.cbIconAction{
+  display:inline-flex!important;align-items:center!important;justify-content:center!important;
+  gap:7px!important;height:46px!important;min-width:46px!important;padding:0 13px!important;
+  border:3px solid #07111e!important;border-radius:14px!important;
+  box-shadow:0 3px 0 #07111e,0 6px 15px rgba(0,0,0,.22)!important;
+  transition:transform .14s ease,filter .14s ease,box-shadow .14s ease!important;
+}
+.cbIconAction:hover{transform:translateY(-2px)!important;filter:brightness(1.06)!important;box-shadow:0 5px 0 #07111e,0 9px 18px rgba(0,0,0,.25)!important}
+.cbIconAction:active{transform:translateY(2px)!important;box-shadow:0 1px 0 #07111e!important}
+.cbActionIcon{display:grid!important;place-items:center!important;width:23px!important;height:23px!important}
+.cbActionIcon svg{display:block!important;width:23px!important;height:23px!important}
+.cbFavorite{background:#fff!important;color:#18263c!important}
+.cbFavorite.active{background:#ffd92e!important;color:#111!important}
+.cbHeart{background:#fff!important;color:#e83e70!important}
+.cbHeart.liked{background:#ff4d7d!important;color:#fff!important}
+.cbHeart b{font-size:17px!important;line-height:1!important}
+.cbHeart.compact{height:40px!important;min-width:52px!important;padding:0 10px!important}
+.cbHeart.compact .cbActionIcon,.cbHeart.compact svg{width:20px!important;height:20px!important}
+
+.cbAuthorButton{display:inline-flex!important;align-items:center!important;gap:7px!important;padding:4px 10px 4px 5px!important}
+.cbAuthorAvatar{
+  width:28px!important;height:28px!important;min-width:28px!important;border-radius:50%!important;
+  object-fit:cover!important;border:2px solid #61d5ff!important;background:#10223c!important;
+  overflow:hidden!important;display:grid!important;place-items:center!important;color:#fff!important;
+}
+.cbAuthorAvatarFallback svg{width:19px;height:19px}
+
+.skillTypeBadge{
+  display:inline-flex;align-items:center;justify-content:center;
+  margin:0 0 8px 2px;padding:6px 14px;border:3px solid #000;border-radius:999px;
+  background:#ffe600;color:#000;font-size:14px;font-weight:1000;letter-spacing:.03em;
+}
+.quirkSectionTitle{
+  margin:12px 16px 2px!important;padding:10px 14px!important;
+  border-left:9px solid #ffe100;border-radius:5px;background:#202632!important;
+  color:#fff!important;text-transform:uppercase;font-style:italic;text-shadow:2px 2px #000;
+}
