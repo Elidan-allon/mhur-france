@@ -1,0 +1,1 @@
+V399 — correction du blocage global des clics causé par la boucle MutationObserver.
