@@ -526,6 +526,19 @@ function cbDetailModal(){
   }
   return modal;
 }
+function cbPreloadBuilderImages(charId){
+  try{
+    const urls=[];
+    const char=cbCharacter(charId);
+    if(char?.img) urls.push(char.img);
+    cbCostumes(charId).slice(0,28).forEach(c=>c?.img&&urls.push(c.img));
+    const seen=new Set();
+    Object.values(window.styles||{}).forEach(style=>{
+      (style?.tunings||[]).forEach(t=>{if(t?.img&&!seen.has(t.img)&&urls.length<70){seen.add(t.img);urls.push(t.img)}});
+    });
+    urls.forEach(src=>{const im=new Image();im.decoding='async';im.src=src});
+  }catch(_){}
+}
 window.openCommunityBuildCreator=function(charId,styleId){
   const char=cbCharacter(charId);
   if(!char||!char.styles.includes(styleId)) return;
@@ -533,6 +546,7 @@ window.openCommunityBuildCreator=function(charId,styleId){
   const authProfile=window.MHUR_AUTH?.getProfile?.();
   const authUser=window.MHUR_AUTH?.getUser?.();
   const accountName=authProfile?.username||authUser?.user_metadata?.full_name||authUser?.user_metadata?.name||authUser?.email?.split('@')[0]||'';
+  cbPreloadBuilderImages(charId);
   const costumes=cbCostumes(charId);
   CB_STATE.draft={
     characterId:charId,
@@ -627,7 +641,7 @@ function cbBuilderOfficialSlotV308(spec){
       style="--slot-color:${slotHex(spec.color)}"
       onclick="communitySelectDraftSlot('${cbEsc(spec.id)}');return false;">
     <div class="slotBandText">${text}</div>
-    ${slotGem(spec.color,isSp?(spec.condition||''):'',tuning?tuning.img:'')}
+    ${slotGem(spec.color,spec.condition||'',tuning?tuning.img:'')}
   </button>`;
 }
 function cbBuilderSlot(spec){
@@ -664,7 +678,7 @@ function cbBuilderPicker(costume,spec){
               style="--option-font:${fs}px;--desc-font:${ds.length>95?12:13}px"
               onclick="communityEquipDraftTuning(${index});return false;">
             ${tuning.img
-              ?`<span class="tuningOptionIconWrap"><img src="${cbEsc(tuning.img)}" alt="${cbEsc(tuning.character||'')}"></span>`
+              ?`<span class="tuningOptionIconWrap"><img src="${cbEsc(tuning.img)}" alt="${cbEsc(tuning.character||'')}" loading="eager" decoding="async"></span>`
               :'<div class="tuningOptionImg"></div>'}
             <div class="tuningOptionMain">
               <div class="tuningOptionChar">${cbEsc(tuning.character||'')}</div>
@@ -725,7 +739,7 @@ function cbRenderBuilder(){
       <button onclick="communityResetBuildCostumeFilters()">Réinitialiser</button>
     </div>
     <div class="cbCostumeChoices" onscroll="communityRememberCostumeScroll(this.scrollLeft)">${filteredCostumes.map(item=>`<button class="${draft.costumeId===item.id?'selected':''}" onclick="communityChooseCostume('${cbEsc(item.id)}')">
-      <div class="cbCostumeChoiceImage">${asset(item.img,cbCostumeName(item))}${cbCostumeRarityBadge(item)}${cbCostumeSlotBadges(item)}</div>
+      <div class="cbCostumeChoiceImage"><img src="${cbEsc(item.img||'')}" alt="${cbEsc(cbCostumeName(item))}" loading="eager" decoding="async">${cbCostumeRarityBadge(item)}${cbCostumeSlotBadges(item)}</div>
       <b>${cbEsc(cbCostumeText(item.group||item.name||'Costume'))}</b><span>${cbEsc(cbCostumeText(item.variant||'Original'))}</span>
     </button>`).join('')||'<div class="cbEmpty cbCostumeFilterEmpty">Aucun costume ne correspond aux filtres.</div>'}</div>
     ${costume?`<h3 class="cbSectionTitle">2. T.U.N.I.N.G <span>${filled}/${specs.length}</span></h3>
