@@ -463,15 +463,7 @@ function ensureNavigationButtons(){
   });
 }
 /* OAuth always returns to the current root, without an old release URL. */
-function patchAuth(){
-  const auth=window.MHUR_AUTH;if(!auth||auth.__v370)return;auth.__v370=true;
-  const original=auth.login;
-  auth.login=function(provider){
-    if(!cfg.supabaseUrl||!cfg.supabaseKey)return original?.call(auth,provider);
-    const callback=location.origin+'/#home';
-    location.assign(String(cfg.supabaseUrl).replace(/\/+$/,'')+'/auth/v1/authorize?provider='+encodeURIComponent(provider)+'&redirect_to='+encodeURIComponent(callback));
-  };
-}
+function patchAuth(){ /* V398: legacy OAuth override disabled; community-auth.js owns the complete PKCE flow. */ }
 
 function boot(){fillEnglishData();patchAuth();ensureNavigationButtons();startObserver();scheduleTranslate(document.body);document.querySelectorAll('.costumeMiniDesc').forEach(x=>x.remove());preparePwa()}
 document.addEventListener('DOMContentLoaded',boot,{once:true});

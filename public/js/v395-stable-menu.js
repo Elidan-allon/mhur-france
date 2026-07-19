@@ -10,7 +10,7 @@
   }:{
     home:'Accueil',characters:'Personnages',tunings:'T.U.N.I.N.G',costumes:'Costumes',builds:'Builds communauté',mods:'Mods',creator:'Classement créateurs',tier:'Tier List',search:'Recherche globale',install:'Préparation de l’installation…',game:'JEU',community:'COMMUNAUTÉ',tools:'OUTILS'
   };
-  const icons={home:'🏠',characters:'🏠',tunings:'👥',costumes:'🔧',builds:'👥',mods:'🧩',creator:'🏅',tier:'🏆',search:'🔎',install:'📲'};
+  const icons={home:'🏠',characters:'🦸',tunings:'🧬',costumes:'👕',builds:'👥',mods:'🧩',creator:'🏅',tier:'🏆',search:'🔎',install:'📲'};
 
   function section(key,title){
     const s=document.createElement('section');
@@ -30,6 +30,7 @@
     b.dataset.mhurHub='1';
     b.dataset.v395Key=key;
     if(key==='mods') b.dataset.mhurMods='1';
+    if(key==='install') b.dataset.mhurInstall='1';
     else b.dataset.mhurFinalNav=key;
     return b;
   }

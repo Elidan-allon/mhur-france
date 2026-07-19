@@ -1,0 +1,7 @@
+V398
+- Legacy OAuth override disabled.
+- Google/Discord callback handled by community-auth.js PKCE flow.
+- Duplicate menu pseudo-icons disabled.
+- One clean icon per menu item.
+- PWA install button wired for Chromium and iOS instructions.
+- Six tutorial images displayed directly below their matching steps.
