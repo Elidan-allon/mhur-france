@@ -1,0 +1,10 @@
+V383 — Vérification navigation
+
+- Barre latérale épinglée sur ordinateur.
+- Tiroir fixé sur téléphone/tablette.
+- Fiche personnage/style ouverte systématiquement en haut.
+- Retour depuis une fiche vers les styles à la position précédente.
+- Retour depuis les styles vers la liste des personnages à la position précédente.
+- Retour instantané, sans animation fluide imposée.
+- Bouton Retour fixé sous la barre supérieure.
+- Ancien correctif V382 désactivé pour éviter les doubles mémorisations.

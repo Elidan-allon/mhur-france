@@ -1,0 +1,8 @@
+V385 verification
+- Final CSS is loaded after v363 and every legacy stylesheet.
+- Header uses position: fixed and remains clickable while scrolling.
+- Hamburger, account and FR/EN controls remain visible.
+- Back button uses position: fixed below the header.
+- Opening a character/style starts at the top.
+- Back restores the exact saved roster/style-picker scroll position without smooth animation.
+- Legacy V384 assets are disabled.

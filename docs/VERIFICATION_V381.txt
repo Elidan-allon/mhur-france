@@ -1,0 +1,7 @@
+V381 - Vérification
+
+- 17 styles ciblés
+- 51 compétences Alpha/Beta/Gamma corrigées en anglais
+- Noms et descriptions bilingues conservés
+- Correctif appliqué après V380
+- Syntaxe JavaScript vérifiée avec Node.js

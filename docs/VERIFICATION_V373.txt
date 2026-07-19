@@ -1,0 +1,7 @@
+V373 checks
+- Removed V371/V372 menu observers that created duplicate drawer entries.
+- Added one deduplicating menu pass.
+- Global Search, Tier List and Creator Ranking are kept exactly once.
+- English descriptions no longer mix French and English in the same sentence.
+- Hitoshi Shinso profile and Binding Cloth description corrected.
+- Role descriptions standardized in English.

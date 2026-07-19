@@ -1,0 +1,6 @@
+MHUR France V372 verification
+- v372-final-fixes.js is loaded after all older compatibility scripts.
+- Generic “Uses ..., one of ... abilities” placeholders are replaced from the actual French descriptions for every style and skill.
+- Drawer is rebuilt with Global Search, Tier List, Creator Ranking and Install App after every layout/render.
+- Mobile CSS from V371 is preserved.
+- Release references and PWA files bumped to 372.

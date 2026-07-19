@@ -105,8 +105,8 @@
     renderAndRestore(state.roster[keyForRoster()] || 0);
   }
 
-  /* Capture phase is intentional: it blocks the old inline onclick before it resets scroll. */
-  document.addEventListener('click', handleBack, true);
+  /* Window capture runs before the older document capture handler and the inline onclick. */
+  window.addEventListener('click', handleBack, true);
 
   /* Rebind after scripts that rebuild or replace navigation functions. */
   function refresh(){ wrapNavigationFunctions(); }

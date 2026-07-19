@@ -1,0 +1,7 @@
+OK - v374 script included
+OK - old v371 removed
+OK - old v372 removed
+OK - old v373 removed
+OK - red spirit official
+OK - no object fallback in new patch
+OK - menu cleaner present

@@ -1,0 +1,21 @@
+MHUR FRANCE — V356 FINALE
+
+Cette version contient :
+- la balise Google Search Console officielle ;
+- le favicon MHUR France ;
+- robots.txt ;
+- sitemap.xml ;
+- les métadonnées SEO et les aperçus de partage ;
+- toutes les améliorations de la V355.
+
+DÉPLOIEMENT
+1. Remplace les fichiers de ton dépôt GitHub par ceux de ce dossier.
+2. Fais un commit puis un push sur la branche main.
+3. Attends la fin du déploiement Cloudflare.
+4. Ouvre https://mhur-france.eallon01.workers.dev/ et vérifie que le site fonctionne.
+5. Retourne dans Google Search Console et clique sur « Valider ».
+6. Dans « Sitemaps », envoie : sitemap.xml
+7. Dans « Inspection de l’URL », demande l’indexation de la page d’accueil.
+
+IMPORTANT
+Ne supprime pas la balise google-site-verification du fichier public/index.html.

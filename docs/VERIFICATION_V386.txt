@@ -1,0 +1,9 @@
+V386 — Menu séparé
+
+- Accueil reste seul en haut.
+- JEU : Personnages, T.U.N.I.N.G, Costumes.
+- COMMUNAUTÉ : Builds communauté, Classement créateurs, Tier List.
+- OUTILS : Recherche globale, Installer l’application.
+- Aucun autre comportement ou affichage du site n’a été modifié.
+- Les actions existantes des boutons sont conservées.
+- Les titres suivent FR / EN.

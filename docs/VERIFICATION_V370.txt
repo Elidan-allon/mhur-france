@@ -1,0 +1,27 @@
+VERIFICATION MHUR FRANCE V370
+
+OK  Syntaxe js/v370-stable-core.js
+OK  Syntaxe service-worker.js
+OK  Manifest: identité stable — /mhur-france-app
+OK  Manifest: start_url — /?source=pwa#home
+OK  Manifest: affichage standalone — standalone
+OK  Manifest: applications liées désactivées — False
+OK  Icône 192×192 — (192, 192)
+OK  Icône 512×512 — (512, 512)
+OK  Index charge le manifeste V370
+OK  Index charge le cœur V370
+OK  Aucune référence au cœur V369
+OK  Service worker avec fetch
+OK  Service worker supprime les vieux caches
+OK  Enregistrement SW sans cache
+OK  Prompt natif PWA écouté
+OK  Ancienne grande fenêtre supprimée
+OK  Traduction Momo: Swings a blunt weapon she created, rel
+OK  Traduction Momo: Creates and places a shield in front o
+OK  Traduction Momo: Places a cannon on the ground and fire
+OK  Traduction Momo: Yaoyorozu's Lucky Bag
+OK  Tous les JS/CSS locaux existent
+
+Résultat : 21/21 vérifications réussies.
+
+Note PWA : la fenêtre d’installation en un clic appartient au navigateur. La V370 prépare le service worker, utilise une nouvelle identité stable et attend l’événement natif beforeinstallprompt. Si le navigateur refuse cet événement (application déjà installée, politique du navigateur ou iPhone), aucun site web ne peut ouvrir cette fenêtre de force.
