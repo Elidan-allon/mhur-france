@@ -20,10 +20,141 @@ function meta(u){const m=u?.user_metadata||{};const provider=u?.app_metadata?.pr
 function initials(name){return String(name||'?').split(/\s+/).slice(0,2).map(x=>x[0]||'').join('').toUpperCase()||'?'}
 async function syncProfile(){if(!state.user)return null;const m=meta(state.user);try{const rows=await request('/rest/v1/profiles?on_conflict=id&select=*',{method:'POST',headers:{Prefer:'resolution=merge-duplicates,return=representation'},body:JSON.stringify({id:m.id,username:m.name.slice(0,40),avatar_url:m.avatar,provider:m.provider,updated_at:new Date().toISOString()})});state.profile=Array.isArray(rows)?rows[0]:rows}catch(_){state.profile={id:m.id,username:m.name,avatar_url:m.avatar,provider:m.provider}}return state.profile}
 function notify(){renderButton();state.listeners.forEach(fn=>{try{fn(state)}catch(_){}});window.dispatchEvent(new CustomEvent('mhur-auth-change',{detail:state}))}
-function parseCallback(){const raw=location.hash.startsWith('#access_token=')?location.hash.slice(1):location.search.slice(1);if(!raw)return false;const p=new URLSearchParams(raw);const access=p.get('access_token'),refreshToken=p.get('refresh_token');if(!access)return false;save({access_token:access,refresh_token:refreshToken,expires_in:Number(p.get('expires_in')||3600),token_type:p.get('token_type')||'bearer'});history.replaceState(null,'',location.pathname+'#home');return true}
-async function init(){if(!configured){state.ready=true;renderButton();return}parseCallback();state.session=stored();state.user=await user();if(state.user)await syncProfile();state.ready=true;notify()}
-function redirectTo(){return location.origin+location.pathname}
-function login(provider){if(!configured){showError(L('Configure Supabase avant d’activer les comptes.','Configure Supabase before enabling accounts.'));return}const target=`${url}/auth/v1/authorize?provider=${encodeURIComponent(provider)}&redirect_to=${encodeURIComponent(redirectTo())}`;location.href=target}
+const PKCE_STORE='mhur_auth_pkce_verifier_v396';
+
+function base64Url(bytes){
+  let binary='';
+  const arr=bytes instanceof Uint8Array?bytes:new Uint8Array(bytes);
+  for(const b of arr)binary+=String.fromCharCode(b);
+  return btoa(binary).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
+}
+
+function randomVerifier(){
+  const bytes=new Uint8Array(48);
+  crypto.getRandomValues(bytes);
+  return base64Url(bytes);
+}
+
+async function sha256(value){
+  return new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(value)));
+}
+
+function cleanOAuthUrl(){
+  const clean=location.pathname+'#home';
+  history.replaceState(null,'',clean);
+}
+
+async function parseCallback(){
+  const hashParams=new URLSearchParams(location.hash.replace(/^#/,''));
+  const queryParams=new URLSearchParams(location.search);
+  const error=hashParams.get('error_description')||queryParams.get('error_description')||hashParams.get('error')||queryParams.get('error');
+
+  if(error){
+    cleanOAuthUrl();
+    setTimeout(()=>showError(error),0);
+    return false;
+  }
+
+  const access=hashParams.get('access_token');
+  const refreshToken=hashParams.get('refresh_token');
+
+  if(access){
+    save({
+      access_token:access,
+      refresh_token:refreshToken,
+      expires_in:Number(hashParams.get('expires_in')||3600),
+      expires_at:Number(hashParams.get('expires_at')||0),
+      token_type:hashParams.get('token_type')||'bearer'
+    });
+    localStorage.removeItem(PKCE_STORE);
+    cleanOAuthUrl();
+    return true;
+  }
+
+  const code=queryParams.get('code');
+
+  if(code){
+    const verifier=localStorage.getItem(PKCE_STORE);
+
+    if(!verifier){
+      cleanOAuthUrl();
+      setTimeout(()=>showError(L(
+        'La connexion a expiré. Relance Google ou Discord.',
+        'The sign-in attempt expired. Start Google or Discord again.'
+      )),0);
+      return false;
+    }
+
+    try{
+      const session=await request('/auth/v1/token?grant_type=pkce',{
+        method:'POST',
+        token:key,
+        body:JSON.stringify({
+          auth_code:code,
+          code_verifier:verifier
+        })
+      });
+
+      save(session);
+      localStorage.removeItem(PKCE_STORE);
+      cleanOAuthUrl();
+      return true;
+    }catch(err){
+      localStorage.removeItem(PKCE_STORE);
+      cleanOAuthUrl();
+      setTimeout(()=>showError(err?.message||L('Connexion impossible.','Unable to sign in.')),0);
+      return false;
+    }
+  }
+
+  return false;
+}
+
+async function init(){
+  if(!configured){
+    state.ready=true;
+    renderButton();
+    return;
+  }
+
+  await parseCallback();
+  state.session=stored();
+  state.user=await user();
+
+  if(state.user)await syncProfile();
+
+  state.ready=true;
+  notify();
+}
+
+function redirectTo(){
+  return location.origin+location.pathname;
+}
+
+async function login(provider){
+  if(!configured){
+    showError(L('Configure Supabase avant d’activer les comptes.','Configure Supabase before enabling accounts.'));
+    return;
+  }
+
+  try{
+    const verifier=randomVerifier();
+    const challenge=base64Url(await sha256(verifier));
+    localStorage.setItem(PKCE_STORE,verifier);
+
+    const params=new URLSearchParams({
+      provider:String(provider),
+      redirect_to:redirectTo(),
+      code_challenge:challenge,
+      code_challenge_method:'s256'
+    });
+
+    location.assign(`${url}/auth/v1/authorize?${params.toString()}`);
+  }catch(err){
+    localStorage.removeItem(PKCE_STORE);
+    showError(err?.message||L('Impossible de démarrer la connexion.','Unable to start sign-in.'));
+  }
+}
 async function logout(){if(state.session){try{await request('/auth/v1/logout',{method:'POST'})}catch(_){}}save(null);state.session=null;state.user=null;state.profile=null;close();notify()}
 function ensure(){let m=document.getElementById('mhurAuthOverlay');if(m)return m;m=document.createElement('div');m.id='mhurAuthOverlay';m.className='mhurAuthOverlay';m.innerHTML='<section class="mhurAuthPanel"><div class="mhurAuthHead"><span id="mhurAuthLabel"></span><h2>MY HERO ULTRA RUMBLE FRANCE</h2><p id="mhurAuthSubtitle"></p><button class="mhurAuthClose" type="button" onclick="MHUR_AUTH.close()">×</button></div><div class="mhurAuthBody" id="mhurAuthBody"></div></section>';m.addEventListener('click',e=>{if(e.target===m)close()});document.body.appendChild(m);return m}
 function showError(msg){open();const e=document.getElementById('mhurAuthError');if(e){e.textContent=msg;e.classList.add('show')}}
@@ -54,5 +185,5 @@ function renderButton(){
 }
 function requireLogin(message){message=message||L('Connecte-toi pour utiliser cette fonctionnalité.','Sign in to use this feature.');if(state.user)return true;open();setTimeout(()=>showError(message),0);return false}
 window.MHUR_AUTH={state,configured,init,open,close,login,logout,requireLogin,renderButton,getUser:()=>state.user,getProfile:()=>state.profile,getAccessToken:()=>state.session?.access_token||'',onChange:fn=>state.listeners.push(fn)};
-document.addEventListener('DOMContentLoaded',init);
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
 })();

@@ -22,3 +22,8 @@
   #drawer .v386-menu-section{gap:8px;margin:12px 0 16px;}
   #drawer .v386-menu-section-title{font-size:11px;}
 }
+
+/* V395: alignement fiable des icônes et libellés. */
+.v395-nav-icon{display:inline-flex;width:1.55em;justify-content:center;align-items:center;flex:0 0 1.55em}
+.v395-nav-label{display:inline-block;min-width:0}
+#drawer .navItem{display:flex!important;align-items:center;gap:.55em}
