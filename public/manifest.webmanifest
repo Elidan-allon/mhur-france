@@ -2,7 +2,7 @@
   "name": "My Hero Ultra Rumble France",
   "short_name": "MHUR France",
   "id": "/",
-  "start_url": "/?release=363#home",
+  "start_url": "/#home",
   "scope": "/",
   "display": "standalone",
   "orientation": "any",
@@ -14,18 +14,49 @@
     "entertainment",
     "social"
   ],
+  "prefer_related_applications": false,
   "icons": [
     {
-      "src": "assets/brand/icon-192.png",
+      "src": "/assets/brand/icon-192.png",
       "sizes": "192x192",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
     },
     {
-      "src": "assets/brand/icon-512.png",
+      "src": "/assets/brand/icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/brand/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Personnages",
+      "short_name": "Personnages",
+      "url": "/#characters",
+      "icons": [
+        {
+          "src": "/assets/brand/icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Costumes",
+      "short_name": "Costumes",
+      "url": "/#costumes",
+      "icons": [
+        {
+          "src": "/assets/brand/icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
     }
   ]
 }

@@ -1,4 +1,0 @@
-V365 — correction des traductions anglaises visibles.
-- Personnage jouable traduit.
-- Détection FR/EN réparée.
-- Noms et variantes de costumes courants traduits.

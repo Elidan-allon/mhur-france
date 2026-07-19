@@ -1,0 +1,20 @@
+MHUR FRANCE V387 — ONGLET MODS
+
+1. Remplace entièrement les anciens fichiers du dépôt par le dossier mhur-france de cette archive.
+2. Dans Supabase, ouvre SQL Editor.
+3. Exécute le fichier INSTALLATION_MODS_SUPABASE_V387.sql une seule fois.
+4. Fais Commit puis Push sur GitHub et attends le déploiement Cloudflare.
+
+La rubrique Mods permet :
+- d'afficher un tutoriel d'installation MHUR ;
+- de rechercher et filtrer les mods ;
+- de publier un nom, une description, une catégorie, un fichier et une photo/vidéo ;
+- de demander le personnage concerné pour la catégorie Personnage ;
+- de télécharger les fichiers publiés ;
+- de supprimer ses propres publications.
+
+Limites configurées :
+- fichier du mod : 200 MB maximum ;
+- photo ou vidéo : 20 MB maximum.
+
+Les fichiers sont publics. Les membres doivent uniquement publier du contenu qu'ils ont le droit de distribuer.

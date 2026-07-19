@@ -1,6 +1,0 @@
-MHUR France V364 — priorité crash
-
-- Suppression des anciens observateurs et wrappers empilés qui bloquaient les fiches personnages.
-- Tableaux de statistiques chargés uniquement au clic.
-- Rendu des personnages protégé contre les appels récursifs.
-- Version 364 forcée dans les ressources.

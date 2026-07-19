@@ -1,5 +1,0 @@
-MHUR France V353
-
-Corrections : traductions anglaises manquantes (styles/compétences/descriptions), suppression du double badge COMPÉTENCE/SKILL, descriptions de costumes masquées, exclusion de tous les T.U.N.I.N.G du personnage du build (normal + SP + tous ses styles), bouton de suppression pour le propriétaire du build, rendu des T.U.N.I.N.G communautaires basé sur les classes officielles des costumes, suppression de la mise à jour automatique du navigateur, blocage du doublon All For One jeune dans la synchronisation.
-
-Publication : remplace les fichiers, Commit to main, Push origin.

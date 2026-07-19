@@ -16,26 +16,63 @@ const homeTerms={
 };
 function homeText(v){
   let out=String(v??'');
-  if(!isEn())return out;
-  if(homeTerms[out])return homeTerms[out];
-  const reps=[
-    [/Événement de missions débutant/gi,'Beginner Mission Event'],
-    [/Événement de licence/gi,'License Event'],
-    [/Événement de missions T\.U\.N\.I\.N\.G/gi,'T.U.N.I.N.G Mission Event'],
-    [/Événement de missions/gi,'Mission Event'],
-    [/Bonus de connexion spécial/gi,'Special Login Bonus'],
-    [/Campagne anniversaire ([^0-9]+) (\d{4})/gi,'$1 Birthday Campaign $2'],
-    [/Tirage Personnage PLUS ULTRA/gi,'PLUS ULTRA Character Banner'],
-    [/Tirage Alters/gi,'Quirk Skill Banner'],
-    [/ et /gi,' & '],
-    [/Saison/gi,'Season'],
-    [/Débutant/gi,'Beginner'],
-    [/Connexion/gi,'Login'],
-    [/Anniversaire/gi,'Birthday'],
-    [/Événement/gi,'Event'],
-    [/Tirage/gi,'Banner']
-  ];
-  reps.forEach(([a,b])=>{out=out.replace(a,b)});
+  const enExact={
+    'Événement':'Event','ÉVÉNEMENT':'EVENT','Mission':'Mission','MISSION':'MISSION','Débutant':'Beginner','DÉBUTANT':'BEGINNER',
+    'Personnage':'Character','PERSONNAGE':'CHARACTER','Alter':'Quirk Skill','ALTER':'QUIRK SKILL','Costume':'Costume','COSTUME':'COSTUME',
+    'GACHA Beginner Missions Roll':'GACHA Beginner Missions Roll',
+    'PLUS ULTRA Character Roll: Original (S17) Mirko':'PLUS ULTRA Character Roll: Original (S17) Mirko',
+    'QUIRK / SKILL Character Roll: Alternative (S17) Present Mic':'QUIRK / SKILL Character Roll: Alternative (S17) Present Mic',
+    'PLUS ULTRA Character Roll: Original (S17) Lady Nagant':'PLUS ULTRA Character Roll: Original (S17) Lady Nagant',
+    'QUIRK / SKILL Character Roll: Alternative (S17) Overhaul':'QUIRK / SKILL Character Roll: Alternative (S17) Overhaul',
+    'QUIRK / SKILL Character Roll: Alternative (S17) Aizawa':'QUIRK / SKILL Character Roll: Alternative (S17) Aizawa',
+    'COSTUME Costume Pick Up Roll (S17) Vol. Casual Style':'COSTUME Pick Up Roll (S17) Vol. Casual Style',
+    'PLUS ULTRA Character Roll: Original (S17) Amajiki':'PLUS ULTRA Character Roll: Original (S17) Amajiki',
+    'QUIRK / SKILL Character Roll: Alternative (S17) All Might and Kendo':'QUIRK / SKILL Character Roll: Alternative (S17) All Might and Kendo',
+    'EVENT Beginner Mission Event':'EVENT Beginner Mission Event','MISSION Mission Event Vol. 17':'MISSION Mission Event Vol. 17',
+    'EVENT Area Control Battle Event Vol. 6':'EVENT Area Control Battle Event Vol. 6',
+    'EVENT T.U.N.I.N.G. Mission Event Vol. 4':'EVENT T.U.N.I.N.G Mission Event Vol. 4',
+    'EVENT License Event Vol. 3':'EVENT License Event Vol. 3'
+  };
+  const frExact={
+    'Event':'Événement','EVENT':'ÉVÉNEMENT','Mission':'Mission','MISSION':'MISSION','Beginner':'Débutant','BEGINNER':'DÉBUTANT',
+    'Character':'Personnage','CHARACTER':'PERSONNAGE','Quirk Skill':'Alter','QUIRK SKILL':'ALTER','Costume':'Costume','COSTUME':'COSTUME',
+    'GACHA Beginner Missions Roll':'TIRAGE Missions de débutant',
+    'PLUS ULTRA Character Roll: Original (S17) Mirko':'TIRAGE Personnage PLUS ULTRA : Original (S17) Mirko',
+    'QUIRK / SKILL Character Roll: Alternative (S17) Present Mic':'TIRAGE Personnage ALTER : Alternatif (S17) Present Mic',
+    'PLUS ULTRA Character Roll: Original (S17) Lady Nagant':'TIRAGE Personnage PLUS ULTRA : Original (S17) Lady Nagant',
+    'QUIRK / SKILL Character Roll: Alternative (S17) Overhaul':'TIRAGE Personnage ALTER : Alternatif (S17) Overhaul',
+    'QUIRK / SKILL Character Roll: Alternative (S17) Aizawa':'TIRAGE Personnage ALTER : Alternatif (S17) Aizawa',
+    'COSTUME Costume Pick Up Roll (S17) Vol. Casual Style':'TIRAGE Costumes (S17) Vol. Style décontracté',
+    'PLUS ULTRA Character Roll: Original (S17) Amajiki':'TIRAGE Personnage PLUS ULTRA : Original (S17) Amajiki',
+    'QUIRK / SKILL Character Roll: Alternative (S17) All Might and Kendo':'TIRAGE Personnage ALTER : Alternatif (S17) All Might et Kendo',
+    'EVENT Beginner Mission Event':'ÉVÉNEMENT Missions de débutant',
+    'MISSION Mission Event Vol. 17':'MISSION Événement de missions Vol. 17',
+    'EVENT Area Control Battle Event Vol. 6':'ÉVÉNEMENT Combat de contrôle de zone Vol. 6',
+    'EVENT T.U.N.I.N.G. Mission Event Vol. 4':'ÉVÉNEMENT Missions T.U.N.I.N.G Vol. 4',
+    'EVENT T.U.N.I.N.G Mission Event Vol. 4':'ÉVÉNEMENT Missions T.U.N.I.N.G Vol. 4',
+    'EVENT License Event Vol. 3':'ÉVÉNEMENT Licence Vol. 3'
+  };
+  const exact=isEn()?enExact:frExact;
+  if(exact[out])return exact[out];
+  if(isEn()){
+    const reps=[
+      [/Événement de missions débutant/gi,'Beginner Mission Event'],[/Événement de licence/gi,'License Event'],
+      [/Événement de missions T\.U\.N\.I\.N\.G/gi,'T.U.N.I.N.G Mission Event'],[/Événement de missions/gi,'Mission Event'],
+      [/Bonus de connexion spécial/gi,'Special Login Bonus'],[/Campagne anniversaire ([^0-9]+) (\d{4})/gi,'$1 Birthday Campaign $2'],
+      [/Tirage Personnage PLUS ULTRA/gi,'PLUS ULTRA Character Banner'],[/Tirage Alters/gi,'Quirk Skill Banner'],
+      [/ et /gi,' & '],[/Saison/gi,'Season'],[/Débutant/gi,'Beginner'],[/Connexion/gi,'Login'],
+      [/Anniversaire/gi,'Birthday'],[/Événement/gi,'Event'],[/Tirage/gi,'Banner']
+    ];reps.forEach(([a,b])=>{out=out.replace(a,b)});
+  }else{
+    const reps=[
+      [/QUIRK \/ SKILL Character Roll/gi,'TIRAGE Personnage ALTER'],[/PLUS ULTRA Character Roll/gi,'TIRAGE Personnage PLUS ULTRA'],
+      [/GACHA Beginner Missions Roll/gi,'TIRAGE Missions de débutant'],[/Costume Pick Up Roll/gi,'TIRAGE Costumes'],
+      [/Alternative/gi,'Alternatif'],[/Casual Style/gi,'Style décontracté'],[/Beginner Mission Event/gi,'Missions de débutant'],
+      [/Mission Event/gi,'Événement de missions'],[/Area Control Battle Event/gi,'Combat de contrôle de zone'],
+      [/License Event/gi,'Événement de licence'],[/Character/gi,'Personnage'],[/Quirk Skill/gi,'Alter'],
+      [/ and /gi,' et ']
+    ];reps.forEach(([a,b])=>{out=out.replace(a,b)});
+  }
   return out;
 }
 const patchTerms={

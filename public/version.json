@@ -1,1 +1,13 @@
-{"version":"365","release":"365","notes":["English translation detection fixed","Playable character translated","Costume families and variants translated"]}
+{
+  "version": "390",
+  "release": "V390",
+  "date": "2026-07-19",
+  "changes": [
+    "Complete Mods hub with category, character, search and sorting filters",
+    "Mod detail pages with likes, downloads and comments",
+    "Validated .pak, .utoc, .ucas and .zip publishing",
+    "Responsive Mods interface without changing the existing site design",
+    "Supabase V390 migration for likes, comments and download counters"
+  ],
+  "label": "V390"
+}

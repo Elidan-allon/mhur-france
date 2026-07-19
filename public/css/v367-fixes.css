@@ -1,0 +1,4 @@
+/* V367: no costume family/name between the left and right T.U.N.I.N.G gems. */
+.costumeMiniDesc,.costumeTileDesc,.costumeSlotName,.costumeTile .miniDesc{display:none!important}
+/* Keep the two tuning badges clear and clickable. */
+.costumeTileBadge{z-index:4!important}
