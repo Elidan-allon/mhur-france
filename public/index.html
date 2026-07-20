@@ -733,7 +733,7 @@
 
 </head>
 <body>
-<header class="top"><button class="menuBtn" onclick="toggleMenu()">☰</button><div class="brand">MY HERO ULTRA RUMBLE<span>FRANCE</span></div><button id="mhurAccountButton" class="mhurAccountButton" type="button" onclick="MHUR_AUTH.open()"><span class="mhurAccountAvatar">👤</span><span class="mhurAccountButtonText"><b id="signinTitle">Se connecter</b><small id="signinSub">Google ou Discord</small></span></button><button class="lang" onclick="toggleLang()">FR / EN</button></header>
+<header class="top"><button class="menuBtn" onclick="toggleMenu()" aria-label="Ouvrir le menu"><span class="menuBtnLines" aria-hidden="true"><span></span><span></span><span></span></span></button><div class="brand">MY HERO ULTRA RUMBLE<span>FRANCE</span></div><button id="mhurAccountButton" class="mhurAccountButton" type="button" onclick="MHUR_AUTH.open()"><span class="mhurAccountAvatar">👤</span><span class="mhurAccountButtonText"><b id="signinTitle">Se connecter</b><small id="signinSub">Google ou Discord</small></span></button><button class="lang" onclick="toggleLang()">FR / EN</button></header>
 <nav id="drawer" class="drawer"></nav>
 <main class="wrap" id="app"></main>
 <script>
@@ -5836,9 +5836,9 @@ body .costumeTile > img,
 
 
 <!-- V401 MUST remain last: targeted final corrections. -->
-<link rel="stylesheet" href="css/v401-final-corrections.css?v=401">
+<link rel="stylesheet" href="css/v405-final-hamburger.css?v=405">
 <script src="js/v401-final-corrections.js?v=401"></script>
-<script src="js/v403-tutorial-image-language.js"></script>
+<script src="js/v403-tutorial-image-language.js?v=404"></script>
 </body></html>
 <style id="v223_tuning_text_fix">
 /* v223 : garde le badge MAX en place, mais donne plus de place au texte */

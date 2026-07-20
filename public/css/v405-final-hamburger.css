@@ -1,0 +1,153 @@
+/* V405 — corrections finales ciblées. */
+
+/* Une seule entrée du menu peut être jaune. */
+#drawer .navItem{
+  background:#182942!important;
+  color:#fff!important;
+  border-color:transparent!important;
+  box-shadow:none!important;
+}
+#drawer .navItem.active,
+#drawer .navItem[aria-current="page"]{
+  background:#ffe000!important;
+  color:#000!important;
+  border-color:#000!important;
+}
+
+/* Icône hamburger parfaitement centrée, sans dépendre du glyphe ☰ du navigateur. */
+.menuBtn{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  padding:0!important;
+  text-align:center!important;
+  line-height:0!important;
+  overflow:hidden!important;
+  font-size:0!important;
+}
+.menuBtnLines{
+  width:24px!important;
+  height:18px!important;
+  display:flex!important;
+  flex-direction:column!important;
+  justify-content:space-between!important;
+  align-items:stretch!important;
+  margin:0!important;
+  padding:0!important;
+  transform:none!important;
+  pointer-events:none!important;
+}
+.menuBtnLines>span{
+  display:block!important;
+  width:100%!important;
+  height:3px!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:999px!important;
+  background:currentColor!important;
+  transform:none!important;
+  box-sizing:border-box!important;
+}
+
+/* Toutes les croix restent entièrement à l'intérieur de leur fenêtre. */
+.modalV296{padding-top:max(18px,env(safe-area-inset-top))!important}
+.modalPanelV296{overflow:visible!important}
+.modalPanelV296>header{
+  top:0!important;
+  border-radius:8px 8px 0 0!important;
+  overflow:visible!important;
+}
+.modalPanelV296>header button{
+  flex:0 0 48px!important;
+  position:relative!important;
+  inset:auto!important;
+  transform:none!important;
+  margin:0!important;
+}
+.modsDialog{position:relative!important;overflow:auto!important}
+.modsDialogHead{top:0!important;overflow:visible!important;padding-right:18px!important}
+.modsDialogHead .modsClose{position:relative!important;inset:auto!important;flex:0 0 42px!important;transform:none!important;margin:0!important}
+.cbModalPanel{padding-top:0!important}
+.cbModalPanel .cbClose{
+  position:absolute!important;
+  top:12px!important;
+  right:12px!important;
+  left:auto!important;
+  float:none!important;
+  margin:0!important;
+  transform:none!important;
+  z-index:300!important;
+}
+.cbBuilderHeader,.cbDetailHeader{padding-right:78px!important}
+.mhurHubPanel{position:relative!important}
+.mhurHubClose{top:12px!important;right:12px!important;transform:none!important}
+
+/* Les boutons Retour restent toujours cliquables. */
+.back,.mhurTierBack{
+  position:relative!important;
+  z-index:50!important;
+  pointer-events:auto!important;
+  touch-action:manipulation!important;
+}
+
+/* Tutoriel fermé par défaut et images nettes sans agrandissement artificiel. */
+.modsTutorial:not([open]) .modsTutorialBody{display:none!important}
+.modsTutorialStepImage{
+  width:auto!important;
+  max-width:min(100%,1100px)!important;
+  height:auto!important;
+  margin:18px auto 0!important;
+  padding:0!important;
+  object-fit:contain!important;
+  image-rendering:auto!important;
+  filter:contrast(1.035) saturate(1.02)!important;
+}
+.modsTutorialSteps article{align-items:stretch!important}
+
+/* Zone de dépôt T.U.N.I.N.G alignée et centrée. */
+.cbOfficialCreatorScreenV308 .gameTuningArea{
+  align-items:stretch!important;
+}
+.cbOfficialCreatorScreenV308 .tuningColumn{
+  display:grid!important;
+  grid-template-rows:auto minmax(0,1fr)!important;
+  align-items:stretch!important;
+}
+.cbOfficialCreatorScreenV308 .slotList{
+  display:grid!important;
+  align-content:center!important;
+  justify-content:stretch!important;
+  gap:10px!important;
+  width:100%!important;
+  margin:0 auto!important;
+}
+.cbOfficialCreatorScreenV308 .gameSlot{
+  width:100%!important;
+  max-width:100%!important;
+  margin:0 auto!important;
+  align-self:center!important;
+}
+
+/* Indication visuelle pendant l'auto-défilement de la Tier List. */
+body.v401-tier-dragging{scroll-behavior:auto!important}
+
+/* Fenêtre d'aide à l'installation PWA. */
+.v401InstallHelp{
+  position:fixed;inset:0;z-index:200000;display:grid;place-items:center;
+  padding:18px;background:rgba(0,0,0,.82)
+}
+.v401InstallHelp[hidden]{display:none}
+.v401InstallCard{
+  width:min(560px,100%);padding:24px;border:3px solid #4b6f9d;border-radius:18px;
+  background:#101a2a;color:#fff;box-shadow:0 18px 70px #000
+}
+.v401InstallCard h2{margin:0 0 12px;color:#ffe000}
+.v401InstallCard p{line-height:1.55}
+.v401InstallCard button{display:block;margin:18px 0 0 auto;padding:10px 18px;border:2px solid #000;border-radius:10px;background:#ffe000;color:#000;font-weight:1000}
+
+@media(max-width:760px){
+  .modalV296{padding-top:max(8px,env(safe-area-inset-top))!important}
+  .cbModalPanel .cbClose{top:8px!important;right:8px!important}
+  .modsTutorialStepImage{max-width:100%!important;border-radius:9px!important}
+}

@@ -9,6 +9,14 @@ function ensureHamburger(){
   if(!btn) return;
   btn.style.display='flex';
   btn.setAttribute('aria-label', (document.documentElement.lang||'fr').startsWith('en') ? 'Open menu' : 'Ouvrir le menu');
+  if(!btn.querySelector('.menuBtnLines')){
+    btn.textContent='';
+    const lines=document.createElement('span');
+    lines.className='menuBtnLines';
+    lines.setAttribute('aria-hidden','true');
+    lines.innerHTML='<span></span><span></span><span></span>';
+    btn.appendChild(lines);
+  }
   if(!btn.dataset.v384Bound){
     btn.dataset.v384Bound='1';
     btn.addEventListener('click', function(ev){
