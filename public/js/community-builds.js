@@ -15,8 +15,7 @@ const CB_STATE = {
   sort: Object.create(null),
   draft: null,
   currentDetail: null,
-  publishing: false,
-  editingId: null
+  publishing: false
 };
 const CB_LOCAL_KEY = 'mhur_community_builds_v304';
 const CB_LIKED_KEY = 'mhur_community_liked_v304';
@@ -289,7 +288,7 @@ function cbBuildCard(build,index=0,compact=false){
     <div class="cbRank">${index+1}</div>
     <div class="cbBuildCostume">${asset(build.costume_img,build.costume_name+' '+build.costume_variant)}${cbCostumeRarityBadge(costumeData)}</div>
     <div class="cbBuildMain">
-      <div class="cbBuildTitleLine"><h3>${cbEsc(build.title)}${window.MHUR_MODERATION?.verifiedBadge?.(build)||''}</h3><div class="cbBuildActions">${cbFavoriteHtml(build)}${cbHeartHtml(build,compact)}${cbOwnEditHtml(build,true)}${cbOwnDeleteHtml(build,true)}</div></div>
+      <div class="cbBuildTitleLine"><h3>${cbEsc(build.title)}${window.MHUR_MODERATION?.verifiedBadge?.(build)||''}</h3><div class="cbBuildActions">${cbFavoriteHtml(build)}${cbHeartHtml(build,compact)}${cbOwnDeleteHtml(build,true)}</div></div>
       <div class="cbBuildMeta">
         ${cbAuthorButton(build)}
         <span>${cbEsc(char?.name||build.character_id)}</span>
@@ -541,7 +540,6 @@ function cbPreloadBuilderImages(charId){
   }catch(_){}
 }
 window.openCommunityBuildCreator=function(charId,styleId){
-  CB_STATE.editingId=null;
   const char=cbCharacter(charId);
   if(!char||!char.styles.includes(styleId)) return;
   if(CB_REMOTE && !window.MHUR_AUTH?.requireLogin?.('Connecte-toi avec Google ou Discord pour publier un build.')) return;
@@ -571,7 +569,6 @@ window.closeCommunityBuildCreator=function(){
   document.body.classList.remove('cbModalOpen');
   CB_STATE.draft=null;
   CB_STATE.publishing=false;
-  CB_STATE.editingId=null;
 };
 window.communityBuildCostumeFilter=function(field,value){
   const draft=CB_STATE.draft;
@@ -712,9 +709,9 @@ function cbRenderBuilder(){
   const selectedSpec=specs.find(x=>x.id===draft.selectedSlot)||specs[0];
   const filled=specs.filter(x=>draft.slots[x.id]).length;
   content.innerHTML=`<div class="cbBuilderHeader">
-      <span>${CB_STATE.editingId?'MODIFICATION DU BUILD':'CRÉATEUR DE BUILD'}</span>
+      <span>CRÉATEUR DE BUILD</span>
       <h2>${cbEsc(char?.name)} — ${cbEsc(cbStyleName(draft.styleId))}</h2>
-      <p>${CB_STATE.editingId?'Modifie les informations, le costume ou les T.U.N.I.N.G, puis enregistre.':'Choisis un costume puis remplis tous ses emplacements T.U.N.I.N.G.'}</p>
+      <p>Choisis un costume puis remplis tous ses emplacements T.U.N.I.N.G.</p>
     </div>
     <div class="cbBuildFields">
       <label>Nom du build<input maxlength="80" value="${cbEsc(draft.title)}" oninput="communityDraftField('title',this.value)" placeholder="Ex : Mobilité maximale, DPS, survie…"></label>
@@ -765,7 +762,7 @@ function cbRenderBuilder(){
       </div>
       <div class="cbPublishBar">
         <div><b>${filled===specs.length?'Build complet':'Build incomplet'}</b><span>${filled} emplacement${filled>1?'s':''} rempli${filled>1?'s':''} sur ${specs.length}</span></div>
-        <button ${CB_STATE.publishing||filled!==specs.length?'disabled':''} onclick="communityPublishBuild()">${CB_STATE.publishing?(CB_STATE.editingId?'Enregistrement…':'Publication…'):(CB_STATE.editingId?'Enregistrer les modifications':'Publier le build')}</button>
+        <button ${CB_STATE.publishing||filled!==specs.length?'disabled':''} onclick="communityPublishBuild()">${CB_STATE.publishing?'Publication…':'Publier le build'}</button>
       </div>`:'<div class="cbEmpty">Aucun costume disponible.</div>'}`;
   const restoreCostumeScroll=()=>{
     const strip=content.querySelector('.cbCostumeChoices');
@@ -826,44 +823,18 @@ function cbPublishLocal(payload){
   cbSaveLocal(all);
   return item;
 }
-
-async function cbUpdateRemote(id,payload){
-  const uid=window.MHUR_AUTH?.getUser?.()?.id||'';
-  const {creator_id,likes_count,is_hidden,...changes}=payload;
-  const rows=await cbRequest(`/rest/v1/community_builds?id=eq.${encodeURIComponent(id)}&creator_id=eq.${encodeURIComponent(uid)}&select=*`,{
-    method:'PATCH',
-    headers:{Prefer:'return=representation'},
-    body:JSON.stringify(changes)
-  });
-  const row=Array.isArray(rows)?rows[0]:rows;
-  if(!row)throw new Error(cbIsEnglish()?'Build update failed.':'La modification du build a échoué.');
-  return cbNormalizeBuild(row);
-}
-function cbUpdateLocal(id,payload){
-  const all=cbLocalAll(),index=all.findIndex(x=>String(x.id)===String(id));
-  if(index<0)throw new Error('Build introuvable.');
-  const updated=cbNormalizeBuild({...all[index],...payload,id:all[index].id,created_at:all[index].created_at,likes_count:all[index].likes_count,creator_id:all[index].creator_id,source:'local'});
-  all[index]=updated;
-  cbSaveLocal(all);
-  return updated;
-}
-
 window.communityPublishBuild=async function(){
-  if(CB_STATE.publishing)return;
-  const editingId=CB_STATE.editingId;
+  if(CB_STATE.publishing) return;
   try{
     const payload=cbPayloadFromDraft();
     CB_STATE.publishing=true;
     cbRenderBuilder();
-    const build=editingId
-      ?(CB_REMOTE?await cbUpdateRemote(editingId,payload):cbUpdateLocal(editingId,payload))
-      :(CB_REMOTE?await cbPublishRemote(payload):cbPublishLocal(payload));
+    const build=CB_REMOTE?await cbPublishRemote(payload):cbPublishLocal(payload);
     const key=cbKey(build.character_id,build.style_id);
     delete CB_STATE.cache[key];
     await cbEnsureLoaded(build.character_id,build.style_id,true);
     closeCommunityBuildCreator();
     cbOpenBuildsPage(build.character_id,build.style_id);
-    if(editingId)requestAnimationFrame(()=>openCommunityBuildDetail(build.id,build.character_id,build.style_id));
   }catch(error){
     alert(error.message||String(error));
     CB_STATE.publishing=false;
@@ -895,15 +866,6 @@ function cbDetailColumn(build,side){
 }
 
 
-
-function cbOwnEditHtml(build,compact=false){
-  const uid=window.MHUR_AUTH?.getUser?.()?.id||'';
-  const own=uid&&String(uid)===String(build.creator_id||'');
-  if(!own)return '';
-  const txt=cbIsEnglish()?'Edit build':'Modifier le build';
-  return `<button class="cbEditOwn ${compact?'compact':''}" title="${txt}" aria-label="${txt}" onclick="event.stopPropagation();communityEditOwnBuild('${cbEsc(build.id)}')">✏️ ${txt}</button>`;
-}
-
 function cbOwnDeleteHtml(build,compact=false){
   const uid=window.MHUR_AUTH?.getUser?.()?.id||'';
   const own=uid&&String(uid)===String(build.creator_id||'');
@@ -911,33 +873,6 @@ function cbOwnDeleteHtml(build,compact=false){
   const txt=(typeof lang!=='undefined'&&lang==='en')?'Delete build':'Supprimer le build';
   return `<button class="cbDeleteOwn ${compact?'compact':''}" title="${txt}" aria-label="${txt}" onclick="event.stopPropagation();communityDeleteOwnBuild('${cbEsc(build.id)}')">🗑 ${txt}</button>`;
 }
-
-window.communityEditOwnBuild=function(id){
-  const build=cbFindBuild(id),uid=window.MHUR_AUTH?.getUser?.()?.id||'';
-  if(!build||!uid||String(uid)!==String(build.creator_id||''))return;
-  cbPreloadBuilderImages(build.character_id);
-  const slots={};
-  (build.tuning_slots||[]).forEach(entry=>{if(entry?.id&&entry?.tuning)slots[entry.id]=entry.tuning});
-  CB_STATE.editingId=build.id;
-  CB_STATE.draft={
-    characterId:build.character_id,
-    styleId:build.style_id,
-    costumeId:build.costume_id,
-    title:build.title||'',
-    author:window.MHUR_AUTH?.getProfile?.()?.username||build.author||'',
-    description:build.description||'',
-    selectedSlot:Object.keys(slots)[0]||'sp|left|0',
-    slots,
-    costumeFilters:cbCostumeFilterDefaults()
-  };
-  closeCommunityBuildDetail();
-  const modal=cbBuilderModal();
-  modal.classList.add('open');
-  document.body.classList.add('cbModalOpen');
-  cbRenderBuilder();
-  modal.querySelector('.cbModalPanel')?.scrollTo({top:0,behavior:'auto'});
-};
-
 window.communityDeleteOwnBuild=async function(id){
   const build=cbFindBuild(id);
   const uid=window.MHUR_AUTH?.getUser?.()?.id||'';
@@ -966,7 +901,7 @@ function cbRenderBuildDetail(id){
         <p>${cbEsc(char?.name||build.character_id)} · ${cbEsc(cbStyleName(build.style_id))}</p>
         <p>${cbEsc(build.costume_name)} — ${cbEsc(build.costume_variant)}</p>
         <div class="cbDetailAuthor">Par ${cbAuthorButton(build)} · ${cbFormatDate(build.created_at)}</div>
-        <div class="cbBuildActions">${cbFavoriteHtml(build)}${cbHeartHtml(build)}${cbOwnEditHtml(build)}${cbOwnDeleteHtml(build)}${window.MHUR_MODERATION?.detailActions?.(build)||''}</div>
+        <div class="cbBuildActions">${cbFavoriteHtml(build)}${cbHeartHtml(build)}${cbOwnDeleteHtml(build)}${window.MHUR_MODERATION?.detailActions?.(build)||''}</div>
       </div>
     </div>
     <div class="cbDetailDescription">${cbEsc(build.description||'Aucune description.')}</div>

@@ -1,0 +1,30 @@
+/* V358 — correctifs réels : Tier List, personnages et cache OAuth */
+.mhurTierPage{
+  width:100%!important;
+  max-width:100%!important;
+  margin:0!important;
+  padding:18px!important;
+  overflow:visible!important;
+}
+.mhurTierPageTop{
+  width:100%!important;
+  max-width:100%!important;
+  grid-template-columns:auto minmax(0,1fr) minmax(230px,310px)!important;
+  overflow:visible!important;
+}
+.mhurTierTopActions,.mhurTierActionButtons,.mhurTierFilter,.mhurTierFilter select{
+  min-width:0!important;
+  max-width:100%!important;
+}
+.mhurTierActionButtons button{min-width:0!important;white-space:normal!important;overflow-wrap:anywhere!important}
+.mhurTierList,.mhurTierListPage,.mhurTierRow,.mhurTierItems{width:100%!important;max-width:100%!important;min-width:0!important}
+.mhurTierItems{overflow:hidden!important}
+@media(max-width:1100px){
+  .mhurTierPageTop{grid-template-columns:auto minmax(0,1fr)!important}
+  .mhurTierTopActions{grid-column:1/-1!important;width:100%!important}
+}
+@media(max-width:760px){
+  .mhurTierPage{padding:8px!important}
+  .mhurTierPageTop{grid-template-columns:1fr!important}
+  .mhurTierTopActions{grid-column:auto!important}
+}

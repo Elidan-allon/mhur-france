@@ -1,0 +1,11 @@
+/* V360: stability, mobile installation and leaderboard fixes. */
+.mhurSafeError{max-width:900px;margin:30px auto;padding:28px;border:3px solid #ff5b5b;background:#14243a}
+.mhurSafeError p{overflow-wrap:anywhere}
+.mhurLeaderboardError{padding:20px;border:2px solid #ff6262;border-radius:14px;background:#1c2635;line-height:1.5}
+.mhurInstallButtonV360{display:flex!important}
+.costumeMiniDesc{display:block!important}
+@media(max-width:760px){
+  .mhurLeaderboardRow{grid-template-columns:48px minmax(0,1fr)!important;gap:8px!important}
+  .mhurLeaderboardScore{grid-column:2;text-align:left!important}
+  .mhurHubPanel{width:calc(100vw - 22px)!important;max-height:88vh!important}
+}

@@ -1,0 +1,19 @@
+{
+  "sync_mode": "weekly",
+  "updated_tunings": 0,
+  "updated_rarities": 0,
+  "updated_photos": 0,
+  "added": 0,
+  "downloaded_images": 0,
+  "changed_costumes": 0,
+  "changed_fields": 0,
+  "merged_ids": [],
+  "unmapped": [],
+  "failed": [],
+  "incomplete_tuning": [],
+  "missing_exact_photo": [],
+  "photo_download_failures": [],
+  "network_pages_requested": 0,
+  "cache_rows_reused": 0,
+  "permanent_unavailable_skipped": []
+}

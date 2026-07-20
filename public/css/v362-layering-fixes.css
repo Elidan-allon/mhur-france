@@ -1,0 +1,16 @@
+/* Keep the site banner above costume/tuning content on every browser. */
+.top{
+  position:sticky!important;
+  top:0!important;
+  z-index:200000!important;
+  isolation:isolate!important;
+  transform:translateZ(0);
+}
+.brand,.menuBtn,.lang,.mhurAccountButton{position:relative;z-index:200001!important}
+.costumeGroup,.costumeGalleryGroup,.costumeTile,.costumeTileBadge,.costumeTileStars,
+.gameCostumeScreen,.gameTuningArea,.tuningColumns,.tuningColumn,.tuningPicker,.tuningOptions,.tuningOption{
+  z-index:auto!important;
+}
+/* Cards must clip their slot icons instead of allowing them to cross the header. */
+.costumeGroup,.costumeGalleryGroup,.gameCostumeScreen{position:relative!important;overflow:hidden!important}
+.costumeTile{position:relative!important;overflow:hidden!important}

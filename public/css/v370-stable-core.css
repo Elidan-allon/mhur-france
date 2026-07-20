@@ -1,0 +1,7 @@
+.costumeMiniDesc{display:none!important}
+.mhurInstallButtonV370{display:flex!important;align-items:center;gap:8px;white-space:normal;line-height:1.15}
+.mhurInstallButtonV370.is-ready{outline:2px solid #ffe100;box-shadow:0 0 0 3px rgba(255,225,0,.18)}
+.mhurInstallButtonV370.is-pending{opacity:.78}
+.mhurInstallButtonV370.is-installed{opacity:.72}
+.mhurInstallButtonV370:disabled{cursor:default}
+.top{z-index:10000!important}.drawer{z-index:9999!important}
