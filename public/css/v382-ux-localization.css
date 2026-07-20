@@ -1,4 +1,0 @@
-/* V382 — navigation fixe et retour avec position conservée */
-.drawer{position:fixed!important;top:72px!important;bottom:0!important;overflow-y:auto!important;overscroll-behavior:contain;scrollbar-gutter:stable;}
-.back{position:sticky!important;top:82px!important;z-index:19!important;box-shadow:0 4px 12px rgba(0,0,0,.35);}
-@media(max-width:760px){.back{top:76px!important}.drawer{top:72px!important;width:min(88vw,320px)!important}}
