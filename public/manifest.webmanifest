@@ -1,6 +1,6 @@
 {
-  "name": "My Hero Ultra Rumble France",
-  "short_name": "MHUR France",
+  "name": "MHUR FR — My Hero Ultra Rumble France",
+  "short_name": "MHUR FR",
   "id": "/",
   "start_url": "/#home",
   "scope": "/",
@@ -8,7 +8,7 @@
   "orientation": "any",
   "background_color": "#080d17",
   "theme_color": "#ffe100",
-  "description": "Personnages, costumes, T.U.N.I.N.G, builds communautaires, Tier Lists et événements MHUR.",
+  "description": "Site communautaire français de My Hero Ultra Rumble : personnages, builds, costumes, T.U.N.I.N.G, Tier Lists, mods et événements.",
   "categories": [
     "games",
     "entertainment",
