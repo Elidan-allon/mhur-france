@@ -1,1 +1,2 @@
 V404
+V408 - close button visibility + tutorial step 1 alignment

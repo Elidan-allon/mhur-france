@@ -1,4 +1,4 @@
-const RELEASE='406';
+const RELEASE='409';
 self.addEventListener('install',event=>event.waitUntil(self.skipWaiting()));
 self.addEventListener('activate',event=>event.waitUntil((async()=>{
   const keys=await caches.keys();
