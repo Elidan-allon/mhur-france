@@ -288,7 +288,7 @@ function cbBuildCard(build,index=0,compact=false){
     <div class="cbRank">${index+1}</div>
     <div class="cbBuildCostume">${asset(build.costume_img,build.costume_name+' '+build.costume_variant)}${cbCostumeRarityBadge(costumeData)}</div>
     <div class="cbBuildMain">
-      <div class="cbBuildTitleLine"><h3>${cbEsc(build.title)}${window.MHUR_MODERATION?.verifiedBadge?.(build)||''}</h3><div class="cbBuildActions">${cbFavoriteHtml(build)}${cbHeartHtml(build,compact)}${cbOwnDeleteHtml(build,true)}</div></div>
+      <div class="cbBuildTitleLine"><h3>${cbEsc(build.title)}${window.MHUR_MODERATION?.verifiedBadge?.(build)||''}</h3><div class="cbBuildActions">${cbFavoriteHtml(build)}${cbHeartHtml(build,compact)}${cbOwnEditHtml(build,true)}${cbOwnDeleteHtml(build,true)}</div></div>
       <div class="cbBuildMeta">
         ${cbAuthorButton(build)}
         <span>${cbEsc(char?.name||build.character_id)}</span>
@@ -557,8 +557,40 @@ window.openCommunityBuildCreator=function(charId,styleId){
     description:'',
     selectedSlot:'sp|left|0',
     slots:{},
-    costumeFilters:cbCostumeFilterDefaults()
+    costumeFilters:cbCostumeFilterDefaults(),
+    editingId:''
   };
+  const modal=cbBuilderModal();
+  modal.classList.add('open');
+  document.body.classList.add('cbModalOpen');
+  cbRenderBuilder();
+};
+
+window.communityEditOwnBuild=function(id){
+  const build=cbFindBuild(id);
+  const authUser=window.MHUR_AUTH?.getUser?.();
+  if(!build||!authUser||String(authUser.id)!==String(build.creator_id||'')){
+    alert(cbIsEnglish()?'Only the creator can edit this build.':'Seul le créateur peut modifier ce build.');
+    return;
+  }
+  const slots={};
+  cbSlotEntries(build).forEach(entry=>{
+    if(entry?.id&&entry?.tuning) slots[entry.id]=JSON.parse(JSON.stringify(entry.tuning));
+  });
+  cbPreloadBuilderImages(build.character_id);
+  CB_STATE.draft={
+    characterId:build.character_id,
+    styleId:build.style_id,
+    costumeId:build.costume_id,
+    title:build.title,
+    author:window.MHUR_AUTH?.getProfile?.()?.username||build.author,
+    description:build.description||'',
+    selectedSlot:cbSlotEntries(build)[0]?.id||'sp|left|0',
+    slots,
+    costumeFilters:cbCostumeFilterDefaults(),
+    editingId:build.id
+  };
+  closeCommunityBuildDetail();
   const modal=cbBuilderModal();
   modal.classList.add('open');
   document.body.classList.add('cbModalOpen');
@@ -708,10 +740,11 @@ function cbRenderBuilder(){
   const specs=costume?cbSlotSpecs(costume):[];
   const selectedSpec=specs.find(x=>x.id===draft.selectedSlot)||specs[0];
   const filled=specs.filter(x=>draft.slots[x.id]).length;
+  const editing=Boolean(draft.editingId);
   content.innerHTML=`<div class="cbBuilderHeader">
-      <span>CRÉATEUR DE BUILD</span>
+      <span>${editing?'MODIFICATION DU BUILD':'CRÉATEUR DE BUILD'}</span>
       <h2>${cbEsc(char?.name)} — ${cbEsc(cbStyleName(draft.styleId))}</h2>
-      <p>Choisis un costume puis remplis tous ses emplacements T.U.N.I.N.G.</p>
+      <p>${editing?'Modifie les informations, le costume ou les T.U.N.I.N.G puis enregistre.':'Choisis un costume puis remplis tous ses emplacements T.U.N.I.N.G.'}</p>
     </div>
     <div class="cbBuildFields">
       <label>Nom du build<input maxlength="80" value="${cbEsc(draft.title)}" oninput="communityDraftField('title',this.value)" placeholder="Ex : Mobilité maximale, DPS, survie…"></label>
@@ -762,7 +795,7 @@ function cbRenderBuilder(){
       </div>
       <div class="cbPublishBar">
         <div><b>${filled===specs.length?'Build complet':'Build incomplet'}</b><span>${filled} emplacement${filled>1?'s':''} rempli${filled>1?'s':''} sur ${specs.length}</span></div>
-        <button ${CB_STATE.publishing||filled!==specs.length?'disabled':''} onclick="communityPublishBuild()">${CB_STATE.publishing?'Publication…':'Publier le build'}</button>
+        <button ${CB_STATE.publishing||filled!==specs.length?'disabled':''} onclick="communityPublishBuild()">${CB_STATE.publishing?(editing?'Enregistrement…':'Publication…'):(editing?'Enregistrer les modifications':'Publier le build')}</button>
       </div>`:'<div class="cbEmpty">Aucun costume disponible.</div>'}`;
   const restoreCostumeScroll=()=>{
     const strip=content.querySelector('.cbCostumeChoices');
@@ -811,6 +844,19 @@ async function cbPublishRemote(payload){
   });
   return cbNormalizeBuild(Array.isArray(rows)?rows[0]:rows);
 }
+async function cbUpdateRemote(id,payload,uid){
+  const updatePayload={...payload};
+  delete updatePayload.creator_id;
+  delete updatePayload.likes_count;
+  delete updatePayload.is_hidden;
+  const rows=await cbRequest(`/rest/v1/community_builds?id=eq.${encodeURIComponent(id)}&creator_id=eq.${encodeURIComponent(uid)}&select=*`,{
+    method:'PATCH',
+    headers:{Prefer:'return=representation'},
+    body:JSON.stringify(updatePayload)
+  });
+  if(!Array.isArray(rows)||!rows.length) throw new Error(cbIsEnglish()?'Update refused or build not found.':'Modification refusée ou build introuvable.');
+  return cbNormalizeBuild(rows[0]);
+}
 function cbPublishLocal(payload){
   const item=cbNormalizeBuild({
     ...payload,
@@ -823,18 +869,33 @@ function cbPublishLocal(payload){
   cbSaveLocal(all);
   return item;
 }
+function cbUpdateLocal(id,payload){
+  const all=cbLocalAll();
+  const index=all.findIndex(x=>String(x.id)===String(id));
+  if(index<0) throw new Error('Build introuvable.');
+  const previous=all[index];
+  const item=cbNormalizeBuild({...previous,...payload,id:previous.id,creator_id:previous.creator_id,likes_count:previous.likes_count,created_at:previous.created_at,source:'local'});
+  all[index]=item;
+  cbSaveLocal(all);
+  return item;
+}
 window.communityPublishBuild=async function(){
   if(CB_STATE.publishing) return;
+  const editingId=CB_STATE.draft?.editingId||'';
   try{
     const payload=cbPayloadFromDraft();
+    const uid=window.MHUR_AUTH?.getUser?.()?.id||'';
     CB_STATE.publishing=true;
     cbRenderBuilder();
-    const build=CB_REMOTE?await cbPublishRemote(payload):cbPublishLocal(payload);
+    const build=editingId
+      ?(CB_REMOTE?await cbUpdateRemote(editingId,payload,uid):cbUpdateLocal(editingId,payload))
+      :(CB_REMOTE?await cbPublishRemote(payload):cbPublishLocal(payload));
     const key=cbKey(build.character_id,build.style_id);
     delete CB_STATE.cache[key];
     await cbEnsureLoaded(build.character_id,build.style_id,true);
     closeCommunityBuildCreator();
     cbOpenBuildsPage(build.character_id,build.style_id);
+    if(editingId) requestAnimationFrame(()=>openCommunityBuildDetail(build.id,build.character_id,build.style_id));
   }catch(error){
     alert(error.message||String(error));
     CB_STATE.publishing=false;
@@ -865,6 +926,15 @@ function cbDetailColumn(build,side){
   </section>`;
 }
 
+
+
+function cbOwnEditHtml(build,compact=false){
+  const uid=window.MHUR_AUTH?.getUser?.()?.id||'';
+  const own=uid&&String(uid)===String(build.creator_id||'');
+  if(!own) return '';
+  const txt=cbIsEnglish()?'Edit build':'Modifier le build';
+  return `<button class="cbEditOwn ${compact?'compact':''}" title="${txt}" aria-label="${txt}" onclick="event.stopPropagation();communityEditOwnBuild('${cbEsc(build.id)}')">✏️ ${txt}</button>`;
+}
 
 function cbOwnDeleteHtml(build,compact=false){
   const uid=window.MHUR_AUTH?.getUser?.()?.id||'';
@@ -901,7 +971,7 @@ function cbRenderBuildDetail(id){
         <p>${cbEsc(char?.name||build.character_id)} · ${cbEsc(cbStyleName(build.style_id))}</p>
         <p>${cbEsc(build.costume_name)} — ${cbEsc(build.costume_variant)}</p>
         <div class="cbDetailAuthor">Par ${cbAuthorButton(build)} · ${cbFormatDate(build.created_at)}</div>
-        <div class="cbBuildActions">${cbFavoriteHtml(build)}${cbHeartHtml(build)}${cbOwnDeleteHtml(build)}${window.MHUR_MODERATION?.detailActions?.(build)||''}</div>
+        <div class="cbBuildActions">${cbFavoriteHtml(build)}${cbHeartHtml(build)}${cbOwnEditHtml(build)}${cbOwnDeleteHtml(build)}${window.MHUR_MODERATION?.detailActions?.(build)||''}</div>
       </div>
     </div>
     <div class="cbDetailDescription">${cbEsc(build.description||'Aucune description.')}</div>
@@ -984,6 +1054,7 @@ window.communityToggleHeart=async function(id){
 };
 
 window.addEventListener('mhur-favorites-change',()=>cbRefreshVisible());
+window.addEventListener('mhur-auth-change',()=>cbRefreshVisible());
 
 window.addEventListener('keydown',event=>{
   if(event.key!=='Escape') return;

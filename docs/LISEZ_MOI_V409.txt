@@ -1,0 +1,12 @@
+MHUR France V409
+
+Modifications :
+- fenêtre de patch corrigée sur iPhone : le titre et la croix restent stables ;
+- bouton Modifier réservé au créateur sur les mods et les builds ;
+- modification possible sans supprimer la création ;
+- fichiers .pak sélectionnables directement depuis l'app Fichiers sur iPhone ;
+- compteur de téléchargements : une seule augmentation par compte et par mod ;
+- retours à la ligne conservés dans les descriptions des cartes de mods.
+
+Supabase :
+Exécuter une seule fois le fichier MISE_A_JOUR_SUPABASE_V409.sql dans Supabase > SQL Editor.

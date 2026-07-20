@@ -1,0 +1,138 @@
+/* V409 — édition des créations, fichiers .pak iPhone et fenêtre du patch stable */
+
+/* La fenêtre du patch ne fait plus défiler son en-tête avec toute la page.
+   Seul le contenu sous le titre défile, donc la croix reste toujours au bon endroit. */
+#patchModalV296.modalV296.open{
+  display:flex!important;
+  align-items:flex-start!important;
+  justify-content:center!important;
+  overflow:hidden!important;
+  box-sizing:border-box!important;
+  padding:max(82px,calc(env(safe-area-inset-top) + 12px)) 8px 8px!important;
+}
+#patchModalV296 .patchPanelV296{
+  display:flex!important;
+  flex-direction:column!important;
+  width:min(1180px,100%)!important;
+  max-height:calc(100dvh - 90px)!important;
+  margin:0 auto!important;
+  overflow:hidden!important;
+  box-sizing:border-box!important;
+}
+#patchModalV296 .patchPanelV296>header{
+  position:relative!important;
+  top:auto!important;
+  left:auto!important;
+  right:auto!important;
+  flex:0 0 auto!important;
+  min-height:72px!important;
+  padding:14px 72px 14px 18px!important;
+  overflow:hidden!important;
+  border-radius:8px 8px 0 0!important;
+}
+#patchModalV296 .patchPanelV296>header h2{
+  min-width:0!important;
+  overflow-wrap:anywhere!important;
+  line-height:1.08!important;
+}
+#patchModalV296 .patchPanelV296>header button{
+  position:absolute!important;
+  top:10px!important;
+  right:10px!important;
+  left:auto!important;
+  bottom:auto!important;
+  margin:0!important;
+  transform:none!important;
+}
+#patchModalV296 .modalBodyV296{
+  flex:1 1 auto!important;
+  min-height:0!important;
+  overflow:auto!important;
+  overscroll-behavior:contain!important;
+  -webkit-overflow-scrolling:touch!important;
+}
+
+/* Les sauts de ligne français / anglais restent visibles sur les cartes de mods. */
+.modBody p{
+  white-space:pre-wrap!important;
+  overflow-wrap:anywhere!important;
+}
+
+/* Boutons propriétaire des mods. */
+.modOwnerActions{
+  display:flex;
+  justify-content:flex-end;
+  gap:8px;
+  margin-top:2px;
+}
+.modEdit{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  padding:11px 14px;
+  border:2px solid #000;
+  border-radius:11px;
+  background:#2d8cff;
+  color:#fff;
+  font-weight:1000;
+  cursor:pointer;
+  text-decoration:none;
+}
+.modEdit:hover{filter:brightness(1.08)}
+.modOwnerActions .modEdit{width:100%}
+
+/* Bouton Modifier des builds, assorti aux actions existantes. */
+.cbEditOwn{
+  background:#2d8cff!important;
+  color:#fff!important;
+  border:3px solid #05080d!important;
+  border-radius:12px!important;
+  padding:10px 14px!important;
+  font-weight:1000!important;
+  box-shadow:0 3px 0 #05080d!important;
+  white-space:nowrap!important;
+}
+.cbEditOwn:hover{filter:brightness(1.08)!important;transform:translateY(-1px)!important}
+.cbEditOwn.compact{
+  width:52px!important;
+  height:52px!important;
+  overflow:hidden!important;
+  padding:0!important;
+  font-size:0!important;
+}
+.cbEditOwn.compact::before{content:'✏️';font-size:20px!important}
+
+/* Les champs de fichiers restent confortables sur Safari iPhone. */
+.modsForm input[type="file"]{
+  min-height:48px;
+  font-size:16px;
+}
+
+@media(max-width:760px){
+  #patchModalV296.modalV296.open{
+    padding:max(74px,calc(env(safe-area-inset-top) + 8px)) 4px 4px!important;
+  }
+  #patchModalV296 .patchPanelV296{
+    max-height:calc(100dvh - 78px)!important;
+    border-radius:12px!important;
+  }
+  #patchModalV296 .patchPanelV296>header{
+    min-height:68px!important;
+    padding:10px 62px 10px 12px!important;
+  }
+  #patchModalV296 .patchPanelV296>header h2{
+    font-size:clamp(21px,7.2vw,31px)!important;
+  }
+  #patchModalV296 .patchPanelV296>header button{
+    top:8px!important;
+    right:8px!important;
+  }
+  .modsDetailActions .modEdit,
+  .modsDetailActions .modDelete,
+  .modsDetailActions .modDownload,
+  .modsDetailActions .modsLike{
+    width:100%;
+  }
+  .cbEditOwn:not(.compact){padding:8px 10px!important}
+}
