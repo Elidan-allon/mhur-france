@@ -1,0 +1,8 @@
+V410 — vérifications effectuées
+================================
+- Syntaxe de tous les fichiers JavaScript : OK.
+- Cartes normales et SP : noms longs réduits avec la variable --equip-font : OK.
+- Badge MAX visible dans le créateur et les cartes publiées : OK.
+- Ancien all:unset des cartes communautaires supprimé : OK.
+- Auto-défilement mobile : emplacement -> liste compatible -> retour emplacement : OK.
+- Bouton Retour des builds protégé contre l'interception V385 : OK.

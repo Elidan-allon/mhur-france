@@ -24,7 +24,7 @@
 .cbCostumeTuningGridV306 .slotMax,.cbOfficialCreatorScreenV308 .slotMax{display:block!important}
 .cbCostumeTuningGridV306.micro .gameSlot,.cbCostumeTuningGridV306.mini .gameSlot{min-height:66px!important;height:66px!important}
 .cbCostumeTuningGridV306.micro .gameSlot.spBand,.cbCostumeTuningGridV306.mini .gameSlot.spBand{min-height:84px!important;height:84px!important}
-.cbOfficialBuildTuningSlot{all:unset}
+/* V410 : la carte officielle garde désormais les styles .gameSlot. */
 
 .costumeInfoBox>p,.costumeNotes,.costumeDescription,.costumeMiniDesc{display:none!important}
 @media(max-width:900px){.cbBuildActions{flex-wrap:wrap!important}.cbDeleteOwn:not(.compact){padding:8px 10px!important}}

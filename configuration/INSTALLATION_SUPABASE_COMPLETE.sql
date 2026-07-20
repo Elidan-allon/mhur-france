@@ -1,4 +1,4 @@
--- MHUR France V393 — INSTALLATION SUPABASE PROPRE (projet neuf)
+-- MHUR France V411 — INSTALLATION SUPABASE PROPRE (projet neuf)
 -- Colle ce fichier ENTIER dans Supabase > SQL Editor > New query, puis Run.
 -- Ne l'utilise pas pour supprimer un ancien projet contenant des données.
 
@@ -817,3 +817,437 @@ grant execute on function public.refresh_mod_likes(uuid) to authenticated;
 grant select on public.community_mod_likes, public.community_mod_comments to anon, authenticated;
 grant insert, delete on public.community_mod_likes to authenticated;
 grant insert, update, delete on public.community_mod_comments to authenticated;
+-- MHUR France V411 — fonctions communautaires avancées
+-- À exécuter UNE FOIS dans Supabase > SQL Editor sur une base déjà installée.
+
+-- Version du jeu, attribution des copies et date de dernière modification des builds.
+alter table public.community_builds
+  add column if not exists game_version text,
+  add column if not exists source_build_id uuid,
+  add column if not exists source_creator_id uuid,
+  add column if not exists source_author text,
+  add column if not exists updated_at timestamptz not null default now();
+
+do $$
+begin
+  if not exists (select 1 from pg_constraint where conname='community_builds_source_build_fkey') then
+    alter table public.community_builds add constraint community_builds_source_build_fkey
+      foreign key (source_build_id) references public.community_builds(id) on delete set null;
+  end if;
+  if not exists (select 1 from pg_constraint where conname='community_builds_source_creator_fkey') then
+    alter table public.community_builds add constraint community_builds_source_creator_fkey
+      foreign key (source_creator_id) references public.profiles(id) on delete set null;
+  end if;
+end $$;
+
+create or replace function public.mhur_set_updated_at()
+returns trigger language plpgsql as $$
+begin new.updated_at=now(); return new; end;
+$$;
+
+drop trigger if exists mhur_builds_updated_at on public.community_builds;
+create trigger mhur_builds_updated_at before update on public.community_builds
+for each row execute function public.mhur_set_updated_at();
+
+drop trigger if exists mhur_mods_updated_at on public.community_mods;
+create trigger mhur_mods_updated_at before update on public.community_mods
+for each row execute function public.mhur_set_updated_at();
+
+-- Réactions simples sur les builds.
+create table if not exists public.community_build_reactions (
+  build_id uuid not null references public.community_builds(id) on delete cascade,
+  user_id uuid not null references auth.users(id) on delete cascade,
+  reaction text not null check (reaction in ('useful','tested','recommended','outdated')),
+  created_at timestamptz not null default now(),
+  primary key (build_id,user_id,reaction)
+);
+create index if not exists community_build_reactions_build_idx on public.community_build_reactions(build_id,reaction);
+alter table public.community_build_reactions enable row level security;
+drop policy if exists "build reactions public read" on public.community_build_reactions;
+create policy "build reactions public read" on public.community_build_reactions for select to anon,authenticated using (true);
+drop policy if exists "build reactions owner insert" on public.community_build_reactions;
+create policy "build reactions owner insert" on public.community_build_reactions for insert to authenticated with check (auth.uid()=user_id);
+drop policy if exists "build reactions owner delete" on public.community_build_reactions;
+create policy "build reactions owner delete" on public.community_build_reactions for delete to authenticated using (auth.uid()=user_id);
+grant select on public.community_build_reactions to anon,authenticated;
+grant insert,delete on public.community_build_reactions to authenticated;
+
+-- Favoris pour les mods.
+create table if not exists public.community_mod_favorites (
+  user_id uuid not null references auth.users(id) on delete cascade,
+  mod_id uuid not null references public.community_mods(id) on delete cascade,
+  created_at timestamptz not null default now(),
+  primary key (user_id,mod_id)
+);
+create index if not exists community_mod_favorites_user_idx on public.community_mod_favorites(user_id,created_at desc);
+alter table public.community_mod_favorites enable row level security;
+drop policy if exists "mod favorites owner read" on public.community_mod_favorites;
+create policy "mod favorites owner read" on public.community_mod_favorites for select to authenticated using (auth.uid()=user_id);
+drop policy if exists "mod favorites owner insert" on public.community_mod_favorites;
+create policy "mod favorites owner insert" on public.community_mod_favorites for insert to authenticated with check (auth.uid()=user_id);
+drop policy if exists "mod favorites owner delete" on public.community_mod_favorites;
+create policy "mod favorites owner delete" on public.community_mod_favorites for delete to authenticated using (auth.uid()=user_id);
+grant select,insert,delete on public.community_mod_favorites to authenticated;
+revoke all on public.community_mod_favorites from anon;
+
+-- Historique téléchargeable des anciennes versions de mods.
+create table if not exists public.community_mod_versions (
+  id uuid primary key default gen_random_uuid(),
+  mod_id uuid not null references public.community_mods(id) on delete cascade,
+  creator_id uuid not null references auth.users(id) on delete cascade,
+  mod_version text not null default '1.0',
+  game_version text,
+  description text not null default '',
+  file_url text not null default '',
+  file_path text not null default '',
+  file_name text not null default '',
+  file_size bigint not null default 0,
+  created_at timestamptz not null default now()
+);
+create index if not exists community_mod_versions_mod_idx on public.community_mod_versions(mod_id,created_at desc);
+alter table public.community_mod_versions enable row level security;
+drop policy if exists "mod versions public read" on public.community_mod_versions;
+create policy "mod versions public read" on public.community_mod_versions for select to anon,authenticated
+using (exists(select 1 from public.community_mods m where m.id=mod_id and m.is_hidden=false));
+drop policy if exists "mod versions owner insert" on public.community_mod_versions;
+create policy "mod versions owner insert" on public.community_mod_versions for insert to authenticated
+with check (auth.uid()=creator_id and exists(select 1 from public.community_mods m where m.id=mod_id and m.creator_id=auth.uid()));
+grant select on public.community_mod_versions to anon,authenticated;
+grant insert on public.community_mod_versions to authenticated;
+
+-- Signalements des mods.
+create table if not exists public.community_mod_reports (
+  id uuid primary key default gen_random_uuid(),
+  mod_id uuid not null references public.community_mods(id) on delete cascade,
+  reporter_id uuid not null references auth.users(id) on delete cascade,
+  reason text not null check (reason in ('broken','stolen','inappropriate','misleading','other')),
+  details text not null default '' check (char_length(details)<=700),
+  status text not null default 'open' check (status in ('open','resolved','actioned','dismissed')),
+  created_at timestamptz not null default now(),
+  resolved_at timestamptz,
+  resolved_by uuid references auth.users(id) on delete set null,
+  unique(mod_id,reporter_id)
+);
+create index if not exists community_mod_reports_status_idx on public.community_mod_reports(status,created_at);
+alter table public.community_mod_reports enable row level security;
+drop policy if exists "mod reports owner insert" on public.community_mod_reports;
+create policy "mod reports owner insert" on public.community_mod_reports for insert to authenticated with check (auth.uid()=reporter_id);
+drop policy if exists "mod reports owner read" on public.community_mod_reports;
+create policy "mod reports owner read" on public.community_mod_reports for select to authenticated using (auth.uid()=reporter_id or public.is_mhur_moderator());
+drop policy if exists "mod reports moderator update" on public.community_mod_reports;
+create policy "mod reports moderator update" on public.community_mod_reports for update to authenticated using (public.is_mhur_moderator()) with check (public.is_mhur_moderator());
+grant select,insert,update on public.community_mod_reports to authenticated;
+
+-- Les créateurs conservent le droit de modifier/supprimer leurs propres créations.
+grant update,delete on public.community_builds to authenticated;
+grant update,delete on public.community_mods to authenticated;
+
+-- ============================================================
+-- V412 — FIABILITÉ, PARTAGE, SÉCURITÉ ET NOTIFICATIONS
+-- ============================================================
+-- MHUR France V412 — fiabilité, partage, sécurité et notifications
+-- À exécuter UNE FOIS dans Supabase > SQL Editor sur une base déjà en V411.
+
+create extension if not exists pgcrypto;
+
+-- ============================================================
+-- BUILDS : code de partage, compteur de copies et validation
+-- ============================================================
+create or replace function public.mhur_generate_build_share_code()
+returns text
+language sql
+volatile
+as $$
+  select 'MHR-' || upper(substr(encode(gen_random_bytes(6), 'hex'), 1, 10));
+$$;
+
+alter table public.community_builds
+  add column if not exists share_code text,
+  add column if not exists copied_count integer not null default 0 check (copied_count >= 0),
+  add column if not exists validation_status text not null default 'valid'
+    check (validation_status in ('valid','warning','invalid')),
+  add column if not exists validation_issues text[] not null default '{}';
+
+update public.community_builds
+set share_code = public.mhur_generate_build_share_code()
+where share_code is null or btrim(share_code) = '';
+
+alter table public.community_builds
+  alter column share_code set default public.mhur_generate_build_share_code(),
+  alter column share_code set not null;
+
+create unique index if not exists community_builds_share_code_uidx
+  on public.community_builds(upper(share_code));
+
+create or replace function public.increment_build_copy(target_build uuid)
+returns integer
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  new_count integer := 0;
+begin
+  if auth.uid() is null then
+    select copied_count into new_count
+    from public.community_builds
+    where id = target_build and is_hidden = false;
+    return coalesce(new_count, 0);
+  end if;
+
+  update public.community_builds
+  set copied_count = copied_count + 1
+  where id = target_build and is_hidden = false
+  returning copied_count into new_count;
+
+  return coalesce(new_count, 0);
+end;
+$$;
+
+revoke execute on function public.increment_build_copy(uuid) from anon;
+grant execute on function public.increment_build_copy(uuid) to authenticated;
+
+-- ============================================================
+-- MODS : état de sécurité et empreinte du fichier
+-- ============================================================
+alter table public.community_mods
+  add column if not exists file_sha256 text,
+  add column if not exists security_status text not null default 'extension_checked'
+    check (security_status in ('verified','checksum','extension_checked','unverified','blocked')),
+  add column if not exists security_note text;
+
+create index if not exists community_mods_security_idx
+  on public.community_mods(security_status, created_at desc);
+
+-- ============================================================
+-- NOTIFICATIONS PRIVÉES ET PERSISTANTES
+-- ============================================================
+create table if not exists public.community_notifications (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references auth.users(id) on delete cascade,
+  actor_id uuid,
+  type text not null check (type in (
+    'build_comment','mod_comment','build_like','mod_like','build_reaction',
+    'build_updated','mod_updated','moderation','badge','system'
+  )),
+  title text not null check (char_length(title) between 1 and 120),
+  body text not null default '' check (char_length(body) <= 500),
+  entity_type text check (entity_type in ('build','mod','profile','system')),
+  entity_id uuid,
+  is_read boolean not null default false,
+  read_at timestamptz,
+  created_at timestamptz not null default now()
+);
+
+create index if not exists community_notifications_user_idx
+  on public.community_notifications(user_id, is_read, created_at desc);
+
+alter table public.community_notifications enable row level security;
+
+drop policy if exists "notifications owner read" on public.community_notifications;
+create policy "notifications owner read"
+on public.community_notifications for select
+to authenticated
+using (auth.uid() = user_id);
+
+drop policy if exists "notifications owner update" on public.community_notifications;
+create policy "notifications owner update"
+on public.community_notifications for update
+to authenticated
+using (auth.uid() = user_id)
+with check (auth.uid() = user_id);
+
+drop policy if exists "notifications owner delete" on public.community_notifications;
+create policy "notifications owner delete"
+on public.community_notifications for delete
+to authenticated
+using (auth.uid() = user_id);
+
+grant select, update, delete on public.community_notifications to authenticated;
+revoke all on public.community_notifications from anon;
+
+create or replace function public.mhur_insert_notification(
+  p_user uuid,
+  p_actor uuid,
+  p_type text,
+  p_title text,
+  p_body text,
+  p_entity_type text,
+  p_entity_id uuid
+)
+returns void
+language plpgsql
+security definer
+set search_path = public
+as $$
+begin
+  if p_user is null or p_user = p_actor then return; end if;
+  insert into public.community_notifications(user_id, actor_id, type, title, body, entity_type, entity_id)
+  values (p_user, p_actor, p_type, left(p_title,120), left(coalesce(p_body,''),500), p_entity_type, p_entity_id);
+end;
+$$;
+revoke execute on function public.mhur_insert_notification(uuid,uuid,text,text,text,text,uuid) from public, anon, authenticated;
+
+-- Commentaire sur un build.
+create or replace function public.mhur_notify_build_comment()
+returns trigger
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare owner_id uuid; build_title text; actor_name text;
+begin
+  select creator_id, title into owner_id, build_title from public.community_builds where id = new.build_id;
+  select username into actor_name from public.profiles where id = new.user_id;
+  perform public.mhur_insert_notification(owner_id,new.user_id,'build_comment','Nouveau commentaire',coalesce(actor_name,'Membre') || ' · ' || coalesce(build_title,'Build'),'build',new.build_id);
+  return new;
+end;
+$$;
+drop trigger if exists mhur_notify_build_comment_trg on public.community_build_comments;
+create trigger mhur_notify_build_comment_trg
+after insert on public.community_build_comments
+for each row execute function public.mhur_notify_build_comment();
+
+-- Commentaire sur un mod.
+create or replace function public.mhur_notify_mod_comment()
+returns trigger
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare owner_id uuid; mod_title text; actor_name text;
+begin
+  select creator_id, title into owner_id, mod_title from public.community_mods where id = new.mod_id;
+  select username into actor_name from public.profiles where id = new.user_id;
+  perform public.mhur_insert_notification(owner_id,new.user_id,'mod_comment','Nouveau commentaire',coalesce(actor_name,'Membre') || ' · ' || coalesce(mod_title,'Mod'),'mod',new.mod_id);
+  return new;
+end;
+$$;
+drop trigger if exists mhur_notify_mod_comment_trg on public.community_mod_comments;
+create trigger mhur_notify_mod_comment_trg
+after insert on public.community_mod_comments
+for each row execute function public.mhur_notify_mod_comment();
+
+-- Like sur un mod.
+create or replace function public.mhur_notify_mod_like()
+returns trigger
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare owner_id uuid; mod_title text; actor_name text;
+begin
+  select creator_id, title into owner_id, mod_title from public.community_mods where id = new.mod_id;
+  select username into actor_name from public.profiles where id = new.user_id;
+  perform public.mhur_insert_notification(owner_id,new.user_id,'mod_like','Nouveau J’aime',coalesce(actor_name,'Membre') || ' · ' || coalesce(mod_title,'Mod'),'mod',new.mod_id);
+  return new;
+end;
+$$;
+drop trigger if exists mhur_notify_mod_like_trg on public.community_mod_likes;
+create trigger mhur_notify_mod_like_trg
+after insert on public.community_mod_likes
+for each row execute function public.mhur_notify_mod_like();
+
+-- Like sur un build. voter_id correspond au compte connecté dans les versions récentes.
+create or replace function public.mhur_notify_build_like()
+returns trigger
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare owner_id uuid; build_title text; actor_name text;
+begin
+  select creator_id, title into owner_id, build_title from public.community_builds where id = new.build_id;
+  select username into actor_name from public.profiles where id = new.voter_id;
+  perform public.mhur_insert_notification(owner_id,new.voter_id,'build_like','Nouveau J’aime',coalesce(actor_name,'Membre') || ' · ' || coalesce(build_title,'Build'),'build',new.build_id);
+  return new;
+end;
+$$;
+drop trigger if exists mhur_notify_build_like_trg on public.community_build_likes;
+create trigger mhur_notify_build_like_trg
+after insert on public.community_build_likes
+for each row execute function public.mhur_notify_build_like();
+
+-- Réaction sur un build.
+create or replace function public.mhur_notify_build_reaction()
+returns trigger
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare owner_id uuid; build_title text; actor_name text;
+begin
+  select creator_id, title into owner_id, build_title from public.community_builds where id = new.build_id;
+  select username into actor_name from public.profiles where id = new.user_id;
+  perform public.mhur_insert_notification(owner_id,new.user_id,'build_reaction','Nouvelle réaction',coalesce(actor_name,'Membre') || ' · ' || coalesce(build_title,'Build') || ' · ' || new.reaction,'build',new.build_id);
+  return new;
+end;
+$$;
+drop trigger if exists mhur_notify_build_reaction_trg on public.community_build_reactions;
+create trigger mhur_notify_build_reaction_trg
+after insert on public.community_build_reactions
+for each row execute function public.mhur_notify_build_reaction();
+
+-- Mise à jour d’un build favori.
+create or replace function public.mhur_notify_build_update()
+returns trigger
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare fav record;
+begin
+  for fav in select user_id from public.community_build_favorites where build_id = new.id loop
+    perform public.mhur_insert_notification(fav.user_id,new.creator_id,'build_updated','Build favori mis à jour',new.title,'build',new.id);
+  end loop;
+  return new;
+end;
+$$;
+drop trigger if exists mhur_notify_build_update_trg on public.community_builds;
+create trigger mhur_notify_build_update_trg
+after update of title, description, tuning_slots, costume_id, game_version on public.community_builds
+for each row when (old.updated_at is distinct from new.updated_at)
+execute function public.mhur_notify_build_update();
+
+-- Mise à jour d’un mod favori.
+create or replace function public.mhur_notify_mod_update()
+returns trigger
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare fav record;
+begin
+  for fav in select user_id from public.community_mod_favorites where mod_id = new.id loop
+    perform public.mhur_insert_notification(fav.user_id,new.creator_id,'mod_updated','Mod favori mis à jour',new.title || ' · v' || coalesce(new.mod_version,'1.0'),'mod',new.id);
+  end loop;
+  return new;
+end;
+$$;
+drop trigger if exists mhur_notify_mod_update_trg on public.community_mods;
+create trigger mhur_notify_mod_update_trg
+after update of title, description, mod_version, game_version, file_url, preview_url on public.community_mods
+for each row when (old.updated_at is distinct from new.updated_at)
+execute function public.mhur_notify_mod_update();
+
+-- Nettoyage facultatif : conserve au maximum environ six mois de notifications lues.
+create or replace function public.mhur_cleanup_old_notifications()
+returns integer
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare removed integer;
+begin
+  delete from public.community_notifications
+  where is_read = true and created_at < now() - interval '180 days';
+  get diagnostics removed = row_count;
+  return removed;
+end;
+$$;
+revoke execute on function public.mhur_cleanup_old_notifications() from anon;
+grant execute on function public.mhur_cleanup_old_notifications() to authenticated;
+
+-- Les créateurs gardent leurs droits de modification.
+grant update, delete on public.community_builds to authenticated;
+grant update, delete on public.community_mods to authenticated;

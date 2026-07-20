@@ -33,6 +33,11 @@ function cbPlain(value, max=500){
   return String(value ?? '').replace(/\s+/g,' ').trim().slice(0,max);
 }
 function cbIsEnglish(){return typeof lang!=='undefined'&&lang==='en'}
+function cbCurrentGameVersion(){
+  const title=String(window.MHUR_HOME_DATA?.patch_notes?.[0]?.title||'');
+  const match=title.match(/v?([0-9]+(?:\.[0-9]+){1,3}(?:[-_. ]?RC\d+)?)/i);
+  return match?`v${match[1].replace(/[-_. ]?rc/i,'-RC')}`:'';
+}
 function cbGameText(value){
   const fn=window.MHUR_TRANSLATE_GAME_TEXT;
   return cbIsEnglish()&&typeof fn==='function'?fn(value):String(value??'');
@@ -122,6 +127,15 @@ function cbNormalizeBuild(row){
     creator_id:String(row.creator_id||row.creatorId||''),
     is_verified:Boolean(row.is_verified),
     author_profile:row.profile||row.author_profile||null,
+    game_version:String(row.game_version||row.gameVersion||''),
+    source_build_id:String(row.source_build_id||row.sourceBuildId||''),
+    source_creator_id:String(row.source_creator_id||row.sourceCreatorId||''),
+    source_author:String(row.source_author||row.sourceAuthor||''),
+    updated_at:String(row.updated_at||row.updatedAt||row.created_at||row.createdAt||new Date().toISOString()),
+    share_code:String(row.share_code||row.shareCode||''),
+    copied_count:Number(row.copied_count??row.copiedCount??0),
+    validation_status:String(row.validation_status||row.validationStatus||'valid'),
+    validation_issues:Array.isArray(row.validation_issues)?row.validation_issues:[],
     source:row.source||(/^[0-9a-f-]{36}$/i.test(String(row.id||''))?'remote':'local')
   };
 }
@@ -230,22 +244,28 @@ function cbHeartHtml(build,compact=false){
 function cbSlotEntries(build){
   return Array.isArray(build.tuning_slots)?build.tuning_slots:[];
 }
+function cbAdaptiveSlotFont(name,size='normal',isSp=false){
+  const base=typeof slotFontSize==='function'?slotFontSize(name):20;
+  const cap={micro:10,mini:14,detail:20,normal:20}[size]||20;
+  const fitted=Math.min(Number(base)||20,cap);
+  return isSp?Math.max(10,fitted-1):Math.max(9,fitted);
+}
 function cbBuildTuningCardV306(entry,size='normal',clickable=false){
   const tuning=entry.tuning||{};
   const color=entry.color||tuning.slot||'gray';
   const isSp=entry.kind==='sp';
   const condition=entry.condition||'';
   const nm=safeTuningName(cbTuningName(tuning));
-  const fs=slotFontSize(nm);
+  const fs=cbAdaptiveSlotFont(nm,size,isSp);
   const text=tuning&&Object.keys(tuning).length
     ?(isSp
-      ?`<span class="equippedChar">${cbEsc(tuning.character||'')}</span><span class="equippedName" style="--equip-font:${Math.max(14,fs-1)}px">${cbEsc(nm)}</span>`
+      ?`<span class="equippedChar">${cbEsc(tuning.character||'')}</span><span class="equippedName" style="--equip-font:${fs}px">${cbEsc(nm)}</span>`
       :`<span class="equippedName" style="--equip-font:${fs}px">${cbEsc(nm)}</span>`)
     :'';
   const tag=clickable?'button':'div';
   const click=clickable?` type="button" onclick="communitySelectDraftSlot('${cbEsc(entry.id)}');return false;"`:'';
   const max=Number(entry.max||0)||(isSp?(entry.side==='left'?3:4):3);
-  return `<${tag}${click} class="gameSlot ${slotColorClass(color)} ${isSp?'spBand':''} ${tuning&&Object.keys(tuning).length?'filled':'empty'}" style="--slot-color:${slotHex(color)}">
+  return `<${tag}${click} class="gameSlot cbOfficialBuildTuningSlot ${cbEsc(size)} ${slotColorClass(color)} ${isSp?'spBand':''} ${tuning&&Object.keys(tuning).length?'filled':'empty'}" style="--slot-color:${slotHex(color)}" data-cb-build-slot="${cbEsc(entry.id||'')}">
     <div class="slotBandText">${text}</div><span class="slotMax">MAX ${max}</span>
     ${slotGem(color,isSp?condition:'',tuning.img||'')}
   </${tag}>`;
@@ -274,6 +294,11 @@ function cbAuthorProfile(build){
 function cbInitials(name){return String(name||'?').split(/\s+/).slice(0,2).map(x=>x[0]||'').join('').toUpperCase()||'?'}
 function cbAuthorAvatar(profile){return profile.avatar_url?`<img class="cbAuthorAvatar" src="${cbEsc(profile.avatar_url)}" alt="${cbEsc(profile.username||'')}">`:`<span class="cbAuthorAvatar cbAuthorAvatarFallback">${cbGenericAvatar}</span>`}
 function cbAuthorButton(build){const p=cbAuthorProfile(build);return p.id?`<button class="cbAuthorButton" onclick="event.stopPropagation();MHUR_PROFILES?.open('${cbEsc(p.id)}')">${cbAuthorAvatar(p)}<span>${cbEsc(p.username)}</span></button>`:`<span>${cbEsc(p.username)}</span>`}
+function cbExtraBuildActions(build,compact=false){
+  const copy=cbIsEnglish()?'Use this build':'Utiliser ce build';
+  const compare=cbIsEnglish()?'Compare':'Comparer';
+  return `<button class="cbCopyBuild ${compact?'compact':''}" title="${copy}" aria-label="${copy}" onclick="event.stopPropagation();communityCopyBuild('${cbEsc(build.id)}')">📋${compact?'':' '+copy}</button><button class="cbCompareBuild ${compact?'compact':''}" title="${compare}" aria-label="${compare}" onclick="event.stopPropagation();MHUR_PLUS?.compare?.pick('${cbEsc(build.id)}')">⚖️${compact?'':' '+compare}</button>`;
+}
 function cbFavoriteHtml(build){
   const active=window.MHUR_PROFILES?.isFavorite?.(build.id);
   const title=cbIsEnglish()?(active?'Remove from favorites':'Add to favorites'):(active?'Retirer des favoris':'Ajouter aux favoris');
@@ -288,12 +313,13 @@ function cbBuildCard(build,index=0,compact=false){
     <div class="cbRank">${index+1}</div>
     <div class="cbBuildCostume">${asset(build.costume_img,build.costume_name+' '+build.costume_variant)}${cbCostumeRarityBadge(costumeData)}</div>
     <div class="cbBuildMain">
-      <div class="cbBuildTitleLine"><h3>${cbEsc(build.title)}${window.MHUR_MODERATION?.verifiedBadge?.(build)||''}</h3><div class="cbBuildActions">${cbFavoriteHtml(build)}${cbHeartHtml(build,compact)}${cbOwnEditHtml(build,true)}${cbOwnDeleteHtml(build,true)}</div></div>
+      <div class="cbBuildTitleLine"><h3>${cbEsc(build.title)}${window.MHUR_MODERATION?.verifiedBadge?.(build)||''}</h3><div class="cbBuildActions">${cbFavoriteHtml(build)}${cbHeartHtml(build,compact)}${cbExtraBuildActions(build,true)}${cbOwnEditHtml(build,true)}${cbOwnDeleteHtml(build,true)}</div></div>
       <div class="cbBuildMeta">
         ${cbAuthorButton(build)}
         <span>${cbEsc(char?.name||build.character_id)}</span>
         <span>${cbEsc(styleName)}</span>
         <span>${cbEsc(build.costume_name)} — ${cbEsc(build.costume_variant)}</span>
+        ${build.game_version?`<span class="cbCardVersion">🎮 ${cbEsc(build.game_version)}</span>`:''}
       </div>
       ${compact
         ?cbBuildTuningColumnsV306(build,'micro')
@@ -331,6 +357,26 @@ function cbOpenBuildsPage(charId,styleId){
   render();
 }
 window.openCommunityBuildsPage=cbOpenBuildsPage;
+window.communityBackToBuildRoster=function(){
+  CB_STATE.currentDetail=null;
+  selectedChar=null;
+  selectedStyle=null;
+  selectedCostume=null;
+  if(location.hash!=='#builds') history.replaceState(null,'','#builds');
+  window.__keepScroll=true;
+  render();
+  requestAnimationFrame(()=>window.scrollTo({top:0,left:0,behavior:'auto'}));
+};
+/* Ce gestionnaire est chargé avant l'ancien correctif V385 : le bouton Retour des builds
+   ne peut donc plus être transformé à tort en simple changement de style. */
+window.addEventListener('click',event=>{
+  const back=event.target.closest?.('[data-cb-builds-back]');
+  if(!back) return;
+  event.preventDefault();
+  event.stopPropagation();
+  event.stopImmediatePropagation();
+  window.communityBackToBuildRoster();
+},true);
 
 function cbCharacterWidget(styleId){
   const char=characters.find(x=>x.styles.includes(styleId));
@@ -384,7 +430,7 @@ buildsPage=function(){
   if(!char) return `<div class="homeBox">${tr('characterNotFound')}</div>`;
   if(!selectedStyle||!char.styles.includes(selectedStyle)) selectedStyle=char.styles[0];
   cbEnsureLoaded(char.id,selectedStyle);
-  return `<button class="back" onclick="selectedChar=null;selectedStyle=null;render()">← ${tr('back')}</button>
+  return `<button class="back cbCommunityBuildBack" type="button" data-cb-builds-back="1" onclick="communityBackToBuildRoster();return false;">← ${tr('back')}</button>
     <div class="cbPageHead">
       <div><h1 class="title">${tr('communityBuildsTitle')} — ${cbEsc(char.name)}</h1><p>${tr('eachStyleRanking')}</p></div>
       <button class="cbAddBuild" onclick="openCommunityBuildCreator('${cbEsc(char.id)}','${cbEsc(selectedStyle)}')"><span>+</span> ${tr('createFullBuild')}</button>
@@ -555,6 +601,8 @@ window.openCommunityBuildCreator=function(charId,styleId){
     title:'',
     author:window.MHUR_AUTH?.getProfile?.()?.username||accountName||localStorage.getItem('mhur_build_author_v304')||'',
     description:'',
+    gameVersion:cbCurrentGameVersion(),
+    sourceBuildId:'',sourceCreatorId:'',sourceAuthor:'',
     selectedSlot:'sp|left|0',
     slots:{},
     costumeFilters:cbCostumeFilterDefaults(),
@@ -585,6 +633,8 @@ window.communityEditOwnBuild=function(id){
     title:build.title,
     author:window.MHUR_AUTH?.getProfile?.()?.username||build.author,
     description:build.description||'',
+    gameVersion:build.game_version||cbCurrentGameVersion(),
+    sourceBuildId:build.source_build_id||'',sourceCreatorId:build.source_creator_id||'',sourceAuthor:build.source_author||'',
     selectedSlot:cbSlotEntries(build)[0]?.id||'sp|left|0',
     slots,
     costumeFilters:cbCostumeFilterDefaults(),
@@ -595,6 +645,27 @@ window.communityEditOwnBuild=function(id){
   modal.classList.add('open');
   document.body.classList.add('cbModalOpen');
   cbRenderBuilder();
+};
+window.communityCopyBuild=function(id){
+  const build=cbFindBuild(id);
+  if(!build) return;
+  if(CB_REMOTE && !window.MHUR_AUTH?.requireLogin?.(cbIsEnglish()?'Sign in to use this build.':'Connecte-toi pour utiliser ce build.')) return;
+  const slots={};
+  cbSlotEntries(build).forEach(entry=>{if(entry?.id&&entry?.tuning)slots[entry.id]=JSON.parse(JSON.stringify(entry.tuning));});
+  const authProfile=window.MHUR_AUTH?.getProfile?.();
+  const authUser=window.MHUR_AUTH?.getUser?.();
+  const accountName=authProfile?.username||authUser?.user_metadata?.full_name||authUser?.user_metadata?.name||authUser?.email?.split('@')[0]||'';
+  cbPreloadBuilderImages(build.character_id);
+  CB_STATE.draft={
+    characterId:build.character_id,styleId:build.style_id,costumeId:build.costume_id,
+    title:(cbIsEnglish()?'Inspired by ':'Inspiré de ')+build.title,
+    author:accountName||localStorage.getItem('mhur_build_author_v304')||'',
+    description:'',gameVersion:cbCurrentGameVersion()||build.game_version||'',
+    sourceBuildId:/^[0-9a-f-]{36}$/i.test(build.id)?build.id:'',sourceCreatorId:/^[0-9a-f-]{36}$/i.test(build.creator_id||'')?build.creator_id:'',sourceAuthor:cbAuthorProfile(build).username||build.author||'',
+    selectedSlot:cbSlotEntries(build)[0]?.id||'sp|left|0',slots,costumeFilters:cbCostumeFilterDefaults(),editingId:''
+  };
+  closeCommunityBuildDetail();
+  const modal=cbBuilderModal();modal.classList.add('open');document.body.classList.add('cbModalOpen');cbRenderBuilder();
 };
 window.closeCommunityBuildCreator=function(){
   cbBuilderModal().classList.remove('open');
@@ -627,28 +698,53 @@ window.communityChooseCostume=function(costumeId){
   CB_STATE.draft.slots={};
   cbRenderBuilder();
 };
+function cbBuilderUsesMobileFlow(){
+  return Boolean(window.matchMedia&&window.matchMedia('(max-width:1050px)').matches);
+}
+function cbQueueBuilderScroll(target,slotId=''){
+  if(!cbBuilderUsesMobileFlow()) return;
+  const run=()=>{
+    const panel=document.querySelector('#cbBuilderModal .cbModalPanel');
+    if(!panel) return;
+    let node=null;
+    if(target==='picker') node=document.querySelector('#cbBuilderContent [data-cb-picker]');
+    else node=[...document.querySelectorAll('#cbBuilderContent [data-cb-slot-anchor]')].find(el=>el.dataset.cbSlotAnchor===String(slotId));
+    if(!node) return;
+    const panelBox=panel.getBoundingClientRect();
+    const nodeBox=node.getBoundingClientRect();
+    const offset=target==='picker'?12:Math.max(12,(panel.clientHeight-nodeBox.height)/2);
+    const top=Math.max(0,panel.scrollTop+(nodeBox.top-panelBox.top)-offset);
+    try{panel.scrollTo({top,behavior:'smooth'});}catch(_){panel.scrollTop=top;}
+  };
+  requestAnimationFrame(()=>requestAnimationFrame(()=>setTimeout(run,20)));
+}
 window.communitySelectDraftSlot=function(slotId){
   if(!CB_STATE.draft) return;
   CB_STATE.draft.selectedSlot=slotId;
   cbRenderBuilder();
+  cbQueueBuilderScroll('picker',slotId);
 };
 window.communityEquipDraftTuning=function(index){
   const tuning=window.__cbTuningOptions?.[index];
   const draft=CB_STATE.draft;
   if(!draft||!tuning) return;
+  const selectedSlot=draft.selectedSlot;
   const styleKey=tuning.styleKey||tuning.character;
-  if(cbUsedStyles(draft.selectedSlot).has(styleKey)){
+  if(cbUsedStyles(selectedSlot).has(styleKey)){
     alert('Ce style de T.U.N.I.N.G est déjà utilisé dans ce build. Choisis un autre style.');
     return;
   }
-  draft.slots[draft.selectedSlot]=cbTuningSnapshot(tuning);
+  draft.slots[selectedSlot]=cbTuningSnapshot(tuning);
   cbRenderBuilder();
+  cbQueueBuilderScroll('slot',selectedSlot);
 };
 window.communityClearDraftSlot=function(){
   const draft=CB_STATE.draft;
   if(!draft) return;
-  delete draft.slots[draft.selectedSlot];
+  const selectedSlot=draft.selectedSlot;
+  delete draft.slots[selectedSlot];
   cbRenderBuilder();
+  cbQueueBuilderScroll('slot',selectedSlot);
 };
 window.communityDraftField=function(field,value){
   if(CB_STATE.draft) CB_STATE.draft[field]=value;
@@ -662,17 +758,19 @@ function cbBuilderOfficialSlotV308(spec){
 
   if(tuning){
     const nm=safeTuningName(cbTuningName(tuning));
-    const fs=slotFontSize(nm);
+    const fs=cbAdaptiveSlotFont(nm,'normal',isSp);
     text=isSp
-      ?`<span class="equippedChar">${cbEsc(tuning.character||'')}</span><span class="equippedName" style="--equip-font:${Math.max(14,fs-1)}px">${cbEsc(nm)}</span>`
+      ?`<span class="equippedChar">${cbEsc(tuning.character||'')}</span><span class="equippedName" style="--equip-font:${fs}px">${cbEsc(nm)}</span>`
       :`<span class="equippedName" style="--equip-font:${fs}px">${cbEsc(nm)}</span>`;
   }
 
   return `<button type="button"
-      class="gameSlot ${isSp?'spBand':''} ${active?'active':''} ${tuning?'filled':'empty'}"
+      class="gameSlot cbCommunityCreatorSlot ${slotColorClass(spec.color)} ${isSp?'spBand':''} ${active?'active':''} ${tuning?'filled':'empty'}"
       style="--slot-color:${slotHex(spec.color)}"
+      data-cb-slot-anchor="${cbEsc(spec.id)}"
       onclick="communitySelectDraftSlot('${cbEsc(spec.id)}');return false;">
     <div class="slotBandText">${text}</div>
+    <span class="slotMax">MAX ${Number(spec.max||0)||(isSp?(spec.side==='left'?3:4):3)}</span>
     ${slotGem(spec.color,spec.condition||'',tuning?tuning.img:'')}
   </button>`;
 }
@@ -691,7 +789,7 @@ function cbBuilderPicker(costume,spec){
     ?'T.U.N.I.N.G SP'
     :'T.U.N.I.N.G normal';
 
-  return `<div class="cbOfficialPickerWrapV308">
+  return `<div class="cbOfficialPickerWrapV308" data-cb-picker="1">
     ${CB_STATE.draft.slots[spec.id]
       ?'<button type="button" class="cbOfficialRemoveV308" onclick="communityClearDraftSlot()">Retirer le T.U.N.I.N.G de cet emplacement</button>'
       :''}
@@ -749,7 +847,9 @@ function cbRenderBuilder(){
     <div class="cbBuildFields">
       <label>Nom du build<input maxlength="80" value="${cbEsc(draft.title)}" oninput="communityDraftField('title',this.value)" placeholder="Ex : Mobilité maximale, DPS, survie…"></label>
       <label>Pseudo<input maxlength="40" value="${cbEsc(draft.author)}" ${window.MHUR_AUTH?.getUser?.()?'readonly title="Pseudo lié à ton compte"':'oninput="communityDraftField(\'author\',this.value)"'} placeholder="Ton pseudo"></label>
+      <label>Version du jeu<input maxlength="40" value="${cbEsc(draft.gameVersion||'')}" oninput="communityDraftField('gameVersion',this.value)" placeholder="Ex : v1.16.3-RC142"></label>
       <label class="wide">Description<textarea maxlength="700" oninput="communityDraftField('description',this.value)" placeholder="Explique comment jouer le build…">${cbEsc(draft.description)}</textarea></label>
+      ${draft.sourceBuildId?`<div class="cbInspiredDraft">🔗 ${cbIsEnglish()?'Inspired by':'Inspiré du build de'} <b>${cbEsc(draft.sourceAuthor||'la communauté')}</b></div>`:''}
     </div>
     <h3 class="cbSectionTitle">1. Costume <span>${filteredCostumes.length}/${costumes.length}</span></h3>
     <div class="cbCostumeFilters">
@@ -806,6 +906,38 @@ function cbRenderBuilder(){
   restoreCostumeScroll();
   requestAnimationFrame(restoreCostumeScroll);
 }
+function cbValidateDraft(){
+  const draft=CB_STATE.draft;
+  const costume=cbDraftCostume();
+  const errors=[];
+  const warnings=[];
+  if(!draft){errors.push(cbIsEnglish()?'No build is being edited.':'Aucun build en cours.');return {errors,warnings,filled:0,total:12};}
+  if(!costume){errors.push(cbIsEnglish()?'Choose a valid costume.':'Choisis un costume valide.');return {errors,warnings,filled:0,total:12};}
+  const specs=cbSlotSpecs(costume);
+  if(specs.length!==12)errors.push((cbIsEnglish()?'This costume exposes ':'Ce costume contient ')+specs.length+(cbIsEnglish()?' slots instead of 12.':' emplacements au lieu de 12.'));
+  const used=new Map();
+  let filled=0;
+  for(const spec of specs){
+    const tuning=draft.slots?.[spec.id];
+    if(!tuning){errors.push(`${spec.side==='left'?(cbIsEnglish()?'Left':'Gauche'):(cbIsEnglish()?'Right':'Droite')} · ${spec.kind==='sp'?'SP':(cbIsEnglish()?'normal':'normal')} #${Number(spec.index||0)+1} : ${cbIsEnglish()?'empty slot':'emplacement vide'}`);continue;}
+    filled++;
+    const family=tuning.styleKey||tuning.character||tuning.key||tuning.name;
+    if(used.has(family))errors.push((cbIsEnglish()?'T.U.N.I.N.G style used twice: ':'Style T.U.N.I.N.G utilisé deux fois : ')+(tuning.character||tuning.styleKey||tuning.name));
+    else used.set(family,spec.id);
+    if(tuning.kind&&tuning.kind!==spec.kind)errors.push((cbIsEnglish()?'Wrong T.U.N.I.N.G type in ':'Mauvais type de T.U.N.I.N.G dans ')+spec.id);
+    const compatible=compatibleTunings(spec.color,spec.kind,spec.condition).some(item=>{
+      const candidateKey=[item.kind,item.styleKey,item.character,item.name].join('|');
+      if(tuning.key&&candidateKey===tuning.key)return true;
+      const a=item.styleKey||item.character;
+      const b=tuning.styleKey||tuning.character;
+      return a===b && String(cbTuningName(item)||'')===String(tuning.name||'');
+    });
+    if(!compatible)errors.push((cbIsEnglish()?'Incompatible or outdated T.U.N.I.N.G: ':'T.U.N.I.N.G incompatible ou obsolète : ')+(tuning.name||spec.id));
+    if(!Number(spec.max||0))warnings.push((cbIsEnglish()?'Unknown maximum level for ':'Niveau maximum inconnu pour ')+spec.id);
+  }
+  if(draft.gameVersion&&cbCurrentGameVersion()&&draft.gameVersion.toLowerCase()!==cbCurrentGameVersion().toLowerCase())warnings.push(cbIsEnglish()?'The selected game version differs from the current site data.':'La version choisie diffère des données actuelles du site.');
+  return {errors:[...new Set(errors)],warnings:[...new Set(warnings)],filled,total:specs.length};
+}
 function cbPayloadFromDraft(){
   const draft=CB_STATE.draft;
   const costume=cbDraftCostume();
@@ -813,10 +945,12 @@ function cbPayloadFromDraft(){
   draft.title=cbPlain(document.querySelector('#cbBuilderContent input[placeholder^="Ex :"]')?.value||draft.title,80);
   draft.author=cbPlain(window.MHUR_AUTH?.getProfile?.()?.username||document.querySelector('#cbBuilderContent input[placeholder="Ton pseudo"]')?.value||draft.author,40);
   draft.description=cbPlain(document.querySelector('#cbBuilderContent textarea')?.value||draft.description,700);
+  draft.gameVersion=cbPlain(draft.gameVersion||cbCurrentGameVersion(),40);
   if(draft.title.length<3) throw new Error('Le nom du build doit contenir au moins 3 caractères.');
   if(draft.author.length<2) throw new Error('Ajoute un pseudo.');
   const specs=cbSlotSpecs(costume);
-  if(specs.some(spec=>!draft.slots[spec.id])) throw new Error('Remplis les 12 emplacements T.U.N.I.N.G.');
+  const validation=cbValidateDraft();
+  if(validation.errors.length) throw new Error(validation.errors[0]);
   const authUser=window.MHUR_AUTH?.getUser?.();
   if(CB_REMOTE && !authUser) throw new Error('Connecte-toi pour publier ce build.');
   localStorage.setItem('mhur_build_author_v304',draft.author);
@@ -830,6 +964,13 @@ function cbPayloadFromDraft(){
     title:draft.title,
     author:draft.author,
     description:draft.description,
+    game_version:draft.gameVersion||null,
+    source_build_id:draft.sourceBuildId||null,
+    source_creator_id:draft.sourceCreatorId||null,
+    source_author:draft.sourceAuthor||null,
+    updated_at:new Date().toISOString(),
+    validation_status:validation.errors.length?'invalid':(validation.warnings.length?'warning':'valid'),
+    validation_issues:[...validation.errors,...validation.warnings].slice(0,30),
     tuning_slots:specs.map(spec=>({...spec,tuning:draft.slots[spec.id]})),
     creator_id:authUser?.id||cbVoterId(),
     likes_count:0,
@@ -965,17 +1106,26 @@ function cbRenderBuildDetail(id){
   const content=document.getElementById('cbDetailContent');
   if(!build||!content) return;
   const char=cbCharacter(build.character_id);
+  const currentVersion=cbCurrentGameVersion();
+  const outdated=Boolean(build.game_version&&currentVersion&&build.game_version.toLowerCase()!==currentVersion.toLowerCase());
   content.innerHTML=`<div class="cbDetailHero">
       <div>${asset(build.costume_img,build.costume_name)}</div>
       <div><span>BUILD COMMUNAUTAIRE</span><h2>${cbEsc(build.title)}</h2>
         <p>${cbEsc(char?.name||build.character_id)} · ${cbEsc(cbStyleName(build.style_id))}</p>
         <p>${cbEsc(build.costume_name)} — ${cbEsc(build.costume_variant)}</p>
+        <div class="cbDetailVersion">🎮 ${cbEsc(build.game_version||(cbIsEnglish()?'Version not specified':'Version non précisée'))}</div>
+        ${build.share_code?`<div class="cbShareCode">🔗 ${cbEsc(build.share_code)} · ${Number(build.copied_count)||0} ${cbIsEnglish()?'copies':'copies'}</div>`:''}
+        ${build.source_author?`<div class="cbInspiredBy">🔗 ${cbIsEnglish()?'Inspired by a build from':'Inspiré d’un build de'} <b>${cbEsc(build.source_author)}</b></div>`:''}
+        ${outdated?`<div class="cbCompatibilityWarning">⚠️ ${cbIsEnglish()?`This build was created for ${cbEsc(build.game_version)}. Current data: ${cbEsc(currentVersion)}.`:`Ce build a été créé pour ${cbEsc(build.game_version)}. Données actuelles : ${cbEsc(currentVersion)}.`}</div>`:''}
         <div class="cbDetailAuthor">Par ${cbAuthorButton(build)} · ${cbFormatDate(build.created_at)}</div>
-        <div class="cbBuildActions">${cbFavoriteHtml(build)}${cbHeartHtml(build)}${cbOwnEditHtml(build)}${cbOwnDeleteHtml(build)}${window.MHUR_MODERATION?.detailActions?.(build)||''}</div>
+        <div class="cbBuildActions">${cbFavoriteHtml(build)}${cbHeartHtml(build)}${cbExtraBuildActions(build)}${cbOwnEditHtml(build)}${cbOwnDeleteHtml(build)}${window.MHUR_MODERATION?.detailActions?.(build)||''}</div>
       </div>
     </div>
     <div class="cbDetailDescription">${cbEsc(build.description||'Aucune description.')}</div>
-    <div class="cbCostumeTuningGridV306 detail">${cbDetailColumn(build,'left')}${cbDetailColumn(build,'right')}</div>`;
+    <div class="cbCostumeTuningGridV306 detail">${cbDetailColumn(build,'left')}${cbDetailColumn(build,'right')}</div>
+    <div id="mhurBuildReactionsMount"></div>`;
+  window.MHUR_HUB?.comments?.mount?.(build.id);
+  window.MHUR_PLUS?.mountBuildDetail?.(build);
 }
 window.openCommunityBuildDetail=function(id,charId,styleId){
   const build=cbFindBuild(id,charId,styleId);
@@ -1061,6 +1211,8 @@ window.addEventListener('keydown',event=>{
   if(document.getElementById('cbBuilderModal')?.classList.contains('open')) closeCommunityBuildCreator();
   if(document.getElementById('cbDetailModal')?.classList.contains('open')) closeCommunityBuildDetail();
 });
+
+window.MHUR_COMMUNITY_BUILDS={state:CB_STATE,find:cbFindBuild,normalize:cbNormalizeBuild,request:cbRequest,remote:CB_REMOTE,currentVersion:cbCurrentGameVersion,slotEntries:cbSlotEntries,slotSpecs:cbSlotSpecs,draftCostume:cbDraftCostume,validateDraft:cbValidateDraft,renderBuilder:cbRenderBuilder,renderTuningColumns:cbBuildTuningColumnsV306,refresh:cbRefreshVisible,openPage:cbOpenBuildsPage,allCached:()=>Object.values(CB_STATE.cache).flat()};
 
 if(page==='builds'||(page==='characters'&&selectedStyle)){
   window.__keepScroll=true;

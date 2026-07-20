@@ -48,6 +48,28 @@
       ]
     },
     {
+      "name": "Builds communauté",
+      "short_name": "Builds",
+      "url": "/#builds",
+      "icons": [
+        {
+          "src": "/assets/brand/icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Mods",
+      "short_name": "Mods",
+      "url": "/#mods",
+      "icons": [
+        {
+          "src": "/assets/brand/icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
       "name": "Costumes",
       "short_name": "Costumes",
       "url": "/#costumes",

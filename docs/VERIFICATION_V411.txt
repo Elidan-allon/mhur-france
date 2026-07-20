@@ -1,0 +1,16 @@
+VÉRIFICATION V411
+
+[OK] Syntaxe vérifiée pour tous les fichiers JavaScript.
+[OK] Les fichiers CSS/JS V411 sont chargés en dernier dans index.html.
+[OK] Le script SQL V411 est présent à la racine et dans configuration/.
+[OK] INSTALLATION_SUPABASE_COMPLETE.sql inclut les fonctions V411.
+[OK] Service worker et version.json passent en version 411.
+[OK] Les anciennes fonctions V409/V410 restent présentes.
+
+À tester après mise en ligne et exécution du SQL :
+1. Copier un build puis le publier.
+2. Sélectionner deux builds avec « Comparer ».
+3. Ajouter/retirer une réaction et un favori.
+4. Modifier un mod et télécharger son ancienne version.
+5. Ouvrir Ma bibliothèque et Tendances semaine.
+6. Vérifier les notifications après la modification d'un favori.

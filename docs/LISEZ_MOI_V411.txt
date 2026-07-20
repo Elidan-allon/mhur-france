@@ -1,0 +1,23 @@
+MHUR FRANCE V411 — COMMUNAUTÉ AVANCÉE
+
+NOUVEAUTÉS
+- Bouton « Utiliser ce build » : ouvre le créateur avec le costume et les 12 T.U.N.I.N.G déjà remplis.
+- Attribution automatique du build d'origine.
+- Comparaison de deux builds avec liste des T.U.N.I.N.G différents.
+- Version du jeu enregistrée sur chaque build et avertissement quand elle diffère des données actuelles.
+- Réactions : Utile, Testé en partie, Recommandé et Ne fonctionne plus.
+- Commentaires directement sous les builds.
+- Favoris des mods et page « Ma bibliothèque » pour retrouver builds et mods.
+- Tendances hebdomadaires pour les builds, les mods et les créateurs.
+- Profils publics enrichis : builds, mods, likes, téléchargements et badges.
+- Historique des anciennes versions des mods avec téléchargement des anciens fichiers.
+- Guide d'installation adapté au fichier .pak/.utoc/.ucas ou .zip.
+- Signalement des mods et écran de traitement pour les administrateurs.
+- Notifications locales quand un build ou un mod favori est mis à jour.
+- PWA améliorée avec cache progressif et mode hors connexion.
+
+SUPABASE
+Exécuter UNE FOIS :
+  configuration/MISE_A_JOUR_SUPABASE_V411.sql
+
+Le fichier INSTALLATION_SUPABASE_COMPLETE.sql contient aussi toutes les tables V411 pour un nouveau projet Supabase.

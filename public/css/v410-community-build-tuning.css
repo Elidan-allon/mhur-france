@@ -1,0 +1,310 @@
+/* V410 — cartes T.U.N.I.N.G communautaires identiques aux costumes + navigation mobile */
+
+/* Les cartes du créateur et des builds publiés réutilisent réellement la carte officielle.
+   Les anciennes hauteurs fixes qui coupaient les noms longs sont neutralisées. */
+#cbBuilderContent .cbOfficialCreatorScreenV308 .cbCommunityCreatorSlot.gameSlot,
+.cbCostumeTuningGridV306 .cbOfficialBuildTuningSlot.gameSlot{
+  position:relative!important;
+  display:block!important;
+  width:100%!important;
+  max-width:100%!important;
+  min-width:0!important;
+  height:auto!important;
+  min-height:74px!important;
+  margin:0!important;
+  box-sizing:border-box!important;
+  overflow:hidden!important;
+  text-align:left!important;
+  cursor:default!important;
+}
+#cbBuilderContent .cbOfficialCreatorScreenV308 .cbCommunityCreatorSlot.gameSlot{
+  cursor:pointer!important;
+}
+#cbBuilderContent .cbOfficialCreatorScreenV308 .cbCommunityCreatorSlot.gameSlot.spBand,
+.cbCostumeTuningGridV306 .cbOfficialBuildTuningSlot.gameSlot.spBand{
+  height:auto!important;
+  min-height:94px!important;
+}
+
+/* Zone de texte : elle garde la place de l'hexagone et du badge MAX. */
+#cbBuilderContent .cbOfficialCreatorScreenV308 .cbCommunityCreatorSlot .slotBandText,
+.cbCostumeTuningGridV306 .cbOfficialBuildTuningSlot .slotBandText{
+  position:relative!important;
+  z-index:2!important;
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:flex-start!important;
+  justify-content:center!important;
+  width:auto!important;
+  min-width:0!important;
+  min-height:74px!important;
+  max-height:none!important;
+  padding:6px 86px 29px 10px!important;
+  box-sizing:border-box!important;
+  overflow:hidden!important;
+  text-align:left!important;
+}
+#cbBuilderContent .cbOfficialCreatorScreenV308 .cbCommunityCreatorSlot.spBand .slotBandText,
+.cbCostumeTuningGridV306 .cbOfficialBuildTuningSlot.spBand .slotBandText{
+  min-height:94px!important;
+  padding:7px 91px 23px 11px!important;
+}
+
+/* Le nom utilise la taille calculée dans le JavaScript. Plus il est long, plus il rétrécit. */
+#cbBuilderContent .cbOfficialCreatorScreenV308 .cbCommunityCreatorSlot .equippedName,
+.cbCostumeTuningGridV306 .cbOfficialBuildTuningSlot .equippedName{
+  display:-webkit-box!important;
+  -webkit-box-orient:vertical!important;
+  -webkit-line-clamp:2!important;
+  width:100%!important;
+  min-width:0!important;
+  max-width:100%!important;
+  max-height:2.08em!important;
+  margin:0!important;
+  color:#000!important;
+  font-size:var(--equip-font,20px)!important;
+  font-weight:1000!important;
+  line-height:1.04!important;
+  white-space:normal!important;
+  overflow:hidden!important;
+  overflow-wrap:anywhere!important;
+  word-break:normal!important;
+  text-overflow:clip!important;
+  text-shadow:none!important;
+}
+#cbBuilderContent .cbOfficialCreatorScreenV308 .cbCommunityCreatorSlot.spBand .equippedName,
+.cbCostumeTuningGridV306 .cbOfficialBuildTuningSlot.spBand .equippedName{
+  max-height:2.12em!important;
+  color:#fff!important;
+  font-size:var(--equip-font,18px)!important;
+  line-height:1.06!important;
+  text-shadow:2px 2px 0 #000!important;
+}
+#cbBuilderContent .cbOfficialCreatorScreenV308 .cbCommunityCreatorSlot .equippedChar,
+.cbCostumeTuningGridV306 .cbOfficialBuildTuningSlot .equippedChar{
+  display:block!important;
+  width:100%!important;
+  margin:0 0 2px!important;
+  color:#fff!important;
+  font-size:12px!important;
+  font-weight:900!important;
+  line-height:1!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+  text-shadow:2px 2px 0 #000!important;
+}
+
+/* MAX est maintenant présent dans le créateur comme sur la page Costumes. */
+#cbBuilderContent .cbOfficialCreatorScreenV308 .cbCommunityCreatorSlot .slotMax,
+.cbCostumeTuningGridV306 .cbOfficialBuildTuningSlot .slotMax{
+  display:inline-flex!important;
+  left:9px!important;
+  bottom:6px!important;
+  z-index:7!important;
+  font-size:10px!important;
+  padding:2px 6px!important;
+}
+#cbBuilderContent .cbOfficialCreatorScreenV308 .cbCommunityCreatorSlot.spBand .slotMax,
+.cbCostumeTuningGridV306 .cbOfficialBuildTuningSlot.spBand .slotMax{
+  left:10px!important;
+  bottom:7px!important;
+}
+
+/* Hexagone officiel, sans changement de position pendant les rerendus. */
+#cbBuilderContent .cbOfficialCreatorScreenV308 .cbCommunityCreatorSlot .slotGem,
+.cbCostumeTuningGridV306 .cbOfficialBuildTuningSlot .slotGem{
+  position:absolute!important;
+  top:50%!important;
+  right:7px!important;
+  width:64px!important;
+  height:64px!important;
+  margin:0!important;
+  transform:translateY(-50%)!important;
+}
+#cbBuilderContent .cbOfficialCreatorScreenV308 .cbCommunityCreatorSlot.spBand .slotGem,
+.cbCostumeTuningGridV306 .cbOfficialBuildTuningSlot.spBand .slotGem{
+  right:6px!important;
+  width:70px!important;
+  height:70px!important;
+}
+
+/* Tailles des cartes dans les listes et dans la fenêtre de détail. */
+.cbCostumeTuningGridV306 .cbOfficialBuildTuningSlot.mini.gameSlot{
+  min-height:68px!important;
+}
+.cbCostumeTuningGridV306 .cbOfficialBuildTuningSlot.mini.gameSlot.spBand{
+  min-height:82px!important;
+}
+.cbCostumeTuningGridV306 .cbOfficialBuildTuningSlot.mini .slotBandText{
+  min-height:68px!important;
+  padding:5px 69px 25px 8px!important;
+}
+.cbCostumeTuningGridV306 .cbOfficialBuildTuningSlot.mini.spBand .slotBandText{
+  min-height:82px!important;
+  padding:6px 73px 21px 9px!important;
+}
+.cbCostumeTuningGridV306 .cbOfficialBuildTuningSlot.mini .slotGem{
+  width:52px!important;
+  height:52px!important;
+  right:6px!important;
+}
+.cbCostumeTuningGridV306 .cbOfficialBuildTuningSlot.mini.spBand .slotGem{
+  width:58px!important;
+  height:58px!important;
+}
+.cbCostumeTuningGridV306 .cbOfficialBuildTuningSlot.mini .slotMax{
+  font-size:8px!important;
+}
+
+.cbCostumeTuningGridV306 .cbOfficialBuildTuningSlot.micro.gameSlot{
+  min-height:56px!important;
+}
+.cbCostumeTuningGridV306 .cbOfficialBuildTuningSlot.micro.gameSlot.spBand{
+  min-height:70px!important;
+}
+.cbCostumeTuningGridV306 .cbOfficialBuildTuningSlot.micro .slotBandText{
+  min-height:56px!important;
+  padding:4px 55px 21px 6px!important;
+}
+.cbCostumeTuningGridV306 .cbOfficialBuildTuningSlot.micro.spBand .slotBandText{
+  min-height:70px!important;
+  padding:5px 59px 18px 7px!important;
+}
+.cbCostumeTuningGridV306 .cbOfficialBuildTuningSlot.micro .slotGem{
+  width:40px!important;
+  height:40px!important;
+  right:5px!important;
+}
+.cbCostumeTuningGridV306 .cbOfficialBuildTuningSlot.micro.spBand .slotGem{
+  width:46px!important;
+  height:46px!important;
+}
+.cbCostumeTuningGridV306 .cbOfficialBuildTuningSlot.micro .slotMax{
+  left:6px!important;
+  bottom:4px!important;
+  padding:1px 4px!important;
+  font-size:7px!important;
+}
+.cbCostumeTuningGridV306 .cbOfficialBuildTuningSlot.micro .equippedChar{
+  font-size:8px!important;
+}
+
+.cbCostumeTuningGridV306 .cbOfficialBuildTuningSlot.detail.gameSlot{
+  min-height:98px!important;
+}
+.cbCostumeTuningGridV306 .cbOfficialBuildTuningSlot.detail.gameSlot.spBand{
+  min-height:104px!important;
+}
+.cbCostumeTuningGridV306 .cbOfficialBuildTuningSlot.detail .slotBandText{
+  min-height:98px!important;
+  padding:8px 98px 31px 13px!important;
+}
+.cbCostumeTuningGridV306 .cbOfficialBuildTuningSlot.detail.spBand .slotBandText{
+  min-height:104px!important;
+  padding:8px 102px 25px 13px!important;
+}
+.cbCostumeTuningGridV306 .cbOfficialBuildTuningSlot.detail .slotGem{
+  width:78px!important;
+  height:78px!important;
+  right:8px!important;
+}
+.cbCostumeTuningGridV306 .cbOfficialBuildTuningSlot.detail.spBand .slotGem{
+  width:84px!important;
+  height:84px!important;
+}
+.cbCostumeTuningGridV306 .cbOfficialBuildTuningSlot.detail .slotMax{
+  left:12px!important;
+  bottom:8px!important;
+  font-size:11px!important;
+}
+
+/* La liste compatible respecte aussi sa taille dynamique au lieu d'imposer 20 px. */
+#cbBuilderContent .cbOfficialCreatorScreenV308 .tuningOptionName{
+  font-size:var(--option-font,20px)!important;
+  line-height:1.03!important;
+}
+
+/* Le bouton Retour des builds reste au-dessus des anciens gestionnaires de navigation. */
+.cbCommunityBuildBack{
+  position:relative;
+  z-index:2;
+}
+
+/* Cibles de l'auto-défilement mobile. */
+#cbBuilderContent [data-cb-slot-anchor],
+#cbBuilderContent [data-cb-picker]{
+  scroll-margin-top:12px;
+  scroll-margin-bottom:12px;
+}
+
+@media(max-width:1050px){
+  #cbBuilderContent .cbOfficialCreatorScreenV308 .gameTuningArea{
+    grid-template-columns:minmax(0,1fr)!important;
+  }
+  #cbBuilderContent .cbOfficialCreatorScreenV308 .tuningColumns.gameSlots{
+    grid-template-columns:minmax(0,1fr)!important;
+  }
+  #cbBuilderContent .cbOfficialCreatorScreenV308 .cbCommunityCreatorSlot.gameSlot{
+    touch-action:manipulation!important;
+  }
+}
+
+@media(max-width:700px){
+  #cbBuilderContent .cbOfficialCreatorScreenV308{
+    margin:0 8px 14px!important;
+  }
+  #cbBuilderContent .cbOfficialCreatorScreenV308 .gameTuningArea{
+    padding:8px!important;
+  }
+  #cbBuilderContent .cbOfficialCreatorScreenV308 .slotList{
+    padding:8px!important;
+  }
+  #cbBuilderContent .cbOfficialCreatorScreenV308 .cbCommunityCreatorSlot.gameSlot{
+    min-height:70px!important;
+  }
+  #cbBuilderContent .cbOfficialCreatorScreenV308 .cbCommunityCreatorSlot.gameSlot.spBand{
+    min-height:88px!important;
+  }
+  #cbBuilderContent .cbOfficialCreatorScreenV308 .cbCommunityCreatorSlot .slotBandText{
+    min-height:70px!important;
+    padding:5px 74px 26px 8px!important;
+  }
+  #cbBuilderContent .cbOfficialCreatorScreenV308 .cbCommunityCreatorSlot.spBand .slotBandText{
+    min-height:88px!important;
+    padding:6px 78px 21px 9px!important;
+  }
+  #cbBuilderContent .cbOfficialCreatorScreenV308 .cbCommunityCreatorSlot .slotGem{
+    width:56px!important;
+    height:56px!important;
+    right:6px!important;
+  }
+  #cbBuilderContent .cbOfficialCreatorScreenV308 .cbCommunityCreatorSlot.spBand .slotGem{
+    width:62px!important;
+    height:62px!important;
+  }
+  #cbBuilderContent .cbOfficialCreatorScreenV308 .cbCommunityCreatorSlot .slotMax{
+    left:7px!important;
+    bottom:5px!important;
+    font-size:9px!important;
+  }
+  .cbCostumeTuningGridV306.detail{
+    padding:8px!important;
+    gap:10px!important;
+  }
+  .cbCostumeTuningGridV306 .cbOfficialBuildTuningSlot.detail.gameSlot,
+  .cbCostumeTuningGridV306 .cbOfficialBuildTuningSlot.detail.gameSlot.spBand{
+    min-height:88px!important;
+  }
+  .cbCostumeTuningGridV306 .cbOfficialBuildTuningSlot.detail .slotBandText,
+  .cbCostumeTuningGridV306 .cbOfficialBuildTuningSlot.detail.spBand .slotBandText{
+    min-height:88px!important;
+    padding:6px 79px 25px 9px!important;
+  }
+  .cbCostumeTuningGridV306 .cbOfficialBuildTuningSlot.detail .slotGem,
+  .cbCostumeTuningGridV306 .cbOfficialBuildTuningSlot.detail.spBand .slotGem{
+    width:62px!important;
+    height:62px!important;
+    right:6px!important;
+  }
+}

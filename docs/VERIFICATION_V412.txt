@@ -1,0 +1,8 @@
+Vérifications V412
+- Syntaxe JavaScript contrôlée avec node --check.
+- JSON version.json et manifest vérifiés.
+- Les brouillons sont séparés par compte.
+- Les liens de build utilisent ?build=MHR-XXXXXXXXXX.
+- Les extensions exécutables et doubles extensions sont bloquées.
+- Les notifications Supabase restent privées via RLS.
+- Le service worker utilise le cache V412.

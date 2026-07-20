@@ -77,6 +77,8 @@
   function handleBack(ev){
     const button = ev.target.closest('.back');
     if(!button) return;
+    /* Les builds communautaires gèrent eux-mêmes leur retour vers la liste des personnages. */
+    if(button.hasAttribute('data-cb-builds-back')) return;
 
     const charId = currentChar();
     const styleId = currentStyle();

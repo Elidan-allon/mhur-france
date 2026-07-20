@@ -1,0 +1,11 @@
+MHUR France V410
+================
+
+Modifications :
+- cartes T.U.N.I.N.G des builds communautaires alignées sur les cartes officielles de la page Costumes ;
+- noms longs réduits automatiquement au lieu d'être coupés ;
+- niveaux MAX affichés dans le créateur communautaire et conservés dans les builds publiés ;
+- bouton Retour des builds communautaires corrigé ;
+- sur téléphone, toucher un emplacement descend vers les T.U.N.I.N.G compatibles, puis choisir un T.U.N.I.N.G remonte vers l'emplacement sélectionné.
+
+Aucune nouvelle modification Supabase n'est nécessaire après la V409.

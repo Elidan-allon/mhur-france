@@ -1,0 +1,40 @@
+/* MHUR France V411 — bibliothèque, comparaison, réactions, historique et profils */
+.cbCopyBuild,.cbCompareBuild,.modInstallGuide,.modReport,.modFavorite{
+  border:2px solid #44597a;border-radius:10px;background:#17243a;color:#fff;padding:9px 12px;font-weight:900;
+}
+.cbCopyBuild:hover,.cbCompareBuild:hover,.modInstallGuide:hover{background:#213756}
+.cbCopyBuild.compact,.cbCompareBuild.compact{font-size:12px;padding:6px 8px}
+.cbDetailVersion,.cbInspiredBy{display:inline-flex;align-items:center;gap:6px;margin:5px 8px 5px 0;padding:7px 10px;border-radius:999px;background:#17263b;border:1px solid #49658d;font-weight:900}
+.cbCompatibilityWarning{margin:12px 0;padding:12px 14px;border:2px solid #d39a00;border-radius:12px;background:#4b3700;color:#ffe37a;font-weight:900;line-height:1.35}
+.cbInspiredDraft{grid-column:1/-1;padding:10px 12px;border-radius:10px;background:#112b3f;border:1px solid #2ea9d3}
+.mhurBuildReactions{margin-top:20px;padding:18px;border:2px solid #3c526f;border-radius:14px;background:#0d1726}
+.mhurBuildReactions h3{margin:0 0 12px}.mhurReactionButtons{display:flex;gap:10px;flex-wrap:wrap}
+.mhurReactionButtons button{padding:10px 13px;border:2px solid #415777;border-radius:999px;background:#17253b;color:white;font-weight:900}
+.mhurReactionButtons button.active{background:#ffe100;color:#111;border-color:#111}.mhurReactionButtons button b{margin-left:5px}
+.mhurPlusOverlay{position:fixed;inset:0;z-index:10050;background:rgba(1,4,9,.86);display:none;padding:20px;overflow:auto}
+.mhurPlusOverlay.open{display:flex;align-items:flex-start;justify-content:center}
+.mhurPlusPanel{position:relative;width:min(1180px,100%);margin:auto;background:#101a29;border:3px solid #49658d;border-radius:18px;color:#fff;box-shadow:0 20px 70px #000;overflow:hidden}
+.mhurPlusPanel>header{padding:20px 70px 16px 22px;background:#17263b;border-bottom:1px solid #405778}.mhurPlusPanel>header h2{margin:0;font-size:30px}.mhurPlusPanel>header p{margin:7px 0 0;color:#c9d7ec}
+.mhurPlusClose{position:absolute;right:14px;top:12px;width:48px;height:48px;border-radius:50%;background:#ff5c65;color:white;font-size:30px;font-weight:900;border:3px solid #000;z-index:2}
+.mhurPlusBody{padding:20px;max-height:78vh;overflow:auto}.mhurPlusLoading{padding:30px;text-align:center;font-weight:900}
+.mhurPlusToast{position:fixed;left:50%;bottom:24px;z-index:11000;transform:translate(-50%,30px);opacity:0;pointer-events:none;background:#ffe100;color:#111;border:3px solid #000;border-radius:14px;padding:14px 18px;font-weight:900;transition:.2s;max-width:min(620px,90vw);text-align:center}
+.mhurPlusToast.show{opacity:1;transform:translate(-50%,0)}
+.mhurCompareGrid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.mhurCompareBuild{min-width:0;background:#0a111c;border:2px solid #3b526f;border-radius:14px;padding:14px;overflow:hidden}
+.mhurCompareBuild>header{display:grid;grid-template-columns:100px 1fr;gap:12px;align-items:center;margin-bottom:12px}.mhurCompareBuild>header img{width:100px;height:100px;object-fit:cover;border-radius:10px;background:#18263a}.mhurCompareBuild h3{margin:0 0 6px;font-size:24px}.mhurCompareBuild p,.mhurCompareBuild small{display:block;margin:3px 0;color:#c8d7ea}
+.mhurCompareDiff{margin-top:18px;background:#0b1421;border-radius:14px;padding:16px}.mhurCompareDiff>div{display:grid;grid-template-columns:150px 1fr 30px 1fr;gap:10px;align-items:center;padding:10px;border-bottom:1px solid #31445e}.mhurCompareDiff span{overflow-wrap:anywhere}.mhurCompareDiff code{color:#ffe100}
+.mhurLibrarySection{margin-bottom:24px}.mhurLibraryGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}.mhurLibraryGrid button{display:grid;grid-template-columns:80px 1fr;gap:12px;align-items:center;text-align:left;background:#17253a;color:white;border:2px solid #3d5575;border-radius:12px;padding:9px}.mhurLibraryGrid img{width:80px;height:72px;object-fit:cover;border-radius:8px;background:#0a111a}.mhurLibraryGrid span{min-width:0}.mhurLibraryGrid b,.mhurLibraryGrid small{display:block;overflow-wrap:anywhere}.mhurLibraryGrid small{color:#c5d4e8;margin-top:6px}
+.mhurWeeklyCreators{margin-bottom:18px}.mhurWeeklyCreators article{display:grid;grid-template-columns:42px 48px 1fr auto;gap:10px;align-items:center;padding:10px;border-bottom:1px solid #344962}.mhurWeeklyCreators img,.mhurWeeklyCreators article>span{width:44px;height:44px;border-radius:50%;object-fit:cover;display:grid;place-items:center;background:#233650}.mhurWeeklyCreators em{color:#ffe100;font-weight:900}
+.mhurWeeklyColumns{display:grid;grid-template-columns:1fr 1fr;gap:18px}.mhurWeeklyColumns section{background:#0b1421;border:2px solid #354b68;border-radius:14px;padding:12px}.mhurWeeklyColumns button{width:100%;display:grid;grid-template-columns:44px 62px 1fr;gap:9px;align-items:center;text-align:left;background:#17253a;color:white;border:0;border-bottom:1px solid #33465f;padding:8px}.mhurWeeklyColumns button img{width:58px;height:52px;object-fit:cover;border-radius:7px}.mhurWeeklyColumns button span,.mhurWeeklyColumns button small{display:block}.mhurWeeklyColumns button small{color:#cbd8e8;margin-top:4px}
+.modFavorite{padding:5px 10px}.modFavorite.active{background:#ffe100;color:#111;border-color:#111}.modStats .modFavorite{margin-left:auto}
+.modVersionHistory{margin-top:24px;padding-top:14px;border-top:2px solid #30445f}.modVersionRow{padding:12px;margin:10px 0;border:1px solid #3c526e;border-radius:10px;background:#0d1725}.modVersionRow>div{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.modVersionRow b{color:#ffe100}.modVersionRow small{margin-left:auto;color:#b9c9dd}.modVersionRow p{white-space:pre-wrap}.modVersionRow a{display:inline-block;background:#ffe100;color:#111;padding:9px 12px;border-radius:9px;text-decoration:none;font-weight:900}
+.mhurInstallPath{display:flex;gap:10px;align-items:center;padding:12px;background:#08101b;border-radius:10px;overflow:auto}.mhurInstallPath code{flex:1;white-space:nowrap}.mhurInstallPath button,.mhurPlusPrimary{background:#ffe100;color:#111;border:2px solid #111;border-radius:9px;padding:10px 14px;font-weight:900}.mhurInstallSteps{font-size:18px;line-height:1.55}.mhurInstallSteps li{margin:12px 0}
+.mhurPlusField{display:block;margin:12px 0;font-weight:900}.mhurPlusField select,.mhurPlusField textarea{display:block;width:100%;margin-top:7px;background:#08111d;color:white;border:2px solid #405778;border-radius:10px;padding:12px}.mhurPlusField textarea{min-height:130px;resize:vertical}
+.mhurProfileBadges{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}.mhurProfileBadge{display:inline-flex;padding:7px 10px;border-radius:999px;background:#ffe100;color:#111;font-size:13px;font-weight:900;border:2px solid #111}.mhurProfileStats{grid-template-columns:repeat(4,1fr)!important}.mhurProfileMod .mhurProfileBuildImg{display:grid;place-items:center;font-size:30px}
+#drawer [data-mhur-plus]{font:inherit;border:0}
+@media(max-width:850px){
+  .mhurPlusOverlay{padding:6px}.mhurPlusPanel{border-radius:12px}.mhurPlusBody{padding:12px;max-height:82vh}
+  .mhurCompareGrid,.mhurWeeklyColumns{grid-template-columns:1fr}.mhurCompareDiff>div{grid-template-columns:1fr}.mhurCompareDiff>div b{display:none}
+  .mhurReactionButtons button{flex:1 1 45%;font-size:13px}.cbCopyBuild,.cbCompareBuild{font-size:12px;padding:7px 8px}
+  .mhurProfileStats{grid-template-columns:repeat(2,1fr)!important}.mhurWeeklyCreators article{grid-template-columns:36px 42px 1fr}.mhurWeeklyCreators em{grid-column:3}
+}
+.cbCardVersion{color:#ffe100!important;font-weight:900}

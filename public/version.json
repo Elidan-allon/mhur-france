@@ -1,4 +1,20 @@
 {
-  "version": "409",
-  "name": "V409 creation editing + unique mod downloads + iPhone fixes"
+  "version": "412",
+  "name": "V412 fiabilité et confort",
+  "changes_fr": [
+    "Brouillons automatiques pour les builds et les mods",
+    "Code court, lien direct, import et image de partage des builds",
+    "Vérification automatique des 12 emplacements T.U.N.I.N.G",
+    "Contrôle renforcé des fichiers de mods et empreinte SHA-256",
+    "Centre de notifications persistant avec filtres et actions",
+    "Améliorations hors ligne, chargement des images et protection contre les doubles publications"
+  ],
+  "changes_en": [
+    "Automatic drafts for builds and mods",
+    "Short code, direct link, import and share image for builds",
+    "Automatic validation of all 12 T.U.N.I.N.G slots",
+    "Stronger mod file checks and SHA-256 fingerprints",
+    "Persistent notification center with filters and actions",
+    "Offline, image loading and duplicate publication improvements"
+  ]
 }

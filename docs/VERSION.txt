@@ -1,1 +1,2 @@
-V409 - modification des créations + téléchargements uniques + correctifs iPhone
+MHUR France V412
+Fiabilité et confort : brouillons automatiques, partage/import des builds, validation, sécurité des mods et notifications persistantes.
