@@ -1,0 +1,6 @@
+V402 — Tutoriel Mods bilingue
+
+- Les captures françaises restent affichées en FR.
+- Les captures anglaises des étapes Steam 1 et 2 sont affichées en EN.
+- Les étapes 3 à 6 conservent les captures de dossiers, dont les noms sont identiques.
+- Aucun autre comportement du site n'a été modifié.
