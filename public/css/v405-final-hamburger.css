@@ -139,15 +139,222 @@ body.v401-tier-dragging{scroll-behavior:auto!important}
 }
 .v401InstallHelp[hidden]{display:none}
 .v401InstallCard{
-  width:min(560px,100%);padding:24px;border:3px solid #4b6f9d;border-radius:18px;
+  position:relative;width:min(560px,100%);padding:24px;border:3px solid #4b6f9d;border-radius:18px;
   background:#101a2a;color:#fff;box-shadow:0 18px 70px #000
 }
-.v401InstallCard h2{margin:0 0 12px;color:#ffe000}
+.v401InstallCard h2{margin:0 44px 12px 0;color:#ffe000}
 .v401InstallCard p{line-height:1.55}
-.v401InstallCard button{display:block;margin:18px 0 0 auto;padding:10px 18px;border:2px solid #000;border-radius:10px;background:#ffe000;color:#000;font-weight:1000}
+.v401InstallClose{position:absolute;top:12px;right:12px;width:38px;height:38px;margin:0!important;padding:0!important;border-radius:50%!important;background:#e84f48!important;color:#fff!important;font-size:24px!important;line-height:1!important}
+.v401InstallActions{display:flex;justify-content:flex-end;gap:10px;flex-wrap:wrap;margin-top:18px}
+.v401InstallCard .v401InstallActions button{display:block;margin:0;padding:10px 18px;border:2px solid #000;border-radius:10px;background:#ffe000;color:#000;font-weight:1000}
+.v401InstallCard .v401InstallOk{background:#243752;color:#fff}
+.v401InstallSuccess{margin:14px 0 0;padding:10px 12px;border:2px solid #2e8b57;border-radius:10px;background:#10291d;color:#caffdf;font-weight:900}
 
 @media(max-width:760px){
   .modalV296{padding-top:max(8px,env(safe-area-inset-top))!important}
   .cbModalPanel .cbClose{top:8px!important;right:8px!important}
   .modsTutorialStepImage{max-width:100%!important;border-radius:9px!important}
+}
+
+
+/* V407 — assure que les petites fenêtres passent au-dessus du header
+   et gardent toujours la croix entièrement visible. */
+.modalV296,
+.modsModal,
+.cbModal,
+.mhurHubOverlay,
+.mhurPublicProfileModal,
+.mhurModerationOverlay,
+.mhurAuthOverlay{
+  z-index:2147483646!important;
+  box-sizing:border-box!important;
+  padding-top:max(82px,calc(env(safe-area-inset-top) + 18px))!important;
+  padding-bottom:18px!important;
+}
+.modalV296,
+.modsModal,
+.cbModal,
+.mhurHubOverlay,
+.mhurPublicProfileModal,
+.mhurModerationOverlay,
+.mhurAuthOverlay{
+  align-items:flex-start!important;
+  justify-content:center!important;
+}
+.modalPanelV296,
+.modsDialog,
+.cbModalPanel,
+.mhurHubPanel,
+.mhurPublicProfilePanel,
+.mhurModerationPanel,
+.mhurAuthPanel{
+  max-height:calc(100dvh - 118px)!important;
+  margin-top:0!important;
+}
+.modalPanelV296>header,
+.modsDialogHead,
+.cbModalPanel .cbClose,
+.mhurHubClose,
+.mhurPublicProfileClose,
+.mhurModerationClose,
+.mhurAuthClose{
+  scroll-margin-top:96px!important;
+}
+
+@media(max-width:760px){
+  .modalV296,
+  .modsModal,
+  .cbModal,
+  .mhurHubOverlay,
+  .mhurPublicProfileModal,
+  .mhurModerationOverlay,
+  .mhurAuthOverlay{
+    padding-top:max(74px,calc(env(safe-area-inset-top) + 10px))!important;
+    padding-bottom:10px!important;
+  }
+  .modalPanelV296,
+  .modsDialog,
+  .cbModalPanel,
+  .mhurHubPanel,
+  .mhurPublicProfilePanel,
+  .mhurModerationPanel,
+  .mhurAuthPanel{
+    max-height:calc(100dvh - 92px)!important;
+  }
+}
+
+
+/* V408 — réglage renforcé des petites fenêtres :
+   la croix reste toujours visible sous le header fixe. */
+.modalV296,
+.modsModal,
+.cbModal,
+.mhurHubOverlay,
+.mhurPublicProfileModal,
+.mhurModerationOverlay,
+.mhurAuthOverlay{
+  z-index:2147483646!important;
+  box-sizing:border-box!important;
+  align-items:flex-start!important;
+  justify-content:center!important;
+  overflow:auto!important;
+  padding-top:max(96px,calc(env(safe-area-inset-top) + 24px))!important;
+  padding-right:14px!important;
+  padding-bottom:18px!important;
+  padding-left:14px!important;
+}
+
+.modalPanelV296,
+.modsDialog,
+.cbModalPanel,
+.mhurHubPanel,
+.mhurPublicProfilePanel,
+.mhurModerationPanel,
+.mhurAuthPanel{
+  position:relative!important;
+  margin:0 auto!important;
+  max-height:calc(100dvh - 126px)!important;
+}
+
+.modalPanelV296>header{
+  padding-right:62px!important;
+}
+.modalPanelV296>header button{
+  position:absolute!important;
+  top:10px!important;
+  right:10px!important;
+  z-index:600!important;
+}
+
+.modsDialog{overflow:auto!important}
+.modsDialogHead{
+  position:sticky!important;
+  top:0!important;
+  padding-right:72px!important;
+  min-height:64px!important;
+  overflow:visible!important;
+}
+.modsDialogHead .modsClose{
+  position:absolute!important;
+  top:10px!important;
+  right:12px!important;
+  margin:0!important;
+  z-index:600!important;
+}
+
+.cbModalPanel{
+  padding-top:0!important;
+}
+.cbModalPanel .cbClose,
+.mhurPublicProfileClose,
+.mhurModerationClose{
+  position:absolute!important;
+  top:12px!important;
+  right:12px!important;
+  left:auto!important;
+  float:none!important;
+  margin:0!important;
+  transform:none!important;
+  z-index:600!important;
+}
+.mhurHubPanel{
+  position:relative!important;
+  overflow:auto!important;
+}
+.mhurHubClose{
+  position:absolute!important;
+  top:12px!important;
+  right:12px!important;
+  z-index:600!important;
+  transform:none!important;
+}
+
+.cbBuilderHeader,
+.cbDetailHeader,
+.mhurHubHead,
+.mhurPublicProfileHero{
+  padding-right:78px!important;
+}
+
+@media(max-width:760px){
+  .modalV296,
+  .modsModal,
+  .cbModal,
+  .mhurHubOverlay,
+  .mhurPublicProfileModal,
+  .mhurModerationOverlay,
+  .mhurAuthOverlay{
+    padding-top:max(82px,calc(env(safe-area-inset-top) + 12px))!important;
+    padding-right:8px!important;
+    padding-bottom:8px!important;
+    padding-left:8px!important;
+  }
+
+  .modalPanelV296,
+  .modsDialog,
+  .cbModalPanel,
+  .mhurHubPanel,
+  .mhurPublicProfilePanel,
+  .mhurModerationPanel,
+  .mhurAuthPanel{
+    max-height:calc(100dvh - 96px)!important;
+  }
+
+  .modsDialogHead,
+  .mhurHubHead,
+  .mhurPublicProfileHero,
+  .cbBuilderHeader,
+  .cbDetailHeader{
+    padding-right:64px!important;
+  }
+
+  .modsDialogHead .modsClose,
+  .cbModalPanel .cbClose,
+  .mhurHubClose,
+  .mhurPublicProfileClose,
+  .mhurModerationClose,
+  .modalPanelV296>header button{
+    top:8px!important;
+    right:8px!important;
+  }
 }

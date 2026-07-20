@@ -1,0 +1,128 @@
+/* V409 — mobile modals, descriptions, edit buttons and iPhone upload. */
+
+/* The fixed header stays clickable while a window is open. */
+.modalV296,
+.modsModal,
+.cbModal,
+.mhurHubOverlay,
+.mhurPublicProfileModal,
+.mhurModerationOverlay,
+.mhurAuthOverlay{
+  position:fixed!important;
+  inset:var(--mhur-top-height,72px) 0 0 0!important;
+  z-index:2147483550!important;
+  box-sizing:border-box!important;
+  align-items:flex-start!important;
+  justify-content:center!important;
+  padding:8px 10px 12px!important;
+  overflow:hidden!important;
+  overscroll-behavior:none!important;
+}
+
+.modalPanelV296,
+.modsDialog,
+.cbModalPanel,
+.mhurHubPanel,
+.mhurPublicProfilePanel,
+.mhurModerationPanel,
+.mhurAuthPanel{
+  position:relative!important;
+  width:min(var(--mhur-modal-width,1500px),100%)!important;
+  max-height:calc(100dvh - var(--mhur-top-height,72px) - 20px)!important;
+  margin:0 auto!important;
+  overflow-y:auto!important;
+  overflow-x:hidden!important;
+  overscroll-behavior:contain!important;
+  -webkit-overflow-scrolling:touch!important;
+  touch-action:pan-y!important;
+}
+.modsDialog{--mhur-modal-width:980px}
+.modsDialog:not(.modsDetailDialog){--mhur-modal-width:780px}
+.mhurAuthPanel{--mhur-modal-width:510px}
+.mhurPublicProfilePanel{--mhur-modal-width:950px}
+
+/* Sticky headers and close controls: always visible while the content scrolls. */
+.modalPanelV296>header,
+.modsDialogHead{
+  position:sticky!important;
+  top:0!important;
+  z-index:700!important;
+}
+.modalPanelV296>header button,
+.modsDialogHead .modsClose{
+  z-index:710!important;
+}
+
+.cbModalPanel>.cbClose,
+.mhurHubPanel>.mhurHubClose,
+.mhurPublicProfilePanel>.mhurPublicProfileClose,
+.mhurModerationPanel>.mhurModerationClose{
+  position:sticky!important;
+  top:8px!important;
+  right:8px!important;
+  left:auto!important;
+  float:right!important;
+  display:grid!important;
+  place-items:center!important;
+  margin:8px 8px -60px 0!important;
+  transform:none!important;
+  z-index:710!important;
+}
+.cbBuilderHeader,.cbDetailHeader,.mhurHubHead,.mhurPublicProfileHero{padding-right:78px!important}
+
+/* Preserve the blank line entered in a mod description on list cards. */
+.modBody>p{
+  white-space:pre-wrap!important;
+  overflow-wrap:anywhere!important;
+  -webkit-line-clamp:6!important;
+}
+.modsDetailDescription,.modComment p{white-space:pre-wrap!important}
+
+.modEdit,.cbEditOwn{
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:6px!important;
+  border:3px solid #000!important;
+  border-radius:10px!important;
+  padding:9px 12px!important;
+  background:#19c9de!important;
+  color:#00131a!important;
+  font-weight:1000!important;
+  cursor:pointer!important;
+}
+.cbEditOwn.compact,.cbDeleteOwn.compact{font-size:12px!important;padding:7px 9px!important}
+.modsCurrentFile{display:block!important;color:#ffe000!important;font-weight:800!important}
+
+@media(max-width:700px){
+  .modalV296,
+  .modsModal,
+  .cbModal,
+  .mhurHubOverlay,
+  .mhurPublicProfileModal,
+  .mhurModerationOverlay,
+  .mhurAuthOverlay{
+    inset:var(--mhur-top-height,64px) 0 0 0!important;
+    padding:5px 6px 8px!important;
+  }
+  .modalPanelV296,
+  .modsDialog,
+  .cbModalPanel,
+  .mhurHubPanel,
+  .mhurPublicProfilePanel,
+  .mhurModerationPanel,
+  .mhurAuthPanel{
+    max-height:calc(100dvh - var(--mhur-top-height,64px) - 12px)!important;
+    border-radius:14px!important;
+  }
+  .cbModalPanel>.cbClose,
+  .mhurHubPanel>.mhurHubClose,
+  .mhurPublicProfilePanel>.mhurPublicProfileClose,
+  .mhurModerationPanel>.mhurModerationClose{
+    top:6px!important;
+    right:6px!important;
+    margin:6px 6px -56px 0!important;
+  }
+  .modsDetailActions>*{width:100%!important}
+  .cbBuildActions{flex-wrap:wrap!important}
+}

@@ -7,7 +7,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="google-site-verification" content="kw2VXVq_AZcsKg3TdhJl91U4poT62GNr8Mjg0Sh4T-0" />
-<title>My Hero Ultra Rumble France</title>
+<title>MHUR FR — My Hero Ultra Rumble France | Site communautaire</title>
 <style>
 :root{
   --bg:#070b13;--panel:#101928;--panel2:#17263b;--line:#344c70;--text:#f7fbff;--muted:#c7d7ee;
@@ -714,22 +714,53 @@
 <link rel="icon" type="image/png" sizes="32x32" href="assets/brand/favicon-32.png">
 <link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png">
 <meta name="theme-color" content="#ffe100">
-<title>MHUR France — Personnages, costumes, T.U.N.I.N.G et builds</title>
-<meta name="description" content="Site communautaire français dédié à My Hero Ultra Rumble : personnages, compétences, costumes, T.U.N.I.N.G, builds, Tier Lists, événements et patch notes.">
-<meta name="robots" content="index,follow,max-image-preview:large">
+<meta name="description" content="MHUR FR, le site communautaire français de My Hero Ultra Rumble (aussi recherché My Hero Academia Ultra Rumble) : personnages, builds, costumes, T.U.N.I.N.G, Tier Lists, mods et événements.">
+<meta name="keywords" content="MHUR FR, MHUR France, My Hero Ultra Rumble France, My Hero Academia Ultra Rumble, My Hero Academia Ultra Rumble France, builds MHUR, Tier List MHUR, mods MHUR">
+<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
 <link rel="canonical" href="https://mhur-france.eallon01.workers.dev/">
+<link rel="alternate" hreflang="fr-FR" href="https://mhur-france.eallon01.workers.dev/">
+<link rel="alternate" hreflang="x-default" href="https://mhur-france.eallon01.workers.dev/">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="fr_FR">
-<meta property="og:site_name" content="MHUR France">
-<meta property="og:title" content="MHUR France — My Hero Ultra Rumble France">
-<meta property="og:description" content="Personnages, compétences, costumes, T.U.N.I.N.G, builds communautaires, Tier Lists et événements MHUR.">
+<meta property="og:site_name" content="MHUR FR">
+<meta property="og:title" content="MHUR FR — My Hero Ultra Rumble France">
+<meta property="og:description" content="Le site communautaire français de My Hero Ultra Rumble : personnages, builds, costumes, T.U.N.I.N.G, Tier Lists, mods et événements.">
 <meta property="og:url" content="https://mhur-france.eallon01.workers.dev/">
 <meta property="og:image" content="https://mhur-france.eallon01.workers.dev/assets/brand/mhur-france-icon.png">
+<meta property="og:image:alt" content="Logo de MHUR FR, communauté française de My Hero Ultra Rumble">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="MHUR France">
-<meta name="twitter:description" content="La plateforme communautaire française de My Hero Ultra Rumble.">
+<meta name="twitter:title" content="MHUR FR — My Hero Ultra Rumble France">
+<meta name="twitter:description" content="La communauté française de My Hero Ultra Rumble : guides, builds, Tier Lists, mods et événements.">
 <meta name="twitter:image" content="https://mhur-france.eallon01.workers.dev/assets/brand/mhur-france-icon.png">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"MHUR France","url":"https://mhur-france.eallon01.workers.dev/","inLanguage":["fr","en"],"potentialAction":{"@type":"SearchAction","target":"https://mhur-france.eallon01.workers.dev/?q={search_term_string}","query-input":"required name=search_term_string"}}</script>
+<meta name="twitter:image:alt" content="Logo de MHUR FR">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": "https://mhur-france.eallon01.workers.dev/#website",
+      "url": "https://mhur-france.eallon01.workers.dev/",
+      "name": "MHUR FR",
+      "alternateName": [
+        "MHUR France",
+        "My Hero Ultra Rumble France",
+        "My Hero Academia Ultra Rumble France"
+      ],
+      "description": "Site communautaire français dédié à My Hero Ultra Rumble.",
+      "inLanguage": ["fr-FR", "en"]
+    },
+    {
+      "@type": "Organization",
+      "@id": "https://mhur-france.eallon01.workers.dev/#organization",
+      "name": "MHUR FR",
+      "alternateName": "MHUR France",
+      "url": "https://mhur-france.eallon01.workers.dev/",
+      "logo": "https://mhur-france.eallon01.workers.dev/assets/brand/mhur-france-icon.png"
+    }
+  ]
+}
+</script>
 
 </head>
 <body>
@@ -1043,7 +1074,7 @@ function updateSigninText(){const t=document.getElementById('signinTitle'),s=doc
 function toggleLang(){lang=lang==='fr'?'en':'fr';layout();updateSigninText();window.MHUR_AUTH?.renderButton?.()}function go(p){page=p||'home';selectedChar=null;selectedStyle=null;selectedCostume=null;document.getElementById('drawer').classList.remove('open');if(location.hash!=='#'+page) location.hash=page;layout()}window.addEventListener('hashchange',()=>{const h=(location.hash||'#home').replace('#','');if(['home','characters','tunings','costumes','builds'].includes(h))go(h)});document.addEventListener('click',(e)=>{const a=e.target.closest('.navItem');if(a&&!a.hasAttribute('data-mhur-hub')){e.preventDefault();go(a.dataset.page)}});
 function layout(){document.getElementById('drawer').innerHTML=['home','characters','tunings','costumes','builds'].map(p=>`<a href="#${p}" data-page="${p}" class="navItem ${page===p?'active':''}">${tr(p)}</a>`).join('');render()}
 function card(c,mode='characters'){const modeClass=mode==='costumes'?' costumeMode':mode==='builds'?' buildMode':mode==='tunings'?' tuningMode':' characterMode';const tag=mode==='costumes'?`<div class="cardModeTag">${tr('costumeTag')}</div>`:mode==='builds'?`<div class="cardModeTag">${tr('buildTag')}</div>`:mode==='tunings'?`<div class="cardModeTag">T.U.N.I.N.G</div>`:`<div class="cardModeTag">PERSONNAGE</div>`;const msg=mode==='costumes'?tr('costumeChoose'):mode==='builds'?tr('buildChoose'):mode==='tunings'?'Clique pour choisir le T.U.N.I.N.G.':tr('choose');return `<button class="card${modeClass}" data-char="${c.id}" onclick="selectChar('${c.id}')">${tag}<div class="thumb">${asset(c.portrait,c.name)}</div><div class="cardBody"><h3>${c.name}</h3><div class="badges">${sideBadge(c.side)}${c.styles.map(s=>roleBadge(styles[s].role)).join('')}</div><p style="color:#c9d7ee">${msg}</p></div></button>`}
-function home(){return `<h1 class="title">MY HERO ULTRA RUMBLE FRANCE</h1><div class="homeBox">Base de données FR/EN pour les personnages, T.U.N.I.N.G, costumes et builds de la communauté.<br><br>Les personnages déjà détaillés restent complets. Les personnages restants ont été ajoutés dans l’ordre du roster avec des fiches provisoires à compléter progressivement.<div class="workflowBox"><h2>Workflow portraits v152</h2>Le site contient maintenant un dossier <code>portrait_pipeline</code> pour gérer les portraits de skins proprement : on récupère les images, on les range avec un ordre numérique, puis on garde l’ordre officiel du jeu dans un fichier JSON.<div class="workflowSteps"><div class="workflowStep"><b>1.</b> Récupérer les portraits UltraRumble dans <code>portrait_source</code></div><div class="workflowStep"><b>2.</b> Remplir <code>skin_order_template.json</code> avec l’ordre du jeu</div><div class="workflowStep"><b>3.</b> Lancer <code>prepare_portraits.py</code> pour renommer et créer le manifest</div></div></div></div>`}
+function home(){return `<h1 class="title">MHUR FR — MY HERO ULTRA RUMBLE FRANCE</h1><div class="homeBox"><strong>MHUR FR</strong> est le site communautaire français de <strong>My Hero Ultra Rumble</strong>, parfois recherché sous le nom « My Hero Academia Ultra Rumble ». Retrouvez les personnages, T.U.N.I.N.G, costumes, builds, Tier Lists, mods et événements de la communauté.<br><br>Les personnages déjà détaillés restent complets. Les personnages restants ont été ajoutés dans l’ordre du roster avec des fiches provisoires à compléter progressivement.<div class="workflowBox"><h2>Workflow portraits v152</h2>Le site contient maintenant un dossier <code>portrait_pipeline</code> pour gérer les portraits de skins proprement : on récupère les images, on les range avec un ordre numérique, puis on garde l’ordre officiel du jeu dans un fichier JSON.<div class="workflowSteps"><div class="workflowStep"><b>1.</b> Récupérer les portraits UltraRumble dans <code>portrait_source</code></div><div class="workflowStep"><b>2.</b> Remplir <code>skin_order_template.json</code> avec l’ordre du jeu</div><div class="workflowStep"><b>3.</b> Lancer <code>prepare_portraits.py</code> pour renommer et créer le manifest</div></div></div></div>`}
 function rosterSections(showSearch=false,mode='characters'){const hs=characters.filter(c=>c.side==='hero').map(c=>card(c,mode)).join('');const vs=characters.filter(c=>c.side==='villain').map(c=>card(c,mode)).join('');const prefix=mode==='costumes'?`${tr('costumes')} — `:mode==='builds'?`${tr('builds')} — `:mode==='tunings'?`T.U.N.I.N.G — `:`${tr('characters')} — `;const notice=mode==='costumes'?`<div class="modeNotice"><span>${tr('costumeTag')}</span>${tr('costumeChoose')}</div>`:mode==='builds'?`<div class="modeNotice"><span>${tr('buildTag')}</span>${tr('buildChoose')}</div>`:mode==='tunings'?`<div class="modeNotice"><span>T.U.N.I.N.G</span>${tr('tuningNotice')}</div>`:`<div class="modeNotice"><span>${tr('charactersTag')}</span>${tr('characterNotice')}</div>`;const frame=mode==='costumes'?'costumesFrame':mode==='builds'?'buildsFrame':mode==='tunings'?'tuningsFrame':'charactersFrame';return `<div class="pageFrame ${frame}">${notice}${showSearch?`<input class="search" placeholder="${tr('search')}" oninput="filterCards(this.value)">`:''}<div class="section"><div class="sectionHead heroHead">${prefix}${tr('heroes')}</div><div class="sectionBody cardsGrid" id="cards">${hs}</div></div><div class="section"><div class="sectionHead villainHead">${prefix}${tr('villains')}</div><div class="sectionBody cardsGrid">${vs}</div></div></div>`}
 function charactersPage(){if(selectedChar&&selectedStyle)return characterDetail(selectedStyle);if(selectedChar)return stylePicker();return `<h1 class="title">${tr('characters')}</h1>${rosterSections(true)}`}
 function filterCards(q){q=q.toLowerCase();document.querySelectorAll('.card').forEach(el=>el.style.display=el.textContent.toLowerCase().includes(q)?'flex':'none')}
@@ -5836,8 +5867,8 @@ body .costumeTile > img,
 
 
 <!-- V401 MUST remain last: targeted final corrections. -->
-<link rel="stylesheet" href="css/v405-final-hamburger.css?v=405">
-<script src="js/v401-final-corrections.js?v=401"></script>
+<link rel="stylesheet" href="css/v405-final-hamburger.css?v=408">
+<script src="js/v401-final-corrections.js?v=407"></script>
 <script src="js/v403-tutorial-image-language.js?v=404"></script>
 </body></html>
 <style id="v223_tuning_text_fix">
@@ -6552,7 +6583,7 @@ body .costumeTile > img,
 <script src="js/community-profiles.js?v=380"></script>
 <link rel="stylesheet" href="css/community-moderation.css?v=380">
 <script src="js/community-moderation.js?v=380"></script>
-<script src="js/community-builds.js?v=400"></script>
+<script src="js/community-builds.js?v=409"></script>
 <script src="js/community-hub.js?v=380"></script>
 
 <script src="js/launch.js?v=380"></script>
@@ -6597,8 +6628,12 @@ body .costumeTile > img,
 <!-- V386 JS disabled by V395 -->
 <!-- V387 Community Mods — loaded after menu organisation. -->
 <link rel="stylesheet" href="css/community-mods.css?v=400">
-<script src="js/community-mods.js?v=400"></script>
+<script src="js/community-mods.js?v=409"></script>
 <!-- V391 JS disabled by V395 -->
 <script src="js/v395-stable-menu.js?v=399"></script>
 
 
+
+<!-- V409: loaded last on purpose. -->
+<link rel="stylesheet" href="css/v409-mobile-community.css?v=409">
+<script src="js/v409-mobile-modal-controls.js?v=409"></script>

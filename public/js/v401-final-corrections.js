@@ -106,43 +106,139 @@
     });
   },true);
 
-  /* Installation PWA : vrai prompt si Brave/Chrome le fournit, aide précise sinon. */
+  /* Installation PWA : prompt natif quand disponible, raccourci téléchargeable sinon. */
   window.addEventListener('beforeinstallprompt',event=>{
     event.preventDefault();
     installPrompt=event;
   });
   window.addEventListener('appinstalled',()=>{installPrompt=null});
+
   const standalone=()=>matchMedia('(display-mode: standalone)').matches||navigator.standalone===true;
-  function installHelp(){
+  const ua=()=>String(navigator.userAgent||'');
+  const isIOS=()=>/iphone|ipad|ipod/i.test(ua());
+  const isAndroid=()=>/android/i.test(ua());
+  const isMac=()=>/macintosh|mac os x/i.test(ua())&&!isIOS();
+  const isLinux=()=>/linux/i.test(ua())&&!isAndroid();
+  const isFirefox=()=>/firefox\//i.test(ua());
+  const isSafari=()=>/safari/i.test(ua())&&!/chrome|chromium|crios|edg|opr|firefox/i.test(ua());
+  const isMobile=()=>isIOS()||isAndroid()||/mobile/i.test(ua());
+  const english=()=>{try{return (typeof lang!=='undefined'?lang:window.lang)==='en'}catch(_){return false}};
+  const tr=(fr,en)=>english()?en:fr;
+
+  function appHomeUrl(){
+    try{return new URL('/#home',location.origin).href}catch(_){return location.href.split('#')[0]+'#home'}
+  }
+
+  function downloadShortcut(){
+    if(isMobile())return false;
+    const url=appHomeUrl();
+    let name='MHUR-France.url';
+    let type='application/internet-shortcut;charset=utf-8';
+    let content=`[InternetShortcut]\r\nURL=${url}\r\nIconFile=${location.origin}/favicon.ico\r\nIconIndex=0\r\n`;
+
+    if(isMac()){
+      name='MHUR France.webloc';
+      type='application/xml;charset=utf-8';
+      const safe=url.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+      content=`<?xml version="1.0" encoding="UTF-8"?>\n<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "https://www.apple.com/DTDs/PropertyList-1.0.dtd">\n<plist version="1.0"><dict><key>URL</key><string>${safe}</string></dict></plist>`;
+    }else if(isLinux()){
+      name='MHUR-France.html';
+      type='text/html;charset=utf-8';
+      const safe=url.replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+      content=`<!doctype html><meta charset="utf-8"><meta http-equiv="refresh" content="0;url=${safe}"><title>MHUR France</title><p><a href="${safe}">Open MHUR France</a></p>`;
+    }
+
+    const blob=new Blob([content],{type});
+    const objectUrl=URL.createObjectURL(blob);
+    const link=document.createElement('a');
+    link.href=objectUrl;
+    link.download=name;
+    link.style.display='none';
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    setTimeout(()=>URL.revokeObjectURL(objectUrl),1500);
+    return true;
+  }
+
+  function installHelp(shortcutDownloaded=false){
     let box=document.getElementById('v401InstallHelp');
     if(!box){
-      box=document.createElement('div');box.id='v401InstallHelp';box.className='v401InstallHelp';box.hidden=true;
-      box.innerHTML='<section class="v401InstallCard"><h2>Installer MHUR France</h2><div class="v401InstallText"></div><button type="button">OK</button></section>';
-      box.querySelector('button').onclick=()=>box.hidden=true;
-      box.onclick=e=>{if(e.target===box)box.hidden=true};
+      box=document.createElement('div');
+      box.id='v401InstallHelp';
+      box.className='v401InstallHelp';
+      box.hidden=true;
+      box.innerHTML='<section class="v401InstallCard" role="dialog" aria-modal="true"><button class="v401InstallClose" type="button" aria-label="Close">×</button><h2></h2><div class="v401InstallText"></div><div class="v401InstallActions"><button class="v401InstallDownload" type="button"></button><button class="v401InstallOk" type="button"></button></div></section>';
+      box.querySelector('.v401InstallClose').onclick=()=>box.hidden=true;
+      box.querySelector('.v401InstallOk').onclick=()=>box.hidden=true;
+      box.querySelector('.v401InstallDownload').onclick=()=>{
+        if(downloadShortcut())installHelp(true);
+      };
+      box.onclick=event=>{if(event.target===box)box.hidden=true};
       document.body.appendChild(box);
     }
-    const brave=!!navigator.brave||/Brave/i.test(navigator.userAgent);
-    const ios=/iphone|ipad|ipod/i.test(navigator.userAgent);
-    const en=(()=>{try{return (typeof lang!=='undefined'?lang:window.lang)==='en'}catch(_){return false}})();
-    let html;
-    if(ios)html=en?'In Safari, tap <b>Share</b>, then <b>Add to Home Screen</b>.':'Dans Safari, touche <b>Partager</b>, puis <b>Sur l’écran d’accueil</b>.';
-    else if(brave)html=en?'In Brave, click the install icon at the right of the address bar. If it is hidden, open the <b>☰ menu</b> and choose <b>Install MHUR France</b>.':'Dans Brave, clique sur l’icône d’installation à droite de la barre d’adresse. Si elle est cachée, ouvre le <b>menu ☰</b> puis choisis <b>Installer MHUR France</b>.';
-    else html=en?'Open the browser menu and choose <b>Install app</b>.':'Ouvre le menu du navigateur puis choisis <b>Installer l’application</b>.';
-    box.querySelector('.v401InstallText').innerHTML=`<p>${html}</p>`;box.hidden=false;
+
+    const title=box.querySelector('h2');
+    const text=box.querySelector('.v401InstallText');
+    const download=box.querySelector('.v401InstallDownload');
+    const ok=box.querySelector('.v401InstallOk');
+    title.textContent=tr('Installer MHUR France','Install MHUR France');
+    ok.textContent=tr('Fermer','Close');
+    download.textContent=tr('Télécharger le raccourci','Download shortcut');
+    download.hidden=isMobile();
+
+    let html='';
+    if(isIOS()){
+      html=tr('Dans <b>Safari</b>, touche <b>Partager</b>, puis <b>Sur l’écran d’accueil</b>.','In <b>Safari</b>, tap <b>Share</b>, then <b>Add to Home Screen</b>.');
+    }else if(isAndroid()){
+      html=tr('Ouvre le menu du navigateur puis choisis <b>Installer l’application</b> ou <b>Ajouter à l’écran d’accueil</b>.','Open the browser menu and choose <b>Install app</b> or <b>Add to Home screen</b>.');
+    }else if(isMac()&&isSafari()){
+      html=tr('Dans Safari, ouvre le menu <b>Fichier</b> puis choisis <b>Ajouter au Dock</b>.','In Safari, open the <b>File</b> menu, then choose <b>Add to Dock</b>.');
+    }else if(isFirefox()){
+      html=tr('Firefox ne propose pas toujours l’installation automatique. Utilise le raccourci téléchargé pour ouvrir MHUR France directement.','Firefox does not always offer automatic installation. Use the downloaded shortcut to open MHUR France directly.');
+    }else{
+      html=tr('Ton navigateur n’a pas affiché la fenêtre native. Tu peux utiliser son menu <b>Installer l’application</b> ou ouvrir le raccourci téléchargé.','Your browser did not show the native prompt. Use its <b>Install app</b> menu or open the downloaded shortcut.');
+    }
+    if(shortcutDownloaded&&!isMobile()){
+      html=`<p>${html}</p>`+tr('<p class="v401InstallSuccess">✅ Le raccourci MHUR France a été téléchargé.</p>','<p class="v401InstallSuccess">✅ The MHUR France shortcut was downloaded.</p>');
+    }else{
+      html=`<p>${html}</p>`;
+    }
+    text.innerHTML=html;
+    box.hidden=false;
   }
+
+  async function waitForInstallPrompt(timeout=900){
+    if(installPrompt)return installPrompt;
+    return new Promise(resolve=>{
+      const started=Date.now();
+      const timer=setInterval(()=>{
+        if(installPrompt||Date.now()-started>=timeout){clearInterval(timer);resolve(installPrompt||null)}
+      },60);
+    });
+  }
+
   async function install(){
     if(standalone())return;
     if('serviceWorker'in navigator&&location.protocol==='https:'){
-      try{const r=await navigator.serviceWorker.register('/service-worker.js?v=401',{scope:'/',updateViaCache:'none'});await r.update().catch(()=>{});await navigator.serviceWorker.ready}catch(_){}
+      try{
+        const registration=await navigator.serviceWorker.register('/service-worker.js?v=406',{scope:'/',updateViaCache:'none'});
+        await registration.update().catch(()=>{});
+        await navigator.serviceWorker.ready;
+      }catch(_){ }
     }
-    if(installPrompt){
-      const prompt=installPrompt;installPrompt=null;
-      try{await prompt.prompt();await prompt.userChoice}catch(_){}
+
+    const prompt=installPrompt||await waitForInstallPrompt();
+    if(prompt){
+      installPrompt=null;
+      try{await prompt.prompt();await prompt.userChoice}catch(_){ }
       return;
     }
-    installHelp();
+
+    const downloaded=downloadShortcut();
+    installHelp(downloaded);
   }
+
   document.addEventListener('click',event=>{
     const button=event.target.closest('#drawer [data-v395-key="install"],#drawer [data-mhur-install]');
     if(!button)return;
@@ -152,5 +248,5 @@
   document.addEventListener('DOMContentLoaded',()=>{wireRoutes();setTimeout(wireRoutes,80);setTimeout(wireRoutes,500)},{once:true});
   window.addEventListener('hashchange',()=>setTimeout(refresh,0));
   window.addEventListener('load',()=>setTimeout(wireRoutes,50),{once:true});
-  window.MHUR_V401={activate,refresh,install};
+  window.MHUR_V401={activate,refresh,install,downloadShortcut};
 })();
