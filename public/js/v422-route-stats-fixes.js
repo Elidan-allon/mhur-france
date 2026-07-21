@@ -19,7 +19,7 @@
   }
   window.tables=function(ts){
     const ordered=[...(ts||[])].sort((a,b)=>(String(b.title).includes('Effets')?1:0)-(String(a.title).includes('Effets')?1:0));
-    return `<div class="tables">${ordered.map(tb=>`<button type="button" class="toggle" onclick="this.nextElementSibling.classList.toggle('hidden')">${esc(localText(tb.title))} ▾</button><div class="simpleTable hidden"><table class="dataTable"><thead><tr>${(tb.cols||[]).map(c=>`<th>${esc(localText(c))}</th>`).join('')}</tr></thead><tbody>${(tb.rows||[]).map(r=>`<tr>${(r||[]).map(x=>`<td>${esc(localText(x))}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`).join('')}</div>`;
+    return `<div class="tables">${ordered.map(tb=>`<button type="button" class="toggle" aria-expanded="false" onclick="const panel=this.nextElementSibling;panel.classList.toggle('hidden');this.setAttribute('aria-expanded',String(!panel.classList.contains('hidden')))"><span class="statsToggleTitle">${esc(localText(tb.title))}</span><span class="statsToggleArrow" aria-hidden="true">▾</span></button><div class="simpleTable hidden"><table class="dataTable"><thead><tr>${(tb.cols||[]).map(c=>`<th>${esc(localText(c))}</th>`).join('')}</tr></thead><tbody>${(tb.rows||[]).map(r=>`<tr>${(r||[]).map(x=>`<td>${esc(localText(x))}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`).join('')}</div>`;
   };
   function route(){
     const a=location.pathname.split('/').filter(Boolean).map(decodeURIComponent);
@@ -39,6 +39,8 @@
     else if(typeof layout==='function')layout();
     window.MHUR_SEO?.sync?.();
   }
-  addEventListener('load',()=>setTimeout(applyRoute,0),{once:true});
-  addEventListener('popstate',()=>setTimeout(applyRoute,0));
+  function restoreRoute(){applyRoute();setTimeout(applyRoute,80);setTimeout(applyRoute,350)}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',restoreRoute,{once:true});else restoreRoute();
+  addEventListener('load',restoreRoute,{once:true});
+  addEventListener('popstate',restoreRoute);
 })();
