@@ -1,6 +1,6 @@
 (function(){
 'use strict';
-const ID='G-86E185WXCT';
+const ID='G-L1BKL4KMWT';
 const KEY='mhur_ga_consent_v1';
 window.dataLayer=window.dataLayer||[];
 window.gtag=window.gtag||function(){dataLayer.push(arguments)};
