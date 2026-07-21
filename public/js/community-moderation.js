@@ -6,7 +6,7 @@ const KEY=String(cfg.supabaseKey||'').trim();
 const remote=/^https:\/\/.+\.supabase\.co$/i.test(API)&&!!KEY;
 const state={role:'user',reports:[],loading:false,currentBuild:null};
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-async function req(path,opt={}){const token=window.MHUR_AUTH?.getAccessToken?.()||KEY;const r=await fetch(API+path,{...opt,headers:{apikey:KEY,Authorization:`Bearer ${token}`,'Content-Type':'application/json',...(opt.headers||{})}});const t=await r.text();let d=null;try{d=t?JSON.parse(t):null}catch(_){d=t}if(!r.ok)throw new Error(d?.message||d?.hint||d?.error||t||`HTTP ${r.status}`);return d}
+async function req(path,opt={}){const runner=window.MHUR_AUTH?.fetch||fetch;const r=await runner(API+path,{...opt,headers:{'Content-Type':'application/json',...(opt.headers||{})}});const t=await r.text();let d=null;try{d=t?JSON.parse(t):null}catch(_){d=t}if(!r.ok)throw new Error(d?.message||d?.hint||d?.error||t||`HTTP ${r.status}`);return d}
 function user(){return window.MHUR_AUTH?.getUser?.()||null}
 function isAdmin(){return state.role==='admin'||state.role==='moderator'}
 async function refreshRole(){state.role='user';const u=user();if(!remote||!u)return state.role;try{const rows=await req(`/rest/v1/profiles?id=eq.${encodeURIComponent(u.id)}&select=role`);state.role=rows?.[0]?.role||'user'}catch(e){console.warn('Rôle modération:',e)}renderAdminButton();return state.role}

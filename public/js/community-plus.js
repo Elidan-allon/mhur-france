@@ -8,10 +8,10 @@ const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&
 const tx=(fr,en)=>typeof lang!=='undefined'&&lang==='en'?en:fr;
 const user=()=>window.MHUR_AUTH?.getUser?.()||null;
 async function req(path,opt={}){
-  const token=window.MHUR_AUTH?.getAccessToken?.()||KEY;
-  const headers={apikey:KEY,Authorization:`Bearer ${token}`,...(opt.headers||{})};
+  const headers={...(opt.headers||{})};
   if(opt.body&&!headers['Content-Type'])headers['Content-Type']='application/json';
-  const r=await fetch(API+path,{...opt,headers});const text=await r.text();let data=null;
+  const runner=window.MHUR_AUTH?.fetch||fetch;
+  const r=await runner(API+path,{...opt,headers});const text=await r.text();let data=null;
   try{data=text?JSON.parse(text):null}catch(_){data=text}
   if(!r.ok)throw new Error(data?.message||data?.hint||text||`HTTP ${r.status}`);return data;
 }
@@ -33,7 +33,28 @@ const reactions={
 
 const compare={
   first:null,
-  pick(id){const api=window.MHUR_COMMUNITY_BUILDS;const build=api?.find?.(id);if(!build)return;if(!this.first){this.first=build;toast(tx(`Build « ${build.title} » sélectionné. Choisis maintenant un deuxième build.`,`Build “${build.title}” selected. Now choose a second build.`));return}if(String(this.first.id)===String(build.id)){this.first=null;toast(tx('Comparaison annulée.','Comparison cancelled.'));return}const a=this.first;this.first=null;this.open(a,build)},
+  refresh(){window.MHUR_COMMUNITY_BUILDS?.refresh?.()},
+  pick(id){
+    const api=window.MHUR_COMMUNITY_BUILDS;
+    const build=api?.find?.(id);
+    if(!build)return;
+    if(!this.first){
+      this.first=build;
+      this.refresh();
+      toast(tx(`Build « ${build.title} » choisi. Clique sur « Comparer avec ce build » sur un deuxième build.`,`Build “${build.title}” selected. Click “Compare with this build” on a second build.`));
+      return;
+    }
+    if(String(this.first.id)===String(build.id)){
+      this.first=null;
+      this.refresh();
+      toast(tx('Comparaison annulée.','Comparison cancelled.'));
+      return;
+    }
+    const a=this.first;
+    this.first=null;
+    this.refresh();
+    this.open(a,build);
+  },
   open(a,b){const m=overlay('mhurCompareModal',tx('Comparaison de builds','Build comparison'),`${a.title} ↔ ${b.title}`);const body=m.querySelector('.mhurPlusBody');const render=x=>`<article class="mhurCompareBuild"><header><img src="${esc(x.costume_img||'')}" alt=""><div><h3>${esc(x.title)}</h3><p>${esc(x.author)} · ${esc(x.game_version||tx('Version inconnue','Unknown version'))}</p><small>${esc(x.costume_name)} — ${esc(x.costume_variant)}</small></div></header>${window.MHUR_COMMUNITY_BUILDS?.renderTuningColumns?.(x,'micro')||''}</article>`;const slots=x=>new Map((x.tuning_slots||[]).map(s=>[s.id,s.tuning?.name||'—']));const ma=slots(a),mb=slots(b),diff=[...new Set([...ma.keys(),...mb.keys()])].filter(k=>ma.get(k)!==mb.get(k));body.innerHTML=`<div class="mhurCompareGrid">${render(a)}${render(b)}</div><section class="mhurCompareDiff"><h3>${tx('Différences','Differences')} · ${diff.length}</h3>${diff.length?diff.map(k=>`<div><code>${esc(k)}</code><span>${esc(ma.get(k)||'—')}</span><b>→</b><span>${esc(mb.get(k)||'—')}</span></div>`).join(''):`<p>${tx('Les deux builds utilisent les mêmes T.U.N.I.N.G.','Both builds use the same T.U.N.I.N.G.')}</p>`}</section>`;open(m.id)}
 };
 

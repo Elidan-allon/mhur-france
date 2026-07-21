@@ -1,0 +1,14 @@
+Vérification MHUR France V413
+
+1. Ouvrir le créateur de build et cliquer sur « Enregistrer maintenant ».
+   Résultat attendu : statut avec l’heure + message visible.
+2. Cliquer sur « Effacer le brouillon ».
+   Résultat attendu : demande de confirmation, puis statut « Brouillon local effacé ».
+3. Ouvrir un build communautaire.
+   Résultat attendu : toutes les actions, dont Partager, restent dans la zone jaune.
+4. Cliquer sur « Choisir pour comparer », puis sur « Comparer avec ce build » sur un autre build.
+   Résultat attendu : fenêtre de comparaison au premier plan.
+5. Cliquer sur Partager depuis un build ouvert.
+   Résultat attendu : fenêtre de partage au-dessus du build, sans devoir fermer le build.
+
+Aucune migration SQL V413.

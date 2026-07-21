@@ -147,14 +147,12 @@ function cbSortBuilds(list,key){
   });
 }
 async function cbRequest(path,options={}){
-  const authToken=window.MHUR_AUTH?.getAccessToken?.()||CB_KEY;
   const headers={
-    apikey:CB_KEY,
-    Authorization:`Bearer ${authToken}`,
     'Content-Type':'application/json',
     ...(options.headers||{})
   };
-  const response=await fetch(CB_API+path,{...options,headers});
+  const runner=window.MHUR_AUTH?.fetch||fetch;
+  const response=await runner(CB_API+path,{...options,headers});
   const text=await response.text();
   let data=null;
   if(text){
@@ -296,8 +294,14 @@ function cbAuthorAvatar(profile){return profile.avatar_url?`<img class="cbAuthor
 function cbAuthorButton(build){const p=cbAuthorProfile(build);return p.id?`<button class="cbAuthorButton" onclick="event.stopPropagation();MHUR_PROFILES?.open('${cbEsc(p.id)}')">${cbAuthorAvatar(p)}<span>${cbEsc(p.username)}</span></button>`:`<span>${cbEsc(p.username)}</span>`}
 function cbExtraBuildActions(build,compact=false){
   const copy=cbIsEnglish()?'Use this build':'Utiliser ce build';
-  const compare=cbIsEnglish()?'Compare':'Comparer';
-  return `<button class="cbCopyBuild ${compact?'compact':''}" title="${copy}" aria-label="${copy}" onclick="event.stopPropagation();communityCopyBuild('${cbEsc(build.id)}')">📋${compact?'':' '+copy}</button><button class="cbCompareBuild ${compact?'compact':''}" title="${compare}" aria-label="${compare}" onclick="event.stopPropagation();MHUR_PLUS?.compare?.pick('${cbEsc(build.id)}')">⚖️${compact?'':' '+compare}</button>`;
+  const firstCompareId=window.MHUR_PLUS?.compare?.first?.id||'';
+  const isSelected=firstCompareId&&String(firstCompareId)===String(build.id);
+  const compare=firstCompareId
+    ?(isSelected
+      ?(cbIsEnglish()?'Cancel comparison':'Annuler la comparaison')
+      :(cbIsEnglish()?'Compare with this build':'Comparer avec ce build'))
+    :(cbIsEnglish()?'Choose for comparison':'Choisir pour comparer');
+  return `<button class="cbCopyBuild ${compact?'compact':''}" title="${copy}" aria-label="${copy}" onclick="event.stopPropagation();communityCopyBuild('${cbEsc(build.id)}')">📋${compact?'':' '+copy}</button><button class="cbCompareBuild ${compact?'compact':''} ${isSelected?'selected':''}" data-cb-compare="${cbEsc(build.id)}" title="${compare}" aria-label="${compare}" onclick="event.stopPropagation();MHUR_PLUS?.compare?.pick('${cbEsc(build.id)}')">⚖️${compact?'':' '+compare}</button>`;
 }
 function cbFavoriteHtml(build){
   const active=window.MHUR_PROFILES?.isFavorite?.(build.id);

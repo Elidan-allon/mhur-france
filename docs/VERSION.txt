@@ -1,2 +1,2 @@
-MHUR France V412
-Fiabilité et confort : brouillons automatiques, partage/import des builds, validation, sécurité des mods et notifications persistantes.
+MHUR France V414
+Correction définitive des expirations de session Supabase et des erreurs « JWT expired ».

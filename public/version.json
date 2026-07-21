@@ -1,20 +1,18 @@
 {
-  "version": "412",
-  "name": "V412 fiabilité et confort",
+  "version": "414",
+  "name": "V414 correction définitive des sessions Supabase",
   "changes_fr": [
-    "Brouillons automatiques pour les builds et les mods",
-    "Code court, lien direct, import et image de partage des builds",
-    "Vérification automatique des 12 emplacements T.U.N.I.N.G",
-    "Contrôle renforcé des fichiers de mods et empreinte SHA-256",
-    "Centre de notifications persistant avec filtres et actions",
-    "Améliorations hors ligne, chargement des images et protection contre les doubles publications"
+    "Renouvellement automatique du jeton de connexion avant son expiration",
+    "Nouvelle tentative silencieuse lorsqu’une requête reçoit JWT expired",
+    "Retour automatique en lecture publique si une ancienne session ne peut plus être renouvelée",
+    "Message clair de reconnexion uniquement pour les actions nécessitant un compte",
+    "Suppression du faux conseil SQL V387/V390 sur les erreurs temporaires de connexion"
   ],
   "changes_en": [
-    "Automatic drafts for builds and mods",
-    "Short code, direct link, import and share image for builds",
-    "Automatic validation of all 12 T.U.N.I.N.G slots",
-    "Stronger mod file checks and SHA-256 fingerprints",
-    "Persistent notification center with filters and actions",
-    "Offline, image loading and duplicate publication improvements"
+    "Automatic sign-in token renewal before expiration",
+    "Silent retry when a request receives JWT expired",
+    "Automatic public read fallback when an old session can no longer be renewed",
+    "Clear sign-in message only for actions that require an account",
+    "Removed the misleading V387/V390 SQL hint from temporary connection errors"
   ]
 }

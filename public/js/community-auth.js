@@ -6,15 +6,47 @@ const key=String(cfg.supabaseKey||'').trim();
 const configured=/^https:\/\/.+\.supabase\.co$/i.test(url)&&!!key;
 const STORE='mhur_auth_session_v323';
 const state={session:null,user:null,profile:null,ready:false,listeners:[]};
+let refreshPromise=null;
+let refreshTimer=null;
 const isEn=()=>((typeof lang!=='undefined'?lang:window.lang)==='en');
 const L=(fr,en)=>isEn()?en:fr;
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function decode(token){try{return JSON.parse(atob(token.split('.')[1].replace(/-/g,'+').replace(/_/g,'/')))}catch(_){return null}}
-function save(session){state.session=session||null;if(session)localStorage.setItem(STORE,JSON.stringify(session));else localStorage.removeItem(STORE)}
+function sessionExpiry(session){const p=decode(session?.access_token||'');return Number(session?.expires_at||p?.exp||0)*1000}
+function scheduleRefresh(){clearTimeout(refreshTimer);refreshTimer=null;if(!state.session?.refresh_token)return;const expiresAt=sessionExpiry(state.session);if(!expiresAt)return;const delay=Math.max(5000,expiresAt-Date.now()-90000);refreshTimer=setTimeout(()=>refresh(true).catch(()=>{}),delay)}
+function save(session){state.session=session||null;if(session){localStorage.setItem(STORE,JSON.stringify(session));scheduleRefresh()}else{localStorage.removeItem(STORE);clearTimeout(refreshTimer);refreshTimer=null}}
 function stored(){try{return JSON.parse(localStorage.getItem(STORE)||'null')}catch(_){return null}}
-function expired(session){const p=decode(session?.access_token||'');return !p?.exp||p.exp*1000<Date.now()+30000}
+function expired(session){const expiresAt=sessionExpiry(session);return !expiresAt||expiresAt<Date.now()+60000}
 async function request(path,opt={}){const token=opt.token||state.session?.access_token||key;const res=await fetch(url+path,{...opt,headers:{apikey:key,Authorization:`Bearer ${token}`,'Content-Type':'application/json',...(opt.headers||{})}});const text=await res.text();let data=null;try{data=text?JSON.parse(text):null}catch(_){data=text}if(!res.ok)throw new Error(data?.msg||data?.message||data?.error_description||text||`HTTP ${res.status}`);return data}
-async function refresh(){if(!state.session?.refresh_token)return false;try{const s=await request('/auth/v1/token?grant_type=refresh_token',{method:'POST',token:key,body:JSON.stringify({refresh_token:state.session.refresh_token})});save(s);return true}catch(_){save(null);return false}}
+function isJwtProblem(status,text=''){return status===401||/jwt|token.*expired|invalid.*token|session.*expired/i.test(String(text||''))}
+async function refresh(force=false){if(!state.session?.refresh_token)return false;if(!force&&!expired(state.session))return true;if(refreshPromise)return refreshPromise;refreshPromise=(async()=>{try{const s=await request('/auth/v1/token?grant_type=refresh_token',{method:'POST',token:key,body:JSON.stringify({refresh_token:state.session.refresh_token})});save(s);return true}catch(_){save(null);state.user=null;state.profile=null;if(state.ready)notify();return false}finally{refreshPromise=null}})();return refreshPromise}
+async function authenticatedFetch(input,opt={}){
+  const method=String(opt.method||'GET').toUpperCase();
+  const allowAnonFallback=opt.allowAnonFallback!==false&&(method==='GET'||method==='HEAD');
+  const forceAnon=opt.forceAnon===true;
+  const cleanOpt={...opt};delete cleanOpt.allowAnonFallback;delete cleanOpt.forceAnon;
+  if(!forceAnon&&state.session&&expired(state.session))await refresh(true);
+  const make=async token=>fetch(input,{...cleanOpt,headers:{apikey:key,Authorization:`Bearer ${token||key}`,...(cleanOpt.headers||{})}});
+  let response=await make(forceAnon?key:(state.session?.access_token||key));
+  if(!forceAnon&&!response.ok){
+    const detail=await response.clone().text().catch(()=> '');
+    if(isJwtProblem(response.status,detail)){
+      const renewed=await refresh(true);
+      if(renewed){
+        response=await make(state.session?.access_token||key);
+        if(!response.ok){
+          const retryDetail=await response.clone().text().catch(()=> '');
+          if(isJwtProblem(response.status,retryDetail)){
+            if(allowAnonFallback)response=await make(key);
+            else{const err=new Error(L('Ta session a expiré. Reconnecte-toi pour continuer.','Your session expired. Sign in again to continue.'));err.code='AUTH_EXPIRED';throw err}
+          }
+        }
+      }else if(allowAnonFallback)response=await make(key);
+      else{const err=new Error(L('Ta session a expiré. Reconnecte-toi pour continuer.','Your session expired. Sign in again to continue.'));err.code='AUTH_EXPIRED';throw err}
+    }
+  }
+  return response
+}
 async function user(){if(!configured||!state.session)return null;if(expired(state.session)&&!await refresh())return null;try{return await request('/auth/v1/user')}catch(_){save(null);return null}}
 function meta(u){const m=u?.user_metadata||{};const provider=u?.app_metadata?.provider||'compte';return {id:u?.id||'',name:m.full_name||m.name||m.user_name||m.preferred_username||u?.email?.split('@')[0]||'Joueur',avatar:m.avatar_url||m.picture||'',email:u?.email||'',provider}}
 function initials(name){return String(name||'?').split(/\s+/).slice(0,2).map(x=>x[0]||'').join('').toUpperCase()||'?'}
@@ -119,6 +151,7 @@ async function init(){
 
   await parseCallback();
   state.session=stored();
+  scheduleRefresh();
   state.user=await user();
 
   if(state.user)await syncProfile();
@@ -184,6 +217,8 @@ function renderButton(){
   }
 }
 function requireLogin(message){message=message||L('Connecte-toi pour utiliser cette fonctionnalité.','Sign in to use this feature.');if(state.user)return true;open();setTimeout(()=>showError(message),0);return false}
-window.MHUR_AUTH={state,configured,init,open,close,login,logout,requireLogin,renderButton,getUser:()=>state.user,getProfile:()=>state.profile,getAccessToken:()=>state.session?.access_token||'',onChange:fn=>state.listeners.push(fn)};
+window.MHUR_AUTH={state,configured,init,open,close,login,logout,requireLogin,renderButton,refreshSession:()=>refresh(true),fetch:authenticatedFetch,getUser:()=>state.user,getProfile:()=>state.profile,getAccessToken:()=>state.session?.access_token||'',onChange:fn=>state.listeners.push(fn)};
+document.addEventListener('visibilitychange',()=>{if(!document.hidden&&state.session)refresh(false).catch(()=>{})});
+window.addEventListener('online',()=>{if(state.session)refresh(false).catch(()=>{})});
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
 })();

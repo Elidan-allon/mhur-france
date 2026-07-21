@@ -1,4 +1,4 @@
-const RELEASE='412';
+const RELEASE='414';
 const CACHE=`mhur-fr-${RELEASE}`;
 const SHELL=[
   './','./index.html','./manifest.webmanifest','./favicon.ico','./version.json',
