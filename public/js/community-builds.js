@@ -1048,6 +1048,7 @@ window.communityPublishBuild=async function(){
     await cbEnsureLoaded(build.character_id,build.style_id,true);
     closeCommunityBuildCreator();
     cbOpenBuildsPage(build.character_id,build.style_id);
+    window.MHUR_ANALYTICS?.track?.(editingId?'build_updated':'build_created',{build_id:String(build.id||''),character_id:build.character_id,style_id:build.style_id,costume:build.costume_name||''});
     if(editingId) requestAnimationFrame(()=>openCommunityBuildDetail(build.id,build.character_id,build.style_id));
   }catch(error){
     alert(error.message||String(error));
@@ -1158,6 +1159,7 @@ window.communityCopyShareCode=async function(button,code){
       document.execCommand('copy');
       area.remove();
     }
+    window.MHUR_ANALYTICS?.track?.('build_code_copied',{build_code:value});
     if(textNode) textNode.textContent=cbIsEnglish()?'Code copied!':'Code copié !';
     button?.classList?.add('copied');
     clearTimeout(button?._copyResetTimer);
@@ -1233,6 +1235,7 @@ window.communityToggleHeart=async function(id){
     if(isLiked) finalLiked.add(id); else finalLiked.delete(id);
     cbSaveLiked(finalLiked);
     cbUpdateCachedBuild(id,build=>({...build,likes_count:count}));
+    window.MHUR_ANALYTICS?.track?.(isLiked?'build_liked':'build_unliked',{build_id:String(id),likes_count:count});
   }catch(error){
     const rollback=cbLikedSet();
     if(wasLiked) rollback.add(id); else rollback.delete(id);

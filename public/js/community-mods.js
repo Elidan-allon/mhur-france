@@ -374,6 +374,7 @@ async function publish(e){
     f.reset();
     state.editingId=null;
     await load();
+    window.MHUR_ANALYTICS?.track?.(editingId?'mod_updated':'mod_created',{mod_id:String(id),category:payload.category,character_name:payload.character_name||'',game_version:payload.game_version||''});
     if(editingId)await openDetail(editingId);
   }catch(err){
     if(!committed)for(const [bucket,path] of uploaded)try{await deleteStorageObject(bucket,path)}catch(_){}
@@ -394,6 +395,7 @@ async function openDetail(id){
   const r=state.rows.find(x=>String(x.id)===String(id));
   if(!r)return;
   state.active=r;
+  window.MHUR_ANALYTICS?.track?.('mod_viewed',{mod_id:String(id),category:r.category||'',character_name:r.character_name||''});
   await loadComments(id);
   const p=state.profiles[r.creator_id]||{};
   const mine=isMine(r);
@@ -458,6 +460,7 @@ async function incrementDownload(id){
     const count=Number(await request('/rest/v1/rpc/increment_mod_downloads',{method:'POST',body:JSON.stringify({target_mod:id})}))||0;
     const row=state.rows.find(r=>String(r.id)===String(id));
     if(row)row.downloads_count=count;
+    window.MHUR_ANALYTICS?.track?.('mod_downloaded',{mod_id:String(id),downloads_count:count,category:row?.category||''});
     document.querySelectorAll(`[data-mod-id="${id}"] .modStats span:last-child`).forEach(el=>el.textContent=`⬇ ${count}`);
   }catch(error){console.warn('Téléchargement non comptabilisé',error)}
 }

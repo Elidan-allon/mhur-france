@@ -352,3 +352,6 @@
     font-size:14px;
   }
 }
+
+/* Google Analytics consent */
+#mhurAnalyticsConsent{position:fixed;left:16px;right:16px;bottom:16px;z-index:100000;display:flex;gap:16px;align-items:center;justify-content:space-between;padding:16px 18px;background:#0d1727;color:#fff;border:2px solid #405d84;border-radius:14px;box-shadow:0 10px 40px #000a;font-family:Arial,sans-serif}#mhurAnalyticsConsent>div:first-child{display:flex;flex-direction:column;gap:4px}#mhurAnalyticsConsent span{color:#c7d7ee;font-size:14px}#mhurAnalyticsConsent button{margin-left:8px;padding:10px 14px;border-radius:10px;border:1px solid #5877a3;background:#1a2a43;color:#fff;font-weight:800}#mhurAnalyticsConsent button[data-yes]{background:#ffe100;color:#000;border-color:#ffe100}@media(max-width:680px){#mhurAnalyticsConsent{flex-direction:column;align-items:stretch}#mhurAnalyticsConsent>div:last-child{display:flex}#mhurAnalyticsConsent button{flex:1;margin:0 4px}}

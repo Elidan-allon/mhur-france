@@ -154,7 +154,7 @@ async function init(){
   scheduleRefresh();
   state.user=await user();
 
-  if(state.user)await syncProfile();
+  if(state.user){await syncProfile();window.MHUR_ANALYTICS?.track?.('login_completed',{method:meta(state.user).provider||''});}
 
   state.ready=true;
   notify();
@@ -165,6 +165,7 @@ function redirectTo(){
 }
 
 async function login(provider){
+  window.MHUR_ANALYTICS?.track?.('login_started',{method:String(provider||'')});
   if(!configured){
     showError(L('Configure Supabase avant d’activer les comptes.','Configure Supabase before enabling accounts.'));
     return;
