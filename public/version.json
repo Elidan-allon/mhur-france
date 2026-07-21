@@ -1,18 +1,4 @@
 {
-  "version": "415",
-  "name": "V415 vidéos de mods jusqu’à 50 MB",
-  "changes_fr": [
-    "Limite des vidéos de présentation augmentée de 20 MB à 50 MB",
-    "Les images restent limitées à 20 MB pour éviter des aperçus inutilement lourds",
-    "Envoi reprenable par morceaux pour les fichiers de plus de 6 MB",
-    "Affichage du pourcentage pendant l’envoi d’un mod ou d’une vidéo",
-    "Nouveau script Supabase pour régler le bucket mod-previews à 50 MB"
-  ],
-  "changes_en": [
-    "Preview video limit increased from 20 MB to 50 MB",
-    "Images remain limited to 20 MB to avoid unnecessarily heavy previews",
-    "Resumable chunked uploads for files larger than 6 MB",
-    "Upload percentage displayed while sending a mod or video",
-    "New Supabase script to set the mod-previews bucket to 50 MB"
-  ]
+  "version": "424",
+  "label": "V424 — refresh des routes et typographie du menu communauté"
 }

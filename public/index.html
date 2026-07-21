@@ -785,7 +785,8 @@
 })();
 </script>
 <script>
-let page='home', lang='fr', selectedChar=null, selectedStyle=null, selectedCostume=null;
+const __mhurInitialRoute=window.MHUR_CLEAN_ROUTES?.parse?.()||{page:'home',char:null,costume:null};
+let page=__mhurInitialRoute.page||'home', lang='fr', selectedChar=__mhurInitialRoute.char||null, selectedStyle=null, selectedCostume=__mhurInitialRoute.costume||null;
 const A='assets/midoriya/midoriya_assault/';
 const B='assets/midoriya/midoriya_attack/';
 const O='assets/midoriya_ofa/';
@@ -6668,14 +6669,14 @@ body .costumeTile > img,
 <script src="js/community-plus.js?v=417"></script>
 <link rel="stylesheet" href="css/v417-mobile-modal-fixes.css?v=417">
 <link rel="stylesheet" href="css/v422-route-stats-fixes.css?v=422">
-<link rel="stylesheet" href="css/v423-ui-route-fixes.css?v=423">
+<link rel="stylesheet" href="css/v424-route-menu-fixes.css?v=424">
 
 
 
 <!-- V416: 1 à 4 photos obligatoires, description et vidéo facultatives. -->
 <link rel="stylesheet" href="css/v412-community-quality.css?v=413">
 <script src="js/v412-community-quality.js?v=417"></script>
-<script src="js/v422-route-stats-fixes.js?v=423"></script>
+<script src="js/v422-route-stats-fixes.js?v=424"></script>
 <script id="mhur-clean-route-finalizer">
 (function(){
   function wrap(){

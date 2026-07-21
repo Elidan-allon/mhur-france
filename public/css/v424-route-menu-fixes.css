@@ -1,0 +1,97 @@
+/* V423 — titres de statistiques centrés, pleine largeur et menu harmonisé */
+.skillText .tables{
+  width:100%;
+  max-width:none;
+}
+.skillText .toggle{
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  width:100%!important;
+  min-height:48px;
+  padding:11px 54px!important;
+  border-radius:0!important;
+  text-align:center!important;
+  font-size:17px!important;
+  font-weight:900!important;
+  line-height:1.25;
+  letter-spacing:.01em;
+}
+.skillText .toggle .statsToggleTitle{
+  display:block;
+  width:100%;
+  text-align:center;
+}
+.skillText .toggle .statsToggleArrow{
+  position:absolute;
+  right:20px;
+  top:50%;
+  transform:translateY(-50%);
+  font-size:18px;
+  line-height:1;
+  transition:transform .18s ease;
+}
+.skillText .toggle[aria-expanded="true"] .statsToggleArrow{
+  transform:translateY(-50%) rotate(180deg);
+}
+.skillText .simpleTable{
+  width:100%!important;
+  max-width:100%!important;
+  min-width:0!important;
+  overflow-x:auto;
+}
+.skillText .dataTable{
+  width:100%!important;
+  min-width:100%!important;
+  max-width:none!important;
+  table-layout:fixed!important;
+}
+.skillText .dataTable th,
+.skillText .dataTable td{
+  text-align:center!important;
+  white-space:normal!important;
+  vertical-align:middle;
+  padding:10px 12px!important;
+}
+.skillText .dataTable th:first-child,
+.skillText .dataTable td:first-child{
+  width:22%;
+}
+#drawer .navItem[data-mhur-plus]{
+  font-family:inherit!important;
+  font-size:inherit!important;
+  font-weight:inherit!important;
+  line-height:inherit!important;
+  letter-spacing:inherit!important;
+  text-transform:none!important;
+}
+#drawer .navItem[data-mhur-plus] span{
+  font:inherit!important;
+}
+@media(max-width:760px){
+  .skillText .toggle{
+    min-height:46px;
+    padding:10px 44px!important;
+    font-size:15px!important;
+  }
+  .skillText .toggle .statsToggleArrow{right:15px}
+  .skillText .dataTable{min-width:560px!important;table-layout:auto!important}
+  .skillText .dataTable th,.skillText .dataTable td{white-space:nowrap!important}
+}
+
+
+/* V424 — même typographie que les autres entrées Communauté. */
+#drawer button.navItem[data-mhur-plus],
+#drawer button.navItem[data-mhur-plus] > span{
+  font-family:Arial,Helvetica,sans-serif!important;
+  font-size:20px!important;
+  font-weight:900!important;
+  font-style:normal!important;
+  line-height:1.2!important;
+  letter-spacing:0!important;
+}
+@media(max-width:760px){
+  #drawer button.navItem[data-mhur-plus],
+  #drawer button.navItem[data-mhur-plus] > span{font-size:20px!important}
+}
