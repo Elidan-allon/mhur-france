@@ -1126,7 +1126,7 @@ function cbRenderBuildDetail(id){
         <p>${cbEsc(char?.name||build.character_id)} · ${cbEsc(cbStyleName(build.style_id))}</p>
         <p>${cbEsc(build.costume_name)} — ${cbEsc(build.costume_variant)}</p>
         <div class="cbDetailVersion">🎮 ${cbEsc(build.game_version||(cbIsEnglish()?'Version not specified':'Version non précisée'))}</div>
-        ${build.share_code?`<div class="cbShareCode">🔗 ${cbEsc(build.share_code)} · ${Number(build.copied_count)||0} ${cbIsEnglish()?'people inspired':'personne(s) inspirée(s)'}</div>`:''}
+        ${build.share_code?`<button type="button" class="cbShareCode" title="${cbIsEnglish()?'Click to copy the build code':'Cliquer pour copier le code du build'}" aria-label="${cbIsEnglish()?'Copy build code':'Copier le code du build'}" data-share-code="${cbEsc(build.share_code)}" onclick="event.stopPropagation();communityCopyShareCode(this,'${cbEsc(build.share_code)}')">🔗 <span class="cbShareCodeText">${cbEsc(build.share_code)} · ${Number(build.copied_count)||0} ${cbIsEnglish()?'people inspired':'personne(s) inspirée(s)'}</span></button>`:''}
         ${build.source_author?`<div class="cbInspiredBy">🔗 ${cbIsEnglish()?'Inspired by a build from':'Inspiré d’un build de'} <b>${cbEsc(build.source_author)}</b></div>`:''}
         ${outdated?`<div class="cbCompatibilityWarning">⚠️ ${cbIsEnglish()?`This build was created for ${cbEsc(build.game_version)}. Current data: ${cbEsc(currentVersion)}.`:`Ce build a été créé pour ${cbEsc(build.game_version)}. Données actuelles : ${cbEsc(currentVersion)}.`}</div>`:''}
         <div class="cbDetailAuthor">Par ${cbAuthorButton(build)} · ${cbFormatDate(build.created_at)}</div>
@@ -1139,6 +1139,37 @@ function cbRenderBuildDetail(id){
   window.MHUR_HUB?.comments?.mount?.(build.id);
   window.MHUR_PLUS?.mountBuildDetail?.(build);
 }
+window.communityCopyShareCode=async function(button,code){
+  const value=String(code||'').trim();
+  if(!value) return;
+  const textNode=button?.querySelector?.('.cbShareCodeText');
+  const original=textNode?.textContent||'';
+  try{
+    if(navigator.clipboard?.writeText){
+      await navigator.clipboard.writeText(value);
+    }else{
+      const area=document.createElement('textarea');
+      area.value=value;
+      area.setAttribute('readonly','');
+      area.style.position='fixed';
+      area.style.opacity='0';
+      document.body.appendChild(area);
+      area.select();
+      document.execCommand('copy');
+      area.remove();
+    }
+    if(textNode) textNode.textContent=cbIsEnglish()?'Code copied!':'Code copié !';
+    button?.classList?.add('copied');
+    clearTimeout(button?._copyResetTimer);
+    if(button) button._copyResetTimer=setTimeout(()=>{
+      if(textNode) textNode.textContent=original;
+      button.classList.remove('copied');
+    },2000);
+  }catch(_){
+    window.prompt(cbIsEnglish()?'Copy this build code:':'Copie ce code de build :',value);
+  }
+};
+
 window.openCommunityBuildDetail=function(id,charId,styleId){
   const build=cbFindBuild(id,charId,styleId);
   if(!build) return;
