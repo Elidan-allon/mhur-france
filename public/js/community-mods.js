@@ -418,12 +418,12 @@ async function openDetail(id){
       <div class="modSecurityPanel">${securityLabel(r)}${r.file_sha256?`<code title="SHA-256">${esc(r.file_sha256.slice(0,16))}…</code>`:''}<small>${esc(r.security_note||tx('Le site contrôle le format, mais un mod reste une création communautaire.','The site checks the format, but a mod remains community-created.'))}</small></div>
       ${r.description?`<p class="modsDetailDescription">${esc(r.description)}</p>`:`<p class="modsDetailDescription modsDescriptionEmpty">${tx('Aucune description.','No description.')}</p>`}
       <div class="modsDetailActions">
-        <button class="modsLike ${liked?'active':''}" data-like="${esc(r.id)}">♥ ${Number(r.likes_count)||0}</button>
-        <button class="modFavorite ${state.favorites.has(String(r.id))?'active':''}" data-favorite="${esc(r.id)}">★ ${tx('Favori','Favorite')}</button>
+        <button type="button" class="modsLike ${liked?'active':''}" data-like="${esc(r.id)}">♥ ${Number(r.likes_count)||0}</button>
+        <button type="button" class="modFavorite ${state.favorites.has(String(r.id))?'active':''}" data-favorite="${esc(r.id)}">★ ${tx('Favori','Favorite')}</button>
         <a class="modDownload" data-download="${esc(r.id)}" href="${esc(r.file_url)}" download="${esc(r.file_name||'mod.pak')}" target="_blank" rel="noopener">⬇ ${tx('Télécharger','Download')} · ${esc(r.file_name||'')}</a>
-        <button class="modInstallGuide" data-install-guide="${esc(r.id)}">🛠 ${tx('Guide d’installation','Installation guide')}</button>
-        <button class="modReport" data-report="${esc(r.id)}">⚑ ${tx('Signaler','Report')}</button>
-        ${mine?`<button class="modEdit" data-edit="${esc(r.id)}">✏️ ${tx('Modifier','Edit')}</button><button class="modDelete" data-delete="${esc(r.id)}">🗑 ${tx('Supprimer','Delete')}</button>`:''}
+        <button type="button" class="modInstallGuide" data-install-guide="${esc(r.id)}">🛠 ${tx('Guide d’installation','Installation guide')}</button>
+        <button type="button" class="modReport" data-report="${esc(r.id)}">⚑ ${tx('Signaler','Report')}</button>
+        ${mine?`<button type="button" class="modEdit" data-edit="${esc(r.id)}">✏️ ${tx('Modifier','Edit')}</button><button type="button" class="modDelete" data-delete="${esc(r.id)}">🗑 ${tx('Supprimer','Delete')}</button>`:''}
       </div>
       <section class="modVersionHistory"><h3>🕘 ${tx('Historique des versions','Version history')}</h3><div id="modVersionHistoryList">${tx('Chargement…','Loading…')}</div></section>
       <section class="modsComments"><h3>💬 ${tx('Commentaires','Comments')}</h3>${user()?`<form id="modCommentForm"><textarea maxlength="1500" required placeholder="${tx('Écrire un commentaire…','Write a comment…')}"></textarea><button class="modsPrimary">${tx('Publier','Post')}</button></form>`:`<button class="modsPrimary" id="modsLoginComment">${tx('Se connecter pour commenter','Sign in to comment')}</button>`}<div class="modsCommentsList">${commentsHtml()}</div></section>
@@ -431,8 +431,8 @@ async function openDetail(id){
   </div>`;
   m.querySelector('.modsClose').onclick=()=>m.hidden=true;
   m.querySelectorAll('[data-gallery-image]').forEach(btn=>btn.addEventListener('click',()=>openImageLightbox(btn.dataset.galleryImage,r.title)));
-  m.querySelector('[data-like]')?.addEventListener('click',()=>toggleLike(r.id));
-  m.querySelector('[data-favorite]')?.addEventListener('click',()=>toggleFavorite(r.id));
+  m.querySelector('[data-like]')?.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();toggleLike(r.id)});
+  m.querySelector('[data-favorite]')?.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();toggleFavorite(r.id)});
   m.querySelector('[data-install-guide]')?.addEventListener('click',()=>window.MHUR_PLUS?.modGuide?.open(r));
   m.querySelector('[data-report]')?.addEventListener('click',()=>window.MHUR_PLUS?.modReport?.open(r.id));
   m.querySelector('[data-download]')?.addEventListener('click',()=>incrementDownload(r.id));
@@ -445,13 +445,14 @@ async function openDetail(id){
 async function loadComments(id){state.comments=[];if(!REMOTE)return;try{const q=new URLSearchParams({select:'*',mod_id:`eq.${id}`,is_hidden:'eq.false',order:'created_at.asc'});state.comments=await request(`/rest/v1/community_mod_comments?${q}`)||[];await loadProfiles(state.comments.map(x=>x.user_id))}catch(_){} }
 function commentsHtml(){if(!state.comments.length)return `<div class="modsEmpty">${tx('Aucun commentaire pour le moment.','No comments yet.')}</div>`;return state.comments.map(c=>{const p=state.profiles[c.user_id]||{};return `<article class="modComment"><div class="modCommentAvatar">${p.avatar_url?`<img src="${esc(p.avatar_url)}" alt="">`:'👤'}</div><div><b>${esc(p.username||tx('Membre','Member'))}</b><small>${formatDate(c.created_at)}</small><p>${esc(c.body)}</p></div></article>`}).join('')}
 async function postComment(e,id){e.preventDefault();const body=e.currentTarget.querySelector('textarea').value.trim(),u=user();if(!body||!u)return;try{await request('/rest/v1/community_mod_comments',{method:'POST',headers:{Prefer:'return=minimal'},body:JSON.stringify({mod_id:id,user_id:u.id,body})});await openDetail(id)}catch(err){alert(err.message||String(err))}}
-async function toggleLike(id){const u=user();if(!u)return window.MHUR_AUTH?.open?.();try{const liked=state.liked.has(String(id));if(liked){await request(`/rest/v1/community_mod_likes?mod_id=eq.${id}&user_id=eq.${u.id}`,{method:'DELETE'});state.liked.delete(String(id))}else{await request('/rest/v1/community_mod_likes',{method:'POST',headers:{Prefer:'return=minimal'},body:JSON.stringify({mod_id:id,user_id:u.id})});state.liked.add(String(id))}let count=0;try{count=await request('/rest/v1/rpc/refresh_mod_likes',{method:'POST',body:JSON.stringify({target_mod:id})})}catch(_){count=Math.max(0,(state.rows.find(r=>r.id===id)?.likes_count||0)+(liked?-1:1))}const row=state.rows.find(r=>String(r.id)===String(id));if(row)row.likes_count=count;await openDetail(id)}catch(err){alert(err.message||String(err))}}
+async function toggleLike(id){const u=user();if(!u)return window.MHUR_AUTH?.open?.();const dialog=document.querySelector('#modsDetailModal .modsDialog');const modalScroll=dialog?.scrollTop||0;const pageScroll=window.scrollY;try{const liked=state.liked.has(String(id));if(liked){await request(`/rest/v1/community_mod_likes?mod_id=eq.${id}&user_id=eq.${u.id}`,{method:'DELETE'});state.liked.delete(String(id))}else{await request('/rest/v1/community_mod_likes',{method:'POST',headers:{Prefer:'return=minimal'},body:JSON.stringify({mod_id:id,user_id:u.id})});state.liked.add(String(id))}let count=0;try{count=await request('/rest/v1/rpc/refresh_mod_likes',{method:'POST',body:JSON.stringify({target_mod:id})})}catch(_){count=Math.max(0,(state.rows.find(r=>r.id===id)?.likes_count||0)+(liked?-1:1))}const row=state.rows.find(r=>String(r.id)===String(id));if(row)row.likes_count=count;await openDetail(id);requestAnimationFrame(()=>{const d=document.querySelector('#modsDetailModal .modsDialog');if(d)d.scrollTop=modalScroll;window.scrollTo(0,pageScroll)})}catch(err){alert(err.message||String(err))}}
 async function toggleFavorite(id){
   const u=user();if(!u)return window.MHUR_AUTH?.open?.();
+  const dialog=document.querySelector('#modsDetailModal .modsDialog');const modalScroll=dialog?.scrollTop||0;const pageScroll=window.scrollY;
   try{
     if(state.favorites.has(String(id))){await request(`/rest/v1/community_mod_favorites?mod_id=eq.${encodeURIComponent(id)}&user_id=eq.${u.id}`,{method:'DELETE'});state.favorites.delete(String(id));}
     else{await request('/rest/v1/community_mod_favorites',{method:'POST',headers:{Prefer:'return=minimal'},body:JSON.stringify({mod_id:id,user_id:u.id})});state.favorites.add(String(id));}
-    renderPage();if(state.active&&String(state.active.id)===String(id))await openDetail(id);window.dispatchEvent(new CustomEvent('mhur-mod-favorites-change'));
+    renderPage();if(state.active&&String(state.active.id)===String(id))await openDetail(id);requestAnimationFrame(()=>{const d=document.querySelector('#modsDetailModal .modsDialog');if(d)d.scrollTop=modalScroll;window.scrollTo(0,pageScroll)});window.dispatchEvent(new CustomEvent('mhur-mod-favorites-change'));
   }catch(err){alert(err.message||String(err))}
 }
 async function incrementDownload(id){
