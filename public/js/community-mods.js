@@ -476,11 +476,11 @@ async function removeMod(id){
   }catch(e){alert(e.message||String(e))}
 }
 function addMenu(){const drawer=document.getElementById('drawer');if(!drawer)return;let btn=drawer.querySelector('[data-mhur-mods]');if(!btn){btn=document.createElement('a');btn.href='#mods';btn.className='navItem';btn.dataset.mhurMods='1';btn.dataset.mhurHub='1';btn.innerHTML='🧩 <span>Mods</span>';btn.addEventListener('click',e=>{e.preventDefault();openPage()});const builds=[...drawer.querySelectorAll('.navItem')].find(x=>/community builds|builds communaut|build communaut/i.test(x.textContent));(builds?.parentElement||drawer).insertBefore(btn,builds?.nextSibling||null)}btn.classList.toggle('active',typeof page!=='undefined'&&page==='mods');window.MHUR_V386?.refreshMenuSections?.()}
-function openPage(){page='mods';selectedChar=null;selectedStyle=null;selectedCostume=null;document.getElementById('drawer')?.classList.remove('open');if(location.hash!=='#mods')history.pushState(null,'','#mods');renderPage();addMenu()}
+function openPage(){page='mods';selectedChar=null;selectedStyle=null;selectedCostume=null;document.getElementById('drawer')?.classList.remove('open');if(location.pathname!=='/mods')history.pushState(null,'','/mods');renderPage();addMenu()}
 const originalLayout=window.layout;window.layout=function(){const out=originalLayout?.apply(this,arguments);setTimeout(()=>{addMenu();if(typeof page!=='undefined'&&page==='mods')renderPage()},0);return out};
-window.addEventListener('hashchange',()=>{if(location.hash==='#mods')openPage()});
+window.addEventListener('hashchange',()=>{if(location.pathname==='/mods'||location.hash==='#mods')openPage()});
 new MutationObserver(addMenu).observe(document.documentElement,{childList:true,subtree:true});
 window.MHUR_MODS={open:openPage,refresh:load,state,request,openDetail,toggleFavorite,loadFavorites};
 window.addEventListener('mhur-auth-change',()=>{Promise.all([loadLikes(),loadFavorites()]).finally(()=>{renderPage();const detail=document.getElementById('modsDetailModal');if(detail&&!detail.hidden&&state.active)openDetail(state.active.id)})});
-window.addEventListener('load',()=>{addMenu();if(location.hash==='#mods')openPage();load()},{once:true});
+window.addEventListener('load',()=>{addMenu();if(location.pathname==='/mods'||location.hash==='#mods')openPage();load()},{once:true});
 })();

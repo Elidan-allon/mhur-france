@@ -357,7 +357,7 @@ function cbOpenBuildsPage(charId,styleId){
   selectedChar=charId;
   selectedStyle=styleId;
   selectedCostume=null;
-  history.replaceState(null,'','#builds');
+  history.replaceState(null,'','/builds');
   render();
 }
 window.openCommunityBuildsPage=cbOpenBuildsPage;
@@ -366,7 +366,7 @@ window.communityBackToBuildRoster=function(){
   selectedChar=null;
   selectedStyle=null;
   selectedCostume=null;
-  if(location.hash!=='#builds') history.replaceState(null,'','#builds');
+  if(location.hash!=='#builds') history.replaceState(null,'','/builds');
   window.__keepScroll=true;
   render();
   requestAnimationFrame(()=>window.scrollTo({top:0,left:0,behavior:'auto'}));

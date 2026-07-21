@@ -714,24 +714,24 @@
 <link rel="icon" type="image/png" sizes="32x32" href="assets/brand/favicon-32.png">
 <link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png">
 <meta name="theme-color" content="#ffe100">
-<meta name="description" content="MHUR FR, le site communautaire français de My Hero Ultra Rumble (aussi recherché My Hero Academia Ultra Rumble) : personnages, builds, costumes, T.U.N.I.N.G, Tier Lists, mods et événements.">
+<meta id="seo-description" name="description" content="MHUR FR, le site communautaire français de My Hero Ultra Rumble (aussi recherché My Hero Academia Ultra Rumble) : personnages, builds, costumes, T.U.N.I.N.G, Tier Lists, mods et événements.">
 <meta name="keywords" content="MHUR FR, MHUR France, My Hero Ultra Rumble France, My Hero Academia Ultra Rumble, My Hero Academia Ultra Rumble France, builds MHUR, Tier List MHUR, mods MHUR">
 <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
-<link rel="canonical" href="https://mhur-france.eallon01.workers.dev/">
-<link rel="alternate" hreflang="fr-FR" href="https://mhur-france.eallon01.workers.dev/">
-<link rel="alternate" hreflang="x-default" href="https://mhur-france.eallon01.workers.dev/">
+<link id="seo-canonical" rel="canonical" href="https://mhurfrance.com/">
+<link rel="alternate" hreflang="fr-FR" href="https://mhurfrance.com/">
+<link rel="alternate" hreflang="x-default" href="https://mhurfrance.com/">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="fr_FR">
 <meta property="og:site_name" content="MHUR FR">
-<meta property="og:title" content="MHUR FR — My Hero Ultra Rumble France">
-<meta property="og:description" content="Le site communautaire français de My Hero Ultra Rumble : personnages, builds, costumes, T.U.N.I.N.G, Tier Lists, mods et événements.">
-<meta property="og:url" content="https://mhur-france.eallon01.workers.dev/">
-<meta property="og:image" content="https://mhur-france.eallon01.workers.dev/assets/brand/mhur-france-icon.png">
+<meta id="seo-og-title" property="og:title" content="MHUR FR — My Hero Ultra Rumble France">
+<meta id="seo-og-description" property="og:description" content="Le site communautaire français de My Hero Ultra Rumble : personnages, builds, costumes, T.U.N.I.N.G, Tier Lists, mods et événements.">
+<meta id="seo-og-url" property="og:url" content="https://mhurfrance.com/">
+<meta property="og:image" content="https://mhurfrance.com/assets/brand/mhur-france-icon.png">
 <meta property="og:image:alt" content="Logo de MHUR FR, communauté française de My Hero Ultra Rumble">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="MHUR FR — My Hero Ultra Rumble France">
-<meta name="twitter:description" content="La communauté française de My Hero Ultra Rumble : guides, builds, Tier Lists, mods et événements.">
-<meta name="twitter:image" content="https://mhur-france.eallon01.workers.dev/assets/brand/mhur-france-icon.png">
+<meta id="seo-twitter-title" name="twitter:title" content="MHUR FR — My Hero Ultra Rumble France">
+<meta id="seo-twitter-description" name="twitter:description" content="La communauté française de My Hero Ultra Rumble : guides, builds, Tier Lists, mods et événements.">
+<meta name="twitter:image" content="https://mhurfrance.com/assets/brand/mhur-france-icon.png">
 <meta name="twitter:image:alt" content="Logo de MHUR FR">
 <script type="application/ld+json">
 {
@@ -739,8 +739,8 @@
   "@graph": [
     {
       "@type": "WebSite",
-      "@id": "https://mhur-france.eallon01.workers.dev/#website",
-      "url": "https://mhur-france.eallon01.workers.dev/",
+      "@id": "https://mhurfrance.com/#website",
+      "url": "https://mhurfrance.com/",
       "name": "MHUR FR",
       "alternateName": [
         "MHUR France",
@@ -752,11 +752,11 @@
     },
     {
       "@type": "Organization",
-      "@id": "https://mhur-france.eallon01.workers.dev/#organization",
+      "@id": "https://mhurfrance.com/#organization",
       "name": "MHUR FR",
       "alternateName": "MHUR France",
-      "url": "https://mhur-france.eallon01.workers.dev/",
-      "logo": "https://mhur-france.eallon01.workers.dev/assets/brand/mhur-france-icon.png"
+      "url": "https://mhurfrance.com/",
+      "logo": "https://mhurfrance.com/assets/brand/mhur-france-icon.png"
     }
   ]
 }
@@ -767,6 +767,23 @@
 <header class="top"><button class="menuBtn" onclick="toggleMenu()" aria-label="Ouvrir le menu"><span class="menuBtnLines" aria-hidden="true"><span></span><span></span><span></span></span></button><div class="brand">MY HERO ULTRA RUMBLE<span>FRANCE</span></div><button id="mhurAccountButton" class="mhurAccountButton" type="button" onclick="MHUR_AUTH.open()"><span class="mhurAccountAvatar">👤</span><span class="mhurAccountButtonText"><b id="signinTitle">Se connecter</b><small id="signinSub">Google ou Discord</small></span></button><button class="lang" onclick="toggleLang()">FR / EN</button></header>
 <nav id="drawer" class="drawer"></nav>
 <main class="wrap" id="app"></main>
+<script id="mhur-clean-routes-seo">
+(function(){
+  const ORIGIN='https://mhurfrance.com';
+  const labels={home:'Accueil',characters:'Personnages',tunings:'T.U.N.I.N.G',costumes:'Costumes',builds:'Builds communauté',mods:'Mods communauté'};
+  const descriptions={home:'Le site communautaire français de My Hero Ultra Rumble : personnages, builds, costumes, T.U.N.I.N.G, tier lists, mods et actualités.',characters:'Découvrez tous les personnages et styles de My Hero Ultra Rumble, leurs compétences, statistiques et rôles.',tunings:'Consultez les compétences T.U.N.I.N.G normales et spéciales de tous les personnages de My Hero Ultra Rumble.',costumes:'Découvrez les costumes, variantes, raretés et emplacements T.U.N.I.N.G de My Hero Ultra Rumble.',builds:'Découvrez et partagez les meilleurs builds communautaires de My Hero Ultra Rumble France.',mods:'Découvrez et partagez les mods communautaires pour My Hero Ultra Rumble.'};
+  function parse(){const a=location.pathname.split('/').filter(Boolean).map(decodeURIComponent);let p='home',char=null,costume=null,build=null;if(a[0]&&labels[a[0]])p=a[0];if(a[0]==='characters'&&a[1]){p='characters';char=a[1]}if(a[0]==='tunings'&&a[1]){p='tunings';char=a[1]}if(a[0]==='costumes'&&a[1]){p='costumes';char=a[1];costume=a[2]||null}if(a[0]==='builds'&&a[1]){p='builds';char=a[1]==='communaute'?null:a[1];build=a[2]||null}return{page:p,char,costume,build}}
+  function apply(){const r=parse();window.page=r.page;window.selectedChar=r.char||null;if(r.costume)window.selectedCostume=r.costume;if(r.char&&Array.isArray(window.characters)){const c=window.characters.find(x=>x.id===r.char);if(c&&c.styles?.length===1)window.selectedStyle=c.styles[0]}return r}
+  function currentPath(){const p=window.page||'home',c=window.selectedChar,ct=window.selectedCostume;if(p==='home')return '/';if(c){if(p==='costumes'&&ct)return '/costumes/'+encodeURIComponent(c)+'/'+encodeURIComponent(ct);return '/'+p+'/'+encodeURIComponent(c)}return '/'+p}
+  function syncUrl(replace=true){const path=currentPath();if(location.pathname!==path||location.hash)history[replace?'replaceState':'pushState'](null,'',path+location.search)}
+  window.MHUR_CLEAN_ROUTES={parse,apply,currentPath,syncUrl};
+  if(location.hash){const h=location.hash.replace(/^#\/?/,'');if(labels[h])history.replaceState(null,'','/'+(h==='home'?'':h))}
+  const initial=parse();window.page=initial.page;window.selectedChar=initial.char;window.selectedCostume=initial.costume;
+  function set(q,a,v){const e=document.querySelector(q);if(e)e.setAttribute(a,v)}
+  function syncSeo(){const p=window.page||'home',c=(window.characters||[]).find(x=>x.id===window.selectedChar),ct=window.selectedCostume;let title=(labels[p]||'MHUR France')+' | My Hero Ultra Rumble France',desc=descriptions[p]||descriptions.home;if(c){if(p==='characters'){title=c.name+' — Personnage MHUR | MHUR France';desc='Guide de '+c.name+' dans My Hero Ultra Rumble : styles, compétences, statistiques et rôle.'}if(p==='tunings'){title='T.U.N.I.N.G '+c.name+' | MHUR France';desc='Tous les T.U.N.I.N.G normaux et spéciaux de '+c.name+' dans My Hero Ultra Rumble.'}if(p==='costumes'){title=(ct?'Costume '+c.name:'Costumes '+c.name)+' | MHUR France';desc='Costumes, variantes, raretés et emplacements T.U.N.I.N.G de '+c.name+' dans My Hero Ultra Rumble.'}if(p==='builds'){title='Builds '+c.name+' | MHUR France';desc='Les meilleurs builds communautaires pour '+c.name+' dans My Hero Ultra Rumble.'}}const url=ORIGIN+currentPath();document.title=title;set('#seo-description','content',desc);set('#seo-canonical','href',url);set('#seo-og-title','content',title);set('#seo-og-description','content',desc);set('#seo-og-url','content',url);set('#seo-twitter-title','content',title);set('#seo-twitter-description','content',desc)}
+  window.MHUR_SEO={sync:syncSeo};document.addEventListener('click',()=>setTimeout(()=>{syncUrl(true);syncSeo()},0));
+})();
+</script>
 <script>
 let page='home', lang='fr', selectedChar=null, selectedStyle=null, selectedCostume=null;
 const A='assets/midoriya/midoriya_assault/';
@@ -1071,7 +1088,12 @@ const tunings={"assault":[{"role":"assault","img":"assets/midoriya/midoriya_assa
 function toggleMenu(){document.getElementById('drawer').classList.toggle('open')}
 function updateSigninText(){const t=document.getElementById('signinTitle'),s=document.getElementById('signinSub');if(!t||!s)return;if(lang==='en'){t.textContent='Sign In';s.textContent='Google or Discord';}else{t.textContent='Se connecter';s.textContent='Google ou Discord';}}
 
-function toggleLang(){lang=lang==='fr'?'en':'fr';layout();updateSigninText();window.MHUR_AUTH?.renderButton?.()}function go(p){page=p||'home';selectedChar=null;selectedStyle=null;selectedCostume=null;document.getElementById('drawer').classList.remove('open');if(location.hash!=='#'+page) location.hash=page;layout()}window.addEventListener('hashchange',()=>{const h=(location.hash||'#home').replace('#','');if(['home','characters','tunings','costumes','builds'].includes(h))go(h)});document.addEventListener('click',(e)=>{const a=e.target.closest('.navItem');if(a&&!a.hasAttribute('data-mhur-hub')){e.preventDefault();go(a.dataset.page)}});
+function toggleLang(){lang=lang==='fr'?'en':'fr';layout();updateSigninText();window.MHUR_AUTH?.renderButton?.()}
+function cleanPathForPage(p){return p==='home'?'/':'/'+p}
+function go(p,opts={}){page=p||'home';selectedChar=null;selectedStyle=null;selectedCostume=null;document.getElementById('drawer').classList.remove('open');const target=cleanPathForPage(page);if(!opts.noHistory&&location.pathname!==target)history.pushState({page},'',target);layout();window.MHUR_SEO?.sync?.()}
+window.addEventListener('popstate',()=>{window.MHUR_CLEAN_ROUTES?.apply?.();layout();window.MHUR_SEO?.sync?.()});
+window.addEventListener('hashchange',()=>{const h=(location.hash||'').replace(/^#\/?/,'');if(['home','characters','tunings','costumes','builds','mods'].includes(h)){history.replaceState(null,'',cleanPathForPage(h));go(h,{noHistory:true})}});
+document.addEventListener('click',(e)=>{const a=e.target.closest('.navItem');if(a&&!a.hasAttribute('data-mhur-hub')){e.preventDefault();go(a.dataset.page)}});
 function layout(){document.getElementById('drawer').innerHTML=['home','characters','tunings','costumes','builds'].map(p=>`<a href="#${p}" data-page="${p}" class="navItem ${page===p?'active':''}">${tr(p)}</a>`).join('');render()}
 function card(c,mode='characters'){const modeClass=mode==='costumes'?' costumeMode':mode==='builds'?' buildMode':mode==='tunings'?' tuningMode':' characterMode';const tag=mode==='costumes'?`<div class="cardModeTag">${tr('costumeTag')}</div>`:mode==='builds'?`<div class="cardModeTag">${tr('buildTag')}</div>`:mode==='tunings'?`<div class="cardModeTag">T.U.N.I.N.G</div>`:`<div class="cardModeTag">PERSONNAGE</div>`;const msg=mode==='costumes'?tr('costumeChoose'):mode==='builds'?tr('buildChoose'):mode==='tunings'?'Clique pour choisir le T.U.N.I.N.G.':tr('choose');return `<button class="card${modeClass}" data-char="${c.id}" onclick="selectChar('${c.id}')">${tag}<div class="thumb">${asset(c.portrait,c.name)}</div><div class="cardBody"><h3>${c.name}</h3><div class="badges">${sideBadge(c.side)}${c.styles.map(s=>roleBadge(styles[s].role)).join('')}</div><p style="color:#c9d7ee">${msg}</p></div></button>`}
 function home(){return `<h1 class="title">MHUR FR — MY HERO ULTRA RUMBLE FRANCE</h1><div class="homeBox"><strong>MHUR FR</strong> est le site communautaire français de <strong>My Hero Ultra Rumble</strong>, parfois recherché sous le nom « My Hero Academia Ultra Rumble ». Retrouvez les personnages, T.U.N.I.N.G, costumes, builds, Tier Lists, mods et événements de la communauté.<br><br>Les personnages déjà détaillés restent complets. Les personnages restants ont été ajoutés dans l’ordre du roster avec des fiches provisoires à compléter progressivement.<div class="workflowBox"><h2>Workflow portraits v152</h2>Le site contient maintenant un dossier <code>portrait_pipeline</code> pour gérer les portraits de skins proprement : on récupère les images, on les range avec un ordre numérique, puis on garde l’ordre officiel du jeu dans un fichier JSON.<div class="workflowSteps"><div class="workflowStep"><b>1.</b> Récupérer les portraits UltraRumble dans <code>portrait_source</code></div><div class="workflowStep"><b>2.</b> Remplir <code>skin_order_template.json</code> avec l’ordre du jeu</div><div class="workflowStep"><b>3.</b> Lancer <code>prepare_portraits.py</code> pour renommer et créer le manifest</div></div></div></div>`}
@@ -3078,7 +3100,7 @@ function render(){const app=document.getElementById('app');if(page==='home')app.
 <script src="data/home_data.js"></script>
 <script src="js/home.js?v=383"></script>
 <script>
-page=(location.hash||'#home').replace('#','')||'home';if(!['home','characters','tunings','costumes','builds'].includes(page))page='home';layout();
+window.MHUR_CLEAN_ROUTES?.apply?.();if(!['home','characters','tunings','costumes','builds','mods'].includes(page))page='home';layout();window.MHUR_SEO?.sync?.();
 </script>
 <button id="backToTop" title="Retour en haut" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
 <script>window.addEventListener('scroll',()=>{const b=document.getElementById('backToTop'); if(b) b.classList.toggle('show', window.scrollY>180);},{passive:true});</script>
@@ -5870,7 +5892,8 @@ body .costumeTile > img,
 <link rel="stylesheet" href="css/v405-final-hamburger.css?v=408">
 <script src="js/v401-final-corrections.js?v=407"></script>
 <script src="js/v403-tutorial-image-language.js?v=404"></script>
-</body></html>
+
+
 <style id="v223_tuning_text_fix">
 /* v223 : garde le badge MAX en place, mais donne plus de place au texte */
 .gameSlot{position:relative!important;}
@@ -6649,3 +6672,17 @@ body .costumeTile > img,
 <!-- V416: 1 à 4 photos obligatoires, description et vidéo facultatives. -->
 <link rel="stylesheet" href="css/v412-community-quality.css?v=413">
 <script src="js/v412-community-quality.js?v=417"></script>
+<script id="mhur-clean-route-finalizer">
+(function(){
+  function wrap(){
+    if(typeof window.render==='function'&&!window.render.__cleanRouteWrapped){
+      const original=window.render;
+      const wrapped=function(){const out=original.apply(this,arguments);queueMicrotask(()=>{window.MHUR_CLEAN_ROUTES?.syncUrl?.(true);window.MHUR_SEO?.sync?.()});return out};
+      wrapped.__cleanRouteWrapped=true;window.render=wrapped;
+    }
+  }
+  wrap();addEventListener('load',()=>{wrap();window.MHUR_CLEAN_ROUTES?.apply?.();if(typeof window.layout==='function')window.layout();window.MHUR_SEO?.sync?.()},{once:true});
+})();
+</script>
+</body>
+</html>

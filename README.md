@@ -23,3 +23,8 @@ Ne jamais publier de clé Supabase `service_role`, de token Cloudflare ou d'autr
 ## Base de données
 
 Les anciens scripts SQL d'installation et de migration ont été retirés de cette archive destinée à GitHub. Ils doivent être conservés séparément dans une sauvegarde privée si nécessaire.
+
+
+## SEO et URLs propres
+
+Le domaine canonique est `https://mhurfrance.com`. Les routes publiques utilisent désormais des URL sans `#`, par exemple `/characters`, `/characters/mirio`, `/costumes/mirio` et `/builds/mirio`. Le sitemap et le fichier robots.txt sont configurés pour ce domaine.

@@ -1,4 +1,7 @@
 User-agent: *
 Allow: /
+Disallow: /admin
+Disallow: /account
+Disallow: /login
 
-Sitemap: https://mhur-france.eallon01.workers.dev/sitemap.xml
+Sitemap: https://mhurfrance.com/sitemap.xml
