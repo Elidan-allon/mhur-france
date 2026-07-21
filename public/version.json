@@ -1,18 +1,18 @@
 {
-  "version": "414",
-  "name": "V414 correction définitive des sessions Supabase",
+  "version": "415",
+  "name": "V415 vidéos de mods jusqu’à 50 MB",
   "changes_fr": [
-    "Renouvellement automatique du jeton de connexion avant son expiration",
-    "Nouvelle tentative silencieuse lorsqu’une requête reçoit JWT expired",
-    "Retour automatique en lecture publique si une ancienne session ne peut plus être renouvelée",
-    "Message clair de reconnexion uniquement pour les actions nécessitant un compte",
-    "Suppression du faux conseil SQL V387/V390 sur les erreurs temporaires de connexion"
+    "Limite des vidéos de présentation augmentée de 20 MB à 50 MB",
+    "Les images restent limitées à 20 MB pour éviter des aperçus inutilement lourds",
+    "Envoi reprenable par morceaux pour les fichiers de plus de 6 MB",
+    "Affichage du pourcentage pendant l’envoi d’un mod ou d’une vidéo",
+    "Nouveau script Supabase pour régler le bucket mod-previews à 50 MB"
   ],
   "changes_en": [
-    "Automatic sign-in token renewal before expiration",
-    "Silent retry when a request receives JWT expired",
-    "Automatic public read fallback when an old session can no longer be renewed",
-    "Clear sign-in message only for actions that require an account",
-    "Removed the misleading V387/V390 SQL hint from temporary connection errors"
+    "Preview video limit increased from 20 MB to 50 MB",
+    "Images remain limited to 20 MB to avoid unnecessarily heavy previews",
+    "Resumable chunked uploads for files larger than 6 MB",
+    "Upload percentage displayed while sending a mod or video",
+    "New Supabase script to set the mod-previews bucket to 50 MB"
   ]
 }

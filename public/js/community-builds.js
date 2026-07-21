@@ -1035,6 +1035,14 @@ window.communityPublishBuild=async function(){
     const build=editingId
       ?(CB_REMOTE?await cbUpdateRemote(editingId,payload,uid):cbUpdateLocal(editingId,payload))
       :(CB_REMOTE?await cbPublishRemote(payload):cbPublishLocal(payload));
+    if(!editingId && CB_REMOTE && payload.source_build_id && /^[0-9a-f-]{36}$/i.test(build.id||'')){
+      try{
+        await cbRequest('/rest/v1/rpc/register_build_inspiration',{
+          method:'POST',
+          body:JSON.stringify({target_build:payload.source_build_id,inspired_build:build.id})
+        });
+      }catch(_){ /* Le build reste publié même si le compteur ne peut pas être actualisé. */ }
+    }
     const key=cbKey(build.character_id,build.style_id);
     delete CB_STATE.cache[key];
     await cbEnsureLoaded(build.character_id,build.style_id,true);
@@ -1118,7 +1126,7 @@ function cbRenderBuildDetail(id){
         <p>${cbEsc(char?.name||build.character_id)} · ${cbEsc(cbStyleName(build.style_id))}</p>
         <p>${cbEsc(build.costume_name)} — ${cbEsc(build.costume_variant)}</p>
         <div class="cbDetailVersion">🎮 ${cbEsc(build.game_version||(cbIsEnglish()?'Version not specified':'Version non précisée'))}</div>
-        ${build.share_code?`<div class="cbShareCode">🔗 ${cbEsc(build.share_code)} · ${Number(build.copied_count)||0} ${cbIsEnglish()?'copies':'copies'}</div>`:''}
+        ${build.share_code?`<div class="cbShareCode">🔗 ${cbEsc(build.share_code)} · ${Number(build.copied_count)||0} ${cbIsEnglish()?'people inspired':'personne(s) inspirée(s)'}</div>`:''}
         ${build.source_author?`<div class="cbInspiredBy">🔗 ${cbIsEnglish()?'Inspired by a build from':'Inspiré d’un build de'} <b>${cbEsc(build.source_author)}</b></div>`:''}
         ${outdated?`<div class="cbCompatibilityWarning">⚠️ ${cbIsEnglish()?`This build was created for ${cbEsc(build.game_version)}. Current data: ${cbEsc(currentVersion)}.`:`Ce build a été créé pour ${cbEsc(build.game_version)}. Données actuelles : ${cbEsc(currentVersion)}.`}</div>`:''}
         <div class="cbDetailAuthor">Par ${cbAuthorButton(build)} · ${cbFormatDate(build.created_at)}</div>

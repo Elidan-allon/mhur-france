@@ -1,8 +1,0 @@
-MHUR France V370
-
-- Descriptions anglaises officielles corrigées pour Momo Yaoyorozu.
-- Installation PWA préparée avec une identité stable et un service worker contrôlé.
-- Suppression de la grande fenêtre bloquante lorsque le navigateur ne fournit pas encore le prompt.
-- Le bouton affiche son état directement dans le menu latéral.
-
-IMPORTANT : un navigateur ne permet une installation en un clic que lorsqu’il émet l’événement beforeinstallprompt. Le site prépare désormais automatiquement le service worker et recharge une seule fois si nécessaire.

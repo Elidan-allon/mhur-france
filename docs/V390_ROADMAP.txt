@@ -1,8 +1,0 @@
-MHUR France V390 WORK IN PROGRESS
-
-Goals:
-- Preserve existing design.
-- Internal cleanup only.
-- Prepare Mods architecture.
-- Consolidate translations.
-- Remove obsolete documentation after verification.

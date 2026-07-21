@@ -16,3 +16,25 @@
 .modsCopyCommand code{border:0;padding:0;background:transparent;color:#83d9ff}
 .modsCopyCommand span{color:#ffe000}
 @media(max-width:760px){.modsTutorialSteps{grid-template-columns:1fr}.modsTutorialPoster{border-radius:10px}.modsCopyCommand{display:flex;margin:8px 0 0;width:100%;justify-content:space-between}}
+
+/* V415 — progression des gros fichiers et vidéos jusqu’à 50 MB. */
+.modsUploadProgress{width:100%;height:18px;accent-color:#19c9de}.modsUploadProgress[hidden]{display:none}
+
+/* V416 — galerie d'images + vidéo facultative */
+.modsDetailMedia{display:grid;gap:12px;background:#050a12;padding:12px}
+.modsGallery{display:grid;gap:8px;min-height:260px}
+.modsGallery1{grid-template-columns:1fr}
+.modsGallery2{grid-template-columns:repeat(2,1fr)}
+.modsGallery3{grid-template-columns:repeat(2,1fr);grid-template-rows:repeat(2,minmax(150px,1fr))}
+.modsGallery3 .modsGalleryItem:first-child{grid-row:1 / span 2}
+.modsGallery4{grid-template-columns:repeat(2,1fr);grid-template-rows:repeat(2,minmax(150px,1fr))}
+.modsGalleryItem{border:0;padding:0;min-height:180px;background:#02060c;overflow:hidden;cursor:zoom-in}
+.modsGalleryItem img{width:100%;height:100%;object-fit:cover;display:block}
+.modsDetailVideo{background:#000;max-height:520px;display:grid;place-items:center}
+.modsDetailVideo video{width:100%;max-height:520px;display:block;background:#000}
+.modsDescriptionEmpty{opacity:.65;font-style:italic}
+.modsImageLightbox{position:fixed;inset:0;z-index:12050;background:rgba(0,0,0,.94);display:flex;align-items:center;justify-content:center;padding:24px}
+.modsImageLightbox[hidden]{display:none}
+.modsImageLightbox img{max-width:96vw;max-height:92vh;object-fit:contain}
+.modsLightboxClose{position:fixed;top:18px;right:18px;width:48px;height:48px;border-radius:50%;border:3px solid #000;background:#ff5c62;color:#fff;font-size:28px;font-weight:1000;cursor:pointer}
+@media(max-width:600px){.modsDetailMedia{padding:6px}.modsGallery{min-height:220px}.modsGallery2,.modsGallery3,.modsGallery4{gap:4px}.modsGallery3{grid-template-rows:repeat(2,minmax(110px,1fr))}.modsGallery4{grid-template-rows:repeat(2,minmax(110px,1fr))}.modsGalleryItem{min-height:110px}}

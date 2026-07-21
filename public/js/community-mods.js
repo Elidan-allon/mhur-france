@@ -7,13 +7,18 @@ const REMOTE=/^https:\/\/.+\.supabase\.co$/i.test(API)&&!!KEY;
 const state={rows:[],profiles:{},liked:new Set(),favorites:new Set(),loading:false,error:'',category:'all',character:'all',query:'',sort:'recent',active:null,comments:[],editingId:null};
 const CATEGORIES=['skin','ui','audio','vfx','animation','environment','gameplay','misc'];
 const LEGACY={skins:'skin',sounds:'audio',effects:'vfx',maps:'environment',characters:'skin',other:'misc'};
+const MB=1024*1024;
+const PREVIEW_IMAGE_MAX=20*MB;
+const PREVIEW_VIDEO_MAX=50*MB;
+const RESUMABLE_THRESHOLD=6*MB;
 const tx=(fr,en)=>{try{return typeof lang!=='undefined'&&lang==='en'?en:fr}catch(_){return fr}};
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
 const user=()=>window.MHUR_AUTH?.getUser?.()||null;
 const token=()=>window.MHUR_AUTH?.getAccessToken?.()||KEY;
 const safeName=v=>String(v||'file').replace(/[^a-zA-Z0-9._-]+/g,'_').slice(-140);
 const normalizedCategory=c=>LEGACY[c]||c||'misc';
-function categoryLabel(c){const k=normalizedCategory(c);const fr={skin:'Skin',ui:'Interface',audio:'Audio',vfx:'VFX',animation:'Animation',environment:'Environnement',gameplay:'Gameplay',misc:'Divers'};const en={skin:'Skin',ui:'UI',audio:'Audio',vfx:'VFX',animation:'Animation',environment:'Environment',gameplay:'Gameplay',misc:'Misc'};return (tx(fr,en))[k]||k}
+function categoryIcon(c){return ({skin:'👕',ui:'🖥️',audio:'🔊',vfx:'✨',animation:'🎬',environment:'🗺️',gameplay:'🎮',misc:'🧩'})[normalizedCategory(c)]||'🧩'}
+function categoryLabel(c){const k=normalizedCategory(c);const fr={skin:'Skin',ui:'Interface',audio:'Audio',vfx:'VFX',animation:'Animation',environment:'Environnement',gameplay:'Gameplay',misc:'Divers'};const en={skin:'Skin',ui:'UI',audio:'Audio',vfx:'VFX',animation:'Animation',environment:'Environment',gameplay:'Gameplay',misc:'Misc'};return `${categoryIcon(k)} ${(tx(fr,en))[k]||k}`}
 function formatDate(v){try{return new Intl.DateTimeFormat(typeof lang!=='undefined'&&lang==='en'?'en-GB':'fr-FR',{dateStyle:'medium'}).format(new Date(v))}catch(_){return ''}}
 function formatSize(n){n=Number(n)||0;if(n<1024)return `${n} B`;if(n<1048576)return `${(n/1024).toFixed(1)} KB`;return `${(n/1048576).toFixed(1)} MB`}
 async function request(path,opt={}){const headers={...(opt.headers||{})};if(opt.body&&!(opt.body instanceof Blob)&&!headers['Content-Type'])headers['Content-Type']='application/json';const runner=window.MHUR_AUTH?.fetch||fetch;const r=await runner(API+path,{...opt,headers});const text=await r.text();let data=text;try{data=text?JSON.parse(text):null}catch(_){}if(!r.ok)throw new Error(data?.message||data?.error||data?.hint||text||`HTTP ${r.status}`);return data}
@@ -27,7 +32,24 @@ function availableCharacters(){
   return [...new Set(state.rows.map(r=>r.character_name).filter(Boolean))].sort((a,b)=>a.localeCompare(b));
 }
 function filtered(){let rows=state.rows.filter(r=>{const cat=normalizedCategory(r.category);const text=`${r.title||''} ${r.description||''} ${r.character_name||''} ${r.file_name||''} ${(r.tags||[]).join(' ')}`.toLowerCase();return (state.category==='all'||cat===state.category)&&(state.character==='all'||r.character_name===state.character)&&(!state.query||text.includes(state.query.toLowerCase()))});return rows.sort((a,b)=>state.sort==='downloads'?(b.downloads_count||0)-(a.downloads_count||0):state.sort==='likes'?(b.likes_count||0)-(a.likes_count||0):state.sort==='name'?String(a.title).localeCompare(String(b.title)):new Date(b.created_at)-new Date(a.created_at))}
-function preview(r,controls=false){if(r.preview_url&&r.preview_type==='video')return `<video src="${esc(r.preview_url)}" ${controls?'controls':'muted loop playsinline'} preload="metadata"></video>`;if(r.preview_url)return `<img src="${esc(r.preview_url)}" alt="${esc(r.title)}" loading="lazy">`;return `<div class="modPreviewFallback">🧩</div>`}
+function previewImages(r){
+  const list=Array.isArray(r.preview_images)?r.preview_images.filter(x=>x&&x.url):[];
+  if(list.length)return list.slice(0,4);
+  if(r.preview_url&&r.preview_type!=='video')return [{url:r.preview_url,path:r.preview_path||null}];
+  return [];
+}
+function previewVideo(r){
+  if(r.video_url)return {url:r.video_url,path:r.video_path||null};
+  if(r.preview_url&&r.preview_type==='video')return {url:r.preview_url,path:r.preview_path||null};
+  return null;
+}
+function preview(r){const img=previewImages(r)[0];return img?`<img src="${esc(img.url)}" alt="${esc(r.title)}" loading="lazy">`:`<div class="modPreviewFallback">🧩</div>`}
+function detailMedia(r){
+  const imgs=previewImages(r),video=previewVideo(r);
+  const gallery=imgs.length?`<div class="modsGallery modsGallery${imgs.length}">${imgs.map((img,i)=>`<button type="button" class="modsGalleryItem" data-gallery-image="${esc(img.url)}" aria-label="${tx('Agrandir l’image','Enlarge image')} ${i+1}"><img src="${esc(img.url)}" alt="${esc(r.title)} ${i+1}"></button>`).join('')}</div>`:'';
+  const movie=video?`<div class="modsDetailVideo"><video src="${esc(video.url)}" controls playsinline preload="metadata"></video></div>`:'';
+  return gallery+movie;
+}
 function tags(r){const arr=[categoryLabel(r.category),r.character_name,...(Array.isArray(r.tags)?r.tags:[])].filter(Boolean);return [...new Set(arr)].map(t=>`<button class="modTag" data-mod-tag="${esc(t)}">${esc(t)}</button>`).join('')}
 function isMine(r){const u=user();return Boolean(u&&r&&String(u.id)===String(r.creator_id||''))}
 function securityLabel(r){const status=String(r?.security_status||'extension_checked');const map={verified:[tx('Fichier vérifié','Verified file'),'verified'],checksum:[tx('Empreinte SHA-256','SHA-256 fingerprint'),'verified'],extension_checked:[tx('Format contrôlé','Format checked'),'checked'],unverified:[tx('Non vérifié','Unverified'),'warning'],blocked:[tx('Bloqué','Blocked'),'blocked']};const [label,cls]=map[status]||map.unverified;return `<span class="modSecurityBadge ${cls}">🛡️ ${esc(label)}</span>`}
@@ -40,7 +62,7 @@ function card(r){
       <div class="modTags">${tags(r)}</div>
       <button class="modTitle" data-mod-open="${esc(r.id)}"><h3>${esc(r.title)}</h3></button>
       ${r.character_name?`<b>👤 ${esc(r.character_name)}</b>`:''}
-      <p>${esc(r.description)}</p>
+      ${r.description?`<p>${esc(r.description)}</p>`:''}
       <div class="modMeta">${esc(p.username||tx('Membre','Member'))} · ${formatDate(r.created_at)} · ${formatSize(r.file_size)}</div>${securityLabel(r)}
       <div class="modStats"><span>♥ ${Number(r.likes_count)||0}</span><span>⬇ ${Number(r.downloads_count)||0}</span><button class="modFavorite ${state.favorites.has(String(r.id))?'active':''}" type="button" data-mod-favorite="${esc(r.id)}" title="${tx('Favori','Favorite')}">★</button></div>
       ${mine?`<div class="modOwnerActions"><button class="modEdit" type="button" data-mod-edit="${esc(r.id)}">✏️ ${tx('Modifier','Edit')}</button></div>`:''}
@@ -84,7 +106,7 @@ function ensurePublishModal(){
     <div class="modsDialogHead"><h2 id="modsFormTitle">${tx('Publier un mod','Publish a mod')}</h2><button class="modsClose" type="button">×</button></div>
     <form class="modsForm" id="modsForm">
       <label>${tx('Nom du mod','Mod name')}<input name="title" maxlength="100" required></label>
-      <label>${tx('Description','Description')}<textarea name="description" maxlength="3000" required></textarea></label>
+      <label>${tx('Description (facultative)','Description (optional)')}<textarea name="description" maxlength="3000"></textarea></label>
       <div class="modsFormGrid">
         <label>${tx('Catégorie','Category')}<select name="category" required>${CATEGORIES.map(c=>`<option value="${c}">${categoryLabel(c)}</option>`).join('')}</select></label>
         <label>${tx('Version du mod','Mod version')}<input name="mod_version" value="1.0" maxlength="30"></label>
@@ -93,8 +115,10 @@ function ensurePublishModal(){
       <label class="modsCharacterField">${tx('Personnage concerné','Related character')}<select name="character_id"><option value="">${tx('Aucun / général','None / general')}</option>${characterOptions()}</select></label>
       <label>${tx('Tags supplémentaires','Additional tags')}<input name="tags" placeholder="HUD, recolor, voice…"><span class="modsFieldHint">${tx('Sépare les tags avec des virgules.','Separate tags with commas.')}</span></label>
       <label>${tx('Fichier du mod','Mod file')}<input name="mod_file" type="file"><span class="modsFieldHint modsModFileHint">.pak, .utoc, .ucas ou .zip — 200 MB maximum</span></label>
-      <label>${tx('Image ou vidéo de présentation','Preview image or video')}<input name="preview_file" type="file" accept="image/jpeg,image/png,image/webp,image/gif,video/mp4,video/webm"><span class="modsFieldHint modsPreviewFileHint">JPG, PNG, WEBP, GIF, MP4 ou WEBM — 20 MB maximum</span></label>
+      <label>${tx('Photos de présentation (1 à 4)','Preview photos (1 to 4)')}<input name="preview_images" type="file" multiple accept="image/jpeg,image/png,image/webp,image/gif"><span class="modsFieldHint modsPreviewFileHint">${tx('Au moins 1 photo obligatoire · 4 maximum · 20 MB par photo','At least 1 photo required · maximum 4 · 20 MB per photo')}</span></label>
+      <label>${tx('Vidéo de démonstration (facultative)','Demo video (optional)')}<input name="preview_video" type="file" accept="video/mp4,video/webm"><span class="modsFieldHint modsPreviewVideoHint">${tx('MP4 ou WEBM · 50 MB maximum','MP4 or WEBM · 50 MB maximum')}</span></label>
       <button class="modsSubmit" type="submit">${tx('Publier','Publish')}</button>
+      <progress class="modsUploadProgress" id="modsUploadProgress" max="100" value="0" hidden></progress>
       <div class="modsProgress" id="modsProgress"></div>
     </form>
   </div>`;
@@ -104,7 +128,46 @@ function ensurePublishModal(){
   m.querySelector('#modsForm').addEventListener('submit',publish);
   return m;
 }
-async function upload(bucket,path,file){
+function directStorageEndpoint(){
+  try{
+    const u=new URL(API);
+    const projectId=u.hostname.split('.')[0];
+    if(projectId)return `https://${projectId}.storage.supabase.co/storage/v1/upload/resumable`;
+  }catch(_){}
+  return `${API}/storage/v1/upload/resumable`;
+}
+async function resumableUpload(bucket,path,file,onProgress){
+  if(!window.tus?.Upload)throw new Error(tx('Le module d’envoi vidéo n’est pas chargé. Recharge la page.','The video upload module is not loaded. Reload the page.'));
+  if(window.MHUR_AUTH?.refreshSession)await window.MHUR_AUTH.refreshSession().catch(()=>false);
+  const accessToken=token();
+  if(!accessToken||accessToken===KEY)throw new Error(tx('Reconnecte-toi avant d’envoyer un gros fichier.','Sign in again before uploading a large file.'));
+  return new Promise((resolve,reject)=>{
+    const uploadTask=new window.tus.Upload(file,{
+      endpoint:directStorageEndpoint(),
+      retryDelays:[0,3000,5000,10000,20000],
+      headers:{authorization:`Bearer ${accessToken}`,'x-upsert':'false'},
+      uploadDataDuringCreation:true,
+      removeFingerprintOnSuccess:true,
+      metadata:{
+        bucketName:bucket,
+        objectName:path,
+        contentType:file.type||'application/octet-stream',
+        cacheControl:'3600'
+      },
+      chunkSize:6*MB,
+      onError:error=>reject(new Error(error?.message||String(error))),
+      onProgress:(sent,total)=>onProgress?.(total?Math.min(100,Math.round(sent/total*100)):0),
+      onSuccess:()=>{onProgress?.(100);resolve(`${API}/storage/v1/object/public/${bucket}/${path}`)}
+    });
+    uploadTask.findPreviousUploads().then(previous=>{
+      if(previous.length)uploadTask.resumeFromPreviousUpload(previous[0]);
+      uploadTask.start();
+    }).catch(reject);
+  });
+}
+async function upload(bucket,path,file,onProgress){
+  if(file.size>RESUMABLE_THRESHOLD&&window.tus?.Upload)return resumableUpload(bucket,path,file,onProgress);
+  onProgress?.(0);
   const runner=window.MHUR_AUTH?.fetch||fetch;
   const r=await runner(`${API}/storage/v1/object/${bucket}/${path}`,{
     method:'POST',
@@ -114,6 +177,7 @@ async function upload(bucket,path,file){
   });
   const txt=await r.text();
   if(!r.ok)throw new Error((()=>{try{return JSON.parse(txt).message}catch(_){return txt}})());
+  onProgress?.(100);
   return `${API}/storage/v1/object/public/${bucket}/${path}`;
 }
 async function deleteStorageObject(bucket,path){
@@ -126,12 +190,24 @@ function validateModFile(file,required=false){
   if(!['.pak','.utoc','.ucas','.zip'].includes(fileExtension(file)))throw new Error(tx('Format de mod non accepté.','Unsupported mod format.'));
   if(file.size>200*1024*1024)throw new Error(tx('Le fichier dépasse 200 MB.','The file exceeds 200 MB.'));
 }
-function validatePreviewFile(file,required=false){
-  if(!file){if(required)throw new Error(tx('Choisis une image ou une vidéo de présentation.','Choose a preview image or video.'));return}
-  const allowedMime=/^(image\/(jpeg|png|webp|gif)|video\/(mp4|webm))$/i.test(file.type||'');
-  const allowedExt=['.jpg','.jpeg','.png','.webp','.gif','.mp4','.webm'].includes(fileExtension(file));
-  if(!allowedMime&&!allowedExt)throw new Error(tx('Format de présentation non accepté.','Unsupported preview format.'));
-  if(file.size>20*1024*1024)throw new Error(tx('La présentation dépasse 20 MB.','The preview exceeds 20 MB.'));
+function validateImageFiles(files,required=false){
+  const list=Array.from(files||[]);
+  if(!list.length){if(required)throw new Error(tx('Ajoute au moins une photo de présentation.','Add at least one preview photo.'));return []}
+  if(list.length>4)throw new Error(tx('Tu peux ajouter 4 photos maximum.','You can add up to 4 photos.'));
+  for(const file of list){
+    const okMime=/^image\/(jpeg|png|webp|gif)$/i.test(file.type||'');
+    const okExt=['.jpg','.jpeg','.png','.webp','.gif'].includes(fileExtension(file));
+    if(!okMime&&!okExt)throw new Error(tx('Une des photos utilise un format non accepté.','One photo uses an unsupported format.'));
+    if(file.size>PREVIEW_IMAGE_MAX)throw new Error(tx('Une des photos dépasse 20 MB.','One photo exceeds 20 MB.'));
+  }
+  return list;
+}
+function validateVideoFile(file){
+  if(!file)return;
+  const okMime=/^video\/(mp4|webm)$/i.test(file.type||'');
+  const okExt=['.mp4','.webm'].includes(fileExtension(file));
+  if(!okMime&&!okExt)throw new Error(tx('Format vidéo non accepté.','Unsupported video format.'));
+  if(file.size>PREVIEW_VIDEO_MAX)throw new Error(tx('La vidéo dépasse 50 MB.','The video exceeds 50 MB.'));
 }
 async function fileSha256(file){
   if(!file||!window.crypto?.subtle||file.size>64*1024*1024)return '';
@@ -175,13 +251,16 @@ function setModFormMode(row=null){
   }
   characterSelect.value=row?.character_id||'';
   f.elements.mod_file.required=!row;
-  f.elements.preview_file.required=!row;
+  f.elements.preview_images.required=!row;
   f.querySelector('.modsModFileHint').textContent=row
     ?`${tx('Fichier actuel','Current file')} : ${row.file_name||'—'} · ${tx('laisse vide pour le conserver','leave empty to keep it')}`
     :'.pak, .utoc, .ucas ou .zip — 200 MB maximum';
   f.querySelector('.modsPreviewFileHint').textContent=row
-    ?tx('Laisse vide pour conserver la présentation actuelle.','Leave empty to keep the current preview.')
-    :'JPG, PNG, WEBP, GIF, MP4 ou WEBM — 20 MB maximum';
+    ?tx('Laisse vide pour conserver les photos actuelles, ou sélectionne 1 à 4 nouvelles photos.','Leave empty to keep current photos, or select 1 to 4 new photos.')
+    :tx('Au moins 1 photo obligatoire · 4 maximum · 20 MB par photo','At least 1 photo required · maximum 4 · 20 MB per photo');
+  f.querySelector('.modsPreviewVideoHint').textContent=row
+    ?tx('Laisse vide pour conserver la vidéo actuelle.','Leave empty to keep the current video.')
+    :tx('Facultative · MP4 ou WEBM · 50 MB maximum','Optional · MP4 or WEBM · 50 MB maximum');
   f.querySelector('#modsProgress').textContent='';
   m.hidden=false;
   m.querySelector('.modsDialog').scrollTop=0;
@@ -204,16 +283,20 @@ async function publish(e){
   const editingId=f.dataset.editId||'';
   const oldRow=editingId?state.rows.find(r=>String(r.id)===String(editingId)):null;
   const mod=f.elements.mod_file.files[0]||null;
-  const pre=f.elements.preview_file.files[0]||null;
+  const images=Array.from(f.elements.preview_images.files||[]);
+  const video=f.elements.preview_video.files[0]||null;
   const submit=f.querySelector('.modsSubmit');
   const progress=f.querySelector('#modsProgress');
+  const progressBar=f.querySelector('#modsUploadProgress');
+  const showUploadProgress=(label,pct)=>{const n=Math.max(0,Math.min(100,Number(pct)||0));progressBar.hidden=false;progressBar.value=n;progress.textContent=`${label} ${n}%`;};
   if(!u)return window.MHUR_AUTH?.open?.();
   if(!REMOTE)return alert(tx('Supabase n’est pas configuré.','Supabase is not configured.'));
   if(editingId&&(!oldRow||!isMine(oldRow)))return alert(tx('Seul le créateur peut modifier ce mod.','Only the creator can edit this mod.'));
   let security=null;
   try{
     validateModFile(mod,!editingId);
-    validatePreviewFile(pre,!editingId);
+    validateImageFiles(images,!editingId);
+    validateVideoFile(video);
     security=await inspectModFile(mod);
   }catch(error){return alert(error.message||String(error))}
   submit.disabled=true;
@@ -237,8 +320,9 @@ async function publish(e){
     if(!editingId){payload.id=id;payload.creator_id=u.id}
     if(mod){
       const filePath=`${u.id}/${id}/${Date.now()}_${safeName(mod.name)}`;
-      progress.textContent=tx('Envoi du mod…','Uploading mod…');
-      payload.file_url=await upload('community-mods',filePath,mod);
+      const modLabel=tx('Envoi du mod…','Uploading mod…');
+      showUploadProgress(modLabel,0);
+      payload.file_url=await upload('community-mods',filePath,mod,pct=>showUploadProgress(modLabel,pct));
       payload.file_path=filePath;
       payload.file_name=mod.name;
       payload.file_size=mod.size;
@@ -247,13 +331,26 @@ async function publish(e){
       payload.security_note=security?.security_note||null;
       uploaded.push(['community-mods',filePath]);
     }
-    if(pre){
-      const previewPath=`${u.id}/${id}/${Date.now()}_${safeName(pre.name)}`;
-      progress.textContent=tx('Envoi de la présentation…','Uploading preview…');
-      payload.preview_url=await upload('mod-previews',previewPath,pre);
-      payload.preview_path=previewPath;
-      payload.preview_type=pre.type.startsWith('video/')?'video':'image';
-      uploaded.push(['mod-previews',previewPath]);
+    if(images.length){
+      const uploadedImages=[];
+      for(let i=0;i<images.length;i++){
+        const image=images[i];
+        const imagePath=`${u.id}/${id}/images/${Date.now()}_${i+1}_${safeName(image.name)}`;
+        const label=tx(`Envoi de la photo ${i+1}/${images.length}…`,`Uploading photo ${i+1}/${images.length}…`);
+        showUploadProgress(label,0);
+        const url=await upload('mod-previews',imagePath,image,pct=>showUploadProgress(label,pct));
+        uploadedImages.push({url,path:imagePath});uploaded.push(['mod-previews',imagePath]);
+      }
+      payload.preview_images=uploadedImages;
+      payload.preview_url=uploadedImages[0].url;
+      payload.preview_path=uploadedImages[0].path;
+      payload.preview_type='image';
+    }
+    if(video){
+      const videoPath=`${u.id}/${id}/video/${Date.now()}_${safeName(video.name)}`;
+      const label=tx('Envoi de la vidéo…','Uploading video…');showUploadProgress(label,0);
+      payload.video_url=await upload('mod-previews',videoPath,video,pct=>showUploadProgress(label,pct));
+      payload.video_path=videoPath;uploaded.push(['mod-previews',videoPath]);
     }
     progress.textContent=editingId?tx('Enregistrement…','Saving…'):tx('Publication…','Publishing…');
     if(editingId){
@@ -267,7 +364,8 @@ async function publish(e){
       });
       if(!Array.isArray(rows)||!rows.length)throw new Error(tx('Modification refusée ou mod introuvable.','Update refused or mod not found.'));
       /* L'ancien fichier est conservé pour l'historique des versions. */
-      if(pre&&oldRow?.preview_path&&oldRow.preview_path!==payload.preview_path)try{await deleteStorageObject('mod-previews',oldRow.preview_path)}catch(_){}
+      if(images.length){for(const img of previewImages(oldRow))if(img.path&&!payload.preview_images.some(x=>x.path===img.path))try{await deleteStorageObject('mod-previews',img.path)}catch(_){}}
+      if(video&&oldRow?.video_path&&oldRow.video_path!==payload.video_path)try{await deleteStorageObject('mod-previews',oldRow.video_path)}catch(_){}
     }else{
       await request('/rest/v1/community_mods',{method:'POST',headers:{Prefer:'return=minimal'},body:JSON.stringify(payload)});
     }
@@ -283,7 +381,14 @@ async function publish(e){
   }finally{
     submit.disabled=false;
     progress.textContent='';
+    progressBar.hidden=true;
+    progressBar.value=0;
   }
+}
+function openImageLightbox(url,title=''){
+  let box=document.getElementById('modsImageLightbox');
+  if(!box){box=document.createElement('div');box.id='modsImageLightbox';box.className='modsImageLightbox';box.hidden=true;box.innerHTML='<button type="button" class="modsLightboxClose">×</button><img alt="">';document.body.appendChild(box);box.addEventListener('click',e=>{if(e.target===box||e.target.closest('.modsLightboxClose'))box.hidden=true});}
+  box.querySelector('img').src=url;box.querySelector('img').alt=title;box.hidden=false;
 }
 async function openDetail(id){
   const r=state.rows.find(x=>String(x.id)===String(id));
@@ -304,12 +409,12 @@ async function openDetail(id){
   m.hidden=false;
   m.innerHTML=`<div class="modsDialog modsDetailDialog">
     <div class="modsDialogHead"><h2>${esc(r.title)}</h2><button class="modsClose" type="button">×</button></div>
-    <div class="modsDetailPreview">${preview(r,true)}</div>
+    <div class="modsDetailMedia">${detailMedia(r)}</div>
     <div class="modsDetailBody">
       <div class="modTags">${tags(r)}</div>
       <div class="modsDetailInfo"><span>👤 ${esc(p.username||tx('Membre','Member'))}</span><span>📦 ${esc(r.mod_version||'1.0')}</span>${r.game_version?`<span>🎮 ${esc(r.game_version)}</span>`:''}<span>💾 ${formatSize(r.file_size)}</span><span>📅 ${formatDate(r.created_at)}</span></div>
       <div class="modSecurityPanel">${securityLabel(r)}${r.file_sha256?`<code title="SHA-256">${esc(r.file_sha256.slice(0,16))}…</code>`:''}<small>${esc(r.security_note||tx('Le site contrôle le format, mais un mod reste une création communautaire.','The site checks the format, but a mod remains community-created.'))}</small></div>
-      <p class="modsDetailDescription">${esc(r.description)}</p>
+      ${r.description?`<p class="modsDetailDescription">${esc(r.description)}</p>`:`<p class="modsDetailDescription modsDescriptionEmpty">${tx('Aucune description.','No description.')}</p>`}
       <div class="modsDetailActions">
         <button class="modsLike ${liked?'active':''}" data-like="${esc(r.id)}">♥ ${Number(r.likes_count)||0}</button>
         <button class="modFavorite ${state.favorites.has(String(r.id))?'active':''}" data-favorite="${esc(r.id)}">★ ${tx('Favori','Favorite')}</button>
@@ -323,6 +428,7 @@ async function openDetail(id){
     </div>
   </div>`;
   m.querySelector('.modsClose').onclick=()=>m.hidden=true;
+  m.querySelectorAll('[data-gallery-image]').forEach(btn=>btn.addEventListener('click',()=>openImageLightbox(btn.dataset.galleryImage,r.title)));
   m.querySelector('[data-like]')?.addEventListener('click',()=>toggleLike(r.id));
   m.querySelector('[data-favorite]')?.addEventListener('click',()=>toggleFavorite(r.id));
   m.querySelector('[data-install-guide]')?.addEventListener('click',()=>window.MHUR_PLUS?.modGuide?.open(r));
@@ -363,7 +469,8 @@ async function removeMod(id){
   try{
     let history=[];try{history=await request(`/rest/v1/community_mod_versions?mod_id=eq.${encodeURIComponent(id)}&select=file_path`)}catch(_){}
     await request(`/rest/v1/community_mods?id=eq.${encodeURIComponent(id)}&creator_id=eq.${encodeURIComponent(u.id)}`,{method:'DELETE'});
-    for(const [bucket,path] of [['community-mods',row.file_path],['mod-previews',row.preview_path],...(history||[]).map(v=>['community-mods',v.file_path])])if(path)try{await deleteStorageObject(bucket,path)}catch(_){}
+    const mediaPaths=[...previewImages(row).map(x=>x.path),previewVideo(row)?.path].filter(Boolean);
+    for(const [bucket,path] of [['community-mods',row.file_path],...mediaPaths.map(path=>['mod-previews',path]),...(history||[]).map(v=>['community-mods',v.file_path])])if(path)try{await deleteStorageObject(bucket,path)}catch(_){}
     document.getElementById('modsDetailModal')?.setAttribute('hidden','');
     await load();
   }catch(e){alert(e.message||String(e))}

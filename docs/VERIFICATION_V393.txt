@@ -1,8 +1,0 @@
-V393 — Classement des créateurs mobile
-
-- Fenêtre du classement limitée à la largeur réelle de l'écran.
-- Titre redimensionné sur téléphone et retour à la ligne propre.
-- Description et message d'erreur ne se chevauchent plus.
-- Bouton de fermeture fixé en haut à droite de la fenêtre.
-- Corps du classement défilable indépendamment si la liste est longue.
-- Aucun autre écran ni fonctionnalité modifié.

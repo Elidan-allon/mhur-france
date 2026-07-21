@@ -1,8 +1,0 @@
-MHUR France V378 — verification
-
-- Generic English fallback sentences removed for all 59 style records.
-- Existing English data for every character and style is preserved.
-- Missing source descriptions remain empty instead of being invented.
-- Cœur vaillant maps to Undefeatable.
-- Navigation shortcuts are deduplicated after every drawer rebuild.
-- v374 translation observer removed; V378 is the single runtime translation/navigation layer.

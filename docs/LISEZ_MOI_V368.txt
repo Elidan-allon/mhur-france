@@ -1,6 +1,0 @@
-V368
-- Navigation multi-style et bouton Retour restaurés en laissant fonctionner les onclick natifs du site.
-- Bouton Installer l'application toujours présent dans le menu.
-- Nouvelle identité PWA V368, service worker réseau uniquement, aucun ancien cache.
-- Icône Discord corrigée.
-- Traductions anglaises supplémentaires pour personnages, styles, rôles et compétences.

@@ -1,7 +1,0 @@
-MHUR France V391
-
-Corrections :
-- Le bouton Builds communauté ne se déplace plus après FR -> EN -> FR.
-- Le menu conserve toujours le même ordre dans les deux langues.
-- Le filtre Personnage des Mods contient désormais tous les personnages du site, même quand aucun mod n'est encore publié.
-- Le formulaire de publication contient également tous les personnages.

@@ -1,4 +1,0 @@
-V363
-- Correction de la barre supérieure : menu à gauche, compte et langue à droite, logo centré.
-- Correction responsive téléphone/tablette.
-- Conservation du correctif de superposition des costumes et T.U.N.I.N.G.

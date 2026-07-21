@@ -1,8 +1,0 @@
-V384 — BARRE SUPÉRIEURE FIXE
-
-- Barre supérieure position: fixed.
-- Bouton hamburger visible sur ordinateur, tablette et téléphone.
-- Connexion et FR/EN accessibles pendant le défilement.
-- Tiroir latéral fixe sous la barre et ouvert uniquement via le hamburger.
-- Bouton Retour fixe sous la barre.
-- Ancien système V383 désactivé pour éviter les conflits.

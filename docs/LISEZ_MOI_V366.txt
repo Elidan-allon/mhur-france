@@ -1,9 +1,0 @@
-MHUR France V366
-
-Correctifs prioritaires :
-- restauration de l'ouverture des personnages (les données étaient lues depuis window alors qu'elles sont déclarées en const/let dans le site) ;
-- l'application installée démarre sur /#home et non sur une ancienne version numérotée ;
-- le service worker reste network-only et supprime les anciens caches ;
-- traductions demandées : Élégant = Fancy, D'enfer/Infernal = Heat, Super-vilain = Villain Style, Ardent = Burning ;
-- traduction de l'état vide des builds communautaires ;
-- bouton d'installation prioritaire : invite native dès que le navigateur la fournit, instructions adaptées sinon.

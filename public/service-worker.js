@@ -1,9 +1,9 @@
-const RELEASE='414';
+const RELEASE='415';
 const CACHE=`mhur-fr-${RELEASE}`;
 const SHELL=[
   './','./index.html','./manifest.webmanifest','./favicon.ico','./version.json',
   './css/community-builds.css','./css/community-hub.css','./css/community-mods.css','./css/v410-community-build-tuning.css','./css/v411-community-plus.css','./css/v412-community-quality.css',
-  './js/community-config.js','./js/community-auth.js','./js/community-profiles.js','./js/community-builds.js','./js/community-hub.js','./js/community-mods.js','./js/community-plus.js','./js/v412-community-quality.js',
+  './js/community-config.js','./js/community-auth.js','./js/community-profiles.js','./js/community-builds.js','./js/community-hub.js','./js/vendor/tus.min.js','./js/community-mods.js','./js/community-plus.js','./js/v412-community-quality.js',
   './data/home_data.js'
 ];
 self.addEventListener('install',event=>event.waitUntil((async()=>{

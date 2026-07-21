@@ -1,8 +1,0 @@
-Vérification MHUR France V414
-
-- Syntaxe JavaScript contrôlée avec node --check.
-- JSON de version valide.
-- Les requêtes communautaires passent par le gestionnaire de session commun.
-- Les lectures publiques utilisent la clé anonyme si le renouvellement échoue.
-- Les écritures ne sont jamais rejouées en mode invité.
-- Service worker et cache navigateur passés en V414.

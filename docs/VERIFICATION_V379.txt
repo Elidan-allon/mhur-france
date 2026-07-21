@@ -1,7 +1,0 @@
-V379 verification
-- Hitoshi Shinso English character description replaced with the official UltraRumble text.
-- Persona Chords / Persona Command English descriptions replaced.
-- Alpha, Beta and Gamma English descriptions replaced.
-- Tier List button is recreated after every menu/layout rebuild.
-- Global Search and Creator Ranking are also kept once, without duplicates.
-- JavaScript syntax check passed for js/v379-final-fix.js.

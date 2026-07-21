@@ -1,6 +1,0 @@
-V382 verification
-- home.js has bidirectional FR/EN translations for current gachas and events
-- community-auth.js modal is bilingual at opening time
-- sidebar remains fixed while scrolling
-- Back button remains visible and restores the previous scroll position
-- new files load last with version 382

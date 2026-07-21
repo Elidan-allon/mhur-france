@@ -1,0 +1,32 @@
+/* MHUR France V417 — modales mobiles, navigation et titres */
+.mhurPlusPanel>header,
+.mhurPlusPanel>header h2,
+.mhurPlusPanel>header p,
+#patchModalV296 .patchPanelV296>header,
+#patchModalV296 .patchPanelV296>header h2{
+  min-width:0!important;
+  max-width:100%!important;
+  box-sizing:border-box!important;
+  overflow-wrap:anywhere!important;
+  word-break:normal!important;
+}
+.mhurPlusPanel>header h2{line-height:1.08!important;text-wrap:balance}
+.mhurPlusPanel>header p{line-height:1.35!important}
+.mhurWeeklyCreators h3,.mhurWeeklyColumns h3{margin:0 0 12px;line-height:1.2}
+.mhurWeeklyCreators article strong,.mhurWeeklyCreators article em{min-width:0;overflow-wrap:anywhere}
+.cbShareCode{white-space:normal!important;overflow-wrap:anywhere!important}
+
+@media(max-width:760px){
+  .mhurPlusOverlay{padding:max(72px,calc(env(safe-area-inset-top) + 8px)) 6px 6px!important;align-items:flex-start!important}
+  .mhurPlusPanel{width:100%!important;margin:0 auto!important;max-height:calc(100dvh - 80px)!important;display:flex!important;flex-direction:column!important;overflow:hidden!important}
+  .mhurPlusPanel>header{flex:0 0 auto!important;padding:16px 72px 14px 16px!important}
+  .mhurPlusPanel>header h2{font-size:clamp(28px,8vw,42px)!important;line-height:1.05!important}
+  .mhurPlusPanel>header p{font-size:15px!important;margin-top:8px!important}
+  .mhurPlusClose{width:54px!important;height:54px!important;right:10px!important;top:10px!important}
+  .mhurPlusBody{flex:1 1 auto!important;min-height:0!important;max-height:none!important;overflow:auto!important;-webkit-overflow-scrolling:touch!important}
+  .mhurWeeklyCreators article{grid-template-columns:34px 46px minmax(0,1fr)!important;gap:9px!important}
+  .mhurWeeklyCreators em{grid-column:3!important;margin-top:2px}
+  .mhurWeeklyColumns button{grid-template-columns:38px 64px minmax(0,1fr)!important}
+  .mhurWeeklyColumns button span{min-width:0!important;overflow-wrap:anywhere!important}
+  #patchModalV296 .patchPanelV296>header h2{font-size:clamp(22px,6.4vw,30px)!important;line-height:1.05!important;display:-webkit-box!important;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden!important}
+}

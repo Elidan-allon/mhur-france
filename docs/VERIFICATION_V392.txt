@@ -1,7 +1,0 @@
-V392 — CORRECTIFS MOBILE
-
-- La croix de fermeture de la recherche globale reste visible sur téléphone, même après un défilement.
-- La fenêtre de recherche passe correctement au-dessus de la barre fixe.
-- Le bouton Retour d’un personnage à style unique restaure maintenant la position exacte de la liste des personnages.
-- Le retour des personnages à plusieurs styles conserve aussi le comportement existant.
-- Le tutoriel Steam n’a pas été modifié : il sera remplacé avec les étapes fournies par le propriétaire du site.

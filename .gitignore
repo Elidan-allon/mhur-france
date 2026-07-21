@@ -19,3 +19,14 @@ node_modules/
 .dev.vars
 .env
 .env.*
+
+# Archives et fichiers système
+*.zip
+*.rar
+*.7z
+.DS_Store
+Thumbs.db
+
+# Éditeurs
+.vscode/
+.idea/
