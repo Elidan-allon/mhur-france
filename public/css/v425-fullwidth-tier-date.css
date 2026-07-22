@@ -1,0 +1,9 @@
+/* V425 — tableaux de compétences sur toute la largeur + date de création des Tier Lists. */
+.skillText .simpleTable{display:block!important;width:100%!important;max-width:100%!important;min-width:100%!important}
+.skillText table.dataTable{display:table!important;width:100%!important;min-width:100%!important;max-width:100%!important;table-layout:fixed!important;border-collapse:collapse!important}
+.skillText .dataTable thead{display:table-header-group!important}
+.skillText .dataTable tbody{display:table-row-group!important}
+.skillText .dataTable tr{display:table-row!important;width:100%!important}
+.skillText .dataTable th,.skillText .dataTable td{display:table-cell!important;width:auto!important;text-align:center!important;vertical-align:middle!important}
+.skillText .dataTable th:first-child,.skillText .dataTable td:first-child{width:auto!important;text-align:center!important}
+@media(max-width:760px){.skillText .simpleTable{overflow-x:auto!important}.skillText table.dataTable{min-width:560px!important}}
