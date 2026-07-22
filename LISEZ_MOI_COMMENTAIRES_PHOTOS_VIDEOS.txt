@@ -1,0 +1,40 @@
+MHUR NEXUS V2.0 — COMMENTAIRES AVEC PHOTOS ET VIDÉOS
+
+Cette version gère les médias dans DEUX endroits :
+
+1. Commentaires des Builds communauté
+2. Commentaires des Mods
+
+INSTALLATION SUPABASE
+
+1. Ouvre ton projet Supabase.
+2. Clique sur « SQL Editor ».
+3. Clique sur « New query ».
+4. Ouvre le fichier :
+   configuration/SUPABASE_COMMENTAIRES_BUILDS_ET_MODS.sql
+5. Copie tout son contenu dans Supabase.
+6. Clique sur « Run ».
+7. Déploie ensuite le dossier public du site.
+
+FONCTIONNEMENT
+
+- Compte obligatoire pour publier un média.
+- Texte facultatif lorsqu'une photo ou vidéo est jointe.
+- Images : JPG, PNG, WebP ou GIF, maximum 8 Mo.
+- Vidéos : MP4, WebM ou MOV, maximum 50 Mo.
+- Le média est affiché directement dans le commentaire.
+- L'auteur peut supprimer son commentaire et son média.
+- Les modérateurs et administrateurs peuvent aussi supprimer les médias signalés.
+
+IMPORTANT
+
+Le bucket utilisé s'appelle « mod-previews ».
+Le script le crée automatiquement s'il n'existe pas.
+Ne crée pas un autre bucket manuellement, sinon le site ne trouvera pas les fichiers.
+
+TEST RAPIDE
+
+1. Connecte-toi sur le site.
+2. Ouvre un Build communauté, puis publie un commentaire avec une photo.
+3. Ouvre un Mod, puis publie un commentaire avec une vidéo courte.
+4. Actualise la page pour vérifier que les deux médias restent visibles.

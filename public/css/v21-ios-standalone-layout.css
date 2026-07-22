@@ -1,0 +1,39 @@
+/* V2.1 — iPhone installé : même mise en page que Safari, sans chevauchement de la barre d’état. */
+:root{--mhur-safe-top:0px}
+
+/* La classe est posée immédiatement dans le <head> pour les anciennes versions d’iOS. */
+html.mhur-ios-standalone{--mhur-safe-top:env(safe-area-inset-top,0px)}
+
+@media (display-mode: standalone),(display-mode: fullscreen){
+  :root{--mhur-safe-top:env(safe-area-inset-top,0px)}
+}
+
+@media(max-width:700px){
+  html.mhur-ios-standalone body,
+  body{padding-top:calc(64px + var(--mhur-safe-top))!important}
+
+
+  .top{
+    height:calc(64px + var(--mhur-safe-top))!important;
+    padding-top:var(--mhur-safe-top)!important;
+  }
+
+  /* Les contrôles sont centrés uniquement dans les 64 px utiles sous la barre d’état. */
+  .top .menuBtn,
+  .top .headerQuickButton,
+  .top .mhurAccountButton,
+  .top .lang{
+    top:calc(var(--mhur-safe-top) + 32px)!important;
+    transform:translateY(-50%)!important;
+  }
+
+  .top .brand{
+    position:absolute!important;
+    top:calc(var(--mhur-safe-top) + 32px)!important;
+    left:50%!important;
+    transform:translate(-50%,-50%)!important;
+  }
+
+  .drawer{top:calc(64px + var(--mhur-safe-top))!important}
+  .back{top:calc(74px + var(--mhur-safe-top))!important}
+}

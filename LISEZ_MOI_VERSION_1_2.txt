@@ -1,0 +1,16 @@
+MHUR NEXUS — VERSION 1.2
+
+Ajouts :
+- Discord MHUR Nexus cliquable
+- Discord officiel My Hero Ultra Rumble cliquable
+- Discord My Hero Ultra Rumble FR cliquable
+- E-mail MHUR Nexus cliquable
+- Annuaire des créateurs FR et EN
+- Boutons YouTube, Twitch, Discord, X et TikTok selon les liens disponibles
+- Images des serveurs officiel et FR extraites de la capture fournie
+
+Fichiers principaux modifiés :
+- public/js/nexus-links-data.js
+- public/js/nexus-header-links.js
+- public/css/nexus-header-links.css
+- public/assets/community/

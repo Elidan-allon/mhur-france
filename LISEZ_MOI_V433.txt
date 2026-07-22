@@ -1,0 +1,14 @@
+MHUR NEXUS V433 — COMMENTAIRES AVEC PHOTOS / VIDÉOS
+
+IMPORTANT :
+1. Ouvre Supabase > SQL Editor.
+2. Exécute configuration/SUPABASE_V433_COMMENTAIRES_MEDIA.sql.
+3. Déploie ensuite tout le projet.
+4. Vérifie que /version.json affiche 433 puis fais Ctrl+F5.
+
+Fonctions ajoutées :
+- photo ou vidéo dans les commentaires des Mods et Builds ;
+- texte facultatif lorsqu’un média est joint ;
+- limite photo : 8 Mo ; limite vidéo : 50 Mo ;
+- date ET heure affichées pour chaque commentaire ;
+- interface responsive mobile/PC.

@@ -1,0 +1,15 @@
+CHANGER LE NOM DE DOMAINE — MY HERO ULTRA RUMBLE NEXUS
+
+Nom conseillé : mhurnexus.com (à vérifier avant achat)
+
+1. Acheter le nouveau domaine chez Cloudflare Registrar ou un autre registrar.
+2. Ajouter le domaine dans Cloudflare.
+3. Ouvrir Workers & Pages > ton Worker > Settings > Domains & Routes > Add > Custom Domain.
+4. Ajouter le nouveau domaine (par exemple mhurnexus.com), puis aussi www.mhurnexus.com si tu veux l'utiliser.
+5. Ne supprime pas mhurfrance.com. Fais une redirection permanente 301 de chaque ancienne URL vers la même URL sur le nouveau domaine, en conservant le chemin et les paramètres. Exemple : mhurfrance.com/characters/midoriya -> mhurnexus.com/characters/midoriya.
+6. Une fois le nouveau domaine choisi, remplacer dans le projet toutes les URL https://mhurfrance.com par le nouveau domaine dans : index.html, sitemap.xml, robots.txt, manifest.webmanifest et la configuration OAuth/Supabase.
+7. Ajouter le nouveau domaine dans Google Search Console, envoyer le nouveau sitemap, puis utiliser l'outil Changement d'adresse sur l'ancienne propriété.
+8. Dans Google OAuth, Discord OAuth et Supabase Auth, ajouter les nouvelles URL de redirection autorisées AVANT de retirer les anciennes.
+9. Garder les redirections de l'ancien domaine au moins un an.
+
+IMPORTANT : cette archive change uniquement le NOM VISIBLE du site. Les URL restent volontairement sur mhurfrance.com tant que tu n'as pas acheté et choisi le nouveau domaine.
