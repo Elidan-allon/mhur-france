@@ -12,6 +12,13 @@
   };
 
   const platformLabels={youtube:'YouTube',twitch:'Twitch',discord:'Discord',x:'X',tiktok:'TikTok',email:'E-mail'};
+  const flagSvg={
+    fr:'<svg viewBox="0 0 3 2" aria-hidden="true"><path fill="#0055a4" d="M0 0h1v2H0z"/><path fill="#fff" d="M1 0h1v2H1z"/><path fill="#ef4135" d="M2 0h1v2H2z"/></svg>',
+    en:'<svg viewBox="0 0 7410 3900" aria-hidden="true"><path fill="#b22234" d="M0 0h7410v3900H0z"/><path stroke="#fff" stroke-width="300" d="M0 450h7410M0 1050h7410M0 1650h7410M0 2250h7410M0 2850h7410M0 3450h7410"/><path fill="#3c3b6e" d="M0 0h2964v2100H0z"/><g fill="#fff"><circle cx="247" cy="210" r="70"/><circle cx="741" cy="210" r="70"/><circle cx="1235" cy="210" r="70"/><circle cx="1729" cy="210" r="70"/><circle cx="2223" cy="210" r="70"/><circle cx="2717" cy="210" r="70"/><circle cx="494" cy="525" r="70"/><circle cx="988" cy="525" r="70"/><circle cx="1482" cy="525" r="70"/><circle cx="1976" cy="525" r="70"/><circle cx="2470" cy="525" r="70"/></g></svg>',
+    jp:'<svg viewBox="0 0 3 2" aria-hidden="true"><path fill="#fff" d="M0 0h3v2H0z"/><circle cx="1.5" cy="1" r=".6" fill="#bc002d"/></svg>',
+    br:'<svg viewBox="0 0 10 7" aria-hidden="true"><path fill="#009b3a" d="M0 0h10v7H0z"/><path fill="#ffdf00" d="M5 .7 9.2 3.5 5 6.3.8 3.5z"/><circle cx="5" cy="3.5" r="1.55" fill="#002776"/><path d="M3.65 3.2c1.05-.45 2.25-.3 3.2.35" fill="none" stroke="#fff" stroke-width=".18"/></svg>'
+  };
+  const flagMarkup=(key,fallback='🌐')=>flagSvg[key]?`<span class="nexusFlagIcon nexusFlag-${esc(key)}">${flagSvg[key]}</span>`:`<span class="nexusFlagEmoji">${esc(fallback)}</span>`;
   const getLang=()=>{
     try{
       if(typeof lang!=='undefined'&&(lang==='en'||lang==='fr'))return lang;
@@ -43,13 +50,13 @@
     return `${ok?`<a class="nexusLinkRow" href="${esc(item.url)}"${target}>`:'<div class="nexusLinkRow is-disabled">'}${icon}<span class="nexusLinkText"><b>${esc(label)}</b><small>${esc(note||labels().config)}</small></span><span class="nexusLinkArrow">${ok?'↗':'⚙'}</span>${ok?'</a>':'</div>'}`;
   }
 
-  function creatorCard(item,flag){
+  function creatorCard(item,langKey,flag){
     const links=Object.entries(item.links||{}).filter(([,url])=>validUrl(url));
     const avatar=item.avatar
       ?`<img class="nexusCreatorAvatar" src="${esc(item.avatar)}" alt="${esc(item.name)}" loading="lazy">`
       :`<span class="nexusCreatorAvatar nexusCreatorInitials">${esc((item.name||'?').trim().slice(0,2).toUpperCase())}</span>`;
     const buttons=links.map(([type,url])=>`<a class="nexusPlatformBtn is-${esc(type)}" href="${esc(url)}" target="_blank" rel="noopener noreferrer" aria-label="${esc(platformLabels[type]||type)} — ${esc(item.name)}">${serviceIcon(type)}<span>${esc(platformLabels[type]||type)}</span></a>`).join('');
-    return `<article class="nexusCreatorCard">${avatar}<div class="nexusCreatorInfo"><div class="nexusCreatorHeading"><h3>${esc(item.name)}</h3><span class="nexusCreatorFlag">${esc(flag||'🌐')}</span></div><p>${esc(text(item.description))}</p><div class="nexusCreatorLinks">${buttons}</div></div></article>`;
+    return `<article class="nexusCreatorCard">${avatar}<div class="nexusCreatorInfo"><div class="nexusCreatorHeading"><h3>${esc(item.name)}</h3><span class="nexusCreatorFlag">${flagMarkup(langKey,flag)}</span></div><p>${esc(text(item.description))}</p><div class="nexusCreatorLinks">${buttons}</div></div></article>`;
   }
 
   function renderRoot(){
@@ -60,7 +67,7 @@
       return;
     }
     const langs=data.youtubers||{};
-    const rows=Object.entries(langs).map(([key,v])=>`<button type="button" class="nexusLanguageRow" data-lang-key="${esc(key)}"><span class="nexusServiceIcon">${esc(v.flag||'🌐')}</span><span class="nexusLinkText"><b>${esc(text(v.label)||key)}</b><small>${(v.channels||[]).length} ${esc(labels().channels)}</small></span><span class="nexusLinkArrow">›</span></button>`).join('');
+    const rows=Object.entries(langs).map(([key,v])=>`<button type="button" class="nexusLanguageRow" data-lang-key="${esc(key)}"><span class="nexusServiceIcon nexusLanguageFlag">${flagMarkup(key,v.flag)}</span><span class="nexusLinkText"><b>${esc(text(v.label)||key)}</b><small>${(v.channels||[]).length} ${esc(labels().channels)}</small></span><span class="nexusLinkArrow">›</span></button>`).join('');
     shell(`${labels().youtube} · ${labels().choose}`,rows);
     panel.querySelectorAll('[data-lang-key]').forEach(btn=>btn.onclick=()=>renderChannels(btn.dataset.langKey));
   }
@@ -69,8 +76,8 @@
     const group=window.MHUR_NEXUS_LINKS?.youtubers?.[key];
     if(!group)return;
     history.push(renderRoot);
-    const cards=(group.channels||[]).map(x=>creatorCard(x,group.flag)).join('');
-    shell(`${group.flag||'🌐'} ${text(group.label)}`,cards?`<div class="nexusCreatorGrid">${cards}</div>`:`<div class="nexusEmptyHint">${esc(labels().empty)}</div>`,true);
+    const cards=(group.channels||[]).map(x=>creatorCard(x,key,group.flag)).join('');
+    shell(`${text(group.label)}`,cards?`<div class="nexusCreatorGrid">${cards}</div>`:`<div class="nexusEmptyHint">${esc(labels().empty)}</div>`,true);
   }
 
   function refreshLanguage(){
@@ -88,7 +95,7 @@
     const l=labels();
     const wrap=document.createElement('div');
     wrap.className='nexusHeaderLinks';
-    wrap.innerHTML=`<button type="button" class="nexusHeaderBtn" data-nexus-menu="social" aria-expanded="false"><span class="nexusHeaderIcon">🌐</span><span class="nexusHeaderBtnLabel">${esc(l.social)}</span><span class="nexusHeaderChevron">▼</span></button><button type="button" class="nexusHeaderBtn" data-nexus-menu="youtube" aria-expanded="false"><span class="nexusHeaderIcon">▶</span><span class="nexusHeaderBtnLabel">${esc(l.youtube)}</span><span class="nexusHeaderChevron">▼</span></button>`;
+    wrap.innerHTML=`<button type="button" class="nexusHeaderBtn" data-nexus-menu="social" aria-expanded="false"><span class="nexusHeaderIcon">🌐</span><span class="nexusHeaderBtnLabel">${esc(l.social)}</span><span class="nexusHeaderChevron">▼</span></button><button type="button" class="nexusHeaderBtn" data-nexus-menu="youtube" aria-expanded="false"><span class="nexusHeaderIcon">🎬</span><span class="nexusHeaderBtnLabel">${esc(l.youtube)}</span><span class="nexusHeaderChevron">▼</span></button>`;
     header.appendChild(wrap);
     overlay=document.createElement('div');
     overlay.className='nexusLinksOverlay';
