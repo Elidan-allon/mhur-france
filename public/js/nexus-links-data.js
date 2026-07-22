@@ -10,7 +10,7 @@ window.MHUR_NEXUS_LINKS = {
       label: { fr: 'Discord MHUR Nexus', en: 'MHUR Nexus Discord' },
       type: 'discord',
       url: 'https://discord.gg/GeMY8ym47',
-      avatar: 'assets/brand/mhur-france-icon.png',
+      avatar: 'assets/brand/mhur-france-icon.png?v=13',
       note: { fr: 'Rejoins la communauté officielle du site', en: 'Join the website community' }
     },
     {
@@ -18,7 +18,6 @@ window.MHUR_NEXUS_LINKS = {
       label: { fr: 'Discord officiel My Hero Ultra Rumble', en: 'Official My Hero Ultra Rumble Discord' },
       type: 'discord',
       url: 'https://discord.gg/TarDsXwM5',
-      avatar: 'assets/community/discord-mhur-official.png',
       note: { fr: 'Serveur Discord officiel du jeu', en: 'Official Discord server for the game' }
     },
     {
@@ -26,7 +25,6 @@ window.MHUR_NEXUS_LINKS = {
       label: { fr: 'Discord My Hero Ultra Rumble FR', en: 'My Hero Ultra Rumble FR Discord' },
       type: 'discord',
       url: 'https://discord.gg/zGUmk4yEY',
-      avatar: 'assets/community/discord-mhur-fr.png',
       note: { fr: 'Communauté francophone My Hero Ultra Rumble', en: 'French-speaking My Hero Ultra Rumble community' }
     },
     {
@@ -45,7 +43,7 @@ window.MHUR_NEXUS_LINKS = {
       channels: [
         {
           name: 'Dako',
-          avatar: '',
+          avatar: 'https://unavatar.io/youtube/DakoSideQuest',
           description: { fr: 'Créateur francophone My Hero Ultra Rumble.', en: 'French-speaking My Hero Ultra Rumble creator.' },
           links: {
             youtube: 'https://www.youtube.com/@DakoSideQuest',
@@ -57,7 +55,7 @@ window.MHUR_NEXUS_LINKS = {
         },
         {
           name: 'Hosty',
-          avatar: '',
+          avatar: 'https://unavatar.io/youtube/Hosty_off',
           description: { fr: 'Créateur francophone My Hero Ultra Rumble.', en: 'French-speaking My Hero Ultra Rumble creator.' },
           links: {
             youtube: 'https://www.youtube.com/@Hosty_off',
@@ -73,7 +71,7 @@ window.MHUR_NEXUS_LINKS = {
       channels: [
         {
           name: 'Charismatic Demon',
-          avatar: '',
+          avatar: 'https://unavatar.io/youtube/CharismaticDemon_',
           description: { fr: 'Gameplay et contenu My Hero Ultra Rumble en anglais.', en: 'English My Hero Ultra Rumble gameplay and content.' },
           links: {
             youtube: 'https://www.youtube.com/@CharismaticDemon_',
@@ -82,7 +80,7 @@ window.MHUR_NEXUS_LINKS = {
         },
         {
           name: 'Stray',
-          avatar: '',
+          avatar: 'https://unavatar.io/youtube/StrayStream',
           description: { fr: 'Créateur anglophone My Hero Ultra Rumble.', en: 'English-speaking My Hero Ultra Rumble creator.' },
           links: {
             youtube: 'https://www.youtube.com/@StrayStream',
@@ -93,7 +91,7 @@ window.MHUR_NEXUS_LINKS = {
         },
         {
           name: 'SenseiGoGo',
-          avatar: '',
+          avatar: 'https://unavatar.io/youtube/senseigogo',
           description: { fr: 'Actualités et contenu My Hero Ultra Rumble.', en: 'My Hero Ultra Rumble news and content.' },
           links: {
             youtube: 'https://www.youtube.com/@senseigogo'
@@ -101,7 +99,7 @@ window.MHUR_NEXUS_LINKS = {
         },
         {
           name: 'TrashJunkies',
-          avatar: '',
+          avatar: 'https://unavatar.io/youtube/trashjunkies',
           description: { fr: 'Gameplay et contenu My Hero Ultra Rumble en anglais.', en: 'English My Hero Ultra Rumble gameplay and content.' },
           links: {
             youtube: 'https://www.youtube.com/@trashjunkies',
@@ -112,7 +110,7 @@ window.MHUR_NEXUS_LINKS = {
         },
         {
           name: 'Taz',
-          avatar: '',
+          avatar: 'https://unavatar.io/youtube/Tazpluto',
           description: { fr: 'Créateur anglophone My Hero Ultra Rumble.', en: 'English-speaking My Hero Ultra Rumble creator.' },
           links: {
             youtube: 'https://www.youtube.com/@Tazpluto',
@@ -121,7 +119,7 @@ window.MHUR_NEXUS_LINKS = {
         },
         {
           name: 'Mrow',
-          avatar: '',
+          avatar: 'https://unavatar.io/youtube/mrow9x',
           description: { fr: 'Créateur anglophone My Hero Ultra Rumble.', en: 'English-speaking My Hero Ultra Rumble creator.' },
           links: {
             youtube: 'https://www.youtube.com/@mrow9x',

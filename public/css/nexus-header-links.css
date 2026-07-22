@@ -45,3 +45,11 @@
 .nexusPlatformBtn.is-tiktok{background:#1c1c24}
 .nexusLinkRow .nexusChannelAvatar{object-fit:cover;background:#17172a}
 @media (max-width:560px){.nexusCreatorCard{align-items:flex-start;padding:13px}.nexusCreatorAvatar{width:54px;height:54px;min-width:54px;border-radius:14px}.nexusPlatformBtn{padding:7px 9px}.nexusPlatformBtn span:last-child{font-size:11px}}
+
+/* v1.3 — cadrage, icônes et avatars */
+.nexusLinkRow .nexusChannelAvatar{object-fit:contain!important;object-position:center!important;padding:2px;background:#050914!important}
+.nexusCreatorAvatar{object-fit:cover!important;object-position:center!important;background:#0b1220!important}
+.nexusPlatformBtn .nexusServiceIcon{display:inline-flex!important;align-items:center!important;justify-content:center!important;line-height:1!important;overflow:visible!important}
+.nexusPlatformBtn .nexusServiceIcon>span{display:flex!important;align-items:center!important;justify-content:center!important;width:100%!important;height:100%!important;line-height:1!important;font-family:Arial,Helvetica,sans-serif!important;font-weight:900!important}
+.nexusPlatformBtn.is-x .nexusServiceIcon>span{font-size:15px!important;transform:none!important}
+.nexusPlatformBtn.is-tiktok .nexusServiceIcon>span{font-size:18px!important;transform:translateY(-1px)!important}

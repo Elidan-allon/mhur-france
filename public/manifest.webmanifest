@@ -1,6 +1,6 @@
 {
-  "name": "MHUR FR — My Hero Ultra Rumble Nexus",
-  "short_name": "MHUR FR",
+  "name": "MHUR Nexus — My Hero Ultra Rumble",
+  "short_name": "MHUR Nexus",
   "id": "/",
   "start_url": "/#home",
   "scope": "/",
@@ -17,19 +17,19 @@
   "prefer_related_applications": false,
   "icons": [
     {
-      "src": "/assets/brand/icon-192.png",
+      "src": "/assets/brand/icon-192.png?v=13",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/assets/brand/icon-512.png",
+      "src": "/assets/brand/icon-512.png?v=13",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/assets/brand/icon-512.png",
+      "src": "/assets/brand/icon-512.png?v=13",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"

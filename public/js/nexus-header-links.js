@@ -12,15 +12,22 @@
   };
 
   const platformLabels={youtube:'YouTube',twitch:'Twitch',discord:'Discord',x:'X',tiktok:'TikTok',email:'E-mail'};
-  const getLang=()=>{try{return (typeof lang!=='undefined'&&lang==='en')?'en':'fr'}catch(_){return document.documentElement.lang?.startsWith('en')?'en':'fr'}};
+  const getLang=()=>{
+    try{
+      if(typeof lang!=='undefined'&&(lang==='en'||lang==='fr'))return lang;
+      const stored=localStorage.getItem('mhur_lang')||localStorage.getItem('lang');
+      if(stored==='en'||stored==='fr')return stored;
+    }catch(_){}
+    return String(document.documentElement.lang||'fr').toLowerCase().startsWith('en')?'en':'fr';
+  };
   const text=(obj)=>typeof obj==='string'?obj:(obj?.[getLang()]||obj?.fr||obj?.en||'');
   const validUrl=u=>typeof u==='string'&&/^(https?:\/\/|mailto:)/i.test(u.trim());
   const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
   let overlay,panel,active=null,history=[];
 
   function labels(){return getLang()==='en'
-    ?{social:'Social networks',youtube:'Creators',close:'Close',back:'Back',choose:'Choose a language',config:'Link unavailable',open:'Open link',channels:'creator(s)',empty:'No creator has been added yet.'}
-    :{social:'Réseaux sociaux',youtube:'Créateurs',close:'Fermer',back:'Retour',choose:'Choisir une langue',config:'Lien indisponible',open:'Ouvrir le lien',channels:'créateur(s)',empty:'Aucun créateur ajouté pour le moment.'};
+    ?{social:'Social networks',youtube:'Content creators',close:'Close',back:'Back',choose:'Choose a language',config:'Link unavailable',open:'Open link',channels:'content creator(s)',empty:'No content creator has been added yet.'}
+    :{social:'Réseaux sociaux',youtube:'Créateurs de contenu',close:'Fermer',back:'Retour',choose:'Choisir une langue',config:'Lien indisponible',open:'Ouvrir le lien',channels:'créateur(s) de contenu',empty:'Aucun créateur de contenu ajouté pour le moment.'};
   }
 
   function serviceIcon(type){return `<span class="nexusServiceIcon ${esc(type||'website')}">${iconSvg[type]||iconSvg.website}</span>`}
@@ -66,6 +73,15 @@
     shell(`${group.flag||'🌐'} ${text(group.label)}`,cards?`<div class="nexusCreatorGrid">${cards}</div>`:`<div class="nexusEmptyHint">${esc(labels().empty)}</div>`,true);
   }
 
+  function refreshLanguage(){
+    const l=labels();
+    const socialBtn=document.querySelector('[data-nexus-menu="social"] .nexusHeaderBtnLabel');
+    const creatorsBtn=document.querySelector('[data-nexus-menu="youtube"] .nexusHeaderBtnLabel');
+    if(socialBtn)socialBtn.textContent=l.social;
+    if(creatorsBtn)creatorsBtn.textContent=l.youtube;
+    if(overlay?.classList.contains('is-open'))renderRoot();
+  }
+
   function mount(){
     const header=document.querySelector('header.top');
     if(!header||document.querySelector('.nexusHeaderLinks'))return;
@@ -87,4 +103,7 @@
   document.addEventListener('DOMContentLoaded',mount,{once:true});
   window.addEventListener('load',mount,{once:true});
   setTimeout(mount,200);
+  document.addEventListener('click',e=>{if(e.target.closest('#langBtn,.langBtn,[data-lang],.lang'))setTimeout(refreshLanguage,80)});
+  new MutationObserver(refreshLanguage).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+  window.addEventListener('storage',e=>{if(e.key==='mhur_lang'||e.key==='lang')refreshLanguage()});
 })();

@@ -1,0 +1,7 @@
+MHUR Nexus v1.4
+
+Corrections :
+- « Créateurs » devient « Créateurs de contenu ».
+- En anglais : « Content creators ».
+- Les boutons « Réseaux sociaux » et « Créateurs de contenu » se traduisent immédiatement lors du changement de langue.
+- La fenêtre ouverte se retraduit également sans recharger la page.
