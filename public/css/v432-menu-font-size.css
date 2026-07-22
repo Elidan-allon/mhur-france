@@ -1,0 +1,16 @@
+/* V432 — Weekly trends / My library: exactement la même typographie que les autres entrées du menu. */
+#drawer button.navItem[data-mhur-plus]{
+  font-family:inherit!important;
+  font-size:inherit!important;
+  font-weight:900!important;
+  font-style:normal!important;
+  line-height:normal!important;
+  letter-spacing:normal!important;
+  text-transform:none!important;
+}
+#drawer button.navItem[data-mhur-plus] > span{
+  font:inherit!important;
+  font-weight:inherit!important;
+  line-height:inherit!important;
+  letter-spacing:inherit!important;
+}

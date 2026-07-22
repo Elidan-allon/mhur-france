@@ -5,6 +5,7 @@
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <meta charset="utf-8">
+<base href="/">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="google-site-verification" content="kw2VXVq_AZcsKg3TdhJl91U4poT62GNr8Mjg0Sh4T-0" />
 <title>MHUR FR — My Hero Ultra Rumble France | Site communautaire</title>
@@ -762,6 +763,7 @@
 }
 </script>
 
+<link rel="stylesheet" href="/css/v432-menu-font-size.css?v=432">
 </head>
 <body>
 <header class="top"><button class="menuBtn" onclick="toggleMenu()" aria-label="Ouvrir le menu"><span class="menuBtnLines" aria-hidden="true"><span></span><span></span><span></span></span></button><div class="brand">MY HERO ULTRA RUMBLE<span>FRANCE</span></div><button id="mhurAccountButton" class="mhurAccountButton" type="button" onclick="MHUR_AUTH.open()"><span class="mhurAccountAvatar">👤</span><span class="mhurAccountButtonText"><b id="signinTitle">Se connecter</b><small id="signinSub">Google ou Discord</small></span></button><button class="lang" onclick="toggleLang()">FR / EN</button></header>
@@ -789,7 +791,9 @@
 </script>
 <script>
 const __mhurInitialRoute=window.MHUR_CLEAN_ROUTES?.parse?.()||{page:'home',char:null,costume:null};
-let page=__mhurInitialRoute.page||'home', lang='fr', selectedChar=__mhurInitialRoute.char||null, selectedStyle=null, selectedCostume=__mhurInitialRoute.costume||null;
+const __mhurSavedLang=(()=>{try{return localStorage.getItem('mhur_lang')==='en'?'en':'fr'}catch(_){return 'fr'}})();
+let page=__mhurInitialRoute.page||'home', lang=__mhurSavedLang, selectedChar=__mhurInitialRoute.char||null, selectedStyle=null, selectedCostume=__mhurInitialRoute.costume||null;
+document.documentElement.lang=lang;
 const A='assets/midoriya/midoriya_assault/';
 const B='assets/midoriya/midoriya_attack/';
 const O='assets/midoriya_ofa/';
@@ -815,7 +819,7 @@ const IMG={
 };
 const txt={fr:{home:'Accueil',characters:'Personnages',tunings:'T.U.N.I.N.G',costumes:'Costumes',builds:'Builds communauté',heroes:'HÉROS',villains:'SUPER-VILAINS',back:'Retour',choose:'Clique pour choisir le style.',search:'Rechercher un personnage, rôle ou style...',costumeChoose:'Choisis un personnage pour ses costumes.',buildChoose:'Choisis un personnage pour voir les builds de la communauté.',costumeTag:'COSTUMES',buildTag:'BUILDS COMMUNAUTÉ',charactersTag:'PERSONNAGES',characterNotice:'Clique sur un personnage pour choisir son style.',tuningNotice:'Clique sur un personnage pour voir ses compétences T.U.N.I.N.G.',chooseCharacterTitle:'Choisis un personnage',costumesIntro:'Choisis d’abord le personnage, puis les costumes apparaîtront par famille.',recommendedBuildsTitle:'Builds communauté',communityBuildsTitle:'Builds de la communauté',communityBuildsIntro:'Choisis un personnage. Les builds sont séparés par personnage et par style, puis classés selon le nombre de cœurs.',eachStyleRanking:'Chaque style possède son propre classement.',createFullBuild:'Créer un build complet',characterNotFound:'Personnage introuvable.'},en:{home:'Home',characters:'Characters',tunings:'T.U.N.I.N.G',costumes:'Costumes',builds:'Community Builds',heroes:'HEROES',villains:'SUPER-VILLAINS',back:'Back',choose:'Click to choose style.',search:'Search Midoriya, OFA, attack, assault...',costumeChoose:'Choose a character for costumes.',buildChoose:'Choose a character to view community builds.',costumeTag:'COSTUMES',buildTag:'COMMUNITY BUILDS',charactersTag:'CHARACTERS',characterNotice:'Click a character to choose a style.',tuningNotice:'Click a character to view their T.U.N.I.N.G. skills.',chooseCharacterTitle:'Choose a character',costumesIntro:'Choose a character first, then costumes will appear by family.',recommendedBuildsTitle:'Community Builds',communityBuildsTitle:'Community Builds',communityBuildsIntro:'Choose a character. Builds are separated by character and style, then ranked by likes.',eachStyleRanking:'Each style has its own ranking.',createFullBuild:'Create a full build',characterNotFound:'Character not found.'}};
 const roles={assault:{fr:'Assaut',en:'Assault',cls:'assault',img:IMG.roleAssault},strike:{fr:'Attaque',en:'Strike',cls:'attack',img:IMG.roleAttack},speed:{fr:'Vitesse',en:'Rapid',cls:'rapid',img:IMG.roleRapid},technical:{fr:'Technique',en:'Technical',cls:'technical',img:IMG.roleTechnical},support:{fr:'Soutien',en:'Support',cls:'support',img:IMG.roleSupport}};
-function tr(k){return txt[lang][k]||k}function label(v){return typeof v==='string'?v:(v[lang]||v.fr)}function asset(src,alt=''){return `<img src="${src}" alt="${alt}">`}function sideBadge(side){return `<span class="badge ${side==='villain'?'villain':'hero'}">${side==='villain'?tr('villains'):tr('heroes')}</span>`}function roleBadge(r){const x=roles[r];return `<span class="badge ${x.cls}"><img class="roleIcon" src="${x.img}" alt="${label(x)}">${label(x)}</span>`}function roleOnly(r){const x=roles[r];return `<img src="${x.img}" alt="${label(x)}">`}
+function tr(k){return txt[lang][k]||k}function label(v){return typeof v==='string'?v:(v[lang]||v.fr)}function rootAsset(src){const value=String(src||'');if(!value||/^(?:https?:|data:|blob:|\/)/i.test(value))return value;return '/'+value.replace(/^(?:\.{1,2}\/)+/,'')}function asset(src,alt=''){return `<img src="${rootAsset(src)}" alt="${alt}">`}function sideBadge(side){return `<span class="badge ${side==='villain'?'villain':'hero'}">${side==='villain'?tr('villains'):tr('heroes')}</span>`}function roleBadge(r){const x=roles[r];return `<span class="badge ${x.cls}"><img class="roleIcon" src="${rootAsset(x.img)}" alt="${label(x)}">${label(x)}</span>`}function roleOnly(r){const x=roles[r];return `<img src="${rootAsset(x.img)}" alt="${label(x)}">`}
 const alphaBase=[['Lv.1','58','x6','x1','1s'],['Lv.2','60','x6','x1','1s'],['Lv.3','62','x6','x1','1s'],['Lv.4','66','x7','x1','1s'],['Lv.5','68','x7','x1','1s'],['Lv.6','70','x7','x1','1s'],['Lv.7','72','x7','x1','1s'],['Lv.8','74','x7','x1','1s'],['Lv.9','80','x8','x1','1s']];
 const alphaFull=[['Lv.1','100'],['Lv.2','105'],['Lv.3','110'],['Lv.4','115'],['Lv.5','120'],['Lv.6','125'],['Lv.7','130'],['Lv.8','135'],['Lv.9','140']];
 const alphaEff=[['Lv.2','Dégâts +'],['Lv.3','Dégâts +'],['Lv.4','Dégâts + • Munitions + • Taille +'],['Lv.5','Dégâts +'],['Lv.6','Dégâts +'],['Lv.7','Dégâts +'],['Lv.8','Dégâts +'],['Lv.9','Dégâts + • Munitions + • Taille +']];
@@ -1092,7 +1096,7 @@ const tunings={"assault":[{"role":"assault","img":"assets/midoriya/midoriya_assa
 function toggleMenu(){document.getElementById('drawer').classList.toggle('open')}
 function updateSigninText(){const t=document.getElementById('signinTitle'),s=document.getElementById('signinSub');if(!t||!s)return;if(lang==='en'){t.textContent='Sign In';s.textContent='Google or Discord';}else{t.textContent='Se connecter';s.textContent='Google ou Discord';}}
 
-function toggleLang(){lang=lang==='fr'?'en':'fr';document.documentElement.lang=lang;layout();updateSigninText();window.MHUR_AUTH?.renderButton?.();window.MHUR_LAUNCH?.refreshLanguage?.()}
+function toggleLang(){lang=lang==='fr'?'en':'fr';document.documentElement.lang=lang;try{localStorage.setItem('mhur_lang',lang)}catch(_){}layout();updateSigninText();window.MHUR_AUTH?.renderButton?.();window.MHUR_LAUNCH?.refreshLanguage?.();window.dispatchEvent(new CustomEvent('mhur:languagechange',{detail:{lang}}))}
 function canonicalPage(p){return ({character:'characters',tuning:'tunings',costume:'costumes',build:'builds',mod:'mods'})[p]||p||'home'}
 function cleanPathForPage(p){p=canonicalPage(p);return p==='home'?'/':'/'+p}
 function go(p,opts={}){page=canonicalPage(p);selectedChar=null;selectedStyle=null;selectedCostume=null;window.page=page;window.selectedChar=null;window.selectedStyle=null;window.selectedCostume=null;document.getElementById('drawer')?.classList.remove('open');const target=cleanPathForPage(page);if(!opts.noHistory&&location.pathname!==target)history.pushState({page},'',target);else if(opts.replace&&location.pathname!==target)history.replaceState({page},'',target);layout();window.MHUR_SEO?.sync?.()}
@@ -6604,7 +6608,7 @@ body .costumeTile > img,
   .card.buildMode .cardModeTag{max-width:150px;font-size:15px}
 }
 </style>
-<link rel="stylesheet" href="css/community-hub.css?v=380">
+<link rel="stylesheet" href="css/community-hub.css?v=433">
 <link rel="stylesheet" href="css/v392-mobile-search-close.css?v=392">
 <script src="js/analytics.js?v=420"></script>
 <script src="js/community-config.js?v=380"></script>
@@ -6613,9 +6617,8 @@ body .costumeTile > img,
 <link rel="stylesheet" href="css/community-moderation.css?v=380">
 <script src="js/community-moderation.js?v=414"></script>
 <script src="js/community-builds.js?v=414"></script>
-<script src="js/community-hub.js?v=425"></script>
+<script src="js/community-hub.js?v=433"></script>
 
-<script src="js/launch.js?v=430"></script>
 <script src="js/enhancements.js?v=380"></script>
 
 
@@ -6656,9 +6659,9 @@ body .costumeTile > img,
 <link rel="stylesheet" href="css/v386-menu-sections.css?v=386">
 <!-- V386 JS disabled by V395 -->
 <!-- V387 Community Mods — loaded after menu organisation. -->
-<link rel="stylesheet" href="css/community-mods.css?v=416">
+<link rel="stylesheet" href="css/community-mods.css?v=433">
 <script src="js/vendor/tus.min.js?v=415"></script>
-<script src="js/community-mods.js?v=416"></script>
+<script src="js/community-mods.js?v=433"></script>
 <!-- V391 JS disabled by V395 -->
 <script src="js/v395-stable-menu.js?v=399"></script>
 
@@ -6685,6 +6688,8 @@ body .costumeTile > img,
 <link rel="stylesheet" href="css/v426-details-routes.css?v=429">
 <link rel="stylesheet" href="css/v427-navigation-details.css?v=429">
 <script src="js/v429-details.js?v=429"></script>
-<script src="js/v429-router.js?v=429"></script>
+<script src="js/v429-router.js?v=431"></script>
+<script src="js/launch-v431.js?v=431"></script>
+<script src="js/v431-final.js?v=431"></script>
 </body>
 </html>
