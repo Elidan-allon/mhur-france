@@ -190,7 +190,7 @@ async function login(provider){
   }
 }
 async function logout(){if(state.session){try{await request('/auth/v1/logout',{method:'POST'})}catch(_){}}save(null);state.session=null;state.user=null;state.profile=null;close();notify()}
-function ensure(){let m=document.getElementById('mhurAuthOverlay');if(m)return m;m=document.createElement('div');m.id='mhurAuthOverlay';m.className='mhurAuthOverlay';m.innerHTML='<section class="mhurAuthPanel"><div class="mhurAuthHead"><span id="mhurAuthLabel"></span><h2>MY HERO ULTRA RUMBLE FRANCE</h2><p id="mhurAuthSubtitle"></p><button class="mhurAuthClose" type="button" onclick="MHUR_AUTH.close()">×</button></div><div class="mhurAuthBody" id="mhurAuthBody"></div></section>';m.addEventListener('click',e=>{if(e.target===m)close()});document.body.appendChild(m);return m}
+function ensure(){let m=document.getElementById('mhurAuthOverlay');if(m)return m;m=document.createElement('div');m.id='mhurAuthOverlay';m.className='mhurAuthOverlay';m.innerHTML='<section class="mhurAuthPanel"><div class="mhurAuthHead"><span id="mhurAuthLabel"></span><h2>MY HERO ULTRA RUMBLE NEXUS</h2><p id="mhurAuthSubtitle"></p><button class="mhurAuthClose" type="button" onclick="MHUR_AUTH.close()">×</button></div><div class="mhurAuthBody" id="mhurAuthBody"></div></section>';m.addEventListener('click',e=>{if(e.target===m)close()});document.body.appendChild(m);return m}
 function showError(msg){open();const e=document.getElementById('mhurAuthError');if(e){e.textContent=msg;e.classList.add('show')}}
 function open(){
   const m=ensure(),body=m.querySelector('#mhurAuthBody');

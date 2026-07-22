@@ -1,4 +1,4 @@
-# MHUR France
+# MHUR Nexus
 
 Site communautaire français consacré à My Hero Ultra Rumble.
 

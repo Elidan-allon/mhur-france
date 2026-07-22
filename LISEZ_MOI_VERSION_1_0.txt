@@ -1,4 +1,4 @@
-MHUR FRANCE — VERSION PUBLIQUE 1.0
+MHUR NEXUS — VERSION PUBLIQUE 1.0
 
 Modifications :
 - Le pied de page affiche désormais Version 1.0.

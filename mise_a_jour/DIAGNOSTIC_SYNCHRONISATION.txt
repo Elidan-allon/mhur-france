@@ -1,4 +1,4 @@
-DIAGNOSTIC DE SYNCHRONISATION — MHUR FRANCE
+DIAGNOSTIC DE SYNCHRONISATION — MHUR NEXUS
 
 Le diagnostic a été retiré du menu du site.
 Les informations restent disponibles dans les fichiers du projet.

@@ -1,4 +1,4 @@
-/* MHUR France V345 — finition builds + traduction des fiches */
+/* MHUR Nexus V345 — finition builds + traduction des fiches */
 (function(){
   'use strict';
 

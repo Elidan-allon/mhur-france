@@ -1,0 +1,47 @@
+/* MHUR Nexus — boutons Réseaux sociaux et Youtubeurs */
+.nexusHeaderLinks{position:absolute;left:76px;top:11px;display:flex;gap:9px;z-index:45}
+.nexusHeaderBtn{height:50px;padding:0 15px;border:2px solid #49658d;border-radius:14px;background:#132139;color:#fff;font-weight:900;display:flex;align-items:center;gap:9px;box-shadow:0 4px 12px rgba(0,0,0,.22);white-space:nowrap}
+.nexusHeaderBtn:hover,.nexusHeaderBtn[aria-expanded="true"]{border-color:#ffe000;background:#1d3152;color:#ffe000}
+.nexusHeaderIcon{font-size:21px;line-height:1}.nexusHeaderChevron{font-size:12px;opacity:.8}
+.nexusLinksOverlay{position:fixed;inset:72px 0 0 0;z-index:43;pointer-events:none}
+.nexusLinksOverlay.is-open{pointer-events:auto}
+.nexusLinksBackdrop{position:absolute;inset:0;background:rgba(1,5,12,.38);opacity:0;transition:.16s}
+.nexusLinksOverlay.is-open .nexusLinksBackdrop{opacity:1}
+.nexusLinksPanel{position:absolute;top:12px;left:76px;width:min(390px,calc(100vw - 28px));max-height:calc(100vh - 100px);overflow:auto;background:#0c1422;border:2px solid #4c6a95;border-radius:16px;box-shadow:0 18px 55px rgba(0,0,0,.55);transform:translateY(-8px) scale(.98);opacity:0;transition:.16s;padding:12px}
+.nexusLinksOverlay.is-open .nexusLinksPanel{transform:none;opacity:1}
+.nexusLinksTitle{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:7px 8px 12px;font-size:20px;font-weight:1000;color:#fff}
+.nexusLinksClose{width:36px;height:36px;border-radius:10px;background:#182843;color:#fff;font-size:22px}
+.nexusLinkRow,.nexusLanguageRow{width:100%;display:flex;align-items:center;gap:12px;padding:12px;margin:5px 0;border:1px solid #314865;border-radius:13px;background:#111d30;color:#fff;text-align:left;text-decoration:none;transition:.13s}
+.nexusLinkRow:hover,.nexusLanguageRow:hover{transform:translateX(3px);border-color:#ffe000;background:#192a45}
+.nexusLinkRow.is-disabled{opacity:.68;cursor:default}.nexusLinkRow.is-disabled:hover{transform:none;border-color:#314865;background:#111d30}
+.nexusServiceIcon{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;flex:0 0 42px;background:#243857;font-size:22px;overflow:hidden}
+.nexusServiceIcon svg{width:25px;height:25px;display:block;fill:currentColor}.nexusServiceIcon.discord{background:#5865f2}.nexusServiceIcon.youtube{background:#ff0033}.nexusServiceIcon.email{background:#1f8fdf}.nexusServiceIcon.website{background:#754fd6}
+.nexusLinkText{min-width:0;flex:1}.nexusLinkText b{display:block;font-size:16px;overflow-wrap:anywhere}.nexusLinkText small{display:block;margin-top:4px;color:#b9c9e1;line-height:1.25}.nexusLinkArrow{font-size:20px;color:#ffe000}
+.nexusBackBtn{display:flex;align-items:center;gap:8px;background:transparent;color:#8ec7ff;font-weight:900;padding:7px 4px 10px}
+.nexusChannelAvatar{width:54px;height:54px;border-radius:50%;object-fit:cover;background:#243857;border:2px solid #ffe000;display:grid;place-items:center;font-weight:1000;font-size:18px;flex:0 0 54px}
+.nexusEmptyHint{margin:10px 5px 4px;padding:11px;border-radius:11px;background:#241e06;border:1px solid #8c7600;color:#ffe57a;font-size:13px;line-height:1.35}
+@media(max-width:950px){.nexusHeaderBtn{width:50px;padding:0;justify-content:center}.nexusHeaderBtnLabel,.nexusHeaderChevron{display:none}}
+@media(max-width:620px){.nexusHeaderLinks{left:69px;gap:5px}.nexusHeaderBtn{width:42px;height:42px;border-radius:12px}.nexusLinksPanel{left:10px;top:8px;width:calc(100vw - 20px)}.nexusLinksOverlay{inset:64px 0 0}.top{min-height:64px}.nexusHeaderLinks{top:11px}}
+
+/* v1.2 — Creator directory and Discord avatars */
+.nexusCreatorGrid{display:grid;gap:14px;padding:2px 0 6px}
+.nexusCreatorCard{display:flex;gap:14px;padding:15px;border:1px solid rgba(255,255,255,.12);border-radius:16px;background:linear-gradient(145deg,rgba(255,255,255,.055),rgba(255,255,255,.02));box-shadow:0 8px 24px rgba(0,0,0,.18)}
+.nexusCreatorAvatar{width:66px;height:66px;min-width:66px;border-radius:18px;object-fit:cover;border:1px solid rgba(255,255,255,.16);background:#17172a}
+.nexusCreatorInitials{display:grid;place-items:center;font-weight:900;font-size:20px;letter-spacing:.04em;background:linear-gradient(135deg,#653cff,#ec3e94);color:#fff}
+.nexusCreatorInfo{min-width:0;flex:1}
+.nexusCreatorHeading{display:flex;align-items:center;gap:8px}
+.nexusCreatorHeading h3{margin:0;font-size:17px;line-height:1.25;color:#fff}
+.nexusCreatorFlag{font-size:17px}
+.nexusCreatorInfo p{margin:6px 0 11px;color:rgba(255,255,255,.72);font-size:13px;line-height:1.42}
+.nexusCreatorLinks{display:flex;flex-wrap:wrap;gap:7px}
+.nexusPlatformBtn{display:inline-flex;align-items:center;gap:6px;min-height:34px;padding:7px 10px;border-radius:10px;text-decoration:none!important;color:#fff!important;font-weight:800;font-size:12px;border:1px solid rgba(255,255,255,.14);transition:transform .15s ease,filter .15s ease,box-shadow .15s ease}
+.nexusPlatformBtn:hover{transform:translateY(-2px);filter:brightness(1.12);box-shadow:0 7px 18px rgba(0,0,0,.24)}
+.nexusPlatformBtn .nexusServiceIcon{width:17px;height:17px;min-width:17px;background:transparent;padding:0}
+.nexusPlatformBtn .nexusServiceIcon svg{width:15px;height:15px;fill:currentColor}
+.nexusPlatformBtn.is-youtube{background:#e62117}
+.nexusPlatformBtn.is-twitch{background:#9146ff}
+.nexusPlatformBtn.is-discord{background:#5865f2}
+.nexusPlatformBtn.is-x{background:#111}
+.nexusPlatformBtn.is-tiktok{background:#1c1c24}
+.nexusLinkRow .nexusChannelAvatar{object-fit:cover;background:#17172a}
+@media (max-width:560px){.nexusCreatorCard{align-items:flex-start;padding:13px}.nexusCreatorAvatar{width:54px;height:54px;min-width:54px;border-radius:14px}.nexusPlatformBtn{padding:7px 9px}.nexusPlatformBtn span:last-child{font-size:11px}}

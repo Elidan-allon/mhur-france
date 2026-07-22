@@ -137,7 +137,7 @@
     let content=`[InternetShortcut]\r\nURL=${url}\r\nIconFile=${location.origin}/favicon.ico\r\nIconIndex=0\r\n`;
 
     if(isMac()){
-      name='MHUR France.webloc';
+      name='MHUR Nexus.webloc';
       type='application/xml;charset=utf-8';
       const safe=url.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
       content=`<?xml version="1.0" encoding="UTF-8"?>\n<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "https://www.apple.com/DTDs/PropertyList-1.0.dtd">\n<plist version="1.0"><dict><key>URL</key><string>${safe}</string></dict></plist>`;
@@ -145,7 +145,7 @@
       name='MHUR-France.html';
       type='text/html;charset=utf-8';
       const safe=url.replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-      content=`<!doctype html><meta charset="utf-8"><meta http-equiv="refresh" content="0;url=${safe}"><title>MHUR France</title><p><a href="${safe}">Open MHUR France</a></p>`;
+      content=`<!doctype html><meta charset="utf-8"><meta http-equiv="refresh" content="0;url=${safe}"><title>MHUR Nexus</title><p><a href="${safe}">Open MHUR Nexus</a></p>`;
     }
 
     const blob=new Blob([content],{type});
@@ -182,7 +182,7 @@
     const text=box.querySelector('.v401InstallText');
     const download=box.querySelector('.v401InstallDownload');
     const ok=box.querySelector('.v401InstallOk');
-    title.textContent=tr('Installer MHUR France','Install MHUR France');
+    title.textContent=tr('Installer MHUR Nexus','Install MHUR Nexus');
     ok.textContent=tr('Fermer','Close');
     download.textContent=tr('Télécharger le raccourci','Download shortcut');
     download.hidden=isMobile();
@@ -195,12 +195,12 @@
     }else if(isMac()&&isSafari()){
       html=tr('Dans Safari, ouvre le menu <b>Fichier</b> puis choisis <b>Ajouter au Dock</b>.','In Safari, open the <b>File</b> menu, then choose <b>Add to Dock</b>.');
     }else if(isFirefox()){
-      html=tr('Firefox ne propose pas toujours l’installation automatique. Utilise le raccourci téléchargé pour ouvrir MHUR France directement.','Firefox does not always offer automatic installation. Use the downloaded shortcut to open MHUR France directly.');
+      html=tr('Firefox ne propose pas toujours l’installation automatique. Utilise le raccourci téléchargé pour ouvrir MHUR Nexus directement.','Firefox does not always offer automatic installation. Use the downloaded shortcut to open MHUR Nexus directly.');
     }else{
       html=tr('Ton navigateur n’a pas affiché la fenêtre native. Tu peux utiliser son menu <b>Installer l’application</b> ou ouvrir le raccourci téléchargé.','Your browser did not show the native prompt. Use its <b>Install app</b> menu or open the downloaded shortcut.');
     }
     if(shortcutDownloaded&&!isMobile()){
-      html=`<p>${html}</p>`+tr('<p class="v401InstallSuccess">✅ Le raccourci MHUR France a été téléchargé.</p>','<p class="v401InstallSuccess">✅ The MHUR France shortcut was downloaded.</p>');
+      html=`<p>${html}</p>`+tr('<p class="v401InstallSuccess">✅ Le raccourci MHUR Nexus a été téléchargé.</p>','<p class="v401InstallSuccess">✅ The MHUR Nexus shortcut was downloaded.</p>');
     }else{
       html=`<p>${html}</p>`;
     }

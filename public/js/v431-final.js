@@ -39,8 +39,8 @@ function syncLegalFallback(){
   const footer=document.getElementById('mhurLegalFooter');
   if(footer){
     const labels=en
-      ?{privacy:'Privacy',rules:'Rules',about:'About',notice:'Unofficial community project · Version 1.0',disclaimer:'MHUR France is not affiliated with, endorsed by, or supported by Bandai Namco Entertainment Inc. or Byking Inc.'}
-      :{privacy:'Confidentialité',rules:'Règles',about:'À propos',notice:'Projet communautaire non officiel · Version 1.0',disclaimer:"MHUR France n’est ni affilié, ni approuvé, ni soutenu par Bandai Namco Entertainment Inc. ou Byking Inc."};
+      ?{privacy:'Privacy',rules:'Rules',about:'About',notice:'Unofficial community project · Version 1.0',disclaimer:'MHUR Nexus is not affiliated with, endorsed by, or supported by Bandai Namco Entertainment Inc. or Byking Inc.'}
+      :{privacy:'Confidentialité',rules:'Règles',about:'À propos',notice:'Projet communautaire non officiel · Version 1.0',disclaimer:"MHUR Nexus n’est ni affilié, ni approuvé, ni soutenu par Bandai Namco Entertainment Inc. ou Byking Inc."};
     footer.querySelectorAll('[data-legal]').forEach(button=>{
       button.textContent=labels[button.dataset.legal]||button.textContent;
     });

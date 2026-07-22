@@ -1,5 +1,5 @@
 
-/* MHUR France V326 — préparation lancement */
+/* MHUR Nexus V326 — préparation lancement */
 .mhurLaunchBar{position:fixed;left:18px;bottom:18px;z-index:9000;display:flex;align-items:center;gap:8px;max-width:min(520px,calc(100vw - 36px));padding:9px 12px;border:3px solid #000;border-radius:12px;background:#101a29;color:#fff;box-shadow:0 4px 0 #000;font-size:12px;font-weight:900}
 .mhurLaunchDot{width:11px;height:11px;flex:0 0 11px;border-radius:50%;background:#ffb000}.mhurLaunchBar.online .mhurLaunchDot{background:#20df69}.mhurLaunchBar.offline .mhurLaunchDot{background:#ef4a55}.mhurLaunchBar button{margin-left:auto;padding:5px 8px;border:2px solid #000;border-radius:7px;background:#ffe100;color:#000;font-weight:1000}
 .mhurLegalFooter{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin:22px auto 90px;padding:12px;color:#b9c8dc;font-size:12px}.mhurLegalFooter button{padding:6px 10px;border:1px solid #405d84;border-radius:8px;background:#101a29;color:#fff;font-weight:900}.mhurLegalFooter span{width:100%;text-align:center;line-height:1.4}.mhurLegalFooter .mhurFooterVersion{font-weight:800}.mhurLegalFooter .mhurFooterDisclaimer{max-width:850px;margin:0 auto;color:#9fb0c5;font-size:11px;line-height:1.55}
