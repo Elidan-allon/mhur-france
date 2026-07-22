@@ -772,7 +772,10 @@
   const ORIGIN='https://mhurfrance.com';
   const labels={home:'Accueil',characters:'Personnages',tunings:'T.U.N.I.N.G',costumes:'Costumes',builds:'Builds communauté',mods:'Mods communauté'};
   const descriptions={home:'Le site communautaire français de My Hero Ultra Rumble : personnages, builds, costumes, T.U.N.I.N.G, tier lists, mods et actualités.',characters:'Découvrez tous les personnages et styles de My Hero Ultra Rumble, leurs compétences, statistiques et rôles.',tunings:'Consultez les compétences T.U.N.I.N.G normales et spéciales de tous les personnages de My Hero Ultra Rumble.',costumes:'Découvrez les costumes, variantes, raretés et emplacements T.U.N.I.N.G de My Hero Ultra Rumble.',builds:'Découvrez et partagez les meilleurs builds communautaires de My Hero Ultra Rumble France.',mods:'Découvrez et partagez les mods communautaires pour My Hero Ultra Rumble.'};
-  function parse(){const a=location.pathname.split('/').filter(Boolean).map(decodeURIComponent);let p='home',char=null,costume=null,build=null;if(a[0]&&labels[a[0]])p=a[0];if(a[0]==='characters'&&a[1]){p='characters';char=a[1]}if(a[0]==='tunings'&&a[1]){p='tunings';char=a[1]}if(a[0]==='costumes'&&a[1]){p='costumes';char=a[1];costume=a[2]||null}if(a[0]==='builds'&&a[1]){p='builds';char=a[1]==='communaute'?null:a[1];build=a[2]||null}return{page:p,char,costume,build}}
+  const routeAliases={home:'home',character:'characters',characters:'characters',tuning:'tunings',tunings:'tunings',costume:'costumes',costumes:'costumes',build:'builds',builds:'builds',mod:'mods',mods:'mods'};
+  function normalizeIncomingPath(){const a=location.pathname.split('/').filter(Boolean).map(decodeURIComponent);if(!a.length)return;const canonical=routeAliases[a[0]];if(!canonical||canonical===a[0])return;a[0]=canonical;history.replaceState(history.state,'','/'+a.map(encodeURIComponent).join('/')+location.search+location.hash)}
+  normalizeIncomingPath();
+  function parse(pathname=location.pathname){const a=pathname.split('/').filter(Boolean).map(decodeURIComponent);const first=routeAliases[a[0]||'home']||'home';let p=first,char=null,costume=null,build=null;if(p==='characters'&&a[1])char=a[1];if(p==='tunings'&&a[1])char=a[1];if(p==='costumes'&&a[1]){char=a[1];costume=a[2]||null}if(p==='builds'&&a[1]){char=a[1]==='communaute'?null:a[1];build=a[2]||null}return{page:p,char,costume,build}}
   function apply(){const r=parse();window.page=r.page;window.selectedChar=r.char||null;window.selectedCostume=r.costume||null;try{if(typeof page!=='undefined')page=r.page;if(typeof selectedChar!=='undefined')selectedChar=r.char||null;if(typeof selectedCostume!=='undefined')selectedCostume=r.costume||null;if(typeof selectedStyle!=='undefined')selectedStyle=null}catch(_e){}if(r.char&&Array.isArray(window.characters)){const c=window.characters.find(x=>x.id===r.char);if(c&&c.styles?.length===1){window.selectedStyle=c.styles[0];try{if(typeof selectedStyle!=='undefined')selectedStyle=c.styles[0]}catch(_e){}}}return r}
   function currentPath(){let p=window.page||'home',c=window.selectedChar||null,ct=window.selectedCostume||null;try{if(typeof page!=='undefined')p=page||'home';if(typeof selectedChar!=='undefined')c=selectedChar||null;if(typeof selectedCostume!=='undefined')ct=selectedCostume||null}catch(_e){}if(p==='home')return '/';if(c){if(p==='costumes'&&ct)return '/costumes/'+encodeURIComponent(c)+'/'+encodeURIComponent(ct);return '/'+p+'/'+encodeURIComponent(c)}return '/'+p}
   function syncUrl(replace=true){const path=currentPath();if(location.pathname!==path||location.hash)history[replace?'replaceState':'pushState'](null,'',path+location.search)}
@@ -1089,13 +1092,14 @@ const tunings={"assault":[{"role":"assault","img":"assets/midoriya/midoriya_assa
 function toggleMenu(){document.getElementById('drawer').classList.toggle('open')}
 function updateSigninText(){const t=document.getElementById('signinTitle'),s=document.getElementById('signinSub');if(!t||!s)return;if(lang==='en'){t.textContent='Sign In';s.textContent='Google or Discord';}else{t.textContent='Se connecter';s.textContent='Google ou Discord';}}
 
-function toggleLang(){lang=lang==='fr'?'en':'fr';layout();updateSigninText();window.MHUR_AUTH?.renderButton?.()}
-function cleanPathForPage(p){return p==='home'?'/':'/'+p}
-function go(p,opts={}){page=p||'home';selectedChar=null;selectedStyle=null;selectedCostume=null;window.page=page;window.selectedChar=null;window.selectedStyle=null;window.selectedCostume=null;document.getElementById('drawer').classList.remove('open');const target=cleanPathForPage(page);if(!opts.noHistory&&location.pathname!==target)history.pushState({page},'',target);layout();window.MHUR_SEO?.sync?.()}
+function toggleLang(){lang=lang==='fr'?'en':'fr';document.documentElement.lang=lang;layout();updateSigninText();window.MHUR_AUTH?.renderButton?.();window.MHUR_LAUNCH?.refreshLanguage?.()}
+function canonicalPage(p){return ({character:'characters',tuning:'tunings',costume:'costumes',build:'builds',mod:'mods'})[p]||p||'home'}
+function cleanPathForPage(p){p=canonicalPage(p);return p==='home'?'/':'/'+p}
+function go(p,opts={}){page=canonicalPage(p);selectedChar=null;selectedStyle=null;selectedCostume=null;window.page=page;window.selectedChar=null;window.selectedStyle=null;window.selectedCostume=null;document.getElementById('drawer')?.classList.remove('open');const target=cleanPathForPage(page);if(!opts.noHistory&&location.pathname!==target)history.pushState({page},'',target);else if(opts.replace&&location.pathname!==target)history.replaceState({page},'',target);layout();window.MHUR_SEO?.sync?.()}
 window.addEventListener('popstate',()=>{window.MHUR_CLEAN_ROUTES?.apply?.();layout();window.MHUR_SEO?.sync?.()});
-window.addEventListener('hashchange',()=>{const h=(location.hash||'').replace(/^#\/?/,'');if(['home','characters','tunings','costumes','builds','mods'].includes(h)){history.replaceState(null,'',cleanPathForPage(h));go(h,{noHistory:true})}});
-document.addEventListener('click',(e)=>{const a=e.target.closest('.navItem');if(a&&!a.hasAttribute('data-mhur-hub')){e.preventDefault();go(a.dataset.page)}});
-function layout(){document.getElementById('drawer').innerHTML=['home','characters','tunings','costumes','builds'].map(p=>`<a href="#${p}" data-page="${p}" class="navItem ${page===p?'active':''}">${tr(p)}</a>`).join('');render()}
+window.addEventListener('hashchange',()=>{const h=canonicalPage((location.hash||'').replace(/^#\/?/,''));if(['home','characters','tunings','costumes','builds','mods'].includes(h)){history.replaceState(null,'',cleanPathForPage(h));go(h,{noHistory:true})}});
+document.addEventListener('click',(e)=>{const a=e.target.closest?.('#drawer .navItem[data-page]');if(!a)return;e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();go(a.dataset.page)},true);
+function layout(){document.getElementById('drawer').innerHTML=['home','characters','tunings','costumes','builds'].map(p=>`<a href="${cleanPathForPage(p)}" data-page="${p}" class="navItem ${page===p?'active':''}">${tr(p)}</a>`).join('');render()}
 function card(c,mode='characters'){const modeClass=mode==='costumes'?' costumeMode':mode==='builds'?' buildMode':mode==='tunings'?' tuningMode':' characterMode';const tag=mode==='costumes'?`<div class="cardModeTag">${tr('costumeTag')}</div>`:mode==='builds'?`<div class="cardModeTag">${tr('buildTag')}</div>`:mode==='tunings'?`<div class="cardModeTag">T.U.N.I.N.G</div>`:`<div class="cardModeTag">PERSONNAGE</div>`;const msg=mode==='costumes'?tr('costumeChoose'):mode==='builds'?tr('buildChoose'):mode==='tunings'?'Clique pour choisir le T.U.N.I.N.G.':tr('choose');return `<button class="card${modeClass}" data-char="${c.id}" onclick="selectChar('${c.id}')">${tag}<div class="thumb">${asset(c.portrait,c.name)}</div><div class="cardBody"><h3>${c.name}</h3><div class="badges">${sideBadge(c.side)}${c.styles.map(s=>roleBadge(styles[s].role)).join('')}</div><p style="color:#c9d7ee">${msg}</p></div></button>`}
 function home(){return `<h1 class="title">MHUR FR — MY HERO ULTRA RUMBLE FRANCE</h1><div class="homeBox"><strong>MHUR FR</strong> est le site communautaire français de <strong>My Hero Ultra Rumble</strong>, parfois recherché sous le nom « My Hero Academia Ultra Rumble ». Retrouvez les personnages, T.U.N.I.N.G, costumes, builds, Tier Lists, mods et événements de la communauté.<br><br>Les personnages déjà détaillés restent complets. Les personnages restants ont été ajoutés dans l’ordre du roster avec des fiches provisoires à compléter progressivement.<div class="workflowBox"><h2>Workflow portraits v152</h2>Le site contient maintenant un dossier <code>portrait_pipeline</code> pour gérer les portraits de skins proprement : on récupère les images, on les range avec un ordre numérique, puis on garde l’ordre officiel du jeu dans un fichier JSON.<div class="workflowSteps"><div class="workflowStep"><b>1.</b> Récupérer les portraits UltraRumble dans <code>portrait_source</code></div><div class="workflowStep"><b>2.</b> Remplir <code>skin_order_template.json</code> avec l’ordre du jeu</div><div class="workflowStep"><b>3.</b> Lancer <code>prepare_portraits.py</code> pour renommer et créer le manifest</div></div></div></div>`}
 function rosterSections(showSearch=false,mode='characters'){const hs=characters.filter(c=>c.side==='hero').map(c=>card(c,mode)).join('');const vs=characters.filter(c=>c.side==='villain').map(c=>card(c,mode)).join('');const prefix=mode==='costumes'?`${tr('costumes')} — `:mode==='builds'?`${tr('builds')} — `:mode==='tunings'?`T.U.N.I.N.G — `:`${tr('characters')} — `;const notice=mode==='costumes'?`<div class="modeNotice"><span>${tr('costumeTag')}</span>${tr('costumeChoose')}</div>`:mode==='builds'?`<div class="modeNotice"><span>${tr('buildTag')}</span>${tr('buildChoose')}</div>`:mode==='tunings'?`<div class="modeNotice"><span>T.U.N.I.N.G</span>${tr('tuningNotice')}</div>`:`<div class="modeNotice"><span>${tr('charactersTag')}</span>${tr('characterNotice')}</div>`;const frame=mode==='costumes'?'costumesFrame':mode==='builds'?'buildsFrame':mode==='tunings'?'tuningsFrame':'charactersFrame';return `<div class="pageFrame ${frame}">${notice}${showSearch?`<input class="search" placeholder="${tr('search')}" oninput="filterCards(this.value)">`:''}<div class="section"><div class="sectionHead heroHead">${prefix}${tr('heroes')}</div><div class="sectionBody cardsGrid" id="cards">${hs}</div></div><div class="section"><div class="sectionHead villainHead">${prefix}${tr('villains')}</div><div class="sectionBody cardsGrid">${vs}</div></div></div>`}
@@ -3095,7 +3099,7 @@ function gameSlotBand(ct,color,kind,side,index){
 })();
 
 
-function render(){const app=document.getElementById('app');if(page==='home')app.innerHTML=home();if(page==='characters')app.innerHTML=charactersPage();if(page==='tunings')app.innerHTML=tuningsPage();if(page==='costumes')app.innerHTML=costumesPage();if(page==='builds')app.innerHTML=buildsPage();if(!window.__keepScroll){window.scrollTo({top:0,left:0,behavior:'auto'})} window.__keepScroll=false;}
+function render(){const app=document.getElementById('app');if(page==='home')app.innerHTML=home();if(page==='characters')app.innerHTML=charactersPage();if(page==='tunings')app.innerHTML=tuningsPage();if(page==='costumes')app.innerHTML=costumesPage();if(page==='builds')app.innerHTML=buildsPage();if(!window.__keepScroll){window.scrollTo({top:0,left:0,behavior:'auto'})}window.__keepScroll=false;queueMicrotask(()=>{window.MHUR_ROUTER?.syncFromState?.('replace');window.MHUR_SEO?.sync?.()})}
 </script>
 <!-- V312 : les données et le véritable accueil sont chargés avant le tout premier rendu. -->
 <script src="data/home_data.js"></script>
@@ -6611,7 +6615,7 @@ body .costumeTile > img,
 <script src="js/community-builds.js?v=414"></script>
 <script src="js/community-hub.js?v=425"></script>
 
-<script src="js/launch.js?v=380"></script>
+<script src="js/launch.js?v=430"></script>
 <script src="js/enhancements.js?v=380"></script>
 
 
@@ -6677,23 +6681,10 @@ body .costumeTile > img,
 <link rel="stylesheet" href="css/v412-community-quality.css?v=413">
 <link rel="stylesheet" href="css/v425-fullwidth-tier-date.css?v=425">
 <script src="js/v412-community-quality.js?v=417"></script>
-<script src="js/v422-route-stats-fixes.js?v=424"></script>
-<script id="mhur-clean-route-finalizer">
-(function(){
-  function wrap(){
-    if(typeof window.render==='function'&&!window.render.__cleanRouteWrapped){
-      const original=window.render;
-      const wrapped=function(){const out=original.apply(this,arguments);queueMicrotask(()=>{window.MHUR_CLEAN_ROUTES?.syncUrl?.(true);window.MHUR_SEO?.sync?.()});return out};
-      wrapped.__cleanRouteWrapped=true;window.render=wrapped;
-    }
-  }
-  wrap();addEventListener('load',()=>{wrap();window.MHUR_CLEAN_ROUTES?.apply?.();if(typeof window.layout==='function')window.layout();window.MHUR_SEO?.sync?.()},{once:true});
-})();
-</script>
-<link rel="stylesheet" href="css/v426-details-routes.css?v=426">
-<script src="js/v426-details-routes.js?v=426"></script>
-<link rel="stylesheet" href="css/v427-navigation-details.css?v=427">
-<script src="js/v427-navigation-details.js?v=427"></script>
-<script src="js/v428-route-state-bridge.js?v=428"></script>
+
+<link rel="stylesheet" href="css/v426-details-routes.css?v=429">
+<link rel="stylesheet" href="css/v427-navigation-details.css?v=429">
+<script src="js/v429-details.js?v=429"></script>
+<script src="js/v429-router.js?v=429"></script>
 </body>
 </html>

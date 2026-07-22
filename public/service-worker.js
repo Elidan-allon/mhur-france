@@ -1,9 +1,9 @@
-const RELEASE='415';
+const RELEASE='430';
 const CACHE=`mhur-fr-${RELEASE}`;
 const SHELL=[
   './','./index.html','./manifest.webmanifest','./favicon.ico','./version.json',
   './css/community-builds.css','./css/community-hub.css','./css/community-mods.css','./css/v410-community-build-tuning.css','./css/v411-community-plus.css','./css/v412-community-quality.css',
-  './js/community-config.js','./js/community-auth.js','./js/community-profiles.js','./js/community-builds.js','./js/community-hub.js','./js/vendor/tus.min.js','./js/community-mods.js','./js/community-plus.js','./js/v412-community-quality.js',
+  './js/community-config.js','./js/launch.js','./js/community-auth.js','./js/community-profiles.js','./js/community-builds.js','./js/community-hub.js','./js/vendor/tus.min.js','./js/community-mods.js','./js/community-plus.js','./js/v412-community-quality.js','./js/v429-details.js','./js/v429-router.js',
   './data/home_data.js'
 ];
 self.addEventListener('install',event=>event.waitUntil((async()=>{
@@ -31,10 +31,10 @@ self.addEventListener('fetch',event=>{
   }
   event.respondWith((async()=>{
     const cached=await caches.match(request);
-    const network=fetch(request).then(async response=>{
+    const network=await fetch(request,{cache:'no-store'}).then(async response=>{
       if(response.ok){const cache=await caches.open(CACHE);cache.put(request,response.clone())}
       return response;
     }).catch(()=>null);
-    return cached||(await network)||new Response('',{status:503});
+    return network||cached||new Response('',{status:503});
   })());
 });
