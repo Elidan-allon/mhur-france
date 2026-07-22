@@ -1,0 +1,10 @@
+/* V427 — la classe fermée gagne sur tous les anciens display:block!important. */
+.skillText .simpleTable.hidden,
+.skillText .simpleTable[hidden],
+.skillText .simpleTable[aria-hidden="true"]{
+  display:none!important;
+}
+.skillText .simpleTable:not(.hidden):not([hidden]){
+  display:block!important;
+  width:100%!important;
+}
