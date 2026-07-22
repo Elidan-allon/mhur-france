@@ -14,7 +14,7 @@
     try{
       const regs=await navigator.serviceWorker.getRegistrations();
       await Promise.all(regs.map(r=>r.unregister()));
-      const reg=await navigator.serviceWorker.register('/service-worker.js?v=22',{scope:'/',updateViaCache:'none'});
+      const reg=await navigator.serviceWorker.register('/service-worker.js?v=23',{scope:'/',updateViaCache:'none'});
       await reg.update().catch(()=>{});
       if(reg.waiting) reg.waiting.postMessage({type:'SKIP_WAITING'});
       setInterval(()=>reg.update().catch(()=>{}),60*60*1000);

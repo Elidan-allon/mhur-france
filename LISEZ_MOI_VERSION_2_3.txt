@@ -1,0 +1,10 @@
+MHUR NEXUS — VERSION 2.3
+
+Correction iPhone (application installée) :
+- la barre supérieure est placée sous l’heure, le Wi-Fi et la batterie ;
+- les boutons restent tous sur une seule ligne ;
+- aucune double marge n’est ajoutée ;
+- le menu latéral et le bouton Retour suivent le nouveau positionnement ;
+- cache PWA actualisé en version 23.
+
+Après la mise en ligne : ferme complètement l’application puis rouvre-la.

@@ -1,0 +1,44 @@
+/* V2.3 — iPhone installé : barre supérieure sous la zone d’état, sans casser l’alignement. */
+:root{--mhur-ios-safe-top:0px}
+
+/* Cette règle ne s’applique qu’à l’application ajoutée à l’écran d’accueil iOS. */
+html.mhur-ios-standalone{--mhur-ios-safe-top:env(safe-area-inset-top,0px)}
+
+@media (max-width:700px){
+  html.mhur-ios-standalone body{
+    padding-top:calc(64px + var(--mhur-ios-safe-top))!important;
+  }
+
+  /* On déplace le header complet sous l’heure/la batterie.
+     Sa hauteur utile reste 64 px : tous les boutons gardent donc une seule ligne. */
+  html.mhur-ios-standalone .top{
+    top:var(--mhur-ios-safe-top)!important;
+    height:64px!important;
+    min-height:64px!important;
+    padding-top:0!important;
+  }
+
+  /* Fond continu derrière la barre d’état iOS. */
+  html.mhur-ios-standalone .top::before{
+    content:"";
+    position:absolute;
+    left:0;
+    right:0;
+    bottom:100%;
+    height:var(--mhur-ios-safe-top);
+    background:#070b13;
+    border-bottom:0;
+    pointer-events:none;
+  }
+
+  html.mhur-ios-standalone .drawer{
+    top:calc(64px + var(--mhur-ios-safe-top))!important;
+    max-height:calc(100dvh - 64px - var(--mhur-ios-safe-top))!important;
+  }
+
+  html.mhur-ios-standalone #app>.back,
+  html.mhur-ios-standalone .wrap>.back,
+  html.mhur-ios-standalone .back{
+    top:calc(74px + var(--mhur-ios-safe-top))!important;
+  }
+}

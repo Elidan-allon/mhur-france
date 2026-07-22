@@ -1,7 +1,7 @@
-const RELEASE='pwa-22';
+const RELEASE='pwa-23';
 const CACHE=`mhur-nexus-${RELEASE}`;
 const OFFLINE='/index.html';
-const SHELL=['/','/index.html','/manifest.webmanifest','/favicon.ico','/version.json','/assets/brand/icon-192.png','/assets/brand/icon-512.png','/css/v19-ios-header-update.css','/js/v19-pwa-update.js'];
+const SHELL=['/','/index.html','/manifest.webmanifest','/favicon.ico','/version.json','/assets/brand/icon-192.png','/assets/brand/icon-512.png','/css/v19-ios-header-update.css','/css/v23-ios-standalone-header.css','/js/v19-pwa-update.js'];
 self.addEventListener('message',event=>{if(event.data?.type==='SKIP_WAITING')self.skipWaiting()});
 self.addEventListener('install',event=>event.waitUntil((async()=>{
   const cache=await caches.open(CACHE);
