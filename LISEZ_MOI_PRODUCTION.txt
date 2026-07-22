@@ -21,3 +21,5 @@ de vider le cache.
 
 
 V348 : traduction FR/EN des titres, catégories et libellés des événements, bonus et tirages de l'accueil.
+
+V428 : correction définitive de la synchronisation URL/état pour toutes les routes.

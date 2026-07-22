@@ -773,8 +773,8 @@
   const labels={home:'Accueil',characters:'Personnages',tunings:'T.U.N.I.N.G',costumes:'Costumes',builds:'Builds communauté',mods:'Mods communauté'};
   const descriptions={home:'Le site communautaire français de My Hero Ultra Rumble : personnages, builds, costumes, T.U.N.I.N.G, tier lists, mods et actualités.',characters:'Découvrez tous les personnages et styles de My Hero Ultra Rumble, leurs compétences, statistiques et rôles.',tunings:'Consultez les compétences T.U.N.I.N.G normales et spéciales de tous les personnages de My Hero Ultra Rumble.',costumes:'Découvrez les costumes, variantes, raretés et emplacements T.U.N.I.N.G de My Hero Ultra Rumble.',builds:'Découvrez et partagez les meilleurs builds communautaires de My Hero Ultra Rumble France.',mods:'Découvrez et partagez les mods communautaires pour My Hero Ultra Rumble.'};
   function parse(){const a=location.pathname.split('/').filter(Boolean).map(decodeURIComponent);let p='home',char=null,costume=null,build=null;if(a[0]&&labels[a[0]])p=a[0];if(a[0]==='characters'&&a[1]){p='characters';char=a[1]}if(a[0]==='tunings'&&a[1]){p='tunings';char=a[1]}if(a[0]==='costumes'&&a[1]){p='costumes';char=a[1];costume=a[2]||null}if(a[0]==='builds'&&a[1]){p='builds';char=a[1]==='communaute'?null:a[1];build=a[2]||null}return{page:p,char,costume,build}}
-  function apply(){const r=parse();window.page=r.page;window.selectedChar=r.char||null;if(r.costume)window.selectedCostume=r.costume;if(r.char&&Array.isArray(window.characters)){const c=window.characters.find(x=>x.id===r.char);if(c&&c.styles?.length===1)window.selectedStyle=c.styles[0]}return r}
-  function currentPath(){const p=window.page||'home',c=window.selectedChar,ct=window.selectedCostume;if(p==='home')return '/';if(c){if(p==='costumes'&&ct)return '/costumes/'+encodeURIComponent(c)+'/'+encodeURIComponent(ct);return '/'+p+'/'+encodeURIComponent(c)}return '/'+p}
+  function apply(){const r=parse();window.page=r.page;window.selectedChar=r.char||null;window.selectedCostume=r.costume||null;try{if(typeof page!=='undefined')page=r.page;if(typeof selectedChar!=='undefined')selectedChar=r.char||null;if(typeof selectedCostume!=='undefined')selectedCostume=r.costume||null;if(typeof selectedStyle!=='undefined')selectedStyle=null}catch(_e){}if(r.char&&Array.isArray(window.characters)){const c=window.characters.find(x=>x.id===r.char);if(c&&c.styles?.length===1){window.selectedStyle=c.styles[0];try{if(typeof selectedStyle!=='undefined')selectedStyle=c.styles[0]}catch(_e){}}}return r}
+  function currentPath(){let p=window.page||'home',c=window.selectedChar||null,ct=window.selectedCostume||null;try{if(typeof page!=='undefined')p=page||'home';if(typeof selectedChar!=='undefined')c=selectedChar||null;if(typeof selectedCostume!=='undefined')ct=selectedCostume||null}catch(_e){}if(p==='home')return '/';if(c){if(p==='costumes'&&ct)return '/costumes/'+encodeURIComponent(c)+'/'+encodeURIComponent(ct);return '/'+p+'/'+encodeURIComponent(c)}return '/'+p}
   function syncUrl(replace=true){const path=currentPath();if(location.pathname!==path||location.hash)history[replace?'replaceState':'pushState'](null,'',path+location.search)}
   window.MHUR_CLEAN_ROUTES={parse,apply,currentPath,syncUrl};
   if(location.hash){const h=location.hash.replace(/^#\/?/,'');if(labels[h])history.replaceState(null,'','/'+(h==='home'?'':h))}
@@ -1091,7 +1091,7 @@ function updateSigninText(){const t=document.getElementById('signinTitle'),s=doc
 
 function toggleLang(){lang=lang==='fr'?'en':'fr';layout();updateSigninText();window.MHUR_AUTH?.renderButton?.()}
 function cleanPathForPage(p){return p==='home'?'/':'/'+p}
-function go(p,opts={}){page=p||'home';selectedChar=null;selectedStyle=null;selectedCostume=null;document.getElementById('drawer').classList.remove('open');const target=cleanPathForPage(page);if(!opts.noHistory&&location.pathname!==target)history.pushState({page},'',target);layout();window.MHUR_SEO?.sync?.()}
+function go(p,opts={}){page=p||'home';selectedChar=null;selectedStyle=null;selectedCostume=null;window.page=page;window.selectedChar=null;window.selectedStyle=null;window.selectedCostume=null;document.getElementById('drawer').classList.remove('open');const target=cleanPathForPage(page);if(!opts.noHistory&&location.pathname!==target)history.pushState({page},'',target);layout();window.MHUR_SEO?.sync?.()}
 window.addEventListener('popstate',()=>{window.MHUR_CLEAN_ROUTES?.apply?.();layout();window.MHUR_SEO?.sync?.()});
 window.addEventListener('hashchange',()=>{const h=(location.hash||'').replace(/^#\/?/,'');if(['home','characters','tunings','costumes','builds','mods'].includes(h)){history.replaceState(null,'',cleanPathForPage(h));go(h,{noHistory:true})}});
 document.addEventListener('click',(e)=>{const a=e.target.closest('.navItem');if(a&&!a.hasAttribute('data-mhur-hub')){e.preventDefault();go(a.dataset.page)}});
@@ -6694,5 +6694,6 @@ body .costumeTile > img,
 <script src="js/v426-details-routes.js?v=426"></script>
 <link rel="stylesheet" href="css/v427-navigation-details.css?v=427">
 <script src="js/v427-navigation-details.js?v=427"></script>
+<script src="js/v428-route-state-bridge.js?v=428"></script>
 </body>
 </html>
