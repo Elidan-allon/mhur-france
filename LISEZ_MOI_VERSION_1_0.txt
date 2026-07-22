@@ -1,9 +1,0 @@
-MHUR NEXUS — VERSION PUBLIQUE 1.0
-
-Modifications :
-- Le pied de page affiche désormais Version 1.0.
-- Ajout de la mention de non-affiliation à Bandai Namco Entertainment Inc. et Byking Inc.
-- Mention disponible en français et en anglais.
-- Les numéros techniques V4xx ne sont plus affichés aux visiteurs.
-
-Déployez tout le contenu du dossier comme pour les versions précédentes.

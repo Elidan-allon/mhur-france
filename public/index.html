@@ -11,6 +11,13 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="MHUR Nexus">
+
+<style>html,body{background-color:#07101f!important}</style>
+<link rel="apple-touch-startup-image" href="/assets/brand/apple-splash-1290x2796.png?v=19" media="(device-width:430px) and (device-height:932px) and (-webkit-device-pixel-ratio:3)">
+<link rel="apple-touch-startup-image" href="/assets/brand/apple-splash-1179x2556.png?v=19" media="(device-width:393px) and (device-height:852px) and (-webkit-device-pixel-ratio:3)">
+<link rel="apple-touch-startup-image" href="/assets/brand/apple-splash-1170x2532.png?v=19" media="(device-width:390px) and (device-height:844px) and (-webkit-device-pixel-ratio:3)">
+<link rel="apple-touch-startup-image" href="/assets/brand/apple-splash-1284x2778.png?v=19" media="(device-width:428px) and (device-height:926px) and (-webkit-device-pixel-ratio:3)">
+<link rel="apple-touch-startup-image" href="/assets/brand/apple-splash-1125x2436.png?v=19" media="(device-width:375px) and (device-height:812px) and (-webkit-device-pixel-ratio:3)">
 <meta name="google-site-verification" content="kw2VXVq_AZcsKg3TdhJl91U4poT62GNr8Mjg0Sh4T-0" />
 <title>MHUR FR — My Hero Ultra Rumble Nexus | Site communautaire</title>
 <style>
@@ -559,9 +566,6 @@
 }
 
 /* v1.8 — démarrage iOS et langue active */
-#mhurStartup{position:fixed;inset:0;z-index:999999;display:flex;align-items:center;justify-content:center;background:#07101f;transition:opacity .16s ease,visibility .16s ease}
-#mhurStartup.hidden{opacity:0;visibility:hidden;pointer-events:none}
-#mhurStartup img{width:min(42vw,210px);height:min(42vw,210px);object-fit:contain;filter:drop-shadow(0 8px 18px rgba(0,0,0,.45))}
 .lang{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-width:104px}
 .langPart{color:#dce7f7;transition:color .15s ease,transform .15s ease;text-shadow:none}
 .langPart.active{color:#ffe100;transform:scale(1.08);text-shadow:0 0 10px rgba(255,225,0,.35)}
@@ -801,7 +805,7 @@
 </style>
 </head>
 <body>
-<div id="mhurStartup" aria-hidden="true"><img src="/assets/brand/icon-512.png?v=18" alt=""></div>
+
 <header class="top"><button class="menuBtn" onclick="toggleMenu()" aria-label="Ouvrir le menu"><span class="menuBtnLines" aria-hidden="true"><span></span><span></span><span></span></span></button><div class="brand">MY HERO ULTRA RUMBLE<span>NEXUS</span></div><button id="mhurAccountButton" class="mhurAccountButton" type="button" onclick="MHUR_AUTH.open()"><span class="mhurAccountAvatar">👤</span><span class="mhurAccountButtonText"><b id="signinTitle">Se connecter</b><small id="signinSub">Google ou Discord</small></span></button><button class="lang" onclick="toggleLang()" aria-label="Changer la langue"><span class="langPart" data-lang-code="fr">FR</span><span class="langSep">/</span><span class="langPart" data-lang-code="en">EN</span></button></header>
 <nav id="drawer" class="drawer"></nav>
 <main class="wrap" id="app"></main>
@@ -3146,7 +3150,7 @@ function render(){const app=document.getElementById('app');if(page==='home')app.
 <script src="data/home_data.js"></script>
 <script src="js/home.js?v=383"></script>
 <script>
-window.MHUR_CLEAN_ROUTES?.apply?.();if(!['home','characters','tunings','costumes','builds','mods'].includes(page))page='home';updateLanguageIndicator();layout();window.MHUR_SEO?.sync?.();requestAnimationFrame(()=>requestAnimationFrame(()=>{const splash=document.getElementById('mhurStartup');if(splash){splash.classList.add('hidden');setTimeout(()=>splash.remove(),220)}}));
+window.MHUR_CLEAN_ROUTES?.apply?.();if(!['home','characters','tunings','costumes','builds','mods'].includes(page))page='home';updateLanguageIndicator();layout();window.MHUR_SEO?.sync?.();
 </script>
 <button id="backToTop" title="Retour en haut" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
 <script>window.addEventListener('scroll',()=>{const b=document.getElementById('backToTop'); if(b) b.classList.toggle('show', window.scrollY>180);},{passive:true});</script>
@@ -6735,5 +6739,7 @@ body .costumeTile > img,
 <script src="js/nexus-header-links.js?v=13"></script>
 <!-- V1.7: correction mobile des cartes T.U.N.I.N.G -->
 <link rel="stylesheet" href="css/v17-mobile-tuning-fix.css?v=17">
+<link rel="stylesheet" href="css/v19-ios-header-update.css?v=19">
+<script src="js/v19-pwa-update.js?v=19"></script>
 </body>
 </html>
