@@ -1,0 +1,9 @@
+MHUR NEXUS — VERSION 1.7
+
+Correction effectuée :
+- Sur téléphone, l’icône du T.U.N.I.N.G ne chevauche plus le titre « Éclat de souvenir ».
+- La taille de l’icône SP est limitée sur mobile.
+- Le titre s’adapte automatiquement à la largeur de l’écran.
+- Le cache PWA a été actualisé (pwa-17).
+
+Après publication, recharge une fois le site ou ferme et rouvre l’application installée.

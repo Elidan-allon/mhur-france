@@ -1,0 +1,61 @@
+/* MHUR Nexus v1.7 — correction du chevauchement des cartes T.U.N.I.N.G sur mobile */
+@media (max-width: 760px) {
+  .tuningCard .gameHeader,
+  .tuningCard.spTuning .gameHeader {
+    grid-template-columns: 76px minmax(0, 1fr);
+    column-gap: 14px;
+    padding: 16px 14px;
+    align-items: center;
+  }
+
+  .tuningCard .gameIcon,
+  .tuningCard.spTuning .gameIcon {
+    width: 72px;
+    height: 72px;
+    min-width: 72px;
+    max-width: 72px;
+    overflow: hidden;
+  }
+
+  .tuningCard .gameIcon img,
+  .tuningCard.spTuning .gameIcon img {
+    width: 100%;
+    height: 100%;
+    max-width: 72px;
+    max-height: 72px;
+    object-fit: contain;
+  }
+
+  .tuningCard .gameName {
+    min-width: 0;
+    margin: 0;
+    font-size: clamp(23px, 6.4vw, 31px);
+    line-height: 1.08;
+    overflow-wrap: anywhere;
+    word-break: normal;
+  }
+}
+
+@media (max-width: 390px) {
+  .tuningCard .gameHeader,
+  .tuningCard.spTuning .gameHeader {
+    grid-template-columns: 66px minmax(0, 1fr);
+    column-gap: 11px;
+    padding: 14px 12px;
+  }
+
+  .tuningCard .gameIcon,
+  .tuningCard.spTuning .gameIcon,
+  .tuningCard .gameIcon img,
+  .tuningCard.spTuning .gameIcon img {
+    width: 64px;
+    height: 64px;
+    min-width: 64px;
+    max-width: 64px;
+    max-height: 64px;
+  }
+
+  .tuningCard .gameName {
+    font-size: clamp(21px, 6.2vw, 27px);
+  }
+}

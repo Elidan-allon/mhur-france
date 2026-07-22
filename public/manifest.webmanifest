@@ -8,30 +8,146 @@
   "start_url": "/?source=pwa#home",
   "scope": "/",
   "display": "standalone",
-  "display_override": ["window-controls-overlay", "standalone", "minimal-ui"],
+  "display_override": [
+    "window-controls-overlay",
+    "standalone",
+    "minimal-ui"
+  ],
   "orientation": "any",
-  "background_color": "#030710",
+  "background_color": "#07101f",
   "theme_color": "#07101f",
-  "categories": ["games", "entertainment", "social"],
+  "categories": [
+    "games",
+    "entertainment",
+    "social"
+  ],
   "prefer_related_applications": false,
   "icons": [
-    {"src":"/assets/brand/icon-48.png?v=16","sizes":"48x48","type":"image/png","purpose":"any"},
-    {"src":"/assets/brand/icon-72.png?v=16","sizes":"72x72","type":"image/png","purpose":"any"},
-    {"src":"/assets/brand/icon-96.png?v=16","sizes":"96x96","type":"image/png","purpose":"any"},
-    {"src":"/assets/brand/icon-128.png?v=16","sizes":"128x128","type":"image/png","purpose":"any"},
-    {"src":"/assets/brand/icon-144.png?v=16","sizes":"144x144","type":"image/png","purpose":"any"},
-    {"src":"/assets/brand/icon-152.png?v=16","sizes":"152x152","type":"image/png","purpose":"any"},
-    {"src":"/assets/brand/icon-192.png?v=16","sizes":"192x192","type":"image/png","purpose":"any"},
-    {"src":"/assets/brand/icon-256.png?v=16","sizes":"256x256","type":"image/png","purpose":"any"},
-    {"src":"/assets/brand/icon-384.png?v=16","sizes":"384x384","type":"image/png","purpose":"any"},
-    {"src":"/assets/brand/icon-512.png?v=16","sizes":"512x512","type":"image/png","purpose":"any"},
-    {"src":"/assets/brand/maskable-192.png?v=16","sizes":"192x192","type":"image/png","purpose":"maskable"},
-    {"src":"/assets/brand/maskable-512.png?v=16","sizes":"512x512","type":"image/png","purpose":"maskable"}
+    {
+      "src": "/assets/brand/icon-48.png?v=18",
+      "sizes": "48x48",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/brand/icon-72.png?v=18",
+      "sizes": "72x72",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/brand/icon-96.png?v=18",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/brand/icon-128.png?v=18",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/brand/icon-144.png?v=18",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/brand/icon-152.png?v=18",
+      "sizes": "152x152",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/brand/icon-192.png?v=18",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/brand/icon-256.png?v=18",
+      "sizes": "256x256",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/brand/icon-384.png?v=18",
+      "sizes": "384x384",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/brand/icon-512.png?v=18",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/brand/maskable-192.png?v=18",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/assets/brand/maskable-512.png?v=18",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
   ],
   "shortcuts": [
-    {"name":"Personnages","short_name":"Personnages","description":"Voir les personnages","url":"/#characters","icons":[{"src":"/assets/brand/icon-192.png?v=16","sizes":"192x192","type":"image/png"}]},
-    {"name":"Builds communauté","short_name":"Builds","description":"Consulter les builds communautaires","url":"/#builds","icons":[{"src":"/assets/brand/icon-192.png?v=16","sizes":"192x192","type":"image/png"}]},
-    {"name":"Costumes","short_name":"Costumes","description":"Explorer les costumes","url":"/#costumes","icons":[{"src":"/assets/brand/icon-192.png?v=16","sizes":"192x192","type":"image/png"}]},
-    {"name":"Mods","short_name":"Mods","description":"Voir les mods","url":"/#mods","icons":[{"src":"/assets/brand/icon-192.png?v=16","sizes":"192x192","type":"image/png"}]}
+    {
+      "name": "Personnages",
+      "short_name": "Personnages",
+      "description": "Voir les personnages",
+      "url": "/#characters",
+      "icons": [
+        {
+          "src": "/assets/brand/icon-192.png?v=18",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "Builds communauté",
+      "short_name": "Builds",
+      "description": "Consulter les builds communautaires",
+      "url": "/#builds",
+      "icons": [
+        {
+          "src": "/assets/brand/icon-192.png?v=18",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "Costumes",
+      "short_name": "Costumes",
+      "description": "Explorer les costumes",
+      "url": "/#costumes",
+      "icons": [
+        {
+          "src": "/assets/brand/icon-192.png?v=18",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "Mods",
+      "short_name": "Mods",
+      "description": "Voir les mods",
+      "url": "/#mods",
+      "icons": [
+        {
+          "src": "/assets/brand/icon-192.png?v=18",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    }
   ]
 }

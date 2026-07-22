@@ -6,7 +6,11 @@
 <meta http-equiv="Expires" content="0">
 <meta charset="utf-8">
 <base href="/">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#07101f">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="MHUR Nexus">
 <meta name="google-site-verification" content="kw2VXVq_AZcsKg3TdhJl91U4poT62GNr8Mjg0Sh4T-0" />
 <title>MHUR FR — My Hero Ultra Rumble Nexus | Site communautaire</title>
 <style>
@@ -553,6 +557,15 @@
 @media(max-width:760px){
   .card.buildMode .cardModeTag{max-width:150px;font-size:15px}
 }
+
+/* v1.8 — démarrage iOS et langue active */
+#mhurStartup{position:fixed;inset:0;z-index:999999;display:flex;align-items:center;justify-content:center;background:#07101f;transition:opacity .16s ease,visibility .16s ease}
+#mhurStartup.hidden{opacity:0;visibility:hidden;pointer-events:none}
+#mhurStartup img{width:min(42vw,210px);height:min(42vw,210px);object-fit:contain;filter:drop-shadow(0 8px 18px rgba(0,0,0,.45))}
+.lang{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-width:104px}
+.langPart{color:#dce7f7;transition:color .15s ease,transform .15s ease;text-shadow:none}
+.langPart.active{color:#ffe100;transform:scale(1.08);text-shadow:0 0 10px rgba(255,225,0,.35)}
+.langSep{color:#7186a6}
 </style>
 
 <style id="v130fix">
@@ -788,7 +801,8 @@
 </style>
 </head>
 <body>
-<header class="top"><button class="menuBtn" onclick="toggleMenu()" aria-label="Ouvrir le menu"><span class="menuBtnLines" aria-hidden="true"><span></span><span></span><span></span></span></button><div class="brand">MY HERO ULTRA RUMBLE<span>NEXUS</span></div><button id="mhurAccountButton" class="mhurAccountButton" type="button" onclick="MHUR_AUTH.open()"><span class="mhurAccountAvatar">👤</span><span class="mhurAccountButtonText"><b id="signinTitle">Se connecter</b><small id="signinSub">Google ou Discord</small></span></button><button class="lang" onclick="toggleLang()">FR / EN</button></header>
+<div id="mhurStartup" aria-hidden="true"><img src="/assets/brand/icon-512.png?v=18" alt=""></div>
+<header class="top"><button class="menuBtn" onclick="toggleMenu()" aria-label="Ouvrir le menu"><span class="menuBtnLines" aria-hidden="true"><span></span><span></span><span></span></span></button><div class="brand">MY HERO ULTRA RUMBLE<span>NEXUS</span></div><button id="mhurAccountButton" class="mhurAccountButton" type="button" onclick="MHUR_AUTH.open()"><span class="mhurAccountAvatar">👤</span><span class="mhurAccountButtonText"><b id="signinTitle">Se connecter</b><small id="signinSub">Google ou Discord</small></span></button><button class="lang" onclick="toggleLang()" aria-label="Changer la langue"><span class="langPart" data-lang-code="fr">FR</span><span class="langSep">/</span><span class="langPart" data-lang-code="en">EN</span></button></header>
 <nav id="drawer" class="drawer"></nav>
 <main class="wrap" id="app"></main>
 <script id="mhur-clean-routes-seo">
@@ -1118,7 +1132,8 @@ const tunings={"assault":[{"role":"assault","img":"assets/midoriya/midoriya_assa
 function toggleMenu(){document.getElementById('drawer').classList.toggle('open')}
 function updateSigninText(){const t=document.getElementById('signinTitle'),s=document.getElementById('signinSub');if(!t||!s)return;if(lang==='en'){t.textContent='Sign In';s.textContent='Google or Discord';}else{t.textContent='Se connecter';s.textContent='Google ou Discord';}}
 
-function toggleLang(){lang=lang==='fr'?'en':'fr';document.documentElement.lang=lang;try{localStorage.setItem('mhur_lang',lang)}catch(_){}layout();updateSigninText();window.MHUR_AUTH?.renderButton?.();window.MHUR_LAUNCH?.refreshLanguage?.();window.dispatchEvent(new CustomEvent('mhur:languagechange',{detail:{lang}}))}
+function updateLanguageIndicator(){document.querySelectorAll('.langPart[data-lang-code]').forEach(el=>{const active=el.dataset.langCode===lang;el.classList.toggle('active',active);el.setAttribute('aria-current',active?'true':'false')});const b=document.querySelector('.lang');if(b)b.setAttribute('aria-label',lang==='en'?'Change language. English selected.':'Changer la langue. Français sélectionné.')}
+function toggleLang(){lang=lang==='fr'?'en':'fr';document.documentElement.lang=lang;try{localStorage.setItem('mhur_lang',lang)}catch(_){}updateLanguageIndicator();layout();updateSigninText();window.MHUR_AUTH?.renderButton?.();window.MHUR_LAUNCH?.refreshLanguage?.();window.dispatchEvent(new CustomEvent('mhur:languagechange',{detail:{lang}}))}
 function canonicalPage(p){return ({character:'characters',tuning:'tunings',costume:'costumes',build:'builds',mod:'mods'})[p]||p||'home'}
 function cleanPathForPage(p){p=canonicalPage(p);return p==='home'?'/':'/'+p}
 function go(p,opts={}){page=canonicalPage(p);selectedChar=null;selectedStyle=null;selectedCostume=null;window.page=page;window.selectedChar=null;window.selectedStyle=null;window.selectedCostume=null;document.getElementById('drawer')?.classList.remove('open');const target=cleanPathForPage(page);if(!opts.noHistory&&location.pathname!==target)history.pushState({page},'',target);else if(opts.replace&&location.pathname!==target)history.replaceState({page},'',target);layout();window.MHUR_SEO?.sync?.()}
@@ -3131,7 +3146,7 @@ function render(){const app=document.getElementById('app');if(page==='home')app.
 <script src="data/home_data.js"></script>
 <script src="js/home.js?v=383"></script>
 <script>
-window.MHUR_CLEAN_ROUTES?.apply?.();if(!['home','characters','tunings','costumes','builds','mods'].includes(page))page='home';layout();window.MHUR_SEO?.sync?.();
+window.MHUR_CLEAN_ROUTES?.apply?.();if(!['home','characters','tunings','costumes','builds','mods'].includes(page))page='home';updateLanguageIndicator();layout();window.MHUR_SEO?.sync?.();requestAnimationFrame(()=>requestAnimationFrame(()=>{const splash=document.getElementById('mhurStartup');if(splash){splash.classList.add('hidden');setTimeout(()=>splash.remove(),220)}}));
 </script>
 <button id="backToTop" title="Retour en haut" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
 <script>window.addEventListener('scroll',()=>{const b=document.getElementById('backToTop'); if(b) b.classList.toggle('show', window.scrollY>180);},{passive:true});</script>
@@ -6718,5 +6733,7 @@ body .costumeTile > img,
 <link rel="stylesheet" href="css/nexus-header-links.css?v=13">
 <script src="js/nexus-links-data.js?v=13"></script>
 <script src="js/nexus-header-links.js?v=13"></script>
+<!-- V1.7: correction mobile des cartes T.U.N.I.N.G -->
+<link rel="stylesheet" href="css/v17-mobile-tuning-fix.css?v=17">
 </body>
 </html>
