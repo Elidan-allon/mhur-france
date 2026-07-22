@@ -220,7 +220,7 @@
 
   async function install(){
     if(standalone())return;
-    if('serviceWorker'in navigator&&location.protocol==='https:'){
+    if(false&&'serviceWorker'in navigator&&location.protocol==='https:'){
       try{
         const registration=await navigator.serviceWorker.register('/service-worker.js?v=406',{scope:'/',updateViaCache:'none'});
         await registration.update().catch(()=>{});

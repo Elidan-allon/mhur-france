@@ -19,3 +19,8 @@
   Cache-Control: no-cache, no-store, must-revalidate
   Service-Worker-Allowed: /
   Content-Type: application/javascript; charset=utf-8
+
+/service-worker-v24.js
+  Cache-Control: no-cache, no-store, must-revalidate
+  Service-Worker-Allowed: /
+  Content-Type: application/javascript; charset=utf-8

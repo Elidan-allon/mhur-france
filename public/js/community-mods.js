@@ -22,6 +22,10 @@ function categoryLabel(c){const k=normalizedCategory(c);const fr={skin:'Skin',ui
 function formatDate(v){try{return new Intl.DateTimeFormat(typeof lang!=='undefined'&&lang==='en'?'en-GB':'fr-FR',{dateStyle:'medium',timeStyle:'short'}).format(new Date(v))}catch(_){return ''}}
 function formatSize(n){n=Number(n)||0;if(n<1024)return `${n} B`;if(n<1048576)return `${(n/1024).toFixed(1)} KB`;return `${(n/1048576).toFixed(1)} MB`}
 async function request(path,opt={}){const headers={...(opt.headers||{})};if(opt.body&&!(opt.body instanceof Blob)&&!headers['Content-Type'])headers['Content-Type']='application/json';const runner=window.MHUR_AUTH?.fetch||fetch;const r=await runner(API+path,{...opt,headers});const text=await r.text();let data=text;try{data=text?JSON.parse(text):null}catch(_){}if(!r.ok)throw new Error(data?.message||data?.error||data?.hint||text||`HTTP ${r.status}`);return data}
+function missingCommunityModsColumn(error){const m=String(error?.message||error||'').match(/Could not find the ['"]([^'"]+)['"] column of ['"]community_mods['"]/i);return m?m[1]:''}
+const OPTIONAL_MOD_MEDIA_COLUMNS=new Set(['preview_images','video_url','video_path']);
+function modsNotice(message){let n=document.getElementById('modsCompatibilityNotice');if(!n){n=document.createElement('div');n.id='modsCompatibilityNotice';n.setAttribute('role','status');Object.assign(n.style,{position:'fixed',left:'50%',bottom:'max(24px, env(safe-area-inset-bottom))',transform:'translateX(-50%)',zIndex:'100000',maxWidth:'min(92vw,720px)',padding:'13px 18px',border:'2px solid #ffe000',borderRadius:'14px',background:'#0c1729',color:'#fff',fontWeight:'800',boxShadow:'0 12px 35px #0009',textAlign:'center'});document.body.appendChild(n)}n.textContent=message;n.hidden=false;clearTimeout(modsNotice.timer);modsNotice.timer=setTimeout(()=>{n.hidden=true},6500)}
+async function writeCommunityMod(path,method,payload,prefer){const body={...payload};const removed=[];for(let attempt=0;attempt<4;attempt++){try{return {data:await request(path,{method,headers:{Prefer:prefer},body:JSON.stringify(body)}),removed}}catch(error){const column=missingCommunityModsColumn(error);if(!OPTIONAL_MOD_MEDIA_COLUMNS.has(column)||!(column in body))throw error;if(column==='video_url'||column==='video_path'){for(const key of ['video_url','video_path']){if(key in body){delete body[key];if(!removed.includes(key))removed.push(key)}}}else{delete body[column];if(!removed.includes(column))removed.push(column)}}}throw new Error(tx('La publication n’a pas pu être enregistrée.','The post could not be saved.'))}
 async function loadProfiles(ids){ids=[...new Set(ids.filter(Boolean))];if(!ids.length||!REMOTE)return;try{const q=new URLSearchParams({select:'id,username,avatar_url',id:`in.(${ids.join(',')})`});for(const p of await request(`/rest/v1/profiles?${q}`)||[])state.profiles[p.id]=p}catch(_){} }
 async function loadLikes(){state.liked.clear();const u=user();if(!u||!REMOTE)return;try{const q=new URLSearchParams({select:'mod_id',user_id:`eq.${u.id}`});for(const r of await request(`/rest/v1/community_mod_likes?${q}`)||[])state.liked.add(String(r.mod_id))}catch(_){} }
 async function loadFavorites(){state.favorites.clear();const u=user();if(!u||!REMOTE)return;try{const q=new URLSearchParams({select:'mod_id',user_id:`eq.${u.id}`});for(const r of await request(`/rest/v1/community_mod_favorites?${q}`)||[])state.favorites.add(String(r.mod_id))}catch(_){} }
@@ -332,7 +336,7 @@ async function publish(e){
       uploaded.push(['community-mods',filePath]);
     }
     if(images.length){
-      const uploadedImages=[];
+      uploadedImages=[];
       for(let i=0;i<images.length;i++){
         const image=images[i];
         const imagePath=`${u.id}/${id}/images/${Date.now()}_${i+1}_${safeName(image.name)}`;
@@ -348,6 +352,7 @@ async function publish(e){
     }
     if(video){
       const videoPath=`${u.id}/${id}/video/${Date.now()}_${safeName(video.name)}`;
+      uploadedVideoPath=videoPath;
       const label=tx('Envoi de la vidéo…','Uploading video…');showUploadProgress(label,0);
       payload.video_url=await upload('mod-previews',videoPath,video,pct=>showUploadProgress(label,pct));
       payload.video_path=videoPath;uploaded.push(['mod-previews',videoPath]);
@@ -359,15 +364,20 @@ async function publish(e){
         description:oldRow?.description||'',file_url:oldRow?.file_url||'',file_path:oldRow?.file_path||'',file_name:oldRow?.file_name||'',
         file_size:Number(oldRow?.file_size)||0,created_at:oldRow?.updated_at||oldRow?.created_at||new Date().toISOString()
       })});
-      const rows=await request(`/rest/v1/community_mods?id=eq.${encodeURIComponent(id)}&creator_id=eq.${encodeURIComponent(u.id)}&select=*`,{
-        method:'PATCH',headers:{Prefer:'return=representation'},body:JSON.stringify(payload)
-      });
+      const saved=await writeCommunityMod(`/rest/v1/community_mods?id=eq.${encodeURIComponent(id)}&creator_id=eq.${encodeURIComponent(u.id)}&select=*`,'PATCH',payload,'return=representation');
+      const rows=saved.data;
       if(!Array.isArray(rows)||!rows.length)throw new Error(tx('Modification refusée ou mod introuvable.','Update refused or mod not found.'));
+      if(saved.removed.includes('preview_images')&&uploadedImages.length>1){for(const img of uploadedImages.slice(1))try{await deleteStorageObject('mod-previews',img.path)}catch(_){}}
+      if((saved.removed.includes('video_url')||saved.removed.includes('video_path'))&&uploadedVideoPath)try{await deleteStorageObject('mod-previews',uploadedVideoPath)}catch(_){}
+      if(saved.removed.length)modsNotice(tx('Mod enregistré en mode compatible. Exécute le fichier SQL Supabase V2.6 fourni pour activer les galeries de 4 photos et les vidéos.','Mod saved in compatibility mode. Run the supplied Supabase V2.6 SQL file to enable 4-image galleries and videos.'));
       /* L'ancien fichier est conservé pour l'historique des versions. */
       if(images.length){for(const img of previewImages(oldRow))if(img.path&&!payload.preview_images.some(x=>x.path===img.path))try{await deleteStorageObject('mod-previews',img.path)}catch(_){}}
       if(video&&oldRow?.video_path&&oldRow.video_path!==payload.video_path)try{await deleteStorageObject('mod-previews',oldRow.video_path)}catch(_){}
     }else{
-      await request('/rest/v1/community_mods',{method:'POST',headers:{Prefer:'return=minimal'},body:JSON.stringify(payload)});
+      const saved=await writeCommunityMod('/rest/v1/community_mods','POST',payload,'return=minimal');
+      if(saved.removed.includes('preview_images')&&uploadedImages.length>1){for(const img of uploadedImages.slice(1))try{await deleteStorageObject('mod-previews',img.path)}catch(_){}}
+      if((saved.removed.includes('video_url')||saved.removed.includes('video_path'))&&uploadedVideoPath)try{await deleteStorageObject('mod-previews',uploadedVideoPath)}catch(_){}
+      if(saved.removed.length)modsNotice(tx('Mod publié en mode compatible. Exécute le fichier SQL Supabase V2.6 fourni pour activer les galeries de 4 photos et les vidéos.','Mod published in compatibility mode. Run the supplied Supabase V2.6 SQL file to enable 4-image galleries and videos.'));
     }
     committed=true;
     ensurePublishModal().hidden=true;
@@ -378,7 +388,8 @@ async function publish(e){
     if(editingId)await openDetail(editingId);
   }catch(err){
     if(!committed)for(const [bucket,path] of uploaded)try{await deleteStorageObject(bucket,path)}catch(_){}
-    alert(err.message||String(err));
+    const missing=missingCommunityModsColumn(err);
+    alert(missing?tx(`Supabase n’est pas encore configuré pour le champ « ${missing} ». Exécute le fichier SQL V2.6 fourni, puis réessaie.`,`Supabase is not yet configured for the “${missing}” field. Run the supplied V2.6 SQL file, then try again.`):(err.message||String(err)));
   }finally{
     submit.disabled=false;
     progress.textContent='';

@@ -1,0 +1,11 @@
+MHUR NEXUS — VERSION 2.5
+
+Correction principale :
+- le site s'adapte lorsque le navigateur est zoomé ou que Windows utilise une forte mise à l'échelle ;
+- le tableau de saison et le header deviennent automatiquement plus compacts sur les écrans peu hauts ;
+- aucun zoom CSS global n'est imposé ;
+- la bannière de consentement Analytics reste une petite carte sur ordinateur et ne masque plus toute la page ;
+- protection supplémentaire contre les débordements horizontaux ;
+- cache PWA mis à jour vers la version 25.
+
+Après publication, fermer puis rouvrir l'application ou actualiser la page.

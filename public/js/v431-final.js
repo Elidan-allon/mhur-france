@@ -82,7 +82,7 @@ if('caches' in window){
     .map(key=>caches.delete(key)))).catch(()=>{});
 }
 
-if('serviceWorker' in navigator&&location.protocol==='https:'){
+if(false&&'serviceWorker' in navigator&&location.protocol==='https:'){
   navigator.serviceWorker.register(`/service-worker-v431.js?v=${RELEASE}`,{
     scope:'/',
     updateViaCache:'none'

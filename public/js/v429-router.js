@@ -78,7 +78,7 @@
   });
   addEventListener('popstate',normalizeAndRestore);
   addEventListener('pageshow',event=>{if(event.persisted)normalizeAndRestore()});
-  if('serviceWorker' in navigator&&location.protocol==='https:'){
+  if(false&&'serviceWorker' in navigator&&location.protocol==='https:'){
     navigator.serviceWorker.register('/service-worker.js?v=431',{scope:'/',updateViaCache:'none'}).then(registration=>registration.update().catch(()=>{})).catch(()=>{});
   }
   mirror();

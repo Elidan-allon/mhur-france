@@ -1,0 +1,68 @@
+/* V2.4 — iPhone installé : tous les éléments du header restent sur UNE seule ligne,
+   juste sous la barre d’état. Le décalage est appliqué au groupe complet, y compris
+   les boutons Réseaux sociaux et Créateurs de contenu. */
+:root{--mhur-ios-safe-top:0px}
+
+html.mhur-ios-standalone{
+  --mhur-ios-safe-top:env(safe-area-inset-top,0px);
+}
+
+@media(max-width:700px){
+  html.mhur-ios-standalone body{
+    padding-top:calc(64px + var(--mhur-ios-safe-top))!important;
+  }
+
+  html.mhur-ios-standalone .top{
+    position:fixed!important;
+    inset:0 0 auto 0!important;
+    top:0!important;
+    left:0!important;
+    right:0!important;
+    width:100%!important;
+    height:calc(64px + var(--mhur-ios-safe-top))!important;
+    min-height:calc(64px + var(--mhur-ios-safe-top))!important;
+    padding:0!important;
+    margin:0!important;
+    box-sizing:border-box!important;
+    background:#070b13!important;
+  }
+
+  /* Centre vertical commun de tous les contrôles sous la zone d’état iOS. */
+  html.mhur-ios-standalone .top .menuBtn,
+  html.mhur-ios-standalone .top .mhurAccountButton,
+  html.mhur-ios-standalone .top .lang{
+    top:calc(var(--mhur-ios-safe-top) + 32px)!important;
+    transform:translateY(-50%)!important;
+    margin:0!important;
+  }
+
+  html.mhur-ios-standalone .top .brand{
+    position:absolute!important;
+    left:50%!important;
+    top:calc(var(--mhur-ios-safe-top) + 32px)!important;
+    transform:translate(-50%,-50%)!important;
+    margin:0!important;
+  }
+
+  /* Ces deux boutons étaient les seuls à rester collés en haut : ils suivent
+     maintenant exactement la même ligne que le menu, le logo et le profil. */
+  html.mhur-ios-standalone .top .nexusHeaderLinks{
+    top:calc(var(--mhur-ios-safe-top) + 11px)!important;
+    margin:0!important;
+  }
+
+  html.mhur-ios-standalone .drawer{
+    top:calc(64px + var(--mhur-ios-safe-top))!important;
+    max-height:calc(100dvh - 64px - var(--mhur-ios-safe-top))!important;
+  }
+
+  html.mhur-ios-standalone .nexusLinksOverlay{
+    inset:calc(64px + var(--mhur-ios-safe-top)) 0 0!important;
+  }
+
+  html.mhur-ios-standalone #app>.back,
+  html.mhur-ios-standalone .wrap>.back,
+  html.mhur-ios-standalone .back{
+    top:calc(74px + var(--mhur-ios-safe-top))!important;
+  }
+}

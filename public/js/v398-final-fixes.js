@@ -34,7 +34,7 @@ function wire(){
 function scheduleWire(){clearTimeout(wireTimer);wireTimer=setTimeout(wire,30)}
 window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPrompt=e;scheduleWire()});
 window.addEventListener('appinstalled',()=>{deferredPrompt=null;scheduleWire()});
-if('serviceWorker'in navigator&&location.protocol==='https:')navigator.serviceWorker.register('/service-worker.js?v=399',{scope:'/',updateViaCache:'none'}).then(r=>r.update().catch(()=>{})).catch(console.warn);
+if(false&&'serviceWorker'in navigator&&location.protocol==='https:')navigator.serviceWorker.register('/service-worker.js?v=399',{scope:'/',updateViaCache:'none'}).then(r=>r.update().catch(()=>{})).catch(console.warn);
 document.addEventListener('DOMContentLoaded',()=>{
  wire();
  const drawer=document.getElementById('drawer');

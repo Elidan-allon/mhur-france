@@ -1,6 +1,6 @@
 {
-  "version": "2.3",
-  "label": "Barre supérieure iPhone abaissée sous la zone d’état",
+  "version": "2.6",
+  "label": "Correction Supabase des aperçus de mods et mode compatible sans erreur brute",
   "publicVersion": "1.0",
   "brand": "My Hero Ultra Rumble Nexus"
 }

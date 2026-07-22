@@ -1,0 +1,9 @@
+MHUR Nexus v2.4
+
+Correction iPhone installée :
+- les boutons Réseaux sociaux et Créateurs de contenu suivent maintenant la même ligne que le menu ;
+- le menu, le logo, le profil et FR/EN restent sous l’heure et la batterie ;
+- suppression du conflit entre les anciens correctifs de zone de sécurité ;
+- nouveau service worker v24 pour forcer la récupération des fichiers actuels.
+
+Après déploiement : fermer complètement l’application iPhone puis la rouvrir.

@@ -194,5 +194,5 @@ const admin={tab:'builds',async open(){if(!window.MHUR_MODERATION?.isAdmin?.())r
 window.MHUR_HUB={close,search,comments,tier,stats,notifications,admin};
 notifications.badge();setTimeout(()=>notifications.check(),800);
 // PWA
-if('serviceWorker'in navigator&&location.protocol.startsWith('http'))navigator.serviceWorker.register('./service-worker.js').catch(()=>{});
+if(false&&'serviceWorker'in navigator&&location.protocol.startsWith('http'))navigator.serviceWorker.register('./service-worker.js').catch(()=>{});
 })();

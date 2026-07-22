@@ -1,0 +1,25 @@
+MHUR NEXUS V2.6 — ACTION OBLIGATOIRE DANS SUPABASE
+
+L’erreur :
+Could not find the 'preview_images' column of 'community_mods' in the schema cache
+
+signifie que le site utilise la nouvelle galerie de photos, mais que la base Supabase
+n’a pas encore reçu les nouvelles colonnes.
+
+À faire :
+1. Ouvre ton projet Supabase.
+2. Va dans SQL Editor.
+3. Clique sur New query.
+4. Ouvre le fichier :
+   configuration/A_EXECUTER_DANS_SUPABASE_V26.sql
+5. Copie tout son contenu dans Supabase.
+6. Clique sur Run.
+7. Recharge ensuite la page Mods.
+
+Le script ajoute aussi les colonnes nécessaires aux photos/vidéos des commentaires :
+- Builds communauté
+- Mods
+
+La V2.6 contient également un mode de secours : si le SQL n’est pas encore exécuté,
+un mod peut être publié avec sa première photo sans afficher l’erreur technique brute.
+La galerie de 4 photos et la vidéo nécessitent toutefois l’exécution du SQL.
