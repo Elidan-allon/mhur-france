@@ -1,0 +1,7 @@
+MHUR Nexus v2.2
+
+Correction iPhone installé :
+- suppression de la compensation manuelle de la zone de sécurité ajoutée en v2.1 ;
+- iOS réserve désormais lui-même la place de la barre d’état ;
+- menu, Réseaux sociaux, Créateurs de contenu, logo, profil et FR/EN restent sur une seule ligne ;
+- cache PWA mis à jour en pwa-22.
