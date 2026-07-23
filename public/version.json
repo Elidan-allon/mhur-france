@@ -1,16 +1,18 @@
 {
-  "version": "2.8",
-  "label": "Administration, collage des médias et commentaires modifiables",
+  "version": "2.9",
+  "label": "Profils, modération des membres et glisser-déposer des médias",
   "publicVersion": "1.0",
   "brand": "My Hero Ultra Rumble Nexus",
   "changes_fr": [
-    "Admin : suppression de tous les mods, builds et commentaires",
-    "Modification/suppression de ses propres commentaires",
-    "Copier-coller des photos et vidéos avec aperçu avant publication"
+    "Glisser-déposer des photos et vidéos dans les Mods et commentaires",
+    "Aperçu du média au-dessus de la zone de texte",
+    "Profils publics accessibles depuis les pseudos et avatars",
+    "Avertissements, bannissements temporaires/définitifs et lecture seule"
   ],
   "changes_en": [
-    "Admin can delete all mods, builds and comments",
-    "Users can edit/delete their own comments",
-    "Paste images and videos with a preview before posting"
+    "Drag and drop images and videos into Mods and comments",
+    "Media preview above the text field",
+    "Public profiles accessible from usernames and avatars",
+    "Warnings, temporary/permanent bans and read-only mode"
   ]
 }
