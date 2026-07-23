@@ -1,11 +1,11 @@
 {
-  "version": "3.1",
-  "label": "Bouton de modération toujours visible",
+  "version": "3.2",
+  "label": "Fenêtre de modération toujours au premier plan",
   "released_at": "2026-07-23",
   "changes": [
-    "Le bouton Modération ne passe plus derrière le nom du compte",
-    "Les actions Modération, compte et langue utilisent un conteneur flexible sur ordinateur",
-    "Protection contre le défilement horizontal accidentel du site",
-    "Mode compact automatique en cas de zoom navigateur élevé"
+    "La fenêtre Avertir / bannir utilise désormais la couche modale native du navigateur",
+    "La fenêtre de modération ne peut plus s’ouvrir derrière le profil public",
+    "Le profil placé derrière ne peut plus intercepter les clics pendant la modération",
+    "Fermeture fiable avec la croix, Échap ou un clic hors de la fenêtre"
   ]
 }

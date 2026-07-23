@@ -126,11 +126,21 @@ function wrapAuth(){
 }
 function ensureAdminDialog(){
   let modal=document.getElementById('mhurUserAdminOverlayV29');
-  if(modal)return modal;
-  modal=document.createElement('div');modal.id='mhurUserAdminOverlayV29';modal.className='mhurUserAdminOverlayV29';
-  modal.innerHTML=`<section class="mhurUserAdminDialogV29"><button type="button" class="mhurUserAdminCloseV29">×</button><span class="mhurAdminKickerV29">ADMINISTRATION</span><h2 id="mhurUserAdminTitleV29"></h2><div id="mhurUserAdminCurrentV29"></div><label>${tx('Message / motif','Message / reason')}<textarea id="mhurUserAdminMessageV29" maxlength="1000" placeholder="${tx('Écris le message affiché à l’utilisateur…','Write the message shown to the user…')}"></textarea></label><label id="mhurTempBanDateWrapV29">${tx('Fin du bannissement temporaire','Temporary ban end')}<input id="mhurTempBanDateV29" type="datetime-local"></label><div class="mhurUserAdminButtonsV29"><button type="button" data-admin-action="warn">⚠️ ${tx('Avertir','Warn')}</button><button type="button" data-admin-action="temp">⏳ ${tx('Bannir temporairement','Temporary ban')}</button><button type="button" data-admin-action="permanent" class="danger">⛔ ${tx('Bannir définitivement','Permanent ban')}</button><button type="button" data-admin-action="unban" class="success">✅ ${tx('Débannir','Unban')}</button><button type="button" data-admin-action="clear-warning">🧹 ${tx('Retirer l’avertissement','Clear warning')}</button></div><p id="mhurUserAdminResultV29"></p></section>`;
-  document.documentElement.appendChild(modal);
+  if(modal&&modal.tagName==='DIALOG')return modal;
+  /* V3.2: a native modal dialog is placed in the browser top layer. This
+     guarantees that the moderation form can never render behind the public
+     profile modal, regardless of any legacy stacking context or z-index. */
+  modal?.remove();
+  modal=document.createElement('dialog');
+  modal.id='mhurUserAdminOverlayV29';
+  modal.className='mhurUserAdminOverlayV29 mhurUserAdminNativeV32';
+  modal.setAttribute('aria-modal','true');
+  modal.setAttribute('aria-labelledby','mhurUserAdminTitleV29');
+  modal.innerHTML=`<section class="mhurUserAdminDialogV29"><button type="button" class="mhurUserAdminCloseV29" aria-label="${tx('Fermer','Close')}">×</button><span class="mhurAdminKickerV29">ADMINISTRATION</span><h2 id="mhurUserAdminTitleV29"></h2><div id="mhurUserAdminCurrentV29"></div><label>${tx('Message / motif','Message / reason')}<textarea id="mhurUserAdminMessageV29" maxlength="1000" placeholder="${tx('Écris le message affiché à l’utilisateur…','Write the message shown to the user…')}"></textarea></label><label id="mhurTempBanDateWrapV29">${tx('Fin du bannissement temporaire','Temporary ban end')}<input id="mhurTempBanDateV29" type="datetime-local"></label><div class="mhurUserAdminButtonsV29"><button type="button" data-admin-action="warn">⚠️ ${tx('Avertir','Warn')}</button><button type="button" data-admin-action="temp">⏳ ${tx('Bannir temporairement','Temporary ban')}</button><button type="button" data-admin-action="permanent" class="danger">⛔ ${tx('Bannir définitivement','Permanent ban')}</button><button type="button" data-admin-action="unban" class="success">✅ ${tx('Débannir','Unban')}</button><button type="button" data-admin-action="clear-warning">🧹 ${tx('Retirer l’avertissement','Clear warning')}</button></div><p id="mhurUserAdminResultV29"></p></section>`;
+  document.body.appendChild(modal);
   modal.addEventListener('click',event=>{if(event.target===modal)closeAdmin()});
+  modal.addEventListener('cancel',event=>{event.preventDefault();closeAdmin()});
+  modal.addEventListener('close',()=>{modal.classList.remove('open');document.documentElement.classList.remove('mhurUserAdminOpenV30')});
   modal.querySelector('.mhurUserAdminCloseV29').onclick=closeAdmin;
   modal.querySelectorAll('[data-admin-action]').forEach(button=>button.onclick=()=>submitAdminAction(button.dataset.adminAction));
   return modal;
@@ -159,11 +169,22 @@ async function openAdmin(target){
   modal.querySelector('#mhurUserAdminCurrentV29').innerHTML=`<div class="mhurModerationLoadingV29">${tx('Chargement…','Loading…')}</div>`;
   document.documentElement.classList.add('mhurUserAdminOpenV30');
   modal.classList.add('open');
+  try{
+    if(typeof modal.showModal==='function'&&!modal.open)modal.showModal();
+    else modal.setAttribute('open','');
+  }catch(_){modal.setAttribute('open','')}
   requestAnimationFrame(()=>modal.querySelector('#mhurUserAdminMessageV29')?.focus({preventScroll:true}));
   try{state.adminTarget.record=await fetchTargetStatus(profile.id);modal.querySelector('#mhurUserAdminCurrentV29').innerHTML=statusSummary(state.adminTarget.record)}
   catch(error){modal.querySelector('#mhurUserAdminCurrentV29').textContent=error.message||String(error)}
 }
-function closeAdmin(){document.getElementById('mhurUserAdminOverlayV29')?.classList.remove('open');document.documentElement.classList.remove('mhurUserAdminOpenV30')}
+function closeAdmin(){
+  const modal=document.getElementById('mhurUserAdminOverlayV29');
+  if(modal){
+    modal.classList.remove('open');
+    try{if(typeof modal.close==='function'&&modal.open)modal.close();else modal.removeAttribute('open')}catch(_){modal.removeAttribute('open')}
+  }
+  document.documentElement.classList.remove('mhurUserAdminOpenV30');
+}
 async function upsertModeration(payload){
   const rows=await request('/rest/v1/user_moderation?on_conflict=user_id&select=*',{method:'POST',headers:{Prefer:'resolution=merge-duplicates,return=representation'},body:JSON.stringify(payload)});
   return Array.isArray(rows)?rows[0]:rows;

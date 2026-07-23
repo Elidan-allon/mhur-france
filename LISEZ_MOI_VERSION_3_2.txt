@@ -1,0 +1,9 @@
+MHUR NEXUS — VERSION 3.2
+
+CORRECTION
+- La fenêtre « Avertir / bannir » s’ouvre désormais toujours devant le profil.
+- Elle utilise la couche modale native du navigateur, qui passe au-dessus de tous les anciens z-index.
+- La page de profil derrière ne peut plus recevoir de clics tant que la modération est ouverte.
+- Fermeture possible avec la croix, la touche Échap ou un clic sur le fond.
+
+Aucun nouveau script SQL Supabase n’est nécessaire.

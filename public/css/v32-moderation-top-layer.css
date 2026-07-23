@@ -1,0 +1,44 @@
+/* MHUR Nexus v3.2 — fenêtre de modération toujours au premier plan. */
+dialog#mhurUserAdminOverlayV29.mhurUserAdminNativeV32{
+  position:fixed!important;
+  inset:0!important;
+  width:100vw!important;
+  max-width:none!important;
+  height:100dvh!important;
+  max-height:none!important;
+  margin:0!important;
+  padding:18px!important;
+  border:0!important;
+  border-radius:0!important;
+  box-sizing:border-box!important;
+  overflow:auto!important;
+  align-items:center!important;
+  justify-content:center!important;
+  background:rgba(0,0,0,.72)!important;
+  color:#fff!important;
+  backdrop-filter:blur(7px)!important;
+  z-index:2147483647!important;
+}
+dialog#mhurUserAdminOverlayV29.mhurUserAdminNativeV32[open],
+dialog#mhurUserAdminOverlayV29.mhurUserAdminNativeV32.open{
+  display:flex!important;
+}
+dialog#mhurUserAdminOverlayV29.mhurUserAdminNativeV32::backdrop{
+  background:rgba(0,0,0,.92)!important;
+  backdrop-filter:blur(7px)!important;
+}
+dialog#mhurUserAdminOverlayV29 .mhurUserAdminDialogV29{
+  position:relative!important;
+  z-index:1!important;
+  flex:0 0 auto!important;
+  margin:auto!important;
+}
+/* Le profil reste visible derrière, mais ne peut plus intercepter les clics. */
+html.mhurUserAdminOpenV30 .mhurPublicProfileModal,
+html.mhurUserAdminOpenV30 .mhurProfileDirectoryV30{
+  pointer-events:none!important;
+}
+@media(max-width:620px){
+  dialog#mhurUserAdminOverlayV29.mhurUserAdminNativeV32{padding:10px!important;align-items:flex-start!important}
+  dialog#mhurUserAdminOverlayV29 .mhurUserAdminDialogV29{width:100%!important;max-height:calc(100dvh - 20px)!important;padding:20px 14px!important}
+}
