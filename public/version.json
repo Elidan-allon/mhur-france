@@ -1,11 +1,11 @@
 {
-  "version": "3.2",
-  "label": "Fenêtre de modération toujours au premier plan",
+  "version": "3.3",
+  "label": "Détails des compétences traduits selon la langue",
   "released_at": "2026-07-23",
   "changes": [
-    "La fenêtre Avertir / bannir utilise désormais la couche modale native du navigateur",
-    "La fenêtre de modération ne peut plus s’ouvrir derrière le profil public",
-    "Le profil placé derrière ne peut plus intercepter les clics pendant la modération",
-    "Fermeture fiable avec la croix, Échap ou un clic hors de la fenêtre"
+    "Les titres des tableaux de compétences restent en français quand FR est sélectionné",
+    "Les titres et colonnes passent dynamiquement en anglais quand EN est sélectionné",
+    "Le changement de langue ne modifie plus définitivement les données des tableaux",
+    "Correction notamment de Ammo and Reload, Short Range, Medium Range, Long Range et Level-up Effects"
   ]
 }

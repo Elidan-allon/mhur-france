@@ -1,0 +1,14 @@
+MHUR NEXUS — VERSION 3.3
+
+CORRECTION DES DÉTAILS DE COMPÉTENCES
+- En français, les catégories des statistiques sont maintenant intégralement en français.
+- En anglais, elles restent correctement traduites en anglais.
+- Le changement FR / EN ne transforme plus définitivement les données des tableaux.
+- Corrections principales :
+  • Ammo and Reload → Munitions et recharge
+  • Short Range → Distance courte
+  • Medium Range → Distance moyenne
+  • Long Range → Distance longue
+  • Level-up Effects → Effets de montée
+
+Aucun nouveau script SQL Supabase n’est nécessaire.

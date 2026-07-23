@@ -143,7 +143,7 @@ function fillEnglishData(){
       const remoteSpecialDesc=usefulEnglish(remote.special_action?.description);
       const specialDesc=override.special?.description||usefulEnglish(st.special.desc?.en)||remoteSpecialDesc||'';
       st.special.desc=makeBilingual(st.special.desc,specialDesc);
-      if(Array.isArray(st.special.tables))st.special.tables=st.special.tables.map(tb=>({...tb,title:translateGameText(tb.title),cols:(tb.cols||[]).map(translateGameText),rows:(tb.rows||[]).map(r=>(r||[]).map(translateGameText))}));
+      /* V3.3: keep the original French table data intact. It is localized only at render time. */
     }
     const remoteSkills=remote.skills||{};
     (st.skills||[]).forEach((sk,i)=>{
@@ -154,7 +154,7 @@ function fillEnglishData(){
       const remoteDesc=usefulEnglish(r.description)&&String(r.description).trim().toLowerCase()!==String(r.name||'').trim().toLowerCase()?String(r.description).trim():'';
       const localEn=usefulEnglish(sk.desc?.en);
       sk.desc=makeBilingual(sk.desc,skillOverride.description||remoteDesc||localEn||'');
-      if(Array.isArray(sk.tables))sk.tables=sk.tables.map(tb=>({...tb,title:translateGameText(tb.title),cols:(tb.cols||[]).map(translateGameText),rows:(tb.rows||[]).map(rw=>(rw||[]).map(translateGameText))}));
+      /* V3.3: keep the original French table data intact. It is localized only at render time. */
       if(sk.sub){
         const rawSub=String(sk.sub.name?.fr||sk.sub.name||'Follow-up Skill');
         const translatedSub=englishGameText(rawSub);
