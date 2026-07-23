@@ -1,0 +1,9 @@
+MHUR NEXUS — VERSION 3.1
+
+Correction :
+- Le bouton Modération ne peut plus être recouvert par le bouton du compte.
+- Modération, compte et FR/EN sont regroupés dans une zone flexible sur ordinateur.
+- Si la fenêtre ou le zoom manque de place, le bouton Modération devient une icône bouclier.
+- Le défilement horizontal accidentel de toute la page est bloqué.
+
+Aucun nouveau script SQL Supabase n'est nécessaire.

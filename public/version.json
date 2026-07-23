@@ -1,18 +1,11 @@
 {
-  "version": "3.0",
-  "label": "Annuaire des profils et correction de la fenêtre de modération",
-  "publicVersion": "1.0",
-  "brand": "My Hero Ultra Rumble Nexus",
-  "changes_fr": [
-    "La fenêtre Avertir / bannir s’ouvre toujours au-dessus du profil",
-    "La croix ne recouvre plus le bouton de modération",
-    "Ajout de Liste des profils dans Mon compte pour l’administrateur",
-    "Recherche et ouverture rapide des profils publics"
-  ],
-  "changes_en": [
-    "The Warn / ban window always opens above the profile",
-    "The close button no longer overlaps moderation controls",
-    "Added Profile list to My account for the administrator",
-    "Search and quickly open public profiles"
+  "version": "3.1",
+  "label": "Bouton de modération toujours visible",
+  "released_at": "2026-07-23",
+  "changes": [
+    "Le bouton Modération ne passe plus derrière le nom du compte",
+    "Les actions Modération, compte et langue utilisent un conteneur flexible sur ordinateur",
+    "Protection contre le défilement horizontal accidentel du site",
+    "Mode compact automatique en cas de zoom navigateur élevé"
   ]
 }

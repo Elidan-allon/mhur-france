@@ -1,0 +1,100 @@
+/* MHUR Nexus v3.1 — barre administrateur sans chevauchement.
+   Les actions de droite sont regroupées dans un vrai conteneur flex sur ordinateur,
+   au lieu d'utiliser trois positions absolues susceptibles de se recouvrir. */
+
+html,body{
+  max-width:100%!important;
+  overflow-x:hidden!important;
+}
+@supports (overflow:clip){
+  html,body{overflow-x:clip!important}
+}
+.top{max-width:100vw!important}
+
+@media (min-width:761px){
+  .top .mhurTopActionsV31{
+    position:absolute!important;
+    right:14px!important;
+    top:50%!important;
+    transform:translateY(-50%)!important;
+    z-index:2147483606!important;
+    display:flex!important;
+    align-items:center!important;
+    justify-content:flex-end!important;
+    gap:9px!important;
+    min-width:0!important;
+    max-width:min(49vw,590px)!important;
+    margin:0!important;
+    padding:0!important;
+    pointer-events:none;
+  }
+  .top .mhurTopActionsV31 > *{pointer-events:auto}
+
+  /* Annule les anciennes coordonnées absolues : le conteneur flex gère l'espace. */
+  .top .mhurTopActionsV31 > .mhurAdminTopButton,
+  .top .mhurTopActionsV31 > .mhurAccountButton,
+  .top .mhurTopActionsV31 > .lang{
+    position:static!important;
+    inset:auto!important;
+    top:auto!important;
+    right:auto!important;
+    bottom:auto!important;
+    left:auto!important;
+    transform:none!important;
+    translate:none!important;
+    margin:0!important;
+    flex:0 0 auto!important;
+  }
+
+  .top .mhurTopActionsV31 > .mhurAdminTopButton{
+    display:inline-flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+    height:48px!important;
+    min-width:0!important;
+    max-width:180px!important;
+    padding:0 13px!important;
+    overflow:hidden!important;
+    text-overflow:ellipsis!important;
+    white-space:nowrap!important;
+    z-index:auto!important;
+  }
+  .top .mhurTopActionsV31 > .mhurAccountButton{
+    min-width:0!important;
+    max-width:205px!important;
+    z-index:auto!important;
+  }
+  .top .mhurTopActionsV31 > .mhurAccountButton .mhurAccountButtonText{
+    min-width:0!important;
+  }
+  .top .mhurTopActionsV31 > .lang{
+    z-index:auto!important;
+  }
+}
+
+/* Fenêtres plus serrées ou zoom navigateur élevé : on compacte sans recouvrir. */
+@media (min-width:761px) and (max-width:1250px){
+  .top .mhurTopActionsV31{gap:6px!important;max-width:47vw!important}
+  .top .mhurTopActionsV31 > .mhurAdminTopButton{
+    max-width:125px!important;
+    padding:0 9px!important;
+    font-size:12px!important;
+  }
+  .top .mhurTopActionsV31 > .mhurAccountButton{max-width:155px!important}
+  .top .mhurTopActionsV31 > .lang{padding-left:10px!important;padding-right:10px!important}
+}
+
+@media (min-width:761px) and (max-width:1020px){
+  .top .mhurTopActionsV31 > .mhurAdminTopButton{
+    width:46px!important;
+    max-width:46px!important;
+    padding:0!important;
+    font-size:0!important;
+  }
+  .top .mhurTopActionsV31 > .mhurAdminTopButton::before{
+    content:'🛡️';
+    font-size:18px;
+    line-height:1;
+  }
+  .top .mhurTopActionsV31 > .mhurAccountButton{max-width:135px!important}
+}
