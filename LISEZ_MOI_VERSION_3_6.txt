@@ -1,0 +1,3 @@
+MHUR Nexus v3.6
+
+Les nouvelles versions du site sont détectées automatiquement toutes les 15 secondes et lors du retour dans l'application. La page se recharge une seule fois pour appliquer la mise à jour, sans intervention de l'utilisateur.

@@ -204,7 +204,7 @@ window.renderHomeDashboard=function(){
     ${heading(ht('Dernières sorties','Latest releases'),'orange')}
     <div class="releaseGridV296">${(d.latest_releases||[]).map(releaseCard).join('')||('<div class="emptyV296">'+ht('Aucune sortie.','No releases.')+'</div>')}</div>
     ${divider()}
-    ${heading(ht('Tirages disponibles','Available gachas'),'yellow')}
+    ${heading(ht('Tirages en cours','Current Gacha Rolls'),'yellow')}
     <div class="gachaGridV296">${(d.gachas||[]).map(gachaCard).join('')||('<div class="emptyV296">'+ht('Aucun tirage disponible.','No gacha available.')+'</div>')}</div>
     ${divider()}
     ${heading(ht('Événements en cours','Current events'),'cyan')}

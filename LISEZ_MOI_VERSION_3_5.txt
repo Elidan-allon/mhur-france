@@ -1,0 +1,9 @@
+MHUR Nexus v3.5
+
+1. Publie le site.
+2. Exécute configuration/A_EXECUTER_DANS_SUPABASE_V35.sql dans Supabase.
+
+Corrections :
+- traductions T.U.N.I.N.G FR/EN cohérentes ;
+- bannissement total : aucune lecture ni interaction ;
+- avertissements et bannissements détectés sans refresh (vérification environ toutes les 2 secondes).

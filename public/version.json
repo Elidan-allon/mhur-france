@@ -1,11 +1,11 @@
 {
-  "version": "3.3",
-  "label": "Détails des compétences traduits selon la langue",
+  "version": "3.6",
+  "label": "Mises à jour automatiques sans actualisation manuelle",
   "released_at": "2026-07-23",
   "changes": [
-    "Les titres des tableaux de compétences restent en français quand FR est sélectionné",
-    "Les titres et colonnes passent dynamiquement en anglais quand EN est sélectionné",
-    "Le changement de langue ne modifie plus définitivement les données des tableaux",
-    "Correction notamment de Ammo and Reload, Short Range, Medium Range, Long Range et Level-up Effects"
+    "Le site vérifie automatiquement une nouvelle version toutes les 15 secondes",
+    "Une nouvelle version est chargée automatiquement sans appuyer sur Actualiser",
+    "La vérification se lance aussi au retour dans l’application et lors du retour en ligne",
+    "Protection anti-boucle pour empêcher les rechargements infinis"
   ]
 }

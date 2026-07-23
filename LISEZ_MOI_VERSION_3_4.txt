@@ -1,0 +1,6 @@
+MHUR Nexus v3.4
+
+- accueil rapproché du style MHUR Database
+- section saison modernisée
+- grille des dernières sorties et des tirages améliorée
+- titre 'Tirages en cours / Current Gacha Rolls'

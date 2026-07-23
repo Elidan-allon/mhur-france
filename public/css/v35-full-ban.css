@@ -1,0 +1,9 @@
+/* V3.5 — a suspended account cannot read or interact with the site. */
+html.mhurUserBannedV29,html.mhurUserBannedV29 body{overflow:hidden!important;background:#05070c!important}
+html.mhurUserBannedV29 body>*:not(#mhurBanOverlayV29){visibility:hidden!important;pointer-events:none!important;user-select:none!important}
+html.mhurUserBannedV29 #mhurBanOverlayV29{visibility:visible!important;display:grid!important;position:fixed!important;inset:0!important;z-index:2147483647!important;place-items:center!important;background:rgba(2,4,9,.995)!important;padding:18px!important;pointer-events:auto!important}
+html.mhurUserBannedV29 #mhurBanOverlayV29 .mhurUserModerationDialog{max-width:680px!important;width:min(100%,680px)!important;border:5px solid #ef4242!important;box-shadow:0 0 0 5px #050505,0 0 70px rgba(239,66,66,.5)!important}
+html.mhurUserBannedV29 #mhurBanReadOnlyV29{display:none!important}
+html.mhurUserBannedV29 #mhurBanOverlayV29 h2{font-size:clamp(30px,7vw,54px)!important}
+html.mhurUserBannedV29 #mhurBanOverlayV29 p{font-size:clamp(18px,4vw,28px)!important}
+html.mhurUserBannedV29 #mhurBanLogoutV29{display:block!important;margin:22px auto 0!important}
