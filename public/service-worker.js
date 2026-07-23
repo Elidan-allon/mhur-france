@@ -1,2 +1,2 @@
-/* MHUR Nexus V2.6 */
-importScripts('/service-worker-v26.js?v=26');
+/* MHUR Nexus V2.7 — single service worker, no refresh loop */
+importScripts('/service-worker-v27.js?v=27');

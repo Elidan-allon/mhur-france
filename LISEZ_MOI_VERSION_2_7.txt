@@ -1,0 +1,12 @@
+MHUR Nexus — Version 2.7
+
+CORRECTION PRINCIPALE
+- Suppression de la boucle de rafraîchissement infinie.
+- Un seul service worker gère désormais toute l’application.
+- Le rechargement automatique après une mise à jour est limité à une seule fois par version.
+- L’ancien module V370 ne peut plus enregistrer un second service worker.
+
+APRÈS LA MISE EN LIGNE
+1. Remplace les fichiers du site par ceux de ce ZIP.
+2. Sur l’app iPhone, ferme complètement l’application puis rouvre-la.
+3. Si l’ancienne boucle empêche encore l’ouverture, supprime l’app une seule fois, ouvre le site dans Safari, puis ajoute-la de nouveau à l’écran d’accueil. Les versions suivantes ne devraient plus boucler.

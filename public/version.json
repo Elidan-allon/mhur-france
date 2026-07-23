@@ -1,6 +1,6 @@
 {
-  "version": "2.6",
-  "label": "Correction Supabase des aperçus de mods et mode compatible sans erreur brute",
+  "version": "2.7",
+  "label": "Correction de la boucle de rafraîchissement PWA",
   "publicVersion": "1.0",
   "brand": "My Hero Ultra Rumble Nexus"
 }

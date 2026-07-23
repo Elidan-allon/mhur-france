@@ -391,17 +391,12 @@ function standalone(){return matchMedia('(display-mode: standalone)').matches||n
 async function preparePwa(){
   if(standalone()){installState='installed';ensureNavigationButtons();return}
   if(!('serviceWorker' in navigator)||!/^https?:$/.test(location.protocol)){installState='unsupported';ensureNavigationButtons();return}
-  try{
-    const registration=await navigator.serviceWorker.register('/service-worker.js?v=370',{scope:'/',updateViaCache:'none'});
-    registration.update().catch(()=>{});
-    await navigator.serviceWorker.ready;
-    if(!navigator.serviceWorker.controller&&!sessionStorage.getItem('mhurPwaControlled370')){
-      sessionStorage.setItem('mhurPwaControlled370','1');
-      location.reload();
-      return;
-    }
-    installState=installPrompt?'ready':'waiting';
-  }catch(error){console.warn('[MHUR V370 PWA]',error);installState='unsupported'}
+  /*
+   * The current PWA manager is loaded at the end of index.html.
+   * This legacy module must never register another worker or reload the page:
+   * two registrations sharing the same scope caused an endless refresh loop.
+   */
+  installState=installPrompt?'ready':'waiting';
   ensureNavigationButtons();
 }
 function waitForInstallPrompt(timeout=3500){
