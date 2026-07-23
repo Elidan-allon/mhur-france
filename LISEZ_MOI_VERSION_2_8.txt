@@ -1,0 +1,13 @@
+MHUR NEXUS V2.8 — ADMIN + COPIER/COLLER MÉDIAS + COMMENTAIRES
+
+1. Déploie le contenu du dossier public.
+2. Dans Supabase > SQL Editor, exécute :
+   configuration/A_EXECUTER_DANS_SUPABASE_V28.sql
+3. Vérifie dans public.profiles que TON compte possède role = admin.
+
+Nouveautés :
+- l'administrateur peut supprimer n'importe quel mod, build ou commentaire ;
+- les auteurs peuvent modifier et supprimer leurs propres commentaires ;
+- l'administrateur peut supprimer les commentaires des autres ;
+- collage Ctrl/⌘ + V des images/vidéos dans les formulaires de mods et commentaires ;
+- aperçu du média avant publication.

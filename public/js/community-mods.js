@@ -56,10 +56,12 @@ function detailMedia(r){
 }
 function tags(r){const arr=[categoryLabel(r.category),r.character_name,...(Array.isArray(r.tags)?r.tags:[])].filter(Boolean);return [...new Set(arr)].map(t=>`<button class="modTag" data-mod-tag="${esc(t)}">${esc(t)}</button>`).join('')}
 function isMine(r){const u=user();return Boolean(u&&r&&String(u.id)===String(r.creator_id||''))}
+function isSiteAdmin(){return Boolean(window.MHUR_MODERATION?.isSiteAdmin?.()||['admin','administrator'].includes(String(window.MHUR_MODERATION?.state?.role||'').toLowerCase()))}
+function canDeleteMod(r){return Boolean(isMine(r)||isSiteAdmin())}
 function securityLabel(r){const status=String(r?.security_status||'extension_checked');const map={verified:[tx('Fichier vérifié','Verified file'),'verified'],checksum:[tx('Empreinte SHA-256','SHA-256 fingerprint'),'verified'],extension_checked:[tx('Format contrôlé','Format checked'),'checked'],unverified:[tx('Non vérifié','Unverified'),'warning'],blocked:[tx('Bloqué','Blocked'),'blocked']};const [label,cls]=map[status]||map.unverified;return `<span class="modSecurityBadge ${cls}">🛡️ ${esc(label)}</span>`}
 function card(r){
   const p=state.profiles[r.creator_id]||{};
-  const mine=isMine(r);
+  const mine=isMine(r),canDelete=canDeleteMod(r);
   return `<article class="modCard" data-mod-id="${esc(r.id)}">
     <button class="modCardOpen" data-mod-open="${esc(r.id)}" aria-label="${tx('Ouvrir le mod','Open mod')}"><div class="modPreview">${preview(r)}</div></button>
     <div class="modBody">
@@ -69,7 +71,7 @@ function card(r){
       ${r.description?`<p>${esc(r.description)}</p>`:''}
       <div class="modMeta">${esc(p.username||tx('Membre','Member'))} · ${formatDate(r.created_at)} · ${formatSize(r.file_size)}</div>${securityLabel(r)}
       <div class="modStats"><span>♥ ${Number(r.likes_count)||0}</span><span>⬇ ${Number(r.downloads_count)||0}</span><button class="modFavorite ${state.favorites.has(String(r.id))?'active':''}" type="button" data-mod-favorite="${esc(r.id)}" title="${tx('Favori','Favorite')}">★</button></div>
-      ${mine?`<div class="modOwnerActions"><button class="modEdit" type="button" data-mod-edit="${esc(r.id)}">✏️ ${tx('Modifier','Edit')}</button></div>`:''}
+      ${mine||canDelete?`<div class="modOwnerActions">${mine?`<button class="modEdit" type="button" data-mod-edit="${esc(r.id)}">✏️ ${tx('Modifier','Edit')}</button>`:''}${canDelete?`<button class="modDelete" type="button" data-mod-delete="${esc(r.id)}">🗑 ${tx('Supprimer','Delete')}</button>`:''}</div>`:''}
     </div>
   </article>`;
 }
@@ -91,6 +93,7 @@ function bindPage(){
   document.getElementById('modsSort')?.addEventListener('change',e=>{state.sort=e.target.value;renderPage()});
   document.querySelectorAll('[data-mod-open]').forEach(b=>b.addEventListener('click',()=>openDetail(b.dataset.modOpen)));
   document.querySelectorAll('[data-mod-edit]').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();openEdit(b.dataset.modEdit)}));
+  document.querySelectorAll('[data-mod-delete]').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();removeMod(b.dataset.modDelete)}));
   document.querySelectorAll('[data-mod-favorite]').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();toggleFavorite(b.dataset.modFavorite)}));
   document.querySelectorAll('[data-mod-tag]').forEach(b=>b.addEventListener('click',()=>{
     const t=b.dataset.modTag;
@@ -99,6 +102,12 @@ function bindPage(){
   }));
 }
 function characterOptions(){let arr=[];try{const source=window.MHUR_CHARACTER_LIST||window.CHARACTERS||window.characterData||[];arr=Array.isArray(source)?source:Object.values(source);arr=arr.map(x=>({id:x.id||x.slug||x.key||x.name,name:x.name||x.character_name||x.title})).filter(x=>x.id&&x.name)}catch(_){}return arr.sort((a,b)=>String(a.name).localeCompare(String(b.name))).map(x=>`<option value="${esc(x.id)}" data-name="${esc(x.name)}">${esc(x.name)}</option>`).join('')}
+const modsDraftUrls=new WeakMap();
+function assignFiles(input,files){if(!input)return false;try{const dt=new DataTransfer();for(const file of files)dt.items.add(file);input.files=dt.files;input.dispatchEvent(new Event('change',{bubbles:true}));return true}catch(_){return false}}
+function clearDraftUrls(host){for(const url of modsDraftUrls.get(host)||[])URL.revokeObjectURL(url);modsDraftUrls.delete(host)}
+function renderModDraftMedia(form){if(!form)return;const imageHost=form.querySelector('[data-mod-draft-images]'),videoHost=form.querySelector('[data-mod-draft-video]');for(const host of [imageHost,videoHost]){if(host){clearDraftUrls(host);host.innerHTML=''}}const images=Array.from(form.elements.preview_images?.files||[]).slice(0,4),video=form.elements.preview_video?.files?.[0];if(imageHost&&images.length){const urls=[];imageHost.innerHTML=images.map((file,index)=>{const url=URL.createObjectURL(file);urls.push(url);return `<div class="mhurMediaDraftCard"><img src="${url}" alt=""><button type="button" class="mhurMediaDraftRemove" data-remove-mod-image="${index}" aria-label="${tx('Retirer','Remove')}">×</button><small>${esc(file.name||tx('Image collée','Pasted image'))}</small></div>`}).join('');modsDraftUrls.set(imageHost,urls);imageHost.querySelectorAll('[data-remove-mod-image]').forEach(btn=>btn.onclick=()=>{const next=images.filter((_,i)=>i!==Number(btn.dataset.removeModImage));assignFiles(form.elements.preview_images,next)})}if(videoHost&&video){const url=URL.createObjectURL(video);modsDraftUrls.set(videoHost,[url]);videoHost.innerHTML=`<div class="mhurMediaDraftCard"><video src="${url}" controls muted playsinline preload="metadata"></video><button type="button" class="mhurMediaDraftRemove" data-remove-mod-video aria-label="${tx('Retirer','Remove')}">×</button><small>${esc(video.name||tx('Vidéo collée','Pasted video'))}</small></div>`;videoHost.querySelector('[data-remove-mod-video]').onclick=()=>{form.elements.preview_video.value='';renderModDraftMedia(form)}}
+}
+function bindModPaste(form){if(!form||form.dataset.pasteBound==='1')return;form.dataset.pasteBound='1';form.addEventListener('paste',event=>{const files=[...(event.clipboardData?.files||[])].filter(f=>f.type.startsWith('image/')||f.type.startsWith('video/'));if(!files.length)return;event.preventDefault();const pastedImages=files.filter(f=>f.type.startsWith('image/')),pastedVideo=files.find(f=>f.type.startsWith('video/'));if(pastedImages.length){const current=Array.from(form.elements.preview_images.files||[]);const merged=[...current,...pastedImages].slice(0,4);assignFiles(form.elements.preview_images,merged);if(current.length+pastedImages.length>4)modsNotice(tx('Maximum 4 photos par mod.','Maximum 4 images per mod.'))}if(pastedVideo)assignFiles(form.elements.preview_video,[pastedVideo]);renderModDraftMedia(form)})}
 function ensurePublishModal(){
   let m=document.getElementById('modsPublishModal');
   if(m)return m;
@@ -119,8 +128,8 @@ function ensurePublishModal(){
       <label class="modsCharacterField">${tx('Personnage concerné','Related character')}<select name="character_id"><option value="">${tx('Aucun / général','None / general')}</option>${characterOptions()}</select></label>
       <label>${tx('Tags supplémentaires','Additional tags')}<input name="tags" placeholder="HUD, recolor, voice…"><span class="modsFieldHint">${tx('Sépare les tags avec des virgules.','Separate tags with commas.')}</span></label>
       <label>${tx('Fichier du mod','Mod file')}<input name="mod_file" type="file"><span class="modsFieldHint modsModFileHint">.pak, .utoc, .ucas ou .zip — 200 MB maximum</span></label>
-      <label>${tx('Photos de présentation (1 à 4)','Preview photos (1 to 4)')}<input name="preview_images" type="file" multiple accept="image/jpeg,image/png,image/webp,image/gif"><span class="modsFieldHint modsPreviewFileHint">${tx('Au moins 1 photo obligatoire · 4 maximum · 20 MB par photo','At least 1 photo required · maximum 4 · 20 MB per photo')}</span></label>
-      <label>${tx('Vidéo de démonstration (facultative)','Demo video (optional)')}<input name="preview_video" type="file" accept="video/mp4,video/webm"><span class="modsFieldHint modsPreviewVideoHint">${tx('MP4 ou WEBM · 50 MB maximum','MP4 or WEBM · 50 MB maximum')}</span></label>
+      <label>${tx('Photos de présentation (1 à 4)','Preview photos (1 to 4)')}<input name="preview_images" type="file" multiple accept="image/jpeg,image/png,image/webp,image/gif"><span class="modsFieldHint modsPreviewFileHint">${tx('Au moins 1 photo obligatoire · 4 maximum · 20 MB par photo','At least 1 photo required · maximum 4 · 20 MB per photo')}</span><span class="mhurPasteHint">📋 ${tx('Tu peux copier-coller les images avec Ctrl/⌘ + V.','You can paste images with Ctrl/⌘ + V.')}</span><div class="mhurMediaDraftPreview mhurMediaDraftGrid" data-mod-draft-images></div></label>
+      <label>${tx('Vidéo de démonstration (facultative)','Demo video (optional)')}<input name="preview_video" type="file" accept="video/mp4,video/webm,video/quicktime"><span class="modsFieldHint modsPreviewVideoHint">${tx('MP4, WEBM ou MOV · 50 MB maximum','MP4, WEBM or MOV · 50 MB maximum')}</span><div class="mhurMediaDraftPreview" data-mod-draft-video></div></label>
       <button class="modsSubmit" type="submit">${tx('Publier','Publish')}</button>
       <progress class="modsUploadProgress" id="modsUploadProgress" max="100" value="0" hidden></progress>
       <div class="modsProgress" id="modsProgress"></div>
@@ -129,7 +138,11 @@ function ensurePublishModal(){
   document.body.appendChild(m);
   m.querySelector('.modsClose').onclick=()=>m.hidden=true;
   m.addEventListener('click',e=>{if(e.target===m)m.hidden=true});
-  m.querySelector('#modsForm').addEventListener('submit',publish);
+  const form=m.querySelector('#modsForm');
+  form.addEventListener('submit',publish);
+  form.elements.preview_images.addEventListener('change',()=>renderModDraftMedia(form));
+  form.elements.preview_video.addEventListener('change',()=>renderModDraftMedia(form));
+  bindModPaste(form);
   return m;
 }
 function directStorageEndpoint(){
@@ -239,6 +252,7 @@ function setModFormMode(row=null){
   const m=ensurePublishModal();
   const f=m.querySelector('#modsForm');
   f.reset();
+  renderModDraftMedia(f);
   state.editingId=row?.id||null;
   f.dataset.editId=row?.id||'';
   m.querySelector('#modsFormTitle').textContent=row?tx('Modifier le mod','Edit mod'):tx('Publier un mod','Publish a mod');
@@ -409,7 +423,7 @@ async function openDetail(id){
   window.MHUR_ANALYTICS?.track?.('mod_viewed',{mod_id:String(id),category:r.category||'',character_name:r.character_name||''});
   await loadComments(id);
   const p=state.profiles[r.creator_id]||{};
-  const mine=isMine(r);
+  const mine=isMine(r),canDelete=canDeleteMod(r);
   const liked=state.liked.has(String(id));
   let m=document.getElementById('modsDetailModal');
   if(!m){
@@ -434,10 +448,10 @@ async function openDetail(id){
         <a class="modDownload" data-download="${esc(r.id)}" href="${esc(r.file_url)}" download="${esc(r.file_name||'mod.pak')}" target="_blank" rel="noopener">⬇ ${tx('Télécharger','Download')} · ${esc(r.file_name||'')}</a>
         <button type="button" class="modInstallGuide" data-install-guide="${esc(r.id)}">🛠 ${tx('Guide d’installation','Installation guide')}</button>
         <button type="button" class="modReport" data-report="${esc(r.id)}">⚑ ${tx('Signaler','Report')}</button>
-        ${mine?`<button type="button" class="modEdit" data-edit="${esc(r.id)}">✏️ ${tx('Modifier','Edit')}</button><button type="button" class="modDelete" data-delete="${esc(r.id)}">🗑 ${tx('Supprimer','Delete')}</button>`:''}
+        ${mine?`<button type="button" class="modEdit" data-edit="${esc(r.id)}">✏️ ${tx('Modifier','Edit')}</button>`:''}${canDelete?`<button type="button" class="modDelete" data-delete="${esc(r.id)}">🗑 ${tx('Supprimer','Delete')}</button>`:''}
       </div>
       <section class="modVersionHistory"><h3>🕘 ${tx('Historique des versions','Version history')}</h3><div id="modVersionHistoryList">${tx('Chargement…','Loading…')}</div></section>
-      <section class="modsComments"><h3>💬 ${tx('Commentaires','Comments')}</h3>${user()?`<form id="modCommentForm"><textarea maxlength="1500" placeholder="${tx('Écrire un commentaire…','Write a comment…')}"></textarea><div class="modCommentTools"><label class="modCommentFile">📷 ${tx('Photo / vidéo','Image / video')}<input type="file" accept="image/*,video/*"></label><span class="modCommentFileName"></span><progress class="modCommentProgress" max="100" value="0" hidden></progress><button class="modsPrimary">${tx('Publier','Post')}</button></div></form>`:`<button class="modsPrimary" id="modsLoginComment">${tx('Se connecter pour commenter','Sign in to comment')}</button>`}<div class="modsCommentsList">${commentsHtml()}</div></section>
+      <section class="modsComments"><h3>💬 ${tx('Commentaires','Comments')}</h3>${user()?`<form id="modCommentForm"><textarea maxlength="1500" placeholder="${tx('Écrire un commentaire… Tu peux aussi coller une photo ou une vidéo.','Write a comment… You can also paste an image or video.')}"></textarea><div class="mhurMediaDraftPreview" data-mod-comment-draft></div><div class="modCommentTools"><label class="modCommentFile">📷 ${tx('Photo / vidéo','Image / video')}<input type="file" accept="image/*,video/*"></label><span class="modCommentFileName"></span><span class="mhurPasteHint">⌘/Ctrl + V</span><progress class="modCommentProgress" max="100" value="0" hidden></progress><button class="modsPrimary">${tx('Publier','Post')}</button></div></form>`:`<button class="modsPrimary" id="modsLoginComment">${tx('Se connecter pour commenter','Sign in to comment')}</button>`}<div class="modsCommentsList">${commentsHtml()}</div></section>
     </div>
   </div>`;
   m.querySelector('.modsClose').onclick=()=>m.hidden=true;
@@ -449,13 +463,20 @@ async function openDetail(id){
   m.querySelector('[data-download]')?.addEventListener('click',()=>incrementDownload(r.id));
   m.querySelector('[data-edit]')?.addEventListener('click',()=>openEdit(r.id));
   m.querySelector('[data-delete]')?.addEventListener('click',()=>removeMod(r.id));
-  const commentForm=m.querySelector('#modCommentForm');commentForm?.addEventListener('submit',e=>postComment(e,r.id));commentForm?.querySelector('input[type=file]')?.addEventListener('change',e=>{commentForm.querySelector('.modCommentFileName').textContent=e.target.files?.[0]?.name||''});
+  const commentForm=m.querySelector('#modCommentForm');commentForm?.addEventListener('submit',e=>postComment(e,r.id));commentForm?.querySelector('input[type=file]')?.addEventListener('change',e=>{commentForm.querySelector('.modCommentFileName').textContent=e.target.files?.[0]?.name||'';renderModCommentDraft(commentForm)});bindModCommentPaste(commentForm);
+  m.querySelectorAll('[data-comment-edit]').forEach(btn=>btn.addEventListener('click',()=>startModCommentEdit(btn.dataset.commentEdit)));
+  m.querySelectorAll('[data-comment-delete]').forEach(btn=>btn.addEventListener('click',()=>deleteModComment(btn.dataset.commentDelete)));
   m.querySelector('#modsLoginComment')?.addEventListener('click',()=>window.MHUR_AUTH?.open?.());
   window.MHUR_PLUS?.modHistory?.mount?.(r.id,document.getElementById('modVersionHistoryList'));
 }
 async function loadComments(id){state.comments=[];if(!REMOTE)return;try{const q=new URLSearchParams({select:'*',mod_id:`eq.${id}`,is_hidden:'eq.false',order:'created_at.asc'});state.comments=await request(`/rest/v1/community_mod_comments?${q}`)||[];await loadProfiles(state.comments.map(x=>x.user_id))}catch(_){} }
-function commentAttachment(c){const url=String(c.media_url||'');if(!url)return '';return String(c.media_type||'').startsWith('video/')?`<video class="modCommentMedia" controls preload="metadata" src="${esc(url)}"></video>`:`<a href="${esc(url)}" target="_blank" rel="noopener"><img class="modCommentMedia" loading="lazy" src="${esc(url)}" alt="${tx('Photo du commentaire','Comment image')}"></a>`}
-function commentsHtml(){if(!state.comments.length)return `<div class="modsEmpty">${tx('Aucun commentaire pour le moment.','No comments yet.')}</div>`;return state.comments.map(c=>{const p=state.profiles[c.user_id]||{};return `<article class="modComment"><div class="modCommentAvatar">${p.avatar_url?`<img src="${esc(p.avatar_url)}" alt="">`:'👤'}</div><div><b>${esc(p.username||tx('Membre','Member'))}</b><small>🕒 ${formatDate(c.created_at)}</small>${c.body?`<p>${esc(c.body)}</p>`:''}${commentAttachment(c)}</div></article>`}).join('')}
+function commentAttachment(c){const url=String(c.media_url||'');if(!url)return '';return String(c.media_type||'').startsWith('video/')?`<video class="modCommentMedia" controls playsinline preload="metadata" src="${esc(url)}"></video>`:`<a href="${esc(url)}" target="_blank" rel="noopener"><img class="modCommentMedia" loading="lazy" src="${esc(url)}" alt="${tx('Photo du commentaire','Comment image')}"></a>`}
+function commentsHtml(){if(!state.comments.length)return `<div class="modsEmpty">${tx('Aucun commentaire pour le moment.','No comments yet.')}</div>`;return state.comments.map(c=>{const p=state.profiles[c.user_id]||{},mine=String(user()?.id||'')===String(c.user_id||''),admin=isSiteAdmin();return `<article class="modComment" data-mod-comment-id="${esc(c.id)}"><div class="modCommentAvatar">${p.avatar_url?`<img src="${esc(p.avatar_url)}" alt="">`:'👤'}</div><div class="modCommentContent"><div class="modCommentHead"><b>${esc(p.username||tx('Membre','Member'))}</b><small>🕒 ${formatDate(c.created_at)}${c.updated_at&&c.updated_at!==c.created_at?` · ${tx('modifié','edited')}`:''}</small><div class="modCommentActions">${mine?`<button type="button" data-comment-edit="${esc(c.id)}">✏️ ${tx('Modifier','Edit')}</button>`:''}${mine||admin?`<button type="button" class="danger" data-comment-delete="${esc(c.id)}">🗑 ${tx('Supprimer','Delete')}</button>`:''}</div></div>${c.body?`<p class="modCommentBodyText">${esc(c.body)}</p>`:''}${commentAttachment(c)}</div></article>`}).join('')}
+function renderModCommentDraft(form){const input=form?.querySelector('input[type=file]'),host=form?.querySelector('[data-mod-comment-draft]');if(!host)return;clearDraftUrls(host);host.innerHTML='';const file=input?.files?.[0];if(!file)return;const url=URL.createObjectURL(file);modsDraftUrls.set(host,[url]);const video=file.type.startsWith('video/');host.innerHTML=`<div class="mhurMediaDraftCard">${video?`<video src="${url}" muted controls playsinline preload="metadata"></video>`:`<img src="${url}" alt="">`}<button type="button" class="mhurMediaDraftRemove" aria-label="${tx('Retirer','Remove')}">×</button><small>${esc(file.name||tx('Média collé','Pasted media'))}</small></div>`;host.querySelector('.mhurMediaDraftRemove').onclick=()=>{input.value='';form.querySelector('.modCommentFileName').textContent='';renderModCommentDraft(form)}}
+function bindModCommentPaste(form){if(!form)return;form.addEventListener('paste',event=>{const file=[...(event.clipboardData?.files||[])].find(f=>f.type.startsWith('image/')||f.type.startsWith('video/'));if(!file)return;event.preventDefault();assignFiles(form.querySelector('input[type=file]'),[file]);renderModCommentDraft(form)})}
+function startModCommentEdit(id){const c=state.comments.find(x=>String(x.id)===String(id));if(!c||String(c.user_id)!==String(user()?.id||''))return;const article=document.querySelector(`[data-mod-comment-id="${CSS.escape(String(id))}"]`),content=article?.querySelector('.modCommentContent');if(!content)return;content.querySelector('.modCommentBodyText')?.remove();let editor=content.querySelector('.modCommentInlineEdit');if(!editor){editor=document.createElement('div');editor.className='modCommentInlineEdit';editor.innerHTML=`<textarea maxlength="1500">${esc(c.body||'')}</textarea><div><button type="button" class="modsPrimary" data-save>${tx('Enregistrer','Save')}</button><button type="button" data-cancel>${tx('Annuler','Cancel')}</button></div>`;content.insertBefore(editor,content.querySelector('.modCommentMedia, a:has(.modCommentMedia)'));editor.querySelector('[data-cancel]').onclick=()=>openDetail(state.active.id);editor.querySelector('[data-save]').onclick=()=>saveModComment(id,editor.querySelector('textarea').value)}}
+async function saveModComment(id,value){const c=state.comments.find(x=>String(x.id)===String(id)),u=user();if(!c||!u||String(c.user_id)!==String(u.id))return;const body=String(value||'').trim();if(!body&&!c.media_url)return alert(tx('Le commentaire ne peut pas être vide.','The comment cannot be empty.'));try{await request(`/rest/v1/community_mod_comments?id=eq.${encodeURIComponent(id)}&user_id=eq.${encodeURIComponent(u.id)}`,{method:'PATCH',headers:{Prefer:'return=minimal'},body:JSON.stringify({body,updated_at:new Date().toISOString()})});await openDetail(state.active.id)}catch(e){alert(e.message||String(e))}}
+async function deleteModComment(id){const c=state.comments.find(x=>String(x.id)===String(id)),u=user(),admin=isSiteAdmin(),mine=Boolean(c&&u&&String(c.user_id)===String(u.id));if(!c||(!mine&&!admin))return;if(!confirm(tx('Supprimer définitivement ce commentaire ?','Permanently delete this comment?')))return;try{const ownerFilter=admin?'':`&user_id=eq.${encodeURIComponent(u.id)}`;await request(`/rest/v1/community_mod_comments?id=eq.${encodeURIComponent(id)}${ownerFilter}`,{method:'DELETE'});if(c.media_path)try{await deleteStorageObject('mod-previews',c.media_path)}catch(_){}await openDetail(state.active.id)}catch(e){alert(e.message||String(e))}}
 async function postComment(e,id){e.preventDefault();const form=e.currentTarget,body=form.querySelector('textarea').value.trim(),fileInput=form.querySelector('input[type=file]'),file=fileInput?.files?.[0],progress=form.querySelector('.modCommentProgress'),u=user();if((!body&&!file)||!u)return;let media=null;try{if(file){const isImage=file.type.startsWith('image/'),isVideo=file.type.startsWith('video/');if(!isImage&&!isVideo)throw new Error(tx('Choisis une photo ou une vidéo.','Choose an image or video.'));if(isImage&&file.size>8*MB)throw new Error(tx('La photo ne doit pas dépasser 8 Mo.','The image must not exceed 8 MB.'));if(isVideo&&file.size>50*MB)throw new Error(tx('La vidéo ne doit pas dépasser 50 Mo.','The video must not exceed 50 MB.'));const ext=fileExtension(file)||(isVideo?'.mp4':'.jpg'),path=`comments/mod-${id}/${u.id}/${Date.now()}-${Math.random().toString(36).slice(2)}${ext}`;progress.hidden=false;const media_url=await upload('mod-previews',path,file,pct=>progress.value=pct);media={media_url,media_type:file.type,media_path:path}}await request('/rest/v1/community_mod_comments',{method:'POST',headers:{Prefer:'return=minimal'},body:JSON.stringify({mod_id:id,user_id:u.id,body,...(media||{})})});await openDetail(id)}catch(err){if(media?.media_path)try{await deleteStorageObject('mod-previews',media.media_path)}catch(_){}alert(err.message||String(err))}finally{if(progress)progress.hidden=true}}
 async function toggleLike(id){const u=user();if(!u)return window.MHUR_AUTH?.open?.();const dialog=document.querySelector('#modsDetailModal .modsDialog');const modalScroll=dialog?.scrollTop||0;const pageScroll=window.scrollY;try{const liked=state.liked.has(String(id));if(liked){await request(`/rest/v1/community_mod_likes?mod_id=eq.${id}&user_id=eq.${u.id}`,{method:'DELETE'});state.liked.delete(String(id))}else{await request('/rest/v1/community_mod_likes',{method:'POST',headers:{Prefer:'return=minimal'},body:JSON.stringify({mod_id:id,user_id:u.id})});state.liked.add(String(id))}let count=0;try{count=await request('/rest/v1/rpc/refresh_mod_likes',{method:'POST',body:JSON.stringify({target_mod:id})})}catch(_){count=Math.max(0,(state.rows.find(r=>r.id===id)?.likes_count||0)+(liked?-1:1))}const row=state.rows.find(r=>String(r.id)===String(id));if(row)row.likes_count=count;await openDetail(id);requestAnimationFrame(()=>{const d=document.querySelector('#modsDetailModal .modsDialog');if(d)d.scrollTop=modalScroll;window.scrollTo(0,pageScroll)})}catch(err){alert(err.message||String(err))}}
 async function toggleFavorite(id){
@@ -480,11 +501,13 @@ async function incrementDownload(id){
 async function removeMod(id){
   const row=state.rows.find(r=>String(r.id)===String(id));
   const u=user();
-  if(!row||!u||!isMine(row))return;
+  const admin=isSiteAdmin();
+  if(!row||!u||(!isMine(row)&&!admin))return;
   if(!confirm(tx('Supprimer définitivement ce mod ?','Permanently delete this mod?')))return;
   try{
     let history=[];try{history=await request(`/rest/v1/community_mod_versions?mod_id=eq.${encodeURIComponent(id)}&select=file_path`)}catch(_){}
-    await request(`/rest/v1/community_mods?id=eq.${encodeURIComponent(id)}&creator_id=eq.${encodeURIComponent(u.id)}`,{method:'DELETE'});
+    const ownerFilter=admin?'':`&creator_id=eq.${encodeURIComponent(u.id)}`;
+    await request(`/rest/v1/community_mods?id=eq.${encodeURIComponent(id)}${ownerFilter}`,{method:'DELETE'});
     const mediaPaths=[...previewImages(row).map(x=>x.path),previewVideo(row)?.path].filter(Boolean);
     for(const [bucket,path] of [['community-mods',row.file_path],...mediaPaths.map(path=>['mod-previews',path]),...(history||[]).map(v=>['community-mods',v.file_path])])if(path)try{await deleteStorageObject(bucket,path)}catch(_){}
     document.getElementById('modsDetailModal')?.setAttribute('hidden','');
@@ -496,7 +519,8 @@ function openPage(){page='mods';selectedChar=null;selectedStyle=null;selectedCos
 const originalLayout=window.layout;window.layout=function(){const out=originalLayout?.apply(this,arguments);setTimeout(()=>{addMenu();if(typeof page!=='undefined'&&page==='mods')renderPage()},0);return out};
 window.addEventListener('hashchange',()=>{if(location.pathname==='/mods'||location.hash==='#mods')openPage()});
 new MutationObserver(addMenu).observe(document.documentElement,{childList:true,subtree:true});
-window.MHUR_MODS={open:openPage,refresh:load,state,request,openDetail,toggleFavorite,loadFavorites};
+window.MHUR_MODS={open:openPage,refresh:load,state,request,openDetail,toggleFavorite,loadFavorites,removeMod,deleteComment:deleteModComment};
 window.addEventListener('mhur-auth-change',()=>{Promise.all([loadLikes(),loadFavorites()]).finally(()=>{renderPage();const detail=document.getElementById('modsDetailModal');if(detail&&!detail.hidden&&state.active)openDetail(state.active.id)})});
+window.addEventListener('mhur-role-change',()=>{renderPage();const detail=document.getElementById('modsDetailModal');if(detail&&!detail.hidden&&state.active)openDetail(state.active.id)});
 window.addEventListener('load',()=>{addMenu();if(location.pathname==='/mods'||location.hash==='#mods')openPage();load()},{once:true});
 })();

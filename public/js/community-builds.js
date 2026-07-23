@@ -1093,19 +1093,23 @@ function cbOwnEditHtml(build,compact=false){
 function cbOwnDeleteHtml(build,compact=false){
   const uid=window.MHUR_AUTH?.getUser?.()?.id||'';
   const own=uid&&String(uid)===String(build.creator_id||'');
-  if(!own) return '';
+  const admin=Boolean(window.MHUR_MODERATION?.isSiteAdmin?.());
+  if(!own&&!admin) return '';
   const txt=(typeof lang!=='undefined'&&lang==='en')?'Delete build':'Supprimer le build';
   return `<button class="cbDeleteOwn ${compact?'compact':''}" title="${txt}" aria-label="${txt}" onclick="event.stopPropagation();communityDeleteOwnBuild('${cbEsc(build.id)}')">🗑 ${txt}</button>`;
 }
 window.communityDeleteOwnBuild=async function(id){
   const build=cbFindBuild(id);
   const uid=window.MHUR_AUTH?.getUser?.()?.id||'';
-  if(!build||!uid||String(uid)!==String(build.creator_id||'')) return;
+  const admin=Boolean(window.MHUR_MODERATION?.isSiteAdmin?.());
+  const own=Boolean(build&&uid&&String(uid)===String(build.creator_id||''));
+  if(!build||!uid||(!own&&!admin)) return;
   const en=typeof lang!=='undefined'&&lang==='en';
   if(!confirm(en?'Delete this build permanently?':'Supprimer définitivement ce build ?')) return;
   try{
     if(CB_REMOTE&&/^[0-9a-f-]{36}$/i.test(id)){
-      await cbRequest(`/rest/v1/community_builds?id=eq.${encodeURIComponent(id)}&creator_id=eq.${encodeURIComponent(uid)}`,{method:'DELETE',headers:{Prefer:'return=minimal'}});
+      const filter=admin?'':`&creator_id=eq.${encodeURIComponent(uid)}`;
+      await cbRequest(`/rest/v1/community_builds?id=eq.${encodeURIComponent(id)}${filter}`,{method:'DELETE',headers:{Prefer:'return=minimal'}});
     }else{
       cbSaveLocal(cbLocalAll().filter(x=>String(x.id)!==String(id)));
     }
@@ -1264,4 +1268,6 @@ if(page==='builds'||(page==='characters'&&selectedStyle)){
   window.__keepScroll=true;
   render();
 }
+
+window.addEventListener('mhur-role-change',()=>{try{cbRefreshVisible()}catch(_){}});
 })();
