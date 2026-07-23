@@ -1,11 +1,12 @@
 {
-  "version": "3.6",
-  "label": "Mises à jour automatiques sans actualisation manuelle",
+  "version": "4.0",
+  "label": "Synchronisation communautaire en direct",
   "released_at": "2026-07-23",
   "changes": [
-    "Le site vérifie automatiquement une nouvelle version toutes les 15 secondes",
-    "Une nouvelle version est chargée automatiquement sans appuyer sur Actualiser",
-    "La vérification se lance aussi au retour dans l’application et lors du retour en ligne",
-    "Protection anti-boucle pour empêcher les rechargements infinis"
+    "Les nouveaux mods, builds et commentaires apparaissent automatiquement sans actualisation",
+    "Les modifications, suppressions, likes et téléchargements se synchronisent automatiquement",
+    "Les avertissements et bannissements sont reçus directement par l’utilisateur",
+    "Le bannissement définitif affiche clairement le message personnalisé de l’administrateur",
+    "Un compte banni ne peut plus consulter ni utiliser le site"
   ]
 }

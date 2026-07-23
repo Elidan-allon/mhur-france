@@ -1,0 +1,6 @@
+MHUR Nexus v4.0
+
+1. Publie le contenu du ZIP.
+2. Exécute configuration/A_EXECUTER_DANS_SUPABASE_V40.sql dans Supabase > SQL Editor.
+3. Les contenus communautaires sont ensuite resynchronisés automatiquement environ toutes les 2 secondes, sans actualisation manuelle.
+4. Les sanctions continuent d’être vérifiées immédiatement et bloquent totalement le site pour les comptes bannis.
