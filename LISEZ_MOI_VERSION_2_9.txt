@@ -1,0 +1,17 @@
+MHUR NEXUS V2.9
+
+Nouveautés :
+- Glisser-déposer des photos et vidéos dans les commentaires des Builds et des Mods.
+- Glisser-déposer des photos et vidéos dans le formulaire de publication d'un Mod.
+- L'aperçu du média est placé au-dessus de la zone de texte.
+- Les pseudos et avatars ouvrent le profil public du membre.
+- L'administrateur peut avertir, bannir temporairement, bannir définitivement et débannir un membre depuis son profil.
+- Un avertissement non lu apparaît en grand au centre de l'écran.
+- Un compte suspendu passe en lecture seule.
+
+ÉTAPE OBLIGATOIRE :
+1. Ouvre Supabase > SQL Editor > New query.
+2. Copie tout le fichier configuration/A_EXECUTER_DANS_SUPABASE_V29.sql.
+3. Clique sur Run.
+
+Ton compte doit déjà avoir role = admin dans public.profiles.

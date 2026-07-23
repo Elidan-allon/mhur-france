@@ -1,18 +1,18 @@
 {
-  "version": "2.9",
-  "label": "Profils, modération des membres et glisser-déposer des médias",
+  "version": "3.0",
+  "label": "Annuaire des profils et correction de la fenêtre de modération",
   "publicVersion": "1.0",
   "brand": "My Hero Ultra Rumble Nexus",
   "changes_fr": [
-    "Glisser-déposer des photos et vidéos dans les Mods et commentaires",
-    "Aperçu du média au-dessus de la zone de texte",
-    "Profils publics accessibles depuis les pseudos et avatars",
-    "Avertissements, bannissements temporaires/définitifs et lecture seule"
+    "La fenêtre Avertir / bannir s’ouvre toujours au-dessus du profil",
+    "La croix ne recouvre plus le bouton de modération",
+    "Ajout de Liste des profils dans Mon compte pour l’administrateur",
+    "Recherche et ouverture rapide des profils publics"
   ],
   "changes_en": [
-    "Drag and drop images and videos into Mods and comments",
-    "Media preview above the text field",
-    "Public profiles accessible from usernames and avatars",
-    "Warnings, temporary/permanent bans and read-only mode"
+    "The Warn / ban window always opens above the profile",
+    "The close button no longer overlaps moderation controls",
+    "Added Profile list to My account for the administrator",
+    "Search and quickly open public profiles"
   ]
 }

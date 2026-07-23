@@ -1,0 +1,163 @@
+/* MHUR Nexus v3.0 — profils administrateur et superposition de modération */
+#mhurUserAdminOverlayV29.mhurUserAdminOverlayV29{
+  position:fixed!important;
+  inset:0!important;
+  z-index:2147483600!important;
+  isolation:isolate;
+}
+#mhurUserAdminOverlayV29 .mhurUserAdminDialogV29{z-index:1}
+html.mhurUserAdminOpenV30,html.mhurProfileDirectoryOpenV30{overflow:hidden!important}
+html.mhurUserAdminOpenV30 body,html.mhurProfileDirectoryOpenV30 body{overflow:hidden!important}
+
+/* La croix du profil ne recouvre plus le bouton Avertir / bannir. */
+.mhurPublicProfilePanel{isolation:isolate}
+.mhurPublicProfileClose{z-index:50!important}
+.mhurProfileAdminV29{
+  position:relative;
+  min-height:82px;
+  padding-right:82px!important;
+}
+.mhurProfileAdminV29>button{
+  flex:0 1 auto;
+  max-width:min(250px,calc(100% - 145px));
+  white-space:normal;
+  line-height:1.15;
+}
+
+/* Bouton de l’annuaire dans Mon compte. */
+.mhurAuthProfileListV30{
+  width:100%;
+  margin-top:10px;
+  padding:11px;
+  border:3px solid #000;
+  border-radius:10px;
+  background:#ffe100;
+  color:#000;
+  font-weight:1000;
+  box-shadow:0 3px 0 #000;
+}
+.mhurAuthProfileListV30:hover{filter:brightness(1.06)}
+
+/* Annuaire administrateur. */
+.mhurProfileDirectoryV30{
+  position:fixed;
+  inset:0;
+  z-index:2147483500;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:18px;
+  background:rgba(0,0,0,.92);
+  backdrop-filter:blur(7px);
+}
+.mhurProfileDirectoryV30.open{display:flex}
+.mhurProfileDirectoryPanelV30{
+  position:relative;
+  width:min(920px,97vw);
+  max-height:94vh;
+  overflow:auto;
+  padding:24px;
+  border:4px solid #47698f;
+  border-radius:20px;
+  background:#0b1626;
+  color:#fff;
+  box-shadow:0 24px 80px #000;
+}
+.mhurProfileDirectoryPanelV30 header{padding-right:58px}
+.mhurProfileDirectoryPanelV30 header>span{
+  display:inline-block;
+  padding:4px 8px;
+  border-radius:999px;
+  background:#ffe100;
+  color:#000;
+  font-size:11px;
+  font-weight:1000;
+}
+.mhurProfileDirectoryPanelV30 h2{margin:7px 0 4px;font-size:32px}
+.mhurProfileDirectoryPanelV30 header p{margin:0;color:#bfd0e7}
+.mhurProfileDirectoryCloseV30{
+  position:absolute;
+  right:12px;
+  top:12px;
+  z-index:2;
+  width:46px;
+  height:46px;
+  border:3px solid #000;
+  border-radius:50%;
+  background:#e5484f;
+  color:#fff;
+  font-size:27px;
+  font-weight:1000;
+}
+.mhurProfileDirectorySearchV30{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin:18px 0 8px;
+  padding:0 13px;
+  border:2px solid #45668f;
+  border-radius:12px;
+  background:#07111f;
+}
+.mhurProfileDirectorySearchV30 input{
+  width:100%;
+  min-height:48px;
+  border:0;
+  outline:0;
+  background:transparent;
+  color:#fff;
+  font:inherit;
+  font-weight:800;
+}
+.mhurProfileDirectoryCountV30{margin:8px 2px;color:#ffe100;font-size:12px;font-weight:1000}
+.mhurProfileDirectoryListV30{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.mhurProfileDirectoryCardV30{
+  display:grid;
+  grid-template-columns:58px minmax(0,1fr) auto 18px;
+  align-items:center;
+  gap:11px;
+  min-width:0;
+  padding:11px;
+  border:2px solid #36577f;
+  border-radius:13px;
+  background:#13233a;
+  color:#fff;
+  text-align:left;
+}
+.mhurProfileDirectoryCardV30:hover{border-color:#19dcef;transform:translateY(-1px)}
+.mhurProfileDirectoryAvatarV30,.mhurProfileDirectoryAvatarV30 img{
+  width:58px;
+  height:58px;
+  border-radius:50%;
+}
+.mhurProfileDirectoryAvatarV30{display:grid;place-items:center;overflow:hidden;border:3px solid #ffe100;background:#263c5c;color:#fff;font-weight:1000}
+.mhurProfileDirectoryAvatarV30 img{display:block;object-fit:cover}
+.mhurProfileDirectoryIdentityV30{min-width:0}
+.mhurProfileDirectoryIdentityV30 b,.mhurProfileDirectoryIdentityV30 small{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mhurProfileDirectoryIdentityV30 b{font-size:17px}
+.mhurProfileDirectoryIdentityV30 small{margin-top:4px;color:#bfd0e7;font-size:11px}
+.mhurProfileDirectoryRoleV30{padding:5px 8px;border-radius:999px;background:#263c5c;color:#dce8f8;font-size:10px;font-weight:1000;white-space:nowrap}
+.mhurProfileDirectoryRoleV30.admin,.mhurProfileDirectoryRoleV30.administrator{background:#ffe100;color:#000}
+.mhurProfileDirectoryRoleV30.moderator{background:#20cf70;color:#04130a}
+.mhurProfileDirectoryArrowV30{color:#ffe100;font-size:27px;font-weight:1000}
+.mhurProfileDirectoryEmptyV30{grid-column:1/-1;padding:44px 18px;text-align:center;color:#c7d4e8;font-weight:900}
+.mhurProfileDirectoryEmptyV30.error{color:#ff8b93}
+
+/* La barre Modération et le nom du compte ne se chevauchent plus dans une fenêtre étroite. */
+@media (min-width:761px) and (max-width:1050px){
+  .mhurAdminTopButton{right:255px!important;max-width:125px;padding:0 10px!important;font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .mhurAccountButton{right:82px!important;max-width:165px!important}
+  .lang{right:8px!important}
+}
+@media(max-width:760px){
+  .mhurProfileDirectoryListV30{grid-template-columns:1fr}
+  .mhurProfileDirectoryPanelV30{padding:18px 13px}
+  .mhurProfileDirectoryPanelV30 h2{font-size:25px}
+  .mhurProfileAdminV29{padding-right:72px!important}
+  .mhurProfileAdminV29>button{max-width:100%;margin-right:0}
+}
+@media(max-width:460px){
+  .mhurProfileDirectoryCardV30{grid-template-columns:50px minmax(0,1fr) 15px}
+  .mhurProfileDirectoryAvatarV30,.mhurProfileDirectoryAvatarV30 img{width:50px;height:50px}
+  .mhurProfileDirectoryRoleV30{display:none}
+}

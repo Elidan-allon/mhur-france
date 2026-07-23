@@ -1,0 +1,15 @@
+MHUR NEXUS — VERSION 3.0
+
+CORRECTIONS
+- La fenêtre Avertir / bannir passe toujours devant le profil public.
+- La croix de fermeture ne cache plus le bouton Avertir / bannir.
+- La barre Modération ne chevauche plus le nom du compte dans les fenêtres étroites.
+
+NOUVEAU — LISTE DES PROFILS
+1. Connecte-toi avec ton compte administrateur.
+2. Clique sur ton compte en haut à droite.
+3. Clique sur « Liste des profils ».
+4. Recherche un membre puis clique sur sa carte.
+5. Son profil public s’ouvre et le bouton « Avertir / bannir » reste disponible.
+
+AUCUN NOUVEAU SCRIPT SQL N’EST NÉCESSAIRE si la configuration Supabase V2.9 a déjà été exécutée.
