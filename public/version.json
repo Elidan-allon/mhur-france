@@ -1,11 +1,1 @@
-{
-  "version": "4.4",
-  "label": "Zones de médias distinctes et connexion persistante",
-  "released_at": "2026-07-24",
-  "changes": [
-    "Zones Fichiers, Photos et Vidéo clairement différenciées",
-    "Couleurs, icônes et en-têtes distincts pour éviter les erreurs",
-    "Restauration automatique de la session Google ou Discord",
-    "Une erreur réseau temporaire ne déconnecte plus le membre"
-  ]
-}
+{"version":"5.0.0","build":"moderation-center","updatedAt":"2026-07-25T00:00:00Z"}
