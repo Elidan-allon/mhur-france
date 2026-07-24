@@ -1,12 +1,11 @@
 {
-  "version": "4.0",
-  "label": "Synchronisation communautaire en direct",
-  "released_at": "2026-07-23",
+  "version": "4.3",
+  "label": "Correction publication des mods",
+  "released_at": "2026-07-24",
   "changes": [
-    "Les nouveaux mods, builds et commentaires apparaissent automatiquement sans actualisation",
-    "Les modifications, suppressions, likes et téléchargements se synchronisent automatiquement",
-    "Les avertissements et bannissements sont reçus directement par l’utilisateur",
-    "Le bannissement définitif affiche clairement le message personnalisé de l’administrateur",
-    "Un compte banni ne peut plus consulter ni utiliser le site"
+    "Correction de la contrainte Supabase sur la description des mods",
+    "Descriptions facultatives jusqu’à 3 000 caractères",
+    "Message explicite lorsque le script SQL V4.3 doit être exécuté",
+    "Fichiers multiples, copier-coller et glisser-déposer conservés"
   ]
 }

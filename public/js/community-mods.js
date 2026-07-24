@@ -441,7 +441,13 @@ async function publish(e){
   }catch(err){
     if(!committed)for(const [bucket,path] of uploaded)try{await deleteStorageObject(bucket,path)}catch(_){}
     const missing=missingCommunityModsColumn(err);
-    alert(missing?tx(`Supabase n’est pas encore configuré pour le champ « ${missing} ». Exécute le fichier SQL V2.6 fourni, puis réessaie.`,`Supabase is not yet configured for the “${missing}” field. Run the supplied V2.6 SQL file, then try again.`):(err.message||String(err)));
+    const raw=String(err?.message||err||'');
+    const descriptionConstraint=/community_mods_description_check/i.test(raw);
+    alert(missing
+      ?tx(`Supabase n’est pas encore configuré pour le champ « ${missing} ». Exécute le fichier SQL V2.6 fourni, puis réessaie.`,`Supabase is not yet configured for the “${missing}” field. Run the supplied V2.6 SQL file, then try again.`)
+      :descriptionConstraint
+        ?tx('La limite de description Supabase est encore trop basse. Exécute le fichier configuration/A_EXECUTER_DANS_SUPABASE_V43.sql puis réessaie.','The Supabase description limit is still too low. Run configuration/A_EXECUTER_DANS_SUPABASE_V43.sql and try again.')
+        :(err.message||String(err)));
   }finally{
     submit.disabled=false;
     progress.textContent='';

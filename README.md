@@ -1,3 +1,7 @@
+## Correctif V4.3
+
+Exécuter `configuration/A_EXECUTER_DANS_SUPABASE_V43.sql` pour corriger la publication des mods et autoriser les descriptions jusqu’à 3 000 caractères.
+
 # MHUR Nexus
 
 Site communautaire français consacré à My Hero Ultra Rumble.

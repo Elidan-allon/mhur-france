@@ -1,0 +1,12 @@
+MHUR NEXUS — VERSION 4.3
+
+Correction de la publication des mods :
+- suppression de l'erreur « community_mods_description_check » ;
+- description facultative jusqu'à 3 000 caractères, comme indiqué dans le formulaire ;
+- message d'erreur clair si le correctif SQL n'a pas encore été exécuté ;
+- conservation des fichiers multiples : 1 minimum et 3 maximum ;
+- copier-coller et glisser-déposer conservés pour les fichiers et les photos.
+
+IMPORTANT :
+Exécute une seule fois dans Supabase > SQL Editor :
+configuration/A_EXECUTER_DANS_SUPABASE_V43.sql
