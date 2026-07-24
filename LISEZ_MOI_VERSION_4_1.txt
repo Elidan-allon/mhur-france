@@ -1,0 +1,18 @@
+MY HERO ULTRA RUMBLE NEXUS — VERSION 4.1
+
+CORRECTIFS ET NOUVEAUTÉS
+
+- Correction de l’erreur « uploadedImages is not defined » lors de la publication d’un mod.
+- Correction préventive de la variable vidéo utilisée pendant l’envoi.
+- Les fichiers d’un mod acceptent maintenant de 1 à 3 fichiers : .pak, .utoc, .ucas ou .zip.
+- Sélection multiple depuis le bouton de fichiers.
+- Ajout par glisser-déposer dans la zone « Fichiers du mod ».
+- Ajout par copier-coller lorsque le presse-papiers contient des fichiers compatibles.
+- Aperçu de chaque fichier sélectionné avec son nom, sa taille et un bouton de retrait.
+- Contrôle du maximum de 3 fichiers avant l’envoi.
+- Les trois fichiers sont téléversés et proposés séparément au téléchargement.
+
+IMPORTANT
+
+Pour conserver plusieurs fichiers dans Supabase, la colonne JSONB « mod_files » doit être présente.
+Le script de configuration Supabase fourni avec la version 4.0/4.1 l’ajoute automatiquement.

@@ -1,0 +1,14 @@
+MHUR NEXUS — VERSION 4.2
+
+Corrections d'affichage mobile :
+- profil public remis dans le bon ordre ;
+- statistiques en grille 2 × 2 sans chevauchement ;
+- avatar, pseudo et date d'inscription toujours visibles ;
+- barre de modération plus compacte ;
+- annuaire administrateur : texte, recherche et cartes ne se superposent plus ;
+- correction de la police dans les fenêtres communautaires ;
+- bouton de modération du header masqué sur petit écran pour ne plus recouvrir le logo, le compte et FR/EN ;
+- la modération mobile reste accessible via Compte > Liste des profils ;
+- affichage tablette/paysage compacté.
+
+Aucun script SQL supplémentaire n'est nécessaire.

@@ -1,0 +1,116 @@
+/* MHUR Nexus v4.2 — corrections d'affichage mobile profils, annuaire et en-tête. */
+
+/* Toutes les fenêtres communautaires conservent la police et le modèle de boîte du site. */
+.mhurPublicProfileModal,
+.mhurPublicProfilePanel,
+.mhurProfileDirectoryV30,
+.mhurProfileDirectoryPanelV30,
+.mhurUserAdminOverlayV29,
+.mhurUserAdminDialogV29{
+  box-sizing:border-box!important;
+  font-family:Arial,Helvetica,sans-serif!important;
+}
+.mhurPublicProfilePanel *,
+.mhurProfileDirectoryPanelV30 *,
+.mhurUserAdminDialogV29 *{box-sizing:border-box!important}
+
+/* Profil public : aucun bloc ne remonte sur l'avatar ou sur la date d'inscription. */
+.mhurPublicProfilePanel{display:flex!important;flex-direction:column!important}
+.mhurPublicProfileClose{position:absolute!important;top:12px!important;right:12px!important;float:none!important}
+.mhurProfileAdminV29{flex:0 0 auto!important;order:-1!important;padding-right:76px!important}
+.mhurPublicProfileHero{flex:0 0 auto!important;position:relative!important;min-height:0!important}
+.mhurProfileStats{flex:0 0 auto!important;position:relative!important;z-index:1!important}
+.mhurProfileBuilds{flex:0 0 auto!important}
+
+/* Annuaire : le champ de recherche reste sous le texte d'introduction. */
+.mhurProfileDirectoryPanelV30{display:flex!important;flex-direction:column!important}
+.mhurProfileDirectoryPanelV30>header{position:relative!important;display:block!important;flex:0 0 auto!important;min-height:0!important;margin:0!important;padding:0 58px 0 0!important}
+.mhurProfileDirectoryPanelV30>header h2,
+.mhurProfileDirectoryPanelV30>header p{position:static!important;display:block!important;float:none!important;transform:none!important}
+.mhurProfileDirectorySearchV30{position:relative!important;inset:auto!important;transform:none!important;flex:0 0 auto!important;clear:both!important}
+.mhurProfileDirectoryCountV30,.mhurProfileDirectoryListV30{flex:0 0 auto!important}
+
+@media(max-width:700px){
+  /* Le bouton vert de modération du header n'écrase plus le logo, le profil et FR/EN.
+     La modération reste accessible depuis le compte puis "Liste des profils". */
+  header.top #mhurAdminButton,
+  .top #mhurAdminButton.mhurAdminTopButton{display:none!important}
+
+  .mhurPublicProfileModal{padding:8px!important;align-items:flex-start!important}
+  .mhurPublicProfilePanel{
+    width:100%!important;
+    max-width:100%!important;
+    max-height:calc(100dvh - 16px)!important;
+    margin:0!important;
+    border-width:4px!important;
+    border-radius:22px!important;
+  }
+  .mhurPublicProfileClose{top:10px!important;right:10px!important;width:48px!important;height:48px!important}
+  .mhurProfileAdminV29{
+    min-height:106px!important;
+    padding:15px 68px 15px 16px!important;
+    align-items:flex-start!important;
+    justify-content:flex-start!important;
+    gap:10px!important;
+  }
+  .mhurProfileAdminV29>div{min-width:0!important}
+  .mhurProfileAdminV29 h3{font-size:22px!important;line-height:1.15!important}
+  .mhurProfileAdminV29>button{
+    width:auto!important;
+    max-width:100%!important;
+    margin:0!important;
+    padding:10px 13px!important;
+    font-size:16px!important;
+  }
+  .mhurPublicProfileHero{
+    flex-direction:column!important;
+    align-items:center!important;
+    gap:10px!important;
+    padding:22px 16px 18px!important;
+    text-align:center!important;
+  }
+  .mhurPublicProfileAvatar{
+    width:108px!important;height:108px!important;flex-basis:108px!important;
+  }
+  .mhurPublicProfileHero h2{margin:5px 0!important;font-size:28px!important;line-height:1.08!important;overflow-wrap:anywhere!important}
+  .mhurPublicProfileHero p{font-size:15px!important;line-height:1.3!important}
+  .mhurProfileStats{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    gap:8px!important;
+    padding:12px!important;
+  }
+  .mhurProfileStats>div{min-width:0!important;padding:13px 5px!important}
+  .mhurProfileStats b{font-size:25px!important}
+  .mhurProfileStats span{font-size:14px!important;line-height:1.15!important;overflow-wrap:anywhere!important}
+  .mhurProfileBuilds{padding:18px 16px!important}
+  .mhurProfileBuilds h3{font-size:25px!important}
+  .mhurProfileLoading,.mhurProfileEmpty{padding:38px 10px!important}
+
+  .mhurProfileDirectoryV30{padding:12px!important;align-items:flex-start!important}
+  .mhurProfileDirectoryPanelV30{
+    width:100%!important;
+    max-width:100%!important;
+    max-height:calc(100dvh - 24px)!important;
+    padding:18px 14px!important;
+    border-radius:20px!important;
+  }
+  .mhurProfileDirectoryPanelV30>header{padding-right:56px!important}
+  .mhurProfileDirectoryPanelV30 h2{margin:7px 0 6px!important;font-size:27px!important;line-height:1.1!important}
+  .mhurProfileDirectoryPanelV30 header p{margin:0!important;font-size:15px!important;line-height:1.35!important}
+  .mhurProfileDirectorySearchV30{margin:16px 0 9px!important;min-height:50px!important}
+  .mhurProfileDirectorySearchV30 input{min-width:0!important;font-size:16px!important}
+  .mhurProfileDirectoryListV30{grid-template-columns:1fr!important;gap:9px!important}
+  .mhurProfileDirectoryCardV30{min-height:82px!important;padding:10px!important}
+}
+
+@media(min-width:701px) and (max-width:900px){
+  /* Tablettes et téléphones en paysage : actions compactes, sans recouvrement. */
+  .top .mhurTopActionsV31{max-width:46vw!important;gap:5px!important}
+  .top .mhurTopActionsV31>.mhurAdminTopButton{
+    width:46px!important;max-width:46px!important;padding:0!important;font-size:0!important;
+  }
+  .top .mhurTopActionsV31>.mhurAdminTopButton::before{content:'🛡️';font-size:18px!important}
+  .top .mhurTopActionsV31>.mhurAccountButton{width:46px!important;max-width:46px!important;padding:3px!important}
+  .top .mhurTopActionsV31>.mhurAccountButtonText{display:none!important}
+  .top .brand{max-width:160px!important;font-size:14px!important}
+}
