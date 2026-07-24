@@ -5,6 +5,7 @@ const url=String(cfg.supabaseUrl||'').replace(/\/+$/,'');
 const key=String(cfg.supabaseKey||'').trim();
 const configured=/^https:\/\/.+\.supabase\.co$/i.test(url)&&!!key;
 const STORE='mhur_auth_session_v323';
+const LEGACY_STORES=['mhur_auth_session','mhur_auth_session_v29','mhur_auth_session_v30','mhur_auth_session_v31','mhur_auth_session_v32','mhur_auth_session_v323'];
 const state={session:null,user:null,profile:null,ready:false,listeners:[]};
 let refreshPromise=null;
 let refreshTimer=null;
@@ -15,7 +16,15 @@ function decode(token){try{return JSON.parse(atob(token.split('.')[1].replace(/-
 function sessionExpiry(session){const p=decode(session?.access_token||'');return Number(session?.expires_at||p?.exp||0)*1000}
 function scheduleRefresh(){clearTimeout(refreshTimer);refreshTimer=null;if(!state.session?.refresh_token)return;const expiresAt=sessionExpiry(state.session);if(!expiresAt)return;const delay=Math.max(5000,expiresAt-Date.now()-90000);refreshTimer=setTimeout(()=>refresh(true).catch(()=>{}),delay)}
 function save(session){state.session=session||null;if(session){localStorage.setItem(STORE,JSON.stringify(session));scheduleRefresh()}else{localStorage.removeItem(STORE);clearTimeout(refreshTimer);refreshTimer=null}}
-function stored(){try{return JSON.parse(localStorage.getItem(STORE)||'null')}catch(_){return null}}
+function stored(){try{
+  let raw=localStorage.getItem(STORE);
+  if(!raw){for(const name of LEGACY_STORES){raw=localStorage.getItem(name);if(raw)break}}
+  if(!raw){for(let i=0;i<localStorage.length;i++){const name=localStorage.key(i)||'';if(/^sb-.*-auth-token$/.test(name)){raw=localStorage.getItem(name);if(raw)break}}}
+  const value=JSON.parse(raw||'null');
+  const session=value?.currentSession||value?.session||value;
+  if(session?.access_token&&session?.refresh_token){localStorage.setItem(STORE,JSON.stringify(session));return session}
+  return null
+}catch(_){return null}}
 function expired(session){const expiresAt=sessionExpiry(session);return !expiresAt||expiresAt<Date.now()+60000}
 async function request(path,opt={}){const token=opt.token||state.session?.access_token||key;const res=await fetch(url+path,{...opt,headers:{apikey:key,Authorization:`Bearer ${token}`,'Content-Type':'application/json',...(opt.headers||{})}});const text=await res.text();let data=null;try{data=text?JSON.parse(text):null}catch(_){data=text}if(!res.ok)throw new Error(data?.msg||data?.message||data?.error_description||text||`HTTP ${res.status}`);return data}
 function isJwtProblem(status,text=''){return status===401||/jwt|token.*expired|invalid.*token|session.*expired/i.test(String(text||''))}
@@ -47,7 +56,13 @@ async function authenticatedFetch(input,opt={}){
   }
   return response
 }
-async function user(){if(!configured||!state.session)return null;if(expired(state.session)&&!await refresh())return null;try{return await request('/auth/v1/user')}catch(_){save(null);return null}}
+async function user(){if(!configured||!state.session)return null;if(expired(state.session)&&!await refresh())return null;try{return await request('/auth/v1/user')}catch(firstError){
+  try{if(await refresh(true))return await request('/auth/v1/user')}catch(_){}
+  // Ne supprime la session locale que lorsqu'elle est réellement invalide.
+  // Une coupure réseau ou une erreur Supabase temporaire ne doit plus déconnecter le membre.
+  if(/jwt|token|session|unauthorized|401|403/i.test(String(firstError?.message||'')))save(null);
+  return null
+}}
 function meta(u){const m=u?.user_metadata||{};const provider=u?.app_metadata?.provider||'compte';return {id:u?.id||'',name:m.full_name||m.name||m.user_name||m.preferred_username||u?.email?.split('@')[0]||'Joueur',avatar:m.avatar_url||m.picture||'',email:u?.email||'',provider}}
 function initials(name){return String(name||'?').split(/\s+/).slice(0,2).map(x=>x[0]||'').join('').toUpperCase()||'?'}
 async function syncProfile(){if(!state.user)return null;const m=meta(state.user);try{const rows=await request('/rest/v1/profiles?on_conflict=id&select=*',{method:'POST',headers:{Prefer:'resolution=merge-duplicates,return=representation'},body:JSON.stringify({id:m.id,username:m.name.slice(0,40),avatar_url:m.avatar,provider:m.provider,updated_at:new Date().toISOString()})});state.profile=Array.isArray(rows)?rows[0]:rows}catch(_){state.profile={id:m.id,username:m.name,avatar_url:m.avatar,provider:m.provider}}return state.profile}

@@ -1,11 +1,11 @@
 {
-  "version": "4.3",
-  "label": "Correction publication des mods",
+  "version": "4.4",
+  "label": "Zones de médias distinctes et connexion persistante",
   "released_at": "2026-07-24",
   "changes": [
-    "Correction de la contrainte Supabase sur la description des mods",
-    "Descriptions facultatives jusqu’à 3 000 caractères",
-    "Message explicite lorsque le script SQL V4.3 doit être exécuté",
-    "Fichiers multiples, copier-coller et glisser-déposer conservés"
+    "Zones Fichiers, Photos et Vidéo clairement différenciées",
+    "Couleurs, icônes et en-têtes distincts pour éviter les erreurs",
+    "Restauration automatique de la session Google ou Discord",
+    "Une erreur réseau temporaire ne déconnecte plus le membre"
   ]
 }

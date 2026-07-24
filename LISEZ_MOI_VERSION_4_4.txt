@@ -1,0 +1,8 @@
+MY HERO ULTRA RUMBLE NEXUS — VERSION 4.4
+
+- Les zones Fichiers du mod, Photos et Vidéo ont maintenant des couleurs et icônes différentes.
+- La connexion Google/Discord reste mémorisée automatiquement.
+- Les anciennes sessions locales sont récupérées si elles existent encore.
+- Une panne réseau temporaire ne supprime plus la session.
+
+Aucun script SQL supplémentaire n'est nécessaire.

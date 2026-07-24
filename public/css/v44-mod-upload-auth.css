@@ -1,0 +1,56 @@
+/* V4.4 — zones de fichiers clairement différenciées */
+.modsForm .mhurModUploadSection{
+  position:relative;
+  display:block;
+  padding:58px 16px 16px;
+  border-width:3px;
+  border-style:solid;
+  border-radius:18px;
+  overflow:hidden;
+  isolation:isolate;
+}
+.modsForm .mhurModUploadSection::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:-1;
+  opacity:.16;
+  pointer-events:none;
+}
+.modsForm .mhurUploadTypeBadge{
+  position:absolute;
+  top:0;
+  left:0;
+  right:0;
+  min-height:42px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding:9px 14px;
+  font-size:14px;
+  font-weight:1000;
+  letter-spacing:.06em;
+  border-bottom:3px solid currentColor;
+}
+.modsForm .mhurModUploadFiles{border-color:#ffb020;color:#ffd27a}
+.modsForm .mhurModUploadFiles::before{background:#ff9d00}
+.modsForm .mhurModUploadFiles .mhurUploadTypeBadge{background:#3a2605;color:#ffd27a}
+.modsForm .mhurModUploadImages{border-color:#38bdf8;color:#8cddff}
+.modsForm .mhurModUploadImages::before{background:#0284c7}
+.modsForm .mhurModUploadImages .mhurUploadTypeBadge{background:#062c43;color:#8cddff}
+.modsForm .mhurModUploadVideo{border-color:#c084fc;color:#e2c2ff}
+.modsForm .mhurModUploadVideo::before{background:#7e22ce}
+.modsForm .mhurModUploadVideo .mhurUploadTypeBadge{background:#2b1240;color:#e2c2ff}
+.modsForm .mhurModUploadSection>input[type=file]{
+  background:#07111f;
+  border:2px solid currentColor;
+  border-radius:12px;
+  padding:10px;
+  color:#fff;
+}
+.modsForm .mhurModUploadSection .modsFieldHint,
+.modsForm .mhurModUploadSection .mhurPasteHint{display:block;margin-top:8px;color:#dcecff}
+@media(max-width:600px){
+  .modsForm .mhurModUploadSection{padding:54px 12px 13px;border-radius:14px}
+  .modsForm .mhurUploadTypeBadge{font-size:13px}
+}
