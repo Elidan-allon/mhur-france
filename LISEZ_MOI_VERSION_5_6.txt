@@ -1,0 +1,19 @@
+MHUR NEXUS — VERSION 5.6
+================================
+
+CORRECTION DU HEADER SUR PETITS ÉCRANS
+
+- Le header mobile a été reconstruit avec trois lignes indépendantes.
+- Ligne 1 : menu, réseaux sociaux et créateurs de contenu.
+- Ligne 2 : modération, compte et langue.
+- Ligne 3 : logo MY HERO ULTRA RUMBLE NEXUS.
+- Aucun bouton n'est supprimé.
+- Aucun bouton n'utilise de position absolue sur mobile.
+- La hauteur du header est mesurée automatiquement et appliquée au contenu.
+- Le logo ne peut plus passer sous les boutons.
+- Le bouton langue ne peut plus recouvrir le compte.
+- Le bouton modération reste présent pour les administrateurs.
+- Le double espace de 72 px au-dessus de l'accueil a été supprimé.
+- Mise en page adaptée aux téléphones, petites fenêtres et zoom navigateur.
+
+AUCUN SCRIPT SQL N'EST NÉCESSAIRE.

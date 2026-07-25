@@ -36,3 +36,7 @@ Les anciens scripts SQL d'installation et de migration ont été retirés de cet
 ## SEO et URLs propres
 
 Le domaine canonique est `https://mhurfrance.com`. Les routes publiques utilisent désormais des URL sans `#`, par exemple `/characters`, `/characters/mirio`, `/costumes/mirio` et `/builds/mirio`. Le sitemap et le fichier robots.txt sont configurés pour ce domaine.
+
+
+## Version 5.6
+Header mobile reconstruit en trois lignes, hauteur automatique, aucun chevauchement et aucun bouton supprimé. Aucun SQL supplémentaire.

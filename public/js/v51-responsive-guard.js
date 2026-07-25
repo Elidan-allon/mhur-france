@@ -31,6 +31,9 @@
     const header=document.querySelector('header.top');
     if(!header)return;
     header.classList.remove(...classes);
+    /* Le mobile est désormais géré par la grille v5.6 : aucun mode legacy ne
+       doit masquer le logo ou le bouton de modération. */
+    if(innerWidth<=760)return;
     if(innerWidth<1360||collides(header))header.classList.add('mhurHeaderCompactV51');
     if(innerWidth<980||collides(header))header.classList.add('mhurHeaderTightV51');
     if(innerWidth<560||collides(header))header.classList.add('mhurHeaderMinimalV51');
