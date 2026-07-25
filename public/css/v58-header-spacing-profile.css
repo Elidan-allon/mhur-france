@@ -1,0 +1,270 @@
+/* MHUR Nexus v5.8 — ordre du header, suppression des espaces fantômes
+   et profil public sans chevauchement. Chargé après tous les anciens correctifs. */
+
+@media (max-width:760px){
+  /* Le vrai ordre demandé : nom du site en haut, boutons en dessous. */
+  html body > header.top.mhurMobileHeaderV58,
+  html body header.top.mhurMobileHeaderV58{
+    display:flex!important;
+    flex-direction:column!important;
+    align-items:stretch!important;
+    justify-content:flex-start!important;
+    gap:4px!important;
+    height:auto!important;
+    min-height:0!important;
+    padding:max(6px,env(safe-area-inset-top)) max(6px,env(safe-area-inset-right)) 6px max(6px,env(safe-area-inset-left))!important;
+    overflow:visible!important;
+  }
+
+  header.top.mhurMobileHeaderV58 > .mhurMobileBrandRowV57{
+    order:1!important;
+    width:100%!important;
+    height:34px!important;
+    min-height:34px!important;
+    display:flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+    overflow:hidden!important;
+  }
+  header.top.mhurMobileHeaderV58 .mhurMobileBrandRowV57 > .brand{
+    width:100%!important;
+    height:34px!important;
+    min-height:34px!important;
+    margin:0!important;
+    padding:0 6px!important;
+    display:flex!important;
+    flex-direction:column!important;
+    align-items:center!important;
+    justify-content:center!important;
+    overflow:hidden!important;
+    white-space:normal!important;
+    text-align:center!important;
+    font-size:14px!important;
+    line-height:.88!important;
+    letter-spacing:.8px!important;
+  }
+  header.top.mhurMobileHeaderV58 .brand span{
+    font-size:11px!important;
+    line-height:1!important;
+  }
+
+  header.top.mhurMobileHeaderV58 > .mhurMobileToolbarV57{
+    order:2!important;
+    width:100%!important;
+    min-width:0!important;
+    height:46px!important;
+    display:grid!important;
+    grid-template-columns:46px 98px minmax(0,1fr)!important;
+    gap:5px!important;
+    align-items:stretch!important;
+    overflow:visible!important;
+  }
+  header.top.mhurMobileHeaderV58 .mhurMobileToolbarV57 > .menuBtn{
+    width:46px!important;
+    min-width:46px!important;
+    max-width:46px!important;
+    height:46px!important;
+    border-radius:12px!important;
+  }
+  header.top.mhurMobileHeaderV58 .mhurMobileToolbarV57 > .nexusHeaderLinks{
+    width:98px!important;
+    min-width:98px!important;
+    max-width:98px!important;
+    height:46px!important;
+    gap:5px!important;
+  }
+  header.top.mhurMobileHeaderV58 .nexusHeaderBtn{
+    width:46px!important;
+    min-width:46px!important;
+    max-width:46px!important;
+    height:46px!important;
+    border-radius:12px!important;
+  }
+  header.top.mhurMobileHeaderV58 .mhurMobileToolbarV57 > .mhurTopActionsV31{
+    width:100%!important;
+    min-width:0!important;
+    height:46px!important;
+    display:grid!important;
+    grid-auto-flow:column!important;
+    grid-auto-columns:minmax(0,1fr)!important;
+    gap:5px!important;
+  }
+  header.top.mhurMobileHeaderV58 .mhurTopActionsV31 > #mhurAdminButton,
+  header.top.mhurMobileHeaderV58 .mhurTopActionsV31 > .mhurAdminTopButton,
+  header.top.mhurMobileHeaderV58 .mhurTopActionsV31 > #mhurAccountButton,
+  header.top.mhurMobileHeaderV58 .mhurTopActionsV31 > .mhurAccountButton,
+  header.top.mhurMobileHeaderV58 .mhurTopActionsV31 > .lang{
+    display:flex!important;
+    visibility:visible!important;
+    opacity:1!important;
+    position:static!important;
+    width:100%!important;
+    min-width:0!important;
+    max-width:none!important;
+    height:46px!important;
+    margin:0!important;
+    padding:0 5px!important;
+    transform:none!important;
+    align-items:center!important;
+    justify-content:center!important;
+    overflow:hidden!important;
+    border-radius:12px!important;
+  }
+
+  /* Une seule source d'espace : le padding du body égal à la hauteur réelle du header. */
+  body{padding-top:var(--mhur-top-height)!important}
+  main#app.wrap,
+  #app.wrap,
+  #app{
+    padding-top:0!important;
+    margin-top:0!important;
+  }
+  #app:not(.mhurHasBackV57),
+  #app.mhurHasBackV57{
+    padding-top:0!important;
+  }
+  #app > :first-child:not(.back){margin-top:0!important}
+
+  /* Le bouton Retour fait partie du flux : aucune ligne invisible n'est réservée. */
+  #app > .back,
+  .wrap > .back,
+  .back{
+    position:sticky!important;
+    top:calc(var(--mhur-top-height) + 6px)!important;
+    left:auto!important;
+    right:auto!important;
+    inset-inline-start:auto!important;
+    z-index:2147483400!important;
+    display:inline-flex!important;
+    width:max-content!important;
+    max-width:calc(100vw - 20px)!important;
+    margin:8px 0 12px!important;
+    transform:none!important;
+  }
+  .back + .title,
+  .back + .charPanel,
+  .back + .pageFrame,
+  .back + .styleGrid,
+  .back + *{
+    margin-top:0!important;
+  }
+
+  .drawer{top:var(--mhur-top-height)!important;max-height:calc(100dvh - var(--mhur-top-height))!important}
+  .nexusLinksOverlay{inset:var(--mhur-top-height) 0 0!important}
+}
+
+@media (max-width:430px){
+  header.top.mhurMobileHeaderV58 > .mhurMobileBrandRowV57,
+  header.top.mhurMobileHeaderV58 .mhurMobileBrandRowV57 > .brand{
+    height:32px!important;
+    min-height:32px!important;
+  }
+  header.top.mhurMobileHeaderV58 .mhurMobileBrandRowV57 > .brand{font-size:13px!important}
+  header.top.mhurMobileHeaderV58 .brand span{font-size:10px!important}
+  header.top.mhurMobileHeaderV58 > .mhurMobileToolbarV57{
+    grid-template-columns:40px 84px minmax(0,1fr)!important;
+    height:42px!important;
+    gap:4px!important;
+  }
+  header.top.mhurMobileHeaderV58 .mhurMobileToolbarV57 > .menuBtn{
+    width:40px!important;min-width:40px!important;max-width:40px!important;height:42px!important;
+  }
+  header.top.mhurMobileHeaderV58 .mhurMobileToolbarV57 > .nexusHeaderLinks{
+    width:84px!important;min-width:84px!important;max-width:84px!important;height:42px!important;gap:4px!important;
+  }
+  header.top.mhurMobileHeaderV58 .nexusHeaderBtn{
+    width:40px!important;min-width:40px!important;max-width:40px!important;height:42px!important;
+  }
+  header.top.mhurMobileHeaderV58 .mhurMobileToolbarV57 > .mhurTopActionsV31{height:42px!important;gap:4px!important}
+  header.top.mhurMobileHeaderV58 .mhurTopActionsV31 > #mhurAdminButton,
+  header.top.mhurMobileHeaderV58 .mhurTopActionsV31 > .mhurAdminTopButton,
+  header.top.mhurMobileHeaderV58 .mhurTopActionsV31 > #mhurAccountButton,
+  header.top.mhurMobileHeaderV58 .mhurTopActionsV31 > .mhurAccountButton,
+  header.top.mhurMobileHeaderV58 .mhurTopActionsV31 > .lang{height:42px!important;padding:0 3px!important}
+}
+
+/* Profil public : chaque bloc reprend sa place normale dans le flux. */
+.mhurPublicProfilePanel{
+  overflow:auto!important;
+  contain:none!important;
+}
+#mhurPublicProfileBody{
+  position:relative!important;
+  display:flex!important;
+  flex-direction:column!important;
+  width:100%!important;
+  min-width:0!important;
+  height:auto!important;
+  min-height:0!important;
+  overflow:visible!important;
+  isolation:isolate!important;
+}
+#mhurPublicProfileBody > .mhurProfileAdminV29,
+#mhurPublicProfileBody > .mhurPublicProfileHero,
+#mhurPublicProfileBody > .mhurProfileStats,
+#mhurPublicProfileBody > .mhurProfileBuilds{
+  position:relative!important;
+  inset:auto!important;
+  top:auto!important;
+  right:auto!important;
+  bottom:auto!important;
+  left:auto!important;
+  z-index:auto!important;
+  order:initial!important;
+  flex:0 0 auto!important;
+  width:100%!important;
+  min-width:0!important;
+  height:auto!important;
+  max-height:none!important;
+  margin:0!important;
+  transform:none!important;
+  translate:none!important;
+  float:none!important;
+  overflow:visible!important;
+}
+#mhurPublicProfileBody > .mhurProfileAdminV29{order:1!important}
+#mhurPublicProfileBody > .mhurPublicProfileHero{order:2!important;min-height:150px!important}
+#mhurPublicProfileBody > .mhurProfileStats{order:3!important}
+#mhurPublicProfileBody > .mhurProfileBuilds{order:4!important}
+
+.mhurPublicProfileHero > div{
+  position:relative!important;
+  min-width:0!important;
+  height:auto!important;
+  overflow:visible!important;
+}
+.mhurPublicProfileHero h2,
+.mhurPublicProfileHero p,
+.mhurProfileBadges{
+  position:static!important;
+  transform:none!important;
+}
+.mhurProfileStats{
+  clear:both!important;
+  align-self:stretch!important;
+}
+.mhurProfileBuilds{
+  clear:both!important;
+  align-self:stretch!important;
+}
+
+@media (max-width:700px){
+  .mhurPublicProfilePanel{max-height:calc(100dvh - 16px)!important}
+  #mhurPublicProfileBody > .mhurProfileAdminV29{
+    min-height:0!important;
+    padding:14px 66px 14px 14px!important;
+  }
+  #mhurPublicProfileBody > .mhurPublicProfileHero{
+    min-height:0!important;
+    padding:20px 64px 18px 16px!important;
+    gap:12px!important;
+  }
+  #mhurPublicProfileBody > .mhurProfileStats{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    padding:12px!important;
+    gap:8px!important;
+  }
+  #mhurPublicProfileBody > .mhurProfileBuilds{
+    padding:18px 14px!important;
+  }
+}

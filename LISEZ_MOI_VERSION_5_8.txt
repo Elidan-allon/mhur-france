@@ -1,0 +1,19 @@
+MHUR NEXUS — VERSION 5.8
+
+CORRECTIONS
+
+1. HEADER MOBILE
+- Le nom du site est maintenant au-dessus.
+- Tous les boutons restent sur une seule ligne en dessous.
+- Aucun bouton n’est supprimé.
+
+2. ESPACES INVISIBLES
+- Suppression de l’écart entre le header et le contenu/les onglets.
+- Le bouton Retour reste visible et collant, mais il occupe sa place normale dans la page.
+- Plus de ligne vide réservée au-dessus des pages de détail.
+
+3. PROFIL PUBLIC
+- Le bloc administrateur, l’identité, les statistiques, Builds publiés et Mods publiés sont remis dans un flux vertical strict.
+- L’avatar, le pseudo et la date ne peuvent plus passer derrière les statistiques ou les sections publiées.
+
+Aucun script SQL à exécuter.
