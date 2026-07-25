@@ -1,6 +1,10 @@
-## Correctif V4.3
+# MHUR Nexus v5.1
 
-Exécuter `configuration/A_EXECUTER_DANS_SUPABASE_V43.sql` pour corriger la publication des mods et autoriser les descriptions jusqu’à 3 000 caractères.
+Correctif principal : modération sans gel, recours fiable pour avertissement/ban temporaire/ban définitif, et en-tête anti-chevauchement.
+
+Après le déploiement, exécuter obligatoirement `configuration/A_EXECUTER_DANS_SUPABASE_V51.sql` dans Supabase SQL Editor.
+
+Voir `LISEZ_MOI_VERSION_5_1.txt` pour les étapes et les tests.
 
 # MHUR Nexus
 

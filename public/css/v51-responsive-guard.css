@@ -1,0 +1,68 @@
+/* MHUR Nexus v5.1 — garde anti-chevauchement pour toutes les tailles et tous les zooms. */
+header.top{box-sizing:border-box!important;min-width:0!important}
+header.top .brand,
+header.top .nexusHeaderLinks,
+header.top .mhurTopActionsV31{min-width:0!important}
+
+header.top.mhurHeaderCompactV51 .nexusHeaderBtn{
+  width:46px!important;
+  min-width:46px!important;
+  max-width:46px!important;
+  padding:0!important;
+  justify-content:center!important;
+}
+header.top.mhurHeaderCompactV51 .nexusHeaderBtnLabel,
+header.top.mhurHeaderCompactV51 .nexusHeaderChevron{display:none!important}
+header.top.mhurHeaderCompactV51 .mhurAccountButton{
+  width:48px!important;
+  min-width:48px!important;
+  max-width:48px!important;
+  padding:4px!important;
+  justify-content:center!important;
+}
+header.top.mhurHeaderCompactV51 .mhurAccountButtonText{display:none!important}
+header.top.mhurHeaderCompactV51 .mhurAdminTopButton{
+  width:48px!important;
+  min-width:48px!important;
+  max-width:48px!important;
+  padding:0!important;
+  font-size:0!important;
+}
+header.top.mhurHeaderCompactV51 .mhurAdminTopButton::before{content:'🛡️';font-size:19px!important;line-height:1!important}
+header.top.mhurHeaderCompactV51 .mhurTopActionsV31{gap:6px!important;max-width:none!important}
+header.top.mhurHeaderCompactV51 .brand{max-width:230px!important;font-size:15px!important;line-height:1.02!important}
+
+header.top.mhurHeaderTightV51 .nexusHeaderLinks{gap:4px!important}
+header.top.mhurHeaderTightV51 .nexusHeaderBtn{width:42px!important;min-width:42px!important;max-width:42px!important;height:44px!important}
+header.top.mhurHeaderTightV51 .mhurAccountButton,
+header.top.mhurHeaderTightV51 .mhurAdminTopButton{width:42px!important;min-width:42px!important;max-width:42px!important;height:44px!important}
+header.top.mhurHeaderTightV51 .mhurAccountButton img,
+header.top.mhurHeaderTightV51 .mhurAccountAvatar{width:34px!important;height:34px!important;flex-basis:34px!important}
+header.top.mhurHeaderTightV51 .lang{min-width:58px!important;padding-left:8px!important;padding-right:8px!important}
+header.top.mhurHeaderTightV51 .brand{max-width:165px!important;font-size:12px!important;letter-spacing:.02em!important}
+header.top.mhurHeaderTightV51 .brand span{font-size:.9em!important}
+
+header.top.mhurHeaderMinimalV51 .brand{display:none!important}
+header.top.mhurHeaderMinimalV51 .nexusHeaderLinks{left:58px!important;top:50%!important;transform:translateY(-50%)!important;gap:4px!important}
+header.top.mhurHeaderMinimalV51 .nexusHeaderBtn{width:38px!important;min-width:38px!important;max-width:38px!important;height:40px!important;border-radius:11px!important}
+header.top.mhurHeaderMinimalV51 .nexusHeaderIcon{font-size:18px!important}
+header.top.mhurHeaderMinimalV51 .mhurAdminTopButton{display:none!important}
+header.top.mhurHeaderMinimalV51 .mhurAccountButton{width:40px!important;min-width:40px!important;max-width:40px!important;height:42px!important;padding:2px!important}
+header.top.mhurHeaderMinimalV51 .mhurAccountButton img,
+header.top.mhurHeaderMinimalV51 .mhurAccountAvatar{width:34px!important;height:34px!important;flex-basis:34px!important}
+header.top.mhurHeaderMinimalV51 .lang{min-width:54px!important;height:42px!important;padding:0 7px!important;font-size:13px!important}
+header.top.mhurHeaderMinimalV51 > .mhurAccountButton{position:absolute!important;right:66px!important;top:50%!important;transform:translateY(-50%)!important}
+header.top.mhurHeaderMinimalV51 > .lang{position:absolute!important;right:7px!important;top:50%!important;transform:translateY(-50%)!important}
+
+/* Même sans JavaScript, les largeurs intermédiaires sont compactées assez tôt. */
+@media(max-width:1320px) and (min-width:701px){
+  header.top .nexusHeaderBtn{max-width:50px!important;width:50px!important;padding:0!important;justify-content:center!important}
+  header.top .nexusHeaderBtnLabel,header.top .nexusHeaderChevron{display:none!important}
+  header.top .mhurAccountButtonText{display:none!important}
+  header.top .mhurAccountButton{max-width:50px!important;width:50px!important;padding:4px!important}
+  header.top .mhurAdminTopButton{max-width:50px!important;width:50px!important;padding:0!important;font-size:0!important}
+  header.top .mhurAdminTopButton::before{content:'🛡️';font-size:18px!important}
+}
+@media(max-width:700px){
+  header.top #mhurAdminButton{display:none!important}
+}

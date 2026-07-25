@@ -13,7 +13,8 @@ const tables=[
   ['community_build_comments','id,updated_at,created_at,is_hidden'],
   ['community_build_reactions','build_id,user_id,reaction'],
   ['profiles','id,updated_at,username,avatar_url,role'],
-  ['user_moderation','user_id,updated_at,warning_created_at,warning_acknowledged_at,banned_permanent,banned_until']
+  ['user_moderation','user_id,updated_at,warning_created_at,warning_acknowledged_at,banned_permanent,banned_until'],
+  ['moderation_appeals','id,sanction_id,user_id,status,response_message,created_at,responded_at']
 ];
 const signatures=new Map();
 let running=false,timer=null,initialized=false;
@@ -58,6 +59,7 @@ function apply(table){
   if(table.startsWith('community_build'))refreshBuilds();
   if(table==='profiles')refreshProfiles();
   if(table==='user_moderation')refreshModeration();
+  if(table==='moderation_appeals')window.dispatchEvent(new CustomEvent('mhur-appeals-live-change'));
 }
 async function tick(){
   if(!REMOTE||running||document.hidden)return;

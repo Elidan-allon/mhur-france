@@ -1,0 +1,136 @@
+/* MHUR Nexus v5.1 — sanctions stables, sans conflit avec l'ancien écran de ban. */
+
+/* Neutralise entièrement l'ancien verrou V3.5. Le nouveau verrou V5.1 prend le relais. */
+html.mhurModerationV51Ready.mhurUserBannedV29,
+html.mhurModerationV51Ready.mhurUserBannedV29 body{
+  overflow:auto!important;
+  background:revert!important;
+}
+html.mhurModerationV51Ready.mhurUserBannedV29 body > *:not(#mhurBanOverlayV29){
+  visibility:visible!important;
+  pointer-events:auto!important;
+  user-select:auto!important;
+}
+html.mhurModerationV51Ready.mhurUserBannedV29 #mhurBanOverlayV29,
+html.mhurModerationV51Ready #mhurBanOverlayV29,
+html.mhurModerationV51Ready #mhurWarningOverlayV29,
+html.mhurModerationV51Ready #mhurReadOnlyBadgeV29{
+  display:none!important;
+  visibility:hidden!important;
+  pointer-events:none!important;
+}
+html.mhurSanctionLockedV51,
+html.mhurSanctionLockedV51 body{overflow:hidden!important}
+
+.mhurSanctionV51{
+  position:fixed;
+  inset:0;
+  z-index:2147483646;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  box-sizing:border-box;
+  overflow:auto;
+  overscroll-behavior:contain;
+  padding:max(20px,env(safe-area-inset-top)) 16px max(20px,env(safe-area-inset-bottom));
+  background:radial-gradient(circle at 50% 8%,#e12d45 0,#76111f 34%,#180409 80%);
+  color:#fff;
+  font-family:Arial,Helvetica,sans-serif;
+  pointer-events:auto;
+}
+.mhurSanctionV51.open{display:flex!important}
+.mhurSanctionV51.warning{background:radial-gradient(circle at 50% 8%,#ef6d20 0,#8d2418 38%,#210605 82%)}
+.mhurSanctionV51 *{box-sizing:border-box}
+.mhurSanctionCardV51{
+  width:min(760px,100%);
+  margin:auto;
+  padding:clamp(22px,5vw,48px);
+  border:5px solid #070707;
+  border-radius:28px;
+  background:linear-gradient(155deg,rgba(14,4,7,.98),rgba(77,8,20,.98));
+  box-shadow:0 0 0 4px #ff3853,0 28px 100px #000;
+  text-align:center;
+}
+.warning .mhurSanctionCardV51{box-shadow:0 0 0 4px #ffae20,0 28px 100px #000}
+.mhurSanctionIconV51{font-size:clamp(55px,12vw,92px);line-height:1}
+.mhurSanctionKickerV51{margin:9px 0;color:#ffb9c2;font-weight:1000;letter-spacing:.14em}
+.mhurSanctionCardV51 h1{margin:8px 0;font-size:clamp(27px,6vw,52px);line-height:1.04;overflow-wrap:anywhere}
+.mhurSanctionTypeV51{display:inline-block;margin:10px;padding:9px 16px;border:2px solid #ff5369;border-radius:999px;background:#510b17;font-weight:1000}
+.mhurSanctionReasonV51{margin:22px 0;padding:18px;border:2px solid #a83647;border-radius:16px;background:#13060a}
+.mhurSanctionReasonV51 b{color:#ff7284}
+.mhurSanctionReasonV51 p{margin:10px 0 0;white-space:pre-wrap;overflow-wrap:anywhere;font-size:18px;line-height:1.5}
+.mhurCountdownV51{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;margin:20px 0}
+.mhurCountdownV51[hidden]{display:none!important}
+.mhurCountdownV51 div{min-width:0;padding:13px 5px;border:2px solid #ff5369;border-radius:13px;background:#25070d}
+.mhurCountdownV51 strong{display:block;font-size:clamp(27px,7vw,48px)}
+.mhurCountdownV51 span{font-size:11px;font-weight:1000;color:#ffabb6;overflow-wrap:anywhere}
+.mhurSanctionDatesV51{color:#ffc2ca;line-height:1.45}
+.mhurSanctionActionsV51{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.mhurSanctionActionsV51 button,
+.mhurAppealButtonsV51 button,
+.mhurAdminActionsV51 button,
+.mhurAdminAppealCardV51 button{
+  min-height:48px;
+  padding:12px 18px;
+  border:3px solid #000;
+  border-radius:12px;
+  background:#ffe226;
+  color:#090909;
+  font:inherit;
+  font-weight:1000;
+  cursor:pointer;
+}
+.mhurSanctionActionsV51 button:disabled,
+.mhurAdminActionsV51 button:disabled{opacity:.58;cursor:not-allowed}
+.mhurSanctionActionsV51 #mhurAckBtnV51{background:#fff}
+.mhurAppealStatusV51{margin:16px 0 0;white-space:pre-wrap;color:#ffe5e8;font-weight:800}
+
+.mhurAppealDialogV51,.mhurAdminV51{
+  width:min(680px,96vw);
+  max-width:calc(100vw - 20px);
+  max-height:92dvh;
+  padding:0;
+  border:0;
+  border-radius:22px;
+  background:#0b1422;
+  color:#fff;
+  box-shadow:0 25px 100px #000;
+  font-family:Arial,Helvetica,sans-serif;
+}
+.mhurAdminV51{width:min(850px,97vw)}
+.mhurAppealDialogV51::backdrop,.mhurAdminV51::backdrop{background:#000c;backdrop-filter:blur(8px)}
+.mhurAppealDialogV51 form,.mhurAdminV51>section{position:relative;box-sizing:border-box;max-height:92dvh;overflow:auto;padding:28px}
+.mhurAppealDialogV51 *,.mhurAdminV51 *{box-sizing:border-box}
+.mhurCloseV51{position:absolute;right:12px;top:12px;width:42px;height:42px;border:2px solid #000;border-radius:50%;background:#e43d52;color:#fff;font-size:25px;font-weight:1000;cursor:pointer}
+.mhurAppealDialogV51 h2,.mhurAdminV51 h2{margin-right:52px}
+.mhurAppealDialogV51 textarea,.mhurAdminV51 textarea,.mhurAdminV51 input,.mhurAdminV51 select{
+  width:100%;
+  margin-top:8px;
+  padding:12px;
+  border:2px solid #496588;
+  border-radius:10px;
+  background:#07101d;
+  color:#fff;
+  font:inherit;
+}
+.mhurAppealDialogV51 textarea{min-height:180px;resize:vertical}
+.mhurAppealButtonsV51{display:flex;justify-content:flex-end;gap:10px;margin-top:14px}
+.mhurAdminV51 label{display:block;margin:15px 0;color:#ffe226;font-weight:1000}
+.mhurAdminActionsV51{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.mhurAdminActionsV51 .danger{background:#e53d53;color:#fff}
+.mhurAdminActionsV51 .success{background:#28cf76}
+.mhurCurrentV51,.mhurAdminAppealCardV51{margin:14px 0;padding:15px;border:2px solid #425d80;border-radius:13px;background:#101e31}
+.mhurCurrentV51 p,.mhurAdminAppealCardV51 p{white-space:pre-wrap;overflow-wrap:anywhere}
+.mhurAdminAppealCardV51 textarea{min-height:100px;resize:vertical}
+
+@media(max-width:600px){
+  .mhurSanctionV51{align-items:flex-start;padding:calc(10px + env(safe-area-inset-top)) 10px calc(10px + env(safe-area-inset-bottom))}
+  .mhurSanctionCardV51{padding:22px 14px;border-radius:20px}
+  .mhurCountdownV51{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .mhurSanctionActionsV51{flex-direction:column}
+  .mhurSanctionActionsV51 button{width:100%}
+  .mhurAppealButtonsV51{flex-direction:column-reverse}
+  .mhurAppealButtonsV51 button{width:100%}
+  .mhurAdminActionsV51{grid-template-columns:1fr}
+  .mhurAppealDialogV51 form,.mhurAdminV51>section{padding:22px 15px}
+}

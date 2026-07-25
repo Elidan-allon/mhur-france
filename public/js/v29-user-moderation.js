@@ -10,6 +10,7 @@ const isEnglish=()=>((typeof lang!=='undefined'?lang:window.lang)==='en');
 const tx=(fr,en)=>isEnglish()?en:fr;
 const user=()=>window.MHUR_AUTH?.getUser?.()||null;
 const isAdmin=()=>Boolean(window.MHUR_MODERATION?.isSiteAdmin?.());
+const modernModeration=()=>window.MHUR_MODERATION_V51||window.MHUR_MODERATION_V50||null;
 function authFetch(){return state.originalFetch||window.MHUR_AUTH?.fetch||fetch}
 async function request(path,opt={}){
   if(!REMOTE)throw new Error(tx('Supabase n’est pas configuré.','Supabase is not configured.'));
@@ -58,6 +59,13 @@ function ensureBanModal(){
   return modal;
 }
 function renderStatus(){
+  const modern=modernModeration();
+  if(modern){
+    document.documentElement.classList.remove('mhurUserBannedV29');
+    document.getElementById('mhurReadOnlyBadgeV29')?.remove();
+    modern.render?.(state.record);
+    return;
+  }
   document.documentElement.classList.toggle('mhurUserBannedV29',activeBan());
   let badge=document.getElementById('mhurReadOnlyBadgeV29');
   if(activeBan()){
@@ -66,6 +74,8 @@ function renderStatus(){
   }else badge?.remove();
 }
 function showWarning(){
+  const modern=modernModeration();
+  if(modern)return modern.render?.(state.record);
   const record=state.record;
   if(!record?.warning_message||record.warning_acknowledged_at)return;
   const modal=ensureWarningModal();
@@ -74,6 +84,8 @@ function showWarning(){
   modal.classList.add('open');
 }
 function showBan(){
+  const modern=modernModeration();
+  if(modern)return modern.render?.(state.record);
   if(!activeBan())return;
   const modal=ensureBanModal();
   modal.querySelector('#mhurBanStatusV29').textContent=banText();
@@ -96,7 +108,9 @@ async function loadSelfStatus(){
     state.record=Array.isArray(rows)?rows[0]||null:null;
   }catch(error){console.warn('MHUR moderation status:',error)}
   state.loaded=true;renderStatus();
-  if(activeBan())showBan();else showWarning();
+  if(!modernModeration()){
+    if(activeBan())showBan();else showWarning();
+  }
   return state.record;
 }
 function isBlocked(){return activeBan()}
@@ -156,6 +170,8 @@ function statusSummary(record){
   return `<div class="mhurModerationStatusV29">${warning}${ban}${!warning&&!ban?tx('Aucune sanction active.','No active moderation action.'):''}</div>`;
 }
 async function openAdmin(target){
+  if(window.MHUR_MODERATION_V51?.openAdmin)return window.MHUR_MODERATION_V51.openAdmin(target);
+  if(window.MHUR_MODERATION_V50?.openAdmin)return window.MHUR_MODERATION_V50.openAdmin(target);
   if(!isAdmin())return;
   const profile=typeof target==='string'?{id:target,username:target}:target;
   if(!profile?.id)return;
@@ -228,7 +244,11 @@ function injectProfileControls(){
   if(box)return;
   box=document.createElement('section');box.className='mhurProfileAdminV29';
   box.innerHTML=`<div><span>ADMIN</span><h3>${tx('Modération du membre','Member moderation')}</h3></div><button type="button">🛡️ ${tx('Avertir / bannir','Warn / ban')}</button>`;
-  box.querySelector('button').onclick=()=>openAdmin({id:profile.id,username:profile.username||profile.id});
+  box.querySelector('button').onclick=()=>{
+    const target={id:profile.id,username:profile.username||profile.id};
+    const handler=window.MHUR_MODERATION_V51?.openAdmin||window.MHUR_MODERATION_V50?.openAdmin||window.MHUR_USER_MODERATION?.openAdmin||openAdmin;
+    return handler(target);
+  };
   body.prepend(box);
 }
 const observer=new MutationObserver(()=>injectProfileControls());
