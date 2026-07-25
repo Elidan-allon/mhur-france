@@ -1,0 +1,16 @@
+MHUR NEXUS — VERSION 5.7
+================================
+
+HEADER MOBILE SUR UNE SEULE LIGNE
+
+- Tous les boutons du haut sont maintenant sur une seule ligne :
+  menu, réseaux sociaux, créateurs, modération, compte et langue.
+- Le logo MY HERO ULTRA RUMBLE NEXUS reste centré juste en dessous.
+- Les boutons Réseaux et Créateurs utilisent des icônes plus petites.
+- Sur les écrans très étroits, Modération et Compte passent en mode icône,
+  mais aucun bouton n'est supprimé.
+- Aucun chevauchement, même avec une petite fenêtre ou un zoom navigateur.
+- La hauteur du header est recalculée automatiquement.
+- Les fenêtres de modération et les menus restent correctement positionnés.
+
+AUCUN SCRIPT SQL N'EST NÉCESSAIRE.

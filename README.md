@@ -1,10 +1,10 @@
-# MHUR Nexus v5.1
+# MHUR Nexus v5.7
 
-Correctif principal : modération sans gel, recours fiable pour avertissement/ban temporaire/ban définitif, et en-tête anti-chevauchement.
+Correctif principal : header mobile sur une seule ligne de commandes, icônes compactes et logo centré dessous, sans aucun chevauchement.
 
-Après le déploiement, exécuter obligatoirement `configuration/A_EXECUTER_DANS_SUPABASE_V51.sql` dans Supabase SQL Editor.
+Aucun nouveau script SQL n’est nécessaire pour cette version.
 
-Voir `LISEZ_MOI_VERSION_5_1.txt` pour les étapes et les tests.
+Voir `LISEZ_MOI_VERSION_5_7.txt` pour les détails.
 
 # MHUR Nexus
 
@@ -38,5 +38,5 @@ Les anciens scripts SQL d'installation et de migration ont été retirés de cet
 Le domaine canonique est `https://mhurfrance.com`. Les routes publiques utilisent désormais des URL sans `#`, par exemple `/characters`, `/characters/mirio`, `/costumes/mirio` et `/builds/mirio`. Le sitemap et le fichier robots.txt sont configurés pour ce domaine.
 
 
-## Version 5.6
-Header mobile reconstruit en trois lignes, hauteur automatique, aucun chevauchement et aucun bouton supprimé. Aucun SQL supplémentaire.
+## Version 5.7
+Toutes les commandes du header mobile sont sur une seule ligne. Le logo reste centré dessous. Les icônes se compactent automatiquement et aucun bouton n’est supprimé. Aucun SQL supplémentaire.
