@@ -1,0 +1,4 @@
+#mhurEarlyBanGuard{position:fixed;inset:0;z-index:2147483647;background:radial-gradient(circle at 50% 25%,#5e1820 0,#23070b 48%,#080000 100%);display:grid;place-items:center;padding:24px;color:#fff;font-family:Arial,Helvetica,sans-serif;text-align:center}
+#mhurEarlyBanGuard>div{width:min(620px,100%);padding:34px 22px;border:3px solid #ff4d5d;border-radius:24px;background:#0b1422;box-shadow:0 0 0 7px #07090e,0 20px 70px #000}
+#mhurEarlyBanGuard strong{display:block;font-size:clamp(25px,6vw,44px);line-height:1.1;margin-bottom:18px}
+#mhurEarlyBanGuard span{font-size:18px;font-weight:800;color:#ffd5d9}

@@ -52,7 +52,7 @@
   addEventListener('load',async()=>{
     if('serviceWorker' in navigator&&location.protocol==='https:'){
       try{
-        registration=await navigator.serviceWorker.register('/service-worker.js?v=51',{
+        registration=await navigator.serviceWorker.register('/service-worker.js?v=54',{
           scope:'/',
           updateViaCache:'none'
         });

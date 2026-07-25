@@ -1,9 +1,12 @@
 (()=>{
   'use strict';
   const KEY='mhur_active_ban_v52';
+  const COOKIE='mhur_active_ban_device';
   let trapped=false;
   const user=()=>window.MHUR_AUTH?.getUser?.()||null;
-  const parse=()=>{try{return JSON.parse(localStorage.getItem(KEY)||'null')}catch(_){return null}};
+  const readCookie=()=>{try{const hit=document.cookie.split('; ').find(x=>x.startsWith(COOKIE+'='));return hit?decodeURIComponent(hit.slice(COOKIE.length+1)):''}catch(_){return ''}};
+  const writeCookie=(value,maxAge)=>{try{document.cookie=`${COOKIE}=${encodeURIComponent(value)}; Path=/; Max-Age=${maxAge}; SameSite=Lax; Secure`}catch(_){}};
+  const parse=()=>{try{return JSON.parse(localStorage.getItem(KEY)||readCookie()||'null')}catch(_){return null}};
   const valid=lock=>{
     if(!lock||!['temporary','permanent'].includes(lock.kind))return false;
     if(lock.kind==='permanent')return true;
@@ -28,13 +31,15 @@
       message:record.ban_reason||'',created_at:record.banned_at||record.updated_at||new Date().toISOString(),
       sanction_id:record.sanction_id||'',saved_at:new Date().toISOString()
     };
-    try{localStorage.setItem(KEY,JSON.stringify(lock))}catch(_){}
+    try{const raw=JSON.stringify(lock);localStorage.setItem(KEY,raw);writeCookie(raw,31536000)}catch(_){}
     document.documentElement.classList.add('mhurSanctionLockedV52');
     trapHistory();
   }
   function clear(){
     try{localStorage.removeItem(KEY)}catch(_){}
+    writeCookie('',0);
     document.documentElement.classList.remove('mhurSanctionLockedV52');
+    document.getElementById('mhurEarlyBanGuard')?.remove();
   }
   function trapHistory(){
     if(trapped)return;trapped=true;
@@ -46,7 +51,7 @@
     document.documentElement.classList.add('mhurSanctionLockedV52');
     trapHistory();
     const render=window.MHUR_MODERATION_V51?.render;
-    if(render)void render(asRecord(lock));
+    if(render)void render(asRecord(lock)).finally?.(()=>document.getElementById('mhurEarlyBanGuard')?.remove());
     return true;
   }
   function inspect(record){

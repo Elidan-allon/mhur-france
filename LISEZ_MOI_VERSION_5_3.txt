@@ -1,0 +1,10 @@
+MHUR NEXUS v5.3 — CORRECTION RESPONSIVE
+
+- Le header garde tous les boutons, même dans une fenêtre très étroite.
+- Le bouton Modération n'est plus supprimé.
+- Les actions sont réparties sur une vraie grille responsive sans chevauchement.
+- Le logo reste visible sur une deuxième ligne compacte.
+- Les fenêtres Profil, Annuaire, Connexion et Modération passent toujours devant le header.
+- L'annuaire administrateur ne peut plus être recouvert par la barre du haut.
+
+Aucun script SQL supplémentaire n'est nécessaire.

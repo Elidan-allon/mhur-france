@@ -1,4 +1,4 @@
-const RELEASE='54';
+const RELEASE='51';
 const CACHE_PREFIX='mhur-nexus-v';
 const CACHE=`${CACHE_PREFIX}${RELEASE}`;
 const OFFLINE='/index.html';
@@ -24,8 +24,6 @@ const SHELL=[
   '/js/v429-details.js?v=36',
   '/js/v31-header-admin-layout.js',
   '/js/community-auth.js',
-  '/js/v54-early-device-guard.js',
-  '/css/v54-device-session-guard.css',
   '/js/community-profiles.js',
   '/js/community-moderation.js',
   '/js/community-mods.js',
@@ -35,10 +33,10 @@ const SHELL=[
   '/js/v30-profile-directory.js',
   '/js/v40-community-live-sync.js',
   '/css/v50-moderation-center.css',
-  '/css/v52-moderation-center.css',
-  '/css/v52-responsive-guard.css',
-  '/js/v52-moderation-center.js',
-  '/js/v52-responsive-guard.js'
+  '/css/v53-moderation-center.css',
+  '/css/v53-responsive-guard.css',
+  '/js/v53-moderation-center.js',
+  '/js/v53-responsive-guard.js'
 ];
 self.addEventListener('message',event=>{if(event.data?.type==='SKIP_WAITING')self.skipWaiting()});
 self.addEventListener('install',event=>{event.waitUntil((async()=>{const cache=await caches.open(CACHE);await Promise.allSettled(SHELL.map(url=>cache.add(new Request(url,{cache:'reload'}))));await self.skipWaiting()})())});

@@ -4,8 +4,10 @@ const cfg=window.MHUR_COMMUNITY_CONFIG||{};
 const url=String(cfg.supabaseUrl||'').replace(/\/+$/,'');
 const key=String(cfg.supabaseKey||'').trim();
 const configured=/^https:\/\/.+\.supabase\.co$/i.test(url)&&!!key;
-const STORE='mhur_auth_session_v323';
-const LEGACY_STORES=['mhur_auth_session','mhur_auth_session_v29','mhur_auth_session_v30','mhur_auth_session_v31','mhur_auth_session_v32','mhur_auth_session_v323'];
+const STORE='mhur_auth_session_v54';
+const AUTH_COOKIE='mhur_device_auth_v54';
+const DEVICE_MARK='mhur_remembered_account_v54';
+const LEGACY_STORES=['mhur_auth_session','mhur_auth_session_v29','mhur_auth_session_v30','mhur_auth_session_v31','mhur_auth_session_v32','mhur_auth_session_v323','mhur_auth_session_v54'];
 const state={session:null,user:null,profile:null,ready:false,listeners:[]};
 let refreshPromise=null;
 let refreshTimer=null;
@@ -15,20 +17,48 @@ const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&
 function decode(token){try{return JSON.parse(atob(token.split('.')[1].replace(/-/g,'+').replace(/_/g,'/')))}catch(_){return null}}
 function sessionExpiry(session){const p=decode(session?.access_token||'');return Number(session?.expires_at||p?.exp||0)*1000}
 function scheduleRefresh(){clearTimeout(refreshTimer);refreshTimer=null;if(!state.session?.refresh_token)return;const expiresAt=sessionExpiry(state.session);if(!expiresAt)return;const delay=Math.max(5000,expiresAt-Date.now()-90000);refreshTimer=setTimeout(()=>refresh(true).catch(()=>{}),delay)}
-function save(session){state.session=session||null;if(session){localStorage.setItem(STORE,JSON.stringify(session));scheduleRefresh()}else{localStorage.removeItem(STORE);clearTimeout(refreshTimer);refreshTimer=null}}
+function writeCookie(name,value,maxAge){try{document.cookie=`${name}=${encodeURIComponent(value)}; Path=/; Max-Age=${maxAge}; SameSite=Lax; Secure`}catch(_){}}
+function readCookie(name){try{const hit=document.cookie.split('; ').find(x=>x.startsWith(name+'='));return hit?decodeURIComponent(hit.slice(name.length+1)):''}catch(_){return ''}}
+function rememberAccount(session){try{const p=decode(session?.access_token||'');const marker={user_id:p?.sub||'',saved_at:new Date().toISOString()};localStorage.setItem(DEVICE_MARK,JSON.stringify(marker));writeCookie(DEVICE_MARK,JSON.stringify(marker),31536000)}catch(_){}}
+function save(session){
+  state.session=session||null;
+  if(session){
+    const raw=JSON.stringify(session);
+    try{localStorage.setItem(STORE,raw)}catch(_){}
+    /* Le cookie ne contient que le refresh token et sert de secours lorsque le navigateur
+       restaure une ancienne page ou nettoie momentanément le localStorage. */
+    try{writeCookie(AUTH_COOKIE,JSON.stringify({refresh_token:session.refresh_token||'',access_token:session.access_token||'',expires_at:session.expires_at||0}),31536000)}catch(_){}
+    rememberAccount(session);
+    scheduleRefresh();
+  }else{
+    try{localStorage.removeItem(STORE)}catch(_){}
+    writeCookie(AUTH_COOKIE,'',0);
+    try{localStorage.removeItem(DEVICE_MARK)}catch(_){}
+    writeCookie(DEVICE_MARK,'',0);
+    clearTimeout(refreshTimer);refreshTimer=null;
+  }
+}
 function stored(){try{
   let raw=localStorage.getItem(STORE);
   if(!raw){for(const name of LEGACY_STORES){raw=localStorage.getItem(name);if(raw)break}}
   if(!raw){for(let i=0;i<localStorage.length;i++){const name=localStorage.key(i)||'';if(/^sb-.*-auth-token$/.test(name)){raw=localStorage.getItem(name);if(raw)break}}}
+  if(!raw)raw=readCookie(AUTH_COOKIE);
   const value=JSON.parse(raw||'null');
   const session=value?.currentSession||value?.session||value;
   if(session?.access_token&&session?.refresh_token){localStorage.setItem(STORE,JSON.stringify(session));return session}
   return null
 }catch(_){return null}}
 function expired(session){const expiresAt=sessionExpiry(session);return !expiresAt||expiresAt<Date.now()+60000}
-async function request(path,opt={}){const token=opt.token||state.session?.access_token||key;const res=await fetch(url+path,{...opt,headers:{apikey:key,Authorization:`Bearer ${token}`,'Content-Type':'application/json',...(opt.headers||{})}});const text=await res.text();let data=null;try{data=text?JSON.parse(text):null}catch(_){data=text}if(!res.ok)throw new Error(data?.msg||data?.message||data?.error_description||text||`HTTP ${res.status}`);return data}
+async function request(path,opt={}){const token=opt.token||state.session?.access_token||key;let res;try{res=await fetch(url+path,{...opt,headers:{apikey:key,Authorization:`Bearer ${token}`,'Content-Type':'application/json',...(opt.headers||{})}})}catch(networkError){networkError.isNetworkError=true;throw networkError}const text=await res.text();let data=null;try{data=text?JSON.parse(text):null}catch(_){data=text}if(!res.ok){const err=new Error(data?.msg||data?.message||data?.error_description||text||`HTTP ${res.status}`);err.status=res.status;err.payload=data;throw err}return data}
 function isJwtProblem(status,text=''){return status===401||/jwt|token.*expired|invalid.*token|session.*expired/i.test(String(text||''))}
-async function refresh(force=false){if(!state.session?.refresh_token)return false;if(!force&&!expired(state.session))return true;if(refreshPromise)return refreshPromise;refreshPromise=(async()=>{try{const s=await request('/auth/v1/token?grant_type=refresh_token',{method:'POST',token:key,body:JSON.stringify({refresh_token:state.session.refresh_token})});save(s);return true}catch(_){save(null);state.user=null;state.profile=null;if(state.ready)notify();return false}finally{refreshPromise=null}})();return refreshPromise}
+async function refresh(force=false){if(!state.session?.refresh_token)return false;if(!force&&!expired(state.session))return true;if(refreshPromise)return refreshPromise;refreshPromise=(async()=>{try{const s=await request('/auth/v1/token?grant_type=refresh_token',{method:'POST',token:key,body:JSON.stringify({refresh_token:state.session.refresh_token})});save(s);return true}catch(err){
+  /* Ne jamais déconnecter le compte pour une coupure Internet, une erreur 5xx ou un
+     chargement interrompu. La session n'est effacée que si Supabase confirme que le
+     refresh token est réellement invalide/révoqué. */
+  const fatal=err?.status===400||err?.status===401||/invalid refresh|refresh token.*(invalid|not found|revoked)|already used/i.test(String(err?.message||''));
+  if(fatal){save(null);state.user=null;state.profile=null;if(state.ready)notify()}
+  return false
+}finally{refreshPromise=null}})();return refreshPromise}
 async function authenticatedFetch(input,opt={}){
   const method=String(opt.method||'GET').toUpperCase();
   const allowAnonFallback=opt.allowAnonFallback!==false&&(method==='GET'||method==='HEAD');
@@ -60,7 +90,7 @@ async function user(){if(!configured||!state.session)return null;if(expired(stat
   try{if(await refresh(true))return await request('/auth/v1/user')}catch(_){}
   // Ne supprime la session locale que lorsqu'elle est réellement invalide.
   // Une coupure réseau ou une erreur Supabase temporaire ne doit plus déconnecter le membre.
-  if(/jwt|token|session|unauthorized|401|403/i.test(String(firstError?.message||'')))save(null);
+  if((firstError?.status===401||firstError?.status===400)&&/invalid|expired|revoked|jwt/i.test(String(firstError?.message||'')))save(null);
   return null
 }}
 function meta(u){const m=u?.user_metadata||{};const provider=u?.app_metadata?.provider||'compte';return {id:u?.id||'',name:m.full_name||m.name||m.user_name||m.preferred_username||u?.email?.split('@')[0]||'Joueur',avatar:m.avatar_url||m.picture||'',email:u?.email||'',provider}}
