@@ -1,0 +1,12 @@
+MHUR NEXUS — VERSION 5.2
+
+CORRECTIONS :
+- Header mobile réorganisé sur deux lignes : aucun bouton n'est supprimé.
+- Boutons menu, réseaux, créateurs, modération, compte et langue toujours visibles.
+- Logo conservé et centré sur la seconde ligne.
+- Plus aucun chevauchement sur iPhone, petits écrans ou zoom élevé.
+- Un bannissement temporaire ou définitif est mémorisé sur l'appareil.
+- Retour navigateur, rechargement, fermeture/réouverture et déconnexion ne retirent plus la page de sanction.
+- Le verrou est retiré après expiration du ban temporaire ou après vérification authentifiée d'un débannissement.
+
+AUCUN NOUVEAU SCRIPT SQL N'EST NÉCESSAIRE APRÈS LA V5.1.

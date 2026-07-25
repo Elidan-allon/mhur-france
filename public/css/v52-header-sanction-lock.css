@@ -1,0 +1,101 @@
+/* MHUR Nexus v5.2 — header toujours complet, sans chevauchement. */
+header.top{isolation:isolate!important}
+
+/* On annule le mode v5.1 qui supprimait le logo ou le bouton de modération. */
+header.top.mhurHeaderMinimalV51 .brand,
+header.top.mhurHeaderMinimalV51 .mhurAdminTopButton,
+header.top #mhurAdminButton{display:flex!important}
+
+@media (max-width:760px){
+  header.top,
+  header.top.mhurHeaderCompactV51,
+  header.top.mhurHeaderTightV51,
+  header.top.mhurHeaderMinimalV51{
+    position:relative!important;
+    min-height:132px!important;
+    height:auto!important;
+    padding:10px 8px 12px!important;
+    display:grid!important;
+    grid-template-columns:repeat(6,minmax(0,1fr))!important;
+    grid-template-rows:52px 52px!important;
+    gap:7px!important;
+    align-items:center!important;
+    overflow:visible!important;
+  }
+  header.top > .menuBtn{
+    position:static!important;inset:auto!important;transform:none!important;
+    grid-column:1!important;grid-row:1!important;
+    width:100%!important;min-width:0!important;max-width:none!important;height:52px!important;margin:0!important;
+  }
+  header.top > .nexusHeaderLinks{
+    position:static!important;inset:auto!important;transform:none!important;
+    grid-column:2 / span 2!important;grid-row:1!important;
+    display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    gap:7px!important;width:100%!important;min-width:0!important;
+  }
+  header.top .nexusHeaderBtn,
+  header.top.mhurHeaderCompactV51 .nexusHeaderBtn,
+  header.top.mhurHeaderTightV51 .nexusHeaderBtn,
+  header.top.mhurHeaderMinimalV51 .nexusHeaderBtn{
+    width:100%!important;min-width:0!important;max-width:none!important;height:52px!important;padding:0!important;
+    justify-content:center!important;border-radius:14px!important;
+  }
+  header.top .nexusHeaderBtnLabel,header.top .nexusHeaderChevron{display:none!important}
+  header.top .nexusHeaderIcon{font-size:22px!important}
+
+  header.top > #mhurAdminButton,
+  header.top > .mhurAdminTopButton{
+    position:static!important;inset:auto!important;transform:none!important;
+    grid-column:4!important;grid-row:1!important;
+    display:flex!important;width:100%!important;min-width:0!important;max-width:none!important;height:52px!important;
+    padding:0!important;font-size:0!important;margin:0!important;justify-content:center!important;
+  }
+  header.top > #mhurAdminButton::before,
+  header.top > .mhurAdminTopButton::before{content:'🛡️';font-size:22px!important;line-height:1!important}
+
+  header.top > #mhurAccountButton,
+  header.top > .mhurAccountButton{
+    position:static!important;inset:auto!important;transform:none!important;
+    grid-column:5!important;grid-row:1!important;
+    width:100%!important;min-width:0!important;max-width:none!important;height:52px!important;padding:4px!important;margin:0!important;
+    justify-content:center!important;
+  }
+  header.top .mhurAccountButtonText{display:none!important}
+  header.top .mhurAccountAvatar,header.top .mhurAccountButton img{width:40px!important;height:40px!important;flex:0 0 40px!important}
+
+  header.top > .lang{
+    position:static!important;inset:auto!important;transform:none!important;
+    grid-column:6!important;grid-row:1!important;
+    width:100%!important;min-width:0!important;max-width:none!important;height:52px!important;padding:0 4px!important;margin:0!important;
+    font-size:14px!important;justify-content:center!important;
+  }
+  header.top > .brand,
+  header.top.mhurHeaderMinimalV51 > .brand{
+    position:static!important;inset:auto!important;transform:none!important;
+    grid-column:1 / -1!important;grid-row:2!important;
+    display:flex!important;align-items:center!important;justify-content:center!important;flex-direction:column!important;
+    width:100%!important;max-width:none!important;min-width:0!important;height:52px!important;margin:0!important;padding:0 6px!important;
+    font-size:17px!important;line-height:1!important;text-align:center!important;white-space:normal!important;overflow:hidden!important;
+  }
+  header.top .brand span{font-size:14px!important;line-height:1!important}
+  body{padding-top:132px!important}
+  .nexusLinksOverlay{inset:132px 0 0!important}
+}
+
+@media (max-width:430px){
+  header.top,header.top.mhurHeaderCompactV51,header.top.mhurHeaderTightV51,header.top.mhurHeaderMinimalV51{
+    min-height:128px!important;padding-inline:5px!important;gap:5px!important;grid-template-rows:50px 50px!important;
+  }
+  header.top > .menuBtn,header.top .nexusHeaderBtn,header.top > #mhurAdminButton,header.top > .mhurAdminTopButton,
+  header.top > #mhurAccountButton,header.top > .mhurAccountButton,header.top > .lang{height:50px!important;border-radius:12px!important}
+  header.top .mhurAccountAvatar,header.top .mhurAccountButton img{width:37px!important;height:37px!important;flex-basis:37px!important}
+  header.top > .brand{font-size:15px!important;height:50px!important}
+  header.top .brand span{font-size:13px!important}
+  body{padding-top:128px!important}
+  .nexusLinksOverlay{inset:128px 0 0!important}
+}
+
+/* L'écran de sanction reste toujours au-dessus de toute l'application. */
+#mhurSanctionV51{z-index:2147483647!important;position:fixed!important;inset:0!important}
+html.mhurSanctionLockedV52,html.mhurSanctionLockedV52 body{overflow:hidden!important;overscroll-behavior:none!important}
+html.mhurSanctionLockedV52 body>*:not(#mhurSanctionV51):not(#mhurAppealDialogV51){pointer-events:none!important;user-select:none!important}
