@@ -1,0 +1,12 @@
+MY HERO ULTRA RUMBLE NEXUS — VERSION 5.9
+
+CORRECTIONS
+- Les icônes du header mobile sont de nouveau grandes et faciles à toucher.
+- Les six commandes restent visibles sur une seule ligne.
+- Le menu latéral commence toujours sous la totalité du header (nom du site + boutons).
+- La position du menu est recalculée après connexion, rotation, zoom et changement de taille.
+- Le menu reste sous le header sur iPhone, PWA et petites fenêtres de bureau.
+
+INSTALLATION
+Remplacez les fichiers du site par le contenu de cette archive.
+Aucun script SQL Supabase n'est nécessaire pour cette version.

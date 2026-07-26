@@ -1,0 +1,199 @@
+/* MHUR Nexus v5.9 — icônes mobiles lisibles et menu toujours sous le header.
+   Ce fichier doit rester chargé après les correctifs v5.8. */
+
+@media (max-width:760px){
+  :root{
+    --mhur-header-bottom:var(--mhur-top-height,108px);
+  }
+
+  /* Barre de commandes plus grande : aucun retour aux boutons minuscules de v5.7/v5.8. */
+  html body header.top.mhurMobileHeaderV57,
+  html body header.top.mhurMobileHeaderV58,
+  html body header.top.mhurMobileHeaderV59{
+    overflow:visible!important;
+  }
+
+  header.top.mhurMobileHeaderV57 > .mhurMobileToolbarV57,
+  header.top.mhurMobileHeaderV58 > .mhurMobileToolbarV57,
+  header.top.mhurMobileHeaderV59 > .mhurMobileToolbarV57{
+    grid-template-columns:54px 114px minmax(0,1fr)!important;
+    height:54px!important;
+    min-height:54px!important;
+    gap:6px!important;
+  }
+
+  header.top .mhurMobileToolbarV57 > .menuBtn{
+    width:54px!important;
+    min-width:54px!important;
+    max-width:54px!important;
+    height:54px!important;
+    min-height:54px!important;
+    border-radius:14px!important;
+  }
+  header.top .menuBtnLines{
+    width:28px!important;
+    gap:5px!important;
+  }
+  header.top .menuBtnLines > span{
+    width:28px!important;
+    height:3px!important;
+  }
+
+  header.top .mhurMobileToolbarV57 > .nexusHeaderLinks{
+    width:114px!important;
+    min-width:114px!important;
+    max-width:114px!important;
+    height:54px!important;
+    min-height:54px!important;
+    gap:6px!important;
+  }
+  header.top .nexusHeaderBtn{
+    width:54px!important;
+    min-width:54px!important;
+    max-width:54px!important;
+    height:54px!important;
+    min-height:54px!important;
+    border-radius:14px!important;
+  }
+  header.top .nexusHeaderIcon{
+    font-size:23px!important;
+    transform:none!important;
+  }
+
+  header.top .mhurMobileToolbarV57 > .mhurTopActionsV31{
+    height:54px!important;
+    min-height:54px!important;
+    gap:6px!important;
+  }
+  header.top .mhurTopActionsV31 > #mhurAdminButton,
+  header.top .mhurTopActionsV31 > .mhurAdminTopButton,
+  header.top .mhurTopActionsV31 > #mhurAccountButton,
+  header.top .mhurTopActionsV31 > .mhurAccountButton,
+  header.top .mhurTopActionsV31 > .lang{
+    height:54px!important;
+    min-height:54px!important;
+    border-radius:14px!important;
+  }
+  header.top .mhurAccountAvatar,
+  header.top .mhurAccountButton img{
+    width:38px!important;
+    height:38px!important;
+    min-width:38px!important;
+    flex-basis:38px!important;
+  }
+
+  /* Le drawer commence sous le bord inférieur RÉEL du header, jamais sous le logo
+     ou au milieu de la ligne de boutons. Le z-index reste sous celui du header. */
+  html body .drawer,
+  html body #drawer.drawer{
+    position:fixed!important;
+    top:calc(var(--mhur-header-bottom, var(--mhur-top-height,108px)) + 3px)!important;
+    bottom:0!important;
+    height:auto!important;
+    min-height:0!important;
+    max-height:calc(100dvh - var(--mhur-header-bottom, var(--mhur-top-height,108px)) - 3px)!important;
+    z-index:2147482990!important;
+    padding-top:16px!important;
+    overflow-x:hidden!important;
+    overflow-y:auto!important;
+    overscroll-behavior:contain!important;
+  }
+  html body header.top{
+    z-index:2147483000!important;
+  }
+  html body .nexusLinksOverlay{
+    inset:calc(var(--mhur-header-bottom, var(--mhur-top-height,108px)) + 3px) 0 0!important;
+  }
+}
+
+/* Largeur iPhone standard : on garde des cibles tactiles de 50 px minimum. */
+@media (max-width:430px){
+  header.top.mhurMobileHeaderV57 > .mhurMobileToolbarV57,
+  header.top.mhurMobileHeaderV58 > .mhurMobileToolbarV57,
+  header.top.mhurMobileHeaderV59 > .mhurMobileToolbarV57{
+    grid-template-columns:50px 106px minmax(0,1fr)!important;
+    height:50px!important;
+    min-height:50px!important;
+    gap:5px!important;
+  }
+  header.top .mhurMobileToolbarV57 > .menuBtn{
+    width:50px!important;
+    min-width:50px!important;
+    max-width:50px!important;
+    height:50px!important;
+    min-height:50px!important;
+    border-radius:13px!important;
+  }
+  header.top .mhurMobileToolbarV57 > .nexusHeaderLinks{
+    width:106px!important;
+    min-width:106px!important;
+    max-width:106px!important;
+    height:50px!important;
+    min-height:50px!important;
+    gap:5px!important;
+  }
+  header.top .nexusHeaderBtn{
+    width:50px!important;
+    min-width:50px!important;
+    max-width:50px!important;
+    height:50px!important;
+    min-height:50px!important;
+    border-radius:13px!important;
+  }
+  header.top .nexusHeaderIcon{font-size:22px!important}
+  header.top .mhurMobileToolbarV57 > .mhurTopActionsV31{
+    height:50px!important;
+    min-height:50px!important;
+    gap:5px!important;
+  }
+  header.top .mhurTopActionsV31 > #mhurAdminButton,
+  header.top .mhurTopActionsV31 > .mhurAdminTopButton,
+  header.top .mhurTopActionsV31 > #mhurAccountButton,
+  header.top .mhurTopActionsV31 > .mhurAccountButton,
+  header.top .mhurTopActionsV31 > .lang{
+    height:50px!important;
+    min-height:50px!important;
+    padding:0 4px!important;
+    border-radius:13px!important;
+  }
+  header.top #mhurAdminButton::before,
+  header.top .mhurAdminTopButton::before{
+    font-size:20px!important;
+  }
+  header.top .mhurAccountAvatar,
+  header.top .mhurAccountButton img{
+    width:35px!important;
+    height:35px!important;
+    min-width:35px!important;
+    flex-basis:35px!important;
+  }
+  header.top .lang{font-size:12px!important}
+}
+
+/* Même à 320 px, les icônes restent lisibles et les six commandes restent présentes. */
+@media (max-width:350px){
+  header.top.mhurMobileHeaderV57 > .mhurMobileToolbarV57,
+  header.top.mhurMobileHeaderV58 > .mhurMobileToolbarV57,
+  header.top.mhurMobileHeaderV59 > .mhurMobileToolbarV57{
+    grid-template-columns:47px 99px minmax(0,1fr)!important;
+    height:48px!important;
+    min-height:48px!important;
+    gap:4px!important;
+  }
+  header.top .mhurMobileToolbarV57 > .menuBtn{
+    width:47px!important;min-width:47px!important;max-width:47px!important;height:48px!important;min-height:48px!important;
+  }
+  header.top .mhurMobileToolbarV57 > .nexusHeaderLinks{
+    width:99px!important;min-width:99px!important;max-width:99px!important;height:48px!important;min-height:48px!important;gap:4px!important;
+  }
+  header.top .nexusHeaderBtn{
+    width:47px!important;min-width:47px!important;max-width:47px!important;height:48px!important;min-height:48px!important;
+  }
+  header.top .nexusHeaderIcon{font-size:21px!important}
+  header.top .mhurMobileToolbarV57 > .mhurTopActionsV31{height:48px!important;min-height:48px!important;gap:4px!important}
+  header.top .mhurTopActionsV31 > #mhurAdminButton,
+  header.top .mhurTopActionsV31 > .mhurAdminTopButton,
+  header.top .mhurTopActionsV31 > #mhurAccountButton,
+  header.top .mhurTopActionsV31 > .mhurAccountButton,
+  header.top .mhurTopActionsV31 > .lang{height:48px!important;min-height:48px!important}
+}

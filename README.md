@@ -40,3 +40,7 @@ Le domaine canonique est `https://mhurfrance.com`. Les routes publiques utilisen
 
 ## Version 5.8
 Le nom MY HERO ULTRA RUMBLE NEXUS est placé au-dessus de la ligne de boutons sur mobile. L’espace fantôme sous le header et l’espace réservé autour du bouton Retour sont supprimés. Le profil public, ses statistiques et les sections Builds/Mods restent dans l’ordre et ne se recouvrent plus. Aucun SQL supplémentaire.
+
+## Version 5.9
+
+Correction du header mobile : icônes agrandies et menu latéral toujours positionné sous la hauteur réelle du header. Aucun SQL supplémentaire n'est requis.
