@@ -1,0 +1,13 @@
+MY HERO ULTRA RUMBLE NEXUS — VERSION 5.12
+
+CORRECTION PRINCIPALE
+- Les boutons du header sont présents dans le HTML dès le premier affichage.
+- Ils ne sont plus créés ni déplacés après la restauration de la session.
+- La colonne Modération est réservée pendant la vérification du rôle : les autres boutons ne bougent jamais.
+- Le rôle administrateur/modérateur est mémorisé localement pour afficher immédiatement le bon bouton lors des prochaines ouvertures.
+- Les anciens scripts v5.7, v5.8 et v5.9 qui réorganisaient encore le header après le chargement ont été désactivés.
+- Les panneaux Réseaux sociaux et Créateurs de contenu continuent de fonctionner avec les boutons préchargés.
+
+INSTALLATION
+Remplacez les fichiers du site par le contenu de cette archive.
+Aucun nouveau script SQL Supabase n'est nécessaire.

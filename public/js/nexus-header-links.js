@@ -91,20 +91,34 @@
 
   function mount(){
     const header=document.querySelector('header.top');
-    if(!header||document.querySelector('.nexusHeaderLinks'))return;
+    if(!header)return;
     const l=labels();
-    const wrap=document.createElement('div');
-    wrap.className='nexusHeaderLinks';
-    wrap.innerHTML=`<button type="button" class="nexusHeaderBtn" data-nexus-menu="social" aria-expanded="false"><span class="nexusHeaderIcon">🌐</span><span class="nexusHeaderBtnLabel">${esc(l.social)}</span><span class="nexusHeaderChevron">▼</span></button><button type="button" class="nexusHeaderBtn" data-nexus-menu="youtube" aria-expanded="false"><span class="nexusHeaderIcon">🎬</span><span class="nexusHeaderBtnLabel">${esc(l.youtube)}</span><span class="nexusHeaderChevron">▼</span></button>`;
-    header.appendChild(wrap);
-    overlay=document.createElement('div');
-    overlay.className='nexusLinksOverlay';
-    overlay.innerHTML='<div class="nexusLinksBackdrop"></div><div class="nexusLinksPanel" role="dialog" aria-modal="true"></div>';
-    document.body.appendChild(overlay);
-    panel=overlay.querySelector('.nexusLinksPanel');
-    overlay.querySelector('.nexusLinksBackdrop').onclick=close;
+    let wrap=header.querySelector('.nexusHeaderLinks')||document.querySelector('.nexusHeaderLinks');
+    if(!wrap){
+      wrap=document.createElement('div');
+      wrap.className='nexusHeaderLinks';
+      header.appendChild(wrap);
+    }
+    if(!wrap.querySelector('[data-nexus-menu="social"]')||!wrap.querySelector('[data-nexus-menu="youtube"]')){
+      wrap.innerHTML=`<button type="button" class="nexusHeaderBtn" data-nexus-menu="social" aria-expanded="false"><span class="nexusHeaderIcon">🌐</span><span class="nexusHeaderBtnLabel">${esc(l.social)}</span><span class="nexusHeaderChevron">▼</span></button><button type="button" class="nexusHeaderBtn" data-nexus-menu="youtube" aria-expanded="false"><span class="nexusHeaderIcon">🎬</span><span class="nexusHeaderBtnLabel">${esc(l.youtube)}</span><span class="nexusHeaderChevron">▼</span></button>`;
+    }
+    if(!overlay?.isConnected){
+      overlay=document.querySelector('.nexusLinksOverlay');
+      if(!overlay){
+        overlay=document.createElement('div');
+        overlay.className='nexusLinksOverlay';
+        overlay.innerHTML='<div class="nexusLinksBackdrop"></div><div class="nexusLinksPanel" role="dialog" aria-modal="true"></div>';
+        document.body.appendChild(overlay);
+      }
+      panel=overlay.querySelector('.nexusLinksPanel');
+      overlay.querySelector('.nexusLinksBackdrop').onclick=close;
+    }
     wrap.querySelectorAll('[data-nexus-menu]').forEach(btn=>btn.onclick=e=>{e.stopPropagation();const type=btn.dataset.nexusMenu;if(active===type&&overlay.classList.contains('is-open'))close();else open(type,btn)});
-    document.addEventListener('keydown',e=>{if(e.key==='Escape')close()});
+    if(!wrap.dataset.nexusMounted){
+      wrap.dataset.nexusMounted='1';
+      document.addEventListener('keydown',e=>{if(e.key==='Escape')close()});
+    }
+    refreshLanguage();
   }
 
   document.addEventListener('DOMContentLoaded',mount,{once:true});

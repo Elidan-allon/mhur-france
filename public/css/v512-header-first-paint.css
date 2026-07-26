@@ -1,0 +1,69 @@
+/* MHUR Nexus v5.12 — header stable dès le tout premier affichage.
+   La structure complète est déjà dans le HTML : aucun bouton n'est injecté après le rendu. */
+
+/* Le bouton de modération garde sa colonne pendant la vérification du rôle.
+   Ainsi les autres boutons ne bougent jamais quand la session est restaurée. */
+html body header.top[data-mhur-header-version="512"] .mhurMobileToolbarV57 #mhurAdminButton[data-mhur-admin="pending"],
+html body header.top[data-mhur-header-version="512"] .mhurMobileToolbarV57 #mhurAdminButton[data-mhur-admin="0"]{
+  visibility:hidden!important;
+  opacity:0!important;
+  pointer-events:none!important;
+}
+html body header.top[data-mhur-header-version="512"] .mhurMobileToolbarV57 #mhurAdminButton[data-mhur-admin="1"]{
+  visibility:visible!important;
+  opacity:1!important;
+  pointer-events:auto!important;
+}
+
+@media (max-width:760px){
+  /* Valeur correcte avant même la première mesure JavaScript. */
+  :root{
+    --mhur-top-height:112px;
+    --mhur-header-bottom:112px;
+    --mhur-header-visual-bottom:112px;
+  }
+
+  html body>header.top[data-mhur-header-version="512"]{
+    visibility:visible!important;
+    opacity:1!important;
+    contain:layout paint style;
+  }
+
+  /* Six emplacements fixes, présents dès le HTML initial. */
+  html body header.top[data-mhur-header-version="512"]>.mhurMobileToolbarV57{
+    display:grid!important;
+    grid-template-columns:repeat(6,minmax(0,1fr))!important;
+    grid-template-rows:54px!important;
+    grid-auto-flow:column!important;
+    grid-auto-columns:auto!important;
+    width:100%!important;
+    height:54px!important;
+    min-height:54px!important;
+    gap:6px!important;
+  }
+  html body header.top[data-mhur-header-version="512"]>.mhurMobileToolbarV57>.nexusHeaderLinks,
+  html body header.top[data-mhur-header-version="512"]>.mhurMobileToolbarV57>.mhurTopActionsV31{
+    display:contents!important;
+  }
+
+  /* Aucun texte asynchrone ne peut modifier la largeur d'une colonne mobile. */
+  html body header.top[data-mhur-header-version="512"] .nexusHeaderBtnLabel,
+  html body header.top[data-mhur-header-version="512"] .nexusHeaderChevron,
+  html body header.top[data-mhur-header-version="512"] .mhurAccountButtonText{
+    display:none!important;
+  }
+}
+
+@media (max-width:390px){
+  :root{
+    --mhur-top-height:102px;
+    --mhur-header-bottom:102px;
+    --mhur-header-visual-bottom:102px;
+  }
+  html body header.top[data-mhur-header-version="512"]>.mhurMobileToolbarV57{
+    grid-template-rows:49px!important;
+    height:49px!important;
+    min-height:49px!important;
+    gap:4px!important;
+  }
+}

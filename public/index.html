@@ -811,11 +811,31 @@
 
 <link rel="stylesheet" href="css/v28-admin-media.css?v=29">
 <link rel="stylesheet" href="css/v511-responsive-ui.css?v=511">
+<link rel="stylesheet" href="css/v512-header-first-paint.css?v=512">
 </head>
 <body>
 
-<header class="top"><button class="menuBtn" onclick="toggleMenu()" aria-label="Ouvrir le menu"><span class="menuBtnLines" aria-hidden="true"><span></span><span></span><span></span></span></button><div class="brand">MY HERO ULTRA RUMBLE<span>NEXUS</span></div><button id="mhurAccountButton" class="mhurAccountButton" type="button" onclick="MHUR_AUTH.open()"><span class="mhurAccountAvatar">👤</span><span class="mhurAccountButtonText"><b id="signinTitle">Se connecter</b><small id="signinSub">Google ou Discord</small></span></button><button class="lang" onclick="toggleLang()" aria-label="Changer la langue"><span class="langPart" data-lang-code="fr">FR</span><span class="langSep">/</span><span class="langPart" data-lang-code="en">EN</span></button></header>
-<script src="js/v511-responsive-ui.js?v=511"></script>
+<header class="top mhurMobileHeaderV511 mhurHeaderReadyV511 mhurHeaderReadyV512" data-mhur-header-version="512">
+  <div class="mhurMobileBrandRowV57">
+    <div class="brand">MY HERO ULTRA RUMBLE<span>NEXUS</span></div>
+  </div>
+  <div class="mhurMobileToolbarV57">
+    <button class="menuBtn" onclick="toggleMenu()" aria-label="Ouvrir le menu"><span class="menuBtnLines" aria-hidden="true"><span></span><span></span><span></span></span></button>
+    <div class="nexusHeaderLinks" aria-label="Liens du site">
+      <button type="button" class="nexusHeaderBtn" data-nexus-menu="social" aria-expanded="false"><span class="nexusHeaderIcon">🌐</span><span class="nexusHeaderBtnLabel">Réseaux sociaux</span><span class="nexusHeaderChevron">▼</span></button>
+      <button type="button" class="nexusHeaderBtn" data-nexus-menu="youtube" aria-expanded="false"><span class="nexusHeaderIcon">🎬</span><span class="nexusHeaderBtnLabel">Créateurs de contenu</span><span class="nexusHeaderChevron">▼</span></button>
+    </div>
+    <div class="mhurTopActionsV31" aria-label="Actions du compte">
+      <button id="mhurAdminButton" class="mhurAdminTopButton mhurAdminSlotV512" type="button" data-mhur-admin="pending" aria-hidden="true" tabindex="-1" onclick="window.MHUR_MODERATION?.openAdmin?.()">🛡️ Modération</button>
+      <button id="mhurAccountButton" class="mhurAccountButton" type="button" onclick="MHUR_AUTH.open()"><span class="mhurAccountAvatar">👤</span><span class="mhurAccountButtonText"><b id="signinTitle">Se connecter</b><small id="signinSub">Google ou Discord</small></span></button>
+      <button class="lang" onclick="toggleLang()" aria-label="Changer la langue"><span class="langPart" data-lang-code="fr">FR</span><span class="langSep">/</span><span class="langPart" data-lang-code="en">EN</span></button>
+    </div>
+  </div>
+</header>
+<script>
+(()=>{try{const role=String(localStorage.getItem('mhur_cached_role_v512')||'').toLowerCase();const admin=['admin','administrator','moderator'].includes(role);const b=document.getElementById('mhurAdminButton');if(b){b.dataset.mhurAdmin=admin?'1':'0';b.setAttribute('aria-hidden',String(!admin));b.tabIndex=admin?0:-1}const english=(localStorage.getItem('mhur_lang')||localStorage.getItem('lang'))==='en';if(english){const s=document.querySelector('[data-nexus-menu="social"] .nexusHeaderBtnLabel');const c=document.querySelector('[data-nexus-menu="youtube"] .nexusHeaderBtnLabel');if(s)s.textContent='Social networks';if(c)c.textContent='Content creators'}}catch(_){}})();
+</script>
+<script src="js/v512-header-first-paint.js?v=512"></script>
 <nav id="drawer" class="drawer"></nav>
 <main class="wrap" id="app"></main>
 <script id="mhur-clean-routes-seo">
@@ -6763,7 +6783,7 @@ body .costumeTile > img,
 <link rel="stylesheet" href="css/v32-moderation-top-layer.css?v=32">
 <link rel="stylesheet" href="css/v31-header-admin-layout.css?v=31">
 <script src="js/v31-header-admin-layout.js?v=56"></script>
-<script src="js/v36-live-site-update.js?v=511"></script>
+<script src="js/v36-live-site-update.js?v=512"></script>
 <script src="js/v40-community-live-sync.js?v=51"></script>
 <script src="js/v40-ban-message.js?v=40"></script>
 <!-- V3.5: T.U.N.I.N.G language consistency + immediate moderation checks + full ban screen. -->
@@ -6783,19 +6803,22 @@ body .costumeTile > img,
 <script src="js/v52-sanction-lock.js?v=54"></script>
 <link rel="stylesheet" href="css/v53-responsive-header-modal.css?v=53">
 <!-- V5.5: header mobile sur trois lignes, boutons complets et lisibles. -->
-<link rel="stylesheet" href="css/v55-mobile-header-final.css?v=55">
+
 <!-- V5.7: toutes les commandes sur une seule ligne, logo centré dessous, icônes compactes. -->
-<link rel="stylesheet" href="css/v57-mobile-header-one-line.css?v=57">
-<script src="js/v57-mobile-header-one-line.js?v=57"></script>
+
+
 <!-- V5.8: nom du site au-dessus, commandes en dessous, aucun espace fantôme et profil public stable. -->
-<link rel="stylesheet" href="css/v58-header-spacing-profile.css?v=58">
-<script src="js/v58-header-spacing-profile.js?v=58"></script>
+
+
 <!-- V5.9: icônes mobiles agrandies et menu mesuré sous le header réel. -->
-<link rel="stylesheet" href="css/v59-mobile-header-drawer.css?v=59">
-<script src="js/v59-mobile-header-drawer.js?v=59"></script>
+
+
 <!-- V5.10: bouton Retour dans le flux et sous le bord visuel réel du header. -->
 <link rel="stylesheet" href="css/v510-back-button-offset.css?v=510">
 <script src="js/v510-back-button-offset.js?v=510"></script>
-<!-- V5.11 est chargé dans le head et juste après le header pour éviter tout déplacement au premier rendu. -->
+<!-- V5.12 reste aussi chargé en dernier : aucune ancienne règle ne peut reprendre la main. -->
+<link rel="stylesheet" href="css/v511-responsive-ui.css?v=511">
+<link rel="stylesheet" href="css/v512-header-first-paint.css?v=512">
+<!-- V5.12: structure complète du header présente dans le HTML avant le premier affichage. -->
 </body>
 </html>

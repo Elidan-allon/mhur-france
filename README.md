@@ -1,3 +1,7 @@
+# MHUR Nexus v5.12
+
+Le header est maintenant construit complètement avant le premier affichage : les boutons ne se déplacent plus pendant la restauration du compte ou du rôle. Aucun nouveau script SQL n’est requis.
+
 # MHUR Nexus v5.11
 
 Correctifs principaux : header mobile stable dès le premier rendu, panneaux Réseaux sociaux/Créateurs non coupés, fermeture par clic extérieur, profil public traduit en anglais et suppression du refresh provoqué par la reconnexion automatique.
