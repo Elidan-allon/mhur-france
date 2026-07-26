@@ -1,4 +1,4 @@
-const RELEASE='59';
+const RELEASE='510';
 const CACHE_PREFIX='mhur-nexus-v';
 const CACHE=`${CACHE_PREFIX}${RELEASE}`;
 const OFFLINE='/index.html';
@@ -33,6 +33,8 @@ const SHELL=[
   '/js/v58-header-spacing-profile.js',
   '/css/v59-mobile-header-drawer.css',
   '/js/v59-mobile-header-drawer.js',
+  '/css/v510-back-button-offset.css',
+  '/js/v510-back-button-offset.js',
   '/js/community-profiles.js',
   '/js/community-moderation.js',
   '/js/community-mods.js',
