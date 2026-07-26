@@ -1,7 +1,7 @@
 (()=>{
   'use strict';
 
-  const CURRENT='5.8';
+  const CURRENT='5.11';
   const VERSION_URL='/version.json';
   const CHECK_EVERY=15000;
   const RELOAD_KEY='mhur-live-update-reloaded-version';
@@ -52,13 +52,13 @@
   addEventListener('load',async()=>{
     if('serviceWorker' in navigator&&location.protocol==='https:'){
       try{
-        registration=await navigator.serviceWorker.register('/service-worker.js?v=58',{
+        registration=await navigator.serviceWorker.register('/service-worker.js?v=511',{
           scope:'/',
           updateViaCache:'none'
         });
         registration.waiting?.postMessage({type:'SKIP_WAITING'});
       }catch(error){
-        console.debug('MHUR Nexus SW v58:',error);
+        console.debug('MHUR Nexus SW v511:',error);
       }
     }
 

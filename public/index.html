@@ -810,10 +810,12 @@
 </style>
 
 <link rel="stylesheet" href="css/v28-admin-media.css?v=29">
+<link rel="stylesheet" href="css/v511-responsive-ui.css?v=511">
 </head>
 <body>
 
 <header class="top"><button class="menuBtn" onclick="toggleMenu()" aria-label="Ouvrir le menu"><span class="menuBtnLines" aria-hidden="true"><span></span><span></span><span></span></span></button><div class="brand">MY HERO ULTRA RUMBLE<span>NEXUS</span></div><button id="mhurAccountButton" class="mhurAccountButton" type="button" onclick="MHUR_AUTH.open()"><span class="mhurAccountAvatar">👤</span><span class="mhurAccountButtonText"><b id="signinTitle">Se connecter</b><small id="signinSub">Google ou Discord</small></span></button><button class="lang" onclick="toggleLang()" aria-label="Changer la langue"><span class="langPart" data-lang-code="fr">FR</span><span class="langSep">/</span><span class="langPart" data-lang-code="en">EN</span></button></header>
+<script src="js/v511-responsive-ui.js?v=511"></script>
 <nav id="drawer" class="drawer"></nav>
 <main class="wrap" id="app"></main>
 <script id="mhur-clean-routes-seo">
@@ -6661,7 +6663,7 @@ body .costumeTile > img,
 <script src="js/analytics.js?v=420"></script>
 <script src="js/community-config.js?v=380"></script>
 <script src="js/community-auth.js?v=54"></script>
-<script src="js/community-profiles.js?v=430"></script>
+<script src="js/community-profiles.js?v=511"></script>
 <link rel="stylesheet" href="css/community-moderation.css?v=380">
 <script src="js/community-moderation.js?v=30"></script>
 <script src="js/community-builds.js?v=29"></script>
@@ -6761,7 +6763,7 @@ body .costumeTile > img,
 <link rel="stylesheet" href="css/v32-moderation-top-layer.css?v=32">
 <link rel="stylesheet" href="css/v31-header-admin-layout.css?v=31">
 <script src="js/v31-header-admin-layout.js?v=56"></script>
-<script src="js/v36-live-site-update.js?v=51"></script>
+<script src="js/v36-live-site-update.js?v=511"></script>
 <script src="js/v40-community-live-sync.js?v=51"></script>
 <script src="js/v40-ban-message.js?v=40"></script>
 <!-- V3.5: T.U.N.I.N.G language consistency + immediate moderation checks + full ban screen. -->
@@ -6794,5 +6796,6 @@ body .costumeTile > img,
 <!-- V5.10: bouton Retour dans le flux et sous le bord visuel réel du header. -->
 <link rel="stylesheet" href="css/v510-back-button-offset.css?v=510">
 <script src="js/v510-back-button-offset.js?v=510"></script>
+<!-- V5.11 est chargé dans le head et juste après le header pour éviter tout déplacement au premier rendu. -->
 </body>
 </html>

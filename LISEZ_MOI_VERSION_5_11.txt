@@ -1,0 +1,15 @@
+MY HERO ULTRA RUMBLE NEXUS — VERSION 5.11
+
+CORRECTIONS
+- Le header mobile est placé correctement dès le premier affichage, sans déplacement après la connexion.
+- Tous les boutons restent sur une seule ligne et utilisent la même largeur sur les petits écrans.
+- Les panneaux Réseaux sociaux et Créateurs de contenu commencent sous le header et ne sont plus coupés en haut.
+- Un clic en dehors du panneau Réseaux sociaux, Créateurs de contenu ou du menu principal ferme automatiquement le panneau ouvert.
+- Les fenêtres de profil et de modération respectent la zone sûre des iPhone/PWA et restent utilisables sur petits et grands écrans.
+- Le profil public est entièrement traduit en anglais : date du membre, statistiques, titres et messages vides.
+- La reconnexion automatique au compte ne provoque plus de rechargement systématique de la page.
+- Le système de mise à jour automatique reste actif uniquement lorsqu'une nouvelle version réelle est détectée.
+
+INSTALLATION
+Remplacez les fichiers du site par le contenu de cette archive.
+Aucun nouveau script SQL Supabase n'est nécessaire.

@@ -1,10 +1,10 @@
-# MHUR Nexus v5.8
+# MHUR Nexus v5.11
 
-Correctifs principaux : le nom du site passe au-dessus des commandes sur mobile, suppression des espaces invisibles sous le header et autour du bouton Retour, et profil public remis dans un flux vertical sans chevauchement.
+Correctifs principaux : header mobile stable dès le premier rendu, panneaux Réseaux sociaux/Créateurs non coupés, fermeture par clic extérieur, profil public traduit en anglais et suppression du refresh provoqué par la reconnexion automatique.
 
 Aucun nouveau script SQL n’est nécessaire pour cette version.
 
-Voir `LISEZ_MOI_VERSION_5_8.txt` pour les détails.
+Voir `LISEZ_MOI_VERSION_5_11.txt` pour les détails.
 
 # MHUR Nexus
 
@@ -44,3 +44,8 @@ Le nom MY HERO ULTRA RUMBLE NEXUS est placé au-dessus de la ligne de boutons su
 ## Version 5.9
 
 Correction du header mobile : icônes agrandies et menu latéral toujours positionné sous la hauteur réelle du header. Aucun SQL supplémentaire n'est requis.
+
+
+## Version 5.11
+
+Header mobile stabilisé dès le premier rendu, panneaux du header repositionnés sous la barre, fermeture au clic extérieur, profil public bilingue et correction du rechargement à la reconnexion. Aucun SQL supplémentaire.
