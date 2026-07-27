@@ -1,4 +1,4 @@
-const RELEASE='512';
+const RELEASE='513';
 const CACHE_PREFIX='mhur-nexus-v';
 const CACHE=`${CACHE_PREFIX}${RELEASE}`;
 const OFFLINE='/index.html';
@@ -31,6 +31,8 @@ const SHELL=[
   '/css/v511-responsive-ui.css',
   '/css/v512-header-first-paint.css',
   '/js/v512-header-first-paint.js',
+  '/css/v513-header-locked-mobile.css',
+  '/js/v513-header-locked-mobile.js',
   '/js/community-profiles.js',
   '/js/community-moderation.js',
   '/js/community-mods.js',

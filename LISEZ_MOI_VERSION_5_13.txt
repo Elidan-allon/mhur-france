@@ -1,0 +1,14 @@
+MY HERO ULTRA RUMBLE NEXUS — VERSION 5.13
+
+CORRECTIONS DU HEADER MOBILE
+- Le nom MY HERO ULTRA RUMBLE reste désormais sur une seule ligne, avec NEXUS centré juste dessous.
+- Le logo n'est plus limité à 125/145 px par les anciennes règles mobiles : il ne se coupe plus sur les petites fenêtres.
+- La ligne des six boutons possède une hauteur fixe et indépendante du logo.
+- Le bouton Menu à gauche et le bouton FR / EN à droite ne montent et ne redescendent plus pendant la connexion ou le chargement.
+- Les changements de pseudo, avatar, langue et rôle administrateur ne réorganisent plus le header.
+- La hauteur exacte du header est réservée dès le premier affichage afin d'éviter le saut du contenu.
+- Le fonctionnement grand écran reste inchangé.
+
+INSTALLATION
+Remplacez les fichiers du site par le contenu de cette archive.
+Aucun nouveau script SQL Supabase n'est nécessaire.

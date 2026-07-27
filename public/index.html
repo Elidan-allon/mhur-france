@@ -812,10 +812,11 @@
 <link rel="stylesheet" href="css/v28-admin-media.css?v=29">
 <link rel="stylesheet" href="css/v511-responsive-ui.css?v=511">
 <link rel="stylesheet" href="css/v512-header-first-paint.css?v=512">
+<link rel="stylesheet" href="css/v513-header-locked-mobile.css?v=513">
 </head>
 <body>
 
-<header class="top mhurMobileHeaderV511 mhurHeaderReadyV511 mhurHeaderReadyV512" data-mhur-header-version="512">
+<header class="top mhurMobileHeaderV511 mhurHeaderReadyV511 mhurHeaderReadyV512 mhurHeaderReadyV513" data-mhur-header-version="513">
   <div class="mhurMobileBrandRowV57">
     <div class="brand">MY HERO ULTRA RUMBLE<span>NEXUS</span></div>
   </div>
@@ -835,7 +836,7 @@
 <script>
 (()=>{try{const role=String(localStorage.getItem('mhur_cached_role_v512')||'').toLowerCase();const admin=['admin','administrator','moderator'].includes(role);const b=document.getElementById('mhurAdminButton');if(b){b.dataset.mhurAdmin=admin?'1':'0';b.setAttribute('aria-hidden',String(!admin));b.tabIndex=admin?0:-1}const english=(localStorage.getItem('mhur_lang')||localStorage.getItem('lang'))==='en';if(english){const s=document.querySelector('[data-nexus-menu="social"] .nexusHeaderBtnLabel');const c=document.querySelector('[data-nexus-menu="youtube"] .nexusHeaderBtnLabel');if(s)s.textContent='Social networks';if(c)c.textContent='Content creators'}}catch(_){}})();
 </script>
-<script src="js/v512-header-first-paint.js?v=512"></script>
+<script src="js/v513-header-locked-mobile.js?v=513"></script>
 <nav id="drawer" class="drawer"></nav>
 <main class="wrap" id="app"></main>
 <script id="mhur-clean-routes-seo">
@@ -6783,7 +6784,7 @@ body .costumeTile > img,
 <link rel="stylesheet" href="css/v32-moderation-top-layer.css?v=32">
 <link rel="stylesheet" href="css/v31-header-admin-layout.css?v=31">
 <script src="js/v31-header-admin-layout.js?v=56"></script>
-<script src="js/v36-live-site-update.js?v=512"></script>
+<script src="js/v36-live-site-update.js?v=513"></script>
 <script src="js/v40-community-live-sync.js?v=51"></script>
 <script src="js/v40-ban-message.js?v=40"></script>
 <!-- V3.5: T.U.N.I.N.G language consistency + immediate moderation checks + full ban screen. -->
@@ -6816,9 +6817,10 @@ body .costumeTile > img,
 <!-- V5.10: bouton Retour dans le flux et sous le bord visuel réel du header. -->
 <link rel="stylesheet" href="css/v510-back-button-offset.css?v=510">
 <script src="js/v510-back-button-offset.js?v=510"></script>
-<!-- V5.12 reste aussi chargé en dernier : aucune ancienne règle ne peut reprendre la main. -->
+<!-- V5.13 reste chargé en dernier : logo non coupé et boutons verrouillés. -->
 <link rel="stylesheet" href="css/v511-responsive-ui.css?v=511">
 <link rel="stylesheet" href="css/v512-header-first-paint.css?v=512">
-<!-- V5.12: structure complète du header présente dans le HTML avant le premier affichage. -->
+<link rel="stylesheet" href="css/v513-header-locked-mobile.css?v=513">
+<!-- V5.13: header mobile à géométrie fixe, sans saut pendant la restauration du compte. -->
 </body>
 </html>
