@@ -1,0 +1,235 @@
+/* MHUR Nexus v5.17 — correctif final ciblé du header et des panneaux.
+   - Les boutons Réseaux sociaux / Créateurs de contenu sont stylés et placés
+     dès le premier rendu ordinateur.
+   - Sur téléphone, les panneaux commencent réellement sous les DEUX lignes
+     du header et leur titre ne peut plus être restauré dans une position coupée. */
+
+@media (min-width:761px){
+  html body > header.top,
+  html body header.top{
+    position:relative!important;
+    display:flex!important;
+    box-sizing:border-box!important;
+    width:100%!important;
+    height:72px!important;
+    min-height:72px!important;
+    align-items:center!important;
+    justify-content:center!important;
+    overflow:visible!important;
+  }
+
+  html body header.top > .mhurMobileBrandRowV57,
+  html body header.top > .mhurMobileToolbarV57{
+    display:contents!important;
+  }
+
+  html body header.top .menuBtn{
+    position:absolute!important;
+    top:50%!important;
+    right:auto!important;
+    bottom:auto!important;
+    left:14px!important;
+    width:50px!important;
+    height:50px!important;
+    margin:0!important;
+    translate:none!important;
+    transform:translateY(-50%)!important;
+  }
+
+  html body header.top .nexusHeaderLinks{
+    position:absolute!important;
+    top:50%!important;
+    right:auto!important;
+    bottom:auto!important;
+    left:76px!important;
+    z-index:45!important;
+    display:flex!important;
+    width:auto!important;
+    height:50px!important;
+    margin:0!important;
+    padding:0!important;
+    align-items:stretch!important;
+    gap:9px!important;
+    translate:none!important;
+    transform:translateY(-50%)!important;
+  }
+
+  html body header.top .nexusHeaderBtn{
+    -webkit-appearance:none!important;
+    appearance:none!important;
+    position:static!important;
+    display:flex!important;
+    box-sizing:border-box!important;
+    width:auto!important;
+    min-width:0!important;
+    height:50px!important;
+    margin:0!important;
+    padding:0 15px!important;
+    align-items:center!important;
+    justify-content:center!important;
+    gap:9px!important;
+    border:2px solid #49658d!important;
+    border-radius:14px!important;
+    background:#132139!important;
+    color:#fff!important;
+    box-shadow:0 4px 12px rgba(0,0,0,.22)!important;
+    font-size:16px!important;
+    font-weight:900!important;
+    line-height:1!important;
+    white-space:nowrap!important;
+    translate:none!important;
+    transform:none!important;
+  }
+  html body header.top .nexusHeaderBtn:hover,
+  html body header.top .nexusHeaderBtn[aria-expanded="true"]{
+    border-color:#ffe000!important;
+    background:#1d3152!important;
+    color:#ffe000!important;
+  }
+  html body header.top .nexusHeaderIcon{font-size:21px!important;line-height:1!important}
+  html body header.top .nexusHeaderBtnLabel{display:inline!important}
+  html body header.top .nexusHeaderChevron{display:inline!important;font-size:12px!important;opacity:.8!important}
+
+  html body header.top .brand{
+    position:absolute!important;
+    top:50%!important;
+    right:auto!important;
+    bottom:auto!important;
+    left:50%!important;
+    width:auto!important;
+    height:auto!important;
+    margin:0!important;
+    translate:none!important;
+    transform:translate(-50%,-50%)!important;
+  }
+
+  html body header.top .mhurTopActionsV31{
+    position:absolute!important;
+    top:50%!important;
+    right:14px!important;
+    bottom:auto!important;
+    left:auto!important;
+    z-index:2147483606!important;
+    display:flex!important;
+    width:auto!important;
+    min-width:0!important;
+    max-width:min(49vw,590px)!important;
+    height:auto!important;
+    margin:0!important;
+    padding:0!important;
+    align-items:center!important;
+    justify-content:flex-end!important;
+    gap:9px!important;
+    pointer-events:none!important;
+    translate:none!important;
+    transform:translateY(-50%)!important;
+  }
+  html body header.top .mhurTopActionsV31 > *{pointer-events:auto!important}
+  html body header.top .mhurTopActionsV31 > .mhurAdminTopButton,
+  html body header.top .mhurTopActionsV31 > .mhurAccountButton,
+  html body header.top .mhurTopActionsV31 > .lang{
+    position:static!important;
+    inset:auto!important;
+    margin:0!important;
+    flex:0 0 auto!important;
+    translate:none!important;
+    transform:none!important;
+  }
+}
+
+@media (min-width:761px) and (max-width:950px){
+  html body header.top .nexusHeaderBtn{
+    width:50px!important;
+    min-width:50px!important;
+    padding:0!important;
+  }
+  html body header.top .nexusHeaderBtnLabel,
+  html body header.top .nexusHeaderChevron{display:none!important}
+}
+
+@media (max-width:760px){
+  :root{
+    --mhur-v517-header-fallback:calc(108px + env(safe-area-inset-top,0px));
+    --mhur-v517-panel-top:max(var(--mhur-v517-measured-header-bottom,0px),var(--mhur-v517-header-fallback));
+  }
+
+  html body .nexusLinksOverlay{
+    position:fixed!important;
+    top:var(--mhur-v517-panel-top)!important;
+    right:0!important;
+    bottom:0!important;
+    left:0!important;
+    inset-block-start:var(--mhur-v517-panel-top)!important;
+    box-sizing:border-box!important;
+    display:block!important;
+    height:auto!important;
+    max-height:none!important;
+    padding:12px max(10px,env(safe-area-inset-right,0px)) max(14px,env(safe-area-inset-bottom,0px)) max(10px,env(safe-area-inset-left,0px))!important;
+    overflow-x:hidden!important;
+    overflow-y:auto!important;
+    overscroll-behavior:contain!important;
+    scroll-behavior:auto!important;
+    scroll-padding-top:0!important;
+  }
+
+  html body .nexusLinksPanel{
+    position:relative!important;
+    inset:auto!important;
+    top:auto!important;
+    right:auto!important;
+    bottom:auto!important;
+    left:auto!important;
+    box-sizing:border-box!important;
+    width:min(560px,100%)!important;
+    max-width:100%!important;
+    height:auto!important;
+    min-height:0!important;
+    max-height:none!important;
+    margin:0 auto 14px!important;
+    padding:18px 12px 12px!important;
+    overflow:visible!important;
+    overscroll-behavior:auto!important;
+    scroll-behavior:auto!important;
+    opacity:0;
+    translate:none!important;
+    transform:none!important;
+  }
+
+  html body .nexusLinksOverlay.is-open .nexusLinksPanel{
+    opacity:1!important;
+    translate:none!important;
+    transform:none!important;
+  }
+
+  html body .nexusLinksTitle{
+    position:relative!important;
+    inset:auto!important;
+    top:auto!important;
+    right:auto!important;
+    bottom:auto!important;
+    left:auto!important;
+    z-index:5!important;
+    box-sizing:border-box!important;
+    display:flex!important;
+    min-height:62px!important;
+    margin:0 0 12px!important;
+    padding:8px 54px 12px 4px!important;
+    align-items:flex-start!important;
+    overflow:visible!important;
+    line-height:1.14!important;
+    scroll-margin-top:0!important;
+    translate:none!important;
+    transform:none!important;
+  }
+  html body .nexusLinksTitle > span{
+    display:block!important;
+    min-width:0!important;
+    overflow:visible!important;
+  }
+}
+
+@media (max-width:390px){
+  :root{
+    --mhur-v517-header-fallback:calc(100px + env(safe-area-inset-top,0px));
+  }
+}
