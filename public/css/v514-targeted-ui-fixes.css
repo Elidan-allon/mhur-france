@@ -1,0 +1,150 @@
+/* MHUR Nexus v5.14 — corrections ciblées demandées.
+   1) profil public toujours au-dessus des statistiques ;
+   2) panneaux Réseaux/Créateurs entièrement visibles sur téléphone ;
+   3) header desktop réaligné après un redimensionnement. */
+
+/* Le profil, son avatar et son identité gardent une vraie place dans le flux. */
+#mhurPublicProfileBody{
+  display:flex!important;
+  flex-direction:column!important;
+  width:100%!important;
+  min-width:0!important;
+  height:auto!important;
+  min-height:0!important;
+  overflow:visible!important;
+}
+#mhurPublicProfileBody>.mhurProfileAdminV29{order:1!important}
+#mhurPublicProfileBody>.mhurPublicProfileHero{
+  order:2!important;
+  position:relative!important;
+  inset:auto!important;
+  z-index:3!important;
+  display:flex!important;
+  width:100%!important;
+  height:auto!important;
+  min-height:176px!important;
+  margin:0!important;
+  overflow:visible!important;
+  transform:none!important;
+}
+#mhurPublicProfileBody>.mhurProfileStats{
+  order:3!important;
+  position:relative!important;
+  inset:auto!important;
+  z-index:1!important;
+  width:100%!important;
+  margin:0!important;
+  transform:none!important;
+}
+#mhurPublicProfileBody>.mhurProfileBuilds{order:4!important}
+.mhurPublicProfileHero>.mhurPublicProfileAvatar,
+.mhurPublicProfileHero>img.mhurPublicProfileAvatar,
+.mhurPublicProfileHero>span.mhurPublicProfileAvatar,
+.mhurPublicProfileHero>div{
+  position:relative!important;
+  inset:auto!important;
+  visibility:visible!important;
+  opacity:1!important;
+  transform:none!important;
+}
+.mhurPublicProfileHero>.mhurPublicProfileAvatar,
+.mhurPublicProfileHero>img.mhurPublicProfileAvatar,
+.mhurPublicProfileHero>span.mhurPublicProfileAvatar{z-index:4!important}
+.mhurPublicProfileHero>div{z-index:4!important;min-width:0!important;height:auto!important;overflow:visible!important}
+
+/* Les titres des deux panneaux ne remontent plus dans la zone masquée. */
+.nexusLinksPanel{
+  scroll-padding-top:0!important;
+}
+.nexusLinksTitle{
+  top:0!important;
+  margin:0 0 8px!important;
+  padding-top:10px!important;
+}
+
+/* Tous les éléments du header ordinateur restent centrés sur la même ligne,
+   même après un passage téléphone -> ordinateur. */
+@media (min-width:761px){
+  body>header.top,
+  header.top{
+    height:72px!important;
+    min-height:72px!important;
+    align-items:center!important;
+  }
+  header.top>.menuBtn,
+  header.top>.nexusHeaderLinks,
+  header.top>.mhurTopActionsV31{
+    top:50%!important;
+    bottom:auto!important;
+    transform:translateY(-50%)!important;
+    translate:none!important;
+    margin-top:0!important;
+    margin-bottom:0!important;
+  }
+  header.top>.menuBtn{left:14px!important}
+  header.top>.nexusHeaderLinks{left:76px!important}
+  header.top>.brand{
+    position:static!important;
+    inset:auto!important;
+    margin:0!important;
+    transform:none!important;
+    translate:none!important;
+  }
+}
+
+@media (max-width:760px){
+  /* L'overlay commence sous la hauteur réellement mesurée du header. */
+  .nexusLinksOverlay{
+    inset:calc(var(--mhur-header-bottom,var(--mhur-top-height)) + 2px) 0 0!important;
+    padding:10px max(8px,env(safe-area-inset-right,0px)) max(10px,env(safe-area-inset-bottom,0px)) max(8px,env(safe-area-inset-left,0px))!important;
+    overflow:hidden!important;
+  }
+  .nexusLinksPanel{
+    top:auto!important;
+    left:auto!important;
+    width:min(560px,100%)!important;
+    max-height:calc(100dvh - var(--mhur-header-bottom,var(--mhur-top-height)) - 22px)!important;
+    margin:0 auto!important;
+    padding:12px!important;
+    overflow-x:hidden!important;
+    overflow-y:auto!important;
+    transform:none!important;
+  }
+  .nexusLinksOverlay.is-open .nexusLinksPanel{transform:none!important}
+  .nexusLinksTitle{
+    position:sticky!important;
+    top:0!important;
+    z-index:5!important;
+    min-height:54px!important;
+    padding:10px 4px 10px!important;
+    background:#0c1422!important;
+  }
+
+  /* Sur téléphone le bloc identité est entièrement visible avant les statistiques. */
+  #mhurPublicProfileBody>.mhurPublicProfileHero{
+    min-height:190px!important;
+    flex-direction:column!important;
+    align-items:center!important;
+    justify-content:flex-start!important;
+    gap:12px!important;
+    padding:24px 16px 20px!important;
+    text-align:center!important;
+  }
+  .mhurPublicProfileHero>.mhurPublicProfileAvatar,
+  .mhurPublicProfileHero>img.mhurPublicProfileAvatar,
+  .mhurPublicProfileHero>span.mhurPublicProfileAvatar{
+    flex:0 0 112px!important;
+    width:112px!important;
+    height:112px!important;
+    min-width:112px!important;
+    min-height:112px!important;
+  }
+  .mhurPublicProfileHero h2,
+  .mhurPublicProfileHero p,
+  .mhurProfileBadges{
+    position:static!important;
+    visibility:visible!important;
+    opacity:1!important;
+    transform:none!important;
+  }
+}
