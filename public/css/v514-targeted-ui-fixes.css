@@ -1,7 +1,7 @@
-/* MHUR Nexus v5.14 — corrections ciblées demandées.
-   1) profil public toujours au-dessus des statistiques ;
-   2) panneaux Réseaux/Créateurs entièrement visibles sur téléphone ;
-   3) header desktop réaligné après un redimensionnement. */
+/* MHUR Nexus v5.14 — corrections ciblées uniquement.
+   - Profil public au-dessus des statistiques.
+   - Panneaux Réseaux/Créateurs entièrement visibles sur téléphone.
+   - Header desktop stable après redimensionnement. */
 
 /* Le profil, son avatar et son identité gardent une vraie place dans le flux. */
 #mhurPublicProfileBody{
@@ -39,31 +39,28 @@
 #mhurPublicProfileBody>.mhurProfileBuilds{order:4!important}
 .mhurPublicProfileHero>.mhurPublicProfileAvatar,
 .mhurPublicProfileHero>img.mhurPublicProfileAvatar,
-.mhurPublicProfileHero>span.mhurPublicProfileAvatar,
-.mhurPublicProfileHero>div{
+.mhurPublicProfileHero>span.mhurPublicProfileAvatar{
   position:relative!important;
   inset:auto!important;
+  z-index:4!important;
   visibility:visible!important;
   opacity:1!important;
   transform:none!important;
 }
-.mhurPublicProfileHero>.mhurPublicProfileAvatar,
-.mhurPublicProfileHero>img.mhurPublicProfileAvatar,
-.mhurPublicProfileHero>span.mhurPublicProfileAvatar{z-index:4!important}
-.mhurPublicProfileHero>div{z-index:4!important;min-width:0!important;height:auto!important;overflow:visible!important}
-
-/* Les titres des deux panneaux ne remontent plus dans la zone masquée. */
-.nexusLinksPanel{
-  scroll-padding-top:0!important;
-}
-.nexusLinksTitle{
-  top:0!important;
-  margin:0 0 8px!important;
-  padding-top:10px!important;
+.mhurPublicProfileHero>div{
+  position:relative!important;
+  inset:auto!important;
+  z-index:4!important;
+  min-width:0!important;
+  height:auto!important;
+  overflow:visible!important;
+  visibility:visible!important;
+  opacity:1!important;
+  transform:none!important;
 }
 
-/* Tous les éléments du header ordinateur restent centrés sur la même ligne,
-   même après un passage téléphone -> ordinateur. */
+/* Tous les éléments du header ordinateur restent sur la même ligne après
+   un passage téléphone -> ordinateur. Aucune structure DOM n'est modifiée ici. */
 @media (min-width:761px){
   body>header.top,
   header.top{
@@ -76,8 +73,8 @@
   header.top>.mhurTopActionsV31{
     top:50%!important;
     bottom:auto!important;
-    transform:translateY(-50%)!important;
     translate:none!important;
+    transform:translateY(-50%)!important;
     margin-top:0!important;
     margin-bottom:0!important;
   }
@@ -87,37 +84,67 @@
     position:static!important;
     inset:auto!important;
     margin:0!important;
-    transform:none!important;
     translate:none!important;
+    transform:none!important;
   }
 }
 
 @media (max-width:760px){
-  /* L'overlay commence sous la hauteur réellement mesurée du header. */
-  .nexusLinksOverlay{
-    inset:calc(var(--mhur-header-bottom,var(--mhur-top-height)) + 2px) 0 0!important;
-    padding:10px max(8px,env(safe-area-inset-right,0px)) max(10px,env(safe-area-inset-bottom,0px)) max(8px,env(safe-area-inset-left,0px))!important;
+  /* Le panneau commence réellement sous le header fixe. Les propriétés sont
+     séparées au lieu du raccourci inset afin d'éviter les anciennes règles iOS. */
+  html body .nexusLinksOverlay{
+    position:fixed!important;
+    top:calc(var(--mhur-mobile-header-height,var(--mhur-header-bottom,112px)) + 2px)!important;
+    right:0!important;
+    bottom:0!important;
+    left:0!important;
+    inset-block-start:calc(var(--mhur-mobile-header-height,var(--mhur-header-bottom,112px)) + 2px)!important;
+    box-sizing:border-box!important;
+    padding:14px max(10px,env(safe-area-inset-right,0px)) max(12px,env(safe-area-inset-bottom,0px)) max(10px,env(safe-area-inset-left,0px))!important;
+    align-items:flex-start!important;
+    justify-content:center!important;
     overflow:hidden!important;
   }
-  .nexusLinksPanel{
-    top:auto!important;
-    left:auto!important;
+  html body .nexusLinksPanel{
+    position:relative!important;
+    top:0!important;
+    right:auto!important;
+    bottom:auto!important;
+    left:0!important;
+    box-sizing:border-box!important;
     width:min(560px,100%)!important;
-    max-height:calc(100dvh - var(--mhur-header-bottom,var(--mhur-top-height)) - 22px)!important;
+    max-width:100%!important;
+    max-height:calc(100dvh - var(--mhur-mobile-header-height,var(--mhur-header-bottom,112px)) - 30px)!important;
     margin:0 auto!important;
-    padding:12px!important;
+    padding:16px 12px 12px!important;
     overflow-x:hidden!important;
     overflow-y:auto!important;
+    overscroll-behavior:contain!important;
+    scroll-padding-top:0!important;
     transform:none!important;
   }
-  .nexusLinksOverlay.is-open .nexusLinksPanel{transform:none!important}
-  .nexusLinksTitle{
-    position:sticky!important;
-    top:0!important;
+  html body .nexusLinksOverlay.is-open .nexusLinksPanel{
+    transform:none!important;
+    opacity:1!important;
+  }
+
+  /* Le titre n'est plus sticky : il ne peut donc plus être replacé sous le
+     header lorsque le navigateur restaure une ancienne position de défilement. */
+  html body .nexusLinksTitle{
+    position:relative!important;
+    top:auto!important;
+    right:auto!important;
+    bottom:auto!important;
+    left:auto!important;
     z-index:5!important;
+    box-sizing:border-box!important;
     min-height:54px!important;
-    padding:10px 4px 10px!important;
+    margin:0 0 10px!important;
+    padding:6px 4px 10px!important;
+    flex:0 0 auto!important;
     background:#0c1422!important;
+    line-height:1.12!important;
+    transform:none!important;
   }
 
   /* Sur téléphone le bloc identité est entièrement visible avant les statistiques. */

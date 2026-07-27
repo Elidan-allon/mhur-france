@@ -1,4 +1,4 @@
-const RELEASE='514';
+const RELEASE='513';
 const CACHE_PREFIX='mhur-nexus-v';
 const CACHE=`${CACHE_PREFIX}${RELEASE}`;
 const OFFLINE='/index.html';
