@@ -1,0 +1,31 @@
+/* MHUR Nexus v5.18 — correction ciblée ordinateur.
+   Le correctif v5.17 avait remis le header dans le flux de la page sur PC,
+   ce qui créait un espace vide au-dessus et empêchait la barre de rester fixe.
+   Cette règle restaure uniquement le comportement fixe d'origine sur ordinateur. */
+
+@media (min-width:761px){
+  :root{
+    --mhur-top-height:72px;
+  }
+
+  html body{
+    padding-top:var(--mhur-top-height)!important;
+  }
+
+  html body > header.top,
+  html body header.top{
+    position:fixed!important;
+    inset:0 0 auto 0!important;
+    top:0!important;
+    right:0!important;
+    bottom:auto!important;
+    left:0!important;
+    width:100%!important;
+    height:var(--mhur-top-height)!important;
+    min-height:var(--mhur-top-height)!important;
+    margin:0!important;
+    z-index:2147483600!important;
+    translate:none!important;
+    transform:none!important;
+  }
+}

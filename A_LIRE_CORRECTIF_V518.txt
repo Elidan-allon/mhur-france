@@ -1,0 +1,11 @@
+CORRECTIF MHUR NEXUS V5.18
+
+Correction ciblée uniquement sur ordinateur :
+- suppression de l'espace vide apparu tout en haut ;
+- restauration du header fixe pendant le défilement.
+
+Les corrections téléphone, panneaux Réseaux sociaux / Créateurs de contenu,
+reconnexion sans rechargement et modification des mods ne sont pas modifiées.
+
+Installation : copiez le dossier mhur-france par-dessus votre dossier actuel
+et acceptez le remplacement des fichiers.
