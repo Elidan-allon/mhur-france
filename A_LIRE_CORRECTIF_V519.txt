@@ -1,0 +1,13 @@
+CORRECTIF V5.19 — LIMITE VIDÉO DE MOD À 100 MB
+
+1. Décompresse ce ZIP par-dessus ton dossier actuel "mhur-france".
+2. Accepte le remplacement des fichiers.
+
+Modifications uniquement :
+- vidéo de démonstration d'un mod : limite côté site passée de 50 MB à 100 MB ;
+- texte et message d'erreur mis à jour ;
+- envoi TUS/reprenables déjà présent conservé pour les gros fichiers ;
+- aucune autre fonctionnalité modifiée.
+
+IMPORTANT : le site autorisera bien la sélection et tentera l'envoi jusqu'à 100 MB.
+Si Supabase renvoie une erreur de taille, il faudra aussi augmenter la limite du bucket "mod-previews" dans Supabase Storage.

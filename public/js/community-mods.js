@@ -9,7 +9,7 @@ const CATEGORIES=['skin','ui','audio','vfx','animation','environment','gameplay'
 const LEGACY={skins:'skin',sounds:'audio',effects:'vfx',maps:'environment',characters:'skin',other:'misc'};
 const MB=1024*1024;
 const PREVIEW_IMAGE_MAX=20*MB;
-const PREVIEW_VIDEO_MAX=50*MB;
+const PREVIEW_VIDEO_MAX=100*MB;
 const RESUMABLE_THRESHOLD=6*MB;
 const tx=(fr,en)=>{try{return typeof lang!=='undefined'&&lang==='en'?en:fr}catch(_){return fr}};
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
@@ -224,7 +224,7 @@ function ensurePublishModal(){
       <label>${tx('Tags supplémentaires','Additional tags')}<input name="tags" placeholder="HUD, recolor, voice…"><span class="modsFieldHint">${tx('Sépare les tags avec des virgules.','Separate tags with commas.')}</span></label>
       <label class="mhurMediaDropZone mhurModUploadSection mhurModUploadFiles" data-mod-file-drop><span class="mhurUploadTypeBadge">📦 ${tx('FICHIERS DU MOD','MOD FILES')}</span>${tx('Fichiers du mod (1 à 3)','Mod files (1 to 3)')}<div class="mhurModFilesDraft" data-mod-draft-files></div><input name="mod_file" type="file" multiple accept=".pak,.utoc,.ucas,.zip"><span class="modsFieldHint modsModFileHint">${tx('1 fichier minimum · 3 maximum · 200 MB par fichier','At least 1 file · maximum 3 · 200 MB per file')}</span><span class="mhurPasteHint">📥 ${tx('Clique, colle ou glisse les fichiers ici.','Click, paste or drop files here.')}</span></label>
       <label class="mhurMediaDropZone mhurModUploadSection mhurModUploadImages" data-mod-image-drop><span class="mhurUploadTypeBadge">🖼️ ${tx('PHOTOS','PHOTOS')}</span>${tx('Photos de présentation (1 à 4)','Preview photos (1 to 4)')}<div class="mhurMediaDraftPreview mhurMediaDraftGrid" data-mod-draft-images></div><input name="preview_images" type="file" multiple accept="image/jpeg,image/png,image/webp,image/gif"><span class="modsFieldHint modsPreviewFileHint">${tx('Au moins 1 photo obligatoire · 4 maximum · 20 MB par photo','At least 1 photo required · maximum 4 · 20 MB per photo')}</span><span class="mhurPasteHint">📥 ${tx('Clique, colle ou glisse les images ici.','Click, paste or drop images here.')}</span></label>
-      <label class="mhurMediaDropZone mhurModUploadSection mhurModUploadVideo" data-mod-video-drop><span class="mhurUploadTypeBadge">🎬 ${tx('VIDÉO','VIDEO')}</span>${tx('Vidéo de démonstration (facultative)','Demo video (optional)')}<div class="mhurMediaDraftPreview" data-mod-draft-video></div><input name="preview_video" type="file" accept="video/mp4,video/webm,video/quicktime"><span class="modsFieldHint modsPreviewVideoHint">${tx('MP4, WEBM ou MOV · 50 MB maximum','MP4, WEBM or MOV · 50 MB maximum')}</span><span class="mhurPasteHint">📥 ${tx('Clique, colle ou glisse une vidéo ici.','Click, paste or drop a video here.')}</span></label>
+      <label class="mhurMediaDropZone mhurModUploadSection mhurModUploadVideo" data-mod-video-drop><span class="mhurUploadTypeBadge">🎬 ${tx('VIDÉO','VIDEO')}</span>${tx('Vidéo de démonstration (facultative)','Demo video (optional)')}<div class="mhurMediaDraftPreview" data-mod-draft-video></div><input name="preview_video" type="file" accept="video/mp4,video/webm,video/quicktime"><span class="modsFieldHint modsPreviewVideoHint">${tx('MP4, WEBM ou MOV · 100 MB maximum','MP4, WEBM or MOV · 100 MB maximum')}</span><span class="mhurPasteHint">📥 ${tx('Clique, colle ou glisse une vidéo ici.','Click, paste or drop a video here.')}</span></label>
       <button class="modsSubmit" type="submit">${tx('Publier','Publish')}</button>
       <progress class="modsUploadProgress" id="modsUploadProgress" max="100" value="0" hidden></progress>
       <div class="modsProgress" id="modsProgress"></div>
@@ -320,7 +320,7 @@ function validateVideoFile(file){
   const okMime=/^video\/(mp4|webm)$/i.test(file.type||'');
   const okExt=['.mp4','.webm'].includes(fileExtension(file));
   if(!okMime&&!okExt)throw new Error(tx('Format vidéo non accepté.','Unsupported video format.'));
-  if(file.size>PREVIEW_VIDEO_MAX)throw new Error(tx('La vidéo dépasse 50 MB.','The video exceeds 50 MB.'));
+  if(file.size>PREVIEW_VIDEO_MAX)throw new Error(tx('La vidéo dépasse 100 MB.','The video exceeds 100 MB.'));
 }
 async function fileSha256(file){
   if(!file||!window.crypto?.subtle||file.size>64*1024*1024)return '';
@@ -379,7 +379,7 @@ function setModFormMode(row=null){
     :tx('Au moins 1 photo obligatoire · 4 maximum · 20 MB par photo','At least 1 photo required · maximum 4 · 20 MB per photo');
   f.querySelector('.modsPreviewVideoHint').textContent=row
     ?tx('La vidéo est facultative : utilise × pour la supprimer, ou choisis-en une nouvelle pour la remplacer.','The video is optional: use × to delete it, or choose a new one to replace it.')
-    :tx('Facultative · MP4 ou WEBM · 50 MB maximum','Optional · MP4 or WEBM · 50 MB maximum');
+    :tx('Facultative · MP4 ou WEBM · 100 MB maximum','Optional · MP4 or WEBM · 100 MB maximum');
   f.querySelector('#modsProgress').textContent='';
   f.querySelector('#modsUploadProgress').hidden=true;
   renderModDraftMedia(f);
