@@ -1,0 +1,187 @@
+/* MHUR Nexus v5.16 — correctifs ciblés.
+   1) Header ordinateur stable dès le premier affichage.
+   2) Panneaux Réseaux/Créateurs réellement sous les deux lignes du header mobile.
+   3) Présentation des médias existants lors de la modification d'un mod. */
+
+/* Le HTML initial utilise volontairement les conteneurs mobiles pour éviter les
+   sauts sur téléphone. Sur ordinateur, ces conteneurs sont neutralisés dès le
+   premier rendu, avant l'exécution du JavaScript. */
+@media (min-width:761px){
+  html body > header.top,
+  html body header.top{
+    position:relative!important;
+    box-sizing:border-box!important;
+    display:flex!important;
+    width:100%!important;
+    height:72px!important;
+    min-height:72px!important;
+    align-items:center!important;
+    justify-content:center!important;
+    overflow:visible!important;
+  }
+
+  html body header.top > .mhurMobileBrandRowV57,
+  html body header.top > .mhurMobileToolbarV57{
+    display:contents!important;
+  }
+
+  html body header.top > .menuBtn,
+  html body header.top .mhurMobileToolbarV57 > .menuBtn{
+    position:absolute!important;
+    inset:auto auto auto 14px!important;
+    top:50%!important;
+    margin:0!important;
+    translate:none!important;
+    transform:translateY(-50%)!important;
+  }
+
+  html body header.top > .nexusHeaderLinks,
+  html body header.top .mhurMobileToolbarV57 > .nexusHeaderLinks{
+    position:absolute!important;
+    inset:auto auto auto 76px!important;
+    top:50%!important;
+    margin:0!important;
+    translate:none!important;
+    transform:translateY(-50%)!important;
+  }
+
+  html body header.top > .brand,
+  html body header.top .mhurMobileBrandRowV57 > .brand{
+    position:absolute!important;
+    inset:auto!important;
+    top:50%!important;
+    left:50%!important;
+    width:auto!important;
+    height:auto!important;
+    margin:0!important;
+    translate:none!important;
+    transform:translate(-50%,-50%)!important;
+  }
+
+  html body header.top > .mhurTopActionsV31,
+  html body header.top .mhurMobileToolbarV57 > .mhurTopActionsV31{
+    position:absolute!important;
+    inset:auto 14px auto auto!important;
+    top:50%!important;
+    margin:0!important;
+    translate:none!important;
+    transform:translateY(-50%)!important;
+  }
+
+  html body header.top .menuBtn,
+  html body header.top .nexusHeaderLinks,
+  html body header.top .brand,
+  html body header.top .mhurTopActionsV31{
+    transition-property:background-color,border-color,color,box-shadow,opacity!important;
+  }
+}
+
+@media (max-width:760px){
+  /* La valeur est mesurée sur le bas de la deuxième ligne (toolbar), pas
+     uniquement sur la boîte du header qui peut être plus petite sur iOS. */
+  html body .nexusLinksOverlay{
+    position:fixed!important;
+    top:var(--mhur-links-panel-top,calc(var(--mhur-mobile-header-height,112px) + 4px))!important;
+    right:0!important;
+    bottom:0!important;
+    left:0!important;
+    inset-block-start:var(--mhur-links-panel-top,calc(var(--mhur-mobile-header-height,112px) + 4px))!important;
+    box-sizing:border-box!important;
+    padding:12px max(10px,env(safe-area-inset-right,0px)) max(12px,env(safe-area-inset-bottom,0px)) max(10px,env(safe-area-inset-left,0px))!important;
+    align-items:flex-start!important;
+    justify-content:center!important;
+    overflow:hidden!important;
+  }
+
+  html body .nexusLinksPanel{
+    position:relative!important;
+    inset:auto!important;
+    top:0!important;
+    box-sizing:border-box!important;
+    width:min(560px,100%)!important;
+    max-width:100%!important;
+    max-height:calc(100dvh - var(--mhur-links-panel-top,calc(var(--mhur-mobile-header-height,112px) + 4px)) - 14px)!important;
+    margin:0 auto!important;
+    padding:18px 12px 12px!important;
+    overflow-x:hidden!important;
+    overflow-y:auto!important;
+    overscroll-behavior:contain!important;
+    scroll-padding-top:0!important;
+    translate:none!important;
+    transform:none!important;
+  }
+
+  html body .nexusLinksOverlay.is-open .nexusLinksPanel{
+    opacity:1!important;
+    translate:none!important;
+    transform:none!important;
+  }
+
+  html body .nexusLinksTitle{
+    position:relative!important;
+    inset:auto!important;
+    top:auto!important;
+    z-index:5!important;
+    box-sizing:border-box!important;
+    min-height:58px!important;
+    margin:0 0 12px!important;
+    padding:8px 54px 12px 4px!important;
+    line-height:1.14!important;
+    overflow:visible!important;
+    translate:none!important;
+    transform:none!important;
+  }
+}
+
+/* Médias déjà enregistrés dans la fenêtre de modification d'un mod. */
+.modsForm .mhurModFilesDraft,
+.modsForm .mhurMediaDraftPreview{
+  width:100%;
+}
+.modsForm .mhurModFileDraftCard{
+  position:relative;
+  display:grid;
+  grid-template-columns:42px minmax(0,1fr) 32px;
+  gap:10px;
+  align-items:center;
+  width:100%;
+  margin:8px 0;
+  padding:10px;
+  border:1px solid #43628b;
+  border-radius:12px;
+  background:#0b1628;
+  color:#fff;
+}
+.modsForm .mhurModFileDraftCard > span{
+  display:grid;
+  place-items:center;
+  width:42px;
+  height:42px;
+  border-radius:10px;
+  background:#172943;
+  font-size:22px;
+}
+.modsForm .mhurModFileDraftCard > div{min-width:0}
+.modsForm .mhurModFileDraftCard b,
+.modsForm .mhurModFileDraftCard small{
+  display:block;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.modsForm .mhurModFileDraftCard small{margin-top:3px;color:#b8cae2}
+.modsForm .mhurExistingMediaCard{box-shadow:inset 4px 0 0 #ffe000}
+.modsForm .mhurNewMediaCard{box-shadow:inset 4px 0 0 #38bdf8}
+.modsForm .mhurMediaStateBadge{
+  display:inline-block!important;
+  width:auto!important;
+  height:auto!important;
+  margin:0 0 6px!important;
+  padding:3px 7px!important;
+  border-radius:999px!important;
+  background:#263b5b!important;
+  color:#ffe000!important;
+  font-size:.7rem!important;
+  font-weight:900!important;
+  line-height:1!important;
+}
