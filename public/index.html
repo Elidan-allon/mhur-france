@@ -6825,5 +6825,105 @@ body .costumeTile > img,
 <!-- V5.14 : corrections ciblées profil, panneaux mobiles et alignement du header. -->
 <link rel="stylesheet" href="css/v514-targeted-ui-fixes.css?v=5142">
 <script src="js/v514-targeted-ui-fixes.js?v=5142"></script>
+<!-- V5.15 : les panneaux mobiles commencent toujours sous le bord réel du header. -->
+<style id="mhur-v515-mobile-panel-below-header">
+@media (max-width:760px){
+  html body .nexusLinksOverlay{
+    top:var(--mhur-links-panel-top,calc(var(--mhur-mobile-header-height,112px) + 4px))!important;
+    inset-block-start:var(--mhur-links-panel-top,calc(var(--mhur-mobile-header-height,112px) + 4px))!important;
+    padding-top:10px!important;
+  }
+  html body .nexusLinksPanel{
+    top:0!important;
+    margin-top:0!important;
+    max-height:calc(100dvh - var(--mhur-links-panel-top,calc(var(--mhur-mobile-header-height,112px) + 4px)) - 10px)!important;
+    scroll-behavior:auto!important;
+  }
+  html body .nexusLinksTitle{
+    top:auto!important;
+    margin-top:0!important;
+    padding-top:10px!important;
+    transform:none!important;
+  }
+}
+</style>
+<script id="mhur-v515-mobile-panel-below-header-script">
+(()=>{
+  'use strict';
+  const root=document.documentElement;
+  let observer=null;
+
+  function setExactPanelTop(){
+    if(!matchMedia('(max-width:760px)').matches)return;
+    const header=document.querySelector('header.top');
+    if(!header)return;
+    const rect=header.getBoundingClientRect();
+    const top=Math.max(0,Math.ceil(rect.bottom))+4;
+    root.style.setProperty('--mhur-links-panel-top',`${top}px`);
+  }
+
+  function resetOpenPanel(){
+    const panel=document.querySelector('.nexusLinksOverlay.is-open .nexusLinksPanel');
+    if(!panel)return;
+    panel.scrollTop=0;
+    panel.scrollLeft=0;
+    try{panel.scrollTo({top:0,left:0,behavior:'auto'})}catch(_){ }
+  }
+
+  function secureOpenPanel(){
+    setExactPanelTop();
+    requestAnimationFrame(()=>{
+      setExactPanelTop();
+      resetOpenPanel();
+    });
+    [40,120,260].forEach(delay=>setTimeout(()=>{
+      setExactPanelTop();
+      resetOpenPanel();
+    },delay));
+  }
+
+  function watchOverlay(){
+    const overlay=document.querySelector('.nexusLinksOverlay');
+    if(!overlay)return false;
+    observer?.disconnect();
+    observer=new MutationObserver(records=>{
+      if(records.some(record=>record.type==='attributes'&&overlay.classList.contains('is-open'))){
+        secureOpenPanel();
+      }
+      if(records.some(record=>record.type==='childList')&&overlay.classList.contains('is-open')){
+        secureOpenPanel();
+      }
+    });
+    observer.observe(overlay,{attributes:true,attributeFilter:['class'],childList:true,subtree:true});
+    return true;
+  }
+
+  document.addEventListener('pointerdown',event=>{
+    if(event.target.closest('.nexusHeaderBtn'))setExactPanelTop();
+  },true);
+  document.addEventListener('click',event=>{
+    if(event.target.closest('.nexusHeaderBtn,.nexusLanguageRow,.nexusBackBtn'))secureOpenPanel();
+  },true);
+
+  const start=()=>{
+    setExactPanelTop();
+    if(!watchOverlay()){
+      const bodyObserver=new MutationObserver(()=>{
+        if(watchOverlay())bodyObserver.disconnect();
+      });
+      bodyObserver.observe(document.body,{childList:true,subtree:true});
+    }
+  };
+
+  addEventListener('resize',setExactPanelTop,{passive:true});
+  addEventListener('orientationchange',secureOpenPanel,{passive:true});
+  addEventListener('pageshow',secureOpenPanel,{passive:true});
+  if(window.visualViewport){
+    visualViewport.addEventListener('resize',setExactPanelTop,{passive:true});
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});
+  else start();
+})();
+</script>
 </body>
 </html>
