@@ -973,6 +973,140 @@ def official_event_image(session: requests.Session, root: Path, anchor: Tag, eve
     return local or remote or (old_image if old_is_official else ""), remote
 
 
+
+def login_bonus_title(raw_title: str) -> str:
+    """Normalise le titre anglais de la source pour l'affichage français."""
+    title = clean(raw_title)
+    title = re.sub(r"^(?:LOGIN\s+BONUSES?|BONUS)\s*[:\-—]?\s*", "", title, flags=re.I)
+    title = re.sub(r"\bJST\b", "", title, flags=re.I)
+    title = clean(title)
+
+    special = re.match(r"^Special Login Bonus\s*[:\-—]?\s*(.*)$", title, re.I)
+    if special:
+        suffix = clean(special.group(1))
+        suffix = re.sub(r"\bSeason\b", "Saison", suffix, flags=re.I)
+        return clean("Bonus de connexion spécial" + (f" — {suffix}" if suffix else ""))
+
+    birthday = re.match(r"^(.+?)\s+Birthday Campaign(?:\s+(20\d{2}))?$", title, re.I)
+    if birthday:
+        name = clean(birthday.group(1))
+        year = clean(birthday.group(2))
+        return clean(f"Campagne anniversaire {name}" + (f" {year}" if year else ""))
+
+    return title
+
+
+def login_bonus_container(node: Tag) -> Tag:
+    """Remonte jusqu'à la carte qui contient un seul bonus (une paire de dates)."""
+    token = r"20\d{2}-\d{2}-\d{2}\s+\d{2}:\d{2}:\d{2}"
+    current: Tag | None = node
+    best = node
+    for _ in range(12):
+        if not isinstance(current, Tag):
+            break
+        text = clean(current.get_text(" "))
+        count = len(re.findall(token, text, re.I))
+        if 1 <= count <= 2:
+            best = current
+            # Deux dates correspondent normalement au début et à la fin d'une
+            # seule carte. On s'arrête ici pour ne pas remonter jusqu'au body.
+            if count == 2 or image_urls(current) or current.find("a", href=True):
+                return current
+        elif count > 2:
+            break
+        current = current.parent if isinstance(current.parent, Tag) else None
+    return best
+
+
+def parse_login_bonuses(root: Path, soup: BeautifulSoup, previous: list[dict] | None = None):
+    """Lit la section Login Bonuses et supprime les anciennes cartes si elle est vide.
+
+    La présence du titre de section prouve que la page d'accueil a été lue
+    correctement. Dans ce cas, zéro carte sur UltraRumble doit produire une
+    liste vide localement, au lieu de conserver les bonus expirés.
+    """
+    heading = next(
+        (
+            tag for tag in soup.find_all(["h1", "h2", "h3", "h4", "h5"])
+            if "login bonuses" in clean(tag.get_text(" ")).lower()
+        ),
+        None,
+    )
+    if heading is None:
+        print("[HOME BONUS WARNING] Section Login Bonuses introuvable; conservation des données précédentes.", flush=True)
+        return list(previous or [])
+
+    old_by_title = {
+        clean(item.get("title")).lower(): item
+        for item in (previous or [])
+        if isinstance(item, dict) and clean(item.get("title"))
+    }
+    date_token = r"20\d{2}-\d{2}-\d{2}\s+\d{2}:\d{2}:\d{2}"
+    candidates: dict[tuple[str, str, str], dict] = {}
+
+    for node in section_after_heading(soup, "Login Bonuses"):
+        if not isinstance(node, Tag):
+            continue
+        node_text = clean(node.get_text(" "))
+        if not re.search(date_token, node_text):
+            continue
+
+        card = login_bonus_container(node)
+        raw_text = clean(card.get_text(" "))
+        start, end = parse_dates(raw_text)
+        if not start:
+            continue
+
+        title = re.sub(date_token, " ", raw_text, flags=re.I)
+        title = re.sub(r"\bJST\b", " ", title, flags=re.I)
+        title = re.sub(r"\b(?:START|END)\s*:?", " ", title, flags=re.I)
+        title = re.sub(r"\bImage\b", " ", title, flags=re.I)
+        title = login_bonus_title(title)
+        if not title or title.lower() in {"login bonuses", "login bonus"}:
+            continue
+
+        old = old_by_title.get(title.lower(), {})
+        remote = best_image(card, name=title)
+        local = ""
+        if remote:
+            local = download_asset(
+                root,
+                remote,
+                f"assets/home/bonuses/{slug(title, 70)}",
+            )
+
+        low = title.lower()
+        if not local and not old.get("image"):
+            if "midoriya" in low and (root / "assets/home/bonuses/birthday_midoriya.png").exists():
+                local = "assets/home/bonuses/birthday_midoriya.png"
+            elif "mirio" in low and (root / "assets/home/bonuses/birthday_mirio.png").exists():
+                local = "assets/home/bonuses/birthday_mirio.png"
+            elif "bonus de connexion spécial" in low and (root / "assets/home/bonuses/special_common.png").exists():
+                local = "assets/home/bonuses/special_common.png"
+
+        link = card.find("a", href=True)
+        url = absolute(link.get("href")) if link else clean(old.get("url"))
+        bonus = {
+            "type": "Anniversaire" if any(word in low for word in ("anniversaire", "birthday")) else "Connexion",
+            "title": title,
+            "start": start,
+            "end": end,
+            "image": local or old.get("image", "") or remote,
+        }
+        if url and "notices" not in url.lower():
+            bonus["url"] = url
+
+        key = (title.lower(), start or "", end or "")
+        candidates[key] = bonus
+
+    bonuses = list(candidates.values())
+    bonuses.sort(key=lambda item: (item.get("start") or "", item.get("title") or ""))
+    if bonuses:
+        print(f"[HOME] {len(bonuses)} bonus de connexion actif(s).", flush=True)
+    else:
+        print("[HOME] Aucun bonus de connexion actif : suppression des anciennes cartes.", flush=True)
+    return bonuses
+
 def parse_home(session: requests.Session, root: Path, previous: dict):
     soup = BeautifulSoup(get(session, BASE).text, "lxml")
     text = clean(soup.get_text(" "))
@@ -1030,6 +1164,12 @@ def parse_home(session: requests.Session, root: Path, previous: dict):
         )
     if not events:
         events = previous.get("events", [])
+
+    login_bonuses = parse_login_bonuses(
+        root,
+        soup,
+        previous.get("login_bonuses", []),
+    )
 
     previous_latest = (
         previous.get("patch_notes", [None])[0]
@@ -1099,6 +1239,7 @@ def parse_home(session: requests.Session, root: Path, previous: dict):
         "latest_releases": releases or previous_releases,
         "gachas": gachas,
         "events": events,
+        "login_bonuses": login_bonuses,
         "patch_notes": patches,
     }
 
@@ -1131,7 +1272,8 @@ def main():
     print(
         f"[HOME DONE] gachas={len(new_data.get('gachas', []))} "
         f"patches={len(new_data.get('patch_notes', []))} "
-        f"events={len(new_data.get('events', []))}",
+        f"events={len(new_data.get('events', []))} "
+        f"bonus={len(new_data.get('login_bonuses', []))}",
         flush=True,
     )
     for gacha in new_data.get("gachas", []):
