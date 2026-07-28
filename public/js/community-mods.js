@@ -1,0 +1,684 @@
+(function(){
+'use strict';
+const CFG=window.MHUR_COMMUNITY_CONFIG||{};
+const API=String(CFG.supabaseUrl||'').replace(/\/+$/,'');
+const KEY=String(CFG.supabaseKey||'');
+const REMOTE=/^https:\/\/.+\.supabase\.co$/i.test(API)&&!!KEY;
+const state={rows:[],profiles:{},liked:new Set(),favorites:new Set(),loading:false,error:'',category:'all',character:'all',query:'',sort:'recent',active:null,comments:[],editingId:null};
+const CATEGORIES=['skin','ui','audio','vfx','animation','environment','gameplay','misc'];
+const LEGACY={skins:'skin',sounds:'audio',effects:'vfx',maps:'environment',characters:'skin',other:'misc'};
+const MB=1024*1024;
+const PREVIEW_IMAGE_MAX=20*MB;
+const PREVIEW_VIDEO_MAX=100*MB;
+const RESUMABLE_THRESHOLD=6*MB;
+const tx=(fr,en)=>{try{return typeof lang!=='undefined'&&lang==='en'?en:fr}catch(_){return fr}};
+const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
+const user=()=>window.MHUR_AUTH?.getUser?.()||null;
+const token=()=>window.MHUR_AUTH?.getAccessToken?.()||KEY;
+const safeName=v=>String(v||'file').replace(/[^a-zA-Z0-9._-]+/g,'_').slice(-140);
+const normalizedCategory=c=>LEGACY[c]||c||'misc';
+function categoryIcon(c){return ({skin:'👕',ui:'🖥️',audio:'🔊',vfx:'✨',animation:'🎬',environment:'🗺️',gameplay:'🎮',misc:'🧩'})[normalizedCategory(c)]||'🧩'}
+function categoryLabel(c){const k=normalizedCategory(c);const fr={skin:'Skin',ui:'Interface',audio:'Audio',vfx:'VFX',animation:'Animation',environment:'Environnement',gameplay:'Gameplay',misc:'Divers'};const en={skin:'Skin',ui:'UI',audio:'Audio',vfx:'VFX',animation:'Animation',environment:'Environment',gameplay:'Gameplay',misc:'Misc'};return `${categoryIcon(k)} ${(tx(fr,en))[k]||k}`}
+function formatDate(v){try{return new Intl.DateTimeFormat(typeof lang!=='undefined'&&lang==='en'?'en-GB':'fr-FR',{dateStyle:'medium',timeStyle:'short'}).format(new Date(v))}catch(_){return ''}}
+function formatSize(n){n=Number(n)||0;if(n<1024)return `${n} B`;if(n<1048576)return `${(n/1024).toFixed(1)} KB`;return `${(n/1048576).toFixed(1)} MB`}
+async function request(path,opt={}){const headers={...(opt.headers||{})};if(opt.body&&!(opt.body instanceof Blob)&&!headers['Content-Type'])headers['Content-Type']='application/json';const runner=window.MHUR_AUTH?.fetch||fetch;const r=await runner(API+path,{...opt,headers});const text=await r.text();let data=text;try{data=text?JSON.parse(text):null}catch(_){}if(!r.ok)throw new Error(data?.message||data?.error||data?.hint||text||`HTTP ${r.status}`);return data}
+function missingCommunityModsColumn(error){const m=String(error?.message||error||'').match(/Could not find the ['"]([^'"]+)['"] column of ['"]community_mods['"]/i);return m?m[1]:''}
+const OPTIONAL_MOD_MEDIA_COLUMNS=new Set(['preview_images','video_url','video_path','mod_files']);
+function modsNotice(message){let n=document.getElementById('modsCompatibilityNotice');if(!n){n=document.createElement('div');n.id='modsCompatibilityNotice';n.setAttribute('role','status');Object.assign(n.style,{position:'fixed',left:'50%',bottom:'max(24px, env(safe-area-inset-bottom))',transform:'translateX(-50%)',zIndex:'100000',maxWidth:'min(92vw,720px)',padding:'13px 18px',border:'2px solid #ffe000',borderRadius:'14px',background:'#0c1729',color:'#fff',fontWeight:'800',boxShadow:'0 12px 35px #0009',textAlign:'center'});document.body.appendChild(n)}n.textContent=message;n.hidden=false;clearTimeout(modsNotice.timer);modsNotice.timer=setTimeout(()=>{n.hidden=true},6500)}
+async function writeCommunityMod(path,method,payload,prefer){const body={...payload};const removed=[];for(let attempt=0;attempt<6;attempt++){try{return {data:await request(path,{method,headers:{Prefer:prefer},body:JSON.stringify(body)}),removed}}catch(error){const column=missingCommunityModsColumn(error);if(!OPTIONAL_MOD_MEDIA_COLUMNS.has(column)||!(column in body))throw error;if(column==='video_url'||column==='video_path'){for(const key of ['video_url','video_path']){if(key in body){delete body[key];if(!removed.includes(key))removed.push(key)}}}else{delete body[column];if(!removed.includes(column))removed.push(column)}}}throw new Error(tx('La publication n’a pas pu être enregistrée.','The post could not be saved.'))}
+async function loadProfiles(ids){ids=[...new Set(ids.filter(Boolean))];if(!ids.length||!REMOTE)return;try{const q=new URLSearchParams({select:'id,username,avatar_url',id:`in.(${ids.join(',')})`});for(const p of await request(`/rest/v1/profiles?${q}`)||[])state.profiles[p.id]=p}catch(_){} }
+async function loadLikes(){state.liked.clear();const u=user();if(!u||!REMOTE)return;try{const q=new URLSearchParams({select:'mod_id',user_id:`eq.${u.id}`});for(const r of await request(`/rest/v1/community_mod_likes?${q}`)||[])state.liked.add(String(r.mod_id))}catch(_){} }
+async function loadFavorites(){state.favorites.clear();const u=user();if(!u||!REMOTE)return;try{const q=new URLSearchParams({select:'mod_id',user_id:`eq.${u.id}`});for(const r of await request(`/rest/v1/community_mod_favorites?${q}`)||[])state.favorites.add(String(r.mod_id))}catch(_){} }
+async function load(){if(state.loading)return;state.loading=true;state.error='';renderPage();try{if(!REMOTE)throw new Error(tx('Supabase n’est pas configuré.','Supabase is not configured.'));const q=new URLSearchParams({select:'*',is_hidden:'eq.false',order:'created_at.desc'});state.rows=await request(`/rest/v1/community_mods?${q}`)||[];await Promise.all([loadProfiles(state.rows.map(r=>r.creator_id)),loadLikes(),loadFavorites()])}catch(e){state.error=String(e.message||e)}finally{state.loading=false;renderPage()}}
+function availableCharacters(){
+  const source=Array.isArray(window.MHUR_CHARACTER_LIST)?window.MHUR_CHARACTER_LIST:[];
+  if(source.length)return source.map(c=>c.name).filter(Boolean).sort((a,b)=>a.localeCompare(b));
+  return [...new Set(state.rows.map(r=>r.character_name).filter(Boolean))].sort((a,b)=>a.localeCompare(b));
+}
+function filtered(){let rows=state.rows.filter(r=>{const cat=normalizedCategory(r.category);const text=`${r.title||''} ${r.description||''} ${r.character_name||''} ${r.file_name||''} ${(r.tags||[]).join(' ')}`.toLowerCase();return (state.category==='all'||cat===state.category)&&(state.character==='all'||r.character_name===state.character)&&(!state.query||text.includes(state.query.toLowerCase()))});return rows.sort((a,b)=>state.sort==='downloads'?(b.downloads_count||0)-(a.downloads_count||0):state.sort==='likes'?(b.likes_count||0)-(a.likes_count||0):state.sort==='name'?String(a.title).localeCompare(String(b.title)):new Date(b.created_at)-new Date(a.created_at))}
+function previewImages(r){
+  const list=Array.isArray(r.preview_images)?r.preview_images.filter(x=>x&&x.url):[];
+  if(list.length)return list.slice(0,4);
+  if(r.preview_url&&r.preview_type!=='video')return [{url:r.preview_url,path:r.preview_path||null}];
+  return [];
+}
+function modFiles(r){
+  const list=Array.isArray(r.mod_files)?r.mod_files.filter(x=>x&&x.url):[];
+  if(list.length)return list.slice(0,3);
+  return r.file_url?[{url:r.file_url,path:r.file_path||null,name:r.file_name||'mod.pak',size:Number(r.file_size)||0,sha256:r.file_sha256||null}]:[];
+}
+function previewVideo(r){
+  if(r.video_url)return {url:r.video_url,path:r.video_path||null};
+  if(r.preview_url&&r.preview_type==='video')return {url:r.preview_url,path:r.preview_path||null};
+  return null;
+}
+function preview(r){const img=previewImages(r)[0];return img?`<img src="${esc(img.url)}" alt="${esc(r.title)}" loading="lazy">`:`<div class="modPreviewFallback">🧩</div>`}
+function detailMedia(r){
+  const imgs=previewImages(r),video=previewVideo(r);
+  const gallery=imgs.length?`<div class="modsGallery modsGallery${imgs.length}">${imgs.map((img,i)=>`<button type="button" class="modsGalleryItem" data-gallery-image="${esc(img.url)}" aria-label="${tx('Agrandir l’image','Enlarge image')} ${i+1}"><img src="${esc(img.url)}" alt="${esc(r.title)} ${i+1}"></button>`).join('')}</div>`:'';
+  const movie=video?`<div class="modsDetailVideo"><video src="${esc(video.url)}" controls playsinline preload="metadata"></video></div>`:'';
+  return gallery+movie;
+}
+function tags(r){const arr=[categoryLabel(r.category),r.character_name,...(Array.isArray(r.tags)?r.tags:[])].filter(Boolean);return [...new Set(arr)].map(t=>`<button class="modTag" data-mod-tag="${esc(t)}">${esc(t)}</button>`).join('')}
+function isMine(r){const u=user();return Boolean(u&&r&&String(u.id)===String(r.creator_id||''))}
+function isSiteAdmin(){return Boolean(window.MHUR_MODERATION?.isSiteAdmin?.()||['admin','administrator'].includes(String(window.MHUR_MODERATION?.state?.role||'').toLowerCase()))}
+function canDeleteMod(r){return Boolean(isMine(r)||isSiteAdmin())}
+function securityLabel(r){const status=String(r?.security_status||'extension_checked');const map={verified:[tx('Fichier vérifié','Verified file'),'verified'],checksum:[tx('Empreinte SHA-256','SHA-256 fingerprint'),'verified'],extension_checked:[tx('Format contrôlé','Format checked'),'checked'],unverified:[tx('Non vérifié','Unverified'),'warning'],blocked:[tx('Bloqué','Blocked'),'blocked']};const [label,cls]=map[status]||map.unverified;return `<span class="modSecurityBadge ${cls}">🛡️ ${esc(label)}</span>`}
+function card(r){
+  const p=state.profiles[r.creator_id]||{};
+  const mine=isMine(r),canDelete=canDeleteMod(r);
+  return `<article class="modCard" data-mod-id="${esc(r.id)}">
+    <button class="modCardOpen" data-mod-open="${esc(r.id)}" aria-label="${tx('Ouvrir le mod','Open mod')}"><div class="modPreview">${preview(r)}</div></button>
+    <div class="modBody">
+      <div class="modTags">${tags(r)}</div>
+      <button class="modTitle" data-mod-open="${esc(r.id)}"><h3>${esc(r.title)}</h3></button>
+      ${r.character_name?`<b>👤 ${esc(r.character_name)}</b>`:''}
+      ${r.description?`<p>${esc(r.description)}</p>`:''}
+      <div class="modMeta"><button type="button" class="mhurProfileOpenButtonV29" onclick="event.stopPropagation();MHUR_PROFILES?.open('${esc(r.creator_id)}')">${esc(p.username||tx('Membre','Member'))}</button> · ${formatDate(r.created_at)} · ${formatSize(r.file_size)}</div>${securityLabel(r)}
+      <div class="modStats"><span>♥ ${Number(r.likes_count)||0}</span><span>⬇ ${Number(r.downloads_count)||0}</span><button class="modFavorite ${state.favorites.has(String(r.id))?'active':''}" type="button" data-mod-favorite="${esc(r.id)}" title="${tx('Favori','Favorite')}">★</button></div>
+      ${mine||canDelete?`<div class="modOwnerActions">${mine?`<button class="modEdit" type="button" data-mod-edit="${esc(r.id)}">✏️ ${tx('Modifier','Edit')}</button>`:''}${canDelete?`<button class="modDelete" type="button" data-mod-delete="${esc(r.id)}">🗑 ${tx('Supprimer','Delete')}</button>`:''}</div>`:''}
+    </div>
+  </article>`;
+}
+function tutorial(){return `<details class="modsTutorial"><summary>📘 ${tx('Installer des mods — PC Steam uniquement','Install mods — PC Steam only')}</summary><div class="modsTutorialBody"><div class="modsWarning">⚠️ ${tx('Ce tutoriel concerne uniquement la version PC Steam de My Hero Ultra Rumble. Les mods ne fonctionnent pas sur console.','This tutorial is only for the PC Steam version of My Hero Ultra Rumble. Mods do not work on console.')}</div><section class="modsTutorialSteps modsTutorialStepsFinal"><article><h3>1. ${tx('Activer l’option de lancement','Enable the launch option')}</h3><ol><li>${tx('Va dans ta bibliothèque Steam.','Go to your Steam library.')}</li><li>${tx('Fais un clic droit sur My Hero Ultra Rumble.','Right-click My Hero Ultra Rumble.')}</li><li>${tx('Clique sur Propriétés.','Click Properties.')}</li><li>${tx('Dans Général, trouve Options de lancement.','In General, find Launch Options.')}</li><li>${tx('Copie-colle exactement cette commande :','Copy and paste this exact command:')} <button class="modsCopyCommand" type="button" data-copy="-fileopenlog"><code>-fileopenlog</code><span>${tx('Copier','Copy')}</span></button></li></ol><p class="modsImportant">${tx('Sans cette commande, le jeu ne chargera pas les mods.','Without this command, the game will not load mods.')}</p><img class="modsTutorialStepImage" src="assets/mods-tutorial/steps/etape-1.png" data-fr-src="assets/mods-tutorial/steps/etape-1.png" data-en-src="assets/mods-tutorial/steps/etape-1-en.png" loading="lazy" decoding="async" alt="${tx('Steam : Propriétés et option de lancement -fileopenlog','Steam: Properties and the -fileopenlog launch option')}"></article><article><h3>2. ${tx('Ouvrir les fichiers locaux','Open local files')}</h3><ol><li>${tx('Refais un clic droit sur My Hero Ultra Rumble.','Right-click My Hero Ultra Rumble again.')}</li><li>${tx('Clique sur Gérer.','Click Manage.')}</li><li>${tx('Puis clique sur Parcourir les fichiers locaux.','Then click Browse local files.')}</li></ol><img class="modsTutorialStepImage" src="assets/mods-tutorial/steps/etape-2.png" data-fr-src="assets/mods-tutorial/steps/etape-2.png" data-en-src="assets/mods-tutorial/steps/etape-2-en.png" loading="lazy" decoding="async" alt="${tx('Steam : Gérer puis Parcourir les fichiers locaux','Steam: Manage then Browse local files')}"></article><article><h3>3. ${tx('Ouvrir HerovsGame','Open HerovsGame')}</h3><ol><li>${tx('Dans le dossier du jeu, double-clique sur','In the game folder, double-click')} <code>HerovsGame</code>.</li></ol><img class="modsTutorialStepImage" src="assets/mods-tutorial/steps/etape-3.png" data-fr-src="assets/mods-tutorial/steps/etape-3.png" data-en-src="assets/mods-tutorial/steps/etape-3-en.png" loading="lazy" decoding="async" alt="${tx('Dossier HerovsGame','HerovsGame folder')}"></article><article><h3>4. ${tx('Ouvrir Content puis Paks','Open Content then Paks')}</h3><ol><li>${tx('Dans HerovsGame, ouvre','Inside HerovsGame, open')} <code>Content</code>.</li><li>${tx('Ensuite, ouvre','Then open')} <code>Paks</code>.</li></ol><img class="modsTutorialStepImage" src="assets/mods-tutorial/steps/etape-4.png" data-fr-src="assets/mods-tutorial/steps/etape-4.png" data-en-src="assets/mods-tutorial/steps/etape-4-en.png" loading="lazy" decoding="async" alt="${tx('Dossiers Content et Paks','Content and Paks folders')}"></article><article><h3>5. ${tx('Créer le dossier Mods','Create the Mods folder')}</h3><ol><li>${tx('Dans Paks, crée un nouveau dossier.','Inside Paks, create a new folder.')}</li><li>${tx('Nomme-le exactement','Name it exactly')} <code>Mods</code> ${tx('(avec une majuscule).','(with a capital M).')}</li></ol><img class="modsTutorialStepImage" src="assets/mods-tutorial/steps/etape-5.png" data-fr-src="assets/mods-tutorial/steps/etape-5.png" data-en-src="assets/mods-tutorial/steps/etape-5-en.png" loading="lazy" decoding="async" alt="${tx('Création du dossier Mods','Creating the Mods folder')}"></article><article><h3>6. ${tx('Ajouter les fichiers .pak','Add the .pak files')}</h3><ol><li>${tx('Ouvre le dossier Mods.','Open the Mods folder.')}</li><li>${tx('Place tous les fichiers .pak téléchargés dans ce dossier.','Place all downloaded .pak files in this folder.')}</li><li>${tx('Lance ensuite le jeu depuis Steam.','Then launch the game from Steam.')}</li></ol><p><code>SteamLibrary/steamapps/common/My Hero Ultra Rumble/HerovsGame/Content/Paks/Mods</code></p><img class="modsTutorialStepImage" src="assets/mods-tutorial/steps/etape-6.png" data-fr-src="assets/mods-tutorial/steps/etape-6.png" data-en-src="assets/mods-tutorial/steps/etape-6-en.png?v=406" loading="lazy" decoding="async" alt="${tx('Ajout des fichiers pak dans Mods','Adding pak files to Mods')}"></article><article class="modsTutorialDone"><h3>✅ ${tx('C’est terminé','You are done')}</h3><p>${tx('Si le mod est compatible et correctement installé, il sera chargé automatiquement. Pour retirer un mod, supprime simplement son fichier .pak du dossier Mods.','If the mod is compatible and installed correctly, it will load automatically. To remove a mod, simply delete its .pak file from the Mods folder.')}</p></article></section></div></details>`}
+function pageHtml(){const catOptions=CATEGORIES.map(c=>`<option value="${c}" ${state.category===c?'selected':''}>${esc(categoryLabel(c))}</option>`).join('');const charOptions=availableCharacters().map(c=>`<option value="${esc(c)}" ${state.character===c?'selected':''}>${esc(c)}</option>`).join('');const rows=filtered();return `<div class="modsPage"><section class="modsHero"><div><h1>🧩 Mods</h1><p>${tx('Découvre, filtre et partage les créations de la communauté MHUR.','Discover, filter and share MHUR community creations.')}</p></div><button class="modsPrimary" id="modsPublishBtn">＋ ${tx('Publier un mod','Publish a mod')}</button></section>${tutorial()}<section class="modsToolbar" aria-label="Filtres"><input id="modsSearch" value="${esc(state.query)}" placeholder="${tx('Rechercher par nom, auteur, personnage…','Search by name, author, character…')}"><select id="modsCategory"><option value="all">${tx('Toutes les catégories','All categories')}</option>${catOptions}</select><select id="modsCharacter"><option value="all">${tx('Tous les personnages','All characters')}</option>${charOptions}</select><select id="modsSort"><option value="recent" ${state.sort==='recent'?'selected':''}>${tx('Plus récents','Newest')}</option><option value="downloads" ${state.sort==='downloads'?'selected':''}>${tx('Plus téléchargés','Most downloaded')}</option><option value="likes" ${state.sort==='likes'?'selected':''}>${tx('Plus aimés','Most liked')}</option><option value="name" ${state.sort==='name'?'selected':''}>A–Z</option></select></section><div class="modsResultCount">${rows.length} ${tx(rows.length>1?'mods trouvés':'mod trouvé',rows.length===1?'mod found':'mods found')}</div>${state.loading?`<div class="modsEmpty">${tx('Chargement…','Loading…')}</div>`:state.error?`<div class="modsError">${esc(state.error)}<br><small>${tx('La connexion a été réessayée automatiquement. Recharge la page si le problème continue.','The connection was retried automatically. Reload the page if the problem continues.')}</small></div>`:rows.length?`<div class="modsGrid">${rows.map(card).join('')}</div>`:`<div class="modsEmpty">${tx('Aucun mod ne correspond aux filtres.','No mods match these filters.')}</div>`}</div>`}
+function renderPage(){if(typeof page==='undefined'||page!=='mods')return;const root=document.getElementById('content')||document.querySelector('main')||document.body;root.innerHTML=pageHtml();bindPage()}
+function bindPage(){
+  document.querySelectorAll('.modsCopyCommand').forEach(b=>b.addEventListener('click',async()=>{
+    try{
+      await navigator.clipboard.writeText(b.dataset.copy||'-fileopenlog');
+      const span=b.querySelector('span');
+      if(span){const old=span.textContent;span.textContent=tx('Copié !','Copied!');setTimeout(()=>span.textContent=old,1400)}
+    }catch(_){prompt(tx('Copie cette commande :','Copy this command:'),b.dataset.copy||'-fileopenlog')}
+  }));
+  document.getElementById('modsPublishBtn')?.addEventListener('click',openPublish);
+  document.getElementById('modsSearch')?.addEventListener('input',e=>{state.query=e.target.value;renderPage()});
+  document.getElementById('modsCategory')?.addEventListener('change',e=>{state.category=e.target.value;renderPage()});
+  document.getElementById('modsCharacter')?.addEventListener('change',e=>{state.character=e.target.value;renderPage()});
+  document.getElementById('modsSort')?.addEventListener('change',e=>{state.sort=e.target.value;renderPage()});
+  document.querySelectorAll('[data-mod-open]').forEach(b=>b.addEventListener('click',()=>openDetail(b.dataset.modOpen)));
+  document.querySelectorAll('[data-mod-edit]').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();openEdit(b.dataset.modEdit)}));
+  document.querySelectorAll('[data-mod-delete]').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();removeMod(b.dataset.modDelete)}));
+  document.querySelectorAll('[data-mod-favorite]').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();toggleFavorite(b.dataset.modFavorite)}));
+  document.querySelectorAll('[data-mod-tag]').forEach(b=>b.addEventListener('click',()=>{
+    const t=b.dataset.modTag;
+    if(CATEGORIES.includes(t.toLowerCase()))state.category=t.toLowerCase();else state.character=t;
+    renderPage();
+  }));
+}
+function characterOptions(){let arr=[];try{const source=window.MHUR_CHARACTER_LIST||window.CHARACTERS||window.characterData||[];arr=Array.isArray(source)?source:Object.values(source);arr=arr.map(x=>({id:x.id||x.slug||x.key||x.name,name:x.name||x.character_name||x.title})).filter(x=>x.id&&x.name)}catch(_){}return arr.sort((a,b)=>String(a.name).localeCompare(String(b.name))).map(x=>`<option value="${esc(x.id)}" data-name="${esc(x.name)}">${esc(x.name)}</option>`).join('')}
+const modsDraftUrls=new WeakMap();
+function assignFiles(input,files){if(!input)return false;try{const dt=new DataTransfer();for(const file of files)dt.items.add(file);input.files=dt.files;input.dispatchEvent(new Event('change',{bubbles:true}));return true}catch(_){return false}}
+function clearDraftUrls(host){for(const url of modsDraftUrls.get(host)||[])URL.revokeObjectURL(url);modsDraftUrls.delete(host)}
+async function transferMediaFiles(transfer){
+  const direct=[...(transfer?.files||[])].filter(file=>file.type.startsWith('image/')||file.type.startsWith('video/'));
+  if(direct.length)return direct;
+  const raw=String(transfer?.getData?.('text/uri-list')||transfer?.getData?.('text/plain')||'').split(/\r?\n/).find(line=>/^https?:\/\//i.test(line.trim()));
+  if(!raw)return [];
+  try{
+    const response=await fetch(raw.trim(),{mode:'cors'});if(!response.ok)return [];
+    const blob=await response.blob();if(!blob.type.startsWith('image/')&&!blob.type.startsWith('video/'))return [];
+    const name=(new URL(raw.trim()).pathname.split('/').pop()||`media-${Date.now()}`).split('?')[0];
+    return [new File([blob],name,{type:blob.type,lastModified:Date.now()})];
+  }catch(_){return []}
+}
+function bindMediaDropZone(zone,onFiles){
+  if(!zone||zone.dataset.mediaDropBound==='1')return;zone.dataset.mediaDropBound='1';zone.classList.add('mhurMediaDropZone');zone.dataset.dropLabel=tx('Dépose la photo ou la vidéo ici','Drop the image or video here');let depth=0;
+  zone.addEventListener('dragenter',event=>{event.preventDefault();depth++;zone.classList.add('mhurMediaDropActive')});
+  zone.addEventListener('dragover',event=>{event.preventDefault();if(event.dataTransfer)event.dataTransfer.dropEffect='copy';zone.classList.add('mhurMediaDropActive')});
+  zone.addEventListener('dragleave',()=>{depth=Math.max(0,depth-1);if(!depth)zone.classList.remove('mhurMediaDropActive')});
+  zone.addEventListener('drop',async event=>{event.preventDefault();depth=0;zone.classList.remove('mhurMediaDropActive');const files=await transferMediaFiles(event.dataTransfer);if(files.length)onFiles(files);else modsNotice(tx('Glisse une photo ou une vidéo valide.','Drop a valid image or video.'))});
+}
+function getModEditMedia(form){
+  return form?._mhurEditMedia||{files:[],images:[],video:null};
+}
+function keptModEditItems(items){return Array.from(items||[]).filter(item=>item&&item.keep!==false)}
+function renderModDraftMedia(form){
+  if(!form)return;
+  const fileHost=form.querySelector('[data-mod-draft-files]');
+  const imageHost=form.querySelector('[data-mod-draft-images]');
+  const videoHost=form.querySelector('[data-mod-draft-video]');
+  for(const host of [fileHost,imageHost,videoHost]){
+    if(host){clearDraftUrls(host);host.innerHTML=''}
+  }
+
+  const edit=getModEditMedia(form);
+  const files=Array.from(form.elements.mod_file?.files||[]).slice(0,3);
+  const images=Array.from(form.elements.preview_images?.files||[]).slice(0,4);
+  const video=form.elements.preview_video?.files?.[0]||null;
+
+  if(fileHost){
+    const currentCards=(edit.files||[]).map((item,index)=>item&&item.keep!==false?`<div class="mhurModFileDraftCard mhurExistingMediaCard"><span>📦</span><div><span class="mhurMediaStateBadge">${tx('ACTUEL','CURRENT')}</span><b>${esc(item.name||tx('Fichier du mod','Mod file'))}</b><small>${formatSize(item.size)}</small></div><button type="button" class="mhurMediaDraftRemove" data-remove-current-mod-file="${index}" aria-label="${tx('Supprimer ce fichier','Delete this file')}">×</button></div>`:'').join('');
+    const newCards=files.map((file,index)=>`<div class="mhurModFileDraftCard mhurNewMediaCard"><span>📦</span><div><span class="mhurMediaStateBadge">${tx('NOUVEAU','NEW')}</span><b>${esc(file.name)}</b><small>${formatSize(file.size)}</small></div><button type="button" class="mhurMediaDraftRemove" data-remove-mod-file="${index}" aria-label="${tx('Retirer','Remove')}">×</button></div>`).join('');
+    fileHost.innerHTML=currentCards+newCards;
+    fileHost.querySelectorAll('[data-remove-current-mod-file]').forEach(btn=>btn.onclick=event=>{event.preventDefault();event.stopPropagation();
+      const item=edit.files?.[Number(btn.dataset.removeCurrentModFile)];
+      if(item)item.keep=false;
+      renderModDraftMedia(form);
+    });
+    fileHost.querySelectorAll('[data-remove-mod-file]').forEach(btn=>btn.onclick=event=>{event.preventDefault();event.stopPropagation();
+      assignFiles(form.elements.mod_file,files.filter((_,i)=>i!==Number(btn.dataset.removeModFile)));
+    });
+  }
+
+  if(imageHost){
+    const urls=[];
+    const currentCards=(edit.images||[]).map((item,index)=>item&&item.keep!==false?`<div class="mhurMediaDraftCard mhurExistingMediaCard"><img src="${esc(item.url)}" alt=""><button type="button" class="mhurMediaDraftRemove" data-remove-current-mod-image="${index}" aria-label="${tx('Supprimer cette photo','Delete this photo')}">×</button><small><span class="mhurMediaStateBadge">${tx('ACTUELLE','CURRENT')}</span>${tx('Photo enregistrée','Saved photo')}</small></div>`:'').join('');
+    const newCards=images.map((file,index)=>{
+      const url=URL.createObjectURL(file);urls.push(url);
+      return `<div class="mhurMediaDraftCard mhurNewMediaCard"><img src="${url}" alt=""><button type="button" class="mhurMediaDraftRemove" data-remove-mod-image="${index}" aria-label="${tx('Retirer','Remove')}">×</button><small><span class="mhurMediaStateBadge">${tx('NOUVELLE','NEW')}</span>${esc(file.name||tx('Image collée','Pasted image'))}</small></div>`;
+    }).join('');
+    imageHost.innerHTML=currentCards+newCards;
+    if(urls.length)modsDraftUrls.set(imageHost,urls);
+    imageHost.querySelectorAll('[data-remove-current-mod-image]').forEach(btn=>btn.onclick=event=>{event.preventDefault();event.stopPropagation();
+      const item=edit.images?.[Number(btn.dataset.removeCurrentModImage)];
+      if(item)item.keep=false;
+      renderModDraftMedia(form);
+    });
+    imageHost.querySelectorAll('[data-remove-mod-image]').forEach(btn=>btn.onclick=event=>{event.preventDefault();event.stopPropagation();
+      assignFiles(form.elements.preview_images,images.filter((_,i)=>i!==Number(btn.dataset.removeModImage)));
+    });
+  }
+
+  if(videoHost){
+    const cards=[];
+    if(edit.video&&edit.video.keep!==false){
+      cards.push(`<div class="mhurMediaDraftCard mhurExistingMediaCard"><video src="${esc(edit.video.url)}" controls muted playsinline preload="metadata"></video><button type="button" class="mhurMediaDraftRemove" data-remove-current-mod-video aria-label="${tx('Supprimer cette vidéo','Delete this video')}">×</button><small><span class="mhurMediaStateBadge">${tx('ACTUELLE','CURRENT')}</span>${tx('Vidéo enregistrée','Saved video')}</small></div>`);
+    }
+    if(video){
+      const url=URL.createObjectURL(video);modsDraftUrls.set(videoHost,[url]);
+      cards.push(`<div class="mhurMediaDraftCard mhurNewMediaCard"><video src="${url}" controls muted playsinline preload="metadata"></video><button type="button" class="mhurMediaDraftRemove" data-remove-mod-video aria-label="${tx('Retirer','Remove')}">×</button><small><span class="mhurMediaStateBadge">${tx('NOUVELLE','NEW')}</span>${esc(video.name||tx('Vidéo collée','Pasted video'))}</small></div>`);
+    }
+    videoHost.innerHTML=cards.join('');
+    videoHost.querySelector('[data-remove-current-mod-video]')?.addEventListener('click',event=>{event.preventDefault();event.stopPropagation();
+      if(edit.video)edit.video.keep=false;
+      renderModDraftMedia(form);
+    });
+    videoHost.querySelector('[data-remove-mod-video]')?.addEventListener('click',event=>{event.preventDefault();event.stopPropagation();
+      form.elements.preview_video.value='';
+      renderModDraftMedia(form);
+    });
+  }
+}
+function applyModFiles(form,files){const valid=files.filter(f=>['.pak','.utoc','.ucas','.zip'].includes(fileExtension(f)));if(!valid.length)return false;const current=Array.from(form.elements.mod_file.files||[]);const merged=[...current,...valid].slice(0,3);assignFiles(form.elements.mod_file,merged);if(current.length+valid.length>3)modsNotice(tx('Maximum 3 fichiers par mod.','Maximum 3 files per mod.'));renderModDraftMedia(form);return true}
+function applyModMediaFiles(form,files){const pastedImages=files.filter(f=>f.type.startsWith('image/')),pastedVideo=files.find(f=>f.type.startsWith('video/'));if(pastedImages.length){const current=Array.from(form.elements.preview_images.files||[]);const merged=[...current,...pastedImages].slice(0,4);assignFiles(form.elements.preview_images,merged);if(current.length+pastedImages.length>4)modsNotice(tx('Maximum 4 photos par mod.','Maximum 4 images per mod.'))}if(pastedVideo)assignFiles(form.elements.preview_video,[pastedVideo]);renderModDraftMedia(form)}
+function bindModPaste(form){if(!form||form.dataset.pasteBound==='1')return;form.dataset.pasteBound='1';form.addEventListener('paste',async event=>{const direct=[...(event.clipboardData?.files||[])];if(direct.length){const used=applyModFiles(form,direct);applyModMediaFiles(form,direct);if(used||direct.some(f=>f.type.startsWith('image/')||f.type.startsWith('video/')))event.preventDefault();return}const files=await transferMediaFiles(event.clipboardData);if(!files.length)return;event.preventDefault();applyModMediaFiles(form,files)});bindMediaDropZone(form.querySelector('[data-mod-image-drop]'),files=>applyModMediaFiles(form,files.filter(file=>file.type.startsWith('image/'))));bindMediaDropZone(form.querySelector('[data-mod-video-drop]'),files=>applyModMediaFiles(form,files.filter(file=>file.type.startsWith('video/'))));const zone=form.querySelector('[data-mod-file-drop]');if(zone){let depth=0;zone.addEventListener('dragenter',e=>{e.preventDefault();depth++;zone.classList.add('mhurMediaDropActive')});zone.addEventListener('dragover',e=>{e.preventDefault();if(e.dataTransfer)e.dataTransfer.dropEffect='copy'});zone.addEventListener('dragleave',()=>{depth=Math.max(0,depth-1);if(!depth)zone.classList.remove('mhurMediaDropActive')});zone.addEventListener('drop',e=>{e.preventDefault();depth=0;zone.classList.remove('mhurMediaDropActive');if(!applyModFiles(form,[...(e.dataTransfer?.files||[])]))modsNotice(tx('Glisse un fichier .pak, .utoc, .ucas ou .zip.','Drop a .pak, .utoc, .ucas or .zip file.'))})}}
+function ensurePublishModal(){
+  let m=document.getElementById('modsPublishModal');
+  if(m)return m;
+  m=document.createElement('div');
+  m.id='modsPublishModal';
+  m.className='modsModal';
+  m.hidden=true;
+  m.innerHTML=`<div class="modsDialog">
+    <div class="modsDialogHead"><h2 id="modsFormTitle">${tx('Publier un mod','Publish a mod')}</h2><button class="modsClose" type="button">×</button></div>
+    <form class="modsForm" id="modsForm">
+      <label>${tx('Nom du mod','Mod name')}<input name="title" maxlength="100" required></label>
+      <label>${tx('Description (facultative)','Description (optional)')}<textarea name="description" maxlength="3000"></textarea></label>
+      <div class="modsFormGrid">
+        <label>${tx('Catégorie','Category')}<select name="category" required>${CATEGORIES.map(c=>`<option value="${c}">${categoryLabel(c)}</option>`).join('')}</select></label>
+        <label>${tx('Version du mod','Mod version')}<input name="mod_version" value="1.0" maxlength="30"></label>
+        <label>${tx('Version du jeu','Game version')}<input name="game_version" placeholder="Saison 18 / Season 18" maxlength="50"></label>
+      </div>
+      <label class="modsCharacterField">${tx('Personnage concerné','Related character')}<select name="character_id"><option value="">${tx('Aucun / général','None / general')}</option>${characterOptions()}</select></label>
+      <label>${tx('Tags supplémentaires','Additional tags')}<input name="tags" placeholder="HUD, recolor, voice…"><span class="modsFieldHint">${tx('Sépare les tags avec des virgules.','Separate tags with commas.')}</span></label>
+      <label class="mhurMediaDropZone mhurModUploadSection mhurModUploadFiles" data-mod-file-drop><span class="mhurUploadTypeBadge">📦 ${tx('FICHIERS DU MOD','MOD FILES')}</span>${tx('Fichiers du mod (1 à 3)','Mod files (1 to 3)')}<div class="mhurModFilesDraft" data-mod-draft-files></div><input name="mod_file" type="file" multiple accept=".pak,.utoc,.ucas,.zip"><span class="modsFieldHint modsModFileHint">${tx('1 fichier minimum · 3 maximum · 200 MB par fichier','At least 1 file · maximum 3 · 200 MB per file')}</span><span class="mhurPasteHint">📥 ${tx('Clique, colle ou glisse les fichiers ici.','Click, paste or drop files here.')}</span></label>
+      <label class="mhurMediaDropZone mhurModUploadSection mhurModUploadImages" data-mod-image-drop><span class="mhurUploadTypeBadge">🖼️ ${tx('PHOTOS','PHOTOS')}</span>${tx('Photos de présentation (1 à 4)','Preview photos (1 to 4)')}<div class="mhurMediaDraftPreview mhurMediaDraftGrid" data-mod-draft-images></div><input name="preview_images" type="file" multiple accept="image/jpeg,image/png,image/webp,image/gif"><span class="modsFieldHint modsPreviewFileHint">${tx('Au moins 1 photo obligatoire · 4 maximum · 20 MB par photo','At least 1 photo required · maximum 4 · 20 MB per photo')}</span><span class="mhurPasteHint">📥 ${tx('Clique, colle ou glisse les images ici.','Click, paste or drop images here.')}</span></label>
+      <label class="mhurMediaDropZone mhurModUploadSection mhurModUploadVideo" data-mod-video-drop><span class="mhurUploadTypeBadge">🎬 ${tx('VIDÉO','VIDEO')}</span>${tx('Vidéo de démonstration (facultative)','Demo video (optional)')}<div class="mhurMediaDraftPreview" data-mod-draft-video></div><input name="preview_video" type="file" accept="video/mp4,video/webm,video/quicktime"><span class="modsFieldHint modsPreviewVideoHint">${tx('MP4, WEBM ou MOV · 100 MB maximum','MP4, WEBM or MOV · 100 MB maximum')}</span><span class="mhurPasteHint">📥 ${tx('Clique, colle ou glisse une vidéo ici.','Click, paste or drop a video here.')}</span></label>
+      <button class="modsSubmit" type="submit">${tx('Publier','Publish')}</button>
+      <progress class="modsUploadProgress" id="modsUploadProgress" max="100" value="0" hidden></progress>
+      <div class="modsProgress" id="modsProgress"></div>
+    </form>
+  </div>`;
+  document.body.appendChild(m);
+  m.querySelector('.modsClose').onclick=()=>m.hidden=true;
+  m.addEventListener('click',e=>{if(e.target===m)m.hidden=true});
+  const form=m.querySelector('#modsForm');
+  form.addEventListener('submit',publish);
+  form.elements.mod_file.addEventListener('change',()=>renderModDraftMedia(form));
+  form.elements.preview_images.addEventListener('change',()=>renderModDraftMedia(form));
+  form.elements.preview_video.addEventListener('change',()=>renderModDraftMedia(form));
+  bindModPaste(form);
+  return m;
+}
+function directStorageEndpoint(){
+  try{
+    const u=new URL(API);
+    const projectId=u.hostname.split('.')[0];
+    if(projectId)return `https://${projectId}.storage.supabase.co/storage/v1/upload/resumable`;
+  }catch(_){}
+  return `${API}/storage/v1/upload/resumable`;
+}
+async function resumableUpload(bucket,path,file,onProgress){
+  if(!window.tus?.Upload)throw new Error(tx('Le module d’envoi vidéo n’est pas chargé. Recharge la page.','The video upload module is not loaded. Reload the page.'));
+  if(window.MHUR_AUTH?.refreshSession)await window.MHUR_AUTH.refreshSession().catch(()=>false);
+  const accessToken=token();
+  if(!accessToken||accessToken===KEY)throw new Error(tx('Reconnecte-toi avant d’envoyer un gros fichier.','Sign in again before uploading a large file.'));
+  return new Promise((resolve,reject)=>{
+    const uploadTask=new window.tus.Upload(file,{
+      endpoint:directStorageEndpoint(),
+      retryDelays:[0,3000,5000,10000,20000],
+      headers:{authorization:`Bearer ${accessToken}`,'x-upsert':'false'},
+      uploadDataDuringCreation:true,
+      removeFingerprintOnSuccess:true,
+      metadata:{
+        bucketName:bucket,
+        objectName:path,
+        contentType:file.type||'application/octet-stream',
+        cacheControl:'3600'
+      },
+      chunkSize:6*MB,
+      onError:error=>reject(new Error(error?.message||String(error))),
+      onProgress:(sent,total)=>onProgress?.(total?Math.min(100,Math.round(sent/total*100)):0),
+      onSuccess:()=>{onProgress?.(100);resolve(`${API}/storage/v1/object/public/${bucket}/${path}`)}
+    });
+    uploadTask.findPreviousUploads().then(previous=>{
+      if(previous.length)uploadTask.resumeFromPreviousUpload(previous[0]);
+      uploadTask.start();
+    }).catch(reject);
+  });
+}
+async function upload(bucket,path,file,onProgress){
+  if(file.size>RESUMABLE_THRESHOLD&&window.tus?.Upload)return resumableUpload(bucket,path,file,onProgress);
+  onProgress?.(0);
+  const runner=window.MHUR_AUTH?.fetch||fetch;
+  const r=await runner(`${API}/storage/v1/object/${bucket}/${path}`,{
+    method:'POST',
+    headers:{'Content-Type':file.type||'application/octet-stream','x-upsert':'false'},
+    allowAnonFallback:false,
+    body:file
+  });
+  const txt=await r.text();
+  if(!r.ok)throw new Error((()=>{try{return JSON.parse(txt).message}catch(_){return txt}})());
+  onProgress?.(100);
+  return `${API}/storage/v1/object/public/${bucket}/${path}`;
+}
+async function deleteStorageObject(bucket,path){
+  if(!path)return;
+  await request(`/storage/v1/object/${bucket}`,{method:'DELETE',body:JSON.stringify({prefixes:[path]})});
+}
+function fileExtension(file){return (file?.name?.match(/\.[^.]+$/)?.[0]||'').toLowerCase()}
+function validateModFile(file,required=false){
+  if(!file){if(required)throw new Error(tx('Choisis un fichier de mod.','Choose a mod file.'));return}
+  if(!['.pak','.utoc','.ucas','.zip'].includes(fileExtension(file)))throw new Error(tx('Format de mod non accepté.','Unsupported mod format.'));
+  if(file.size>200*1024*1024)throw new Error(tx('Le fichier dépasse 200 MB.','The file exceeds 200 MB.'));
+}
+function validateImageFiles(files,required=false){
+  const list=Array.from(files||[]);
+  if(!list.length){if(required)throw new Error(tx('Ajoute au moins une photo de présentation.','Add at least one preview photo.'));return []}
+  if(list.length>4)throw new Error(tx('Tu peux ajouter 4 photos maximum.','You can add up to 4 photos.'));
+  for(const file of list){
+    const okMime=/^image\/(jpeg|png|webp|gif)$/i.test(file.type||'');
+    const okExt=['.jpg','.jpeg','.png','.webp','.gif'].includes(fileExtension(file));
+    if(!okMime&&!okExt)throw new Error(tx('Une des photos utilise un format non accepté.','One photo uses an unsupported format.'));
+    if(file.size>PREVIEW_IMAGE_MAX)throw new Error(tx('Une des photos dépasse 20 MB.','One photo exceeds 20 MB.'));
+  }
+  return list;
+}
+function validateVideoFile(file){
+  if(!file)return;
+  const okMime=/^video\/(mp4|webm)$/i.test(file.type||'');
+  const okExt=['.mp4','.webm'].includes(fileExtension(file));
+  if(!okMime&&!okExt)throw new Error(tx('Format vidéo non accepté.','Unsupported video format.'));
+  if(file.size>PREVIEW_VIDEO_MAX)throw new Error(tx('La vidéo dépasse 100 MB.','The video exceeds 100 MB.'));
+}
+async function fileSha256(file){
+  if(!file||!window.crypto?.subtle||file.size>64*1024*1024)return '';
+  const data=await file.arrayBuffer();
+  const digest=await crypto.subtle.digest('SHA-256',data);
+  return [...new Uint8Array(digest)].map(b=>b.toString(16).padStart(2,'0')).join('');
+}
+async function inspectModFile(file){
+  if(!file)return {file_sha256:null,security_status:'extension_checked',security_note:null};
+  const lower=String(file.name||'').toLowerCase();
+  const dangerous=['.exe','.msi','.bat','.cmd','.com','.scr','.ps1','.vbs','.js','.jar','.apk','.dmg'];
+  if(dangerous.some(ext=>lower.includes(ext+'.')||lower.endsWith(ext)))throw new Error(tx('Nom de fichier dangereux ou double extension interdite.','Dangerous filename or forbidden double extension.'));
+  if(/\.(pak|utoc|ucas|zip)\s*\.(?!pak$|utoc$|ucas$|zip$)/i.test(lower))throw new Error(tx('Double extension suspecte.','Suspicious double extension.'));
+  if(file.size<=0)throw new Error(tx('Le fichier est vide.','The file is empty.'));
+  const ext=fileExtension(file);
+  if(ext==='.zip'){
+    const sig=new Uint8Array(await file.slice(0,4).arrayBuffer());
+    const ok=sig[0]===0x50&&sig[1]===0x4b&&[[0x03,0x04],[0x05,0x06],[0x07,0x08]].some(x=>sig[2]===x[0]&&sig[3]===x[1]);
+    if(!ok)throw new Error(tx('Ce fichier porte l’extension ZIP mais sa signature est invalide.','This file has a ZIP extension but an invalid signature.'));
+  }
+  const hash=await fileSha256(file);
+  return {file_sha256:hash||null,security_status:hash?'checksum':'extension_checked',security_note:hash?tx('SHA-256 calculé dans le navigateur.','SHA-256 calculated in the browser.'):tx('Extension, taille et nom contrôlés.','Extension, size and filename checked.')};
+}
+function setModFormMode(row=null){
+  const m=ensurePublishModal();
+  const f=m.querySelector('#modsForm');
+  f.reset();
+  state.editingId=row?.id||null;
+  f.dataset.editId=row?.id||'';
+  const existingVideo=row?previewVideo(row):null;
+  f._mhurEditMedia=row?{
+    files:modFiles(row).map(item=>({...item,keep:true})),
+    images:previewImages(row).map(item=>({...item,keep:true})),
+    video:existingVideo?{...existingVideo,keep:true}:null
+  }:null;
+  m.querySelector('#modsFormTitle').textContent=row?tx('Modifier le mod','Edit mod'):tx('Publier un mod','Publish a mod');
+  f.querySelector('.modsSubmit').textContent=row?tx('Enregistrer les modifications','Save changes'):tx('Publier','Publish');
+  f.elements.title.value=row?.title||'';
+  f.elements.description.value=row?.description||'';
+  f.elements.category.value=normalizedCategory(row?.category||'skin');
+  f.elements.mod_version.value=row?.mod_version||'1.0';
+  f.elements.game_version.value=row?.game_version||'';
+  f.elements.tags.value=Array.isArray(row?.tags)?row.tags.join(', '):'';
+  const characterSelect=f.elements.character_id;
+  if(row?.character_id&&!Array.from(characterSelect.options).some(o=>o.value===String(row.character_id))){
+    characterSelect.add(new Option(row.character_name||String(row.character_id),String(row.character_id)));
+  }
+  characterSelect.value=row?.character_id||'';
+  f.elements.mod_file.required=!row;
+  f.elements.preview_images.required=!row;
+  f.querySelector('.modsModFileHint').textContent=row
+    ?tx('Supprime les fichiers inutiles avec × ou ajoute-en de nouveaux. Il doit toujours rester au moins 1 fichier.','Delete unneeded files with × or add new ones. At least 1 file must remain.')
+    :tx('1 fichier minimum · 3 maximum · 200 MB par fichier','At least 1 file · maximum 3 · 200 MB per file');
+  f.querySelector('.modsPreviewFileHint').textContent=row
+    ?tx('Supprime ou remplace les photos avec ×. Il doit toujours rester au moins 1 photo.','Delete or replace photos with ×. At least 1 photo must remain.')
+    :tx('Au moins 1 photo obligatoire · 4 maximum · 20 MB par photo','At least 1 photo required · maximum 4 · 20 MB per photo');
+  f.querySelector('.modsPreviewVideoHint').textContent=row
+    ?tx('La vidéo est facultative : utilise × pour la supprimer, ou choisis-en une nouvelle pour la remplacer.','The video is optional: use × to delete it, or choose a new one to replace it.')
+    :tx('Facultative · MP4 ou WEBM · 100 MB maximum','Optional · MP4 or WEBM · 100 MB maximum');
+  f.querySelector('#modsProgress').textContent='';
+  f.querySelector('#modsUploadProgress').hidden=true;
+  renderModDraftMedia(f);
+  m.hidden=false;
+  m.querySelector('.modsDialog').scrollTop=0;
+  requestAnimationFrame(()=>f.elements.title.focus());
+}
+function openEdit(id){
+  const row=state.rows.find(r=>String(r.id)===String(id));
+  if(!row||!isMine(row))return alert(tx('Seul le créateur peut modifier ce mod.','Only the creator can edit this mod.'));
+  document.getElementById('modsDetailModal')?.setAttribute('hidden','');
+  setModFormMode(row);
+}
+function openPublish(){
+  if(!user()){window.MHUR_AUTH?.open?.();return}
+  setModFormMode(null);
+}
+async function publish(e){
+  e.preventDefault();
+  const f=e.currentTarget;
+  const u=user();
+  const editingId=f.dataset.editId||'';
+  const oldRow=editingId?state.rows.find(r=>String(r.id)===String(editingId)):null;
+  const edit=getModEditMedia(f);
+  const keptFiles=editingId?keptModEditItems(edit.files):[];
+  const keptImages=editingId?keptModEditItems(edit.images):[];
+  const keptVideo=editingId&&edit.video&&edit.video.keep!==false?edit.video:null;
+  const mods=Array.from(f.elements.mod_file.files||[]).slice(0,3);
+  const images=Array.from(f.elements.preview_images.files||[]);
+  const video=f.elements.preview_video.files[0]||null;
+  const submit=f.querySelector('.modsSubmit');
+  const progress=f.querySelector('#modsProgress');
+  const progressBar=f.querySelector('#modsUploadProgress');
+  const showUploadProgress=(label,pct)=>{const n=Math.max(0,Math.min(100,Number(pct)||0));progressBar.hidden=false;progressBar.value=n;progress.textContent=`${label} ${n}%`;};
+  if(!u)return window.MHUR_AUTH?.open?.();
+  if(!REMOTE)return alert(tx('Supabase n’est pas configuré.','Supabase is not configured.'));
+  if(editingId&&(!oldRow||!isMine(oldRow)))return alert(tx('Seul le créateur peut modifier ce mod.','Only the creator can edit this mod.'));
+
+  let security=null;
+  try{
+    const totalFiles=keptFiles.length+mods.length;
+    const totalImages=keptImages.length+images.length;
+    if(totalFiles<1)throw new Error(tx('Il doit rester au moins un fichier de mod.','At least one mod file must remain.'));
+    if(totalFiles>3)throw new Error(tx('Tu peux conserver ou ajouter 3 fichiers maximum.','You can keep or add up to 3 files.'));
+    for(const mod of mods)validateModFile(mod,true);
+    if(totalImages<1)throw new Error(tx('Il doit rester au moins une photo de présentation.','At least one preview photo must remain.'));
+    if(totalImages>4)throw new Error(tx('Tu peux conserver ou ajouter 4 photos maximum.','You can keep or add up to 4 photos.'));
+    validateImageFiles(images,false);
+    validateVideoFile(video);
+    security=mods.length?await inspectModFile(mods[0]):null;
+  }catch(error){
+    const reason=error?.message||String(error);
+    return alert(editingId
+      ?tx(`Modification non envoyée : ${reason}\nAucun fichier n’a été envoyé.`,`Update not sent: ${reason}\nNo file was uploaded.`)
+      :reason);
+  }
+
+  submit.disabled=true;
+  const uploaded=[];
+  let uploadedImages=[];
+  let uploadedVideoPath='';
+  let finalModFiles=[];
+  let finalImages=[];
+  let finalVideo=null;
+  let committed=false;
+  try{
+    const id=editingId||crypto.randomUUID();
+    const payload={
+      title:f.elements.title.value.trim(),
+      description:f.elements.description.value.trim(),
+      category:f.elements.category.value,
+      character_id:f.elements.character_id.value||null,
+      character_name:null,
+      game_version:f.elements.game_version.value.trim()||null,
+      mod_version:f.elements.mod_version.value.trim()||'1.0',
+      tags:f.elements.tags.value.split(',').map(x=>x.trim()).filter(Boolean).slice(0,10),
+      updated_at:new Date().toISOString()
+    };
+    const selected=f.elements.character_id.selectedOptions[0];
+    payload.character_name=f.elements.character_id.value?(selected?.dataset.name||selected?.textContent||oldRow?.character_name):null;
+    if(!editingId){payload.id=id;payload.creator_id=u.id}
+
+    const uploadedModFiles=[];
+    for(let i=0;i<mods.length;i++){
+      const mod=mods[i],check=i===0?security:await inspectModFile(mod);
+      const filePath=`${u.id}/${id}/${Date.now()}_${i+1}_${safeName(mod.name)}`;
+      const modLabel=tx(`Envoi du fichier ${i+1}/${mods.length}…`,`Uploading file ${i+1}/${mods.length}…`);
+      showUploadProgress(modLabel,0);
+      const url=await upload('community-mods',filePath,mod,pct=>showUploadProgress(modLabel,pct));
+      uploadedModFiles.push({url,path:filePath,name:mod.name,size:mod.size,sha256:check?.file_sha256||null,security_status:check?.security_status||'extension_checked'});
+      uploaded.push(['community-mods',filePath]);
+    }
+    finalModFiles=[...keptFiles.map(item=>({...item})),...uploadedModFiles];
+    const primaryFile=finalModFiles[0];
+    payload.mod_files=finalModFiles;
+    payload.file_url=primaryFile.url;
+    payload.file_path=primaryFile.path||null;
+    payload.file_name=primaryFile.name||'mod.pak';
+    payload.file_size=finalModFiles.reduce((sum,item)=>sum+Number(item.size||0),0);
+    payload.file_sha256=primaryFile.sha256||primaryFile.file_sha256||null;
+    payload.security_status=primaryFile.security_status||oldRow?.security_status||security?.security_status||'extension_checked';
+    payload.security_note=uploadedModFiles.length
+      ?tx(`${finalModFiles.length} fichier(s) contrôlé(s).`,`${finalModFiles.length} file(s) checked.`)
+      :(oldRow?.security_note||tx(`${finalModFiles.length} fichier(s) conservé(s).`,`${finalModFiles.length} file(s) kept.`));
+
+    for(let i=0;i<images.length;i++){
+      const image=images[i];
+      const imagePath=`${u.id}/${id}/images/${Date.now()}_${i+1}_${safeName(image.name)}`;
+      const label=tx(`Envoi de la photo ${i+1}/${images.length}…`,`Uploading photo ${i+1}/${images.length}…`);
+      showUploadProgress(label,0);
+      const url=await upload('mod-previews',imagePath,image,pct=>showUploadProgress(label,pct));
+      uploadedImages.push({url,path:imagePath});
+      uploaded.push(['mod-previews',imagePath]);
+    }
+    finalImages=[...keptImages.map(item=>({...item})),...uploadedImages];
+    payload.preview_images=finalImages;
+    payload.preview_url=finalImages[0].url;
+    payload.preview_path=finalImages[0].path||null;
+    payload.preview_type='image';
+
+    if(video){
+      const videoPath=`${u.id}/${id}/video/${Date.now()}_${safeName(video.name)}`;
+      uploadedVideoPath=videoPath;
+      const label=tx('Envoi de la vidéo…','Uploading video…');
+      showUploadProgress(label,0);
+      const url=await upload('mod-previews',videoPath,video,pct=>showUploadProgress(label,pct));
+      finalVideo={url,path:videoPath};
+      uploaded.push(['mod-previews',videoPath]);
+    }else finalVideo=keptVideo?{...keptVideo}:null;
+    if(editingId||finalVideo){
+      payload.video_url=finalVideo?.url||null;
+      payload.video_path=finalVideo?.path||null;
+    }
+
+    progress.textContent=editingId?tx('Enregistrement…','Saving…'):tx('Publication…','Publishing…');
+    if(editingId){
+      await request('/rest/v1/community_mod_versions',{method:'POST',headers:{Prefer:'return=minimal'},body:JSON.stringify({
+        mod_id:id,creator_id:u.id,mod_version:oldRow?.mod_version||'1.0',game_version:oldRow?.game_version||null,
+        description:oldRow?.description||'',file_url:oldRow?.file_url||'',file_path:oldRow?.file_path||'',file_name:oldRow?.file_name||'',
+        file_size:Number(oldRow?.file_size)||0,created_at:oldRow?.updated_at||oldRow?.created_at||new Date().toISOString()
+      })});
+      const saved=await writeCommunityMod(`/rest/v1/community_mods?id=eq.${encodeURIComponent(id)}&creator_id=eq.${encodeURIComponent(u.id)}&select=*`,'PATCH',payload,'return=representation');
+      const rows=saved.data;
+      if(!Array.isArray(rows)||!rows.length)throw new Error(tx('Modification refusée ou mod introuvable.','Update refused or mod not found.'));
+      if(saved.removed.includes('preview_images')&&uploadedImages.length>1){for(const img of uploadedImages.slice(1))try{await deleteStorageObject('mod-previews',img.path)}catch(_){}}
+      if((saved.removed.includes('video_url')||saved.removed.includes('video_path'))&&uploadedVideoPath)try{await deleteStorageObject('mod-previews',uploadedVideoPath)}catch(_){}
+      if(saved.removed.length)modsNotice(tx('Mod enregistré en mode compatible. Exécute le fichier SQL Supabase V2.6 fourni pour activer les galeries de 4 photos et les vidéos.','Mod saved in compatibility mode. Run the supplied Supabase V2.6 SQL file to enable 4-image galleries and videos.'));
+
+      const finalImagePaths=new Set(finalImages.map(item=>item.path).filter(Boolean));
+      for(const img of previewImages(oldRow))if(img.path&&!finalImagePaths.has(img.path))try{await deleteStorageObject('mod-previews',img.path)}catch(_){}
+      if(oldRow?.video_path&&oldRow.video_path!==(finalVideo?.path||''))try{await deleteStorageObject('mod-previews',oldRow.video_path)}catch(_){}
+      const finalFilePaths=new Set(finalModFiles.map(item=>item.path).filter(Boolean));
+      for(const file of modFiles(oldRow)){
+        if(file.path&&!finalFilePaths.has(file.path)&&file.path!==oldRow?.file_path){
+          try{await deleteStorageObject('community-mods',file.path)}catch(_){}
+        }
+      }
+    }else{
+      const saved=await writeCommunityMod('/rest/v1/community_mods','POST',payload,'return=minimal');
+      if(saved.removed.includes('preview_images')&&uploadedImages.length>1){for(const img of uploadedImages.slice(1))try{await deleteStorageObject('mod-previews',img.path)}catch(_){}}
+      if((saved.removed.includes('video_url')||saved.removed.includes('video_path'))&&uploadedVideoPath)try{await deleteStorageObject('mod-previews',uploadedVideoPath)}catch(_){}
+      if(saved.removed.length)modsNotice(tx('Mod publié en mode compatible. Exécute le fichier SQL Supabase V2.6 fourni pour activer les galeries de 4 photos et les vidéos.','Mod published in compatibility mode. Run the supplied Supabase V2.6 SQL file to enable 4-image galleries and videos.'));
+    }
+
+    committed=true;
+    ensurePublishModal().hidden=true;
+    f.reset();
+    f._mhurEditMedia=null;
+    state.editingId=null;
+    await load();
+    window.MHUR_ANALYTICS?.track?.(editingId?'mod_updated':'mod_created',{mod_id:String(id),category:payload.category,character_name:payload.character_name||'',game_version:payload.game_version||''});
+    if(editingId)await openDetail(editingId);
+  }catch(err){
+    if(!committed)for(const [bucket,path] of uploaded)try{await deleteStorageObject(bucket,path)}catch(_){}
+    const missing=missingCommunityModsColumn(err);
+    const raw=String(err?.message||err||'');
+    const descriptionConstraint=/community_mods_description_check/i.test(raw);
+    alert(missing
+      ?tx(`Supabase n’est pas encore configuré pour le champ « ${missing} ». Exécute le fichier SQL V2.6 fourni, puis réessaie.`,`Supabase is not yet configured for the “${missing}” field. Run the supplied V2.6 SQL file, then try again.`)
+      :descriptionConstraint
+        ?tx('La limite de description Supabase est encore trop basse. Exécute le fichier configuration/A_EXECUTER_DANS_SUPABASE_V43.sql puis réessaie.','The Supabase description limit is still too low. Run configuration/A_EXECUTER_DANS_SUPABASE_V43.sql and try again.')
+        :(err.message||String(err)));
+  }finally{
+    submit.disabled=false;
+    progress.textContent='';
+    progressBar.hidden=true;
+    progressBar.value=0;
+  }
+}
+function openImageLightbox(url,title=''){
+  let box=document.getElementById('modsImageLightbox');
+  if(!box){box=document.createElement('div');box.id='modsImageLightbox';box.className='modsImageLightbox';box.hidden=true;box.innerHTML='<button type="button" class="modsLightboxClose">×</button><img alt="">';document.body.appendChild(box);box.addEventListener('click',e=>{if(e.target===box||e.target.closest('.modsLightboxClose'))box.hidden=true});}
+  box.querySelector('img').src=url;box.querySelector('img').alt=title;box.hidden=false;
+}
+async function openDetail(id){
+  const r=state.rows.find(x=>String(x.id)===String(id));
+  if(!r)return;
+  state.active=r;
+  window.MHUR_ANALYTICS?.track?.('mod_viewed',{mod_id:String(id),category:r.category||'',character_name:r.character_name||''});
+  await loadComments(id);
+  const p=state.profiles[r.creator_id]||{};
+  const mine=isMine(r),canDelete=canDeleteMod(r);
+  const liked=state.liked.has(String(id));
+  let m=document.getElementById('modsDetailModal');
+  if(!m){
+    m=document.createElement('div');
+    m.id='modsDetailModal';
+    m.className='modsModal';
+    m.addEventListener('click',e=>{if(e.target===m)m.hidden=true});
+    document.body.appendChild(m);
+  }
+  m.hidden=false;
+  m.innerHTML=`<div class="modsDialog modsDetailDialog">
+    <div class="modsDialogHead"><h2>${esc(r.title)}</h2><button class="modsClose" type="button">×</button></div>
+    <div class="modsDetailMedia">${detailMedia(r)}</div>
+    <div class="modsDetailBody">
+      <div class="modTags">${tags(r)}</div>
+      <div class="modsDetailInfo"><button type="button" class="mhurProfileOpenButtonV29" onclick="MHUR_PROFILES?.open('${esc(r.creator_id)}')">👤 ${esc(p.username||tx('Membre','Member'))}</button><span>📦 ${esc(r.mod_version||'1.0')}</span>${r.game_version?`<span>🎮 ${esc(r.game_version)}</span>`:''}<span>💾 ${formatSize(r.file_size)}</span><span>📅 ${formatDate(r.created_at)}</span></div>
+      <div class="modSecurityPanel">${securityLabel(r)}${r.file_sha256?`<code title="SHA-256">${esc(r.file_sha256.slice(0,16))}…</code>`:''}<small>${esc(r.security_note||tx('Le site contrôle le format, mais un mod reste une création communautaire.','The site checks the format, but a mod remains community-created.'))}</small></div>
+      ${r.description?`<p class="modsDetailDescription">${esc(r.description)}</p>`:`<p class="modsDetailDescription modsDescriptionEmpty">${tx('Aucune description.','No description.')}</p>`}
+      <div class="modsDetailActions">
+        <button type="button" class="modsLike ${liked?'active':''}" data-like="${esc(r.id)}">♥ ${Number(r.likes_count)||0}</button>
+        <button type="button" class="modFavorite ${state.favorites.has(String(r.id))?'active':''}" data-favorite="${esc(r.id)}">★ ${tx('Favori','Favorite')}</button>
+        ${modFiles(r).map((file,i)=>`<a class="modDownload" data-download="${esc(r.id)}" href="${esc(file.url)}" download="${esc(file.name||`mod-${i+1}`)}" target="_blank" rel="noopener">⬇ ${tx('Télécharger le fichier','Download file')} ${modFiles(r).length>1?i+1:''} · ${esc(file.name||'')}</a>`).join('')}
+        <button type="button" class="modInstallGuide" data-install-guide="${esc(r.id)}">🛠 ${tx('Guide d’installation','Installation guide')}</button>
+        <button type="button" class="modReport" data-report="${esc(r.id)}">⚑ ${tx('Signaler','Report')}</button>
+        ${mine?`<button type="button" class="modEdit" data-edit="${esc(r.id)}">✏️ ${tx('Modifier','Edit')}</button>`:''}${canDelete?`<button type="button" class="modDelete" data-delete="${esc(r.id)}">🗑 ${tx('Supprimer','Delete')}</button>`:''}
+      </div>
+      <section class="modVersionHistory"><h3>🕘 ${tx('Historique des versions','Version history')}</h3><div id="modVersionHistoryList">${tx('Chargement…','Loading…')}</div></section>
+      <section class="modsComments"><h3>💬 ${tx('Commentaires','Comments')}</h3>${user()?`<form id="modCommentForm" class="mhurMediaDropZone"><div class="mhurMediaDraftPreview" data-mod-comment-draft></div><textarea maxlength="1500" placeholder="${tx('Écrire un commentaire… Colle ou glisse une photo ou une vidéo ici.','Write a comment… Paste or drop an image or video here.')}"></textarea><div class="mhurMediaDropHint">📥 ${tx('Tu peux glisser-déposer une photo ou une vidéo dans ce bloc.','You can drag and drop an image or video into this box.')}</div><div class="modCommentTools"><label class="modCommentFile">📷 ${tx('Photo / vidéo','Image / video')}<input type="file" accept="image/*,video/*"></label><span class="modCommentFileName"></span><span class="mhurPasteHint">⌘/Ctrl + V</span><progress class="modCommentProgress" max="100" value="0" hidden></progress><button class="modsPrimary">${tx('Publier','Post')}</button></div></form>`:`<button class="modsPrimary" id="modsLoginComment">${tx('Se connecter pour commenter','Sign in to comment')}</button>`}<div class="modsCommentsList">${commentsHtml()}</div></section>
+    </div>
+  </div>`;
+  m.querySelector('.modsClose').onclick=()=>m.hidden=true;
+  m.querySelectorAll('[data-gallery-image]').forEach(btn=>btn.addEventListener('click',()=>openImageLightbox(btn.dataset.galleryImage,r.title)));
+  m.querySelector('[data-like]')?.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();toggleLike(r.id)});
+  m.querySelector('[data-favorite]')?.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();toggleFavorite(r.id)});
+  m.querySelector('[data-install-guide]')?.addEventListener('click',()=>window.MHUR_PLUS?.modGuide?.open(r));
+  m.querySelector('[data-report]')?.addEventListener('click',()=>window.MHUR_PLUS?.modReport?.open(r.id));
+  m.querySelector('[data-download]')?.addEventListener('click',()=>incrementDownload(r.id));
+  m.querySelector('[data-edit]')?.addEventListener('click',()=>openEdit(r.id));
+  m.querySelector('[data-delete]')?.addEventListener('click',()=>removeMod(r.id));
+  const commentForm=m.querySelector('#modCommentForm');commentForm?.addEventListener('submit',e=>postComment(e,r.id));commentForm?.querySelector('input[type=file]')?.addEventListener('change',e=>{commentForm.querySelector('.modCommentFileName').textContent=e.target.files?.[0]?.name||'';renderModCommentDraft(commentForm)});bindModCommentPaste(commentForm);
+  m.querySelectorAll('[data-comment-edit]').forEach(btn=>btn.addEventListener('click',()=>startModCommentEdit(btn.dataset.commentEdit)));
+  m.querySelectorAll('[data-comment-delete]').forEach(btn=>btn.addEventListener('click',()=>deleteModComment(btn.dataset.commentDelete)));
+  m.querySelector('#modsLoginComment')?.addEventListener('click',()=>window.MHUR_AUTH?.open?.());
+  window.MHUR_PLUS?.modHistory?.mount?.(r.id,document.getElementById('modVersionHistoryList'));
+}
+async function loadComments(id){state.comments=[];if(!REMOTE)return;try{const q=new URLSearchParams({select:'*',mod_id:`eq.${id}`,is_hidden:'eq.false',order:'created_at.asc'});state.comments=await request(`/rest/v1/community_mod_comments?${q}`)||[];await loadProfiles(state.comments.map(x=>x.user_id))}catch(_){} }
+function commentAttachment(c){const url=String(c.media_url||'');if(!url)return '';return String(c.media_type||'').startsWith('video/')?`<video class="modCommentMedia" controls playsinline preload="metadata" src="${esc(url)}"></video>`:`<a href="${esc(url)}" target="_blank" rel="noopener"><img class="modCommentMedia" loading="lazy" src="${esc(url)}" alt="${tx('Photo du commentaire','Comment image')}"></a>`}
+function commentsHtml(){if(!state.comments.length)return `<div class="modsEmpty">${tx('Aucun commentaire pour le moment.','No comments yet.')}</div>`;return state.comments.map(c=>{const p=state.profiles[c.user_id]||{},mine=String(user()?.id||'')===String(c.user_id||''),admin=isSiteAdmin();return `<article class="modComment" data-mod-comment-id="${esc(c.id)}"><button type="button" class="modCommentAvatar mhurProfileOpenButtonV29" onclick="MHUR_PROFILES?.open('${esc(c.user_id)}')">${p.avatar_url?`<img src="${esc(p.avatar_url)}" alt="">`:'👤'}</button><div class="modCommentContent"><div class="modCommentHead"><button type="button" class="mhurProfileOpenButtonV29" onclick="MHUR_PROFILES?.open('${esc(c.user_id)}')"><b>${esc(p.username||tx('Membre','Member'))}</b></button><small>🕒 ${formatDate(c.created_at)}${c.updated_at&&c.updated_at!==c.created_at?` · ${tx('modifié','edited')}`:''}</small><div class="modCommentActions">${mine?`<button type="button" data-comment-edit="${esc(c.id)}">✏️ ${tx('Modifier','Edit')}</button>`:''}${mine||admin?`<button type="button" class="danger" data-comment-delete="${esc(c.id)}">🗑 ${tx('Supprimer','Delete')}</button>`:''}</div></div>${c.body?`<p class="modCommentBodyText">${esc(c.body)}</p>`:''}${commentAttachment(c)}</div></article>`}).join('')}
+function renderModCommentDraft(form){const input=form?.querySelector('input[type=file]'),host=form?.querySelector('[data-mod-comment-draft]');if(!host)return;clearDraftUrls(host);host.innerHTML='';const file=input?.files?.[0];if(!file)return;const url=URL.createObjectURL(file);modsDraftUrls.set(host,[url]);const video=file.type.startsWith('video/');host.innerHTML=`<div class="mhurMediaDraftCard">${video?`<video src="${url}" muted controls playsinline preload="metadata"></video>`:`<img src="${url}" alt="">`}<button type="button" class="mhurMediaDraftRemove" aria-label="${tx('Retirer','Remove')}">×</button><small>${esc(file.name||tx('Média collé','Pasted media'))}</small></div>`;host.querySelector('.mhurMediaDraftRemove').onclick=()=>{input.value='';form.querySelector('.modCommentFileName').textContent='';renderModCommentDraft(form)}}
+function bindModCommentPaste(form){if(!form||form.dataset.commentMediaBound==='1')return;form.dataset.commentMediaBound='1';const apply=files=>{const file=files.find(f=>f.type.startsWith('image/')||f.type.startsWith('video/'));if(!file)return;assignFiles(form.querySelector('input[type=file]'),[file]);renderModCommentDraft(form)};form.addEventListener('paste',async event=>{const files=await transferMediaFiles(event.clipboardData);if(!files.length)return;event.preventDefault();apply(files)});bindMediaDropZone(form,apply)}
+function startModCommentEdit(id){const c=state.comments.find(x=>String(x.id)===String(id));if(!c||String(c.user_id)!==String(user()?.id||''))return;const article=document.querySelector(`[data-mod-comment-id="${CSS.escape(String(id))}"]`),content=article?.querySelector('.modCommentContent');if(!content)return;content.querySelector('.modCommentBodyText')?.remove();let editor=content.querySelector('.modCommentInlineEdit');if(!editor){editor=document.createElement('div');editor.className='modCommentInlineEdit';editor.innerHTML=`<textarea maxlength="1500">${esc(c.body||'')}</textarea><div><button type="button" class="modsPrimary" data-save>${tx('Enregistrer','Save')}</button><button type="button" data-cancel>${tx('Annuler','Cancel')}</button></div>`;content.insertBefore(editor,content.querySelector('.modCommentMedia, a:has(.modCommentMedia)'));editor.querySelector('[data-cancel]').onclick=()=>openDetail(state.active.id);editor.querySelector('[data-save]').onclick=()=>saveModComment(id,editor.querySelector('textarea').value)}}
+async function saveModComment(id,value){const c=state.comments.find(x=>String(x.id)===String(id)),u=user();if(!c||!u||String(c.user_id)!==String(u.id))return;const body=String(value||'').trim();if(!body&&!c.media_url)return alert(tx('Le commentaire ne peut pas être vide.','The comment cannot be empty.'));try{await request(`/rest/v1/community_mod_comments?id=eq.${encodeURIComponent(id)}&user_id=eq.${encodeURIComponent(u.id)}`,{method:'PATCH',headers:{Prefer:'return=minimal'},body:JSON.stringify({body,updated_at:new Date().toISOString()})});await openDetail(state.active.id)}catch(e){alert(e.message||String(e))}}
+async function deleteModComment(id){const c=state.comments.find(x=>String(x.id)===String(id)),u=user(),admin=isSiteAdmin(),mine=Boolean(c&&u&&String(c.user_id)===String(u.id));if(!c||(!mine&&!admin))return;if(!confirm(tx('Supprimer définitivement ce commentaire ?','Permanently delete this comment?')))return;try{const ownerFilter=admin?'':`&user_id=eq.${encodeURIComponent(u.id)}`;await request(`/rest/v1/community_mod_comments?id=eq.${encodeURIComponent(id)}${ownerFilter}`,{method:'DELETE'});if(c.media_path)try{await deleteStorageObject('mod-previews',c.media_path)}catch(_){}await openDetail(state.active.id)}catch(e){alert(e.message||String(e))}}
+async function postComment(e,id){e.preventDefault();const form=e.currentTarget,body=form.querySelector('textarea').value.trim(),fileInput=form.querySelector('input[type=file]'),file=fileInput?.files?.[0],progress=form.querySelector('.modCommentProgress'),u=user();if((!body&&!file)||!u)return;let media=null;try{if(file){const isImage=file.type.startsWith('image/'),isVideo=file.type.startsWith('video/');if(!isImage&&!isVideo)throw new Error(tx('Choisis une photo ou une vidéo.','Choose an image or video.'));if(isImage&&file.size>8*MB)throw new Error(tx('La photo ne doit pas dépasser 8 Mo.','The image must not exceed 8 MB.'));if(isVideo&&file.size>50*MB)throw new Error(tx('La vidéo ne doit pas dépasser 50 Mo.','The video must not exceed 50 MB.'));const ext=fileExtension(file)||(isVideo?'.mp4':'.jpg'),path=`comments/mod-${id}/${u.id}/${Date.now()}-${Math.random().toString(36).slice(2)}${ext}`;progress.hidden=false;const media_url=await upload('mod-previews',path,file,pct=>progress.value=pct);media={media_url,media_type:file.type,media_path:path}}await request('/rest/v1/community_mod_comments',{method:'POST',headers:{Prefer:'return=minimal'},body:JSON.stringify({mod_id:id,user_id:u.id,body,...(media||{})})});await openDetail(id)}catch(err){if(media?.media_path)try{await deleteStorageObject('mod-previews',media.media_path)}catch(_){}alert(err.message||String(err))}finally{if(progress)progress.hidden=true}}
+async function toggleLike(id){const u=user();if(!u)return window.MHUR_AUTH?.open?.();const dialog=document.querySelector('#modsDetailModal .modsDialog');const modalScroll=dialog?.scrollTop||0;const pageScroll=window.scrollY;try{const liked=state.liked.has(String(id));if(liked){await request(`/rest/v1/community_mod_likes?mod_id=eq.${id}&user_id=eq.${u.id}`,{method:'DELETE'});state.liked.delete(String(id))}else{await request('/rest/v1/community_mod_likes',{method:'POST',headers:{Prefer:'return=minimal'},body:JSON.stringify({mod_id:id,user_id:u.id})});state.liked.add(String(id))}let count=0;try{count=await request('/rest/v1/rpc/refresh_mod_likes',{method:'POST',body:JSON.stringify({target_mod:id})})}catch(_){count=Math.max(0,(state.rows.find(r=>r.id===id)?.likes_count||0)+(liked?-1:1))}const row=state.rows.find(r=>String(r.id)===String(id));if(row)row.likes_count=count;await openDetail(id);requestAnimationFrame(()=>{const d=document.querySelector('#modsDetailModal .modsDialog');if(d)d.scrollTop=modalScroll;window.scrollTo(0,pageScroll)})}catch(err){alert(err.message||String(err))}}
+async function toggleFavorite(id){
+  const u=user();if(!u)return window.MHUR_AUTH?.open?.();
+  const dialog=document.querySelector('#modsDetailModal .modsDialog');const modalScroll=dialog?.scrollTop||0;const pageScroll=window.scrollY;
+  try{
+    if(state.favorites.has(String(id))){await request(`/rest/v1/community_mod_favorites?mod_id=eq.${encodeURIComponent(id)}&user_id=eq.${u.id}`,{method:'DELETE'});state.favorites.delete(String(id));}
+    else{await request('/rest/v1/community_mod_favorites',{method:'POST',headers:{Prefer:'return=minimal'},body:JSON.stringify({mod_id:id,user_id:u.id})});state.favorites.add(String(id));}
+    renderPage();if(state.active&&String(state.active.id)===String(id))await openDetail(id);requestAnimationFrame(()=>{const d=document.querySelector('#modsDetailModal .modsDialog');if(d)d.scrollTop=modalScroll;window.scrollTo(0,pageScroll)});window.dispatchEvent(new CustomEvent('mhur-mod-favorites-change'));
+  }catch(err){alert(err.message||String(err))}
+}
+async function incrementDownload(id){
+  if(!user())return;
+  try{
+    const count=Number(await request('/rest/v1/rpc/increment_mod_downloads',{method:'POST',body:JSON.stringify({target_mod:id})}))||0;
+    const row=state.rows.find(r=>String(r.id)===String(id));
+    if(row)row.downloads_count=count;
+    window.MHUR_ANALYTICS?.track?.('mod_downloaded',{mod_id:String(id),downloads_count:count,category:row?.category||''});
+    document.querySelectorAll(`[data-mod-id="${id}"] .modStats span:last-child`).forEach(el=>el.textContent=`⬇ ${count}`);
+  }catch(error){console.warn('Téléchargement non comptabilisé',error)}
+}
+async function removeMod(id){
+  const row=state.rows.find(r=>String(r.id)===String(id));
+  const u=user();
+  const admin=isSiteAdmin();
+  if(!row||!u||(!isMine(row)&&!admin))return;
+  if(!confirm(tx('Supprimer définitivement ce mod ?','Permanently delete this mod?')))return;
+  try{
+    let history=[];try{history=await request(`/rest/v1/community_mod_versions?mod_id=eq.${encodeURIComponent(id)}&select=file_path`)}catch(_){}
+    const ownerFilter=admin?'':`&creator_id=eq.${encodeURIComponent(u.id)}`;
+    await request(`/rest/v1/community_mods?id=eq.${encodeURIComponent(id)}${ownerFilter}`,{method:'DELETE'});
+    const mediaPaths=[...previewImages(row).map(x=>x.path),previewVideo(row)?.path].filter(Boolean);
+    for(const [bucket,path] of [['community-mods',row.file_path],...mediaPaths.map(path=>['mod-previews',path]),...(history||[]).map(v=>['community-mods',v.file_path])])if(path)try{await deleteStorageObject(bucket,path)}catch(_){}
+    document.getElementById('modsDetailModal')?.setAttribute('hidden','');
+    await load();
+  }catch(e){alert(e.message||String(e))}
+}
+function addMenu(){const drawer=document.getElementById('drawer');if(!drawer)return;let btn=drawer.querySelector('[data-mhur-mods]');if(!btn){btn=document.createElement('a');btn.href='#mods';btn.className='navItem';btn.dataset.mhurMods='1';btn.dataset.mhurHub='1';btn.innerHTML='🧩 <span>Mods</span>';btn.addEventListener('click',e=>{e.preventDefault();openPage()});const builds=[...drawer.querySelectorAll('.navItem')].find(x=>/community builds|builds communaut|build communaut/i.test(x.textContent));(builds?.parentElement||drawer).insertBefore(btn,builds?.nextSibling||null)}btn.classList.toggle('active',typeof page!=='undefined'&&page==='mods');window.MHUR_V386?.refreshMenuSections?.()}
+function openPage(){page='mods';selectedChar=null;selectedStyle=null;selectedCostume=null;document.getElementById('drawer')?.classList.remove('open');if(location.pathname!=='/mods')history.pushState(null,'','/mods');renderPage();addMenu()}
+const originalLayout=window.layout;window.layout=function(){const out=originalLayout?.apply(this,arguments);setTimeout(()=>{addMenu();if(typeof page!=='undefined'&&page==='mods')renderPage()},0);return out};
+window.addEventListener('hashchange',()=>{if(location.pathname==='/mods'||location.hash==='#mods')openPage()});
+new MutationObserver(addMenu).observe(document.documentElement,{childList:true,subtree:true});
+window.MHUR_MODS={open:openPage,refresh:load,state,request,openDetail,toggleFavorite,loadFavorites,removeMod,deleteComment:deleteModComment};
+window.addEventListener('mhur-auth-change',()=>{Promise.all([loadLikes(),loadFavorites()]).finally(()=>{renderPage();const detail=document.getElementById('modsDetailModal');if(detail&&!detail.hidden&&state.active)openDetail(state.active.id)})});
+window.addEventListener('mhur-role-change',()=>{renderPage();const detail=document.getElementById('modsDetailModal');if(detail&&!detail.hidden&&state.active)openDetail(state.active.id)});
+window.addEventListener('load',()=>{addMenu();if(location.pathname==='/mods'||location.hash==='#mods')openPage();load()},{once:true});
+})();
