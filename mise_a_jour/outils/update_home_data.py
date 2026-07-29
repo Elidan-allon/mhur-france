@@ -1291,7 +1291,16 @@ def parse_home(session: requests.Session, root: Path, previous: dict):
             latest_patch = old or previous_latest
     else:
         latest_patch = previous_latest
+    # Keep the complete patch history. The old updater replaced the list with
+    # only the newest entry, which made the previous patch disappear from the
+    # site on every data update.
     patches = [latest_patch] if latest_patch else []
+    latest_patch_id = str((latest_patch or {}).get("id") or "")
+    patches.extend(
+        old_patch for old_patch in previous.get("patch_notes", [])
+        if isinstance(old_patch, dict) and str(old_patch.get("id") or "") != latest_patch_id
+    )
+    patches = patches[:12]
 
     previous_releases = previous.get("latest_releases", [])
     releases = []

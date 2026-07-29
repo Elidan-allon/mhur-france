@@ -283,6 +283,9 @@ def synchronize(root: Path, log_path: Path) -> Path:
     # immédiatement, même si la synchronisation complète prend plusieurs minutes.
     log("Étape 1/3 : mise à jour rapide de l'accueil et des événements...", log_path)
     run_tool(root, [str(TOOLS_DIR / "update_home_data.py"), "--site-root", "."], log_path)
+    # Le site source a changé de structure avec la Saison 18. Cette passe
+    # répare les bonus, conserve l'historique des patchs et leurs données UI.
+    run_tool(root, [str(TOOLS_DIR / "season18_postprocess.py"), "--site-root", ".", "--phase", "home"], log_path)
 
     # La sauvegarde est créée après l'accueil : si le scan complet échoue, la
     # restauration conserve tout de même les nouveaux événements déjà récupérés.
@@ -299,6 +302,9 @@ def synchronize(root: Path, log_path: Path) -> Path:
             ],
             log_path,
         )
+        # Conversion bilingue des nouvelles fiches, séparation des costumes
+        # à venir et drapeaux NEW avant la vérification finale.
+        run_tool(root, [str(TOOLS_DIR / "season18_postprocess.py"), "--site-root", ".", "--phase", "full"], log_path)
         log("Étape 3/3 : vérification finale des costumes...", log_path)
         run_tool(
             root,

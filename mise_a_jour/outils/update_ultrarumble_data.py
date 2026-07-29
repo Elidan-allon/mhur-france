@@ -2436,7 +2436,7 @@ def merge_remote_costumes(root: Path, session: requests.Session, remotes: List[D
     report = {
         "sync_mode": sync_mode,
         "updated_tunings": 0, "updated_rarities": 0, "updated_photos": 0,
-        "added": 0, "downloaded_images": 0, "changed_costumes": 0, "changed_fields": 0,
+        "added": 0, "added_ids": [], "downloaded_images": 0, "changed_costumes": 0, "changed_fields": 0,
         "merged_ids": [], "unmapped": [], "failed": [], "incomplete_tuning": [], "missing_exact_photo": [], "photo_download_failures": [],
         "duplicates_removed": 0, "misplaced_removed": 0, "bad_bindings_cleared": 0,
         "canonical_ids_bound": 0, "canonical_labels_restored": 0, "canonical_order_restored": 0,
@@ -2629,6 +2629,7 @@ def merge_remote_costumes(root: Path, session: requests.Session, remotes: List[D
             insert_new_costume_preserving_order(local, new_ct)
             by_urid[rid] = new_ct
             report["added"] += 1
+            report.setdefault("added_ids", []).append(rid)
             if downloaded_now:
                 report["downloaded_images"] += 1
                 report["updated_photos"] += 1
@@ -3200,7 +3201,7 @@ def update_costumes(root: Path, session: requests.Session, chars: List[Dict[str,
     merge_mode = "full" if mode == "exact" else ("values" if mode == "values" else ("fast" if mode == "fast" else mode))
     report = merge_remote_costumes(root, session, results, sync_mode=merge_mode) if results else {
         "sync_mode": mode, "updated_tunings": 0, "updated_rarities": 0, "updated_photos": 0,
-        "added": 0, "downloaded_images": 0, "changed_costumes": 0, "changed_fields": 0,
+        "added": 0, "added_ids": [], "downloaded_images": 0, "changed_costumes": 0, "changed_fields": 0,
         "merged_ids": [], "unmapped": [], "failed": failures, "incomplete_tuning": [],
         "missing_exact_photo": [], "photo_download_failures": [],
     }

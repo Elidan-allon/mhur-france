@@ -1,14 +1,15 @@
 {
   "meta": {
-    "updated_at": "2026-07-29T04:35:08.269670+00:00",
+    "updated_at": "2026-07-29T05:41:22.934924+00:00",
     "updater_version": "v354_afo_young_mapped",
     "source": "https://ultrarumble.com",
-    "new_styles_added": 1,
+    "new_styles_added": 0,
     "tuning_level_stats": {
       "normal_cards": 60,
       "special_cards": 60,
       "styles_enriched": 60
-    }
+    },
+    "season18_postprocess": "2026-07-29T05:41:37.766599+00:00"
   },
   "characters": [
     {
@@ -17003,8 +17004,18 @@
       },
       "special_action": {
         "values": {
-          "columns": [],
-          "rows": []
+          "columns": [
+            "Ammo",
+            "Use Ammo",
+            "Reload"
+          ],
+          "rows": [
+            [
+              "x1",
+              "x1",
+              "1s"
+            ]
+          ]
         }
       },
       "normal_tuning": [
@@ -47934,8 +47945,18 @@
       },
       "special_action": {
         "values": {
-          "columns": [],
-          "rows": []
+          "columns": [
+            "Ammo",
+            "Use Ammo",
+            "Reload"
+          ],
+          "rows": [
+            [
+              "x1",
+              "x1",
+              "1s"
+            ]
+          ]
         }
       },
       "normal_tuning": [
@@ -49264,29 +49285,59 @@
       "portrait": "assets/gentle_criminal/gentle_criminal_technical/portrait.png",
       "pv": 300,
       "description": {
-        "fr": "Données mises à jour automatiquement depuis UltraRumble pour Gentle Criminal.",
-        "en": "Automatically updated data."
+        "fr": "Un hors-la-loi des temps modernes qui entrera dans l'Histoire ! Son Alter Élasticité lui permet de virevolter dans les airs en narguant ses ennemis avec panache !",
+        "en": "A modern-day gentleman thief whose name will go down in history! With his Quirk, Elasticity, he flies freely in every direction and gracefully toys with his opponents!"
       },
       "roleDesc": {
-        "fr": "Données du rôle mises à jour automatiquement.",
-        "en": "Automatically updated role data."
+        "fr": "Augmente la vitesse de rechargement de toute l'équipe. Plus il y a de membres avec le même rôle dans l'équipe, plus l'effet est amplifié.",
+        "en": "Gives your entire team Reload Speed UP! The more teammates with the same role, the stronger the effect!"
       },
       "special": {
         "name": {
-          "fr": "Action spéciale",
-          "en": "Special Action"
+          "fr": "Gently Trampoline / Mode Lover",
+          "en": "Gently Trampoline / Rubber Mode"
         },
         "img": "assets/gentle_criminal/gentle_criminal_technical/special.png",
         "desc": {
-          "fr": "Consulte les valeurs ci-dessous.",
-          "en": "See values below."
+          "fr": "Permet de créer un trampoline gonflable à vos pieds. Vous et vos alliés effectueront un grand saut en le touchant, tandis que vos ennemis seront projetés au loin.<br><br>Utilisez l'Alter de Love Lover pour améliorer la puissance d'attaque et la vitesse de rechargement en mode Plus Chaos. Lorsque le Plus Chaos atteint 100 %, il s'active automatiquement, empêchant ainsi vos PV de tomber à 0 en subissant des attaques ennemies.",
+          "en": "Create an air trampoline beneath your feet. Allies who touch it make a huge jump, while opponents are launched away.<br><br>La Brava's Quirk boosts your Attack Power and Reload Speed during Plus Chaos. When Plus Chaos reaches 100%, it activates automatically instead of letting an opponent's attack reduce your HP to 0."
         },
-        "tables": []
+        "tables": [
+          {
+            "title": {
+              "fr": "Valeurs Action spéciale",
+              "en": "Special Action values"
+            },
+            "cols": {
+              "fr": [
+                "Dégâts"
+              ],
+              "en": [
+                "Damage"
+              ]
+            },
+            "rows": {
+              "fr": [
+                [
+                  "0"
+                ]
+              ],
+              "en": [
+                [
+                  "0"
+                ]
+              ]
+            }
+          }
+        ]
       },
       "skills": [
         {
           "letter": "α",
-          "name": "Gently Arrow",
+          "name": {
+            "fr": "Gently Arrow",
+            "en": "Gently Arrow"
+          },
           "img": "assets/gentle_criminal/gentle_criminal_technical/alpha.png",
           "desc": {
             "fr": "Gently Arrow",
@@ -49294,95 +49345,87 @@
           },
           "tables": [
             {
-              "title": "Valeurs α",
-              "cols": [
-                "Level",
-                "Damage",
-                "Ammo",
-                "Use Ammo",
-                "Reload",
-                "Down Power"
-              ],
-              "rows": [
-                [
-                  "Lv.1",
-                  "60",
-                  "x6",
-                  "x1",
-                  "1s",
-                  "80"
+              "title": {
+                "fr": "Valeurs α",
+                "en": "α values"
+              },
+              "cols": {
+                "fr": [
+                  "Niveau"
                 ],
-                [
-                  "Lv.2",
-                  "63",
-                  "x6",
-                  "x1",
-                  "1s",
-                  "80"
-                ],
-                [
-                  "Lv.3",
-                  "66",
-                  "x6",
-                  "x1",
-                  "1s",
-                  "80"
-                ],
-                [
-                  "Lv.4",
-                  "69",
-                  "x7",
-                  "x1",
-                  "1s",
-                  "80"
-                ],
-                [
-                  "Lv.5",
-                  "72",
-                  "x7",
-                  "x1",
-                  "1s",
-                  "80"
-                ],
-                [
-                  "Lv.6",
-                  "75",
-                  "x7",
-                  "x1",
-                  "1s",
-                  "80"
-                ],
-                [
-                  "Lv.7",
-                  "78",
-                  "x7",
-                  "x1",
-                  "1s",
-                  "80"
-                ],
-                [
-                  "Lv.8",
-                  "81",
-                  "x7",
-                  "x1",
-                  "1s",
-                  "80"
-                ],
-                [
-                  "Lv.9",
-                  "84",
-                  "x8",
-                  "x1",
-                  "1s",
-                  "80"
+                "en": [
+                  "Level"
                 ]
-              ]
+              },
+              "rows": {
+                "fr": [
+                  [
+                    "Lv.1"
+                  ],
+                  [
+                    "Lv.2"
+                  ],
+                  [
+                    "Lv.3"
+                  ],
+                  [
+                    "Lv.4"
+                  ],
+                  [
+                    "Lv.5"
+                  ],
+                  [
+                    "Lv.6"
+                  ],
+                  [
+                    "Lv.7"
+                  ],
+                  [
+                    "Lv.8"
+                  ],
+                  [
+                    "Lv.9"
+                  ]
+                ],
+                "en": [
+                  [
+                    "Lv.1"
+                  ],
+                  [
+                    "Lv.2"
+                  ],
+                  [
+                    "Lv.3"
+                  ],
+                  [
+                    "Lv.4"
+                  ],
+                  [
+                    "Lv.5"
+                  ],
+                  [
+                    "Lv.6"
+                  ],
+                  [
+                    "Lv.7"
+                  ],
+                  [
+                    "Lv.8"
+                  ],
+                  [
+                    "Lv.9"
+                  ]
+                ]
+              }
             }
           ]
         },
         {
           "letter": "β",
-          "name": "Gently Rebound",
+          "name": {
+            "fr": "Gently Rebound",
+            "en": "Gently Rebound"
+          },
           "img": "assets/gentle_criminal/gentle_criminal_technical/beta.png",
           "desc": {
             "fr": "Gently Rebound",
@@ -49390,307 +49433,664 @@
           },
           "tables": [
             {
-              "title": "Valeurs supplémentaires β",
-              "cols": [
-                "Type",
-                "Level",
-                "Damage",
-                "Down Power"
-              ],
-              "rows": [
-                [
-                  "Shockwave (衝撃波)",
-                  "Lv.1",
-                  "70",
-                  "500"
+              "title": {
+                "fr": "Valeurs β",
+                "en": "β values"
+              },
+              "cols": {
+                "fr": [
+                  "Niveau"
                 ],
-                [
-                  "Shockwave (衝撃波)",
-                  "Lv.2",
-                  "75",
-                  "500"
-                ],
-                [
-                  "Shockwave (衝撃波)",
-                  "Lv.3",
-                  "80",
-                  "500"
-                ],
-                [
-                  "Shockwave (衝撃波)",
-                  "Lv.4",
-                  "85",
-                  "500"
-                ],
-                [
-                  "Shockwave (衝撃波)",
-                  "Lv.5",
-                  "90",
-                  "500"
-                ],
-                [
-                  "Shockwave (衝撃波)",
-                  "Lv.6",
-                  "95",
-                  "500"
-                ],
-                [
-                  "Shockwave (衝撃波)",
-                  "Lv.7",
-                  "100",
-                  "500"
-                ],
-                [
-                  "Shockwave (衝撃波)",
-                  "Lv.8",
-                  "105",
-                  "500"
-                ],
-                [
-                  "Shockwave (衝撃波)",
-                  "Lv.9",
-                  "110",
-                  "500"
-                ],
-                [
-                  "Bullet (弾)",
-                  "Lv.1",
-                  "20",
-                  "250"
-                ],
-                [
-                  "Bullet (弾)",
-                  "Lv.2",
-                  "21",
-                  "250"
-                ],
-                [
-                  "Bullet (弾)",
-                  "Lv.3",
-                  "22",
-                  "250"
-                ],
-                [
-                  "Bullet (弾)",
-                  "Lv.4",
-                  "24",
-                  "250"
-                ],
-                [
-                  "Bullet (弾)",
-                  "Lv.5",
-                  "25",
-                  "250"
-                ],
-                [
-                  "Bullet (弾)",
-                  "Lv.6",
-                  "26",
-                  "250"
-                ],
-                [
-                  "Bullet (弾)",
-                  "Lv.7",
-                  "27",
-                  "250"
-                ],
-                [
-                  "Bullet (弾)",
-                  "Lv.8",
-                  "28",
-                  "250"
-                ],
-                [
-                  "Bullet (弾)",
-                  "Lv.9",
-                  "30",
-                  "250"
+                "en": [
+                  "Level"
                 ]
-              ]
+              },
+              "rows": {
+                "fr": [
+                  [
+                    "Lv.1"
+                  ],
+                  [
+                    "Lv.2"
+                  ],
+                  [
+                    "Lv.3"
+                  ],
+                  [
+                    "Lv.4"
+                  ],
+                  [
+                    "Lv.5"
+                  ],
+                  [
+                    "Lv.6"
+                  ],
+                  [
+                    "Lv.7"
+                  ],
+                  [
+                    "Lv.8"
+                  ],
+                  [
+                    "Lv.9"
+                  ]
+                ],
+                "en": [
+                  [
+                    "Lv.1"
+                  ],
+                  [
+                    "Lv.2"
+                  ],
+                  [
+                    "Lv.3"
+                  ],
+                  [
+                    "Lv.4"
+                  ],
+                  [
+                    "Lv.5"
+                  ],
+                  [
+                    "Lv.6"
+                  ],
+                  [
+                    "Lv.7"
+                  ],
+                  [
+                    "Lv.8"
+                  ],
+                  [
+                    "Lv.9"
+                  ]
+                ]
+              }
+            },
+            {
+              "title": {
+                "fr": "Valeurs supplémentaires β",
+                "en": "Additional β values"
+              },
+              "cols": {
+                "fr": [
+                  "Type",
+                  "Niveau",
+                  "Dégâts"
+                ],
+                "en": [
+                  "Type",
+                  "Level",
+                  "Damage"
+                ]
+              },
+              "rows": {
+                "fr": [
+                  [
+                    "Shockwave",
+                    "Lv.1",
+                    "70"
+                  ],
+                  [
+                    "Shockwave",
+                    "Lv.2",
+                    "75"
+                  ],
+                  [
+                    "Shockwave",
+                    "Lv.3",
+                    "80"
+                  ],
+                  [
+                    "Shockwave",
+                    "Lv.4",
+                    "85"
+                  ],
+                  [
+                    "Shockwave",
+                    "Lv.5",
+                    "90"
+                  ],
+                  [
+                    "Shockwave",
+                    "Lv.6",
+                    "95"
+                  ],
+                  [
+                    "Shockwave",
+                    "Lv.7",
+                    "100"
+                  ],
+                  [
+                    "Shockwave",
+                    "Lv.8",
+                    "105"
+                  ],
+                  [
+                    "Shockwave",
+                    "Lv.9",
+                    "110"
+                  ],
+                  [
+                    "Bullet",
+                    "Lv.1",
+                    "20"
+                  ],
+                  [
+                    "Bullet",
+                    "Lv.2",
+                    "21"
+                  ],
+                  [
+                    "Bullet",
+                    "Lv.3",
+                    "22"
+                  ],
+                  [
+                    "Bullet",
+                    "Lv.4",
+                    "24"
+                  ],
+                  [
+                    "Bullet",
+                    "Lv.5",
+                    "25"
+                  ],
+                  [
+                    "Bullet",
+                    "Lv.6",
+                    "26"
+                  ],
+                  [
+                    "Bullet",
+                    "Lv.7",
+                    "27"
+                  ],
+                  [
+                    "Bullet",
+                    "Lv.8",
+                    "28"
+                  ],
+                  [
+                    "Bullet",
+                    "Lv.9",
+                    "30"
+                  ]
+                ],
+                "en": [
+                  [
+                    "Shockwave",
+                    "Lv.1",
+                    "70"
+                  ],
+                  [
+                    "Shockwave",
+                    "Lv.2",
+                    "75"
+                  ],
+                  [
+                    "Shockwave",
+                    "Lv.3",
+                    "80"
+                  ],
+                  [
+                    "Shockwave",
+                    "Lv.4",
+                    "85"
+                  ],
+                  [
+                    "Shockwave",
+                    "Lv.5",
+                    "90"
+                  ],
+                  [
+                    "Shockwave",
+                    "Lv.6",
+                    "95"
+                  ],
+                  [
+                    "Shockwave",
+                    "Lv.7",
+                    "100"
+                  ],
+                  [
+                    "Shockwave",
+                    "Lv.8",
+                    "105"
+                  ],
+                  [
+                    "Shockwave",
+                    "Lv.9",
+                    "110"
+                  ],
+                  [
+                    "Bullet",
+                    "Lv.1",
+                    "20"
+                  ],
+                  [
+                    "Bullet",
+                    "Lv.2",
+                    "21"
+                  ],
+                  [
+                    "Bullet",
+                    "Lv.3",
+                    "22"
+                  ],
+                  [
+                    "Bullet",
+                    "Lv.4",
+                    "24"
+                  ],
+                  [
+                    "Bullet",
+                    "Lv.5",
+                    "25"
+                  ],
+                  [
+                    "Bullet",
+                    "Lv.6",
+                    "26"
+                  ],
+                  [
+                    "Bullet",
+                    "Lv.7",
+                    "27"
+                  ],
+                  [
+                    "Bullet",
+                    "Lv.8",
+                    "28"
+                  ],
+                  [
+                    "Bullet",
+                    "Lv.9",
+                    "30"
+                  ]
+                ]
+              }
             }
           ]
         },
         {
           "letter": "γ",
-          "name": "Gently Avant",
+          "name": {
+            "fr": "Gently Rush",
+            "en": "Gently Avant"
+          },
           "img": "assets/gentle_criminal/gentle_criminal_technical/gamma.png",
           "desc": {
-            "fr": "Gently Avant",
+            "fr": "Gently Rush",
             "en": "Gently Avant"
           },
           "tables": [
             {
-              "title": "Valeurs supplémentaires γ",
-              "cols": [
-                "Type",
-                "Level",
-                "Damage",
-                "Down Power"
-              ],
-              "rows": [
-                [
-                  "Rush (突進)",
-                  "Lv.1",
-                  "40",
-                  "10"
+              "title": {
+                "fr": "Valeurs γ",
+                "en": "γ values"
+              },
+              "cols": {
+                "fr": [
+                  "Niveau"
                 ],
-                [
-                  "Rush (突進)",
-                  "Lv.2",
-                  "42",
-                  "10"
-                ],
-                [
-                  "Rush (突進)",
-                  "Lv.3",
-                  "44",
-                  "10"
-                ],
-                [
-                  "Rush (突進)",
-                  "Lv.4",
-                  "48",
-                  "10"
-                ],
-                [
-                  "Rush (突進)",
-                  "Lv.5",
-                  "50",
-                  "10"
-                ],
-                [
-                  "Rush (突進)",
-                  "Lv.6",
-                  "52",
-                  "10"
-                ],
-                [
-                  "Rush (突進)",
-                  "Lv.7",
-                  "54",
-                  "10"
-                ],
-                [
-                  "Rush (突進)",
-                  "Lv.8",
-                  "56",
-                  "10"
-                ],
-                [
-                  "Rush (突進)",
-                  "Lv.9",
-                  "60",
-                  "10"
-                ],
-                [
-                  "Rush (突進)",
-                  "Lv.1",
-                  "5",
-                  "10"
-                ],
-                [
-                  "Rush (突進)",
-                  "Lv.2",
-                  "5",
-                  "10"
-                ],
-                [
-                  "Rush (突進)",
-                  "Lv.3",
-                  "5",
-                  "10"
-                ],
-                [
-                  "Rush (突進)",
-                  "Lv.4",
-                  "5",
-                  "10"
-                ],
-                [
-                  "Rush (突進)",
-                  "Lv.5",
-                  "5",
-                  "10"
-                ],
-                [
-                  "Rush (突進)",
-                  "Lv.6",
-                  "5",
-                  "10"
-                ],
-                [
-                  "Rush (突進)",
-                  "Lv.7",
-                  "5",
-                  "10"
-                ],
-                [
-                  "Rush (突進)",
-                  "Lv.8",
-                  "5",
-                  "10"
-                ],
-                [
-                  "Rush (突進)",
-                  "Lv.9",
-                  "5",
-                  "10"
-                ],
-                [
-                  "Rush (突進)",
-                  "Lv.1",
-                  "40",
-                  "500"
-                ],
-                [
-                  "Rush (突進)",
-                  "Lv.2",
-                  "42",
-                  "500"
-                ],
-                [
-                  "Rush (突進)",
-                  "Lv.3",
-                  "44",
-                  "500"
-                ],
-                [
-                  "Rush (突進)",
-                  "Lv.4",
-                  "48",
-                  "500"
-                ],
-                [
-                  "Rush (突進)",
-                  "Lv.5",
-                  "50",
-                  "500"
-                ],
-                [
-                  "Rush (突進)",
-                  "Lv.6",
-                  "52",
-                  "500"
-                ],
-                [
-                  "Rush (突進)",
-                  "Lv.7",
-                  "54",
-                  "500"
-                ],
-                [
-                  "Rush (突進)",
-                  "Lv.8",
-                  "56",
-                  "500"
-                ],
-                [
-                  "Rush (突進)",
-                  "Lv.9",
-                  "60",
-                  "500"
+                "en": [
+                  "Level"
                 ]
-              ]
+              },
+              "rows": {
+                "fr": [
+                  [
+                    "Lv.1"
+                  ],
+                  [
+                    "Lv.2"
+                  ],
+                  [
+                    "Lv.3"
+                  ],
+                  [
+                    "Lv.4"
+                  ],
+                  [
+                    "Lv.5"
+                  ],
+                  [
+                    "Lv.6"
+                  ],
+                  [
+                    "Lv.7"
+                  ],
+                  [
+                    "Lv.8"
+                  ],
+                  [
+                    "Lv.9"
+                  ]
+                ],
+                "en": [
+                  [
+                    "Lv.1"
+                  ],
+                  [
+                    "Lv.2"
+                  ],
+                  [
+                    "Lv.3"
+                  ],
+                  [
+                    "Lv.4"
+                  ],
+                  [
+                    "Lv.5"
+                  ],
+                  [
+                    "Lv.6"
+                  ],
+                  [
+                    "Lv.7"
+                  ],
+                  [
+                    "Lv.8"
+                  ],
+                  [
+                    "Lv.9"
+                  ]
+                ]
+              }
+            },
+            {
+              "title": {
+                "fr": "Valeurs supplémentaires γ",
+                "en": "Additional γ values"
+              },
+              "cols": {
+                "fr": [
+                  "Type",
+                  "Niveau",
+                  "Dégâts"
+                ],
+                "en": [
+                  "Type",
+                  "Level",
+                  "Damage"
+                ]
+              },
+              "rows": {
+                "fr": [
+                  [
+                    "Rush",
+                    "Lv.1",
+                    "40"
+                  ],
+                  [
+                    "Rush",
+                    "Lv.2",
+                    "42"
+                  ],
+                  [
+                    "Rush",
+                    "Lv.3",
+                    "44"
+                  ],
+                  [
+                    "Rush",
+                    "Lv.4",
+                    "48"
+                  ],
+                  [
+                    "Rush",
+                    "Lv.5",
+                    "50"
+                  ],
+                  [
+                    "Rush",
+                    "Lv.6",
+                    "52"
+                  ],
+                  [
+                    "Rush",
+                    "Lv.7",
+                    "54"
+                  ],
+                  [
+                    "Rush",
+                    "Lv.8",
+                    "56"
+                  ],
+                  [
+                    "Rush",
+                    "Lv.9",
+                    "60"
+                  ],
+                  [
+                    "Rush",
+                    "Lv.1",
+                    "5"
+                  ],
+                  [
+                    "Rush",
+                    "Lv.2",
+                    "5"
+                  ],
+                  [
+                    "Rush",
+                    "Lv.3",
+                    "5"
+                  ],
+                  [
+                    "Rush",
+                    "Lv.4",
+                    "5"
+                  ],
+                  [
+                    "Rush",
+                    "Lv.5",
+                    "5"
+                  ],
+                  [
+                    "Rush",
+                    "Lv.6",
+                    "5"
+                  ],
+                  [
+                    "Rush",
+                    "Lv.7",
+                    "5"
+                  ],
+                  [
+                    "Rush",
+                    "Lv.8",
+                    "5"
+                  ],
+                  [
+                    "Rush",
+                    "Lv.9",
+                    "5"
+                  ],
+                  [
+                    "Rush",
+                    "Lv.1",
+                    "40"
+                  ],
+                  [
+                    "Rush",
+                    "Lv.2",
+                    "42"
+                  ],
+                  [
+                    "Rush",
+                    "Lv.3",
+                    "44"
+                  ],
+                  [
+                    "Rush",
+                    "Lv.4",
+                    "48"
+                  ],
+                  [
+                    "Rush",
+                    "Lv.5",
+                    "50"
+                  ],
+                  [
+                    "Rush",
+                    "Lv.6",
+                    "52"
+                  ],
+                  [
+                    "Rush",
+                    "Lv.7",
+                    "54"
+                  ],
+                  [
+                    "Rush",
+                    "Lv.8",
+                    "56"
+                  ],
+                  [
+                    "Rush",
+                    "Lv.9",
+                    "60"
+                  ]
+                ],
+                "en": [
+                  [
+                    "Rush",
+                    "Lv.1",
+                    "40"
+                  ],
+                  [
+                    "Rush",
+                    "Lv.2",
+                    "42"
+                  ],
+                  [
+                    "Rush",
+                    "Lv.3",
+                    "44"
+                  ],
+                  [
+                    "Rush",
+                    "Lv.4",
+                    "48"
+                  ],
+                  [
+                    "Rush",
+                    "Lv.5",
+                    "50"
+                  ],
+                  [
+                    "Rush",
+                    "Lv.6",
+                    "52"
+                  ],
+                  [
+                    "Rush",
+                    "Lv.7",
+                    "54"
+                  ],
+                  [
+                    "Rush",
+                    "Lv.8",
+                    "56"
+                  ],
+                  [
+                    "Rush",
+                    "Lv.9",
+                    "60"
+                  ],
+                  [
+                    "Rush",
+                    "Lv.1",
+                    "5"
+                  ],
+                  [
+                    "Rush",
+                    "Lv.2",
+                    "5"
+                  ],
+                  [
+                    "Rush",
+                    "Lv.3",
+                    "5"
+                  ],
+                  [
+                    "Rush",
+                    "Lv.4",
+                    "5"
+                  ],
+                  [
+                    "Rush",
+                    "Lv.5",
+                    "5"
+                  ],
+                  [
+                    "Rush",
+                    "Lv.6",
+                    "5"
+                  ],
+                  [
+                    "Rush",
+                    "Lv.7",
+                    "5"
+                  ],
+                  [
+                    "Rush",
+                    "Lv.8",
+                    "5"
+                  ],
+                  [
+                    "Rush",
+                    "Lv.9",
+                    "5"
+                  ],
+                  [
+                    "Rush",
+                    "Lv.1",
+                    "40"
+                  ],
+                  [
+                    "Rush",
+                    "Lv.2",
+                    "42"
+                  ],
+                  [
+                    "Rush",
+                    "Lv.3",
+                    "44"
+                  ],
+                  [
+                    "Rush",
+                    "Lv.4",
+                    "48"
+                  ],
+                  [
+                    "Rush",
+                    "Lv.5",
+                    "50"
+                  ],
+                  [
+                    "Rush",
+                    "Lv.6",
+                    "52"
+                  ],
+                  [
+                    "Rush",
+                    "Lv.7",
+                    "54"
+                  ],
+                  [
+                    "Rush",
+                    "Lv.8",
+                    "56"
+                  ],
+                  [
+                    "Rush",
+                    "Lv.9",
+                    "60"
+                  ]
+                ]
+              }
             }
           ]
         }
@@ -49705,8 +50105,14 @@
         "role": "technical",
         "img": "assets/gentle_criminal/gentle_criminal_technical/tuning.png",
         "type": "SP",
-        "name": "Gently Jump",
-        "desc": "For a set amount of time after the battle starts, crouching for a while enables a huge jump.",
+        "name": {
+          "fr": "Gently Jump",
+          "en": "Gently Jump"
+        },
+        "desc": {
+          "fr": "Permet d'effectuer un grand saut en maintenant la position accroupie pendant un temps limité au début de la bataille.",
+          "en": "For a set amount of time after the battle starts, crouching for a while enables a huge jump."
+        },
         "levels": [
           "Lv.1 : 60",
           "Lv.2 : 90",
@@ -49726,12 +50132,24 @@
       {
         "role": "technical",
         "type": "normal",
-        "name": "Special Action Reload+, Forward Jump HT+",
-        "desc": "Increases reload speed of Special Action<br><br>Increases your forward Jump height",
+        "name": {
+          "fr": "Compétences normales",
+          "en": "Normal T.U.N.I.N.G Skills"
+        },
+        "desc": {
+          "fr": "",
+          "en": ""
+        },
         "effects": [
           {
-            "name": "Special Action Reload+",
-            "desc": "Increases reload speed of Special Action",
+            "name": {
+              "fr": "Rechargement actions spéciales +",
+              "en": "Special Action Reload+"
+            },
+            "desc": {
+              "fr": "Augmente la vitesse de rechargement des actions spéciales",
+              "en": "Increases reload speed of Special Action"
+            },
             "levels": [
               "Lv.1 : 1.01",
               "Lv.2 : 1.015",
@@ -49740,8 +50158,14 @@
             ]
           },
           {
-            "name": "Forward Jump HT+",
-            "desc": "Increases your forward Jump height",
+            "name": {
+              "fr": "Hauteur saut en avant +",
+              "en": "Forward Jump HT+"
+            },
+            "desc": {
+              "fr": "Augmente la hauteur du saut en avant",
+              "en": "Increases your forward Jump height"
+            },
             "levels": [
               "Lv.1 : 5",
               "Lv.2 : 10",

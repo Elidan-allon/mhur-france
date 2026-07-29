@@ -1,0 +1,65 @@
+/* MHUR Nexus — Season 18 compatibility layer. Loaded last on purpose. */
+
+/* The new Technical character must use the violet Technical identity, not the
+   generic gold generated-card background. */
+.charPanel.role-technical{
+  background:
+    radial-gradient(circle at 13% 8%,rgba(223,72,255,.33),transparent 29%),
+    linear-gradient(145deg,#5a0879 0%,#9717bd 46%,#34064f 100%)!important;
+  border-color:#ef65ff!important;
+  box-shadow:0 0 0 4px #080b13,0 0 0 7px #cb29f0,0 14px 30px rgba(0,0,0,.45)!important;
+}
+.charPanel.role-technical>.charTop .meta,
+.charPanel.role-technical>h2{color:#fff!important;text-shadow:2px 2px 0 #000!important}
+.charPanel.role-technical .charTop{background:rgba(8,13,27,.30);border-radius:18px;padding:12px}
+
+/* Comic NEW seal. */
+.card,.styleCard,.costumeTile,.costumeResult,.releaseCardV299{position:relative!important}
+.s18NewBadge{
+  position:absolute;z-index:45;top:7px;left:7px;
+  width:66px;height:55px;display:grid;place-items:center;
+  color:#fff;background:#e20d21;border:3px solid #fff;
+  filter:drop-shadow(0 3px 0 #000) drop-shadow(0 0 5px rgba(255,20,40,.75));
+  font:900 italic 17px/1 Arial,sans-serif;letter-spacing:.5px;text-shadow:2px 2px 0 #8b0010;
+  clip-path:polygon(50% 0,61% 15%,78% 5%,80% 24%,100% 26%,86% 42%,100% 55%,80% 61%,81% 82%,62% 75%,50% 100%,39% 78%,20% 90%,21% 68%,0 62%,15% 48%,1% 31%,22% 27%,22% 7%,40% 17%);
+  animation:s18NewPulse 1.15s ease-in-out infinite;
+  pointer-events:none;
+}
+@keyframes s18NewPulse{0%,100%{transform:scale(.88) rotate(-7deg)}50%{transform:scale(1.08) rotate(4deg)}}
+.styleCard .s18NewBadge{top:10px;left:10px}
+.costumeTile .s18NewBadge{width:53px;height:45px;font-size:14px;top:5px;left:5px}
+.card .s18NewBadge{top:62px}
+
+/* Upcoming costumes, kept separate from released costumes. */
+.s18UpcomingSection{margin:22px 0 30px;padding:18px;border:3px solid #27d6e8;border-radius:18px;background:linear-gradient(145deg,#071b2b,#0b263b);box-shadow:0 8px 0 #02060c}
+.s18UpcomingHead{display:flex;gap:14px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-bottom:15px}
+.s18UpcomingHead h2,.s18AvailableTitle{margin:0;color:#fff;text-transform:uppercase;font-style:italic;text-shadow:3px 3px #000}
+.s18UpcomingHead p{margin:2px 0 0;color:#bcecf2;font-weight:700}
+.s18UpcomingGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(225px,1fr));gap:15px}
+.s18UpcomingItem{position:relative;min-width:0}
+.s18UpcomingItem .costumeTile{width:100%;height:100%}
+.s18ReleaseDate{position:absolute;z-index:32;left:9px;right:9px;top:9px;padding:7px 8px;border:2px solid #fff;border-radius:9px;background:rgba(0,38,48,.92);color:#fff;text-align:center;font-weight:900;font-size:13px;box-shadow:0 3px 0 #000;pointer-events:none}
+.s18UpcomingItem .s18NewBadge{top:44px}
+.s18AvailableTitle{border-left:13px solid #ff7c00;padding-left:12px;margin:28px 0 14px}
+.s18CostumeAcquisition{display:block;color:#bfeff4;font-size:12px;margin-top:4px}
+
+/* Older patch notes remain accessible under the latest one. */
+.s18PatchArchive{margin-top:14px;padding:14px;border:2px solid #40516c;border-radius:14px;background:#0b111c}
+.s18PatchArchive h3{margin:0 0 10px;color:#fff;text-transform:uppercase;font-style:italic}
+.s18PatchArchiveGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:9px}
+.s18PatchArchive button{display:flex;justify-content:space-between;gap:12px;align-items:center;width:100%;padding:12px;border:2px solid #536783;border-radius:10px;background:#111a29;color:#fff;text-align:left;font-weight:800;cursor:pointer}
+.s18PatchArchive button:hover{border-color:#ff7b00;transform:translateY(-1px)}
+.s18PatchArchive small{white-space:nowrap;color:#aebed5}
+
+/* Bilingual generated tables and tuning cards. */
+.s18TableTitle{display:flex;align-items:center;justify-content:space-between}
+.tuningCard .tuningEffectDesc,.tuningCard .tuningText{white-space:normal}
+
+@media(max-width:760px){
+  .s18NewBadge{width:52px;height:44px;font-size:13px}
+  .card .s18NewBadge{top:50px}
+  .s18UpcomingSection{padding:12px;margin-inline:-2px}
+  .s18UpcomingGrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+  .s18ReleaseDate{font-size:10px;left:5px;right:5px;padding:5px 3px}
+  .s18UpcomingItem .s18NewBadge{top:37px}
+}
