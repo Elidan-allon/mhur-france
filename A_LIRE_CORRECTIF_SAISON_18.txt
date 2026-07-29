@@ -1,21 +1,26 @@
-CORRECTIF SAISON 18 V9 — MHUR NEXUS
+CORRECTIF SAISON 18 — V10
+===========================
 
-Installation :
-1. Fermer toute ancienne fenêtre de mise à jour encore ouverte.
-2. Extraire le dossier mhur-france par-dessus le dossier actuel.
+1. Fermer le site et toute fenêtre de mise à jour encore ouverte.
+2. Copier le dossier mhur-france de cette archive par-dessus votre dossier actuel.
 3. Accepter le remplacement des fichiers.
-4. Lancer METTRE_A_JOUR_MHUR_FRANCE.bat et attendre [OK].
-5. Redéployer le dossier public.
+4. Lancer METTRE_A_JOUR_MHUR_FRANCE.bat.
+5. Attendre le message [OK], puis redéployer le dossier public.
+6. Faire Ctrl+F5 dans le navigateur après le déploiement.
 
-Corrections ciblées de cette version :
-- les cartes Dernières sorties utilisent leur bannière officielle dès le premier rendu ;
-- plus de cartes rouges vides avant l'apparition des images ;
-- portraits des cartes personnages agrandis et centrés ;
-- portraits officiels UltraRumble Database téléchargés pour les styles quand ils sont disponibles ;
-- choix de style utilisant les portraits officiels avec retour automatique à l'image locale si nécessaire ;
-- doublon Original de Gentle Criminal supprimé ;
-- Action spéciale, Alter alpha, bêta et gamma de Gentle Criminal détaillés ;
-- tableaux complets : effets de montée, valeurs de base et dégâts supplémentaires ;
-- colonne Down Power supprimée de l'affichage ;
-- traductions française et anglaise conservées ;
-- badges NEW maintenus sur les nouveaux personnages, styles et costumes.
+CORRECTIONS V10
+- Fond de la couleur du rôle derrière tous les portraits pendant le chargement.
+- Portraits des cartes personnages agrandis, centrés et posés en bas.
+- Une carte personnage garde toujours le portrait de son style Original.
+- Chaque carte de style utilise en priorité son portrait officiel MHUR Database.
+- Portraits du choix de styles plus grands et alignés au bas de la carte.
+- Effets de montée placés avant les autres tableaux et ouverts par défaut.
+- Down Power supprimé des tableaux.
+- Sens BUFF/NERF corrigé selon la métrique : une recharge plus courte est un BUFF.
+- Twice : Recharge Time 5 -> 4 = BUFF, Ammo 3 -> 4 = BUFF, Penalty Recharge 6 -> 8 = NERF.
+- Traductions françaises ajoutées aux titres et métriques des notes de patch.
+- BUFF / NERF / NEUTRE affiché clairement sur chaque changement.
+- Portrait, rôle et image de compétence des notes de patch réparés depuis le bon style.
+- NEW retiré des cartes personnages, conservé sur les nouveaux styles et costumes.
+- Les avertissements répétés buff.png / nerf.png ne sont plus affichés.
+- Correctif de verrou Windows conservé.

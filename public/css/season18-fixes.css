@@ -195,3 +195,141 @@
   .s18CharacterCardV9 .thumb img,.s18PortraitImgV9{transform:scale(1.20)!important}
   .s18StyleCardV9 .styleBanner img,.s18StylePortraitV9{transform:scale(1.12)!important}
 }
+
+/* ========================================================================== */
+/* MHUR Nexus — Saison 18 v10 : portraits et notes de patch                   */
+/* ========================================================================== */
+
+/* Fond de rôle immédiatement visible pendant le chargement des portraits. */
+.s18CharacterCardV10 .thumb,
+.s18StyleCardV10 .styleBanner,
+.s18CharacterDetailV9.role-attack .portrait,
+.s18CharacterDetailV9.role-assault .portrait,
+.s18CharacterDetailV9.role-technical .portrait,
+.s18CharacterDetailV9.role-support .portrait,
+.s18CharacterDetailV9.role-rapid .portrait{
+  position:relative!important;
+  overflow:hidden!important;
+  isolation:isolate;
+}
+.s18CharacterCardV10.role-attack .thumb,
+.s18StyleCardV10.role-attack .styleBanner,
+.s18CharacterDetailV9.role-attack .portrait{background:radial-gradient(circle at 50% 28%,#ff7382 0%,#cf1831 47%,#610913 100%)!important}
+.s18CharacterCardV10.role-assault .thumb,
+.s18StyleCardV10.role-assault .styleBanner,
+.s18CharacterDetailV9.role-assault .portrait{background:radial-gradient(circle at 50% 28%,#fff278 0%,#d6ba00 47%,#705e00 100%)!important}
+.s18CharacterCardV10.role-technical .thumb,
+.s18StyleCardV10.role-technical .styleBanner,
+.s18CharacterDetailV9.role-technical .portrait{background:radial-gradient(circle at 50% 28%,#c265eb 0%,#7915a8 47%,#35064e 100%)!important}
+.s18CharacterCardV10.role-support .thumb,
+.s18StyleCardV10.role-support .styleBanner,
+.s18CharacterDetailV9.role-support .portrait{background:radial-gradient(circle at 50% 28%,#79ff9a 0%,#17be49 47%,#075b22 100%)!important}
+.s18CharacterCardV10.role-rapid .thumb,
+.s18StyleCardV10.role-rapid .styleBanner,
+.s18CharacterDetailV9.role-rapid .portrait{background:radial-gradient(circle at 50% 28%,#7aefff 0%,#18badb 47%,#07546b 100%)!important}
+
+/* Portraits des cartes personnages : plus grands, centrés et posés en bas. */
+.s18CharacterCardV10 .thumb{
+  display:flex!important;
+  align-items:flex-end!important;
+  justify-content:center!important;
+  padding:0!important;
+}
+.s18CharacterCardV10 .thumb img,
+.s18PortraitImgV10{
+  width:100%!important;
+  height:100%!important;
+  max-width:none!important;
+  max-height:none!important;
+  object-fit:contain!important;
+  object-position:center bottom!important;
+  padding:0!important;
+  transform:scale(1.43)!important;
+  transform-origin:center bottom!important;
+  filter:drop-shadow(0 9px 16px rgba(0,0,0,.42))!important;
+  opacity:.12;
+  transition:opacity .18s ease;
+}
+.s18PortraitImgV10.s18PortraitLoadedV10{opacity:1}
+.s18CharacterCardV10 .cardBody{position:relative!important;z-index:4!important}
+
+/* Choix des styles : image officielle de chaque style, grande et collée au bas. */
+.s18StyleCardV10{
+  position:relative!important;
+  overflow:hidden!important;
+  border-radius:22px!important;
+}
+.s18StyleCardV10 .styleBanner{
+  height:500px!important;
+  display:flex!important;
+  align-items:flex-end!important;
+  justify-content:center!important;
+  padding:0!important;
+}
+.s18StyleCardV10 .styleBanner img,
+.s18StylePortraitV10{
+  width:100%!important;
+  height:100%!important;
+  max-width:none!important;
+  max-height:none!important;
+  object-fit:contain!important;
+  object-position:center bottom!important;
+  padding:0!important;
+  transform:scale(1.42)!important;
+  transform-origin:center bottom!important;
+  filter:drop-shadow(0 10px 18px rgba(0,0,0,.44))!important;
+  opacity:.12;
+  transition:opacity .18s ease;
+}
+.s18StylePortraitV10.s18PortraitLoadedV10{opacity:1}
+.s18StyleCardV10 .styleInfo{position:relative!important;z-index:4!important;background:#071426!important}
+.s18StyleCardV10 .styleInfo h2{font-weight:1000!important;text-shadow:0 3px 0 #000!important}
+
+/* La première table est toujours l'effet de montée et reste ouverte. */
+.s18TableToggleV10:first-child{border-top:3px solid #19c9de!important}
+.s18TableToggleV10 .statsToggleTitle{font-weight:1000!important}
+
+/* Indication explicite BUFF / NERF / NEUTRE sur chaque changement. */
+.detailCardV296{
+  position:relative!important;
+  padding-top:34px!important;
+}
+.detailCardV296::after{
+  content:attr(data-tone-label);
+  position:absolute;
+  top:7px;
+  right:8px;
+  z-index:8;
+  min-width:70px;
+  padding:5px 10px;
+  border:2px solid #05070b;
+  border-radius:999px;
+  color:#fff;
+  background:#9f760f;
+  font-size:11px;
+  font-weight:1000;
+  line-height:1;
+  text-align:center;
+  box-shadow:0 3px 0 rgba(0,0,0,.35);
+  text-shadow:0 1px 0 #000;
+}
+.detailCardV296.buff::after{background:#108945}
+.detailCardV296.nerf::after{background:#b4293d}
+.detailCardV296.adjust::after{background:#9f760f}
+.detailCardV296.buff .valueTableV296 .after,
+.detailCardV296.buff .singleChangeV296 span:last-child{color:#7aff9f!important}
+.detailCardV296.nerf .valueTableV296 .after,
+.detailCardV296.nerf .singleChangeV296 span:last-child{color:#ff8c98!important}
+.detailCardV296.adjust .valueTableV296 .after,
+.detailCardV296.adjust .singleChangeV296 span:last-child{color:#ffe36b!important}
+
+/* Ancien rendu groupé éventuellement encore présent sur certaines installations. */
+.s18PatchSkillBlock.buff .s18PatchTone{background:#108945!important}
+.s18PatchSkillBlock.nerf .s18PatchTone{background:#b4293d!important}
+.s18PatchSkillBlock.adjust .s18PatchTone{background:#9f760f!important}
+
+@media(max-width:900px){
+  .s18CharacterCardV10 .thumb img,.s18PortraitImgV10{transform:scale(1.34)!important}
+  .s18StyleCardV10 .styleBanner{height:440px!important}
+  .s18StyleCardV10 .styleBanner img,.s18StylePortraitV10{transform:scale(1.32)!important}
+}

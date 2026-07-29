@@ -282,3 +282,228 @@ window.addEventListener('mhur:languagechange',()=>{
   try{ applyAll(); if(typeof render==='function') render(); }catch(_e){}
 });
 })();
+
+/* ========================================================================== */
+/* MHUR Nexus — Saison 18 v10 : portraits, styles, tableaux et patchs FR      */
+/* ========================================================================== */
+(function(){
+'use strict';
+
+const langNow=()=>typeof lang!=='undefined'&&lang==='en'?'en':'fr';
+const pick=v=>v&&typeof v==='object'&&!Array.isArray(v)?(v[langNow()]??v.fr??v.en??''):v;
+const cjk=/[\u3040-\u30ff\u3400-\u9fff\uf900-\ufaff]/g;
+const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const clean=v=>String(pick(v)??'').replace(/\s*[（(][^()（）]*[\u3040-\u30ff\u3400-\u9fff][^()（）]*[）)]/g,'').replace(cjk,'').replace(/\s{2,}/g,' ').trim();
+const norm=v=>clean(v).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'_').replace(/^_|_$/g,'');
+const roleKey=v=>({strike:'attack',attack:'attack',assault:'assault',technical:'technical',support:'support',rapid:'rapid',speed:'rapid'})[norm(v)]||norm(v)||'technical';
+const NEW_HTML='<span class="s18NewBadge s18NewBadgeV10" aria-label="NEW">NEW!</span>';
+
+function exactData(){
+  const el=document.getElementById('ultrarumble-exact-data');
+  if(!el) return null;
+  if(window.__S18_EXACT_V10!==undefined) return window.__S18_EXACT_V10;
+  try{window.__S18_EXACT_V10=JSON.parse(el.textContent||'{}');}
+  catch(_e){window.__S18_EXACT_V10=null;}
+  return window.__S18_EXACT_V10;
+}
+function uniqueStyleIds(character){
+  if(!character||typeof styles==='undefined') return [];
+  const output=[]; const ids=new Set(); const signatures=new Set();
+  (Array.isArray(character.styles)?character.styles:[]).forEach(raw=>{
+    const id=String(raw),st=styles[id];
+    if(!id||!st||ids.has(id)) return;
+    ids.add(id);
+    const sig=[norm(st.name||'Original'),roleKey(st.role),norm(st.portrait||'')].join('|');
+    if(signatures.has(sig)) return;
+    signatures.add(sig); output.push(id);
+  });
+  return output;
+}
+function originalStyleId(character){
+  const ids=uniqueStyleIds(character);
+  if(!ids.length) return '';
+  const exact=exactData()?.exact_by_style||{};
+  return ids.find(id=>Number(exact[id]?.variant_index||0)===0)
+    ||ids.find(id=>norm(styles[id]?.name||'Original')==='original')
+    ||ids.find(id=>/_original(?:_|$)/i.test(id))
+    ||ids[0];
+}
+function officialPortrait(styleId,fallback=''){
+  const sync=window.MHUR_SEASON18_DATA?.official_portraits||{};
+  const exact=exactData()?.exact_by_style||{};
+  return sync[styleId]||exact[styleId]?.assets?.portrait||styles?.[styleId]?.portrait||fallback||'';
+}
+window.MHUR_S18_NEXT_IMAGE_V10=function(image){
+  try{
+    const list=JSON.parse(decodeURIComponent(image.dataset.s18Fallbacks||'%5B%5D'));
+    const next=list.shift();
+    image.dataset.s18Fallbacks=encodeURIComponent(JSON.stringify(list));
+    if(next){image.src=next;return;}
+  }catch(_e){}
+  image.onerror=null;
+};
+function portraitImg(styleId,fallback,alt,className=''){
+  const sync=window.MHUR_SEASON18_DATA?.official_portraits||{};
+  const exact=exactData()?.exact_by_style||{};
+  const list=Array.from(new Set([sync[styleId],exact[styleId]?.assets?.portrait,styles?.[styleId]?.portrait,fallback].filter(Boolean).map(String)));
+  const src=list.shift()||'';
+  return `<img src="${esc(src)}" alt="${esc(alt)}" class="${esc(className)}" loading="eager" decoding="async" fetchpriority="high" data-s18-fallbacks="${esc(encodeURIComponent(JSON.stringify(list)))}" onload="this.classList.add('s18PortraitLoadedV10')" onerror="MHUR_S18_NEXT_IMAGE_V10(this)">`;
+}
+function newSets(){
+  const data=window.MHUR_SEASON18_DATA?.new_content||{};
+  return {styles:new Set((data.styles||[]).map(String)),costumes:new Set((data.costumes||[]).map(String))};
+}
+function uniqueRoles(ids){
+  const seen=new Set(),out=[];
+  ids.forEach(id=>{const role=styles?.[id]?.role,key=roleKey(role);if(role&&!seen.has(key)){seen.add(key);out.push(role);}});
+  return out;
+}
+
+/* La carte d'un personnage garde toujours le portrait de son style Original. */
+function characterCardV10(character,mode='characters'){
+  const ids=uniqueStyleIds(character); character.styles=ids;
+  const original=originalStyleId(character); const role=roleKey(styles?.[original]?.role);
+  const modeClass=mode==='costumes'?' costumeMode':mode==='builds'?' buildMode':mode==='tunings'?' tuningMode':' characterMode';
+  const tag=mode==='costumes'?`<div class="cardModeTag">${tr('costumeTag')}</div>`:mode==='builds'?`<div class="cardModeTag">${tr('buildTag')}</div>`:mode==='tunings'?'<div class="cardModeTag">T.U.N.I.N.G</div>':'<div class="cardModeTag">PERSONNAGE</div>';
+  const message=mode==='costumes'?tr('costumeChoose'):mode==='builds'?tr('buildChoose'):mode==='tunings'?tr('tuningChoose'):tr('choose');
+  /* Le NEW a été retiré des cartes personnages à la demande de l'utilisateur. */
+  return `<button class="card${modeClass} s18CharacterCardV10 role-${role}" data-char="${esc(character.id)}" onclick="selectChar('${String(character.id).replace(/'/g,"\\'")}')">${tag}<div class="thumb">${portraitImg(original,character.portrait,character.name,'s18PortraitImgV10')}</div><div class="cardBody"><h3>${esc(character.name)}</h3><div class="badges">${sideBadge(character.side)}${uniqueRoles(ids).map(r=>roleBadge(r)).join('')}</div><p style="color:#c9d7ee">${esc(message)}</p></div></button>`;
+}
+function stylePickerV10(){
+  const sets=newSets();
+  const character=characters.find(x=>x.id===selectedChar); if(!character) return '';
+  const ids=uniqueStyleIds(character); character.styles=ids;
+  return `<button class="back" onclick="selectedChar=null;render()">← ${tr('back')}</button><h1 class="title">${esc(character.name)}</h1><div class="styleGrid">${ids.map(id=>{const st=styles[id],role=roleKey(st.role);return `<button class="styleCard s18StyleCardV10 role-${role}" data-style="${esc(id)}" onclick="selectStyle('${String(id).replace(/'/g,"\\'")}')">${sets.styles.has(String(id))?NEW_HTML:''}<div class="styleBanner">${portraitImg(id,st.portrait,`${character.name} ${clean(st.name)}`,'s18StylePortraitV10')}</div><div class="styleInfo"><h2>${esc(clean(st.name)||'Original')}</h2><div class="badges">${sideBadge(character.side)}${roleBadge(st.role)}</div></div></button>`;}).join('')}</div>`;
+}
+
+/* Effets de montée toujours en première position et traduction des tableaux. */
+const frWords={
+  level:'Niveau',type:'Type',damage:'Dégâts',ammo:'Munitions',use_ammo:'Consommation',reload:'Recharge',reload_time:'Temps de recharge',cooldown:'Recharge',cooldown_time:'Temps de recharge',guard_break:'Brise-garde',health:'PV',hp:'PV',size:'Taille',range:'Portée',duration:'Durée',level_up_effect:'Effet de montée',effect:'Effet',penalty_recharge:'Pénalité de recharge',recharge_time:'Temps de recharge'
+};
+function translateFr(value){
+  let text=clean(value); if(langNow()!=='fr') return text;
+  const exact=frWords[norm(text)]; if(exact) return exact;
+  const replacements=[
+    [/Level Up Effects?/gi,'Effets de montée'],[/Base Values?/gi,'Valeurs de base'],[/Additional Values?/gi,'Valeurs supplémentaires'],[/Detailed Values?/gi,'Valeurs détaillées'],
+    [/Recharge Time/gi,'Temps de recharge'],[/Reload Time/gi,'Temps de recharge'],[/Penalty Recharge/gi,'Pénalité de recharge'],[/Use Ammo/gi,'Consommation'],[/Guard Break/gi,'Brise-garde'],[/Damage/gi,'Dégâts'],[/Ammo/gi,'Munitions'],[/Health/gi,'PV'],[/Level/gi,'Niveau'],[/Effect/gi,'Effet']
+  ];
+  replacements.forEach(([a,b])=>{text=text.replace(a,b);});
+  return text;
+}
+function localArray(value){
+  const selected=pick(value); return Array.isArray(selected)?selected:[];
+}
+function cleanTable(table){
+  const cols=localArray(table?.cols||table?.columns||[]); const rows=localArray(table?.rows||[]); const keep=[];
+  cols.forEach((column,index)=>{if(norm(column)!=='down_power')keep.push(index);});
+  return {title:translateFr(table?.title),cols:keep.map(i=>translateFr(cols[i])),rows:rows.map(row=>keep.map(i=>translateFr((row||[])[i]??'')))};
+}
+function tablePriority(table){
+  const title=norm(table.title);
+  if(title.includes('effets_de_montee')||title.includes('level_up_effect')) return 0;
+  if(title.includes('valeurs_de_base')||title.includes('base_value')) return 1;
+  return 2;
+}
+function tablesV10(value){
+  const source=Array.isArray(value)?value:[];
+  const list=source.map(cleanTable).filter(t=>t.cols.length&&t.rows.length).sort((a,b)=>tablePriority(a)-tablePriority(b));
+  return `<div class="tables">${list.map((table,index)=>`<button class="toggle s18TableToggleV10" type="button" onclick="this.nextElementSibling.classList.toggle('hidden')"><span class="statsToggleTitle">${esc(table.title)}</span><span class="statsToggleArrow">▾</span></button><div class="simpleTable ${index===0?'':'hidden'}"><table class="dataTable"><thead><tr>${table.cols.map(c=>`<th>${esc(c)}</th>`).join('')}</tr></thead><tbody>${table.rows.map(row=>`<tr>${row.map(cell=>`<td>${esc(cell)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`).join('')}</div>`;
+}
+
+/* Notes de patch : métadonnées exactes, traduction et sens des changements. */
+let originalPatchNotes=null;
+function clone(value){return JSON.parse(JSON.stringify(value));}
+function roleText(role){
+  const key=roleKey(role); const fr={attack:'Attaque',assault:'Assaut',technical:'Technique',support:'Soutien',rapid:'Vitesse'}; const en={attack:'Strike',assault:'Assault',technical:'Technical',support:'Support',rapid:'Rapid'};
+  return (langNow()==='fr'?fr:en)[key]||clean(role);
+}
+function resolvePatchStyle(change){
+  if(typeof characters==='undefined'||typeof styles==='undefined') return {character:null,id:'',style:null};
+  const ch=(characters||[]).find(c=>norm(c.name)===norm(change?.character)||norm(c.id)===norm(change?.character))||null;
+  if(!ch) return {character:null,id:'',style:null};
+  const ids=uniqueStyleIds(ch); const wanted=norm(change?.style||'Original');
+  let id=ids.find(key=>norm(styles[key]?.name||'Original')===wanted)||'';
+  if(!id){
+    const raw=norm(change?.skill_name||change?.label||'');
+    id=ids.find(key=>[{...(styles[key]?.special||{}),letter:'SP'},...(styles[key]?.skills||[])].some(skill=>{const n=norm(skill.name),l=norm(skill.letter);return (n&&raw.includes(n))||(l&&raw.startsWith(l));}))||'';
+  }
+  if(!id) id=originalStyleId(ch)||ids[0]||'';
+  return {character:ch,id,style:styles[id]||null};
+}
+function resolvePatchSkill(style,change){
+  if(!style) return null;
+  const raw=norm(change?.skill_name||change?.label||'');
+  const skills=[{...(style.special||{}),letter:'SP'},...(style.skills||[])];
+  return skills.find(skill=>{const n=norm(skill.name),l=norm(skill.letter);return (n&&raw.includes(n))||(l&&raw.startsWith(l));})||null;
+}
+function numericValues(value){
+  return (Array.isArray(value)?value:[value]).map(v=>parseFloat(String(v??'').replace(',','.'))).filter(Number.isFinite);
+}
+function toneForMetric(label,before,after,existing){
+  const b=numericValues(before),a=numericValues(after); if(!b.length||!a.length) return ['buff','nerf','adjust'].includes(norm(existing))?norm(existing):'adjust';
+  const beforeAvg=b.reduce((x,y)=>x+y,0)/b.length,afterAvg=a.reduce((x,y)=>x+y,0)/a.length;
+  if(afterAvg===beforeAvg) return 'adjust';
+  const metric=norm(label);
+  const lowerIsBetter=/(reload|recharge|cooldown|temps_de_recharge|penalty|penalite|consommation|use_ammo)/.test(metric);
+  const improved=lowerIsBetter?afterAvg<beforeAvg:afterAvg>beforeAvg;
+  return improved?'buff':'nerf';
+}
+function transformPatchNotes(){
+  const data=window.MHUR_HOME_DATA; if(!data||!Array.isArray(data.patch_notes)) return;
+  if(!originalPatchNotes) originalPatchNotes=clone(data.patch_notes);
+  const notes=clone(originalPatchNotes);
+  notes.forEach(note=>{
+    note.title=translateFr(note.title);
+    (note.details||[]).forEach(section=>{
+      section.title=translateFr(section.title); section.note=translateFr(section.note);
+      section.changes=(section.changes||[]).filter(change=>!/^no_changes_detected\.?$/i.test(norm(change?.text||change?.note||''))).map(change=>{
+        const info=resolvePatchStyle(change); const skill=resolvePatchSkill(info.style,change);
+        const rawLabel=change.label||change.skill_name||'';
+        change.character=info.character?.name||clean(change.character);
+        change.style=clean(info.style?.name||change.style||'Original');
+        change.role=roleText(info.style?.role||change.role);
+        change.portrait=officialPortrait(info.id,change.portrait);
+        if(skill?.img) change.skill_image=skill.img;
+        if(skill?.name) change.skill_name=clean(`${skill.letter&&skill.letter!=='SP'?`${skill.letter} - `:''}${pick(skill.name)}`);
+        else change.skill_name=translateFr(change.skill_name);
+        change.label=translateFr(change.label);
+        change.bullets=(change.bullets||[]).map(translateFr);
+        change.tone=toneForMetric(rawLabel,change.before,change.after,change.tone);
+        return change;
+      });
+    });
+  });
+  data.patch_notes=notes;
+}
+function decoratePatchModal(){
+  const modal=document.getElementById('patchModalV296'); if(!modal) return;
+  const adjust=modal.querySelector('.legendV296 .adjust'); if(adjust) adjust.textContent=langNow()==='fr'?'NEUTRE':'NEUTRAL';
+  modal.querySelectorAll('.detailCardV296').forEach(card=>{
+    const tone=card.classList.contains('buff')?'BUFF':card.classList.contains('nerf')?'NERF':(langNow()==='fr'?'NEUTRE':'NEUTRAL');
+    card.dataset.toneLabel=tone;
+  });
+}
+let originalOpenPatch=null;
+function installPatchWrapper(){
+  if(!originalOpenPatch&&typeof window.openPatchNoteV296==='function') originalOpenPatch=window.openPatchNoteV296;
+  if(!originalOpenPatch) return;
+  window.openPatchNoteV296=function(index){transformPatchNotes();const result=originalOpenPatch(index);setTimeout(decoratePatchModal,0);return result;};
+}
+
+function install(){
+  if(typeof characters!=='undefined') characters.forEach(ch=>{ch.styles=uniqueStyleIds(ch);});
+  if(typeof card==='function'){window.card=characterCardV10;try{card=characterCardV10}catch(_e){}}
+  if(typeof stylePicker==='function'){window.stylePicker=stylePickerV10;try{stylePicker=stylePickerV10}catch(_e){}}
+  window.tables=tablesV10;try{tables=tablesV10}catch(_e){}
+  transformPatchNotes(); installPatchWrapper();
+}
+function wrapRender(){
+  if(typeof render!=='function'||render.__s18V10) return;
+  const old=render;
+  const next=function(){install();const output=old.apply(this,arguments);return output;};
+  next.__s18V10=true;window.render=next;try{render=next}catch(_e){}
+}
+install();wrapRender();
+setTimeout(()=>{try{install();if(typeof render==='function'){window.__keepScroll=true;render();}}catch(error){console.error('[MHUR S18 V10]',error);}},0);
+window.addEventListener('mhur:languagechange',()=>{try{install();if(typeof render==='function')render();}catch(_e){}});
+})();
