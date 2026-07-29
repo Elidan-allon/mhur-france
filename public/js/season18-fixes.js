@@ -18,7 +18,7 @@ const stripJP=v=>String(v??'')
   .replace(CJK,'').replace(/\s{2,}/g,' ').trim();
 const text=v=>stripJP(pick(v));
 const normalize=v=>String(v??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'_').replace(/^_|_$/g,'');
-const badge=()=>'<span class="s18NewBadge" aria-label="Nouveau">NEW</span>';
+const badge=()=>'<span class="s18NewBadge" aria-label="Nouveau">NEW!</span>';
 const injectBadge=html=>String(html||'').replace(/^(<button\b[^>]*>)/i,'$1'+badge());
 const costumeRid=ct=>String(ct?.urId??ct?.ur_id??String(ct?.id||'').replace(/^ur_/,''));
 
@@ -342,9 +342,8 @@ function patchGentle(){
       if(ch){
         ch.side='villain';
         ch.name='Gentle Criminal';
-        const list=Array.isArray(ch.styles)?ch.styles:[];
-        if(!list.includes(styleKey)) list.unshift(styleKey);
-        ch.styles=list;
+        const list=Array.isArray(ch.styles)?Array.from(new Set(ch.styles.map(String))):[];
+        ch.styles=[styleKey,...list.filter(id=>id!==styleKey)];
       }
     }
   }catch(_e){}
@@ -353,6 +352,39 @@ function skillByName(st,name){
   const target=normalize(name);
   const all=[st.special,...(st.skills||[])].filter(Boolean);
   return all.find(x=>normalize(x.letter+' '+clean(x.name))===target||normalize(clean(x.name))===target||target.startsWith(normalize(x.letter)))||null;
+}
+function patchTone(change){
+  const t=normalize(change?.tone||change?.type||'');
+  if(/buff|up|increase|improve/.test(t)) return 'buff';
+  if(/nerf|down|decrease|weaken/.test(t)) return 'nerf';
+  return 'adjust';
+}
+function patchToneLabel(change){
+  const t=patchTone(change);
+  if(t==='buff') return 'BUFF';
+  if(t==='nerf') return 'NERF';
+  return langNow()==='fr'?'NEUTRE':'NEUTRAL';
+}
+function patchChangeView(change,group){
+  const info=resolvePatchStyle(change);
+  const st=info?.st||null;
+  let skill=skillByName(st,change?.skill_name||change?.label||'');
+  if(!skill&&st&&Array.isArray(st.skills)){
+    const letter=String(change?.skill_name||change?.label||'').trim().charAt(0).toLowerCase();
+    if(['α','β','γ','a','b','g'].includes(letter)) skill=st.skills.find(sk=>String(sk?.letter||'').toLowerCase()===letter)||null;
+  }
+  const rawSkill=clean(change?.skill_name||change?.label||'');
+  const skillTitle=skill?clean(`${skill.letter?`${skill.letter} - `:''}${pick(skill.name)||''}`):rawSkill;
+  return {
+    tone:patchTone(change),
+    toneLabel:patchToneLabel(change),
+    skillTitle,
+    skillImg:skill?.img||change?.skill_image||'',
+    label:clean(change?.label),
+    before:clean(change?.before),
+    after:clean(change?.after),
+    bullets:localBullets(change?.bullets||[])
+  };
 }
 function resolveCharacterStyle(character, styleName){
   if(typeof characters==='undefined' || typeof styles==='undefined') return null;
@@ -693,11 +725,11 @@ function renderPatchDiff(change){
 function groupedPatchSection(section){
   const groups=[]; const map=new Map();
   (section.changes||[]).forEach(change=>{
-    const key=`${clean(change.character)}__${clean(change.style||'Original')}`;
+    const stHit=resolvePatchStyle(change);
+    const key=`${clean(change.character)}__${stHit?.styleId||clean(change.style||'Original')}`;
     if(!map.has(key)){
       const hit=findRemoteForStyle(((characters||[]).find(ch=>normalize(ch.name)===normalize(change.character) || normalize(ch.id)===normalize(change.character))?.styles||[]).find(id=>normalize(styles[id]?.name||'')===normalize(change.style||'Original'))||'');
-      const stHit=resolvePatchStyle(change);
-      const entry={key,character:clean(change.character),style:clean(change.style||'Original'),role:stHit?.role||change.role||'',side:stHit?.side||'',portrait:stHit?.portrait||change.portrait||hit?.assets?.portrait||'',changes:[]};
+      const entry={key,character:clean(change.character),style:stHit?.st?clean(stHit.st.name||'Original'):clean(change.style||'Original'),role:stHit?.role||change.role||'',side:stHit?.side||'',portrait:stHit?.portrait||change.portrait||hit?.assets?.portrait||'',changes:[]};
       map.set(key,entry); groups.push(entry);
     }
     map.get(key).changes.push(change);
@@ -725,7 +757,7 @@ function patchGroupCard(group){
   const role=roleKey(group.role);
   const sideBadgeHtml=group.side?`<span class="badge ${normalize(group.side)==='hero'?'hero':'villain'}">${normalize(group.side)==='hero'?(langNow()==='fr'?'HÉROS':'HEROES'):(langNow()==='fr'?'SUPER-VILAINS':'SUPER-VILLAINS')}</span>`:'';
   const roleBadgeHtml=typeof roleBadge==='function'?roleBadge(role):'';
-  return `<article class="s18PatchGroupCard role-${role}"><header class="s18PatchHeader"><div class="s18PatchPortrait">${group.portrait?asset(group.portrait,group.character):''}</div><div class="s18PatchMeta"><div class="s18PatchTopLine"><h4>${esc(group.character)}</h4>${sideBadgeHtml}</div><div class="s18PatchStyle">${esc(group.style||'Original')}</div><div class="s18PatchBadges">${roleBadgeHtml}</div></div></header><div class="s18PatchGroupBody">${group.changes.map(change=>`<div class="s18PatchSkillBlock"><div class="s18PatchSkill"><div class="s18PatchSkillImg">${change.skill_image?asset(change.skill_image,change.skill_name):''}</div><div class="s18PatchSkillMeta"><h5>${esc(clean(change.skill_name)||'Skill')}</h5>${change.label?`<div class="s18PatchLabel">${esc(clean(change.label))}</div>`:''}${change.before!=null||change.after!=null?renderPatchDiff(change):''}${(change.bullets||[]).length?`<ul class="s18PatchBullets">${change.bullets.map(x=>`<li>${esc(clean(x))}</li>`).join('')}</ul>`:''}</div></div></div>`).join('')}</div></article>`;
+  return `<article class="s18PatchGroupCard role-${role}"><header class="s18PatchHeader"><div class="s18PatchPortrait">${group.portrait?asset(group.portrait,group.character):''}</div><div class="s18PatchMeta"><div class="s18PatchTopLine"><h4>${esc(group.character)}</h4>${sideBadgeHtml}</div><div class="s18PatchStyle">${esc(group.style||'Original')}</div><div class="s18PatchBadges">${roleBadgeHtml}</div></div></header><div class="s18PatchGroupBody">${group.changes.map(change=>{ const view=patchChangeView(change,group); return `<div class="s18PatchSkillBlock ${esc(view.tone)}"><div class="s18PatchTone ${esc(view.tone)}">${esc(view.toneLabel)}</div><div class="s18PatchSkill"><div class="s18PatchSkillImg">${view.skillImg?asset(view.skillImg,view.skillTitle):''}</div><div class="s18PatchSkillMeta"><h5>${esc(view.skillTitle||'Skill')}</h5>${view.label?`<div class="s18PatchLabel">${esc(view.label)}</div>`:''}${view.before!=null||view.after!=null?`<div class="s18PatchRows"><div class="s18PatchRow"><span class="s18PatchBefore">${esc(view.before)}</span><span class="s18PatchArrow">→</span><span class="s18PatchAfter ${esc(view.tone)}">${esc(view.after)}</span></div></div>`:''}${(view.bullets||[]).length?`<ul class="s18PatchBullets">${view.bullets.map(x=>`<li>${esc(clean(x))}</li>`).join('')}</ul>`:''}</div></div></div>`; }).join('')}</div></article>`;
 }
 function ensurePatchModal(){
   let m=document.getElementById('patchModalV296');
@@ -744,7 +776,7 @@ function openGroupedPatch(i){
   const m=ensurePatchModal();
   m.querySelector('header h2').textContent=clean(note.title);
   const details=Array.isArray(note.details)?note.details.filter(sec=>(sec.changes||[]).length||sec.note):[];
-  let body=`<div class="patchDateV296">${esc(fmtPatchDate(note.date))}</div><div class="legendV296"><span class="buff">${langNow()==='fr'?'AMÉLIORATION':'BUFF'}</span><span class="nerf">${langNow()==='fr'?'RÉDUCTION':'NERF'}</span><span class="adjust">${langNow()==='fr'?'AJUSTEMENT':'ADJUSTMENT'}</span></div>`;
+  let body=`<div class="patchDateV296">${esc(fmtPatchDate(note.date))}</div><div class="legendV296"><span class="buff">${langNow()==='fr'?'AMÉLIORATION':'BUFF'}</span><span class="nerf">${langNow()==='fr'?'RÉDUCTION':'NERF'}</span><span class="adjust">${langNow()==='fr'?'NEUTRE':'NEUTRAL'}</span></div>`;
   if(details.length) body+=details.map(groupedPatchSection).join('');
   else if((note.sections||[]).length) body+=(note.sections||[]).map(s=>`<section class="simplePatchV296"><h3>${esc(clean(s.title||''))}</h3><ul>${(s.items||[]).map(x=>`<li>${esc(clean(x))}</li>`).join('')}</ul></section>`).join('');
   else body+=`<div class="emptyV296">${langNow()==='fr'?'Aucun détail disponible.':'No details available.'}</div>`;
@@ -766,26 +798,53 @@ if(typeof render==='function') setTimeout(()=>{ try{ applyExactData(); dedupeCha
 window.addEventListener('mhur:languagechange',()=>{ applyExactData(); dedupeCharacterStyles(); if(typeof render==='function') render(); });
 })();
 
-/* ---------- Homepage latest releases redesign: full-width art cards ---------- */
+/* ---------- Homepage latest releases redesign ---------- */
 (function(){
 'use strict';
 if(typeof window==='undefined') return;
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const currentLang=()=>typeof lang!=='undefined'&&lang==='en'?'en':'fr';
-const labelForKind=(isCostume,isChar)=>currentLang()==='fr'?(isCostume?'Nouveau costume':isChar?'Nouveau personnage':'Nouveau style'):(isCostume?'New costume':isChar?'New character':'New style');
+const pickLocal=v=>v&&typeof v==='object'&&!Array.isArray(v)?(v[currentLang()]??v.fr??v.en??''):v;
+const cleanLocal=v=>String(pickLocal(v)??'').replace(/[぀-ヿ㐀-鿿豈-﫿]/g,'').replace(/\s{2,}/g,' ').trim();
+const norm=v=>String(v??'').normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'_').replace(/^_|_$/g,'');
+const patchLabel=v=>typeof patchText==='function'?patchText(v):cleanLocal(v);
+const releaseKindLabel=kind=>kind==='character'?(currentLang()==='fr'?'Personnage jouable':'Playable character'):kind==='costume'?(currentLang()==='fr'?'Nouveau costume':'New costume'):(currentLang()==='fr'?'Nouveau style':'New style');
+const isGenericName=v=>/^character\s*\d+/i.test(String(v||''))||/^style\s*\d+/i.test(String(v||''));
+function customReleaseTarget(x){
+  let out={charId:String(x?.character_id||x?.char_id||''),styleId:String(x?.style_id||'')};
+  if(typeof releaseTarget==='function'){ try{ out={...out,...(releaseTarget(x)||{})}; }catch(_e){} }
+  const url=String(x?.url||'');
+  const m=url.match(/character\/(\d+)(?:#Variant-(\d+))?/i);
+  const idMap={'2':'bakugo','13':'aizawa','34':'overhaul','109':'present_mic','111':'mirko'};
+  if(!out.charId&&m&&idMap[m[1]]) out.charId=idMap[m[1]];
+  const c=(typeof characters!=='undefined'&&characters.find(v=>String(v.id)===String(out.charId)))||null;
+  if(!out.styleId&&c){
+    const rawSub=String((currentLang()==='fr'?(x?.subtitle_fr||x?.subtitle):(x?.subtitle_en||x?.subtitle))||'');
+    const subNorm=norm(rawSub);
+    if(m&&m[2]&&Array.isArray(c.styles)){ const idx=parseInt(m[2],10); if(!Number.isNaN(idx)&&c.styles[idx]) out.styleId=String(c.styles[idx]); }
+    if(!out.styleId&&Array.isArray(c.styles)&&rawSub){ const hit=c.styles.find(id=>norm(cleanLocal(styles?.[id]?.name||''))===subNorm); if(hit) out.styleId=String(hit); }
+    if(!out.styleId&&Array.isArray(c.styles)) out.styleId=String(c.styles[0]||'');
+  }
+  return out;
+}
 function overrideReleaseCard(){
   if(typeof releaseCard!=='function') return false;
   const fn=function(x){
-    const kind=String(x.release_kind||x.type||'').toLowerCase();
-    const isCostume=kind.includes('costume');
-    const isChar=!isCostume&&(kind.includes('character')||kind.includes('personnage'));
-    const badge=isCostume?'assets/home/icons/release_costume.png':isChar?'assets/home/icons/release_character.png':'assets/home/icons/release_style.png';
-    const label=labelForKind(isCostume,isChar);
-    const target=releaseTarget(x);
-    const art=x.banner||x.art||x.character_art||x.image;
-    const title=typeof patchText==='function'?patchText(x.title):String(x.title||'');
-    const subtitle=x.subtitle||label;
-    return `<button type="button" class="releaseCardV299 releaseFullBleedV304" data-release-char="${esc(target.charId)}" data-release-style="${esc(target.styleId)}" onclick="openHomeReleaseV298(this)" aria-label="${esc(title)} — ${esc(subtitle)}" title="${esc(title)} — ${esc(subtitle)}"><span class="releaseFullArtV304">${typeof img==='function'?img(art,x.title,'releaseFullArtImgV304'):''}</span><span class="releaseShadeV304"></span><span class="releaseBadgeV304 ${isCostume?'costume':isChar?'character':'style'}">${typeof img==='function'?img(badge,label):''}</span><span class="releaseNewV304">NEW!</span><span class="releaseNamesV304"><b>${esc(title)}</b><small>${esc(subtitle)}</small></span></button>`;
+    const kindRaw=String(x?.release_kind||x?.type||'').toLowerCase();
+    const kind=kindRaw.includes('costume')?'costume':(kindRaw.includes('character')||kindRaw.includes('personnage'))?'character':'style';
+    const badge=kind==='costume'?'assets/home/icons/release_costume.png':kind==='character'?'assets/home/icons/release_character.png':'assets/home/icons/release_style.png';
+    const label=releaseKindLabel(kind);
+    const target=customReleaseTarget(x);
+    const c=(typeof characters!=='undefined'&&characters.find(v=>String(v.id)===String(target.charId)))||null;
+    const st=(typeof styles!=='undefined'&&styles?.[target.styleId])||null;
+    const theme=String(x?.theme||({technical:'purple',speed:'cyan',rapid:'cyan',assault:'yellow',strike:'red',attack:'red',support:'green'}[(st?.role||'').toLowerCase()]||'red'));
+    const rawTitle=String(x?.title||'');
+    const title=c?.name&&(!rawTitle||isGenericName(rawTitle))?c.name:patchLabel(rawTitle);
+    const rawSub=String((currentLang()==='fr'?(x?.subtitle_fr||x?.subtitle):(x?.subtitle_en||x?.subtitle))||'');
+    let subtitle=label;
+    if(kind==='character'&&rawSub&&norm(rawSub)!=='personnage_jouable'&&norm(rawSub)!=='playable_character') subtitle=patchLabel(rawSub);
+    const art=st?.portrait||c?.portrait||x?.art||x?.character_art||x?.image||x?.banner||'';
+    return `<button type="button" class="releaseCardV299 releaseReframedV304 theme-${esc(theme)}" data-release-char="${esc(target.charId||'')}" data-release-style="${esc(target.styleId||'')}" onclick="openHomeReleaseV298(this)" aria-label="${esc(title)} — ${esc(subtitle||label)}" title="${esc(title)} — ${esc(subtitle||label)}"><span class="releaseDotsV299"></span><span class="releaseBadgeV299 ${kind==='costume'?'costume':kind==='character'?'character':'style'}">${typeof img==='function'?img(badge,label):''}</span><span class="releasePromoNewV304" aria-hidden="true"></span><span class="releasePersonWrapV299">${typeof img==='function'?img(art,title,'releasePersonV299 releasePersonHeroV304'):''}</span><span class="releaseSlashV299"></span><span class="releaseNamesV299"><b>${esc(title)}</b><small>${esc(subtitle||label)}</small></span></button>`;
   };
   window.releaseCard=releaseCard=fn;
   return true;

@@ -180,3 +180,134 @@
   .releaseNamesV304 b{font-size:clamp(13px,4vw,18px)}
   .releaseNamesV304 small{font-size:clamp(10px,3vw,13px)}
 }
+
+/* ===== MHUR Nexus v4 corrective overrides ===== */
+.s18NewBadge{
+  display:inline-block;
+  width:92px;
+  height:42px;
+  padding:0;
+  border:0;
+  border-radius:0;
+  background:transparent url('../assets/home/icons/new_badge_custom.png') center/contain no-repeat;
+  color:transparent !important;
+  text-indent:-9999px;
+  overflow:hidden;
+  box-shadow:none;
+}
+
+.releaseReframedV304{
+  position:relative;
+  overflow:hidden;
+  min-height:180px;
+  border:4px solid #000;
+  border-radius:16px;
+  box-shadow:0 6px 0 #000;
+}
+.releaseReframedV304.theme-red{background:linear-gradient(135deg,#c70f22 0%,#ee1a30 52%,#ff4a61 100%)}
+.releaseReframedV304.theme-purple{background:linear-gradient(135deg,#a100d6 0%,#6e0fb2 52%,#47106f 100%)}
+.releaseReframedV304.theme-cyan{background:linear-gradient(135deg,#0cb7de 0%,#08a1cb 48%,#0a6d9a 100%)}
+.releaseReframedV304.theme-orange{background:linear-gradient(135deg,#ff7b00 0%,#ff4e00 48%,#cb2800 100%)}
+.releaseReframedV304.theme-yellow{background:linear-gradient(135deg,#ffd400 0%,#f3b300 48%,#bb7e00 100%)}
+.releaseReframedV304.theme-green{background:linear-gradient(135deg,#14b054 0%,#0b8d45 48%,#0a6634 100%)}
+.releaseReframedV304 .releaseDotsV299{
+  opacity:.18;
+  background-size:14px 14px;
+}
+.releaseReframedV304 .releaseBadgeV299{
+  z-index:4;
+  top:10px;
+  left:10px;
+}
+.releasePromoNewV304{
+  position:absolute;
+  z-index:4;
+  left:22px;
+  top:18px;
+  width:160px;
+  height:78px;
+  background:url('../assets/home/icons/new_badge_custom.png') center/contain no-repeat;
+  filter:drop-shadow(0 4px 0 rgba(0,0,0,.6));
+}
+.releaseReframedV304 .releasePersonWrapV299{
+  position:absolute;
+  inset:16px 16px 18px 37%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:2;
+}
+.releasePersonHeroV304{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  object-position:center center;
+  transform:scale(1.06);
+}
+.releaseReframedV304 .releaseSlashV299{
+  z-index:3;
+  top:50%;
+}
+.releaseReframedV304 .releaseNamesV299{
+  z-index:5;
+  left:18px;
+  right:45%;
+  bottom:16px;
+}
+.releaseReframedV304 .releaseNamesV299 b{
+  font-size:31px;
+  line-height:1;
+  text-shadow:0 3px 0 #000;
+}
+.releaseReframedV304 .releaseNamesV299 small{
+  margin-top:6px;
+  font-size:18px;
+  color:#fff200;
+  text-shadow:0 2px 0 #000;
+}
+
+.s18PatchGroupCard{overflow:hidden}
+.s18PatchSkillBlock{
+  position:relative;
+  padding-top:38px;
+  border:2px solid rgba(255,255,255,.08);
+}
+.s18PatchSkillBlock.buff{border-color:rgba(43,222,111,.75);background:linear-gradient(180deg,rgba(18,65,35,.95),rgba(10,30,21,.96));}
+.s18PatchSkillBlock.nerf{border-color:rgba(255,86,109,.78);background:linear-gradient(180deg,rgba(76,20,28,.95),rgba(32,12,18,.97));}
+.s18PatchSkillBlock.adjust{border-color:rgba(255,214,63,.72);background:linear-gradient(180deg,rgba(76,60,14,.95),rgba(30,24,10,.97));}
+.s18PatchTone{
+  position:absolute;
+  top:10px;
+  right:10px;
+  z-index:3;
+  min-width:72px;
+  padding:6px 10px;
+  border-radius:999px;
+  border:2px solid #000;
+  color:#fff;
+  font-weight:900;
+  font-size:12px;
+  line-height:1;
+  text-align:center;
+  text-shadow:0 1px 0 #000;
+  box-shadow:0 3px 0 rgba(0,0,0,.35);
+}
+.s18PatchTone.buff{background:#128943}
+.s18PatchTone.nerf{background:#b01e33}
+.s18PatchTone.adjust{background:#9f7b11}
+.s18PatchLabel{color:#9dd0ff;font-weight:800}
+.s18PatchAfter.buff{background:#0d6a37}
+.s18PatchAfter.nerf{background:#8f2333}
+.s18PatchAfter.adjust{background:#876f16}
+.s18PatchRows{display:flex;flex-direction:column;gap:10px}
+
+@media (max-width: 920px){
+  .releaseReframedV304 .releasePersonWrapV299{inset:20px 8px 18px 34%;}
+  .releaseReframedV304 .releaseNamesV299{right:39%;}
+  .releasePromoNewV304{width:128px;height:62px;left:14px;top:14px}
+}
+@media (max-width: 680px){
+  .releaseReframedV304{min-height:152px}
+  .releaseReframedV304 .releaseNamesV299 b{font-size:24px}
+  .releaseReframedV304 .releaseNamesV299 small{font-size:15px}
+}
