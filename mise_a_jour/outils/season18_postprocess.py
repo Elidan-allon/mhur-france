@@ -751,15 +751,101 @@ def parse_latest_releases(session: requests.Session, root: Path, payload: dict[s
 
 
 def ensure_assets_in_index(root: Path) -> None:
+    """Install the Season 18 layer in a deterministic order.
+
+    The homepage release renderer must be replaced *before* the first layout()
+    call, otherwise visitors briefly see the old empty red cards.  Character
+    data and the exact UltraRumble payload are available later in the page, so
+    the heavier compatibility layer remains just before </body>.
+    """
     idx = root / "index.html"
     text = idx.read_text(encoding="utf-8", errors="ignore")
-    css = '<link rel="stylesheet" href="css/season18-fixes.css?v=1806">'
-    js = '<script src="data/season18_sync.js?v=1806"></script>\n<script src="js/season18-fixes.js?v=1806"></script>'
-    text = re.sub(r'\s*<link rel="stylesheet" href="css/season18-fixes\.css[^>]*>\s*', "\n", text)
-    text = re.sub(r'\s*<script src="data/season18_sync\.js[^>]*></script>\s*', "\n", text)
-    text = re.sub(r'\s*<script src="js/season18-fixes\.js[^>]*></script>\s*', "\n", text)
-    text = text.replace("</body>", f"\n<!-- Season 18 data compatibility layer. -->\n{css}\n{js}\n</body>")
+    version = "1900"
+    css = f'<link rel="stylesheet" href="css/season18-fixes.css?v={version}">'
+    early = f'<script src="data/season18_sync.js?v={version}"></script>\n<script src="js/season18-early.js?v={version}"></script>'
+    late = f'<script src="js/season18-fixes.js?v={version}"></script>'
+
+    # Remove every previous injection so repeated updates stay idempotent.
+    patterns = (
+        r'\s*<link rel="stylesheet" href="css/season18-fixes\.css[^>]*>\s*',
+        r'\s*<script src="data/season18_sync\.js[^>]*></script>\s*',
+        r'\s*<script src="js/season18-early\.js[^>]*></script>\s*',
+        r'\s*<script src="js/season18-fixes\.js[^>]*></script>\s*',
+    )
+    for pattern in patterns:
+        text = re.sub(pattern, "\n", text)
+
+    if "</head>" in text:
+        text = text.replace("</head>", f"\n{css}\n</head>", 1)
+    else:
+        text = css + "\n" + text
+
+    home_script = re.search(r'<script src="js/home\.js[^>]*></script>', text)
+    if home_script:
+        pos = home_script.end()
+        text = text[:pos] + "\n" + early + text[pos:]
+    elif "</body>" in text:
+        text = text.replace("</body>", early + "\n</body>", 1)
+
+    if "</body>" in text:
+        text = text.replace("</body>", f"\n<!-- Season 18 v9 targeted compatibility layer. -->\n{late}\n</body>", 1)
+    else:
+        text += "\n" + late
     idx.write_text(text, encoding="utf-8")
+
+
+def official_portrait_candidates(row: dict[str, Any]) -> list[str]:
+    """Return likely UltraRumble Database portrait URLs for a battle style.
+
+    Original styles expose the portrait directly. Some variant pages only
+    expose skill assets, so derive the FaceIcon path and keep several filename
+    patterns before falling back to the site's existing local portrait.
+    """
+    assets = row.get("assets") or {}
+    out: list[str] = []
+    if assets.get("portrait"):
+        out.append(str(assets["portrait"]))
+    alpha = str(assets.get("alpha") or "")
+    if alpha:
+        base = alpha.replace("/GUI/Skill/", "/GUI/FaceIcon/")
+        m = re.search(r"T_ui_Skill_(Ch\d+)_Unique1\.png", base, re.I)
+        if m:
+            code = m.group(1)
+            out.extend([
+                re.sub(r"T_ui_Skill_Ch\d+_Unique1\.png", f"T_ui_{code}_CharaImage.png", base, flags=re.I),
+                re.sub(r"T_ui_Skill_Ch\d+_Unique1\.png", f"T_ui_{code}_CharaImage_01.png", base, flags=re.I),
+            ])
+            variant = int(row.get("variant_index") or 0)
+            if variant:
+                out.extend([
+                    re.sub(r"T_ui_Skill_Ch\d+_Unique1\.png", f"T_ui_{code}_{variant:02d}_CharaImage.png", base, flags=re.I),
+                    re.sub(r"T_ui_Skill_Ch\d+_Unique1\.png", f"T_ui_{code}_Var{variant:02d}_CharaImage.png", base, flags=re.I),
+                ])
+    return list(dict.fromkeys(x for x in out if x))
+
+
+def download_official_portraits(session: requests.Session, root: Path, exact: dict[str, Any]) -> dict[str, str]:
+    result: dict[str, str] = {}
+    for style_key, row in exact.items():
+        for url in official_portrait_candidates(row or {}):
+            try:
+                response = session.get(url, headers={**HEADERS, "Accept": "image/avif,image/webp,image/*,*/*;q=0.8"}, timeout=30)
+                response.raise_for_status()
+                if len(response.content) < 500:
+                    continue
+                ext = Path(urlparse(url).path).suffix.lower()
+                if ext not in {".png", ".jpg", ".jpeg", ".webp", ".avif"}:
+                    ext = ".png"
+                rel = Path("assets/characters/official_portraits") / f"{style_key}{ext}"
+                dst = root / rel
+                dst.parent.mkdir(parents=True, exist_ok=True)
+                dst.write_bytes(response.content)
+                result[str(style_key)] = rel.as_posix()
+                break
+            except requests.RequestException:
+                continue
+    print(f"[S18 PORTRAITS] officiels={len(result)}/{len(exact)}", flush=True)
+    return result
 
 
 def patch_full(root: Path, session: requests.Session) -> None:
@@ -768,6 +854,7 @@ def patch_full(root: Path, session: requests.Session) -> None:
     payload_path = root / "data/ultrarumble/site_data_latest.json"
     payload = json.loads(payload_path.read_text(encoding="utf-8"))
     exact = payload.get("exact_by_style") or {}
+    official_portraits = download_official_portraits(session, root, exact)
     generated_styles = payload.get("generated_styles") or {}
     generated_tunings = payload.get("generated_tunings") or {}
     local_rows = json.loads((root / "data/local_style_map.json").read_text(encoding="utf-8"))
@@ -873,6 +960,7 @@ def patch_full(root: Path, session: requests.Session) -> None:
     sync_data = {
         "updated_at": datetime.now(timezone.utc).isoformat(),
         "costumes": costume_meta,
+        "official_portraits": official_portraits,
         "new_content": {
             "styles": new_style_keys,
             "characters": sorted(generated_new_characters | release_character_ids),

@@ -1,17 +1,21 @@
-CORRECTIF SAISON 18 V6 — MHUR NEXUS
+CORRECTIF SAISON 18 V9 — MHUR NEXUS
 
-1. Extraire le dossier mhur-france par-dessus ton dossier actuel.
-2. Accepter le remplacement des fichiers.
-3. Lancer METTRE_A_JOUR_MHUR_FRANCE.bat.
-4. Attendre le message [OK], puis redéployer le dossier public.
+Installation :
+1. Fermer toute ancienne fenêtre de mise à jour encore ouverte.
+2. Extraire le dossier mhur-france par-dessus le dossier actuel.
+3. Accepter le remplacement des fichiers.
+4. Lancer METTRE_A_JOUR_MHUR_FRANCE.bat et attendre [OK].
+5. Redéployer le dossier public.
 
-Corrections principales :
-- ouverture des patch notes réparée ;
-- séparation par personnage et par style ;
-- indication claire BUFF / NERF / NEUTRE ;
-- portraits, rôles et compétences corrigés dans les patchs ;
-- textes d'interface traduits en français ;
-- NEW automatique sur les nouveaux personnages, styles et costumes ;
+Corrections ciblées de cette version :
+- les cartes Dernières sorties utilisent leur bannière officielle dès le premier rendu ;
+- plus de cartes rouges vides avant l'apparition des images ;
+- portraits des cartes personnages agrandis et centrés ;
+- portraits officiels UltraRumble Database téléchargés pour les styles quand ils sont disponibles ;
+- choix de style utilisant les portraits officiels avec retour automatique à l'image locale si nécessaire ;
 - doublon Original de Gentle Criminal supprimé ;
-- Action spéciale et Alters de Gentle Criminal remis au format des anciens personnages ;
-- nouvelles sorties avec le bon personnage, plus grand et centré.
+- Action spéciale, Alter alpha, bêta et gamma de Gentle Criminal détaillés ;
+- tableaux complets : effets de montée, valeurs de base et dégâts supplémentaires ;
+- colonne Down Power supprimée de l'affichage ;
+- traductions française et anglaise conservées ;
+- badges NEW maintenus sur les nouveaux personnages, styles et costumes.
