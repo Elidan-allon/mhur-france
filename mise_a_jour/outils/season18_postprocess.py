@@ -760,7 +760,7 @@ def ensure_assets_in_index(root: Path) -> None:
     """
     idx = root / "index.html"
     text = idx.read_text(encoding="utf-8", errors="ignore")
-    version = "12000"
+    version = "13000"
     css = f'<link rel="stylesheet" href="css/season18-fixes.css?v={version}">'
     early = f'<script src="data/season18_sync.js?v={version}"></script>\n<script src="js/season18-early.js?v={version}"></script>'
     late = f'<script src="js/season18-fixes.js?v={version}"></script>\n<script src="js/season18-v12.js?v={version}"></script>'
@@ -793,10 +793,10 @@ def ensure_assets_in_index(root: Path) -> None:
         flags=re.I,
     )
     patch_button = (
-        '<button id="mhurPatchDevButtonV12" '
-        'class="nexusHeaderBtn mhurPatchDevButtonV10 mhurPatchDevButtonV12" '
+        '<button id="mhurPatchDevButtonV13" '
+        'class="nexusHeaderBtn mhurPatchDevButtonV10 mhurPatchDevButtonV13" '
         'type="button" '
-        'onclick="window.MHUR_S18_V12?.openNotes?.() || window.MHUR_S18_V10?.openNotes?.()">'
+        'onclick="window.MHUR_S18_V13?.openNotes?.() || window.MHUR_S18_OPEN_NOTES_EARLY?.()">'
         '<span class="mhurPatchDevIconV12">📝</span>'
         '<span>Notes de patch / Notes des développeurs</span>'
         '</button>\n'
@@ -818,7 +818,7 @@ def ensure_assets_in_index(root: Path) -> None:
         text = text.replace("</body>", early + "\n</body>", 1)
 
     if "</body>" in text:
-        text = text.replace("</body>", f"\n<!-- Season 18 v12 compatibility layer. -->\n{late}\n</body>", 1)
+        text = text.replace("</body>", f"\n<!-- Season 18 v13 compatibility layer. -->\n{late}\n</body>", 1)
     else:
         text += "\n" + late
     idx.write_text(text, encoding="utf-8")

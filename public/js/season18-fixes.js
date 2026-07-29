@@ -109,7 +109,7 @@ function portraitCandidates(styleId,fallback){
   const local=(typeof styles!=='undefined'&&styles?.[styleId]?._s18LocalPortrait)||'';
   /* La photo exacte du style depuis UltraRumble passe avant toutes les anciennes
      images locales. Les propositions déduites ne servent qu'en dernier recours. */
-  const list=[sync[styleId],row?.assets?.portrait,manualPortrait(styleId),local,fallback,...inferredRemotePortraits(row),originalRemotePortrait(row)].filter(Boolean).map(String);
+  const list=[sync[styleId],manualPortrait(styleId),local,fallback,row?.assets?.portrait,...inferredRemotePortraits(row),originalRemotePortrait(row)].filter(Boolean).map(String);
   return Array.from(new Set(list));
 }
 window.MHUR_S18_NEXT_IMAGE=function(image){
@@ -317,14 +317,10 @@ function wrapRender(){
 
 applyAll();
 wrapRender();
-setTimeout(()=>{
-  try{
-    applyAll();
-    if(typeof render==='function'){ window.__keepScroll=true; render(); }
-  }catch(error){ console.error('[MHUR S18 V9]',error); }
-},0);
+/* Le layout initial est déjà exécuté par index.html. Aucun render() forcé ici :
+   cela évite les doubles rendus et les boucles de chargement. */
 window.addEventListener('mhur:languagechange',()=>{
-  try{ applyAll(); if(typeof render==='function') render(); }catch(_e){}
+  try{ applyAll(); }catch(_e){}
 });
 })();
 /* ========================================================================== */
@@ -383,12 +379,12 @@ function seasonCard(item){
 function patchHome(){
   const home=document.querySelector('.homeV296');if(!home)return;
   const headings=[...home.querySelectorAll('.homeTitleV296')];
-  const releaseHeading=headings.find(h=>/derni[eè]res sorties|latest releases/i.test(h.textContent||''));
-  if(releaseHeading)releaseHeading.textContent=TX('SORTIES PRÉVUES — SAISON 18','SEASON 18 RELEASES');
+  const releaseHeading=headings.find(h=>/derni[eè]res sorties|latest releases|sorties pr[eé]vues|planned releases/i.test(h.textContent||''));
+  if(releaseHeading)releaseHeading.textContent=TX('SORTIES PRÉVUES — SAISON 18','SEASON 18 PLANNED RELEASES');
   const grid=home.querySelector('.releaseGridV296');
-  if(grid&&grid.dataset.s18SeasonV10!==L()){
-    grid.innerHTML=seasonReleases().map(seasonCard).join('');
-    grid.dataset.s18SeasonV10=L();
+  if(grid&&!grid.querySelector('.s18PlannedCardV13')&&typeof window.MHUR_S18_PLANNED_HTML==='function'){
+    grid.className='releaseGridV296 s18PlannedGridV12 s18PlannedGridV13';
+    grid.innerHTML=window.MHUR_S18_PLANNED_HTML();
   }
   const patchHeading=headings.find(h=>/derni[eè]re note de mise [aà] jour|latest patch note/i.test(h.textContent||''));
   if(patchHeading){
@@ -519,11 +515,19 @@ function openNotes(){
   requestAnimationFrame(()=>{resetNotesScroll(modal,true);modal.querySelector('.s18NotesPanelV10')?.focus?.({preventScroll:true});});
 }
 function ensureHeaderButton(){
-  const admin=document.getElementById('mhurAdminButton');if(admin)admin.style.setProperty('display','none','important');
+  document.querySelectorAll('#mhurAdminButton,.mhurAdminTopButton,[data-mhur-admin]').forEach(admin=>{
+    if(admin.id!=='mhurAccountButton')admin.style.setProperty('display','none','important');
+  });
   const account=document.getElementById('mhurAccountButton');if(!account?.parentNode)return;
-  let button=document.getElementById('mhurPatchDevButtonV12')||document.getElementById('mhurPatchDevButtonV10');
-  if(!button){button=document.createElement('button');button.id='mhurPatchDevButtonV12';button.type='button';button.className='nexusHeaderBtn mhurPatchDevButtonV10';button.innerHTML=`📝 <span>${TX('Notes de patch / Notes des développeurs','Patch Notes / Dev Notes')}</span>`;button.onclick=openNotes;account.parentNode.insertBefore(button,account)}
-  else button.querySelector('span').textContent=TX('Notes de patch / Notes des développeurs','Patch Notes / Dev Notes');
+  let button=document.getElementById('mhurPatchDevButtonV13')||document.getElementById('mhurPatchDevButtonV12')||document.getElementById('mhurPatchDevButtonV10');
+  if(!button){
+    button=document.createElement('button');button.id='mhurPatchDevButtonV13';button.type='button';button.className='nexusHeaderBtn mhurPatchDevButtonV10 mhurPatchDevButtonV13';
+    button.innerHTML='<span class="mhurPatchDevIconV12">📝</span><span></span>';
+    account.parentNode.insertBefore(button,account);
+  }
+  const label=TX('Notes de patch / Notes des développeurs','Patch Notes / Dev Notes');
+  const span=button.querySelector('span:last-child');if(span&&span.textContent!==label)span.textContent=label;
+  button.onclick=openNotes;
 }
 
 /* -------------------------- Administration profil ------------------------ */
@@ -576,8 +580,19 @@ function patchMods(){
 /* ------------------------------- DOM ------------------------------------- */
 function removeCharacterNew(){document.querySelectorAll('.card[data-char] .s18NewBadge').forEach(el=>el.remove())}
 function afterDom(){ensureHeaderButton();injectAdminProfileButton();patchHome();patchMods();removeCharacterNew();}
-let queued=false;const observer=new MutationObserver(()=>{if(queued)return;queued=true;requestAnimationFrame(()=>{queued=false;afterDom()})});
-function init(){observer.observe(document.documentElement,{childList:true,subtree:true,attributes:true,attributeFilter:['class','hidden']});afterDom();window.addEventListener('mhur-auth-change',()=>setTimeout(afterDom,80));window.addEventListener('mhur-role-change',()=>setTimeout(afterDom,80));window.addEventListener('mhur:languagechange',()=>setTimeout(afterDom,0));}
+function wrapDomRender(){
+  if(typeof window.render!=='function'||window.render.__s18v13Dom)return;
+  const original=window.render;
+  const wrapped=function(){const result=original.apply(this,arguments);requestAnimationFrame(afterDom);return result;};
+  wrapped.__s18v13Dom=true;window.render=wrapped;try{render=wrapped}catch(_e){}
+}
+function init(){
+  ensureHeaderButton();wrapDomRender();requestAnimationFrame(afterDom);
+  window.addEventListener('mhur-auth-change',()=>setTimeout(()=>{ensureHeaderButton();injectAdminProfileButton()},80));
+  window.addEventListener('mhur-role-change',()=>setTimeout(()=>{ensureHeaderButton();injectAdminProfileButton()},80));
+  window.addEventListener('mhur:languagechange',()=>requestAnimationFrame(afterDom));
+}
 window.MHUR_S18_V10={openNotes,openAdminCenter,showPatch};
+window.MHUR_S18_V13={openNotes,openAdminCenter,showPatch,afterDom};
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
 })();

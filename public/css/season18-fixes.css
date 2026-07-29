@@ -671,3 +671,31 @@ header.top [data-mhur-admin]{display:none!important;visibility:hidden!important;
   .card[data-char].s18V12CharacterCard .thumb,.card[data-char].s18CharacterCardV10 .thumb,.card[data-char].s18CharacterCardV9 .thumb{height:320px!important;min-height:320px!important}
   .styleCard[data-style].s18V12StyleCard .styleBanner,.styleCard[data-style].s18StyleCardV10 .styleBanner,.styleCard[data-style].s18StyleCardV9 .styleBanner{height:390px!important;min-height:390px!important}
 }
+
+/* ===== Saison 18 v13 — stabilité du premier rendu ===== */
+#mhurPatchDevButtonV13,.mhurPatchDevButtonV13{
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:8px!important;
+  min-height:48px!important;
+  padding:7px 14px!important;
+  border:2px solid #49658d!important;
+  border-radius:14px!important;
+  background:#132139!important;
+  color:#fff!important;
+  font-weight:1000!important;
+  white-space:nowrap!important;
+  cursor:pointer!important;
+}
+#mhurPatchDevButtonV13:hover,.mhurPatchDevButtonV13:hover{border-color:#ffe100!important}
+.s18PlannedGridV13{visibility:visible!important;min-height:0!important}
+.s18PlannedCardV13{contain:layout paint;isolation:isolate}
+.s18PlannedArtV13{will-change:auto!important}
+.card[data-char].s18V13CharacterCard .thumb,
+.styleCard[data-style].s18V13StyleCard .styleBanner,
+.charPanel.s18V13CharacterDetail .charTop .portrait{isolation:isolate}
+@media(max-width:600px){
+  #mhurPatchDevButtonV13 span:last-child,.mhurPatchDevButtonV13 span:last-child{display:none!important}
+  #mhurPatchDevButtonV13,.mhurPatchDevButtonV13{min-width:44px!important;padding:6px 10px!important}
+}
