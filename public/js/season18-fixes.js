@@ -248,3 +248,258 @@ if(typeof page!=='undefined'&&page==='home'&&typeof render==='function'){
   try{window.__keepScroll=true;render()}catch(_e){}
 }
 })();
+
+
+/* ---------- Season 18 polish pass: Gentle Criminal, cards, patch cards ---------- */
+(function(){
+'use strict';
+const curLang=()=>typeof lang!=='undefined'&&lang==='en'?'en':'fr';
+const pick=(v,l=curLang())=>v&&typeof v==='object'&&!Array.isArray(v)?(v[l]??v.fr??v.en??''):v;
+const CJK=/[\u3040-\u30ff\u3400-\u9fff\uf900-\ufaff]/g;
+const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const clean=v=>String(pick(v)??'').replace(/\s*[（(][^()（）]*[\u3040-\u30ff\u3400-\u9fff][^()（）]*[）)]/g,'').replace(CJK,'').replace(/\s{2,}/g,' ').trim();
+const normalize=v=>String(clean(v)).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'_').replace(/^_|_$/g,'');
+const roleCls=r=>({strike:'strike',attack:'strike',assault:'assault',technical:'technical',support:'support',rapid:'speed',speed:'speed'})[normalize(r)]||normalize(r)||'technical';
+const roleLabel=r=>{
+  const key=roleCls(r);
+  const dict={fr:{strike:'Attaque',assault:'Assaut',technical:'Technique',support:'Support',speed:'Rapide'},en:{strike:'Strike',assault:'Assault',technical:'Technical',support:'Support',speed:'Rapid'}};
+  return dict[curLang()][key]||clean(r)||r;
+};
+const sideLabel=s=>curLang()==='fr'? (normalize(s)==='hero'?'Héros':'Super-vilains') : (normalize(s)==='hero'?'Heroes':'Super-Villains');
+const NEW_HTML='<span class="s18NewBadge" aria-label="New">NEW</span>';
+const variantMap={
+  fr:{'original':'Original','combat':'Combat','vers_hero':'Vers. Héros','ver_hero':'Vers. Héros','hero_ver':'Vers. Héros','super_villain':'Super-vilain','super_vilains':'Super-vilain','elegant':'Élégant','dangerous':'Dangereux','fancy':'Fancy','heat':'Heat','casual':'Décontracté','formal':'Formel'},
+  en:{'original':'Original','combat':'Combat','vers_heros':'Hero Ver.','ver_heros':'Hero Ver.','d_enfer':'Heat','super_vilain':'Super-Villain','elegant':'Elegant','dangereux':'Dangerous','fancy':'Fancy','tenue_de_boost_d_alters':'Quirk Boost Gear','costume_sans_cravate':'Necktie-less Costume','costume_formel':'Formal Costume','tenue_de_heros':'Hero Costume'}
+};
+function translateCostumeText(v){
+  const raw=clean(v); if(!raw) return raw;
+  const key=normalize(raw);
+  const dict=variantMap[curLang()];
+  return dict[key]||raw;
+}
+function patchGentle(){
+  try{
+    if(typeof styles==='undefined') return;
+    const styleKey=(Object.keys(styles).find(k=>/gentle[_-]?criminal/i.test(k))||'gentle_criminal_support');
+    const st=styles[styleKey]; if(!st) return;
+    st.role='technical';
+    st.pv='300';
+    st.name={fr:'Original',en:'Original'};
+    st.description={
+      fr:"Un hors-la-loi des temps modernes qui entrera dans l'Histoire ! Son Alter Élasticité lui permet de virevolter dans les airs en narguant ses ennemis avec panache !",
+      en:'A modern-day outlaw who is destined to go down in history! His Elasticity Quirk lets him dance through the air while styling on his enemies.'
+    };
+    st.roleDesc={
+      fr:"Augmente la vitesse de rechargement de toute l'équipe. Plus il y a de membres avec le même rôle dans l'équipe, plus l'effet est amplifié.",
+      en:'Raises the reload speed of the whole team. The more allies with the same role, the stronger the effect becomes.'
+    };
+    st.special={
+      name:{fr:'Gently Trampoline / Mode Lover',en:'Gently Trampoline / Mode Lover'},
+      img:st.special?.img||st.special?.image||st.portrait,
+      desc:{
+        fr:"Crée un trampoline gonflable aux pieds de Gentle. Les alliés qui le touchent effectuent un énorme saut, tandis que les ennemis sont repoussés. Après activation, Mode Lover améliore ses déplacements aériens.",
+        en:'Creates an inflatable trampoline at Gentle’s feet. Allies who touch it perform a huge jump, while enemies are bounced away. After activation, Mode Lover enhances his aerial mobility.'
+      },
+      tables:[{title:{fr:'Valeurs action spéciale',en:'Special Action Values'},cols:{fr:['Niveau','Munitions','Consommation','Recharge'],en:['Level','Ammo','Consumption','Reload']},rows:[['Lv.1','x1','x1','14s'],['Lv.2','x1','x1','14s'],['Lv.3','x1','x1','14s'],['Lv.4','x1','x1','13s'],['Lv.5','x1','x1','13s'],['Lv.6','x1','x1','13s'],['Lv.7','x1','x1','12s'],['Lv.8','x1','x1','12s'],['Lv.9','x1','x1','12s']]}]
+    };
+    st.skills=[
+      {
+        letter:'α',
+        name:'Gently Arrow',
+        img:st.skills?.[0]?.img||st.alpha||st.portrait,
+        desc:{
+          fr:"Tire une flèche d'air comprimé qui produit une onde de choc à l'impact, puis poursuit sa course comme un projectile. Polyvalent à mi-distance.",
+          en:'Fires a compressed-air arrow that creates a shockwave on impact and then continues forward as a projectile. A flexible mid-range tool.'
+        },
+        tables:[
+          {title:{fr:'Valeurs α',en:'α Values'},cols:{fr:['Type','Niveau','Dégâts'],en:['Type','Level','Damage']},rows:[['Shockwave','Lv.1','70'],['Shockwave','Lv.2','75'],['Shockwave','Lv.3','80'],['Shockwave','Lv.4','85'],['Shockwave','Lv.5','90'],['Shockwave','Lv.6','95'],['Shockwave','Lv.7','100'],['Shockwave','Lv.8','105'],['Shockwave','Lv.9','110'],['Bullet','Lv.1','20'],['Bullet','Lv.2','21'],['Bullet','Lv.3','22'],['Bullet','Lv.4','23'],['Bullet','Lv.5','24'],['Bullet','Lv.6','25'],['Bullet','Lv.7','26'],['Bullet','Lv.8','27'],['Bullet','Lv.9','28']]},
+          {title:{fr:'Munitions α',en:'α Ammo'},cols:{fr:['Niveau','Munitions','Consommation','Recharge'],en:['Level','Ammo','Consumption','Reload']},rows:[['Lv.1','x6','x1','2s'],['Lv.2','x6','x1','2s'],['Lv.3','x6','x1','2s'],['Lv.4','x7','x1','2s'],['Lv.5','x7','x1','2s'],['Lv.6','x7','x1','2s'],['Lv.7','x8','x1','2s'],['Lv.8','x8','x1','2s'],['Lv.9','x8','x1','2s']]}
+        ]
+      },
+      {
+        letter:'β',
+        name:{fr:'Elasticité montante',en:'Rising Elasticity'},
+        img:st.skills?.[1]?.img||st.portrait,
+        desc:{
+          fr:"Déploie de l'élasticité pour rebondir, contrôler l'espace et repousser les ennemis. Les données qui manquaient sont maintenant affichées proprement.",
+          en:'Deploys elasticity to bounce, control space, and push enemies back. The previously missing values are now shown cleanly.'
+        },
+        tables:[{title:{fr:'Valeurs β',en:'β Values'},cols:{fr:['Niveau','Munitions','Consommation','Recharge'],en:['Level','Ammo','Consumption','Reload']},rows:[['Lv.1','x2','x1','8s'],['Lv.2','x2','x1','8s'],['Lv.3','x2','x1','8s'],['Lv.4','x2','x1','7s'],['Lv.5','x2','x1','7s'],['Lv.6','x2','x1','7s'],['Lv.7','x2','x1','6s'],['Lv.8','x2','x1','6s'],['Lv.9','x2','x1','6s']]}]
+      },
+      {
+        letter:'γ',
+        name:{fr:'Rebond du gentleman',en:'Gentle Rebound'},
+        img:st.skills?.[2]?.img||st.portrait,
+        desc:{
+          fr:"Se propulse en exploitant son Alter pour garder l'avantage en l'air et surprendre sa cible.",
+          en:'Launches himself using Elasticity to keep aerial advantage and catch targets off guard.'
+        },
+        tables:[{title:{fr:'Valeurs γ',en:'γ Values'},cols:{fr:['Niveau','Dégâts','Munitions','Consommation','Recharge'],en:['Level','Damage','Ammo','Consumption','Reload']},rows:[['Lv.1','80','x1','x1','10s'],['Lv.2','82','x1','x1','10s'],['Lv.3','84','x1','x1','10s'],['Lv.4','86','x1','x1','9s'],['Lv.5','88','x1','x1','9s'],['Lv.6','90','x1','x1','9s'],['Lv.7','92','x1','x1','8s'],['Lv.8','95','x1','x1','8s'],['Lv.9','100','x1','x1','8s']]}]
+      }
+    ];
+    if(typeof characters!=='undefined'){
+      const ch=characters.find(c=>/gentle/i.test(c.id||'')||/gentle/i.test(c.name||''));
+      if(ch){
+        ch.side='villain';
+        ch.name='Gentle Criminal';
+        const list=Array.isArray(ch.styles)?ch.styles:[];
+        if(!list.includes(styleKey)) list.unshift(styleKey);
+        ch.styles=list;
+      }
+    }
+  }catch(_e){}
+}
+function skillByName(st,name){
+  const target=normalize(name);
+  const all=[st.special,...(st.skills||[])].filter(Boolean);
+  return all.find(x=>normalize(x.letter+' '+clean(x.name))===target||normalize(clean(x.name))===target||target.startsWith(normalize(x.letter)))||null;
+}
+function resolveCharacterStyle(character, styleName){
+  if(typeof characters==='undefined' || typeof styles==='undefined') return null;
+  const ch=(characters||[]).find(c=>normalize(c.name)===normalize(character)||normalize(c.id)===normalize(character));
+  if(!ch) return null;
+  const list=(ch.styles||[]).map(id=>({id,st:styles[id]})).filter(x=>x.st);
+  if(!list.length) return null;
+  if(styleName){
+    const found=list.find(x=>normalize(clean(x.st.name))===normalize(styleName)||normalize(x.id)===normalize(styleName));
+    if(found) return found;
+  }
+  return list[0];
+}
+function isNoChange(change){
+  const t=normalize(change?.text||change?.note||'');
+  if(t.includes('no_changes_detected')) return true;
+  if(change && 'before' in change && 'after' in change){
+    try{return JSON.stringify(change.before)===JSON.stringify(change.after);}catch(_e){}
+  }
+  return false;
+}
+function scrubPatchData(){
+  const patches=window.MHUR_HOME_DATA?.patch_notes;
+  if(!Array.isArray(patches)) return;
+  patches.forEach(note=>{
+    if(Array.isArray(note.details)){
+      note.details=note.details.map(sec=>{
+        const changes=(sec.changes||[]).filter(ch=>!isNoChange(ch)).map(ch=>{
+          const hit=resolveCharacterStyle(ch.character,ch.style);
+          if(hit){
+            ch.role=roleLabel(hit.st.role);
+            ch.portrait=hit.st.portrait||ch.portrait;
+            const skill=skillByName(hit.st,ch.skill_name);
+            if(skill?.img) ch.skill_image=skill.img;
+          }
+          ch.character=clean(ch.character);
+          ch.style=clean(ch.style);
+          ch.skill_name=clean(ch.skill_name);
+          ch.label=clean(ch.label);
+          return ch;
+        });
+        return {...sec,changes};
+      }).filter(sec=>(sec.changes||[]).length);
+    }
+  });
+}
+function renderDiff(before,after){
+  const b=Array.isArray(before)?before:[before];
+  const a=Array.isArray(after)?after:[after];
+  if(b.length===1 && a.length===1 && typeof b[0]!=='object' && typeof a[0]!=='object'){
+    return `<div class="s18PatchRow"><span class="s18PatchBefore">${esc(clean(b[0]))}</span><span class="s18PatchArrow">→</span><span class="s18PatchAfter">${esc(clean(a[0]))}</span></div>`;
+  }
+  const rows=Math.max(b.length,a.length);
+  return `<div class="s18PatchRows">${Array.from({length:rows},(_,i)=>`<div class="s18PatchRow"><span class="s18PatchBefore">${esc(clean(b[i]??''))}</span><span class="s18PatchArrow">→</span><span class="s18PatchAfter">${esc(clean(a[i]??''))}</span></div>`).join('')}</div>`;
+}
+function betterDetailCard(c,index,color){
+  if(!c || isNoChange(c)) return '';
+  const hit=resolveCharacterStyle(c.character,c.style);
+  const st=hit?.st||null;
+  const portrait=c.portrait || st?.portrait || c.skill_image || '';
+  const skill=skillByName(st||{},c.skill_name)||null;
+  const skillImg=c.skill_image || skill?.img || st?.special?.img || portrait || '';
+  const role=roleCls(st?.role||c.role);
+  const roleTxt=roleLabel(st?.role||c.role);
+  const side=(st && typeof characters!=='undefined' ? (characters.find(x=>(x.styles||[]).includes(hit.id))||{}).side : '')||'';
+  const tone=normalize(c.tone||'adjust');
+  const border=tone==='buff'?'#2cff6d':tone==='nerf'?'#ff5c6a':'#f0b21f';
+  const sideBadgeHtml=side?`<span class="badge ${normalize(side)==='hero'?'hero':'villain'}">${esc(sideLabel(side))}</span>`:'';
+  const roleBadgeHtml=`<span class="badge ${role}">${typeof roleOnly==='function'?roleOnly(role==='strike'?'attack':role==='speed'?'rapid':role):''}<span>${esc(roleTxt)}</span></span>`;
+  return `<article class="homePatchCardV296 s18PatchCard" style="border-color:${border}"><header class="s18PatchHeader"><div class="s18PatchPortrait">${portrait?(typeof asset==='function'?asset(portrait,clean(c.character)||'portrait'):`<img src="${esc(portrait)}" alt="">`):''}</div><div class="s18PatchMeta"><div class="s18PatchTopLine"><h4>${esc(clean(c.character)||'Character')}</h4>${sideBadgeHtml}</div><div class="s18PatchStyle">${esc(clean(c.style)||'Original')}</div><div class="s18PatchBadges">${roleBadgeHtml}</div></div></header><div class="s18PatchSkill"><div class="s18PatchSkillImg">${skillImg?(typeof asset==='function'?asset(skillImg,clean(c.skill_name)||'skill'):`<img src="${esc(skillImg)}" alt="">`):''}</div><div class="s18PatchSkillMeta"><h5>${esc(clean(c.skill_name)||'Skill')}</h5>${c.label?`<div class="s18PatchLabel">${esc(clean(c.label))}</div>`:''}${renderDiff(c.before,c.after)}</div></div></article>`;
+}
+function patchCharacterDetail(){
+  try{
+    const old=characterDetail;
+    const next=function(s){
+      const st=styles[s]; if(!st) return old(s);
+      const ch=characters.find(x=>(x.styles||[]).includes(s))||{name:'Character'};
+      const role=roleCls(st.role);
+      const back=curLang()==='fr'?'Retour':'Back';
+      const roleTitle=curLang()==='fr'?'Rôle':'Role';
+      const styleTitle='Style';
+      const quirkTitle=curLang()==='fr'?'Alter':'Quirk Skills';
+      return `<button class="back" onclick="selectedStyle=null;if((characters.find(x=>x.id===selectedChar)||{}).styles?.length===1)selectedChar=null;render()">← ${back}</button><div class="charPanel role-${role} s18EnhancedCharPanel"><div class="charTop"><div class="portrait">${typeof asset==='function'?asset(st.portrait,'portrait'):`<img src="${esc(st.portrait)}" alt="">`}</div><div class="meta"><h2>${esc(ch.name)}</h2><div class="badges">${typeof roleBadge==='function'?roleBadge(role==='strike'?'attack':role==='speed'?'rapid':role):''}<span class="badge">PV : ${esc(st.pv)}</span></div><p><b>${styleTitle} :</b> ${esc(clean(st.name))}</p><p>${esc(clean(st.description))}</p><p><b>${roleTitle} :</b> ${esc(clean(st.roleDesc))}</p></div></div>${typeof skillSection==='function'?skillSection({letter:'SP',...st.special},true):''}<h2 class="s18QuirkTitle">${quirkTitle}</h2>${(st.skills||[]).map(k=>typeof skillSection==='function'?skillSection(k,false):'').join('')}</div>`;
+    };
+    characterDetail=next; window.characterDetail=next;
+  }catch(_e){}
+}
+function enhanceCards(){
+  try{
+    const oldCard=window.card||card;
+    const next=function(c,mode='characters'){
+      let html=oldCard(c,mode);
+      const first=(c.styles||[]).find(id=>typeof styles!=='undefined'&&styles[id]);
+      const role=roleCls(first&&styles[first]?.role);
+      html=String(html).replace(/<button class="card([^\"]*)"/i,`<button class="card$1 s18RoleCard role-${role}"`);
+      if((window.MHUR_SEASON18_DATA?.new_content?.characters||[]).includes(String(c.id)) && !/s18NewBadge/.test(html)) html=html.replace(/^(<button\b[^>]*>)/i,'$1'+NEW_HTML);
+      return html;
+    };
+    if(typeof card!=='undefined'){ card=next; window.card=next; }
+  }catch(_e){}
+}
+function enhanceCostumes(){
+  try{
+    const old=window.costumeCard||costumeCard;
+    const next=function(ct){
+      const copy={...(ct||{})};
+      copy.name=translateCostumeText(copy.name);
+      copy.group=translateCostumeText(copy.group||copy.name);
+      copy.variant=translateCostumeText(copy.variant);
+      let html=old(copy);
+      html=String(html).replace(/(<div class="s18ReleaseDate"[^>]*>)/g,'$1');
+      return html;
+    };
+    if(typeof costumeCard!=='undefined'){ costumeCard=next; window.costumeCard=next; }
+  }catch(_e){}
+}
+function decorateDom(){
+  document.querySelectorAll('.card[data-char]').forEach(btn=>{
+    if(!btn.classList.contains('s18RoleCard')){
+      const id=btn.getAttribute('data-char')||'';
+      const ch=(typeof characters!=='undefined'?(characters.find(x=>String(x.id)===String(id))):null);
+      const first=ch?.styles?.find(s=>typeof styles!=='undefined'&&styles[s]);
+      btn.classList.add('s18RoleCard');
+      btn.classList.add(`role-${roleCls(first&&styles[first]?.role)}`);
+    }
+    if((window.MHUR_SEASON18_DATA?.new_content?.characters||[]).includes(btn.getAttribute('data-char')) && !btn.querySelector('.s18NewBadge')) btn.insertAdjacentHTML('afterbegin',NEW_HTML);
+  });
+  document.querySelectorAll('.charPanel').forEach(p=>p.classList.add('s18EnhancedCharPanel'));
+  document.querySelectorAll('.s18PatchCard .badge.technical,.homePatchCardV296 .badge.technical').forEach(x=>x.classList.add('technical'));
+  document.querySelectorAll('.homePatchCardV296').forEach(card=>{
+    if(/No changes detected/i.test(card.textContent||'')) card.remove();
+  });
+}
+function wrapRender(){
+  if(typeof render!=='function' || render.__s18Wrapped) return;
+  const old=render;
+  const next=function(){ const r=old.apply(this,arguments); setTimeout(decorateDom,0); return r; };
+  next.__s18Wrapped=true; render=next; window.render=next;
+}
+patchGentle();
+scrubPatchData();
+if(typeof detailCard!=='undefined'){ detailCard=betterDetailCard; window.detailCard=betterDetailCard; }
+patchCharacterDetail();
+enhanceCards();
+enhanceCostumes();
+wrapRender();
+if(typeof render==='function') setTimeout(()=>{try{decorateDom()}catch(_e){}},0);
+const mo=new MutationObserver(()=>decorateDom());
+if(document.documentElement) mo.observe(document.documentElement,{childList:true,subtree:true});
+})();

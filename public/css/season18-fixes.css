@@ -63,3 +63,50 @@
   .s18ReleaseDate{font-size:10px;left:5px;right:5px;padding:5px 3px}
   .s18UpcomingItem .s18NewBadge{top:37px}
 }
+
+
+/* ---------- Season 18 polish pass ---------- */
+.s18RoleCard{position:relative;overflow:hidden}
+.s18RoleCard .thumb{position:relative;isolation:isolate;background:linear-gradient(180deg,#102039,#08101d)!important}
+.s18RoleCard .thumb::before{content:"";position:absolute;inset:0;opacity:.92;background:radial-gradient(circle at 50% 35%,rgba(255,255,255,.18),rgba(255,255,255,0) 32%),linear-gradient(180deg,rgba(255,255,255,.08),rgba(0,0,0,0) 18%),var(--s18CardBg,linear-gradient(135deg,#203657,#08101d));z-index:0}
+.s18RoleCard .thumb::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 48%,rgba(255,255,255,.12),transparent 46%);mix-blend-mode:screen;z-index:1}
+.s18RoleCard .thumb img{position:relative;z-index:2;object-fit:contain!important;object-position:center bottom!important;padding:18px 10px 0;filter:drop-shadow(0 8px 18px rgba(0,0,0,.45));transform:none!important}
+.s18RoleCard.role-technical{--s18CardBg:radial-gradient(circle at 50% 35%,rgba(255,158,255,.45),rgba(255,158,255,0) 32%),linear-gradient(135deg,#7c10b9 0%,#430b69 55%,#0c1020 100%)}
+.s18RoleCard.role-strike{--s18CardBg:radial-gradient(circle at 50% 35%,rgba(255,170,170,.45),rgba(255,170,170,0) 32%),linear-gradient(135deg,#d8162c 0%,#7e0818 55%,#14070a 100%)}
+.s18RoleCard.role-assault{--s18CardBg:radial-gradient(circle at 50% 35%,rgba(255,246,148,.5),rgba(255,246,148,0) 32%),linear-gradient(135deg,#f2d000 0%,#8a7300 55%,#171308 100%)}
+.s18RoleCard.role-support{--s18CardBg:radial-gradient(circle at 50% 35%,rgba(170,255,188,.45),rgba(170,255,188,0) 32%),linear-gradient(135deg,#19db45 0%,#0e7d28 55%,#08170c 100%)}
+.s18RoleCard.role-speed{--s18CardBg:radial-gradient(circle at 50% 35%,rgba(171,246,255,.45),rgba(171,246,255,0) 32%),linear-gradient(135deg,#18c9ef 0%,#0c6f86 55%,#071219 100%)}
+.s18RoleCard .cardBody{background:linear-gradient(180deg,#081527 0%,#07111f 100%)}
+.s18RoleCard .badges{margin-top:4px;margin-bottom:10px}
+.s18NewBadge{position:absolute!important;top:6px!important;left:6px!important;z-index:12!important;display:inline-flex!important;align-items:center;justify-content:center;min-width:72px;height:34px;padding:0 14px;background:linear-gradient(180deg,#ff3846,#d60018)!important;color:#fff!important;border:3px solid #fff!important;border-radius:16px 16px 16px 2px!important;font-weight:1000!important;font-size:21px!important;line-height:1!important;letter-spacing:.8px;text-shadow:0 2px 0 rgba(0,0,0,.35)!important;box-shadow:0 6px 14px rgba(0,0,0,.35)!important;transform-origin:top left;animation:s18BadgePulse 1.25s ease-in-out infinite}
+@keyframes s18BadgePulse{0%,100%{transform:scale(.92) rotate(-9deg)}50%{transform:scale(1.08) rotate(-9deg)}}
+.charPanel.s18EnhancedCharPanel{position:relative;overflow:hidden;border-color:#1b0224!important;box-shadow:0 0 0 3px rgba(255,255,255,.08) inset,0 16px 36px rgba(0,0,0,.28)!important}
+.charPanel.s18EnhancedCharPanel .charTop{position:relative;gap:24px!important}
+.charPanel.s18EnhancedCharPanel .portrait{background:linear-gradient(180deg,rgba(255,255,255,.12),rgba(255,255,255,.02)),var(--s18PortraitBg,linear-gradient(135deg,#524400,#af9600))!important;border:3px solid rgba(0,0,0,.45)!important;box-shadow:inset 0 0 0 2px rgba(255,255,255,.08),0 8px 18px rgba(0,0,0,.25)!important}
+.charPanel.s18EnhancedCharPanel .portrait img{object-fit:contain!important;object-position:center bottom!important;padding:10px 8px 0!important;filter:none!important;transform:none!important;image-rendering:auto!important}
+.charPanel.s18EnhancedCharPanel .meta h2,.charPanel.s18EnhancedCharPanel .meta p,.charPanel.s18EnhancedCharPanel .meta .badge{position:relative;z-index:1}
+.charPanel.s18EnhancedCharPanel .meta{color:#fff;text-shadow:0 2px 0 rgba(0,0,0,.45)}
+.charPanel.s18EnhancedCharPanel .meta .badge:not(.hero):not(.villain){background:rgba(255,255,255,.9)!important;color:#000!important}
+.charPanel.s18EnhancedCharPanel .meta .badge.technical{background:linear-gradient(180deg,#ff66ff,#bd19ff)!important;color:#fff!important}
+.charPanel.s18EnhancedCharPanel .meta .badge.strike,.charPanel.s18EnhancedCharPanel .meta .badge.attack{background:linear-gradient(180deg,#ff5264,#de1026)!important;color:#fff!important}
+.charPanel.s18EnhancedCharPanel .meta .badge.assault{background:linear-gradient(180deg,#ffef6a,#f0cd00)!important;color:#000!important}
+.charPanel.s18EnhancedCharPanel .meta .badge.support{background:linear-gradient(180deg,#4cff79,#11df42)!important;color:#000!important}
+.charPanel.s18EnhancedCharPanel .meta .badge.rapid,.charPanel.s18EnhancedCharPanel .meta .badge.speed{background:linear-gradient(180deg,#49e7ff,#13bce5)!important;color:#000!important}
+.charPanel.role-technical.s18EnhancedCharPanel{background:linear-gradient(180deg,#8d24c0 0%,#5c0d85 22%,#3c0857 100%)!important;--s18PortraitBg:linear-gradient(180deg,#b49200 0%,#8c7300 100%)}
+.charPanel.role-strike.s18EnhancedCharPanel,.charPanel.role-attack.s18EnhancedCharPanel{background:linear-gradient(180deg,#d93a4f 0%,#890c1d 25%,#5c0713 100%)!important;--s18PortraitBg:linear-gradient(180deg,#702424 0%,#3d0e10 100%)}
+.charPanel.role-assault.s18EnhancedCharPanel{background:linear-gradient(180deg,#f3d700 0%,#bc9400 25%,#735b00 100%)!important;--s18PortraitBg:linear-gradient(180deg,#a48d00 0%,#5b4e00 100%)}
+.charPanel.role-support.s18EnhancedCharPanel{background:linear-gradient(180deg,#3ce864 0%,#198934 25%,#0f4d1d 100%)!important;--s18PortraitBg:linear-gradient(180deg,#0e7b28 0%,#083a13 100%)}
+.charPanel.role-speed.s18EnhancedCharPanel,.charPanel.role-rapid.s18EnhancedCharPanel{background:linear-gradient(180deg,#25d7f6 0%,#0f7288 25%,#0a4857 100%)!important;--s18PortraitBg:linear-gradient(180deg,#0d7b95 0%,#083846 100%)}
+.s18QuirkTitle{padding:6px 18px 0!important;color:#fff!important;font-style:italic;text-transform:uppercase;letter-spacing:.5px;text-shadow:0 3px 0 rgba(0,0,0,.45)}
+.s18PatchCard{background:linear-gradient(180deg,#1b202c,#080e18)!important;border:2px solid #47546c!important;border-radius:16px!important;overflow:hidden;padding:0!important}
+.s18PatchHeader{display:grid;grid-template-columns:74px minmax(0,1fr);gap:14px;align-items:center;padding:12px 14px;background:rgba(255,255,255,.08)}
+.s18PatchPortrait,.s18PatchSkillImg{border-radius:12px;overflow:hidden;background:#0c1420;border:2px solid rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center}
+.s18PatchPortrait{width:74px;height:74px}.s18PatchPortrait img{width:100%;height:100%;object-fit:cover}
+.s18PatchMeta h4{margin:0;font-size:18px;color:#fff}.s18PatchTopLine{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.s18PatchStyle{margin-top:2px;color:#ffe64d;font-weight:900}.s18PatchBadges{margin-top:8px;display:flex;gap:8px;flex-wrap:wrap}.s18PatchBadges .badge{transform:scale(.84);transform-origin:left center;margin:0}
+.s18PatchSkill{display:grid;grid-template-columns:90px minmax(0,1fr);gap:14px;padding:14px}.s18PatchSkillImg{width:90px;height:90px}.s18PatchSkillImg img{width:100%;height:100%;object-fit:cover}
+.s18PatchSkillMeta h5{margin:0 0 6px;font-size:19px;color:#fff}.s18PatchLabel{color:#78b8ff;font-weight:900;margin-bottom:10px}.s18PatchRows{display:flex;flex-direction:column;gap:8px}.s18PatchRow{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.s18PatchBefore,.s18PatchAfter{display:inline-flex;align-items:center;min-height:32px;padding:6px 10px;border-radius:10px;background:#2a3242;color:#fff;font-weight:900}.s18PatchAfter{background:#0d3a22}.s18PatchArrow{color:#ffe64d;font-weight:1000;font-size:20px}
+.s18UpcomingSection .s18UpcomingGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px}
+.s18UpcomingItem{display:flex;flex-direction:column;gap:8px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:10px}
+.s18ReleaseDate{position:static!important;display:inline-flex!important;align-self:flex-start;background:#081220!important;color:#ffe95e!important;border:2px solid #26d6f2!important;border-radius:999px!important;padding:7px 12px!important;font-size:14px!important;font-weight:1000!important;line-height:1.1!important;box-shadow:none!important;margin:2px 0 0 2px!important}
+.s18AvailableTitle{margin:20px 0 10px;color:#fff;text-shadow:0 3px 0 #000}
+@media (max-width: 900px){.charPanel.s18EnhancedCharPanel .charTop{grid-template-columns:1fr!important}.charPanel.s18EnhancedCharPanel .portrait{height:420px}.s18PatchSkill{grid-template-columns:1fr}.s18PatchSkillImg{width:100%;height:160px}.s18PatchHeader{grid-template-columns:64px 1fr}.s18PatchPortrait{width:64px;height:64px}}
