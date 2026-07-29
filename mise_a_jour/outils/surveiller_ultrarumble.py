@@ -327,12 +327,58 @@ def lock_pid(lock_path: Path) -> int | None:
 
 
 def process_is_alive(pid: int | None) -> bool:
+    """Retourne True si le PID existe encore, sans faire planter Windows.
+
+    Sous Windows, ``os.kill(pid, 0)`` peut lever un ``SystemError`` avec
+    WinError 87 pour un ancien PID. On utilise donc l'API Windows et on
+    considère ERROR_ACCESS_DENIED comme un processus encore existant.
+    """
     if not pid or pid <= 0:
         return False
+
+    if os.name == "nt":
+        try:
+            import ctypes
+            from ctypes import wintypes
+
+            PROCESS_QUERY_LIMITED_INFORMATION = 0x1000
+            STILL_ACTIVE = 259
+            ERROR_ACCESS_DENIED = 5
+
+            kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)
+            kernel32.OpenProcess.argtypes = [wintypes.DWORD, wintypes.BOOL, wintypes.DWORD]
+            kernel32.OpenProcess.restype = wintypes.HANDLE
+            kernel32.GetExitCodeProcess.argtypes = [wintypes.HANDLE, ctypes.POINTER(wintypes.DWORD)]
+            kernel32.GetExitCodeProcess.restype = wintypes.BOOL
+            kernel32.CloseHandle.argtypes = [wintypes.HANDLE]
+            kernel32.CloseHandle.restype = wintypes.BOOL
+
+            handle = kernel32.OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION, False, int(pid))
+            if not handle:
+                # Accès refusé signifie généralement que le processus existe,
+                # mais qu'il appartient à un autre contexte utilisateur.
+                return ctypes.get_last_error() == ERROR_ACCESS_DENIED
+
+            try:
+                exit_code = wintypes.DWORD()
+                if not kernel32.GetExitCodeProcess(handle, ctypes.byref(exit_code)):
+                    return True
+                return exit_code.value == STILL_ACTIVE
+            finally:
+                kernel32.CloseHandle(handle)
+        except BaseException:
+            # Dernier filet de sécurité : un contrôle de verrou ne doit jamais
+            # faire échouer toute la synchronisation.
+            return False
+
     try:
         os.kill(pid, 0)
         return True
-    except OSError:
+    except ProcessLookupError:
+        return False
+    except PermissionError:
+        return True
+    except BaseException:
         return False
 
 
@@ -352,8 +398,14 @@ def acquire_lock(lock_path: Path) -> bool:
             if not process_is_alive(pid) or age > 4 * 3600:
                 lock_path.unlink(missing_ok=True)
                 return acquire_lock(lock_path)
-        except OSError:
-            pass
+        except BaseException:
+            # Un verrou illisible/corrompu ne doit pas provoquer de crash.
+            try:
+                if lock_path.exists() and time.time() - lock_path.stat().st_mtime > 60:
+                    lock_path.unlink(missing_ok=True)
+                    return acquire_lock(lock_path)
+            except BaseException:
+                pass
         return False
 
 

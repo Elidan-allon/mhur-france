@@ -1,0 +1,12 @@
+CORRECTIF VERROU DE SYNCHRONISATION WINDOWS
+
+Ce correctif règle le plantage :
+SystemError / WinError 87 dans process_is_alive(pid)
+
+Le programme vérifie maintenant correctement si l'ancienne synchronisation
+est encore active sous Windows. Si le fichier
+public/data/ultrarumble/synchronisation_en_cours.lock
+est un ancien verrou abandonné, il sera supprimé automatiquement.
+
+Décompressez le dossier mhur-france par-dessus votre dossier actuel,
+acceptez les remplacements, puis relancez METTRE_A_JOUR_MHUR_FRANCE.bat.
