@@ -2,7 +2,14 @@
 (function(){
 'use strict';
 
-const currentLang=()=>typeof lang!=='undefined'&&lang==='en'?'en':'fr';
+const currentLang=()=>{
+  try{
+    if(typeof lang!=='undefined'&&(lang==='fr'||lang==='en'))return lang;
+    const stored=localStorage.getItem('mhur_lang')||localStorage.getItem('lang');
+    if(stored==='fr'||stored==='en')return stored;
+  }catch(_e){}
+  return document.documentElement.lang==='en'?'en':'fr';
+};
 const tx=(fr,en)=>currentLang()==='en'?en:fr;
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const norm=v=>String(v??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'_').replace(/^_|_$/g,'');
@@ -34,8 +41,10 @@ function patchHomeMarkup(html){
 function installOfficialPortraits(){
   if(typeof styles==='undefined') return;
   const official=window.MHUR_SEASON18_DATA?.official_portraits||{};
-  Object.entries(official).forEach(([id,url])=>{ if(styles[id]&&url) styles[id].portrait=String(url); });
-  if(styles.fullbullet) styles.fullbullet.portrait=official.fullbullet||'assets/home/season18/midoriya_fullbullet_profile.png';
+  Object.entries(official).forEach(([id,url])=>{ if(styles[id]&&url&&!styles[id].portrait) styles[id].portrait=String(url); });
+  if(styles.fullbullet) styles.fullbullet.portrait='assets/home/season18/midoriya_fullbullet_mhurdb.webp';
+  const fullBulletId=Object.keys(styles).find(id=>/^fullbullet$/i.test(id)||/midoriya[_-]?(attack|strike)|full[_-]?bullet/i.test(id));
+  if(fullBulletId&&styles[fullBulletId])styles[fullBulletId].portrait='assets/home/season18/midoriya_fullbullet_mhurdb.webp';
   const gentleId=Object.keys(styles).find(id=>/gentle[_-]?criminal/i.test(id));
   if(gentleId&&styles[gentleId]) styles[gentleId].portrait=official[gentleId]||'assets/home/season18/gentle_s18_profile_hd.webp';
   if(typeof characters!=='undefined'){
@@ -69,16 +78,16 @@ function repairHeader(){
   button.dataset.s18NotesButton='1';
   button.type='button';
   button.className='nexusHeaderBtn mhurPatchDevButtonV10 mhurPatchDevButtonV14';
-  button.innerHTML=`<span class="mhurPatchDevIconV12">📝</span><span>${esc(tx('Notes de patch / Notes des développeurs','Patch Notes / Dev Notes'))}</span>`;
+  button.innerHTML=`<img class="mhurPatchDevIconV16" src="${root('assets/home/icons/patch_dev_events.svg')}" alt=""><span>Patch Notes / Dev Notes</span>`;
   button.onclick=()=>window.MHUR_S18_OPEN_NOTES_EARLY();
   if(button.parentNode!==account.parentNode||button.nextSibling!==account) account.parentNode.insertBefore(button,account);
 }
 
 function preloadPortraits(){
-  const map=window.MHUR_SEASON18_DATA?.official_portraits||{};
-  const urls=Object.values(map).filter(Boolean).slice(0,70);
+  const localStyles=typeof styles!=='undefined'?Object.values(styles||{}).map(st=>String(st?.portrait||'')).filter(url=>url&&!/^https?:/i.test(url)):[];
+  const urls=Array.from(new Set(['assets/home/season18/midoriya_fullbullet_mhurdb.webp','assets/home/icons/patch_dev_events.svg',...localStyles])).slice(0,80);
   const run=()=>urls.forEach(url=>{ const image=new Image(); image.decoding='async'; image.src=root(url); });
-  if('requestIdleCallback' in window) requestIdleCallback(run,{timeout:1800}); else setTimeout(run,500);
+  if('requestIdleCallback' in window) requestIdleCallback(run,{timeout:1200}); else setTimeout(run,250);
 }
 
 if(typeof window.renderHomeDashboard==='function'&&!window.renderHomeDashboard.__s18v14){

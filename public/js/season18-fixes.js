@@ -4,7 +4,14 @@
 (function(){
 'use strict';
 
-const currentLang=()=>typeof lang!=='undefined'&&lang==='en'?'en':'fr';
+const currentLang=()=>{
+  try{
+    if(typeof lang!=='undefined'&&(lang==='fr'||lang==='en')) return lang;
+    const stored=localStorage.getItem('mhur_lang')||localStorage.getItem('lang');
+    if(stored==='fr'||stored==='en') return stored;
+  }catch(_e){}
+  return document.documentElement.lang==='en'?'en':'fr';
+};
 const pick=v=>v&&typeof v==='object'&&!Array.isArray(v)?(v[currentLang()]??v.fr??v.en??''):v;
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const cjk=/[\u3040-\u30ff\u3400-\u9fff\uf900-\ufaff]/g;
@@ -98,8 +105,7 @@ function originalRemotePortrait(row){
 }
 function manualPortrait(styleId){
   const id=String(styleId||'');
-  /* Aucun portrait manuel pour Full Bullet : la base UltraRumble reste la
-     source prioritaire de chaque style. */
+  if(/^fullbullet$/i.test(id)||/midoriya[_-]?(attack|strike)|full[_-]?bullet/i.test(id))return 'assets/home/season18/midoriya_fullbullet_mhurdb.webp';
   if(/gentle[_-]?criminal/i.test(id))return 'assets/home/season18/gentle_s18_profile_hd.webp';
   return '';
 }
@@ -107,9 +113,12 @@ function portraitCandidates(styleId,fallback){
   const sync=window.MHUR_SEASON18_DATA?.official_portraits||{};
   const row=remoteRowForStyle(styleId)||null;
   const local=(typeof styles!=='undefined'&&styles?.[styleId]?._s18LocalPortrait)||'';
-  /* La photo exacte du style depuis UltraRumble passe avant toutes les anciennes
-     images locales. Les propositions déduites ne servent qu'en dernier recours. */
-  const list=[sync[styleId],manualPortrait(styleId),local,fallback,row?.assets?.portrait,...inferredRemotePortraits(row),originalRemotePortrait(row)].filter(Boolean).map(String);
+  const manual=manualPortrait(styleId);
+  const fullBullet=/^fullbullet$/i.test(String(styleId||''))||/midoriya[_-]?(attack|strike)|full[_-]?bullet/i.test(String(styleId||''));
+  /* Les images locales passent en premier. Cela évite le délai des portraits
+     distants et garde exactement les photos présentes dans le site. */
+  const list=(fullBullet?[manual,local,fallback,sync[styleId],row?.assets?.portrait]:[local,fallback,manual,sync[styleId],row?.assets?.portrait])
+    .concat(inferredRemotePortraits(row),originalRemotePortrait(row)).filter(Boolean).map(String);
   return Array.from(new Set(list));
 }
 window.MHUR_S18_NEXT_IMAGE=function(image){
@@ -329,7 +338,14 @@ window.addEventListener('mhur:languagechange',()=>{
 (function(){
 'use strict';
 
-const L=()=>typeof lang!=='undefined'&&lang==='en'?'en':'fr';
+const L=()=>{
+  try{
+    if(typeof lang!=='undefined'&&(lang==='fr'||lang==='en')) return lang;
+    const stored=localStorage.getItem('mhur_lang')||localStorage.getItem('lang');
+    if(stored==='fr'||stored==='en') return stored;
+  }catch(_e){}
+  return document.documentElement.lang==='en'?'en':'fr';
+};
 const TX=(fr,en)=>L()==='en'?en:fr;
 const PICK=v=>v&&typeof v==='object'&&!Array.isArray(v)?(v[L()]??v.fr??v.en??''):v;
 const ESC=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -481,13 +497,13 @@ function notesModal(){
     modal=document.createElement('div');modal.id='s18NotesDevModalV10';modal.className='s18NotesOverlayV10';
     modal.innerHTML=`<section class="s18NotesPanelV10" tabindex="-1"><header><div><span>MHUR NEXUS</span><h2 data-notes-title></h2></div><button type="button" data-close>×</button></header><nav><button type="button" data-tab="patch" class="active"></button><button type="button" data-tab="dev"></button></nav><div class="s18NotesBodyV10"><aside></aside><main></main></div></section>`;
     document.body.appendChild(modal);
-    modal.querySelector('[data-close]').onclick=()=>{modal.classList.remove('open');document.body.classList.remove('s18NotesOpenV11')};
-    modal.onclick=e=>{if(e.target===modal){modal.classList.remove('open');document.body.classList.remove('s18NotesOpenV11')}};
+    modal.querySelector('[data-close]').onclick=closeNotesV16;
+    modal.onclick=e=>{if(e.target===modal)closeNotesV16()};
     modal.querySelectorAll('[data-tab]').forEach(btn=>btn.onclick=()=>showNotesTab(btn.dataset.tab));
   }
-  modal.querySelector('[data-notes-title]').textContent=TX('Notes de patch / Notes des développeurs','Patch Notes / Dev Notes');
-  modal.querySelector('[data-tab="patch"]').textContent=TX('Notes de patch','Patch Notes');
-  modal.querySelector('[data-tab="dev"]').textContent=TX('Notes des développeurs','Dev Notes');
+  modal.querySelector('[data-notes-title]').textContent='Patch Notes / Dev Notes';
+  modal.querySelector('[data-tab="patch"]').textContent='Patch Notes';
+  modal.querySelector('[data-tab="dev"]').textContent='Dev Notes';
   return modal;
 }
 function resetNotesScroll(modal,resetAside=false){
@@ -503,16 +519,35 @@ function showPatch(index=0){
   requestAnimationFrame(()=>resetNotesScroll(modal,false));
 }
 function showNotesTab(tab){
-  const modal=notesModal();modal.querySelectorAll('[data-tab]').forEach(b=>b.classList.toggle('active',b.dataset.tab===tab));
+  const modal=notesModal();modal.dataset.activeTab=tab;modal.querySelectorAll('[data-tab]').forEach(b=>b.classList.toggle('active',b.dataset.tab===tab));
   const aside=modal.querySelector('aside'),main=modal.querySelector('main');
   if(tab==='dev'){aside.innerHTML=`<div class="s18DevSideV10"><b>DEV BLOG VOL. 27</b><small>${TX('Saison 18','Season 18')}</small></div>`;main.innerHTML=devHtml();requestAnimationFrame(()=>resetNotesScroll(modal,true));}
   else showPatch(0);
 }
+function headerBottomV16(){
+  const account=document.getElementById('mhurAccountButton');
+  const header=account?.closest('header,.top,.nexusHeader,.topbar,#topbar,#siteHeader')
+    ||document.querySelector('header.top,.nexusHeader,.topbar,#topbar,#siteHeader');
+  if(!header)return 0;
+  const rect=header.getBoundingClientRect();
+  return Math.max(0,Math.min(window.innerHeight-100,Math.ceil(rect.bottom)));
+}
+function positionNotesV16(modal){
+  const top=headerBottomV16();
+  modal.style.setProperty('--s18-notes-top',`${top}px`);
+  modal.dataset.mobileOffset=String(top);
+}
+function closeNotesV16(){
+  const modal=document.getElementById('s18NotesDevModalV10');
+  if(!modal)return;
+  modal.classList.remove('open');document.body.classList.remove('s18NotesOpenV11');
+}
 function openNotes(){
   const modal=notesModal();
+  positionNotesV16(modal);
   modal.classList.add('open');document.body.classList.add('s18NotesOpenV11');
-  showNotesTab('patch');
-  requestAnimationFrame(()=>{resetNotesScroll(modal,true);modal.querySelector('.s18NotesPanelV10')?.focus?.({preventScroll:true});});
+  showNotesTab(modal.dataset.activeTab||'patch');
+  requestAnimationFrame(()=>{positionNotesV16(modal);resetNotesScroll(modal,true);modal.querySelector('.s18NotesPanelV10')?.focus?.({preventScroll:true});});
 }
 function ensureHeaderButton(){
   const candidates=[...document.querySelectorAll('button')].filter(button=>{
@@ -533,8 +568,8 @@ function ensureHeaderButton(){
   button.dataset.s18NotesButton='1';
   button.type='button';
   button.className='nexusHeaderBtn mhurPatchDevButtonV10 mhurPatchDevButtonV14';
-  button.innerHTML='<span class="mhurPatchDevIconV12">📝</span><span></span>';
-  button.querySelector('span:last-child').textContent=TX('Notes de patch / Notes des développeurs','Patch Notes / Dev Notes');
+  const iconPath=typeof rootAsset==='function'?rootAsset('assets/home/icons/patch_dev_events.svg'):'assets/home/icons/patch_dev_events.svg';
+  button.innerHTML=`<img class="mhurPatchDevIconV16" src="${ESC(iconPath)}" alt=""><span>Patch Notes / Dev Notes</span>`;
   button.onclick=openNotes;
   if(button.parentNode!==account.parentNode||button.nextSibling!==account)account.parentNode.insertBefore(button,account);
 }
@@ -599,10 +634,20 @@ function init(){
   ensureHeaderButton();wrapDomRender();requestAnimationFrame(afterDom);if(window.__s18OpenNotesRequested){window.__s18OpenNotesRequested=false;setTimeout(openNotes,0);}
   window.addEventListener('mhur-auth-change',()=>setTimeout(()=>{ensureHeaderButton();injectAdminProfileButton()},80));
   window.addEventListener('mhur-role-change',()=>setTimeout(()=>{ensureHeaderButton();injectAdminProfileButton()},80));
-  window.addEventListener('mhur:languagechange',()=>requestAnimationFrame(afterDom));
+  window.addEventListener('resize',()=>{const modal=document.getElementById('s18NotesDevModalV10');if(modal?.classList.contains('open'))requestAnimationFrame(()=>positionNotesV16(modal));});
+  window.addEventListener('mhur:languagechange',()=>requestAnimationFrame(()=>{afterDom();const modal=document.getElementById('s18NotesDevModalV10');if(modal?.classList.contains('open'))showNotesTab(modal.dataset.activeTab||'patch');}));
+  if(!window.__s18NotesOutsideCloseV16){
+    window.__s18NotesOutsideCloseV16=true;
+    document.addEventListener('pointerdown',event=>{
+      const modal=document.getElementById('s18NotesDevModalV10');
+      if(!modal?.classList.contains('open'))return;
+      const panel=modal.querySelector('.s18NotesPanelV10');
+      if(event.target===modal||(!panel?.contains(event.target)&&!event.target.closest?.('[data-s18-notes-button],#mhurPatchDevButtonV14')))closeNotesV16();
+    },true);
+  }
 }
 window.MHUR_S18_V10={openNotes,openAdminCenter,showPatch};
 window.MHUR_S18_V13={openNotes,openAdminCenter,showPatch,afterDom};
-window.MHUR_S18_V14={openNotes,openAdminCenter,showPatch,afterDom};
+window.MHUR_S18_V14={openNotes,closeNotes:closeNotesV16,openAdminCenter,showPatch,afterDom};
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
 })();

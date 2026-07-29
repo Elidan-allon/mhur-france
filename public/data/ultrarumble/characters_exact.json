@@ -17009,18 +17009,8 @@
     },
     "special_action": {
       "values": {
-        "columns": [
-          "Ammo",
-          "Use Ammo",
-          "Reload"
-        ],
-        "rows": [
-          [
-            "x1",
-            "x1",
-            "1s"
-          ]
-        ]
+        "columns": [],
+        "rows": []
       }
     },
     "normal_tuning": [

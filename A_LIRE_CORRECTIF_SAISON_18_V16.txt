@@ -1,0 +1,50 @@
+MHUR NEXUS — CORRECTIF SAISON 18 V16
+====================================
+
+Base : version 14, afin de conserver exactement les portraits de la liste générale des personnages.
+
+CORRECTIONS
+
+1. Patch Notes / Dev Notes sur téléphone
+- La fenêtre se positionne automatiquement sous la totalité du header mobile (les deux lignes).
+- La croix de fermeture reste visible.
+- Cliquer ou toucher en dehors de la fenêtre la ferme sur PC et mobile.
+- Présentation mobile refaite : personnages, styles, portraits, badges, compétences et tableaux.
+- Les tableaux de patch défilent horizontalement sans couper les colonnes.
+- Le contenu se remet dans la bonne langue après un changement FR / EN.
+- Les intitulés du bouton et des onglets restent : Patch Notes / Dev Notes.
+
+2. Icône du header
+- Remplacement de l'emoji qui pouvait apparaître comme un carré vide sur iPhone.
+- Ajout d'une icône SVG locale Patch / Dev / Events.
+
+3. Portraits locaux
+- 63 portraits locaux de personnages et de styles sont inclus dans le correctif.
+- Les portraits locaux passent avant les URL externes afin d'apparaître immédiatement.
+- La liste générale des personnages conserve son affichage de la version 14.
+- Full Bullet utilise la photo MHUR Database indiquée par l'utilisateur.
+
+4. Styles et costumes
+- Les images des styles ne sont plus excessivement zoomées ni coupées sur téléphone.
+- Les images des costumes utilisent object-fit: contain afin de garder le personnage entier.
+- Les familles de costumes sont visuellement séparées.
+- Les familles contenant des costumes détectés comme nouveaux sont regroupées sous :
+  Costumes à venir / Upcoming Costumes.
+
+5. Fond de rôle dans les fiches
+- Le fond complet autour des Alters et de l'Action spéciale suit maintenant le rôle :
+  Attaque rouge, Assaut jaune, Technique violet, Soutien vert, Vitesse cyan.
+- Fonctionne sur PC et téléphone.
+
+6. Tableaux des Alters sur téléphone
+- Les titres Munitions / Consommation / Recharge ne se superposent plus.
+- Défilement horizontal tactile ajouté.
+- Première colonne maintenue visible pendant le défilement.
+
+INSTALLATION
+1. Copier le dossier mhur-france de ce ZIP par-dessus le dossier actuel.
+2. Accepter tous les remplacements.
+3. Lancer METTRE_A_JOUR_MHUR_FRANCE.bat.
+4. Attendre [OK].
+5. Redéployer le dossier public.
+6. Faire une fois un rechargement forcé du navigateur.

@@ -1,0 +1,37 @@
+MHUR NEXUS — CORRECTIF SAISON 18 V15
+====================================
+
+Cette version corrige les derniers points demandés :
+
+1. Sorties prévues
+- Cartes agrandies.
+- Visuels agrandis pour éviter les grandes zones vides.
+- Carte Tsuyu refaite avec l'image sans fond (style MHUR Database).
+
+2. Styles / portraits
+- Full Bullet force maintenant l'image MHUR Database locale.
+- Portraits des styles et personnages agrandis pour réduire le vide.
+
+3. Patch Notes / Dev Notes
+- Le bouton du header reste en anglais : "Patch Notes / Dev Notes".
+- Le titre de la fenêtre reste aussi en anglais.
+- Le bouton est réinjecté automatiquement si le header se reconstruit.
+
+4. Réductions de points personnage
+- Ajout des portraits manquants pour :
+  Present Mic D.J. Board
+  Aizawa Flow Runner
+  Mirko
+  Overhaul Factor Fusion
+  Bakugo Cluster
+  Star and Stripe
+- Corrige le problème d'images vides dans la section.
+
+FICHIERS PRINCIPAUX MODIFIÉS
+- public/js/season18-early.js
+- public/js/season18-fixes.js
+- public/css/season18-fixes.css
+- public/assets/home/season18/tsuyu_profile_nobg.png
+- public/assets/... (portraits ajoutés pour les réductions)
+
+Installation : remplace le dossier /mhur-france par celui de cette archive.
