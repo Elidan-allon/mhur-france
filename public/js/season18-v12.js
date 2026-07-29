@@ -2,14 +2,7 @@
 (function(){
 'use strict';
 
-const langNow=()=>{
-  try{
-    if(typeof lang!=='undefined'&&(lang==='fr'||lang==='en')) return lang;
-    const stored=localStorage.getItem('mhur_lang')||localStorage.getItem('lang');
-    if(stored==='en'||stored==='fr') return stored;
-  }catch(_e){}
-  return document.documentElement.lang==='en'?'en':'fr';
-};
+const langNow=()=>typeof lang!=='undefined'&&lang==='en'?'en':'fr';
 const pick=v=>v&&typeof v==='object'&&!Array.isArray(v)?(v[langNow()]??v.fr??v.en??''):v;
 const clean=v=>String(pick(v)??'').replace(/[\u3040-\u30ff\u3400-\u9fff\uf900-\ufaff]/g,'').replace(/\s{2,}/g,' ').trim();
 const norm=v=>clean(v).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'_').replace(/^_|_$/g,'');
@@ -51,13 +44,8 @@ function portraitCandidates(styleId,fallback=''){
   const row=exactRow(styleId);
   const current=typeof styles!=='undefined'?styles?.[styleId]?.portrait||'':'';
   const id=String(styleId||'');
-  const fullBullet=/^fullbullet$/i.test(id)||/midoriya[_-]?(attack|strike)|full[_-]?bullet/i.test(id);
-  const manual=fullBullet?'assets/home/season18/midoriya_fullbullet_mhurdb.webp':(/gentle[_-]?criminal/i.test(id)?'assets/home/season18/gentle_s18_profile_hd.webp':'');
-  /* Les fichiers locaux passent avant les URL UltraRumble afin que les images
-     apparaissent immédiatement. Full Bullet utilise le visuel MHUR Database
-     fourni par l'utilisateur. */
-  const order=fullBullet?[manual,current,fallback,sync[id],row?.assets?.portrait]:[current,fallback,manual,sync[id],row?.assets?.portrait];
-  return Array.from(new Set(order.filter(Boolean).map(String)));
+  const manual=/^fullbullet$/i.test(id)?'assets/home/season18/midoriya_fullbullet_profile.png':(/gentle[_-]?criminal/i.test(id)?'assets/home/season18/gentle_s18_profile_hd.webp':'');
+  return Array.from(new Set([sync[id],row?.assets?.portrait,current,manual,fallback].filter(Boolean).map(String)));
 }
 function applyImage(img,candidates){
   if(!img||!candidates.length) return;
@@ -117,52 +105,14 @@ function decorateDetail(){
   document.querySelectorAll('.charPanel').forEach(panel=>{
     const id=typeof selectedStyle!=='undefined'?String(selectedStyle||''):'';
     const st=id&&typeof styles!=='undefined'?styles?.[id]:null;
-    const role=roleKey(st?.role||'technical');
-    panel.classList.add('s18V12CharacterDetail','s18V13CharacterDetail','s18V14CharacterDetail','s18RoleSurfaceV16',`role-${role}`);
-    ['attack','assault','technical','support','rapid'].forEach(key=>{if(key!==role)panel.classList.remove(`role-${key}`)});
-    panel.style.setProperty('--s18-role-color',roleColors[role]||roleColors.technical);
+    panel.classList.add('s18V12CharacterDetail','s18V13CharacterDetail','s18V14CharacterDetail');
     const portrait=panel.querySelector('.charTop .portrait');
     if(!portrait) return;
-    portrait.style.setProperty('background',oneRoleBackground(role),'important');
+    portrait.style.setProperty('background',oneRoleBackground(st?.role||'technical'),'important');
     const image=portrait.querySelector('img');
     if(image) applyImage(image,portraitCandidates(id,st?.portrait));
   });
 }
-function decorateCostumeFamilies(){
-  const newContent=window.MHUR_SEASON18_DATA?.new_content||{};
-  const raw=Array.isArray(newContent.costumes)?newContent.costumes:[];
-  const newIds=new Set(raw.map(item=>String(item&&typeof item==='object'?(item.id||item.costume_id||''):item||'' )).filter(Boolean));
-  const wrap=document.querySelector('.costumeGroupsWrap');
-  const upcoming=[];
-  document.querySelectorAll('.costumeGalleryGroup').forEach((group,index)=>{
-    group.classList.add('s18CostumeFamilyV16');
-    group.dataset.familyIndex=String(index+1);
-    const tiles=[...group.querySelectorAll('.costumeTile')];
-    let hasNew=false;
-    tiles.forEach(tile=>{
-      const id=String(tile.dataset.costumeId||tile.getAttribute('data-costume-id')||'');
-      if(id&&newIds.has(id)){
-        hasNew=true;
-        tile.classList.add('s18UpcomingCostumeV16');
-        if(!tile.querySelector('.s18CostumeNewV16')) tile.insertAdjacentHTML('beforeend','<span class="s18CostumeNewV16" aria-label="NEW">NEW!</span>');
-      }
-    });
-    group.classList.toggle('s18UpcomingCostumeFamilyV16',hasNew);
-    if(hasNew)upcoming.push(group);
-    const head=group.querySelector('.costumeGalleryHead');
-    if(head&&hasNew&&!head.querySelector('.s18CostumeFamilyNewV16')) head.insertAdjacentHTML('beforeend','<span class="s18CostumeFamilyNewV16">NEW</span>');
-  });
-  if(wrap){
-    let heading=wrap.querySelector(':scope>.s18UpcomingCostumeHeadingV16');
-    if(upcoming.length){
-      if(!heading){heading=document.createElement('h2');heading.className='s18UpcomingCostumeHeadingV16';wrap.prepend(heading)}
-      heading.textContent=langNow()==='fr'?'Costumes à venir':'Upcoming Costumes';
-      let anchor=heading;
-      upcoming.forEach(group=>{if(anchor.nextElementSibling!==group)anchor.after(group);anchor=group});
-    }else heading?.remove();
-  }
-}
-
 function decorateHomeFallback(){
   const home=document.querySelector('.homeV296');
   if(!home) return;
@@ -179,7 +129,6 @@ function afterRender(){
   decorateCharacterCards();
   decorateStyleCards();
   decorateDetail();
-  decorateCostumeFamilies();
   document.querySelectorAll('.card[data-char] .s18NewBadge').forEach(node=>node.remove());
 }
 function wrapRender(){
@@ -187,7 +136,7 @@ function wrapRender(){
   const original=window.render;
   const wrapped=function(){
     const result=original.apply(this,arguments);
-    afterRender();
+    requestAnimationFrame(afterRender);
     return result;
   };
   wrapped.__s18v13Decorated=true;
@@ -196,8 +145,8 @@ function wrapRender(){
 }
 
 wrapRender();
-if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',afterRender,{once:true});
-else afterRender();
+if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',()=>requestAnimationFrame(afterRender),{once:true});
+else requestAnimationFrame(afterRender);
 window.addEventListener('mhur:languagechange',()=>requestAnimationFrame(afterRender));
 window.MHUR_S18_V13_DECORATE=afterRender;
 })();

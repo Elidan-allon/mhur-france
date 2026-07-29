@@ -4,14 +4,7 @@
 (function(){
 'use strict';
 
-const currentLang=()=>{
-  try{
-    if(typeof lang!=='undefined'&&(lang==='fr'||lang==='en')) return lang;
-    const stored=localStorage.getItem('mhur_lang')||localStorage.getItem('lang');
-    if(stored==='fr'||stored==='en') return stored;
-  }catch(_e){}
-  return document.documentElement.lang==='en'?'en':'fr';
-};
+const currentLang=()=>typeof lang!=='undefined'&&lang==='en'?'en':'fr';
 const pick=v=>v&&typeof v==='object'&&!Array.isArray(v)?(v[currentLang()]??v.fr??v.en??''):v;
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const cjk=/[\u3040-\u30ff\u3400-\u9fff\uf900-\ufaff]/g;
@@ -105,7 +98,7 @@ function originalRemotePortrait(row){
 }
 function manualPortrait(styleId){
   const id=String(styleId||'');
-  if(/^fullbullet$/i.test(id)||/midoriya[_-]?(attack|strike)|full[_-]?bullet/i.test(id))return 'assets/home/season18/midoriya_fullbullet_mhurdb.webp';
+  if(/^fullbullet$/i.test(id)||/midoriya[_-]?(attack|strike)|full[_-]?bullet/i.test(id))return 'assets/home/season18/midoriya_fullbullet_profile.png';
   if(/gentle[_-]?criminal/i.test(id))return 'assets/home/season18/gentle_s18_profile_hd.webp';
   return '';
 }
@@ -114,11 +107,7 @@ function portraitCandidates(styleId,fallback){
   const row=remoteRowForStyle(styleId)||null;
   const local=(typeof styles!=='undefined'&&styles?.[styleId]?._s18LocalPortrait)||'';
   const manual=manualPortrait(styleId);
-  const fullBullet=/^fullbullet$/i.test(String(styleId||''))||/midoriya[_-]?(attack|strike)|full[_-]?bullet/i.test(String(styleId||''));
-  /* Les images locales passent en premier. Cela évite le délai des portraits
-     distants et garde exactement les photos présentes dans le site. */
-  const list=(fullBullet?[manual,local,fallback,sync[styleId],row?.assets?.portrait]:[local,fallback,manual,sync[styleId],row?.assets?.portrait])
-    .concat(inferredRemotePortraits(row),originalRemotePortrait(row)).filter(Boolean).map(String);
+  const list=[manual,local,sync[styleId],row?.assets?.portrait,fallback,...inferredRemotePortraits(row),originalRemotePortrait(row)].filter(Boolean).map(String);
   return Array.from(new Set(list));
 }
 window.MHUR_S18_NEXT_IMAGE=function(image){
@@ -338,14 +327,7 @@ window.addEventListener('mhur:languagechange',()=>{
 (function(){
 'use strict';
 
-const L=()=>{
-  try{
-    if(typeof lang!=='undefined'&&(lang==='fr'||lang==='en')) return lang;
-    const stored=localStorage.getItem('mhur_lang')||localStorage.getItem('lang');
-    if(stored==='fr'||stored==='en') return stored;
-  }catch(_e){}
-  return document.documentElement.lang==='en'?'en':'fr';
-};
+const L=()=>typeof lang!=='undefined'&&lang==='en'?'en':'fr';
 const TX=(fr,en)=>L()==='en'?en:fr;
 const PICK=v=>v&&typeof v==='object'&&!Array.isArray(v)?(v[L()]??v.fr??v.en??''):v;
 const ESC=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -384,7 +366,7 @@ function seasonReleases(){
   return [
     {key:'gentle',kind:'character',charId:gentle?.id||'gentle_criminal',styleId:gentleStyle,title:'Gentle Criminal',subtitle:TX('Nouveau personnage · Technique','New character · Technical'),date:TX('Disponible depuis le 29 juillet','Available since July 29'),role:'technical',art:'assets/home/season18/gentle_s18_portrait.webp'},
     {key:'twice',kind:'style',charId:twice?.id||'twice',styleId:twiceStyle,title:'Twice',subtitle:"Sad Man's Parade · "+TX('Soutien','Support'),date:TX('Sortie le 19 août','Releases August 19'),role:'support',art:'assets/home/season18/twice_s18_portrait.webp'},
-    {key:'tsuyu',kind:'style',charId:tsuyu?.id||'tsuyu',styleId:tsuyuStyle,title:tsuyu?.name||'Tsuyu Asui',subtitle:TX('Nouveau style · nom à venir','New style · name to be announced'),date:TX('Prévu pendant la Saison 18','Planned during Season 18'),role:'attack',art:styles?.[tsuyuStyle]?.portrait||tsuyu?.portrait||'',black:true}
+    {key:'tsuyu',kind:'style',charId:tsuyu?.id||'tsuyu',styleId:tsuyuStyle,title:tsuyu?.name||'Tsuyu Asui',subtitle:TX('Nouveau style · nom à venir','New style · name to be announced'),date:TX('Prévu pendant la Saison 18','Planned during Season 18'),role:'attack',art:'assets/home/season18/tsuyu_profile_nobg.png',black:true}
   ];
 }
 function seasonCard(item){
@@ -489,7 +471,7 @@ function patchDetailHtml(note){
   return `<p>${TX('Aucun détail disponible.','No details available.')}</p>`;
 }
 function devHtml(){
-  return `<article class="s18DevArticleV10"><div class="s18DevHeroV10"><span>DEV BLOG VOL. 27</span><h2>${TX('Notes des développeurs — Saison 18','Developer Notes — Season 18')}</h2><p>29/07/2026 · Bandai Namco / Byking</p></div><section><h3>20 ${TX('millions de téléchargements','million downloads')}</h3><p>${TX('Un bonus de connexion spécial de 28 jours célèbre ce cap, avec notamment 6 000 Cristaux Héros et 100 Tickets de tirage.','A special 28-day login bonus celebrates the milestone, including 6,000 Hero Crystals and 100 Roll Tickets.')}</p></section><section><h3>Gentle Criminal & La Brava</h3><p>${TX("Gentle est pensé comme un personnage Technique très mobile. Son Alter Élasticité crée des rebonds, une barrière d'air et un trampoline utilisable par les alliés. La Brava le soutient avec son drone et Lover Mode augmente sa puissance et sa recharge pendant Plus Chaos.","Gentle is designed as a highly mobile Technical character. Elasticity creates rebounds, an air barrier, and an ally-usable trampoline. La Brava supports him with her drone, while Lover Mode boosts attack and reload during Plus Chaos.")}</p></section><section><h3>Chaos City Ver. 02</h3><p>${TX("Le quartier commercial a été profondément rénové et une nouvelle zone souterraine, Tentoin Alley, permet de circuler par des passages sous la ville.","The shopping district has been heavily renovated, with the new underground Tentoin Alley area connecting parts of the city.")}</p></section><section><h3>Research Notebook</h3><p>${TX('La Mission n° 3, plus difficile, est ajoutée. Le niveau maximum passe à 200 avec de nouvelles récompenses, dont des Tickets et des objets T.U.N.I.N.G.','The more challenging Mission No. 3 is added. The level cap rises to 200 with new rewards, including Tickets and T.U.N.I.N.G items.')}</p></section><section><h3>3-Pick Battle</h3><p>${TX('Ce nouveau mode est prévu à partir de la fin août. Chaque joueur choisit trois styles et le vainqueur est celui qui inflige le plus de dégâts.','This new mode is planned from late August. Each player selects three styles, and the winner is the player who deals the most damage.')}</p></section><div class="s18OfficialLinksV10"><a href="https://en.bandainamcoent.eu/my-hero-academia/news/my-hero-ultra-rumble-development-blog-vol-27" target="_blank" rel="noopener">${TX('Lire la Dev Note officielle','Read the official Dev Note')}</a><a href="https://en.bandainamcoent.eu/my-hero-academia/news/my-hero-ultra-rumble-season-18" target="_blank" rel="noopener">${TX('Voir la page officielle Saison 18','View the official Season 18 page')}</a></div></article>`;
+  return `<article class="s18DevArticleV10"><div class="s18DevHeroV10"><span>DEV BLOG VOL. 27</span><h2>Developer Notes — Season 18</h2><p>29/07/2026 · Bandai Namco / Byking</p></div><section><h3>20 ${TX('millions de téléchargements','million downloads')}</h3><p>${TX('Un bonus de connexion spécial de 28 jours célèbre ce cap, avec notamment 6 000 Cristaux Héros et 100 Tickets de tirage.','A special 28-day login bonus celebrates the milestone, including 6,000 Hero Crystals and 100 Roll Tickets.')}</p></section><section><h3>Gentle Criminal & La Brava</h3><p>${TX("Gentle est pensé comme un personnage Technique très mobile. Son Alter Élasticité crée des rebonds, une barrière d'air et un trampoline utilisable par les alliés. La Brava le soutient avec son drone et Lover Mode augmente sa puissance et sa recharge pendant Plus Chaos.","Gentle is designed as a highly mobile Technical character. Elasticity creates rebounds, an air barrier, and an ally-usable trampoline. La Brava supports him with her drone, while Lover Mode boosts attack and reload during Plus Chaos.")}</p></section><section><h3>Chaos City Ver. 02</h3><p>${TX("Le quartier commercial a été profondément rénové et une nouvelle zone souterraine, Tentoin Alley, permet de circuler par des passages sous la ville.","The shopping district has been heavily renovated, with the new underground Tentoin Alley area connecting parts of the city.")}</p></section><section><h3>Research Notebook</h3><p>${TX('La Mission n° 3, plus difficile, est ajoutée. Le niveau maximum passe à 200 avec de nouvelles récompenses, dont des Tickets et des objets T.U.N.I.N.G.','The more challenging Mission No. 3 is added. The level cap rises to 200 with new rewards, including Tickets and T.U.N.I.N.G items.')}</p></section><section><h3>3-Pick Battle</h3><p>${TX('Ce nouveau mode est prévu à partir de la fin août. Chaque joueur choisit trois styles et le vainqueur est celui qui inflige le plus de dégâts.','This new mode is planned from late August. Each player selects three styles, and the winner is the player who deals the most damage.')}</p></section><div class="s18OfficialLinksV10"><a href="https://en.bandainamcoent.eu/my-hero-academia/news/my-hero-ultra-rumble-development-blog-vol-27" target="_blank" rel="noopener">${TX('Lire la Dev Note officielle','Read the official Dev Note')}</a><a href="https://en.bandainamcoent.eu/my-hero-academia/news/my-hero-ultra-rumble-season-18" target="_blank" rel="noopener">${TX('Voir la page officielle Saison 18','View the official Season 18 page')}</a></div></article>`;
 }
 function notesModal(){
   let modal=document.getElementById('s18NotesDevModalV10');
@@ -497,8 +479,8 @@ function notesModal(){
     modal=document.createElement('div');modal.id='s18NotesDevModalV10';modal.className='s18NotesOverlayV10';
     modal.innerHTML=`<section class="s18NotesPanelV10" tabindex="-1"><header><div><span>MHUR NEXUS</span><h2 data-notes-title></h2></div><button type="button" data-close>×</button></header><nav><button type="button" data-tab="patch" class="active"></button><button type="button" data-tab="dev"></button></nav><div class="s18NotesBodyV10"><aside></aside><main></main></div></section>`;
     document.body.appendChild(modal);
-    modal.querySelector('[data-close]').onclick=closeNotesV16;
-    modal.onclick=e=>{if(e.target===modal)closeNotesV16()};
+    modal.querySelector('[data-close]').onclick=()=>{modal.classList.remove('open');document.body.classList.remove('s18NotesOpenV11')};
+    modal.onclick=e=>{if(e.target===modal){modal.classList.remove('open');document.body.classList.remove('s18NotesOpenV11')}};
     modal.querySelectorAll('[data-tab]').forEach(btn=>btn.onclick=()=>showNotesTab(btn.dataset.tab));
   }
   modal.querySelector('[data-notes-title]').textContent='Patch Notes / Dev Notes';
@@ -519,42 +501,23 @@ function showPatch(index=0){
   requestAnimationFrame(()=>resetNotesScroll(modal,false));
 }
 function showNotesTab(tab){
-  const modal=notesModal();modal.dataset.activeTab=tab;modal.querySelectorAll('[data-tab]').forEach(b=>b.classList.toggle('active',b.dataset.tab===tab));
+  const modal=notesModal();modal.querySelectorAll('[data-tab]').forEach(b=>b.classList.toggle('active',b.dataset.tab===tab));
   const aside=modal.querySelector('aside'),main=modal.querySelector('main');
   if(tab==='dev'){aside.innerHTML=`<div class="s18DevSideV10"><b>DEV BLOG VOL. 27</b><small>${TX('Saison 18','Season 18')}</small></div>`;main.innerHTML=devHtml();requestAnimationFrame(()=>resetNotesScroll(modal,true));}
   else showPatch(0);
 }
-function headerBottomV16(){
-  const account=document.getElementById('mhurAccountButton');
-  const header=account?.closest('header,.top,.nexusHeader,.topbar,#topbar,#siteHeader')
-    ||document.querySelector('header.top,.nexusHeader,.topbar,#topbar,#siteHeader');
-  if(!header)return 0;
-  const rect=header.getBoundingClientRect();
-  return Math.max(0,Math.min(window.innerHeight-100,Math.ceil(rect.bottom)));
-}
-function positionNotesV16(modal){
-  const top=headerBottomV16();
-  modal.style.setProperty('--s18-notes-top',`${top}px`);
-  modal.dataset.mobileOffset=String(top);
-}
-function closeNotesV16(){
-  const modal=document.getElementById('s18NotesDevModalV10');
-  if(!modal)return;
-  modal.classList.remove('open');document.body.classList.remove('s18NotesOpenV11');
-}
 function openNotes(){
   const modal=notesModal();
-  positionNotesV16(modal);
   modal.classList.add('open');document.body.classList.add('s18NotesOpenV11');
-  showNotesTab(modal.dataset.activeTab||'patch');
-  requestAnimationFrame(()=>{positionNotesV16(modal);resetNotesScroll(modal,true);modal.querySelector('.s18NotesPanelV10')?.focus?.({preventScroll:true});});
+  showNotesTab('patch');
+  requestAnimationFrame(()=>{resetNotesScroll(modal,true);modal.querySelector('.s18NotesPanelV10')?.focus?.({preventScroll:true});});
 }
 function ensureHeaderButton(){
-  const candidates=[...document.querySelectorAll('button')].filter(button=>{
+  const candidates=[...document.querySelectorAll('button,a,[role="button"]')].filter(button=>{
     const id=String(button.id||'');
     const cls=String(button.className||'');
     const label=String(button.textContent||'');
-    return /^mhurPatchDevButton/i.test(id)||/mhurPatchDevButton/i.test(cls)||/Notes de patch|Patch Notes\s*\/|Notes des développeurs/i.test(label);
+    return /^mhurPatchDevButton/i.test(id)||/mhurPatchDevButton/i.test(cls)||/patch\s*notes|dev\s*notes|notes\s*de\s*patch|notes\s*des\s*d[ée]veloppeurs/i.test(label);
   });
   let button=candidates.shift()||null;
   candidates.forEach(extra=>extra.remove());
@@ -568,8 +531,8 @@ function ensureHeaderButton(){
   button.dataset.s18NotesButton='1';
   button.type='button';
   button.className='nexusHeaderBtn mhurPatchDevButtonV10 mhurPatchDevButtonV14';
-  const iconPath=typeof rootAsset==='function'?rootAsset('assets/home/icons/patch_dev_events.svg'):'assets/home/icons/patch_dev_events.svg';
-  button.innerHTML=`<img class="mhurPatchDevIconV16" src="${ESC(iconPath)}" alt=""><span>Patch Notes / Dev Notes</span>`;
+  button.innerHTML='<span class="mhurPatchDevIconV12">📝</span><span></span>';
+  button.querySelector('span:last-child').textContent='Patch Notes / Dev Notes';
   button.onclick=openNotes;
   if(button.parentNode!==account.parentNode||button.nextSibling!==account)account.parentNode.insertBefore(button,account);
 }
@@ -623,7 +586,7 @@ function patchMods(){
 
 /* ------------------------------- DOM ------------------------------------- */
 function removeCharacterNew(){document.querySelectorAll('.card[data-char] .s18NewBadge').forEach(el=>el.remove())}
-function afterDom(){ensureHeaderButton();injectAdminProfileButton();patchHome();patchMods();removeCharacterNew();}
+function afterDom(){ensureHeaderButton();watchHeaderButton();injectAdminProfileButton();patchHome();patchMods();removeCharacterNew();}
 function wrapDomRender(){
   if(typeof window.render!=='function'||window.render.__s18v13Dom)return;
   const original=window.render;
@@ -634,20 +597,86 @@ function init(){
   ensureHeaderButton();wrapDomRender();requestAnimationFrame(afterDom);if(window.__s18OpenNotesRequested){window.__s18OpenNotesRequested=false;setTimeout(openNotes,0);}
   window.addEventListener('mhur-auth-change',()=>setTimeout(()=>{ensureHeaderButton();injectAdminProfileButton()},80));
   window.addEventListener('mhur-role-change',()=>setTimeout(()=>{ensureHeaderButton();injectAdminProfileButton()},80));
-  window.addEventListener('resize',()=>{const modal=document.getElementById('s18NotesDevModalV10');if(modal?.classList.contains('open'))requestAnimationFrame(()=>positionNotesV16(modal));});
-  window.addEventListener('mhur:languagechange',()=>requestAnimationFrame(()=>{afterDom();const modal=document.getElementById('s18NotesDevModalV10');if(modal?.classList.contains('open'))showNotesTab(modal.dataset.activeTab||'patch');}));
-  if(!window.__s18NotesOutsideCloseV16){
-    window.__s18NotesOutsideCloseV16=true;
-    document.addEventListener('pointerdown',event=>{
-      const modal=document.getElementById('s18NotesDevModalV10');
-      if(!modal?.classList.contains('open'))return;
-      const panel=modal.querySelector('.s18NotesPanelV10');
-      if(event.target===modal||(!panel?.contains(event.target)&&!event.target.closest?.('[data-s18-notes-button],#mhurPatchDevButtonV14')))closeNotesV16();
-    },true);
-  }
+  window.addEventListener('mhur:languagechange',()=>requestAnimationFrame(afterDom));
 }
 window.MHUR_S18_V10={openNotes,openAdminCenter,showPatch};
 window.MHUR_S18_V13={openNotes,openAdminCenter,showPatch,afterDom};
-window.MHUR_S18_V14={openNotes,closeNotes:closeNotesV16,openAdminCenter,showPatch,afterDom};
+window.MHUR_S18_V14={openNotes,openAdminCenter,showPatch,afterDom};
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
+})();
+
+/* ========================================================================== */
+/* MHUR Nexus — Saison 18 v17 : offset patch notes + finitions mobiles       */
+/* ========================================================================== */
+(function(){
+'use strict';
+
+function notesModalV17(){return document.getElementById('s18NotesDevModalV10')}
+function noteButtonsV17(){return [...document.querySelectorAll('[data-s18-notes-button],#mhurPatchDevButtonV14,.mhurPatchDevButtonV14')].filter(Boolean)}
+function measureHeaderOffsetV17(){
+  const candidates=[];
+  noteButtonsV17().forEach(btn=>{if(btn) candidates.push(btn); const wrap=btn?.closest('header,.top,#siteHeader,.nexusHeader,.topbar,#topbar'); if(wrap) candidates.push(wrap)});
+  ['#siteHeader','.nexusHeader','header.top','.top','#topbar','.topbar'].forEach(sel=>document.querySelectorAll(sel).forEach(el=>candidates.push(el)));
+  let bottom=0;
+  candidates.forEach(el=>{try{const box=el.getBoundingClientRect(); if(box.width>0&&box.height>0) bottom=Math.max(bottom,box.bottom);}catch(_e){}});
+  if(bottom<0||!Number.isFinite(bottom)) bottom=0;
+  document.documentElement.style.setProperty('--s18-header-offset',Math.ceil(bottom)+'px');
+  return bottom;
+}
+function refreshNotesLayoutV17(){
+  const offset=measureHeaderOffsetV17();
+  const modal=notesModalV17();
+  if(!modal) return offset;
+  const panel=modal.querySelector('.s18NotesPanelV10');
+  const body=modal.querySelector('.s18NotesBodyV10');
+  if(panel){
+    const max=Math.max(320,Math.floor(window.innerHeight-offset-12));
+    panel.style.maxHeight=max+'px';
+  }
+  if(body){
+    const bodyMax=Math.max(180,Math.floor(window.innerHeight-offset-(window.innerWidth<=600?212:window.innerWidth<=900?238:170)));
+    body.style.maxHeight=bodyMax+'px';
+    body.style.height=bodyMax+'px';
+  }
+  return offset;
+}
+function closeNotesV17(){
+  const modal=notesModalV17();
+  if(!modal) return;
+  modal.classList.remove('open');
+  document.body.classList.remove('s18NotesOpenV11');
+}
+function installNotesGuardsV17(){
+  if(window.__s18NotesGuardsV17) return;
+  window.__s18NotesGuardsV17=true;
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&notesModalV17()?.classList.contains('open'))closeNotesV17()});
+  window.addEventListener('resize',()=>requestAnimationFrame(refreshNotesLayoutV17),{passive:true});
+  window.addEventListener('orientationchange',()=>setTimeout(refreshNotesLayoutV17,80),{passive:true});
+  document.addEventListener('click',e=>{
+    const modal=notesModalV17();
+    if(!modal||!modal.classList.contains('open')) return;
+    const panel=modal.querySelector('.s18NotesPanelV10');
+    if(!panel) return;
+    if(panel.contains(e.target)) return;
+    if(noteButtonsV17().some(btn=>btn.contains(e.target))) return;
+    if(e.target===modal||modal.contains(e.target)) closeNotesV17();
+  },true);
+  const observer=new MutationObserver(()=>{
+    refreshNotesLayoutV17();
+    const modal=notesModalV17();
+    if(modal&&!modal.dataset.s18v17Bound){
+      modal.dataset.s18v17Bound='1';
+      modal.querySelectorAll('img').forEach(img=>img.loading='eager');
+    }
+  });
+  observer.observe(document.documentElement,{childList:true,subtree:true,attributes:true,attributeFilter:['class']});
+}
+
+measureHeaderOffsetV17();
+installNotesGuardsV17();
+refreshNotesLayoutV17();
+window.addEventListener('mhur-auth-change',()=>setTimeout(refreshNotesLayoutV17,60));
+window.addEventListener('mhur-role-change',()=>setTimeout(refreshNotesLayoutV17,60));
+window.addEventListener('mhur:languagechange',()=>setTimeout(refreshNotesLayoutV17,20));
+window.MHUR_S18_V17={refreshNotesLayout:refreshNotesLayoutV17,measureHeaderOffset:measureHeaderOffsetV17};
 })();
