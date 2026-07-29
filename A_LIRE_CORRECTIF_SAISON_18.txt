@@ -1,25 +1,17 @@
-CORRECTIF SAISON 18 — MHUR NEXUS
-=================================
+CORRECTIF SAISON 18 V6 — MHUR NEXUS
 
-Installation du petit correctif :
-1. Ferme le site et la fenêtre de synchronisation.
-2. Décompresse le dossier « mhur-france » du ZIP par-dessus ton dossier actuel.
-3. Accepte le remplacement des fichiers.
-4. Lance METTRE_A_JOUR_MHUR_FRANCE.bat.
-5. Attends le message [OK], puis redéploie uniquement le dossier public sur Cloudflare.
+1. Extraire le dossier mhur-france par-dessus ton dossier actuel.
+2. Accepter le remplacement des fichiers.
+3. Lancer METTRE_A_JOUR_MHUR_FRANCE.bat.
+4. Attendre le message [OK], puis redéployer le dossier public.
 
-Ce correctif ajoute une passe spéciale Saison 18 après la synchronisation normale :
-- fiches des nouveaux personnages/styles en français et en anglais ;
-- descriptions réelles des Alters et actions spéciales ;
-- suppression de la colonne Down Power dans l'affichage ;
-- fond violet pour les styles Techniques générés ;
-- T.U.N.I.N.G bilingue ;
-- costumes bilingues et section Costumes à venir par personnage ;
-- déplacement automatique d'un costume vers les costumes disponibles à sa date de sortie ;
-- badge NEW animé jusqu'à la synchronisation suivante ;
-- conservation de l'historique des patchs ;
-- nouveau patch remis dans l'interface détaillée du site ;
-- nettoyage des textes japonais visibles ;
-- actualisation des dernières sorties et des bonus de connexion.
-
-Les horaires des costumes à venir et de la maintenance sont convertis dans le fuseau local du visiteur par son navigateur.
+Corrections principales :
+- ouverture des patch notes réparée ;
+- séparation par personnage et par style ;
+- indication claire BUFF / NERF / NEUTRE ;
+- portraits, rôles et compétences corrigés dans les patchs ;
+- textes d'interface traduits en français ;
+- NEW automatique sur les nouveaux personnages, styles et costumes ;
+- doublon Original de Gentle Criminal supprimé ;
+- Action spéciale et Alters de Gentle Criminal remis au format des anciens personnages ;
+- nouvelles sorties avec le bon personnage, plus grand et centré.

@@ -853,3 +853,691 @@ if(overrideReleaseCard() && typeof page!=='undefined' && page==='home' && typeof
   try{window.__keepScroll=true; render();}catch(_e){}
 }
 })();
+
+/* ========================================================================== */
+/* MHUR Nexus — Season 18 hard fix v6                                        */
+/* This block is deliberately last: it replaces the fragile v5 overrides.    */
+/* ========================================================================== */
+(function(){
+'use strict';
+
+const v6Lang=()=>typeof lang!=='undefined'&&lang==='en'?'en':'fr';
+const v6Pick=v=>v&&typeof v==='object'&&!Array.isArray(v)?(v[v6Lang()]??v.fr??v.en??''):v;
+const v6Esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const v6Cjk=/[\u3040-\u30ff\u3400-\u9fff\uf900-\ufaff]/g;
+const v6Clean=v=>String(v6Pick(v)??'')
+  .replace(/\s*[（(][^()（）]*[\u3040-\u30ff\u3400-\u9fff][^()（）]*[）)]/g,'')
+  .replace(v6Cjk,'').replace(/\s{2,}/g,' ').trim();
+const v6Norm=v=>String(v6Clean(v)).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'_').replace(/^_|_$/g,'');
+const v6Badge=()=>'<span class="s18NewBadge s18NewBadgeV6" aria-label="Nouveau">NEW!</span>';
+
+function v6Exact(){
+  if(window.__mhurExactV6)return window.__mhurExactV6;
+  const el=document.getElementById('ultrarumble-exact-data');
+  if(!el)return null;
+  try{window.__mhurExactV6=JSON.parse(el.textContent||'{}');}catch(_e){window.__mhurExactV6=null;}
+  return window.__mhurExactV6;
+}
+function v6RoleKey(v){
+  return ({attack:'attack',strike:'attack',assault:'assault',technical:'technical',support:'support',rapid:'rapid',speed:'rapid'})[v6Norm(v)]||'technical';
+}
+function v6RoleText(v){
+  const key=v6RoleKey(v);
+  const fr={attack:'Attaque',assault:'Assaut',technical:'Technique',support:'Soutien',rapid:'Vitesse'};
+  const en={attack:'Strike',assault:'Assault',technical:'Technical',support:'Support',rapid:'Rapid'};
+  return (v6Lang()==='fr'?fr:en)[key]||v6Clean(v);
+}
+function v6SideText(v){
+  const villain=v6Norm(v)==='villain';
+  return v6Lang()==='fr'?(villain?'SUPER-VILAINS':'HÉROS'):(villain?'SUPER-VILLAINS':'HEROES');
+}
+function v6ExactStyleKeyFromUrl(url){
+  const exact=v6Exact()?.exact_by_style||{};
+  const raw=String(url||'').replace(/\/$/,'');
+  if(!raw)return '';
+  return Object.keys(exact).find(key=>String(exact[key]?.source_url||'').replace(/\/$/,'')===raw)||'';
+}
+function v6CharacterForStyle(styleId){
+  if(typeof characters==='undefined')return null;
+  return (characters||[]).find(ch=>(ch.styles||[]).map(String).includes(String(styleId)))||null;
+}
+function v6ResolveRelease(x){
+  const source=String(x?.source_url||x?.url||'');
+  let styleId=String(x?.style_id||'');
+  if(!styleId)styleId=v6ExactStyleKeyFromUrl(source);
+  let charId=String(x?.character_id||x?.char_id||'');
+  let ch=charId&&typeof characters!=='undefined'?(characters||[]).find(c=>String(c.id)===charId):null;
+  if(!ch&&styleId)ch=v6CharacterForStyle(styleId);
+  if(!ch&&typeof characters!=='undefined'){
+    const title=v6Norm(x?.title||'');
+    ch=(characters||[]).find(c=>v6Norm(c.name)===title)||null;
+  }
+  if(ch&&!charId)charId=String(ch.id);
+  if(ch&&!styleId){
+    const sourceKey=v6ExactStyleKeyFromUrl(source);
+    if(sourceKey)styleId=sourceKey;
+    else{
+      const subtitle=v6Norm(x?.subtitle_fr||x?.subtitle_en||x?.subtitle||'');
+      styleId=(ch.styles||[]).find(id=>v6Norm(styles?.[id]?.name)===subtitle)||String((ch.styles||[])[0]||'');
+    }
+  }
+  const st=styleId&&typeof styles!=='undefined'?styles[styleId]:null;
+  return {charId,styleId,ch,st,source};
+}
+function v6NewSets(){
+  const sync=window.MHUR_SEASON18_DATA?.new_content||{};
+  const chars=new Set((sync.characters||[]).map(String));
+  const styleSet=new Set((sync.styles||[]).map(String));
+  const costumes=new Set((sync.costumes||[]).map(String));
+  const releases=window.MHUR_HOME_DATA?.latest_releases||[];
+  releases.forEach(x=>{
+    const r=v6ResolveRelease(x);
+    const kind=v6Norm(x?.release_kind||x?.type||'');
+    if(kind.includes('character')||kind.includes('personnage')){if(r.charId)chars.add(r.charId);}
+    else if(kind.includes('style')||kind.includes('alter')||kind.includes('quirk')){if(r.styleId)styleSet.add(r.styleId);}
+  });
+  return {chars,styles:styleSet,costumes};
+}
+function v6DedupeStyleIds(ch){
+  if(!ch||typeof styles==='undefined')return [];
+  const ids=[];const signatures=new Set();
+  for(const raw of (ch.styles||[])){
+    const id=String(raw),st=styles[id];
+    if(!st||ids.includes(id))continue;
+    const sig=[v6Norm(st.name||'Original'),v6RoleKey(st.role),v6Norm(st.portrait||'')].join('|');
+    if(signatures.has(sig))continue;
+    signatures.add(sig);ids.push(id);
+  }
+  return ids;
+}
+function v6DeduplicateAll(){
+  if(typeof characters==='undefined')return;
+  (characters||[]).forEach(ch=>{ch.styles=v6DedupeStyleIds(ch)});
+}
+
+/* ---------------- Gentle Criminal: one style and complete old-style data --- */
+function v6Table(titleFr,titleEn,columns,rows){
+  const keep=[];
+  (columns||[]).forEach((c,i)=>{if(v6Norm(c)!=='down_power')keep.push(i)});
+  const frNames={level:'Niveau',type:'Type',damage:'Dégâts',ammo:'Munitions',use_ammo:'Consommation',reload:'Recharge',level_up_effect:'Effet de montée',guard_break:'Brise-garde',duration:'Durée',range:'Portée'};
+  const enNames={level:'Level',type:'Type',damage:'Damage',ammo:'Ammo',use_ammo:'Use Ammo',reload:'Reload',level_up_effect:'Level Up Effect',guard_break:'Guard Break',duration:'Duration',range:'Range'};
+  const translate=(c,l)=>((l==='fr'?frNames:enNames)[v6Norm(c)]||v6Clean(c));
+  const filtered=(rows||[]).map(row=>keep.map(i=>v6Clean((row||[])[i]??''))).filter(row=>row.some(Boolean));
+  if(!keep.length||!filtered.length)return null;
+  return {title:{fr:titleFr,en:titleEn},cols:{fr:keep.map(i=>translate(columns[i],'fr')),en:keep.map(i=>translate(columns[i],'en'))},rows:filtered};
+}
+function v6MeaningfulDescription(value,name){
+  const txt=v6Clean(value),nm=v6Clean(name);
+  return txt&&txt.length>8&&v6Norm(txt)!==v6Norm(nm);
+}
+function v6PatchGentle(){
+  if(typeof styles==='undefined'||typeof characters==='undefined')return;
+  const exact=v6Exact();
+  let styleId='';let row=null;
+  for(const [key,value] of Object.entries(exact?.exact_by_style||{})){
+    if(v6Norm(value?.base_name||value?.name).includes('gentle_criminal')&&Number(value?.variant_index||0)===0){styleId=key;row=value;break;}
+  }
+  if(!styleId)styleId=Object.keys(styles).find(k=>/gentle[_-]?criminal/i.test(k))||'';
+  const ch=(characters||[]).find(c=>v6Norm(c.name).includes('gentle_criminal')||v6Norm(c.id).includes('gentle_criminal')||(c.styles||[]).map(String).includes(styleId));
+  if(!ch||!styleId||!styles[styleId])return;
+  const st=styles[styleId];
+  ch.name='Gentle Criminal';ch.side='villain';
+  const otherDistinct=v6DedupeStyleIds(ch).filter(id=>id!==styleId&&v6Norm(styles[id]?.name)!=='original');
+  ch.styles=[styleId,...otherDistinct];
+  st.role='technical';st.name={fr:'Original',en:'Original'};st.pv=String(row?.stats?.['Max Main Health']||row?.stats?.['Max Health']||row?.stats?.HP||st.pv||300);
+  if(row?.assets?.portrait)st.portrait=row.assets.portrait;
+  ch.portrait=st.portrait;
+  st.description={
+    fr:"Un hors-la-loi des temps modernes qui entrera dans l'Histoire ! Son Alter Élasticité lui permet de virevolter dans les airs en narguant ses ennemis avec panache !",
+    en:'A modern-day outlaw destined to go down in history. His Elasticity Quirk lets him dance through the air while styling on his enemies.'
+  };
+  st.roleDesc={
+    fr:"Augmente la vitesse de rechargement de toute l'équipe. Plus il y a de membres avec le même rôle, plus l'effet est amplifié.",
+    en:'Raises the reload speed of the whole team. The more allies with the same role, the stronger the effect.'
+  };
+  const sp=row?.special_action||{};
+  const spTable=v6Table('Valeurs de l’action spéciale','Special Action Values',sp.values?.columns||[],sp.values?.rows||[]);
+  st.special={
+    name:{fr:'Gently Trampoline / Mode Lover',en:'Gently Trampoline / Mode Lover'},
+    img:row?.assets?.special||st.special?.img||st.portrait,
+    desc:{
+      fr:"Déploie un point d'élasticité qui fait rebondir Gentle Criminal, ses alliés et les ennemis. Il peut ainsi se repositionner rapidement ou perturber une attaque.",
+      en:'Deploys an elasticity point that bounces Gentle Criminal, allies, and enemies, allowing quick repositioning or disruption.'
+    },
+    tables:spTable?[spTable]:[]
+  };
+  const letters=['α','β','γ'];
+  const fallback={
+    'α':{fr:"Tire une flèche d'air comprimé qui crée une onde de choc à l'impact avant de poursuivre sa trajectoire.",en:'Fires a compressed-air arrow that creates a shockwave on impact before continuing forward.'},
+    'β':{fr:"Crée une surface élastique qui permet de rebondir, de contrôler l'espace et de repousser les ennemis.",en:'Creates an elastic surface used to bounce, control space, and repel enemies.'},
+    'γ':{fr:"Se propulse grâce à son Alter pour conserver l'avantage aérien et surprendre sa cible.",en:'Launches himself with Elasticity to maintain aerial advantage and surprise the target.'}
+  };
+  const oldSkills=Array.isArray(st.skills)?st.skills:[];
+  st.skills=letters.map((letter,index)=>{
+    const raw=row?.skills?.[letter]||{};
+    const old=oldSkills.find(s=>s.letter===letter)||oldSkills[index]||{};
+    const tables=[];
+    const level=v6Table(`Effets de montée ${letter}`,`${letter} Level Up Effects`,raw.level_up_effects?.columns||[],raw.level_up_effects?.rows||[]);if(level)tables.push(level);
+    const base=v6Table(`Valeurs de base ${letter}`,`${letter} Base Values`,raw.base_values?.columns||[],raw.base_values?.rows||[]);if(base)tables.push(base);
+    const add=v6Table(`Valeurs détaillées ${letter}`,`${letter} Detailed Values`,raw.additional_values?.columns||[],raw.additional_values?.rows||[]);if(add)tables.push(add);
+    const imgKey=letter==='α'?'alpha':letter==='β'?'beta':'gamma';
+    const officialDesc=v6MeaningfulDescription(raw.description,raw.name)?v6Clean(raw.description):'';
+    return {
+      letter,
+      name:v6Clean(raw.name)||v6Clean(old.name)||({α:'Gently Arrow',β:'Gently Trampoline',γ:'Gently Rebound'}[letter]),
+      img:row?.assets?.[imgKey]||old.img||st.portrait,
+      desc:{fr:fallback[letter].fr,en:officialDesc||fallback[letter].en},
+      tables:tables.length?tables:(old.tables||[])
+    };
+  });
+}
+
+/* ---------------- Cards and NEW badges ------------------------------------- */
+function v6Card(c,mode='characters'){
+  const sets=v6NewSets();
+  const styleIds=v6DedupeStyleIds(c);
+  const first=styleIds[0],role=v6RoleKey(styles?.[first]?.role);
+  const modeClass=mode==='costumes'?' costumeMode':mode==='builds'?' buildMode':mode==='tunings'?' tuningMode':' characterMode';
+  const tag=mode==='costumes'?`<div class="cardModeTag">${tr('costumeTag')}</div>`:mode==='builds'?`<div class="cardModeTag">${tr('buildTag')}</div>`:mode==='tunings'?'<div class="cardModeTag">T.U.N.I.N.G</div>':'<div class="cardModeTag">PERSONNAGE</div>';
+  const message=mode==='costumes'?tr('costumeChoose'):mode==='builds'?tr('buildChoose'):mode==='tunings'?tr('tuningChoose'):tr('choose');
+  const roles=[];const seen=new Set();
+  styleIds.forEach(id=>{const r=v6RoleKey(styles[id]?.role);if(!seen.has(r)){seen.add(r);roles.push(styles[id]?.role)}});
+  const portrait=styles?.[first]?.portrait||c.portrait||'';
+  return `<button class="card${modeClass} s18RoleCard role-${role}" data-char="${v6Esc(c.id)}" onclick="selectChar('${String(c.id).replace(/'/g,"\\'")}')">${sets.chars.has(String(c.id))?v6Badge():''}${tag}<div class="thumb">${asset(portrait,c.name)}</div><div class="cardBody"><h3>${v6Esc(c.name)}</h3><div class="badges">${sideBadge(c.side)}${roles.map(r=>roleBadge(r)).join('')}</div><p style="color:#c9d7ee">${v6Esc(message)}</p></div></button>`;
+}
+function v6StylePicker(){
+  const sets=v6NewSets();
+  const c=(characters||[]).find(x=>x.id===selectedChar);if(!c)return '';
+  const ids=v6DedupeStyleIds(c);c.styles=ids;
+  return `<button class="back" onclick="selectedChar=null;render()">← ${tr('back')}</button><h1 class="title">${v6Esc(c.name)}</h1><div class="styleGrid">${ids.map(id=>{const st=styles[id],role=v6RoleKey(st.role);return `<button class="styleCard s18StyleCard role-${role}" data-style="${v6Esc(id)}" onclick="selectStyle('${String(id).replace(/'/g,"\\'")}')">${sets.styles.has(String(id))?v6Badge():''}<div class="styleBanner">${asset(st.portrait,`${c.name} ${v6Clean(st.name)}`)}</div><div class="styleInfo"><h2>${v6Esc(v6Clean(st.name)||'Original')}</h2><div class="badges">${sideBadge(c.side)}${roleBadge(st.role)}</div></div></button>`}).join('')}</div>`;
+}
+const v6BaseCostumeCard=typeof costumeCard==='function'?costumeCard:null;
+function v6CostumeCard(ct){
+  if(!v6BaseCostumeCard)return '';
+  let html=String(v6BaseCostumeCard(ct)||'');
+  const id=String(ct?.urId??ct?.ur_id??String(ct?.id||'').replace(/^ur_/,''));
+  if(v6NewSets().costumes.has(id)&&!html.includes('s18NewBadge'))html=html.replace(/^(<button\b[^>]*>|<div\b[^>]*class="[^"]*(?:costume|slot)[^"]*"[^>]*>)/i,`$1${v6Badge()}`);
+  return html;
+}
+
+/* ---------------- Patch modal: safe, grouped, localized and correctly toned */
+function v6PatchFr(value){
+  let out=v6Clean(value);
+  if(v6Lang()==='en')return typeof patchText==='function'?patchText(out):out;
+  const exact={
+    'Damage':'Dégâts','Damages':'Dégâts','Guard Break':'Brise-garde','Cooldown':'Recharge','Reload':'Recharge','Ammo':'Munitions','Use Ammo':'Consommation','Consumption':'Consommation','Special Action':'Action spéciale','Health':'PV','Maximum HP':'PV maximum','Adjustment':'Ajustement','Before':'Avant','After':'Après','No changes detected.':'Aucun changement détecté.'
+  };
+  if(exact[out])return exact[out];
+  return out
+    .replace(/^Balance Changes:\s*/i,"Changements d'équilibrage : ")
+    .replace(/Damage/gi,'Dégâts').replace(/Guard Break/gi,'Brise-garde')
+    .replace(/Cooldown/gi,'Recharge').replace(/Reload/gi,'Recharge')
+    .replace(/Ammo/gi,'Munitions').replace(/Use Ammo/gi,'Consommation')
+    .replace(/Special Action/gi,'Action spéciale').replace(/Maximum HP/gi,'PV maximum')
+    .replace(/No changes detected\.?/gi,'Aucun changement détecté.');
+}
+function v6PatchTone(change){
+  const tone=v6Norm(change?.tone||change?.type||'');
+  if(/buff|increase|improve|up/.test(tone))return 'buff';
+  if(/nerf|decrease|reduce|down/.test(tone))return 'nerf';
+  return 'adjust';
+}
+function v6ToneLabel(tone){return tone==='buff'?'BUFF':tone==='nerf'?'NERF':(v6Lang()==='fr'?'NEUTRE':'NEUTRAL')}
+function v6StyleForChange(change){
+  if(typeof characters==='undefined'||typeof styles==='undefined')return {ch:null,id:'',st:null};
+  const ch=(characters||[]).find(c=>v6Norm(c.name)===v6Norm(change?.character)||v6Norm(c.id)===v6Norm(change?.character));
+  if(!ch)return {ch:null,id:'',st:null};
+  const ids=v6DedupeStyleIds(ch);
+  const styleName=v6Norm(change?.style||'Original');
+  let id=ids.find(x=>v6Norm(styles[x]?.name||'Original')===styleName)||'';
+  if(!id){
+    const skillName=v6Norm(change?.skill_name||'');
+    id=ids.find(x=>{
+      const st=styles[x];
+      const all=[st?.special,...(st?.skills||[])].filter(Boolean);
+      return all.some(sk=>skillName&&((v6Norm(sk.name)&&skillName.includes(v6Norm(sk.name)))||skillName.startsWith(v6Norm(sk.letter))));
+    })||'';
+  }
+  if(!id)id=ids[0]||'';
+  return {ch,id,st:styles[id]||null};
+}
+function v6SkillForChange(st,change){
+  if(!st)return null;
+  const raw=v6Norm(change?.skill_name||change?.label||'');
+  const all=[{...st.special,letter:'SP'},...(st.skills||[])].filter(Boolean);
+  let hit=all.find(sk=>{
+    const name=v6Norm(sk.name),letter=v6Norm(sk.letter);
+    return (name&&raw.includes(name))||(letter&&raw.startsWith(letter));
+  });
+  if(!hit){
+    const first=String(change?.skill_name||'').trim().charAt(0);
+    hit=all.find(sk=>String(sk.letter||'')===first)||null;
+  }
+  return hit||null;
+}
+function v6PatchValue(change,tone){
+  const before=Array.isArray(change?.before)?change.before:[change?.before];
+  const after=Array.isArray(change?.after)?change.after:[change?.after];
+  const count=Math.max(before.length,after.length);
+  if(count>1){
+    return `<div class="s18PatchTableWrapV6"><table class="s18PatchTableV6"><thead><tr><th></th>${Array.from({length:count},(_,i)=>`<th>Lv.${i+1}</th>`).join('')}</tr></thead><tbody><tr class="before"><th>${v6Lang()==='fr'?'Avant':'Before'}</th>${Array.from({length:count},(_,i)=>`<td>${v6Esc(v6Clean(before[i]??''))}</td>`).join('')}</tr><tr class="after ${tone}"><th>${v6Lang()==='fr'?'Après':'After'}</th>${Array.from({length:count},(_,i)=>`<td>${v6Esc(v6Clean(after[i]??''))}</td>`).join('')}</tr></tbody></table></div>`;
+  }
+  if(change?.before!=null||change?.after!=null)return `<div class="s18PatchRow"><span class="s18PatchBefore">${v6Esc(v6Clean(before[0]??'—'))}</span><span class="s18PatchArrow">→</span><span class="s18PatchAfter ${tone}">${v6Esc(v6Clean(after[0]??'—'))}</span></div>`;
+  return '';
+}
+function v6PatchGroups(section){
+  const groups=[];const map=new Map();
+  (section?.changes||[]).forEach(change=>{
+    const info=v6StyleForChange(change);const id=info.id||v6Norm(change?.style||'Original');
+    const key=`${v6Norm(change?.character)}__${id}`;
+    if(!map.has(key)){
+      const group={key,ch:info.ch,id,st:info.st,character:info.ch?.name||v6Clean(change?.character),style:v6Clean(info.st?.name||change?.style||'Original'),changes:[]};
+      map.set(key,group);groups.push(group);
+    }
+    map.get(key).changes.push(change);
+  });
+  return groups;
+}
+function v6PatchGroupCard(group){
+  const st=group.st||{};const ch=group.ch||{};const role=v6RoleKey(st.role||'technical');
+  return `<article class="s18PatchGroupCard role-${role}"><header class="s18PatchHeader"><div class="s18PatchPortrait">${st.portrait?asset(st.portrait,group.character):''}</div><div class="s18PatchMeta"><h4>${v6Esc(group.character)}</h4><div class="s18PatchStyle">${v6Esc(group.style)}</div><div class="s18PatchBadges"><span class="badge ${ch.side==='villain'?'villain':'hero'}">${v6Esc(v6SideText(ch.side))}</span><span class="badge ${role}">${v6Esc(v6RoleText(role))}</span></div></div></header><div class="s18PatchGroupBody">${group.changes.map(change=>{
+    const tone=v6PatchTone(change),skill=v6SkillForChange(st,change),skillName=v6Clean(skill?.name||change?.skill_name||change?.label||'Ajustement');
+    const image=skill?.img||change?.skill_image||'';
+    const bullets=(change?.bullets||[]).map(v6PatchFr).filter(x=>x&&!/aucun changement détecté/i.test(x));
+    return `<section class="s18PatchSkillBlock ${tone}"><div class="s18PatchTone ${tone}">${v6ToneLabel(tone)}</div><div class="s18PatchSkill">${image?`<div class="s18PatchSkillImg">${asset(image,skillName)}</div>`:''}<div class="s18PatchSkillMeta"><h5>${v6Esc(skillName)}</h5>${change?.label?`<div class="s18PatchLabel">${v6Esc(v6PatchFr(change.label))}</div>`:''}${v6PatchValue(change,tone)}${bullets.length?`<ul class="s18PatchBullets">${bullets.map(x=>`<li>${v6Esc(x)}</li>`).join('')}</ul>`:''}</div></div></section>`;
+  }).join('')}</div></article>`;
+}
+function v6OpenPatch(index){
+  try{
+    const note=(window.MHUR_HOME_DATA?.patch_notes||[])[index];if(!note)return;
+    let modal=document.getElementById('patchModalV296');
+    if(!modal){
+      modal=document.createElement('div');modal.id='patchModalV296';modal.className='modalV296';
+      modal.innerHTML='<div class="modalPanelV296 patchPanelV296"><header><h2></h2><button type="button" class="v6PatchClose">×</button></header><div class="modalBodyV296"></div></div>';
+      document.body.appendChild(modal);
+      modal.querySelector('.v6PatchClose').addEventListener('click',()=>{modal.classList.remove('open');document.body.classList.remove('homeModalOpenV296')});
+      modal.addEventListener('click',e=>{if(e.target===modal){modal.classList.remove('open');document.body.classList.remove('homeModalOpenV296')}});
+    }
+    modal.querySelector('header h2').textContent=v6PatchFr(note.title);
+    const details=(note.details||[]).filter(sec=>(sec.changes||[]).some(c=>!/^no changes detected\.?$/i.test(v6Clean(c?.text||c?.note||''))));
+    let html=`<div class="patchDateV296">${new Intl.DateTimeFormat(v6Lang()==='fr'?'fr-FR':'en-US',{dateStyle:'medium',timeStyle:'short'}).format(new Date(note.date))}</div><div class="legendV296"><span class="buff">BUFF</span><span class="nerf">NERF</span><span class="adjust">${v6Lang()==='fr'?'NEUTRE':'NEUTRAL'}</span></div>`;
+    if(details.length){
+      html+=details.map(sec=>`<section class="detailSectionV296 ${v6Esc(sec.accent||'')}"><h3>${v6Esc(v6PatchFr(sec.title))}</h3>${sec.note?`<p class="patchNoteV296">${v6Esc(v6PatchFr(sec.note))}</p>`:''}<div class="s18PatchGroupGrid">${v6PatchGroups(sec).map(v6PatchGroupCard).join('')}</div></section>`).join('');
+    }else if((note.rich_blocks||[]).length){
+      html+=`<article class="richPatchV303">${note.rich_blocks.map(block=>block.type==='heading'?`<h3 class="richPatchHeadingV303">${v6Esc(v6PatchFr(block.text))}</h3>`:block.type==='image'?`<figure class="richPatchImageV303">${asset(block.src,block.alt||'Illustration')}</figure>`:`<p class="richPatchTextV303">${v6Esc(v6PatchFr(block.text))}</p>`).join('')}</article>`;
+    }else html+=`<div class="emptyV296">${v6Lang()==='fr'?'Aucun détail disponible.':'No details available.'}</div>`;
+    modal.querySelector('.modalBodyV296').innerHTML=html;
+    modal.classList.add('open');document.body.classList.add('homeModalOpenV296');
+  }catch(error){console.error('[MHUR V6 PATCH]',error);}
+}
+
+/* ---------------- Latest releases: correct new portrait, large and centred -- */
+function v6ReleaseCard(x){
+  const r=v6ResolveRelease(x);const kindRaw=v6Norm(x?.release_kind||x?.type||'');
+  const kind=kindRaw.includes('character')||kindRaw.includes('personnage')?'character':kindRaw.includes('costume')?'costume':'style';
+  const icon=kind==='character'?'assets/home/icons/release_character.png':kind==='costume'?'assets/home/icons/release_costume.png':'assets/home/icons/release_style.png';
+  const label=kind==='character'?(v6Lang()==='fr'?'Personnage jouable':'Playable character'):kind==='costume'?(v6Lang()==='fr'?'Nouveau costume':'New costume'):(v6Lang()==='fr'?'Nouveau style':'New style');
+  const title=r.ch?.name||(!/^Character\s*\d+/i.test(String(x?.title||''))?v6PatchFr(x?.title):'')||'My Hero Ultra Rumble';
+  const subtitle=kind==='style'?v6Clean(r.st?.name||x?.subtitle||label):label;
+  const art=r.st?.portrait||r.ch?.portrait||x?.art||x?.image||x?.banner||'';
+  const role=v6RoleKey(r.st?.role||'technical');
+  return `<button type="button" class="releaseCardV299 releaseV6 role-${role}" data-release-char="${v6Esc(r.charId)}" data-release-style="${v6Esc(r.styleId)}" onclick="openHomeReleaseV298(this)" title="${v6Esc(title)} — ${v6Esc(subtitle)}"><span class="releaseDotsV299"></span><span class="releaseBadgeV299 ${kind}">${img(icon,label)}</span><span class="releaseNewImageV6"></span><span class="releasePortraitV6">${img(art,title)}</span><span class="releaseSlashV299"></span><span class="releaseNamesV299"><b>${v6Esc(title)}</b><small>${v6Esc(subtitle)}</small></span></button>`;
+}
+
+function v6Install(){
+  v6PatchGentle();v6DeduplicateAll();
+  if(typeof card==='function'){window.card=v6Card;try{card=v6Card}catch(_e){}}
+  if(typeof stylePicker==='function'){window.stylePicker=v6StylePicker;try{stylePicker=v6StylePicker}catch(_e){}}
+  if(v6BaseCostumeCard){window.costumeCard=v6CostumeCard;try{costumeCard=v6CostumeCard}catch(_e){}}
+  window.openPatchNoteV296=v6OpenPatch;
+  if(typeof releaseCard==='function'){window.releaseCard=v6ReleaseCard;try{releaseCard=v6ReleaseCard}catch(_e){}}
+}
+v6Install();
+setTimeout(()=>{
+  try{
+    v6PatchGentle();v6DeduplicateAll();
+    if(typeof render==='function'){window.__keepScroll=true;render()}
+  }catch(error){console.error('[MHUR V6 INIT]',error)}
+},0);
+window.addEventListener('mhur:languagechange',()=>{try{v6Install();if(typeof render==='function')render()}catch(_e){}});
+})();
+/* ========================================================================== */
+/* MHUR Nexus — Season 18 emergency hotfix v7                                */
+/* This block stays last and patches the DOM after render for maximum safety. */
+/* ========================================================================== */
+(function(){
+'use strict';
+
+const LANG=()=>typeof lang!=='undefined'&&lang==='en'?'en':'fr';
+const PICK=v=>v&&typeof v==='object'&&!Array.isArray(v)?(v[LANG()]??v.fr??v.en??''):v;
+const CJK=/[\u3040-\u30ff\u3400-\u9fff\uf900-\ufaff]/g;
+const ESC=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const CLEAN=v=>String(PICK(v)??'').replace(/\s*[（(][^()（）]*[\u3040-\u30ff\u3400-\u9fff][^()（）]*[）)]/g,'').replace(CJK,'').replace(/\s{2,}/g,' ').trim();
+const NORM=v=>String(CLEAN(v)).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'_').replace(/^_|_$/g,'');
+const NEW_HTML='<span class="s18NewBadge s18NewBadgeV7" aria-label="NEW">NEW!</span>';
+
+function EX(){
+  if(window.__mhurExactV7!==undefined) return window.__mhurExactV7;
+  const el=document.getElementById('ultrarumble-exact-data');
+  if(!el) return window.__mhurExactV7=null;
+  try{ window.__mhurExactV7=JSON.parse(el.textContent||'{}'); }
+  catch(_e){ window.__mhurExactV7=null; }
+  return window.__mhurExactV7;
+}
+function roleKey(v){
+  return ({attack:'attack',strike:'attack',assault:'assault',technical:'technical',support:'support',rapid:'rapid',speed:'rapid'})[NORM(v)]||'technical';
+}
+function roleText(v){
+  const key=roleKey(v);
+  const fr={attack:'Attaque',assault:'Assaut',technical:'Technique',support:'Soutien',rapid:'Vitesse'};
+  const en={attack:'Strike',assault:'Assault',technical:'Technical',support:'Support',rapid:'Rapid'};
+  return (LANG()==='fr'?fr:en)[key]||CLEAN(v);
+}
+function sideText(v){
+  const villain=NORM(v)==='villain';
+  return LANG()==='fr'?(villain?'SUPER-VILAINS':'HÉROS'):(villain?'SUPER-VILLAINS':'HEROES');
+}
+function patchFr(v){
+  let out=CLEAN(v);
+  if(LANG()==='en') return out;
+  const pairs=[
+    [/^Data Update/i,'Mise à jour des données'],[/^Balance Changes:\s*/i,"Changements d'équilibrage : "],
+    [/Damage/gi,'Dégâts'],[/Guard Break/gi,'Brise-garde'],[/Reload/gi,'Recharge'],[/Cooldown/gi,'Recharge'],
+    [/Use Ammo/gi,'Consommation'],[/Ammo/gi,'Munitions'],[/Health/gi,'PV'],[/Maximum HP|Max HP/gi,'PV maximum'],
+    [/Special Action/gi,'Action spéciale'],[/Quirk Skill/gi,'Alter'],[/Before/gi,'Avant'],[/After/gi,'Après'],
+    [/Original/gi,'Original'],[/No changes detected\.?/gi,'Aucun changement détecté.']
+  ];
+  pairs.forEach(([a,b])=>{ out=out.replace(a,b); });
+  return out;
+}
+function newSets(){
+  const sync=window.MHUR_SEASON18_DATA?.new_content||{};
+  const chars=new Set((sync.characters||[]).map(String));
+  const stylesSet=new Set((sync.styles||[]).map(String));
+  const costumes=new Set((sync.costumes||[]).map(String));
+  return {chars,styles:stylesSet,costumes};
+}
+function dedupeStyleIds(ch){
+  if(!ch||typeof styles==='undefined') return [];
+  const keep=[]; const seenId=new Set(); const seenSig=new Set();
+  (Array.isArray(ch.styles)?ch.styles:[]).forEach(raw=>{
+    const id=String(raw); if(!id||seenId.has(id)||!styles[id]) return;
+    seenId.add(id);
+    const st=styles[id];
+    const sig=[NORM(st.name||'Original'),roleKey(st.role),NORM(st.portrait||'')].join('|');
+    if(seenSig.has(sig)) return;
+    seenSig.add(sig); keep.push(id);
+  });
+  return keep;
+}
+function dedupeAll(){
+  if(typeof characters==='undefined'||!Array.isArray(characters)) return;
+  characters.forEach(ch=>{ ch.styles=dedupeStyleIds(ch); });
+}
+function tableClean(columns, rows, titleFr, titleEn){
+  const cols=Array.isArray(columns)?columns:[];
+  const keep=[];
+  cols.forEach((c,i)=>{ if(NORM(c)!=='down_power') keep.push(i); });
+  if(!keep.length||!Array.isArray(rows)||!rows.length) return null;
+  const dictFr={level:'Niveau',type:'Type',damage:'Dégâts',ammo:'Munitions',use_ammo:'Consommation',reload:'Recharge',guard_break:'Brise-garde',health:'PV',hp:'PV'};
+  const dictEn={level:'Level',type:'Type',damage:'Damage',ammo:'Ammo',use_ammo:'Use Ammo',reload:'Reload',guard_break:'Guard Break',health:'HP',hp:'HP'};
+  const mapHead=(c,l)=>((l==='fr'?dictFr:dictEn)[NORM(c)]||CLEAN(c));
+  const outRows=rows.map(r=>keep.map(i=>CLEAN((r||[])[i]??''))).filter(r=>r.some(Boolean));
+  if(!outRows.length) return null;
+  return {title:{fr:titleFr,en:titleEn}, cols:{fr:keep.map(i=>mapHead(cols[i],'fr')), en:keep.map(i=>mapHead(cols[i],'en'))}, rows:outRows};
+}
+function patchGentle(){
+  if(typeof styles==='undefined'||typeof characters==='undefined') return;
+  const exact=EX()?.exact_by_style||{};
+  let styleId=''; let row=null;
+  Object.keys(exact).some(key=>{
+    const item=exact[key]||{};
+    if(NORM(item.base_name||item.name).includes('gentle_criminal') && Number(item.variant_index||0)===0){ styleId=key; row=item; return true; }
+    return false;
+  });
+  if(!styleId) styleId=Object.keys(styles).find(k=>/gentle[_-]?criminal/i.test(k))||'';
+  if(!styleId||!styles[styleId]) return;
+  const ch=(characters||[]).find(c=>(c.styles||[]).map(String).includes(String(styleId))||NORM(c.id).includes('gentle_criminal')||NORM(c.name).includes('gentle_criminal'));
+  if(!ch) return;
+  const st=styles[styleId];
+  ch.name='Gentle Criminal'; ch.side='villain'; ch.styles=[styleId];
+  st.role='technical'; st.name={fr:'Original',en:'Original'}; st.pv=String(row?.stats?.['Max Main Health']||row?.stats?.['Max Health']||st.pv||300);
+  if(row?.assets?.portrait) st.portrait=row.assets.portrait;
+  ch.portrait=st.portrait||ch.portrait;
+  st.description={
+    fr:"Un hors-la-loi des temps modernes qui entrera dans l'Histoire ! Son Alter Élasticité lui permet de virevolter dans les airs en narguant ses ennemis avec panache !",
+    en:'A modern-day outlaw destined to go down in history. His Elasticity Quirk lets him dance through the air while styling on his enemies.'
+  };
+  st.roleDesc={
+    fr:"Augmente la vitesse de rechargement de toute l'équipe. Plus il y a de membres avec le même rôle dans l'équipe, plus l'effet est amplifié.",
+    en:'Raises the reload speed of the whole team. The more allies with the same role, the stronger the effect becomes.'
+  };
+  const sp=row?.special_action||{};
+  st.special={
+    name:{fr:'Gently Trampoline / Mode Lover',en:'Gently Trampoline / Mode Lover'},
+    img:row?.assets?.special||st.special?.img||st.portrait,
+    desc:{
+      fr:"Déploie un point d'élasticité qui fait rebondir Gentle Criminal, ses alliés et les ennemis. Il peut ainsi se repositionner rapidement ou perturber une attaque.",
+      en:'Deploys an elasticity point that bounces Gentle Criminal, allies, and enemies, letting him reposition quickly or disrupt attacks.'
+    },
+    tables:(()=>{ const t=tableClean(sp.values?.columns||[], sp.values?.rows||[], "Valeurs de l'action spéciale", 'Special Action Values'); return t?[t]:[]; })()
+  };
+  const defaults={
+    'α':{name:'Gently Arrow',fr:"Tire une flèche d'air comprimé qui crée une onde de choc à l'impact avant de poursuivre sa trajectoire.",en:'Fires a compressed-air arrow that creates a shockwave on impact before continuing forward.'},
+    'β':{name:'Gently Trampoline',fr:"Crée une surface élastique qui permet de rebondir, de contrôler l'espace et de repousser les ennemis.",en:'Creates an elastic surface used to bounce, control space, and repel enemies.'},
+    'γ':{name:'Gently Rebound',fr:"Se propulse grâce à son Alter pour conserver l'avantage aérien et surprendre sa cible.",en:'Launches himself with Elasticity to keep aerial advantage and surprise the target.'}
+  };
+  const oldSkills=Array.isArray(st.skills)?st.skills:[];
+  st.skills=['α','β','γ'].map((letter,idx)=>{
+    const raw=row?.skills?.[letter]||{};
+    const old=oldSkills.find(s=>String(s.letter)===letter)||oldSkills[idx]||{};
+    const tables=[];
+    [
+      tableClean(raw.level_up_effects?.columns||[], raw.level_up_effects?.rows||[], `Effets de montée ${letter}`, `${letter} Level Up Effects`),
+      tableClean(raw.base_values?.columns||[], raw.base_values?.rows||[], `Valeurs de base ${letter}`, `${letter} Base Values`),
+      tableClean(raw.additional_values?.columns||[], raw.additional_values?.rows||[], `Valeurs détaillées ${letter}`, `${letter} Detailed Values`)
+    ].forEach(t=>{ if(t) tables.push(t); });
+    const key=letter==='α'?'alpha':letter==='β'?'beta':'gamma';
+    return {letter,name:CLEAN(raw.name)||defaults[letter].name,img:row?.assets?.[key]||old.img||st.portrait,desc:{fr:defaults[letter].fr,en:defaults[letter].en},tables:tables.length?tables:(old.tables||[])};
+  });
+}
+function styleInfoForChange(change){
+  if(typeof characters==='undefined'||typeof styles==='undefined') return {ch:null,styleId:'',st:null};
+  const charNorm=NORM(change?.character||'');
+  const ch=(characters||[]).find(c=>NORM(c.name)===charNorm||NORM(c.id)===charNorm) || null;
+  if(!ch) return {ch:null,styleId:'',st:null};
+  const ids=dedupeStyleIds(ch);
+  const wanted=NORM(change?.style||'Original');
+  let styleId=ids.find(id=>NORM(styles[id]?.name||'Original')===wanted)||'';
+  if(!styleId){
+    const rawSkill=NORM(change?.skill_name||change?.label||'');
+    styleId=ids.find(id=>{
+      const st=styles[id];
+      const all=[st?.special,...(st?.skills||[])].filter(Boolean);
+      return all.some(sk=>{ const nm=NORM(sk.name), lt=NORM(sk.letter); return (nm&&rawSkill.includes(nm))||(lt&&rawSkill.startsWith(lt)); });
+    })||'';
+  }
+  if(!styleId) styleId=ids[0]||'';
+  return {ch,styleId,st:styles[styleId]||null};
+}
+function skillForChange(st, change){
+  if(!st) return null;
+  const raw=NORM(change?.skill_name||change?.label||'');
+  const all=[{...(st.special||{}),letter:'SP'},...(st.skills||[])].filter(Boolean);
+  let hit=all.find(sk=>{ const nm=NORM(sk.name), lt=NORM(sk.letter); return (nm&&raw.includes(nm))||(lt&&raw.startsWith(lt)); });
+  if(!hit){ const first=String(change?.skill_name||'').trim().charAt(0); hit=all.find(sk=>String(sk.letter||'')===first)||null; }
+  return hit||null;
+}
+function numericTone(change){
+  const tone=NORM(change?.tone||change?.type||'');
+  if(/buff|increase|improve|up/.test(tone)) return 'buff';
+  if(/nerf|decrease|reduce|down/.test(tone)) return 'nerf';
+  const before=(Array.isArray(change?.before)?change.before:[change?.before]).map(x=>parseFloat(String(x).replace(',', '.'))).filter(Number.isFinite);
+  const after=(Array.isArray(change?.after)?change.after:[change?.after]).map(x=>parseFloat(String(x).replace(',', '.'))).filter(Number.isFinite);
+  if(before.length&&after.length){
+    const b=before.reduce((a,c)=>a+c,0)/before.length;
+    const a=after.reduce((x,c)=>x+c,0)/after.length;
+    if(a>b) return 'buff';
+    if(a<b) return 'nerf';
+  }
+  return 'adjust';
+}
+function toneLabel(t){ return t==='buff'?'BUFF':t==='nerf'?'NERF':(LANG()==='fr'?'NEUTRE':'NEUTRAL'); }
+function renderValue(change,tone){
+  const before=Array.isArray(change?.before)?change.before:[change?.before];
+  const after=Array.isArray(change?.after)?change.after:[change?.after];
+  const count=Math.max(before.length,after.length);
+  if(count>1){
+    return `<div class="s18PatchTableWrapV7"><table class="s18PatchTableV7"><thead><tr><th></th>${Array.from({length:count},(_,i)=>`<th>Lv.${i+1}</th>`).join('')}</tr></thead><tbody><tr class="before"><th>${LANG()==='fr'?'Avant':'Before'}</th>${Array.from({length:count},(_,i)=>`<td>${ESC(CLEAN(before[i]??''))}</td>`).join('')}</tr><tr class="after ${tone}"><th>${LANG()==='fr'?'Après':'After'}</th>${Array.from({length:count},(_,i)=>`<td>${ESC(CLEAN(after[i]??''))}</td>`).join('')}</tr></tbody></table></div>`;
+  }
+  if(change?.before!=null||change?.after!=null){
+    return `<div class="s18PatchRow"><span class="s18PatchBefore">${ESC(CLEAN(before[0]??'—'))}</span><span class="s18PatchArrow">→</span><span class="s18PatchAfter ${tone}">${ESC(CLEAN(after[0]??'—'))}</span></div>`;
+  }
+  return '';
+}
+function patchGroups(section){
+  const groups=[]; const map=new Map();
+  (section?.changes||[]).forEach(change=>{
+    const txt=NORM(change?.text||change?.note||'');
+    if(txt==='no_changes_detected' || txt==='no_changes_detected_') return;
+    const info=styleInfoForChange(change);
+    const key=`${NORM(change?.character)}__${info.styleId||NORM(change?.style||'Original')}`;
+    if(!map.has(key)){
+      const group={key,ch:info.ch,styleId:info.styleId,st:info.st,character:info.ch?.name||CLEAN(change?.character),style:CLEAN(info.st?.name||change?.style||'Original'),changes:[]};
+      map.set(key,group); groups.push(group);
+    }
+    map.get(key).changes.push(change);
+  });
+  return groups;
+}
+function patchGroupCard(group){
+  const st=group.st||{}; const ch=group.ch||{}; const role=roleKey(st.role||'technical');
+  return `<article class="s18PatchGroupCard role-${role}"><header class="s18PatchHeader"><div class="s18PatchPortrait">${st.portrait&&typeof asset==='function'?asset(st.portrait,group.character):''}</div><div class="s18PatchMeta"><h4>${ESC(group.character)}</h4><div class="s18PatchStyle">${ESC(group.style)}</div><div class="s18PatchBadges"><span class="badge ${ch.side==='villain'?'villain':'hero'}">${ESC(sideText(ch.side))}</span><span class="badge ${role}">${ESC(roleText(role))}</span></div></div></header><div class="s18PatchGroupBody">${group.changes.map(change=>{ const tone=numericTone(change); const skill=skillForChange(st,change); const skillName=CLEAN(skill?.name||change?.skill_name||change?.label||(LANG()==='fr'?'Ajustement':'Adjustment')); const bullets=(change?.bullets||[]).map(patchFr).filter(Boolean); const imgSrc=skill?.img||change?.skill_image||''; return `<section class="s18PatchSkillBlock ${tone}"><div class="s18PatchTone ${tone}">${toneLabel(tone)}</div><div class="s18PatchSkill">${imgSrc&&typeof asset==='function'?`<div class="s18PatchSkillImg">${asset(imgSrc,skillName)}</div>`:''}<div class="s18PatchSkillMeta"><h5>${ESC(skillName)}</h5>${change?.label?`<div class="s18PatchLabel">${ESC(patchFr(change.label))}</div>`:''}${renderValue(change,tone)}${bullets.length?`<ul class="s18PatchBullets">${bullets.map(x=>`<li>${ESC(x)}</li>`).join('')}</ul>`:''}</div></div></section>`; }).join('')}</div></article>`;
+}
+function openPatch(index){
+  try{
+    const note=(window.MHUR_HOME_DATA?.patch_notes||[])[index]; if(!note) return;
+    let modal=document.getElementById('patchModalV296');
+    if(!modal){
+      modal=document.createElement('div'); modal.id='patchModalV296'; modal.className='modalV296';
+      modal.innerHTML='<div class="modalPanelV296 patchPanelV296"><header><h2></h2><button type="button" class="v7PatchClose">×</button></header><div class="modalBodyV296"></div></div>';
+      document.body.appendChild(modal);
+      modal.querySelector('.v7PatchClose').addEventListener('click',()=>{ modal.classList.remove('open'); document.body.classList.remove('homeModalOpenV296'); });
+      modal.addEventListener('click',e=>{ if(e.target===modal){ modal.classList.remove('open'); document.body.classList.remove('homeModalOpenV296'); } });
+    }
+    modal.querySelector('header h2').textContent=patchFr(note.title);
+    const sections=(note.details||[]).map(sec=>({...(sec||{}),changes:(sec?.changes||[]).filter(ch=>NORM(ch?.text||ch?.note||'')!=='no_changes_detected')})).filter(sec=>(sec.changes||[]).length);
+    const date=new Date(note.date);
+    let html=`<div class="patchDateV296">${Number.isNaN(date.getTime())?ESC(note.date||''):new Intl.DateTimeFormat(LANG()==='fr'?'fr-FR':'en-US',{dateStyle:'medium',timeStyle:'short'}).format(date)}</div><div class="legendV296"><span class="buff">BUFF</span><span class="nerf">NERF</span><span class="adjust">${LANG()==='fr'?'NEUTRE':'NEUTRAL'}</span></div>`;
+    if(sections.length){
+      html+=sections.map(sec=>`<section class="detailSectionV296 ${ESC(sec.accent||'')}"><h3>${ESC(patchFr(sec.title))}</h3>${sec.note?`<p class="patchNoteV296">${ESC(patchFr(sec.note))}</p>`:''}<div class="s18PatchGroupGrid">${patchGroups(sec).map(patchGroupCard).join('')}</div></section>`).join('');
+    }else if((note.rich_blocks||[]).length){
+      html+=`<article class="richPatchV303">${(note.rich_blocks||[]).map(block=>block.type==='heading'?`<h3 class="richPatchHeadingV303">${ESC(patchFr(block.text))}</h3>`:block.type==='image'&&typeof asset==='function'?`<figure class="richPatchImageV303">${asset(block.src,block.alt||'Illustration')}</figure>`:`<p class="richPatchTextV303">${ESC(patchFr(block.text))}</p>`).join('')}</article>`;
+    }else{
+      html+=`<div class="emptyV296">${LANG()==='fr'?'Aucun détail disponible.':'No details available.'}</div>`;
+    }
+    modal.querySelector('.modalBodyV296').innerHTML=html;
+    modal.classList.add('open'); document.body.classList.add('homeModalOpenV296');
+  }catch(err){ console.error('[MHUR V7 PATCH]', err); }
+}
+function exactStyleKeyFromUrl(url){
+  const exact=EX()?.exact_by_style||{}; const raw=String(url||'').replace(/\/$/,''); if(!raw) return '';
+  return Object.keys(exact).find(key=>String(exact[key]?.source_url||'').replace(/\/$/,'')===raw)||'';
+}
+function characterForStyle(styleId){
+  if(typeof characters==='undefined') return null;
+  return (characters||[]).find(ch=>(ch.styles||[]).map(String).includes(String(styleId)))||null;
+}
+function resolveRelease(item){
+  const source=String(item?.source_url||item?.url||'');
+  let styleId=String(item?.style_id||'')||exactStyleKeyFromUrl(source);
+  let charId=String(item?.character_id||item?.char_id||'');
+  let ch=charId&&typeof characters!=='undefined'?(characters||[]).find(c=>String(c.id)===charId):null;
+  if(!ch&&styleId) ch=characterForStyle(styleId);
+  if(!ch&&typeof characters!=='undefined'){
+    const title=NORM(item?.title||''); ch=(characters||[]).find(c=>NORM(c.name)===title)||null;
+  }
+  if(ch&&!charId) charId=String(ch.id);
+  if(ch&&!styleId){
+    const wanted=NORM(item?.subtitle_fr||item?.subtitle_en||item?.subtitle||'');
+    styleId=dedupeStyleIds(ch).find(id=>NORM(styles?.[id]?.name||'Original')===wanted)||String(dedupeStyleIds(ch)[0]||'');
+  }
+  const st=styleId&&typeof styles!=='undefined'?styles[styleId]:null;
+  const kindRaw=NORM(item?.release_kind||item?.type||'');
+  const kind=kindRaw.includes('character')||kindRaw.includes('personnage')?'character':kindRaw.includes('costume')?'costume':'style';
+  return {charId,styleId,ch,st,kind};
+}
+function badgeIcon(kind){
+  return kind==='character'?'assets/home/icons/release_character.png':kind==='costume'?'assets/home/icons/release_costume.png':'assets/home/icons/release_style.png';
+}
+function releaseLabel(kind){
+  return kind==='character'?(LANG()==='fr'?'Personnage jouable':'Playable character'):kind==='costume'?(LANG()==='fr'?'Nouveau costume':'New costume'):(LANG()==='fr'?'Nouveau style':'New style');
+}
+function releaseTitle(item,res){
+  const raw=String(item?.title||'');
+  if(res.ch?.name) return res.ch.name;
+  if(/^character\s*\d+/i.test(raw)) return 'My Hero Ultra Rumble';
+  return patchFr(raw)||'My Hero Ultra Rumble';
+}
+function releaseSubtitle(item,res){
+  if(res.kind==='style') return CLEAN(res.st?.name||item?.subtitle||releaseLabel(res.kind));
+  return releaseLabel(res.kind);
+}
+function releaseArt(item,res){
+  return item?.image||item?.banner||item?.art||item?.character_art||res.st?.portrait||res.ch?.portrait||'';
+}
+function releaseGridHtml(){
+  const items=window.MHUR_HOME_DATA?.latest_releases||[];
+  return items.map(item=>{
+    const res=resolveRelease(item); const title=releaseTitle(item,res); const subtitle=releaseSubtitle(item,res); const art=releaseArt(item,res); const role=roleKey(res.st?.role||'technical');
+    return `<button type="button" class="releaseCardV299 releaseV7 role-${role}" data-release-char="${ESC(res.charId||'')}" data-release-style="${ESC(res.styleId||'')}" onclick="openHomeReleaseV298(this)" title="${ESC(title)} — ${ESC(subtitle)}"><span class="releaseV7Bg" style="background-image:url('${ESC(String(art).replace(/'/g,'%27'))}')"></span><span class="releaseV7Overlay"></span><span class="releaseBadgeV299 ${res.kind}">${typeof img==='function'?img(badgeIcon(res.kind),releaseLabel(res.kind)):''}</span><span class="releaseNewImageV7" aria-hidden="true"></span><span class="releaseNamesV299"><b>${ESC(title)}</b><small>${ESC(subtitle)}</small></span></button>`;
+  }).join('') || `<div class="emptyV296">${LANG()==='fr'?'Aucune sortie.':'No releases.'}</div>`;
+}
+function patchHomeReleases(){
+  const grid=document.querySelector('.releaseGridV296');
+  if(!grid||grid.dataset.s18v7==='1') return;
+  grid.innerHTML=releaseGridHtml();
+  grid.dataset.s18v7='1';
+}
+function patchStyleGridDom(){
+  const grid=document.querySelector('.styleGrid'); if(!grid) return;
+  const seen=new Set();
+  Array.from(grid.children).forEach(card=>{
+    const key=[NORM(card.querySelector('h2')?.textContent||''),NORM(card.querySelector('.badges')?.textContent||'')].join('|');
+    if(seen.has(key)) card.remove(); else seen.add(key);
+  });
+}
+function patchNewBadgesDom(){
+  const sets=newSets();
+  document.querySelectorAll('.card[data-char]').forEach(card=>{ if(sets.chars.has(card.getAttribute('data-char')) && !card.querySelector('.s18NewBadge')) card.insertAdjacentHTML('afterbegin',NEW_HTML); });
+  document.querySelectorAll('.styleCard[data-style]').forEach(card=>{ if(sets.styles.has(card.getAttribute('data-style')) && !card.querySelector('.s18NewBadge')) card.insertAdjacentHTML('afterbegin',NEW_HTML); });
+  document.querySelectorAll('[data-costume-id],[data-costume],[data-id]').forEach(card=>{
+    const id=card.getAttribute('data-costume-id')||card.getAttribute('data-costume')||String(card.getAttribute('data-id')||'').replace(/^ur_/,'');
+    if(id && sets.costumes.has(String(id)) && !card.querySelector('.s18NewBadge') && /costume/i.test(card.className)) card.insertAdjacentHTML('afterbegin',NEW_HTML);
+  });
+}
+function patchUiTextDom(){
+  if(LANG()!=='fr') return;
+  document.querySelectorAll('.latestPatchTagV303').forEach(el=>{ el.textContent='DERNIÈRE MISE À JOUR'; });
+  document.querySelectorAll('.gachaViewV303').forEach(el=>{ el.textContent='DISPONIBLE'; });
+  document.querySelectorAll('.homeTitleV296').forEach(el=>{ el.textContent=patchFr(el.textContent); });
+}
+function afterRender(){
+  try{ patchGentle(); dedupeAll(); patchHomeReleases(); patchStyleGridDom(); patchNewBadgesDom(); patchUiTextDom(); }catch(err){ console.error('[MHUR V7 AFTER RENDER]', err); }
+}
+function wrapRender(){
+  if(typeof window.render!=='function' || window.render.__s18v7) return;
+  const old=window.render;
+  const next=function(){ const out=old.apply(this,arguments); setTimeout(afterRender,0); return out; };
+  next.__s18v7=true; window.render=next; try{ render=next; }catch(_e){}
+}
+function install(){
+  patchGentle(); dedupeAll();
+  window.openPatchNoteV296=openPatch;
+  wrapRender();
+  setTimeout(afterRender,0);
+}
+install();
+window.addEventListener('mhur:languagechange',()=>setTimeout(afterRender,0));
+document.addEventListener('DOMContentLoaded',()=>setTimeout(afterRender,0));
+})();

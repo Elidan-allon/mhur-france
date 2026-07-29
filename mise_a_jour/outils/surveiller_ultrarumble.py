@@ -327,11 +327,11 @@ def lock_pid(lock_path: Path) -> int | None:
 
 
 def process_is_alive(pid: int | None) -> bool:
-    """Retourne True si le PID existe encore, sans faire planter Windows.
+    """Return True only when *pid* is still running.
 
-    Sous Windows, ``os.kill(pid, 0)`` peut lever un ``SystemError`` avec
-    WinError 87 pour un ancien PID. On utilise donc l'API Windows et on
-    considère ERROR_ACCESS_DENIED comme un processus encore existant.
+    ``os.kill(pid, 0)`` is reliable on POSIX, but can raise a ``SystemError``
+    wrapping WinError 87 on Windows.  Use the Windows process API there so a
+    stale lock can be removed instead of crashing the whole updater.
     """
     if not pid or pid <= 0:
         return False
@@ -341,72 +341,75 @@ def process_is_alive(pid: int | None) -> bool:
             import ctypes
             from ctypes import wintypes
 
+            kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)
+            open_process = kernel32.OpenProcess
+            open_process.argtypes = [wintypes.DWORD, wintypes.BOOL, wintypes.DWORD]
+            open_process.restype = wintypes.HANDLE
+
+            get_exit_code = kernel32.GetExitCodeProcess
+            get_exit_code.argtypes = [wintypes.HANDLE, ctypes.POINTER(wintypes.DWORD)]
+            get_exit_code.restype = wintypes.BOOL
+
+            close_handle = kernel32.CloseHandle
+            close_handle.argtypes = [wintypes.HANDLE]
+            close_handle.restype = wintypes.BOOL
+
             PROCESS_QUERY_LIMITED_INFORMATION = 0x1000
             STILL_ACTIVE = 259
-            ERROR_ACCESS_DENIED = 5
-
-            kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)
-            kernel32.OpenProcess.argtypes = [wintypes.DWORD, wintypes.BOOL, wintypes.DWORD]
-            kernel32.OpenProcess.restype = wintypes.HANDLE
-            kernel32.GetExitCodeProcess.argtypes = [wintypes.HANDLE, ctypes.POINTER(wintypes.DWORD)]
-            kernel32.GetExitCodeProcess.restype = wintypes.BOOL
-            kernel32.CloseHandle.argtypes = [wintypes.HANDLE]
-            kernel32.CloseHandle.restype = wintypes.BOOL
-
-            handle = kernel32.OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION, False, int(pid))
+            handle = open_process(PROCESS_QUERY_LIMITED_INFORMATION, False, pid)
             if not handle:
-                # Accès refusé signifie généralement que le processus existe,
-                # mais qu'il appartient à un autre contexte utilisateur.
-                return ctypes.get_last_error() == ERROR_ACCESS_DENIED
-
+                # ERROR_ACCESS_DENIED means the process exists but cannot be
+                # queried. ERROR_INVALID_PARAMETER means the PID is stale.
+                return ctypes.get_last_error() == 5
             try:
                 exit_code = wintypes.DWORD()
-                if not kernel32.GetExitCodeProcess(handle, ctypes.byref(exit_code)):
-                    return True
+                if not get_exit_code(handle, ctypes.byref(exit_code)):
+                    return False
                 return exit_code.value == STILL_ACTIVE
             finally:
-                kernel32.CloseHandle(handle)
+                close_handle(handle)
         except BaseException:
-            # Dernier filet de sécurité : un contrôle de verrou ne doit jamais
-            # faire échouer toute la synchronisation.
+            # Lock detection must never abort an update. A failed probe is
+            # treated as a dead process so the stale file can be replaced.
             return False
 
     try:
         os.kill(pid, 0)
         return True
-    except ProcessLookupError:
-        return False
-    except PermissionError:
-        return True
-    except BaseException:
+    except (OSError, SystemError):
         return False
 
 
 def acquire_lock(lock_path: Path) -> bool:
+    """Acquire the updater lock and safely clean a stale/malformed lock."""
     lock_path.parent.mkdir(parents=True, exist_ok=True)
-    try:
-        fd = os.open(str(lock_path), os.O_CREAT | os.O_EXCL | os.O_WRONLY)
-        with os.fdopen(fd, "w", encoding="utf-8") as handle:
-            handle.write(f"pid={os.getpid()}\nstarted={utc_now()}\n")
-        return True
-    except FileExistsError:
+
+    # A short loop handles the race where a stale lock is deleted just before
+    # another process creates a new one. It also avoids recursive retries.
+    for _ in range(3):
         try:
-            age = time.time() - lock_path.stat().st_mtime
-            pid = lock_pid(lock_path)
-            # Supprime immédiatement un verrou laissé par un processus terminé,
-            # ou un verrou vraiment ancien.
-            if not process_is_alive(pid) or age > 4 * 3600:
-                lock_path.unlink(missing_ok=True)
-                return acquire_lock(lock_path)
-        except BaseException:
-            # Un verrou illisible/corrompu ne doit pas provoquer de crash.
+            fd = os.open(str(lock_path), os.O_CREAT | os.O_EXCL | os.O_WRONLY)
+            with os.fdopen(fd, "w", encoding="utf-8") as handle:
+                handle.write(f"pid={os.getpid()}\nstarted={utc_now()}\n")
+            return True
+        except FileExistsError:
             try:
-                if lock_path.exists() and time.time() - lock_path.stat().st_mtime > 60:
+                age = max(0.0, time.time() - lock_path.stat().st_mtime)
+                pid = lock_pid(lock_path)
+                # A lock without a valid PID, owned by a terminated process, or
+                # older than four hours is stale and can be removed.
+                stale = pid is None or not process_is_alive(pid) or age > 4 * 3600
+                if stale:
                     lock_path.unlink(missing_ok=True)
-                    return acquire_lock(lock_path)
-            except BaseException:
-                pass
-        return False
+                    continue
+                return False
+            except (OSError, SystemError):
+                # The file may have disappeared between stat/read/unlink. Retry
+                # instead of crashing the updater.
+                continue
+        except OSError:
+            return False
+    return False
 
 
 def write_sync_status(status_path: Path, payload: dict) -> None:

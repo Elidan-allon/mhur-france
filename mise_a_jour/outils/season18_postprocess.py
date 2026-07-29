@@ -753,8 +753,8 @@ def parse_latest_releases(session: requests.Session, root: Path, payload: dict[s
 def ensure_assets_in_index(root: Path) -> None:
     idx = root / "index.html"
     text = idx.read_text(encoding="utf-8", errors="ignore")
-    css = '<link rel="stylesheet" href="css/season18-fixes.css?v=1802">'
-    js = '<script src="data/season18_sync.js?v=1802"></script>\n<script src="js/season18-fixes.js?v=1802"></script>'
+    css = '<link rel="stylesheet" href="css/season18-fixes.css?v=1806">'
+    js = '<script src="data/season18_sync.js?v=1806"></script>\n<script src="js/season18-fixes.js?v=1806"></script>'
     text = re.sub(r'\s*<link rel="stylesheet" href="css/season18-fixes\.css[^>]*>\s*', "\n", text)
     text = re.sub(r'\s*<script src="data/season18_sync\.js[^>]*></script>\s*', "\n", text)
     text = re.sub(r'\s*<script src="js/season18-fixes\.js[^>]*></script>\s*', "\n", text)
@@ -854,12 +854,28 @@ def patch_full(root: Path, session: requests.Session) -> None:
         home_path.write_text(json.dumps(home, ensure_ascii=False, indent=2), encoding="utf-8")
         (root / "data/home_data.js").write_text("window.MHUR_HOME_DATA = " + json.dumps(home, ensure_ascii=False, separators=(",", ":")) + ";\n", encoding="utf-8")
 
+    release_style_keys = {
+        str(x.get("style_id") or "") for x in releases
+        if str(x.get("release_kind") or "").lower() == "style" and str(x.get("style_id") or "")
+    }
+    release_character_ids = {
+        str(x.get("character_id") or "") for x in releases
+        if str(x.get("release_kind") or "").lower() == "character" and str(x.get("character_id") or "")
+    }
+    # The homepage is the safest source for the current season's newly released
+    # characters/styles. Keep these flags until the next synchronization, even
+    # when the historical known-content file was already written by a prior run.
+    new_style_keys = sorted(set(new_style_keys) | release_style_keys)
+    generated_new_characters = {
+        str(x.get("character_id")) for x in generated_records
+        if str(x.get("style_key")) in set(new_style_keys) and str(x.get("character_id") or "")
+    }
     sync_data = {
         "updated_at": datetime.now(timezone.utc).isoformat(),
         "costumes": costume_meta,
         "new_content": {
             "styles": new_style_keys,
-            "characters": sorted({str(x.get("character_id")) for x in generated_records if str(x.get("style_key")) in new_style_keys}),
+            "characters": sorted(generated_new_characters | release_character_ids),
             "costumes": added_costumes,
         },
     }

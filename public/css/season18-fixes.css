@@ -311,3 +311,232 @@
   .releaseReframedV304 .releaseNamesV299 b{font-size:24px}
   .releaseReframedV304 .releaseNamesV299 small{font-size:15px}
 }
+
+/* ========================================================================== */
+/* MHUR Nexus — Season 18 hard fix v6                                        */
+/* ========================================================================== */
+.s18NewBadgeV6,.s18NewBadge{
+  position:absolute!important;
+  top:7px!important;
+  left:7px!important;
+  z-index:30!important;
+  display:block!important;
+  width:104px!important;
+  height:54px!important;
+  min-width:0!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent url('../assets/home/icons/new_badge_custom.png') center/contain no-repeat!important;
+  color:transparent!important;
+  text-indent:-9999px!important;
+  overflow:hidden!important;
+  box-shadow:none!important;
+  transform-origin:top left!important;
+  animation:s18NewPulseV6 1.15s ease-in-out infinite!important;
+}
+@keyframes s18NewPulseV6{0%,100%{transform:scale(.94) rotate(-3deg)}50%{transform:scale(1.08) rotate(-3deg)}}
+
+.releaseV6{
+  position:relative!important;
+  min-height:190px!important;
+  overflow:hidden!important;
+  border:4px solid #05070b!important;
+  border-radius:16px!important;
+  background:#ad1529!important;
+  box-shadow:0 7px 0 #050506!important;
+}
+.releaseV6.role-technical{background:linear-gradient(135deg,#6f0e9e 0%,#a91ad4 52%,#4d0d73 100%)!important}
+.releaseV6.role-attack{background:linear-gradient(135deg,#a4081c 0%,#f01a38 52%,#920a1b 100%)!important}
+.releaseV6.role-assault{background:linear-gradient(135deg,#9f8200 0%,#f0c900 52%,#6f5b00 100%)!important}
+.releaseV6.role-support{background:linear-gradient(135deg,#0e8135 0%,#1ac65b 52%,#075626 100%)!important}
+.releaseV6.role-rapid{background:linear-gradient(135deg,#087f9b 0%,#14caef 52%,#07556d 100%)!important}
+.releaseV6 .releaseDotsV299{opacity:.20!important}
+.releaseV6 .releaseBadgeV299{z-index:8!important;left:10px!important;top:10px!important;width:36px!important;height:36px!important}
+.releaseNewImageV6{
+  position:absolute;
+  left:24px;
+  top:34px;
+  z-index:7;
+  width:170px;
+  height:86px;
+  background:url('../assets/home/icons/new_badge_custom.png') center/contain no-repeat;
+  filter:drop-shadow(0 4px 0 rgba(0,0,0,.65));
+}
+.releasePortraitV6{
+  position:absolute;
+  z-index:4;
+  left:31%;
+  right:1%;
+  top:2px;
+  bottom:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+}
+.releasePortraitV6 img{
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit:contain!important;
+  object-position:center center!important;
+  transform:scale(1.23)!important;
+  filter:drop-shadow(0 8px 8px rgba(0,0,0,.42));
+}
+.releaseV6 .releaseSlashV299{z-index:6!important;top:52%!important}
+.releaseV6 .releaseNamesV299{z-index:9!important;left:16px!important;right:48%!important;bottom:11px!important;text-align:left!important}
+.releaseV6 .releaseNamesV299 b{font-size:clamp(17px,1.8vw,27px)!important;line-height:1!important;text-shadow:0 3px 0 #000!important}
+.releaseV6 .releaseNamesV299 small{font-size:clamp(12px,1.15vw,17px)!important;color:#ffea00!important;text-shadow:0 2px 0 #000!important}
+
+.s18PatchGroupGrid{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:18px!important}
+.s18PatchGroupCard{border-radius:18px!important;overflow:hidden!important;border:2px solid #4a5870!important;background:#0b1320!important;box-shadow:0 7px 0 rgba(0,0,0,.45)!important}
+.s18PatchGroupCard .s18PatchHeader{display:grid!important;grid-template-columns:82px minmax(0,1fr)!important;gap:14px!important;align-items:center!important;padding:13px 15px!important;background:#252b38!important}
+.s18PatchPortrait{width:82px!important;height:82px!important;border-radius:12px!important;overflow:hidden!important;background:#0c1420!important;border:2px solid #52627e!important}
+.s18PatchPortrait img{width:100%!important;height:100%!important;object-fit:cover!important;object-position:center top!important}
+.s18PatchMeta h4{margin:0!important;font-size:22px!important;color:#fff!important}
+.s18PatchStyle{margin-top:3px!important;color:#ffe100!important;font-weight:1000!important;font-size:16px!important}
+.s18PatchBadges{display:flex!important;gap:8px!important;flex-wrap:wrap!important;margin-top:8px!important}
+.s18PatchBadges .badge{min-height:38px!important;padding:5px 10px!important;font-size:13px!important;border-width:2px!important}
+.s18PatchGroupBody{padding:13px!important;display:flex!important;flex-direction:column!important;gap:13px!important}
+.s18PatchSkillBlock{position:relative!important;padding-top:38px!important;border-radius:14px!important;border:2px solid #657085!important;overflow:hidden!important;background:#141d2b!important}
+.s18PatchSkillBlock.buff{border-color:#25df70!important;background:linear-gradient(180deg,#143a25,#0b2015)!important}
+.s18PatchSkillBlock.nerf{border-color:#ff536b!important;background:linear-gradient(180deg,#451721,#260d13)!important}
+.s18PatchSkillBlock.adjust{border-color:#e2bd35!important;background:linear-gradient(180deg,#463b14,#28200c)!important}
+.s18PatchTone{position:absolute!important;top:8px!important;right:9px!important;z-index:5!important;min-width:78px!important;padding:6px 11px!important;border:2px solid #000!important;border-radius:999px!important;color:#fff!important;font-size:12px!important;font-weight:1000!important;text-align:center!important;text-shadow:0 1px 0 #000!important;box-shadow:0 3px 0 rgba(0,0,0,.35)!important}
+.s18PatchTone.buff{background:#168e49!important}.s18PatchTone.nerf{background:#b61e39!important}.s18PatchTone.adjust{background:#9b7810!important}
+.s18PatchSkill{display:grid!important;grid-template-columns:94px minmax(0,1fr)!important;gap:13px!important;padding:13px!important}
+.s18PatchSkillImg{width:94px!important;height:94px!important;border-radius:12px!important;overflow:hidden!important;border:2px solid #54627a!important;background:#09111d!important}
+.s18PatchSkillImg img{width:100%!important;height:100%!important;object-fit:cover!important}
+.s18PatchSkillMeta h5{margin:0 0 6px!important;color:#fff!important;font-size:19px!important}
+.s18PatchLabel{color:#84c1ff!important;font-weight:900!important;margin-bottom:8px!important}
+.s18PatchRow{display:flex!important;align-items:center!important;gap:8px!important;flex-wrap:wrap!important}
+.s18PatchBefore,.s18PatchAfter{display:inline-flex!important;align-items:center!important;min-height:33px!important;padding:6px 10px!important;border-radius:9px!important;background:#303a4d!important;color:#fff!important;font-weight:900!important}
+.s18PatchAfter.buff{background:#0a6734!important}.s18PatchAfter.nerf{background:#8b1d31!important}.s18PatchAfter.adjust{background:#7a6412!important}
+.s18PatchArrow{color:#ffe000!important;font-size:20px!important;font-weight:1000!important}
+.s18PatchTableWrapV6{overflow-x:auto!important;margin-top:7px!important}
+.s18PatchTableV6{width:100%!important;border-collapse:collapse!important;color:#fff!important;font-size:13px!important}
+.s18PatchTableV6 th,.s18PatchTableV6 td{padding:7px 8px!important;border:1px solid #4d586b!important;text-align:center!important;white-space:nowrap!important}
+.s18PatchTableV6 thead th{background:#111a28!important;color:#fff!important}
+.s18PatchTableV6 tbody th{background:#202b3d!important;color:#fff!important}
+.s18PatchTableV6 tr.before td{background:#3a2430!important;color:#ff9dae!important}
+.s18PatchTableV6 tr.after.buff td{background:#0c542c!important;color:#75ffa5!important}
+.s18PatchTableV6 tr.after.nerf td{background:#6b1728!important;color:#ffb0be!important}
+.s18PatchTableV6 tr.after.adjust td{background:#66520d!important;color:#ffea7c!important}
+.s18PatchBullets{margin:8px 0 0!important;padding-left:20px!important;color:#e1ebfb!important}
+.s18PatchBullets li+li{margin-top:5px!important}
+.legendV296 .adjust{background:#9b7810!important;color:#fff!important}
+
+.styleCard.s18StyleCard,.card.s18RoleCard{position:relative!important}
+.styleCard.s18StyleCard .styleBanner img{object-fit:contain!important;object-position:center bottom!important;transform:none!important;padding:10px 10px 0!important}
+.card.s18RoleCard .thumb img{object-fit:contain!important;object-position:center bottom!important;transform:none!important;padding:10px 8px 0!important}
+
+@media(max-width:960px){
+  .s18PatchGroupGrid{grid-template-columns:1fr!important}
+  .releasePortraitV6{left:28%!important}
+  .releaseV6 .releaseNamesV299{right:42%!important}
+}
+@media(max-width:680px){
+  .releaseV6{min-height:158px!important}
+  .releaseNewImageV6{width:120px!important;height:60px!important;left:14px!important;top:31px!important}
+  .releasePortraitV6{left:29%!important;right:-5%!important}
+  .releasePortraitV6 img{transform:scale(1.16)!important}
+  .releaseV6 .releaseNamesV299{right:38%!important}
+  .s18PatchSkill{grid-template-columns:1fr!important}
+  .s18PatchSkillImg{width:100%!important;height:150px!important}
+}
+/* ========================================================================== */
+/* MHUR Nexus — Season 18 emergency hotfix v7 CSS                            */
+/* ========================================================================== */
+.s18NewBadgeV7,.s18NewBadgeV6,.s18NewBadge{
+  background:transparent url('../assets/home/icons/new_badge_custom.png') center/contain no-repeat!important;
+  color:transparent!important;
+  text-indent:-9999px!important;
+  overflow:hidden!important;
+  border:none!important;
+  box-shadow:none!important;
+}
+.releaseGridV296{gap:16px!important}
+.releaseV7{
+  position:relative!important;
+  min-height:176px!important;
+  overflow:hidden!important;
+  border:4px solid #05070b!important;
+  border-radius:16px!important;
+  background:#111!important;
+  box-shadow:0 7px 0 #050506!important;
+}
+.releaseV7 .releaseV7Bg{
+  position:absolute;
+  inset:0;
+  background-position:center center;
+  background-size:cover;
+  background-repeat:no-repeat;
+  transform:scale(1.02);
+}
+.releaseV7 .releaseV7Overlay{
+  position:absolute;
+  inset:0;
+  background:linear-gradient(90deg,rgba(8,10,14,.30) 0%,rgba(8,10,14,.08) 35%,rgba(8,10,14,.10) 55%,rgba(8,10,14,.36) 100%),linear-gradient(180deg,rgba(255,255,255,.03),rgba(0,0,0,.16));
+  z-index:2;
+}
+.releaseV7 .releaseDotsV299{display:none!important}
+.releaseV7 .releaseBadgeV299{
+  z-index:6!important;
+  left:10px!important;
+  top:10px!important;
+  width:36px!important;
+  height:36px!important;
+}
+.releaseNewImageV7{
+  position:absolute;
+  right:10px;
+  top:8px;
+  z-index:7;
+  width:88px;
+  height:44px;
+  background:url('../assets/home/icons/new_badge_custom.png') center/contain no-repeat;
+  filter:drop-shadow(0 3px 0 rgba(0,0,0,.65));
+}
+.releaseV7 .releaseNamesV299{
+  position:absolute!important;
+  z-index:8!important;
+  left:14px!important;
+  right:14px!important;
+  bottom:12px!important;
+  text-align:left!important;
+}
+.releaseV7 .releaseNamesV299 b{
+  display:block;
+  font-size:clamp(20px,1.9vw,30px)!important;
+  line-height:1!important;
+  color:#fff!important;
+  text-shadow:0 3px 0 rgba(0,0,0,.85)!important;
+}
+.releaseV7 .releaseNamesV299 small{
+  display:block;
+  margin-top:4px;
+  font-size:clamp(12px,1.05vw,16px)!important;
+  color:#ffea00!important;
+  text-shadow:0 2px 0 rgba(0,0,0,.85)!important;
+}
+.releaseV7.role-technical .releaseV7Overlay{background:linear-gradient(90deg,rgba(43,0,77,.20) 0%,rgba(43,0,77,.04) 45%,rgba(43,0,77,.18) 100%),linear-gradient(180deg,rgba(255,255,255,.04),rgba(0,0,0,.18))}
+.releaseV7.role-attack .releaseV7Overlay{background:linear-gradient(90deg,rgba(110,0,0,.22) 0%,rgba(110,0,0,.04) 45%,rgba(110,0,0,.16) 100%),linear-gradient(180deg,rgba(255,255,255,.04),rgba(0,0,0,.18))}
+.releaseV7.role-assault .releaseV7Overlay{background:linear-gradient(90deg,rgba(110,78,0,.22) 0%,rgba(110,78,0,.04) 45%,rgba(110,78,0,.18) 100%),linear-gradient(180deg,rgba(255,255,255,.04),rgba(0,0,0,.18))}
+.releaseV7.role-support .releaseV7Overlay{background:linear-gradient(90deg,rgba(0,84,36,.20) 0%,rgba(0,84,36,.04) 45%,rgba(0,84,36,.18) 100%),linear-gradient(180deg,rgba(255,255,255,.04),rgba(0,0,0,.18))}
+.releaseV7.role-rapid .releaseV7Overlay{background:linear-gradient(90deg,rgba(0,64,95,.22) 0%,rgba(0,64,95,.04) 45%,rgba(0,64,95,.18) 100%),linear-gradient(180deg,rgba(255,255,255,.04),rgba(0,0,0,.18))}
+
+.s18PatchTableWrapV7{overflow:auto;margin-top:10px}
+.s18PatchTableV7{width:100%;border-collapse:collapse;background:#0e1220;border:2px solid #243255;border-radius:10px;overflow:hidden}
+.s18PatchTableV7 th,.s18PatchTableV7 td{padding:8px 10px;border:1px solid #243255;text-align:center;color:#eef3ff}
+.s18PatchTableV7 thead th{background:#17213a;font-weight:800}
+.s18PatchTableV7 tbody tr.before th,.s18PatchTableV7 tbody tr.before td{background:#35151a}
+.s18PatchTableV7 tbody tr.after th,.s18PatchTableV7 tbody tr.after td{background:#17321f}
+.s18PatchTableV7 tbody tr.after.adjust th,.s18PatchTableV7 tbody tr.after.adjust td{background:#3a300f}
+
+@media (max-width:900px){
+  .releaseV7{min-height:150px!important}
+  .releaseNewImageV7{width:72px;height:36px}
+  .releaseV7 .releaseNamesV299 b{font-size:clamp(16px,4.2vw,23px)!important}
+  .releaseV7 .releaseNamesV299 small{font-size:clamp(10px,2.8vw,14px)!important}
+}
