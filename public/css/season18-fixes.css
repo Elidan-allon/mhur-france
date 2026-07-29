@@ -1147,3 +1147,273 @@ header.top [data-mhur-admin]{display:none!important;visibility:hidden!important;
   .charPanel.s18V13CharacterDetail .skillText .dataTable,
   .charPanel.s18V12CharacterDetail .skillText .dataTable{min-width:520px!important;font-size:14px!important}
 }
+
+
+/* ========================================================================== */
+/* MHUR Nexus — Saison 18 v19 : visuels PC + réductions + costumes           */
+/* ========================================================================== */
+.discountCardV296.s18DiscountCardV19{
+  display:flex!important;
+  flex-direction:column!important;
+  justify-content:space-between!important;
+}
+.s18DiscountArtV19{
+  width:100%!important;
+  height:148px!important;
+  display:flex!important;
+  align-items:flex-end!important;
+  justify-content:center!important;
+  overflow:hidden!important;
+  background:radial-gradient(circle at 50% 30%,#334764 0%,#17253a 42%,#0c1421 75%,#090f18 100%)!important;
+}
+.s18DiscountArtV19 img{
+  width:138%!important;
+  height:138%!important;
+  object-fit:contain!important;
+  object-position:center bottom!important;
+  transform:translateY(2%)!important;
+  background:none!important;
+}
+
+@media(min-width:901px){
+  .card[data-char].s18CharacterCardV10 .thumb,
+  .card[data-char].s18V14CharacterCard .thumb,
+  .card[data-char].s18V13CharacterCard .thumb,
+  .card[data-char].s18V12CharacterCard .thumb{
+    height:500px!important;
+    min-height:500px!important;
+  }
+  .card[data-char].s18CharacterCardV10 .thumb img,
+  .card[data-char].s18V14CharacterCard .thumb img,
+  .card[data-char].s18V13CharacterCard .thumb img,
+  .card[data-char].s18V12CharacterCard .thumb img,
+  .s18PortraitImgV10{
+    width:168%!important;
+    height:168%!important;
+    object-fit:contain!important;
+    object-position:center bottom!important;
+    transform:translateX(-50%) translateY(-1%)!important;
+  }
+
+  .styleCard[data-style].s18StyleCardV10 .styleBanner,
+  .styleCard[data-style].s18V14StyleCard .styleBanner,
+  .styleCard[data-style].s18V13StyleCard .styleBanner,
+  .styleCard[data-style].s18V12StyleCard .styleBanner{
+    height:580px!important;
+    min-height:580px!important;
+    align-items:flex-end!important;
+  }
+  .styleCard[data-style].s18StyleCardV10 .styleBanner img,
+  .styleCard[data-style].s18V14StyleCard .styleBanner img,
+  .styleCard[data-style].s18V13StyleCard .styleBanner img,
+  .styleCard[data-style].s18V12StyleCard .styleBanner img,
+  .s18StylePortraitV10{
+    width:154%!important;
+    height:154%!important;
+    object-fit:contain!important;
+    object-position:center bottom!important;
+    transform:translateX(-50%) translateY(-2%)!important;
+  }
+
+  .discountGridV296{grid-template-columns:repeat(6,minmax(0,1fr))!important}
+  .s18DiscountArtV19{height:170px!important}
+  .s18DiscountArtV19 img{width:150%!important;height:150%!important}
+
+  .s18CostumeDesktopGridV19{
+    display:grid!important;
+    grid-template-columns:repeat(auto-fit,minmax(175px,1fr))!important;
+    gap:14px!important;
+    overflow:visible!important;
+    padding-bottom:0!important;
+    align-items:stretch!important;
+  }
+  .s18CostumeDesktopGridV19 .costumeTile,
+  .s18CostumeDesktopGridV19 .costumeCard{
+    width:100%!important;
+    max-width:none!important;
+    flex:none!important;
+  }
+  .s18UpcomingCostumeGroupV19{
+    margin-top:22px!important;
+    padding-top:8px!important;
+    border-top:3px solid #1f3855!important;
+  }
+  .s18UpcomingCostumeTitleV19{
+    margin:0 0 14px!important;
+    padding:10px 14px!important;
+    border-left:7px solid #ffe000!important;
+    background:#0e1b2d!important;
+    color:#fff!important;
+    font-size:28px!important;
+    font-weight:1000!important;
+  }
+}
+
+@media(max-width:900px){
+  .s18DiscountArtV19{height:132px!important}
+  .s18DiscountArtV19 img{width:124%!important;height:124%!important}
+}
+
+
+/* ========================================================================== */
+/* MHUR Nexus — Saison 18 v20 : correctifs mobile finaux                     */
+/* ========================================================================== */
+.mhurPatchDevButtonV20 .mhurPatchDevIconV20{
+  display:grid!important;
+  place-items:center!important;
+  width:22px!important;
+  height:22px!important;
+  flex:0 0 22px!important;
+  line-height:0!important;
+}
+.mhurPatchDevButtonV20 .mhurPatchDevIconV20 svg{
+  display:block!important;
+  width:22px!important;
+  height:22px!important;
+}
+
+.s18PatchTableWrapV10{
+  overflow-x:auto!important;
+  overflow-y:hidden!important;
+  -webkit-overflow-scrolling:touch!important;
+  touch-action:pan-x!important;
+}
+.s18PatchTableWrapV10::-webkit-scrollbar{height:8px}
+.s18PatchTableV10{min-width:max-content!important}
+
+@media(max-width:900px){
+  .homeV296.s18HomeMobileOffsetV20{padding-top:12px!important}
+
+  .card[data-char].s18CharacterCardV10 .thumb,
+  .card[data-char].s18V14CharacterCard .thumb,
+  .card[data-char].s18V13CharacterCard .thumb,
+  .card[data-char].s18V12CharacterCard .thumb{
+    height:380px!important;
+    min-height:380px!important;
+    display:flex!important;
+    align-items:flex-end!important;
+    justify-content:center!important;
+    overflow:hidden!important;
+  }
+  .card[data-char].s18CharacterCardV10 .thumb img,
+  .card[data-char].s18V14CharacterCard .thumb img,
+  .card[data-char].s18V13CharacterCard .thumb img,
+  .card[data-char].s18V12CharacterCard .thumb img,
+  .s18PortraitImgV10{
+    width:112%!important;
+    height:112%!important;
+    max-width:none!important;
+    max-height:none!important;
+    object-fit:contain!important;
+    object-position:center bottom!important;
+    left:50%!important;
+    top:auto!important;
+    bottom:0!important;
+    transform:translateX(-50%) translateY(0)!important;
+  }
+
+  .styleCard[data-style].s18StyleCardV10 .styleBanner,
+  .styleCard[data-style].s18V14StyleCard .styleBanner,
+  .styleCard[data-style].s18V13StyleCard .styleBanner,
+  .styleCard[data-style].s18V12StyleCard .styleBanner{
+    height:430px!important;
+    min-height:430px!important;
+    display:flex!important;
+    align-items:flex-end!important;
+    justify-content:center!important;
+    overflow:hidden!important;
+  }
+  .styleCard[data-style].s18StyleCardV10 .styleBanner img,
+  .styleCard[data-style].s18V14StyleCard .styleBanner img,
+  .styleCard[data-style].s18V13StyleCard .styleBanner img,
+  .styleCard[data-style].s18V12StyleCard .styleBanner img,
+  .s18StylePortraitV10{
+    width:112%!important;
+    height:112%!important;
+    max-width:none!important;
+    max-height:none!important;
+    object-fit:contain!important;
+    object-position:center bottom!important;
+    left:50%!important;
+    top:auto!important;
+    bottom:0!important;
+    transform:translateX(-50%) translateY(0)!important;
+  }
+  .styleCard[data-style="fullbullet"] .styleBanner img,
+  .styleCard[data-style*="midoriya_attack"] .styleBanner img,
+  .s18StyleCardV10[data-style="fullbullet"] .styleBanner img,
+  .s18StyleCardV10[data-style*="midoriya_attack"] .styleBanner img,
+  .s18V14StyleCard[data-style="fullbullet"] .styleBanner img,
+  .s18V14StyleCard[data-style*="midoriya_attack"] .styleBanner img{
+    width:104%!important;
+    height:104%!important;
+    object-position:center bottom!important;
+    top:auto!important;
+    bottom:0!important;
+    transform:translateX(-50%) translateY(0)!important;
+  }
+
+  .s18PatchChangeV10{overflow:visible!important}
+  .s18PatchTableWrapV10{padding-bottom:4px!important}
+  .s18PatchTableV10{min-width:760px!important}
+
+  .s18NotesBodyV10>main{padding:14px!important}
+}
+
+@media(max-width:600px){
+  .homeV296.s18HomeMobileOffsetV20{padding-top:16px!important}
+
+  #mhurPatchDevButtonV14,.mhurPatchDevButtonV14{
+    min-width:44px!important;
+    max-width:48px!important;
+    padding:6px 10px!important;
+  }
+
+  .card[data-char].s18CharacterCardV10 .thumb,
+  .card[data-char].s18V14CharacterCard .thumb,
+  .card[data-char].s18V13CharacterCard .thumb,
+  .card[data-char].s18V12CharacterCard .thumb{
+    height:340px!important;
+    min-height:340px!important;
+  }
+  .card[data-char].s18CharacterCardV10 .thumb img,
+  .card[data-char].s18V14CharacterCard .thumb img,
+  .card[data-char].s18V13CharacterCard .thumb img,
+  .card[data-char].s18V12CharacterCard .thumb img,
+  .s18PortraitImgV10{
+    width:108%!important;
+    height:108%!important;
+  }
+
+  .styleCard[data-style].s18StyleCardV10 .styleBanner,
+  .styleCard[data-style].s18V14StyleCard .styleBanner,
+  .styleCard[data-style].s18V13StyleCard .styleBanner,
+  .styleCard[data-style].s18V12StyleCard .styleBanner{
+    height:398px!important;
+    min-height:398px!important;
+  }
+  .styleCard[data-style].s18StyleCardV10 .styleBanner img,
+  .styleCard[data-style].s18V14StyleCard .styleBanner img,
+  .styleCard[data-style].s18V13StyleCard .styleBanner img,
+  .styleCard[data-style].s18V12StyleCard .styleBanner img,
+  .s18StylePortraitV10{
+    width:108%!important;
+    height:108%!important;
+  }
+  .styleCard[data-style="fullbullet"] .styleBanner img,
+  .styleCard[data-style*="midoriya_attack"] .styleBanner img,
+  .s18StyleCardV10[data-style="fullbullet"] .styleBanner img,
+  .s18StyleCardV10[data-style*="midoriya_attack"] .styleBanner img,
+  .s18V14StyleCard[data-style="fullbullet"] .styleBanner img,
+  .s18V14StyleCard[data-style*="midoriya_attack"] .styleBanner img{
+    width:102%!important;
+    height:102%!important;
+  }
+
+  .s18PatchSkillV10{grid-template-columns:68px minmax(0,1fr)!important;gap:10px!important}
+  .s18PatchSkillV10>div{width:68px!important;height:68px!important}
+  .s18PatchSkillV10 h5{font-size:17px!important;line-height:1.18!important}
+  .s18PatchTableV10{min-width:720px!important}
+  .s18PatchTableV10 th,
+  .s18PatchTableV10 td{padding:7px 9px!important;font-size:13px!important}
+}

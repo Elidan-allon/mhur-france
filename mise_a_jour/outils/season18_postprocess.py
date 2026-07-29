@@ -1053,10 +1053,15 @@ def patch_full(root: Path, session: requests.Session) -> None:
     report_path = root / "data/ultrarumble/costume_update_report.json"
     report = json.loads(report_path.read_text(encoding="utf-8")) if report_path.exists() else {}
     added_costumes = [str(x) for x in report.get("added_ids", [])]
+    future_costumes = [rid for rid, x in costume_meta.items() if x.get("upcoming")]
     if not added_costumes and report.get("added"):
         # Fallback for the first run with the older updater: mark only future IDs,
         # never the whole historical catalogue.
-        added_costumes = [rid for rid, x in costume_meta.items() if x.get("upcoming")]
+        added_costumes = future_costumes[:]
+    else:
+        # Keep every costume still marked as upcoming so the frontend can rebuild
+        # the "Upcoming Costumes" section even after multiple synchronisations.
+        added_costumes = sorted({*added_costumes, *future_costumes}, key=lambda x: int(x))
 
     releases = parse_latest_releases(session, root, payload)
     home_path = root / "data/home_data.json"
@@ -1091,6 +1096,7 @@ def patch_full(root: Path, session: requests.Session) -> None:
             "characters": sorted(generated_new_characters | release_character_ids),
             "costumes": added_costumes,
         },
+        "upcoming_costumes": future_costumes,
     }
     (root / "data/season18_sync.js").write_text("window.MHUR_SEASON18_DATA = " + json.dumps(sync_data, ensure_ascii=False, separators=(",", ":")) + ";\n", encoding="utf-8")
     known_path.write_text(json.dumps({"styles": sorted({str(x.get('style_key')) for x in generated_records}), "costumes": ids, "updated_at": sync_data["updated_at"]}, ensure_ascii=False, indent=2), encoding="utf-8")

@@ -699,3 +699,179 @@ window.addEventListener('mhur:languagechange',()=>setTimeout(refreshNotesLayoutV
 window.MHUR_S18_V17={refreshNotesLayout:refreshNotesLayoutV17,measureHeaderOffset:measureHeaderOffsetV17};
 window.MHUR_S18_V18={refreshNotesLayout:refreshNotesLayoutV17,measureHeaderOffset:measureHeaderOffsetV17};
 })();
+
+
+/* ========================================================================== */
+/* MHUR Nexus — Saison 18 v19 : portraits réductions + costumes PC           */
+/* ========================================================================== */
+(function(){
+'use strict';
+
+const L=()=>typeof lang!=='undefined'&&lang==='en'?'en':'fr';
+const ESC=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const root=v=>typeof rootAsset==='function'?rootAsset(v):String(v||'');
+const NORM=v=>String(v??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'_').replace(/^_|_$/g,'');
+
+const DISCOUNT_PORTRAITS={
+  dj_board:'assets/present_mic/present_mic_technical/portrait.webp',
+  flow_runner:'assets/aizawa/aizawa_strike/portrait.webp',
+  gentle_criminal:'assets/home/season18/gentle_s18_profile_hd.webp',
+  factor_fusion:'assets/overhaul/overhaul_assault/portrait.webp',
+  cluster:'assets/bakugo/bakugo_technical/portrait.webp',
+  mirko:'assets/mirko/mirko_rapid/portrait.webp',
+  star_and_stripe:'assets/star_and_stripe/star_and_stripe_strike/portrait.webp',
+  star_stripe:'assets/star_and_stripe/star_and_stripe_strike/portrait.webp'
+};
+
+function discountPortrait(name,image){
+  const key=NORM(name);
+  return root(DISCOUNT_PORTRAITS[key]||image||'');
+}
+function renderDiscountCardV19(item){
+  const src=discountPortrait(item?.name,item?.image);
+  const pts=String(item?.points??'');
+  return `<article class="discountCardV296 s18DiscountCardV19"><div class="s18DiscountArtV19"><img src="${ESC(src)}" alt="${ESC(item?.name||'Discount')}" loading="lazy" decoding="async"></div><b>${ESC(item?.name||'')}</b><span>${ESC(pts)} Pts.</span></article>`;
+}
+function patchDiscountGrid(html){
+  const template=document.createElement('template');
+  template.innerHTML=String(html||'').trim();
+  const grid=template.content.querySelector('.discountGridV296');
+  if(!grid) return html;
+  const discounts=Array.isArray(window.MHUR_HOME_DATA?.discounts)?window.MHUR_HOME_DATA.discounts:[];
+  const empty=L()==='en'?'No discount.':'Aucune réduction.';
+  grid.innerHTML=discounts.length?discounts.map(renderDiscountCardV19).join(''):`<div class="emptyV296">${empty}</div>`;
+  return template.innerHTML;
+}
+function wrapHomeDashboard(){
+  if(typeof window.renderHomeDashboard!=='function'||window.renderHomeDashboard.__s18v19) return;
+  const original=window.renderHomeDashboard;
+  const wrapped=function(){ return patchDiscountGrid(original.apply(this,arguments)); };
+  wrapped.__s18v19=true;
+  window.renderHomeDashboard=wrapped;
+}
+
+function tileIdFromEl(el){
+  if(!el) return '';
+  const direct=[el.dataset?.costume,el.dataset?.id,el.getAttribute('data-costume'),el.getAttribute('data-id'),el.id].filter(Boolean);
+  for(const value of direct){
+    const m=String(value).match(/(\d{1,6})/);
+    if(m) return m[1];
+  }
+  const sources=[el.getAttribute('onclick'),el.getAttribute('href'),el.outerHTML];
+  for(const raw of sources){
+    const text=String(raw||'');
+    let m=text.match(/selectedCostume\s*=\s*['"](?:ur_)?(\d{1,6})['"]/i)||text.match(/openCostume[^\d]*(?:ur_)?(\d{1,6})/i)||text.match(/(?:costume|ur)[_-]?(\d{1,6})/i);
+    if(m) return m[1];
+  }
+  return '';
+}
+function markCostumeLayouts(){
+  document.querySelectorAll('.costumeGroupRow,.costumeGallery,.costumeGalleryGrid,.costumeGrid').forEach(el=>el.classList.add('s18CostumeDesktopGridV19'));
+}
+function injectUpcomingGroup(){
+  if(String(window.page||'')!=='costumes') return;
+  const meta=window.MHUR_SEASON18_DATA?.costumes||{};
+  const upcomingIds=new Set(Object.entries(meta).filter(([,v])=>v&&v.upcoming).map(([id])=>String(id)));
+  if(!upcomingIds.size) return;
+  const existing=document.querySelector('.s18UpcomingCostumeGroupV19');
+  if(existing) return;
+  const allTiles=[...document.querySelectorAll('.costumeTile,.costumeCard')].filter(el=>!el.closest('.inlineCostumeFilters'));
+  const upcomingTiles=allTiles.filter(el=>upcomingIds.has(tileIdFromEl(el)));
+  if(!upcomingTiles.length) return;
+  const groupsWrap=upcomingTiles[0].closest('.costumeGroupsWrap,.costumePage,.page,.content')||document.querySelector('.costumeGroupsWrap,.costumePage,.page,.content');
+  if(!groupsWrap) return;
+  const group=document.createElement('section');
+  group.className='costumeGroup s18UpcomingCostumeGroupV19';
+  group.innerHTML=`<h2 class="s18UpcomingCostumeTitleV19">${L()==='en'?'Upcoming Costumes':'Costumes à venir'}</h2><div class="s18CostumeDesktopGridV19 s18UpcomingCostumeGridV19"></div>`;
+  const grid=group.querySelector('.s18UpcomingCostumeGridV19');
+  upcomingTiles.forEach(tile=>grid.appendChild(tile));
+  groupsWrap.appendChild(group);
+}
+function applyDomV19(){
+  markCostumeLayouts();
+  injectUpcomingGroup();
+}
+function wrapRenderV19(){
+  if(typeof window.render!=='function'||window.render.__s18v19dom) return;
+  const original=window.render;
+  const wrapped=function(){ const result=original.apply(this,arguments); requestAnimationFrame(applyDomV19); return result; };
+  wrapped.__s18v19dom=true;
+  window.render=wrapped;
+  try{ render=wrapped; }catch(_e){}
+}
+
+wrapHomeDashboard();
+wrapRenderV19();
+if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',()=>requestAnimationFrame(applyDomV19),{once:true});
+else requestAnimationFrame(applyDomV19);
+window.addEventListener('mhur:languagechange',()=>requestAnimationFrame(applyDomV19));
+})();
+
+
+/* ========================================================================== */
+/* MHUR Nexus — Saison 18 v20 : hotfix mobile header / notes / portraits     */
+/* ========================================================================== */
+(function(){
+'use strict';
+
+const ICON_V20 = `
+<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+  <path fill="#f7fbff" d="M7 2h7l5 5v13a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z"/>
+  <path fill="#1a2f4d" d="M14 2v5h5"/>
+  <path fill="#17365d" d="M8 10h8v2H8zm0 4h8v2H8zm0 4h6v2H8z"/>
+  <circle cx="18" cy="18" r="4" fill="#ffcb16" stroke="#0b111a" stroke-width="1.5"/>
+  <path d="M18 15.8v4.4M15.8 18h4.4" stroke="#0b111a" stroke-width="1.5" stroke-linecap="round"/>
+</svg>`;
+
+function noteButtonsV20(){
+  return [...document.querySelectorAll('#mhurPatchDevButtonV14,.mhurPatchDevButtonV14,[data-s18-notes-button]')];
+}
+function decorateNotesButtonV20(){
+  noteButtonsV20().forEach(btn=>{
+    if(!btn) return;
+    btn.classList.add('mhurPatchDevButtonV20');
+    btn.setAttribute('aria-label','Patch Notes / Dev Notes');
+    btn.setAttribute('title','Patch Notes / Dev Notes');
+    const label=(btn.querySelector('span:last-child')?.textContent||'').trim()||'Patch Notes / Dev Notes';
+    btn.innerHTML=`<span class="mhurPatchDevIconV20" aria-hidden="true">${ICON_V20}</span><span>${label}</span>`;
+    btn.onclick=typeof openNotes==='function'?openNotes:btn.onclick;
+  });
+}
+function wrapEnsureHeaderButtonV20(){
+  if(typeof ensureHeaderButton!=='function' || ensureHeaderButton.__s18v20) return;
+  const original=ensureHeaderButton;
+  const wrapped=function(){ const out=original.apply(this,arguments); decorateNotesButtonV20(); return out; };
+  wrapped.__s18v20=true;
+  ensureHeaderButton=wrapped;
+  try{ window.ensureHeaderButton=wrapped; }catch(_e){}
+}
+function patchScrollableNotesV20(root=document){
+  root.querySelectorAll('.s18PatchTableWrapV10').forEach(wrap=>{
+    wrap.style.overflowX='auto';
+    wrap.style.overflowY='hidden';
+    wrap.style.webkitOverflowScrolling='touch';
+    wrap.style.touchAction='pan-x';
+    wrap.setAttribute('tabindex','0');
+  });
+}
+function fixHomeOffsetV20(){
+  const home=document.querySelector('.homeV296');
+  if(home) home.classList.add('s18HomeMobileOffsetV20');
+}
+function refreshV20(){
+  decorateNotesButtonV20();
+  patchScrollableNotesV20(document);
+  fixHomeOffsetV20();
+}
+
+wrapEnsureHeaderButtonV20();
+if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',()=>requestAnimationFrame(refreshV20),{once:true});
+else requestAnimationFrame(refreshV20);
+window.addEventListener('mhur:languagechange',()=>setTimeout(refreshV20,20));
+window.addEventListener('resize',()=>setTimeout(patchScrollableNotesV20,10),{passive:true});
+document.addEventListener('click',e=>{
+  if(e.target.closest?.('#mhurPatchDevButtonV14,.mhurPatchDevButtonV14,[data-s18-notes-button],[data-patch-index],[data-tab]')){
+    setTimeout(refreshV20,40);
+  }
+},true);
+})();

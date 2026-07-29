@@ -1,0 +1,28 @@
+MHUR NEXUS — CORRECTIF SAISON 18 V19
+====================================
+
+Cette version corrige les points remontés après le correctif stable :
+
+1. Réductions de points personnage
+- les portraits manquants sont forcés sur les visuels locaux MHUR Database ;
+- les images sont plus grandes et bien collées en bas du cadre ;
+- le rendu reste propre sur PC et compact sur mobile.
+
+2. Personnages / styles
+- les portraits de cartes personnages sont agrandis sur PC ;
+- les portraits de styles sont aussi agrandis sur PC ;
+- l’alignement reste centré en bas pour éviter le vide en haut.
+
+3. Costumes
+- les galeries de costumes utilisent mieux toute la largeur sur PC ;
+- un groupe "Costumes à venir" est recréé automatiquement quand des costumes sont marqués upcoming dans season18_sync.js ;
+- le post-traitement conserve maintenant les costumes upcoming dans les données de saison 18.
+
+FICHIERS PRINCIPAUX MODIFIÉS
+- public/js/season18-fixes.js
+- public/css/season18-fixes.css
+- mise_a_jour/outils/season18_postprocess.py
+
+Installation
+- remplace le dossier /mhur-france par celui de cette archive ;
+- si tu veux refaire la liste des costumes à venir depuis les données MHUR Database, relance ensuite la mise à jour complète.
