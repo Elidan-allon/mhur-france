@@ -1,6 +1,6 @@
 {
   "meta": {
-    "updated_at": "2026-07-29T17:45:44.815615+00:00",
+    "updated_at": "2026-07-29T18:25:30.391074+00:00",
     "source": "UltraRumble.com",
     "version": "v520-maintenance-sync"
   },
@@ -272,32 +272,32 @@
     {
       "name": "D.J. Board",
       "points": 100,
-      "image": "assets/present_mic/present_mic_technical/portrait.webp"
+      "image": "assets/home/discounts/d_j_board.webp"
     },
     {
       "name": "Flow Runner",
       "points": 100,
-      "image": "assets/aizawa/aizawa_strike/portrait.webp"
+      "image": "assets/home/discounts/flow_runner.webp"
     },
     {
-      "name": "Mirko",
+      "name": "Gentle Criminal",
       "points": 100,
-      "image": "assets/mirko/mirko_rapid/portrait.webp"
+      "image": "assets/home/discounts/gentle_criminal.webp"
     },
     {
       "name": "Factor Fusion",
       "points": 50,
-      "image": "assets/overhaul/overhaul_assault/portrait.webp"
+      "image": "assets/home/discounts/factor_fusion.webp"
     },
     {
       "name": "Cluster",
       "points": 50,
-      "image": "assets/bakugo/bakugo_technical/portrait.webp"
+      "image": "assets/home/discounts/cluster.webp"
     },
     {
-      "name": "Star and Stripe",
+      "name": "Mirko",
       "points": 50,
-      "image": "assets/star_and_stripe/star_and_stripe_strike/portrait.webp"
+      "image": "assets/home/discounts/mirko.webp"
     }
   ],
   "patch_notes": [

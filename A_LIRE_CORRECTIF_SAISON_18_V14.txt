@@ -1,0 +1,22 @@
+CORRECTIF SAISON 18 V14 — AFFICHAGE, PORTRAITS ET REDUCTIONS
+=============================================================
+
+1. Copie le dossier mhur-france par-dessus ton dossier actuel.
+2. Accepte tous les remplacements.
+3. Lance METTRE_A_JOUR_MHUR_FRANCE.bat.
+4. Attends le message [OK].
+5. Redéploie le dossier public.
+6. Fais une seule fois Ctrl + F5.
+
+CORRECTIONS V14
+- Un seul bouton Notes de patch / Notes des développeurs dans le header.
+- Suppression définitive des anciens doublons à chaque mise à jour.
+- Cartes Sorties prévues plus grandes, sans fond bleu ajouté.
+- Photos des personnages et styles plus grandes et collées en bas.
+- La carte générale utilise uniquement la couleur du style Original.
+- Portraits des styles récupérés depuis les ressources Variant Assets de MHUR Database.
+- Portrait Full Bullet local officiel utilisé immédiatement en secours.
+- Portraits locaux préchargés pour réduire le temps d'apparition.
+- Réductions de points personnage resynchronisées depuis Entry Cost Discounts.
+- Images des réductions téléchargées localement pour accélérer l'accueil.
+- Cache du correctif passé à la version 14000.

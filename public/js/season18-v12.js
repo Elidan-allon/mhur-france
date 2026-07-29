@@ -43,14 +43,19 @@ function portraitCandidates(styleId,fallback=''){
   const sync=window.MHUR_SEASON18_DATA?.official_portraits||{};
   const row=exactRow(styleId);
   const current=typeof styles!=='undefined'?styles?.[styleId]?.portrait||'':'';
-  const manual=/gentle[_-]?criminal/i.test(String(styleId||''))?'assets/home/season18/gentle_s18_profile_hd.webp':'';
-  return Array.from(new Set([sync[styleId],manual,current,fallback,row?.assets?.portrait].filter(Boolean).map(String)));
+  const id=String(styleId||'');
+  const manual=/^fullbullet$/i.test(id)?'assets/home/season18/midoriya_fullbullet_profile.png':(/gentle[_-]?criminal/i.test(id)?'assets/home/season18/gentle_s18_profile_hd.webp':'');
+  return Array.from(new Set([manual,sync[id],row?.assets?.portrait,current,fallback].filter(Boolean).map(String)));
 }
 function applyImage(img,candidates){
-  if(!img||!candidates.length||img.dataset.s18v13Applied==='1') return;
+  if(!img||!candidates.length) return;
+  img.loading='eager';
+  img.decoding='async';
+  try{img.fetchPriority='high'}catch(_e){}
+  if(img.dataset.s18v14Applied==='1') return;
   const queue=Array.from(new Set(candidates.filter(Boolean)));
   const first=queue.shift();
-  img.dataset.s18v13Applied='1';
+  img.dataset.s18v14Applied='1';
   img.dataset.s18v13Fallbacks=encodeURIComponent(JSON.stringify(queue));
   img.onerror=function(){
     try{
@@ -68,26 +73,17 @@ function oneRoleBackground(role){
   return `radial-gradient(circle at 50% 22%,color-mix(in srgb, ${color} 48%, white) 0%,${color} 48%,color-mix(in srgb, ${color} 70%, black) 100%)`;
 }
 function characterBackground(ids){
-  const roles=[];
-  ids.forEach(id=>{ const role=roleKey(styles?.[id]?.role); if(!roles.includes(role)) roles.push(role); });
-  if(!roles.length) roles.push('technical');
-  if(roles.length===1) return oneRoleBackground(roles[0]);
-  const stops=[];
-  roles.forEach((role,index)=>{
-    const start=Math.round(index*100/roles.length);
-    const end=Math.round((index+1)*100/roles.length);
-    stops.push(`${roleColors[role]} ${start}%`,`${roleColors[role]} ${end}%`);
-  });
-  return `linear-gradient(135deg,${stops.join(',')})`;
+  const original=(ids||[]).find(id=>norm(styles?.[id]?.name||'Original')==='original')||(ids||[])[0];
+  return oneRoleBackground(styles?.[original]?.role||'technical');
 }
 
 function decorateCharacterCards(){
   document.querySelectorAll('.card[data-char]').forEach(card=>{
     const ch=charById(card.dataset.char); if(!ch) return;
-    const ids=validStyleIds(ch); const first=ids[0]||'';
-    card.classList.add('s18V12CharacterCard','s18V13CharacterCard');
+    const ids=validStyleIds(ch); const first=ids.find(id=>norm(styles?.[id]?.name||'Original')==='original')||ids[0]||'';
+    card.classList.add('s18V12CharacterCard','s18V13CharacterCard','s18V14CharacterCard');
     const thumb=card.querySelector('.thumb'); if(!thumb) return;
-    thumb.style.background=characterBackground(ids);
+    thumb.style.setProperty('background',characterBackground(ids),'important');
     const image=thumb.querySelector('img');
     if(image) applyImage(image,portraitCandidates(first,ch.portrait));
   });
@@ -98,9 +94,9 @@ function decorateStyleCards(){
     const st=typeof styles!=='undefined'?styles?.[id]:null;
     if(!st) return;
     const role=roleKey(st.role);
-    card.classList.add('s18V12StyleCard','s18V13StyleCard',`role-${role}`);
+    card.classList.add('s18V12StyleCard','s18V13StyleCard','s18V14StyleCard',`role-${role}`);
     const banner=card.querySelector('.styleBanner'); if(!banner) return;
-    banner.style.background=oneRoleBackground(role);
+    banner.style.setProperty('background',oneRoleBackground(role),'important');
     const image=banner.querySelector('img');
     if(image) applyImage(image,portraitCandidates(id,st.portrait));
   });
@@ -109,10 +105,10 @@ function decorateDetail(){
   document.querySelectorAll('.charPanel').forEach(panel=>{
     const id=typeof selectedStyle!=='undefined'?String(selectedStyle||''):'';
     const st=id&&typeof styles!=='undefined'?styles?.[id]:null;
-    panel.classList.add('s18V12CharacterDetail','s18V13CharacterDetail');
+    panel.classList.add('s18V12CharacterDetail','s18V13CharacterDetail','s18V14CharacterDetail');
     const portrait=panel.querySelector('.charTop .portrait');
     if(!portrait) return;
-    portrait.style.background=oneRoleBackground(st?.role||'technical');
+    portrait.style.setProperty('background',oneRoleBackground(st?.role||'technical'),'important');
     const image=portrait.querySelector('img');
     if(image) applyImage(image,portraitCandidates(id,st?.portrait));
   });
@@ -123,8 +119,8 @@ function decorateHomeFallback(){
   const heading=[...home.querySelectorAll('.homeTitleV296')].find(node=>/derni[eè]res sorties|latest releases|sorties pr[eé]vues|planned releases/i.test(node.textContent||''));
   if(heading) heading.textContent=langNow()==='fr'?'SORTIES PRÉVUES — SAISON 18':'SEASON 18 PLANNED RELEASES';
   const grid=home.querySelector('.releaseGridV296');
-  if(grid&&!grid.querySelector('.s18PlannedCardV13')&&typeof window.MHUR_S18_PLANNED_HTML==='function'){
-    grid.className='releaseGridV296 s18PlannedGridV12 s18PlannedGridV13';
+  if(grid&&!grid.querySelector('.s18PlannedCardV14')&&typeof window.MHUR_S18_PLANNED_HTML==='function'){
+    grid.className='releaseGridV296 s18PlannedGridV12 s18PlannedGridV13 s18PlannedGridV14';
     grid.innerHTML=window.MHUR_S18_PLANNED_HTML();
   }
 }

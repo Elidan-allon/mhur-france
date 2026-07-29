@@ -381,6 +381,89 @@ def parse_patch_structured(session: requests.Session, root: Path, url: str, old:
     return out
 
 
+def parse_entry_discounts(session: requests.Session, root: Path, soup: BeautifulSoup) -> list[dict[str, Any]]:
+    """Read the current Entry Cost Discounts directly from UltraRumble.
+
+    The homepage markup changes occasionally, so the parser looks for point
+    labels inside the dedicated section instead of depending on fragile CSS
+    classes. Card portraits are downloaded locally to avoid slow remote images.
+    """
+    heading = next(
+        (
+            h for h in soup.find_all(["h1", "h2", "h3", "h4"])
+            if any(token in clean(h.get_text(" ")).lower() for token in (
+                "entry cost discounts", "réductions de coût", "reductions de cout"
+            ))
+        ),
+        None,
+    )
+    if heading is None:
+        return []
+
+    rank = int(heading.name[1])
+    tags: list[Tag] = []
+    for node in heading.find_all_next():
+        if node is heading:
+            continue
+        if isinstance(node, Tag) and node.name in {"h1", "h2", "h3", "h4"} and int(node.name[1]) <= rank:
+            break
+        if isinstance(node, Tag):
+            tags.append(node)
+
+    rows: list[dict[str, Any]] = []
+    seen: set[tuple[str, int]] = set()
+    point_re = re.compile(r"\b(\d{1,3})\s*Pts?\.?\s*$", re.I)
+    for node in tags:
+        raw = clean(node.get_text(" "))
+        match = point_re.fullmatch(raw)
+        if not match:
+            continue
+        points = int(match.group(1))
+        card: Tag | None = node
+        for _ in range(8):
+            if not isinstance(card, Tag):
+                break
+            card_text = clean(card.get_text(" "))
+            images = card.find_all("img")
+            if point_re.search(card_text) and images and len(card_text) <= 180:
+                break
+            card = card.parent if isinstance(card.parent, Tag) else None
+        if not isinstance(card, Tag):
+            continue
+
+        card_text = clean(card.get_text(" "))
+        name = clean(point_re.sub("", card_text))
+        name = re.sub(r"\bImage\b", "", name, flags=re.I)
+        name = clean(name)
+        if not name or len(name) > 90:
+            candidates = [
+                clean(x.get_text(" ")) for x in card.find_all(["b", "strong", "span", "p", "div"])
+                if clean(x.get_text(" ")) and not point_re.search(clean(x.get_text(" ")))
+            ]
+            candidates = [x for x in candidates if 1 < len(x) <= 70 and x.lower() not in {"image", "entry cost discounts"}]
+            name = candidates[0] if candidates else ""
+        key = (norm(name), points)
+        if not name or key in seen:
+            continue
+
+        image_url = ""
+        image_candidates: list[str] = []
+        for image in card.find_all("img"):
+            src = image.get("src") or image.get("data-src") or image.get("data-lazy-src") or ""
+            if src:
+                image_candidates.append(urljoin(BASE, src))
+        preferred = [u for u in image_candidates if re.search(r"charaimage|character|faceicon|variation|thumb", u, re.I)]
+        if preferred:
+            image_url = preferred[-1]
+        elif image_candidates:
+            image_url = image_candidates[-1]
+        local = download_image(session, root, image_url, f"assets/home/discounts/{norm(name) or len(rows)}") if image_url else ""
+        rows.append({"name": name, "points": points, "image": local or image_url})
+        seen.add(key)
+
+    return rows[:8]
+
+
 def patch_home(root: Path, session: requests.Session) -> None:
     data_path = root / "data/home_data.json"
     data = json.loads(data_path.read_text(encoding="utf-8")) if data_path.exists() else {}
@@ -388,6 +471,10 @@ def patch_home(root: Path, session: requests.Session) -> None:
     bonuses = parse_login_bonuses(session, root, soup)
     if bonuses or any("login bonuses" in clean(h.get_text(" ")).lower() for h in soup.find_all(["h1", "h2", "h3"])):
         data["login_bonuses"] = bonuses
+
+    discounts = parse_entry_discounts(session, root, soup)
+    if discounts:
+        data["discounts"] = discounts
 
     links: list[str] = []
     for a in soup.find_all("a", href=True):
@@ -410,7 +497,7 @@ def patch_home(root: Path, session: requests.Session) -> None:
 
     data_path.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
     (root / "data/home_data.js").write_text("window.MHUR_HOME_DATA = " + json.dumps(data, ensure_ascii=False, separators=(",", ":")) + ";\n", encoding="utf-8")
-    print(f"[S18 HOME] bonus={len(data.get('login_bonuses', []))} patches={len(data.get('patch_notes', []))}", flush=True)
+    print(f"[S18 HOME] bonus={len(data.get('login_bonuses', []))} discounts={len(data.get('discounts', []))} patches={len(data.get('patch_notes', []))}", flush=True)
 
 
 def extract_lines(module: Any, html: str, url: str) -> list[str]:
@@ -760,7 +847,7 @@ def ensure_assets_in_index(root: Path) -> None:
     """
     idx = root / "index.html"
     text = idx.read_text(encoding="utf-8", errors="ignore")
-    version = "13000"
+    version = "14000"
     css = f'<link rel="stylesheet" href="css/season18-fixes.css?v={version}">'
     early = f'<script src="data/season18_sync.js?v={version}"></script>\n<script src="js/season18-early.js?v={version}"></script>'
     late = f'<script src="js/season18-fixes.js?v={version}"></script>\n<script src="js/season18-v12.js?v={version}"></script>'
@@ -776,27 +863,26 @@ def ensure_assets_in_index(root: Path) -> None:
     for pattern in patterns:
         text = re.sub(pattern, "\n", text)
 
-    # Le bouton de modération n'appartient plus au header. Le bouton Notes est
-    # écrit directement dans l'HTML afin qu'il soit présent dès le premier
-    # affichage, sans apparition/disparition après JavaScript.
+    # Header idempotent: remove every old Notes button left by prior updates
+    # and every moderation launcher from the header before inserting one button.
     text = re.sub(
-        r'<button\b[^>]*id=["\']mhurAdminButton["\'][^>]*>[\s\S]*?</button>\s*',
+        r'<button\b[^>]*(?:id=["\'][^"\']*(?:mhurAdminButton|mhurPatchDevButton)[^"\']*["\']|class=["\'][^"\']*(?:mhurAdminTopButton|mhurPatchDevButton)[^"\']*["\'])[^>]*>[\s\S]*?</button>\s*',
         '',
         text,
-        count=1,
         flags=re.I,
     )
+    # Also remove duplicated notes launchers identified by their visible label.
     text = re.sub(
-        r'<button\b[^>]*id=["\']mhurPatchDevButtonV(?:10|12)["\'][^>]*>[\s\S]*?</button>\s*',
+        r'<button\b[^>]*>[\s\S]{0,500}?(?:Notes de patch|Patch Notes)[\s\S]{0,500}?</button>\s*',
         '',
         text,
         flags=re.I,
     )
     patch_button = (
-        '<button id="mhurPatchDevButtonV13" '
-        'class="nexusHeaderBtn mhurPatchDevButtonV10 mhurPatchDevButtonV13" '
+        '<button id="mhurPatchDevButtonV14" data-s18-notes-button="1" '
+        'class="nexusHeaderBtn mhurPatchDevButtonV10 mhurPatchDevButtonV14" '
         'type="button" '
-        'onclick="window.MHUR_S18_V13?.openNotes?.() || window.MHUR_S18_OPEN_NOTES_EARLY?.()">'
+        'onclick="window.MHUR_S18_V14?.openNotes?.() || window.MHUR_S18_OPEN_NOTES_EARLY?.()">'
         '<span class="mhurPatchDevIconV12">📝</span>'
         '<span>Notes de patch / Notes des développeurs</span>'
         '</button>\n'
@@ -805,10 +891,19 @@ def ensure_assets_in_index(root: Path) -> None:
     if account_match:
         text = text[:account_match.start()] + patch_button + text[account_match.start():]
 
+    preload = "\n".join([
+        '<link rel="preload" as="image" href="assets/home/season18/gentle_s18_banner.webp">',
+        '<link rel="preload" as="image" href="assets/home/season18/twice_s18_banner.webp">',
+        '<link rel="preload" as="image" href="assets/home/season18/tsuyu_profile.webp">',
+        '<link rel="preload" as="image" href="assets/home/icons/new_badge_custom.png">',
+    ])
+    text = re.sub(r'\s*<link rel="preload" as="image" href="assets/home/season18/[^"]+">', '', text)
+    text = re.sub(r'\s*<link rel="preload" as="image" href="assets/home/icons/new_badge_custom\.png">', '', text)
+
     if "</head>" in text:
-        text = text.replace("</head>", f"\n{css}\n</head>", 1)
+        text = text.replace("</head>", f"\n{preload}\n{css}\n</head>", 1)
     else:
-        text = css + "\n" + text
+        text = preload + "\n" + css + "\n" + text
 
     home_script = re.search(r'<script src="js/home\.js[^>]*></script>', text)
     if home_script:
@@ -818,7 +913,7 @@ def ensure_assets_in_index(root: Path) -> None:
         text = text.replace("</body>", early + "\n</body>", 1)
 
     if "</body>" in text:
-        text = text.replace("</body>", f"\n<!-- Season 18 v13 compatibility layer. -->\n{late}\n</body>", 1)
+        text = text.replace("</body>", f"\n<!-- Season 18 v14 compatibility layer. -->\n{late}\n</body>", 1)
     else:
         text += "\n" + late
     idx.write_text(text, encoding="utf-8")

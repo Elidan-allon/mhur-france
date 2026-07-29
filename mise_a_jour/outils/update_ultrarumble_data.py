@@ -515,7 +515,13 @@ def character_asset_urls(url: str, html: str) -> Dict[str, str]:
         if ch.lower() not in path.lower():
             continue
         if variant:
-            if var_dir.lower() not in path.lower() and f"_ch{code:03d}_{variant:02d}" not in path.lower():
+            thumb = re.search(r"/GUI/Variation/T_ui_Thumb_[^/]*_(\d+)_L\.(?:png|webp|jpg|jpeg)$", path, re.I)
+            thumb_matches = bool(thumb and int(thumb.group(1)) == code * 100 + variant)
+            if (
+                var_dir.lower() not in path.lower()
+                and f"_ch{code:03d}_{variant:02d}" not in path.lower()
+                and not thumb_matches
+            ):
                 continue
         else:
             if "/Variation/" in path:
@@ -528,7 +534,7 @@ def character_asset_urls(url: str, html: str) -> Dict[str, str]:
     out: Dict[str, str] = {}
     for asset in filtered:
         low = asset.lower()
-        if "charaimage" in low and "portrait" not in out:
+        if ("charaimage" in low or (variant and "/gui/variation/" in low and "t_ui_thumb_" in low)) and "portrait" not in out:
             out["portrait"] = asset
         elif "specialskill" in low and "special" not in out:
             out["special"] = asset

@@ -382,8 +382,8 @@ function patchHome(){
   const releaseHeading=headings.find(h=>/derni[eè]res sorties|latest releases|sorties pr[eé]vues|planned releases/i.test(h.textContent||''));
   if(releaseHeading)releaseHeading.textContent=TX('SORTIES PRÉVUES — SAISON 18','SEASON 18 PLANNED RELEASES');
   const grid=home.querySelector('.releaseGridV296');
-  if(grid&&!grid.querySelector('.s18PlannedCardV13')&&typeof window.MHUR_S18_PLANNED_HTML==='function'){
-    grid.className='releaseGridV296 s18PlannedGridV12 s18PlannedGridV13';
+  if(grid&&!grid.querySelector('.s18PlannedCardV14')&&typeof window.MHUR_S18_PLANNED_HTML==='function'){
+    grid.className='releaseGridV296 s18PlannedGridV12 s18PlannedGridV13 s18PlannedGridV14';
     grid.innerHTML=window.MHUR_S18_PLANNED_HTML();
   }
   const patchHeading=headings.find(h=>/derni[eè]re note de mise [aà] jour|latest patch note/i.test(h.textContent||''));
@@ -515,19 +515,28 @@ function openNotes(){
   requestAnimationFrame(()=>{resetNotesScroll(modal,true);modal.querySelector('.s18NotesPanelV10')?.focus?.({preventScroll:true});});
 }
 function ensureHeaderButton(){
-  document.querySelectorAll('#mhurAdminButton,.mhurAdminTopButton,[data-mhur-admin]').forEach(admin=>{
-    if(admin.id!=='mhurAccountButton')admin.style.setProperty('display','none','important');
+  const candidates=[...document.querySelectorAll('button')].filter(button=>{
+    const id=String(button.id||'');
+    const cls=String(button.className||'');
+    const label=String(button.textContent||'');
+    return /^mhurPatchDevButton/i.test(id)||/mhurPatchDevButton/i.test(cls)||/Notes de patch|Patch Notes\s*\/|Notes des développeurs/i.test(label);
   });
-  const account=document.getElementById('mhurAccountButton');if(!account?.parentNode)return;
-  let button=document.getElementById('mhurPatchDevButtonV13')||document.getElementById('mhurPatchDevButtonV12')||document.getElementById('mhurPatchDevButtonV10');
-  if(!button){
-    button=document.createElement('button');button.id='mhurPatchDevButtonV13';button.type='button';button.className='nexusHeaderBtn mhurPatchDevButtonV10 mhurPatchDevButtonV13';
-    button.innerHTML='<span class="mhurPatchDevIconV12">📝</span><span></span>';
-    account.parentNode.insertBefore(button,account);
-  }
-  const label=TX('Notes de patch / Notes des développeurs','Patch Notes / Dev Notes');
-  const span=button.querySelector('span:last-child');if(span&&span.textContent!==label)span.textContent=label;
+  let button=candidates.shift()||null;
+  candidates.forEach(extra=>extra.remove());
+  document.querySelectorAll('#mhurAdminButton,.mhurAdminTopButton,[data-mhur-admin]').forEach(admin=>{
+    if(admin.closest('header,.nexusHeader,.topbar,#topbar,#siteHeader'))admin.remove();
+  });
+  const account=document.getElementById('mhurAccountButton');
+  if(!account?.parentNode)return;
+  if(!button)button=document.createElement('button');
+  button.id='mhurPatchDevButtonV14';
+  button.dataset.s18NotesButton='1';
+  button.type='button';
+  button.className='nexusHeaderBtn mhurPatchDevButtonV10 mhurPatchDevButtonV14';
+  button.innerHTML='<span class="mhurPatchDevIconV12">📝</span><span></span>';
+  button.querySelector('span:last-child').textContent=TX('Notes de patch / Notes des développeurs','Patch Notes / Dev Notes');
   button.onclick=openNotes;
+  if(button.parentNode!==account.parentNode||button.nextSibling!==account)account.parentNode.insertBefore(button,account);
 }
 
 /* -------------------------- Administration profil ------------------------ */
@@ -587,12 +596,13 @@ function wrapDomRender(){
   wrapped.__s18v13Dom=true;window.render=wrapped;try{render=wrapped}catch(_e){}
 }
 function init(){
-  ensureHeaderButton();wrapDomRender();requestAnimationFrame(afterDom);
+  ensureHeaderButton();wrapDomRender();requestAnimationFrame(afterDom);if(window.__s18OpenNotesRequested){window.__s18OpenNotesRequested=false;setTimeout(openNotes,0);}
   window.addEventListener('mhur-auth-change',()=>setTimeout(()=>{ensureHeaderButton();injectAdminProfileButton()},80));
   window.addEventListener('mhur-role-change',()=>setTimeout(()=>{ensureHeaderButton();injectAdminProfileButton()},80));
   window.addEventListener('mhur:languagechange',()=>requestAnimationFrame(afterDom));
 }
 window.MHUR_S18_V10={openNotes,openAdminCenter,showPatch};
 window.MHUR_S18_V13={openNotes,openAdminCenter,showPatch,afterDom};
+window.MHUR_S18_V14={openNotes,openAdminCenter,showPatch,afterDom};
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
 })();

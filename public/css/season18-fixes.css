@@ -699,3 +699,130 @@ header.top [data-mhur-admin]{display:none!important;visibility:hidden!important;
   #mhurPatchDevButtonV13 span:last-child,.mhurPatchDevButtonV13 span:last-child{display:none!important}
   #mhurPatchDevButtonV13,.mhurPatchDevButtonV13{min-width:44px!important;padding:6px 10px!important}
 }
+
+/* ========================================================================== */
+/* Saison 18 v14 — cartes plus grandes, fonds d'origine et header idempotent */
+/* ========================================================================== */
+#mhurPatchDevButtonV14,.mhurPatchDevButtonV14{
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:8px!important;
+  min-height:48px!important;
+  max-width:min(360px,31vw)!important;
+  padding:7px 14px!important;
+  border:2px solid #49658d!important;
+  border-radius:14px!important;
+  background:#132139!important;
+  color:#fff!important;
+  font-weight:1000!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+  cursor:pointer!important;
+}
+#mhurPatchDevButtonV14:hover,.mhurPatchDevButtonV14:hover{border-color:#ffe100!important}
+
+.s18PlannedGridV14{
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:20px!important;
+  padding:0!important;
+  margin:0!important;
+  background:transparent!important;
+}
+.s18PlannedCardV14{
+  min-height:278px!important;
+  background:transparent!important;
+  border:4px solid #05070b!important;
+  border-radius:17px!important;
+  box-shadow:0 8px 0 #050506!important;
+}
+.s18PlannedCardV14.wide{grid-column:1/-1!important;min-height:285px!important}
+.s18PlannedArtV14{position:absolute!important;inset:0!important;display:block!important;overflow:hidden!important;background:none!important}
+.s18PlannedArtV14 img{
+  display:block!important;
+  width:100%!important;
+  height:100%!important;
+  object-fit:cover!important;
+  object-position:center center!important;
+  opacity:1!important;
+}
+.s18PlannedTsuyuV14{background:#000!important}
+.s18PlannedTsuyuV14 img{height:128%!important;max-width:100%!important;object-position:center bottom!important}
+.s18PlannedCardV14 .s18PlannedShadeV12{background:linear-gradient(90deg,rgba(0,0,0,.68) 0%,rgba(0,0,0,.12) 46%,rgba(0,0,0,.08) 68%,rgba(0,0,0,.38) 100%),linear-gradient(180deg,transparent 42%,rgba(0,0,0,.82) 100%)!important}
+.s18PlannedCardV14 .s18PlannedTextV12 b{font-size:clamp(30px,2.5vw,42px)!important}
+.s18PlannedCardV14 .s18PlannedTextV12 small{font-size:clamp(16px,1.35vw,20px)!important}
+.s18PlannedCardV14 .s18PlannedTextV12 em{font-size:14px!important}
+
+/* Une seule couleur sur la carte personnage : celle du style Original. */
+.card[data-char].s18V14CharacterCard .thumb,
+.card[data-char].s18V13CharacterCard .thumb,
+.card[data-char].s18V12CharacterCard .thumb{
+  height:470px!important;
+  min-height:470px!important;
+  padding:0!important;
+}
+.card[data-char].s18V14CharacterCard .thumb img,
+.card[data-char].s18V13CharacterCard .thumb img,
+.card[data-char].s18V12CharacterCard .thumb img{
+  width:146%!important;
+  height:146%!important;
+  max-width:none!important;
+  max-height:none!important;
+  bottom:-2px!important;
+  object-fit:contain!important;
+  object-position:center bottom!important;
+  opacity:1!important;
+}
+
+.styleCard[data-style].s18V14StyleCard .styleBanner,
+.styleCard[data-style].s18V13StyleCard .styleBanner,
+.styleCard[data-style].s18V12StyleCard .styleBanner{
+  height:575px!important;
+  min-height:575px!important;
+}
+.styleCard[data-style].s18V14StyleCard .styleBanner img,
+.styleCard[data-style].s18V13StyleCard .styleBanner img,
+.styleCard[data-style].s18V12StyleCard .styleBanner img{
+  width:145%!important;
+  height:145%!important;
+  bottom:-2px!important;
+  object-fit:contain!important;
+  object-position:center bottom!important;
+  opacity:1!important;
+}
+
+.charPanel.s18V14CharacterDetail .charTop .portrait,
+.charPanel.s18V13CharacterDetail .charTop .portrait,
+.charPanel.s18V12CharacterDetail .charTop .portrait{min-height:455px!important}
+.charPanel.s18V14CharacterDetail .charTop .portrait img,
+.charPanel.s18V13CharacterDetail .charTop .portrait img,
+.charPanel.s18V12CharacterDetail .charTop .portrait img{
+  width:145%!important;
+  height:145%!important;
+  bottom:-2px!important;
+  opacity:1!important;
+}
+
+@media(max-width:1100px){
+  #mhurPatchDevButtonV14 span:last-child,.mhurPatchDevButtonV14 span:last-child{max-width:210px;overflow:hidden;text-overflow:ellipsis}
+  .s18PlannedCardV14{min-height:245px!important}
+  .s18PlannedCardV14.wide{min-height:250px!important}
+  .card[data-char].s18V14CharacterCard .thumb,.card[data-char].s18V13CharacterCard .thumb,.card[data-char].s18V12CharacterCard .thumb{height:420px!important;min-height:420px!important}
+}
+@media(max-width:760px){
+  .s18PlannedGridV14{grid-template-columns:1fr!important;gap:16px!important}
+  .s18PlannedCardV14,.s18PlannedCardV14.wide{grid-column:auto!important;min-height:220px!important}
+  .card[data-char].s18V14CharacterCard .thumb,.card[data-char].s18V13CharacterCard .thumb,.card[data-char].s18V12CharacterCard .thumb{height:365px!important;min-height:365px!important}
+  .styleCard[data-style].s18V14StyleCard .styleBanner,.styleCard[data-style].s18V13StyleCard .styleBanner,.styleCard[data-style].s18V12StyleCard .styleBanner{height:470px!important;min-height:470px!important}
+}
+@media(max-width:600px){
+  #mhurPatchDevButtonV14,.mhurPatchDevButtonV14{min-width:44px!important;max-width:48px!important;padding:6px 10px!important}
+  #mhurPatchDevButtonV14 span:last-child,.mhurPatchDevButtonV14 span:last-child{display:none!important}
+  .s18PlannedCardV14,.s18PlannedCardV14.wide{min-height:190px!important}
+  .s18PlannedCardV14 .s18PlannedTextV12 b{font-size:24px!important}
+  .s18PlannedCardV14 .s18PlannedTextV12 small{font-size:13px!important}
+  .card[data-char].s18V14CharacterCard .thumb,.card[data-char].s18V13CharacterCard .thumb,.card[data-char].s18V12CharacterCard .thumb{height:330px!important;min-height:330px!important}
+  .styleCard[data-style].s18V14StyleCard .styleBanner,.styleCard[data-style].s18V13StyleCard .styleBanner,.styleCard[data-style].s18V12StyleCard .styleBanner{height:410px!important;min-height:410px!important}
+}

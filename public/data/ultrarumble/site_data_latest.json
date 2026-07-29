@@ -1,6 +1,6 @@
 {
   "meta": {
-    "updated_at": "2026-07-29T17:48:38.901833+00:00",
+    "updated_at": "2026-07-29T18:28:26.813721+00:00",
     "updater_version": "v354_afo_young_mapped",
     "source": "https://ultrarumble.com",
     "new_styles_added": 0,
@@ -9,7 +9,7 @@
       "special_cards": 60,
       "styles_enriched": 60
     },
-    "season18_postprocess": "2026-07-29T17:49:18.130650+00:00"
+    "season18_postprocess": "2026-07-29T18:28:56.342262+00:00"
   },
   "characters": [
     {
@@ -753,6 +753,7 @@
         ]
       },
       "assets": {
+        "portrait": "https://ultrarumble.com/assets/Character/Ch001/GUI/Variation/T_ui_Thumb_13_101_L.png",
         "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch001_01.png",
         "alpha": "https://ultrarumble.com/assets/Character/Ch001/Variation/Var01/GUI/Skill/T_ui_Skill_Ch001_Unique1.png",
         "beta": "https://ultrarumble.com/assets/Character/Ch001/Variation/Var01/GUI/Skill/T_ui_Skill_Ch001_Unique2.png",
@@ -1560,6 +1561,7 @@
         ]
       },
       "assets": {
+        "portrait": "https://ultrarumble.com/assets/Character/Ch002/GUI/Variation/T_ui_Thumb_13_201_L.png",
         "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch002_01.png",
         "alpha": "https://ultrarumble.com/assets/Character/Ch002/Variation/Var01/GUI/Skill/T_ui_Skill_Ch002_Unique1.png",
         "beta": "https://ultrarumble.com/assets/Character/Ch002/Variation/Var01/GUI/Skill/T_ui_Skill_Ch002_Unique2.png",
@@ -2397,6 +2399,7 @@
         ]
       },
       "assets": {
+        "portrait": "https://ultrarumble.com/assets/Character/Ch002/GUI/Variation/T_ui_Thumb_13_202_L.png",
         "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch002_02.png",
         "alpha": "https://ultrarumble.com/assets/Character/Ch002/Variation/Var02/GUI/Skill/T_ui_Skill_Ch002_Unique1.png",
         "beta": "https://ultrarumble.com/assets/Character/Ch002/Variation/Var02/GUI/Skill/T_ui_Skill_Ch002_Unique2.png",
@@ -2951,6 +2954,7 @@
         ]
       },
       "assets": {
+        "portrait": "https://ultrarumble.com/assets/Character/Ch003/GUI/Variation/T_ui_Thumb_13_301_L.png",
         "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch003_01.png",
         "alpha": "https://ultrarumble.com/assets/Character/Ch003/Variation/Var01/GUI/Skill/T_ui_Skill_Ch003_Unique1.png",
         "beta": "https://ultrarumble.com/assets/Character/Ch003/Variation/Var01/GUI/Skill/T_ui_Skill_Ch003_Unique2.png",
@@ -3707,6 +3711,7 @@
         ]
       },
       "assets": {
+        "portrait": "https://ultrarumble.com/assets/Character/Ch004/GUI/Variation/T_ui_Thumb_13_401_L.png",
         "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch004_01.png",
         "alpha": "https://ultrarumble.com/assets/Character/Ch004/Variation/Var01/GUI/Skill/T_ui_Skill_Ch004_Unique1.png",
         "beta": "https://ultrarumble.com/assets/Character/Ch004/Variation/Var01/GUI/Skill/T_ui_Skill_Ch004_Unique2.png",
@@ -5328,6 +5333,7 @@
         ]
       },
       "assets": {
+        "portrait": "https://ultrarumble.com/assets/Character/Ch007/GUI/Variation/T_ui_Thumb_13_701_L.png",
         "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch007_01.png",
         "alpha": "https://ultrarumble.com/assets/Character/Ch007/Variation/Var01/GUI/Skill/T_ui_Skill_Ch007_Unique1.png",
         "beta": "https://ultrarumble.com/assets/Character/Ch007/Variation/Var01/GUI/Skill/T_ui_Skill_Ch007_Unique2.png",
@@ -6412,6 +6418,7 @@
         ]
       },
       "assets": {
+        "portrait": "https://ultrarumble.com/assets/Character/Ch008/GUI/Variation/T_ui_Thumb_13_801_L.png",
         "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch008_01.png",
         "alpha": "https://ultrarumble.com/assets/Character/Ch008/Variation/Var01/GUI/Skill/T_ui_Skill_Ch008_Unique1.png",
         "beta": "https://ultrarumble.com/assets/Character/Ch008/Variation/Var01/GUI/Skill/T_ui_Skill_Ch008_Unique2.png",
@@ -8071,6 +8078,7 @@
         ]
       },
       "assets": {
+        "portrait": "https://ultrarumble.com/assets/Character/Ch012/GUI/Variation/T_ui_Thumb_13_1201_L.png",
         "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch012_01.png",
         "alpha": "https://ultrarumble.com/assets/Character/Ch012/Variation/Var01/GUI/Skill/T_ui_Skill_Ch012_Unique1.png",
         "beta": "https://ultrarumble.com/assets/Character/Ch012/Variation/Var01/GUI/Skill/T_ui_Skill_Ch012_Unique2.png",
@@ -8972,6 +8980,7 @@
         ]
       },
       "assets": {
+        "portrait": "https://ultrarumble.com/assets/Character/Ch013/GUI/Variation/T_ui_Thumb_13_1301_L.png",
         "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch013_01.png",
         "alpha": "https://ultrarumble.com/assets/Character/Ch013/Variation/Var01/GUI/Skill/T_ui_Skill_Ch013_Unique1.png",
         "beta": "https://ultrarumble.com/assets/Character/Ch013/Variation/Var01/GUI/Skill/T_ui_Skill_Ch013_Unique2.png",
@@ -9988,6 +9997,7 @@
         ]
       },
       "assets": {
+        "portrait": "https://ultrarumble.com/assets/Character/Ch015/GUI/Variation/T_ui_Thumb_13_1501_L.png",
         "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch015_01.png",
         "alpha": "https://ultrarumble.com/assets/Character/Ch015/Variation/Var01/GUI/Skill/T_ui_Skill_Ch015_Unique1.png",
         "beta": "https://ultrarumble.com/assets/Character/Ch015/Variation/Var01/GUI/Skill/T_ui_Skill_Ch015_Unique2.png",
@@ -10349,6 +10359,7 @@
         ]
       },
       "assets": {
+        "portrait": "https://ultrarumble.com/assets/Character/Ch015/GUI/Variation/T_ui_Thumb_13_1502_L.png",
         "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch015_02.png",
         "alpha": "https://ultrarumble.com/assets/Character/Ch015/Variation/Var02/GUI/Skill/T_ui_Skill_Ch015_Unique1.png",
         "beta": "https://ultrarumble.com/assets/Character/Ch015/Variation/Var02/GUI/Skill/T_ui_Skill_Ch015_Unique2.png",
@@ -11242,6 +11253,7 @@
         ]
       },
       "assets": {
+        "portrait": "https://ultrarumble.com/assets/Character/Ch016/GUI/Variation/T_ui_Thumb_13_1601_L.png",
         "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch016_01.png",
         "alpha": "https://ultrarumble.com/assets/Character/Ch016/Variation/Var01/GUI/Skill/T_ui_Skill_Ch016_Unique1.png",
         "beta": "https://ultrarumble.com/assets/Character/Ch016/Variation/Var01/GUI/Skill/T_ui_Skill_Ch016_Unique2.png",
@@ -11909,6 +11921,7 @@
         ]
       },
       "assets": {
+        "portrait": "https://ultrarumble.com/assets/Character/Ch017/GUI/Variation/T_ui_Thumb_13_1701_L.png",
         "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch017_01.png",
         "alpha": "https://ultrarumble.com/assets/Character/Ch017/Variation/Var01/GUI/Skill/T_ui_Skill_Ch017_Unique1.png",
         "beta": "https://ultrarumble.com/assets/Character/Ch017/Variation/Var01/GUI/Skill/T_ui_Skill_Ch017_Unique2.png",
@@ -12831,6 +12844,7 @@
         ]
       },
       "assets": {
+        "portrait": "https://ultrarumble.com/assets/Character/Ch018/GUI/Variation/T_ui_Thumb_13_1801_L.png",
         "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch018_01.png",
         "alpha": "https://ultrarumble.com/assets/Character/Ch018/Variation/Var01/GUI/Skill/T_ui_Skill_Ch018_Unique1.png",
         "beta": "https://ultrarumble.com/assets/Character/Ch018/Variation/Var01/GUI/Skill/T_ui_Skill_Ch018_Unique2.png",
@@ -13589,6 +13603,7 @@
         ]
       },
       "assets": {
+        "portrait": "https://ultrarumble.com/assets/Character/Ch023/GUI/Variation/T_ui_Thumb_13_2301_L.png",
         "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch023_01.png",
         "alpha": "https://ultrarumble.com/assets/Character/Ch023/Variation/Var01/GUI/Skill/T_ui_Skill_Ch023_Unique1.png",
         "beta": "https://ultrarumble.com/assets/Character/Ch023/Variation/Var01/GUI/Skill/T_ui_Skill_Ch023_Unique2.png",
@@ -14361,6 +14376,7 @@
         ]
       },
       "assets": {
+        "portrait": "https://ultrarumble.com/assets/Character/Ch024/GUI/Variation/T_ui_Thumb_13_2401_L.png",
         "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch024_01.png",
         "alpha": "https://ultrarumble.com/assets/Character/Ch024/Variation/Var01/GUI/Skill/T_ui_Skill_Ch024_Unique1.png",
         "beta": "https://ultrarumble.com/assets/Character/Ch024/Variation/Var01/GUI/Skill/T_ui_Skill_Ch024_Unique2.png",
@@ -15127,6 +15143,7 @@
         ]
       },
       "assets": {
+        "portrait": "https://ultrarumble.com/assets/Character/Ch025/GUI/Variation/T_ui_Thumb_13_2501_L.png",
         "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch025_01.png",
         "alpha": "https://ultrarumble.com/assets/Character/Ch025/Variation/Var01/GUI/Skill/T_ui_Skill_Ch025_Unique1.png",
         "beta": "https://ultrarumble.com/assets/Character/Ch025/Variation/Var01/GUI/Skill/T_ui_Skill_Ch025_Unique2.png",
@@ -16332,6 +16349,7 @@
         ]
       },
       "assets": {
+        "portrait": "https://ultrarumble.com/assets/Character/Ch034/GUI/Variation/T_ui_Thumb_13_3401_L.png",
         "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch034_01.png",
         "alpha": "https://ultrarumble.com/assets/Character/Ch034/Variation/Var01/GUI/Skill/T_ui_Skill_Ch034_Unique1.png",
         "beta": "https://ultrarumble.com/assets/Character/Ch034/Variation/Var01/GUI/Skill/T_ui_Skill_Ch034_Unique2.png",
@@ -18061,6 +18079,7 @@
         ]
       },
       "assets": {
+        "portrait": "https://ultrarumble.com/assets/Character/Ch043/GUI/Variation/T_ui_Thumb_13_4301_L.png",
         "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch043_01.png",
         "alpha": "https://ultrarumble.com/assets/Character/Ch043/Variation/Var01/GUI/Skill/T_ui_Skill_Ch043_Unique1.png",
         "beta": "https://ultrarumble.com/assets/Character/Ch043/Variation/Var01/GUI/Skill/T_ui_Skill_Ch043_Unique2.png",
@@ -18795,6 +18814,7 @@
         ]
       },
       "assets": {
+        "portrait": "https://ultrarumble.com/assets/Character/Ch046/GUI/Variation/T_ui_Thumb_13_4601_L.png",
         "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch046_01.png",
         "alpha": "https://ultrarumble.com/assets/Character/Ch046/Variation/Var01/GUI/Skill/T_ui_Skill_Ch046_Unique1.png",
         "beta": "https://ultrarumble.com/assets/Character/Ch046/Variation/Var01/GUI/Skill/T_ui_Skill_Ch046_Unique2.png",
@@ -22576,6 +22596,7 @@
         ]
       },
       "assets": {
+        "portrait": "https://ultrarumble.com/assets/Character/Ch109/GUI/Variation/T_ui_Thumb_13_10901_L.png",
         "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch109_01.png",
         "alpha": "https://ultrarumble.com/assets/Character/Ch109/Variation/Var01/GUI/Skill/T_ui_Skill_Ch109_Unique1.png",
         "beta": "https://ultrarumble.com/assets/Character/Ch109/Variation/Var01/GUI/Skill/T_ui_Skill_Ch109_Unique2.png",
@@ -25850,6 +25871,7 @@
         ]
       },
       "assets": {
+        "portrait": "https://ultrarumble.com/assets/Character/Ch007/GUI/Variation/T_ui_Thumb_13_701_L.png",
         "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch007_01.png",
         "alpha": "https://ultrarumble.com/assets/Character/Ch007/Variation/Var01/GUI/Skill/T_ui_Skill_Ch007_Unique1.png",
         "beta": "https://ultrarumble.com/assets/Character/Ch007/Variation/Var01/GUI/Skill/T_ui_Skill_Ch007_Unique2.png",
@@ -27096,6 +27118,7 @@
         ]
       },
       "assets": {
+        "portrait": "https://ultrarumble.com/assets/Character/Ch001/GUI/Variation/T_ui_Thumb_13_101_L.png",
         "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch001_01.png",
         "alpha": "https://ultrarumble.com/assets/Character/Ch001/Variation/Var01/GUI/Skill/T_ui_Skill_Ch001_Unique1.png",
         "beta": "https://ultrarumble.com/assets/Character/Ch001/Variation/Var01/GUI/Skill/T_ui_Skill_Ch001_Unique2.png",
@@ -28149,6 +28172,7 @@
         ]
       },
       "assets": {
+        "portrait": "https://ultrarumble.com/assets/Character/Ch002/GUI/Variation/T_ui_Thumb_13_201_L.png",
         "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch002_01.png",
         "alpha": "https://ultrarumble.com/assets/Character/Ch002/Variation/Var01/GUI/Skill/T_ui_Skill_Ch002_Unique1.png",
         "beta": "https://ultrarumble.com/assets/Character/Ch002/Variation/Var01/GUI/Skill/T_ui_Skill_Ch002_Unique2.png",
@@ -28986,6 +29010,7 @@
         ]
       },
       "assets": {
+        "portrait": "https://ultrarumble.com/assets/Character/Ch002/GUI/Variation/T_ui_Thumb_13_202_L.png",
         "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch002_02.png",
         "alpha": "https://ultrarumble.com/assets/Character/Ch002/Variation/Var02/GUI/Skill/T_ui_Skill_Ch002_Unique1.png",
         "beta": "https://ultrarumble.com/assets/Character/Ch002/Variation/Var02/GUI/Skill/T_ui_Skill_Ch002_Unique2.png",
@@ -29540,6 +29565,7 @@
         ]
       },
       "assets": {
+        "portrait": "https://ultrarumble.com/assets/Character/Ch003/GUI/Variation/T_ui_Thumb_13_301_L.png",
         "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch003_01.png",
         "alpha": "https://ultrarumble.com/assets/Character/Ch003/Variation/Var01/GUI/Skill/T_ui_Skill_Ch003_Unique1.png",
         "beta": "https://ultrarumble.com/assets/Character/Ch003/Variation/Var01/GUI/Skill/T_ui_Skill_Ch003_Unique2.png",
@@ -30583,6 +30609,7 @@
         ]
       },
       "assets": {
+        "portrait": "https://ultrarumble.com/assets/Character/Ch004/GUI/Variation/T_ui_Thumb_13_401_L.png",
         "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch004_01.png",
         "alpha": "https://ultrarumble.com/assets/Character/Ch004/Variation/Var01/GUI/Skill/T_ui_Skill_Ch004_Unique1.png",
         "beta": "https://ultrarumble.com/assets/Character/Ch004/Variation/Var01/GUI/Skill/T_ui_Skill_Ch004_Unique2.png",
@@ -32014,6 +32041,7 @@
         ]
       },
       "assets": {
+        "portrait": "https://ultrarumble.com/assets/Character/Ch008/GUI/Variation/T_ui_Thumb_13_801_L.png",
         "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch008_01.png",
         "alpha": "https://ultrarumble.com/assets/Character/Ch008/Variation/Var01/GUI/Skill/T_ui_Skill_Ch008_Unique1.png",
         "beta": "https://ultrarumble.com/assets/Character/Ch008/Variation/Var01/GUI/Skill/T_ui_Skill_Ch008_Unique2.png",
@@ -34301,6 +34329,7 @@
         ]
       },
       "assets": {
+        "portrait": "https://ultrarumble.com/assets/Character/Ch046/GUI/Variation/T_ui_Thumb_13_4601_L.png",
         "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch046_01.png",
         "alpha": "https://ultrarumble.com/assets/Character/Ch046/Variation/Var01/GUI/Skill/T_ui_Skill_Ch046_Unique1.png",
         "beta": "https://ultrarumble.com/assets/Character/Ch046/Variation/Var01/GUI/Skill/T_ui_Skill_Ch046_Unique2.png",
@@ -35594,6 +35623,7 @@
         ]
       },
       "assets": {
+        "portrait": "https://ultrarumble.com/assets/Character/Ch024/GUI/Variation/T_ui_Thumb_13_2401_L.png",
         "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch024_01.png",
         "alpha": "https://ultrarumble.com/assets/Character/Ch024/Variation/Var01/GUI/Skill/T_ui_Skill_Ch024_Unique1.png",
         "beta": "https://ultrarumble.com/assets/Character/Ch024/Variation/Var01/GUI/Skill/T_ui_Skill_Ch024_Unique2.png",
@@ -36714,6 +36744,7 @@
         ]
       },
       "assets": {
+        "portrait": "https://ultrarumble.com/assets/Character/Ch025/GUI/Variation/T_ui_Thumb_13_2501_L.png",
         "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch025_01.png",
         "alpha": "https://ultrarumble.com/assets/Character/Ch025/Variation/Var01/GUI/Skill/T_ui_Skill_Ch025_Unique1.png",
         "beta": "https://ultrarumble.com/assets/Character/Ch025/Variation/Var01/GUI/Skill/T_ui_Skill_Ch025_Unique2.png",
@@ -38052,6 +38083,7 @@
         ]
       },
       "assets": {
+        "portrait": "https://ultrarumble.com/assets/Character/Ch012/GUI/Variation/T_ui_Thumb_13_1201_L.png",
         "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch012_01.png",
         "alpha": "https://ultrarumble.com/assets/Character/Ch012/Variation/Var01/GUI/Skill/T_ui_Skill_Ch012_Unique1.png",
         "beta": "https://ultrarumble.com/assets/Character/Ch012/Variation/Var01/GUI/Skill/T_ui_Skill_Ch012_Unique2.png",
@@ -38953,6 +38985,7 @@
         ]
       },
       "assets": {
+        "portrait": "https://ultrarumble.com/assets/Character/Ch013/GUI/Variation/T_ui_Thumb_13_1301_L.png",
         "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch013_01.png",
         "alpha": "https://ultrarumble.com/assets/Character/Ch013/Variation/Var01/GUI/Skill/T_ui_Skill_Ch013_Unique1.png",
         "beta": "https://ultrarumble.com/assets/Character/Ch013/Variation/Var01/GUI/Skill/T_ui_Skill_Ch013_Unique2.png",
@@ -39577,6 +39610,7 @@
         ]
       },
       "assets": {
+        "portrait": "https://ultrarumble.com/assets/Character/Ch109/GUI/Variation/T_ui_Thumb_13_10901_L.png",
         "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch109_01.png",
         "alpha": "https://ultrarumble.com/assets/Character/Ch109/Variation/Var01/GUI/Skill/T_ui_Skill_Ch109_Unique1.png",
         "beta": "https://ultrarumble.com/assets/Character/Ch109/Variation/Var01/GUI/Skill/T_ui_Skill_Ch109_Unique2.png",
@@ -40335,6 +40369,7 @@
         ]
       },
       "assets": {
+        "portrait": "https://ultrarumble.com/assets/Character/Ch023/GUI/Variation/T_ui_Thumb_13_2301_L.png",
         "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch023_01.png",
         "alpha": "https://ultrarumble.com/assets/Character/Ch023/Variation/Var01/GUI/Skill/T_ui_Skill_Ch023_Unique1.png",
         "beta": "https://ultrarumble.com/assets/Character/Ch023/Variation/Var01/GUI/Skill/T_ui_Skill_Ch023_Unique2.png",
@@ -41345,6 +41380,7 @@
         ]
       },
       "assets": {
+        "portrait": "https://ultrarumble.com/assets/Character/Ch043/GUI/Variation/T_ui_Thumb_13_4301_L.png",
         "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch043_01.png",
         "alpha": "https://ultrarumble.com/assets/Character/Ch043/Variation/Var01/GUI/Skill/T_ui_Skill_Ch043_Unique1.png",
         "beta": "https://ultrarumble.com/assets/Character/Ch043/Variation/Var01/GUI/Skill/T_ui_Skill_Ch043_Unique2.png",
@@ -44430,6 +44466,7 @@
         ]
       },
       "assets": {
+        "portrait": "https://ultrarumble.com/assets/Character/Ch015/GUI/Variation/T_ui_Thumb_13_1501_L.png",
         "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch015_01.png",
         "alpha": "https://ultrarumble.com/assets/Character/Ch015/Variation/Var01/GUI/Skill/T_ui_Skill_Ch015_Unique1.png",
         "beta": "https://ultrarumble.com/assets/Character/Ch015/Variation/Var01/GUI/Skill/T_ui_Skill_Ch015_Unique2.png",
@@ -44791,6 +44828,7 @@
         ]
       },
       "assets": {
+        "portrait": "https://ultrarumble.com/assets/Character/Ch015/GUI/Variation/T_ui_Thumb_13_1502_L.png",
         "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch015_02.png",
         "alpha": "https://ultrarumble.com/assets/Character/Ch015/Variation/Var02/GUI/Skill/T_ui_Skill_Ch015_Unique1.png",
         "beta": "https://ultrarumble.com/assets/Character/Ch015/Variation/Var02/GUI/Skill/T_ui_Skill_Ch015_Unique2.png",
@@ -45684,6 +45722,7 @@
         ]
       },
       "assets": {
+        "portrait": "https://ultrarumble.com/assets/Character/Ch016/GUI/Variation/T_ui_Thumb_13_1601_L.png",
         "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch016_01.png",
         "alpha": "https://ultrarumble.com/assets/Character/Ch016/Variation/Var01/GUI/Skill/T_ui_Skill_Ch016_Unique1.png",
         "beta": "https://ultrarumble.com/assets/Character/Ch016/Variation/Var01/GUI/Skill/T_ui_Skill_Ch016_Unique2.png",
@@ -46351,6 +46390,7 @@
         ]
       },
       "assets": {
+        "portrait": "https://ultrarumble.com/assets/Character/Ch017/GUI/Variation/T_ui_Thumb_13_1701_L.png",
         "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch017_01.png",
         "alpha": "https://ultrarumble.com/assets/Character/Ch017/Variation/Var01/GUI/Skill/T_ui_Skill_Ch017_Unique1.png",
         "beta": "https://ultrarumble.com/assets/Character/Ch017/Variation/Var01/GUI/Skill/T_ui_Skill_Ch017_Unique2.png",
@@ -47273,6 +47313,7 @@
         ]
       },
       "assets": {
+        "portrait": "https://ultrarumble.com/assets/Character/Ch018/GUI/Variation/T_ui_Thumb_13_1801_L.png",
         "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch018_01.png",
         "alpha": "https://ultrarumble.com/assets/Character/Ch018/Variation/Var01/GUI/Skill/T_ui_Skill_Ch018_Unique1.png",
         "beta": "https://ultrarumble.com/assets/Character/Ch018/Variation/Var01/GUI/Skill/T_ui_Skill_Ch018_Unique2.png",
@@ -49268,6 +49309,7 @@
         ]
       },
       "assets": {
+        "portrait": "https://ultrarumble.com/assets/Character/Ch034/GUI/Variation/T_ui_Thumb_13_3401_L.png",
         "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch034_01.png",
         "alpha": "https://ultrarumble.com/assets/Character/Ch034/Variation/Var01/GUI/Skill/T_ui_Skill_Ch034_Unique1.png",
         "beta": "https://ultrarumble.com/assets/Character/Ch034/Variation/Var01/GUI/Skill/T_ui_Skill_Ch034_Unique2.png",
