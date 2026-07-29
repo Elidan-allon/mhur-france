@@ -6,6 +6,7 @@ import hashlib
 import json
 import mimetypes
 import re
+import sys
 import threading
 import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
@@ -15,6 +16,19 @@ from urllib.parse import urljoin, urlparse
 
 import requests
 from bs4 import BeautifulSoup, NavigableString, Tag
+
+
+def _configure_utf8_stdio() -> None:
+    """Empêche la console Windows (CP1255/CP1252) de faire planter les accents."""
+    for stream_name in ("stdout", "stderr"):
+        stream = getattr(sys, stream_name, None)
+        try:
+            stream.reconfigure(encoding="utf-8", errors="backslashreplace")
+        except (AttributeError, OSError):
+            pass
+
+
+_configure_utf8_stdio()
 
 BASE = "https://ultrarumble.com/"
 PATCH_ARCHIVE_IDS = ['1783497169', '1782273704', '1781064165', '1780384366', '1779934289', '1779836241', '1776813970', '1775599507', '1774397314', '1770177919', '1768924815', '1767762097', '1764737973', '1763569564', '1762315281', '1761105736', '1759896564', '1759294389', '1758686428', '1756872004', '1755663674', '1750221960', '1750219260', '1749054000', '1747813500', '1747799940', '1742966220']

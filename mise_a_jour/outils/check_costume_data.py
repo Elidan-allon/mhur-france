@@ -2,9 +2,24 @@
 # -*- coding: utf-8 -*-
 from __future__ import annotations
 
+import sys
+
 import argparse, copy, json, re
 from collections import Counter, defaultdict
 from pathlib import Path
+
+
+def _configure_utf8_stdio() -> None:
+    """Empêche la console Windows (CP1255/CP1252) de faire planter les accents."""
+    for stream_name in ("stdout", "stderr"):
+        stream = getattr(sys, stream_name, None)
+        try:
+            stream.reconfigure(encoding="utf-8", errors="backslashreplace")
+        except (AttributeError, OSError):
+            pass
+
+
+_configure_utf8_stdio()
 
 from update_ultrarumble_data import TUNING_FIELDS, refresh_tuning_from_slot_debug, tuning_field_valid
 

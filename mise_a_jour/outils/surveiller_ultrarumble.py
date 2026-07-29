@@ -26,6 +26,19 @@ from urllib.parse import urldefrag
 import requests
 from bs4 import BeautifulSoup
 
+
+def _configure_utf8_stdio() -> None:
+    """Empêche la console Windows (CP1255/CP1252) de faire planter les accents."""
+    for stream_name in ("stdout", "stderr"):
+        stream = getattr(sys, stream_name, None)
+        try:
+            stream.reconfigure(encoding="utf-8", errors="backslashreplace")
+        except (AttributeError, OSError):
+            pass
+
+
+_configure_utf8_stdio()
+
 BASE = "https://ultrarumble.com"
 FR_BASE = "https://fr.ultrarumble.com"
 HEADERS = {
@@ -237,14 +250,19 @@ def run_tool(root: Path, args: list[str], log_path: Path, accepted: set[int] | N
     accepted = accepted or {0}
     command = [sys.executable, *args]
     log("Exécution : " + " ".join(command[1:]), log_path)
+    child_env = os.environ.copy()
+    child_env["PYTHONUTF8"] = "1"
+    child_env["PYTHONIOENCODING"] = "utf-8"
     process = subprocess.Popen(
         command,
         cwd=root,
         text=True,
+        encoding="utf-8",
         stdout=subprocess.PIPE,
         stderr=subprocess.STDOUT,
-        errors="replace",
+        errors="backslashreplace",
         bufsize=1,
+        env=child_env,
     )
     with log_path.open("a", encoding="utf-8") as handle:
         if process.stdout is not None:

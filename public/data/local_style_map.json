@@ -1391,5 +1391,31 @@
       }
     ],
     "special_name": "Action spéciale"
+  },
+  {
+    "style_key": "gentle_criminal_technical",
+    "character_id": "gentle_criminal",
+    "character_name": "Gentle Criminal",
+    "style_name": "Original",
+    "role": "technical",
+    "pv": 300,
+    "skill_names": [
+      {
+        "letter": "α",
+        "name": "Gently Arrow"
+      },
+      {
+        "letter": "β",
+        "name": "Gently Rebound"
+      },
+      {
+        "letter": "γ",
+        "name": "Gently Avant"
+      }
+    ],
+    "special_name": "Action spéciale",
+    "source_url": "https://ultrarumble.com/character/108",
+    "generated": true,
+    "side": "villain"
   }
 ]

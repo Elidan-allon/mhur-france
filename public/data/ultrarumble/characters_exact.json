@@ -995,7 +995,7 @@
           "rows": [
             [
               "Lv.1",
-              "4",
+              "1",
               "x1",
               "x1",
               "10s",
@@ -1003,7 +1003,7 @@
             ],
             [
               "Lv.2",
-              "4",
+              "1",
               "x1",
               "x1",
               "10s",
@@ -1011,7 +1011,7 @@
             ],
             [
               "Lv.3",
-              "4",
+              "1",
               "x1",
               "x1",
               "10s",
@@ -1019,7 +1019,7 @@
             ],
             [
               "Lv.4",
-              "4",
+              "1",
               "x2",
               "x1",
               "10s",
@@ -1027,7 +1027,7 @@
             ],
             [
               "Lv.5",
-              "4",
+              "1",
               "x2",
               "x1",
               "10s",
@@ -1035,7 +1035,7 @@
             ],
             [
               "Lv.6",
-              "4",
+              "1",
               "x2",
               "x1",
               "10s",
@@ -1043,7 +1043,7 @@
             ],
             [
               "Lv.7",
-              "4",
+              "1",
               "x2",
               "x1",
               "10s",
@@ -1051,7 +1051,7 @@
             ],
             [
               "Lv.8",
-              "4",
+              "1",
               "x2",
               "x1",
               "10s",
@@ -1059,7 +1059,7 @@
             ],
             [
               "Lv.9",
-              "4",
+              "1",
               "x2",
               "x1",
               "8s",
@@ -1602,55 +1602,55 @@
             [
               "Normal (通常)",
               "Lv.1",
-              "30",
+              "40",
               "100"
             ],
             [
               "Normal (通常)",
               "Lv.2",
-              "31",
+              "41",
               "100"
             ],
             [
               "Normal (通常)",
               "Lv.3",
-              "32",
+              "42",
               "100"
             ],
             [
               "Normal (通常)",
               "Lv.4",
-              "34",
+              "44",
               "100"
             ],
             [
               "Normal (通常)",
               "Lv.5",
-              "35",
+              "45",
               "100"
             ],
             [
               "Normal (通常)",
               "Lv.6",
-              "36",
+              "46",
               "100"
             ],
             [
               "Normal (通常)",
               "Lv.7",
-              "37",
+              "47",
               "100"
             ],
             [
               "Normal (通常)",
               "Lv.8",
-              "38",
+              "48",
               "100"
             ],
             [
               "Normal (通常)",
               "Lv.9",
-              "40",
+              "50",
               "100"
             ],
             [
@@ -1951,109 +1951,109 @@
             [
               "Explosion (爆発)",
               "Lv.1",
-              "30",
-              "200"
-            ],
-            [
-              "Explosion (爆発)",
-              "Lv.2",
-              "31",
-              "200"
-            ],
-            [
-              "Explosion (爆発)",
-              "Lv.3",
-              "32",
-              "200"
-            ],
-            [
-              "Explosion (爆発)",
-              "Lv.4",
-              "34",
-              "200"
-            ],
-            [
-              "Explosion (爆発)",
-              "Lv.5",
               "35",
               "200"
             ],
             [
               "Explosion (爆発)",
-              "Lv.6",
+              "Lv.2",
               "36",
               "200"
             ],
             [
               "Explosion (爆発)",
-              "Lv.7",
+              "Lv.3",
               "37",
               "200"
             ],
             [
               "Explosion (爆発)",
+              "Lv.4",
+              "39",
+              "200"
+            ],
+            [
+              "Explosion (爆発)",
+              "Lv.5",
+              "40",
+              "200"
+            ],
+            [
+              "Explosion (爆発)",
+              "Lv.6",
+              "41",
+              "200"
+            ],
+            [
+              "Explosion (爆発)",
+              "Lv.7",
+              "42",
+              "200"
+            ],
+            [
+              "Explosion (爆発)",
               "Lv.8",
-              "38",
+              "43",
               "200"
             ],
             [
               "Explosion (爆発)",
               "Lv.9",
-              "40",
+              "45",
               "200"
             ],
             [
               "Explosion (爆発)",
               "Lv.1",
-              "40",
-              "250"
-            ],
-            [
-              "Explosion (爆発)",
-              "Lv.2",
-              "41",
-              "250"
-            ],
-            [
-              "Explosion (爆発)",
-              "Lv.3",
-              "42",
-              "250"
-            ],
-            [
-              "Explosion (爆発)",
-              "Lv.4",
               "44",
               "250"
             ],
             [
               "Explosion (爆発)",
-              "Lv.5",
-              "45",
-              "250"
-            ],
-            [
-              "Explosion (爆発)",
-              "Lv.6",
+              "Lv.2",
               "46",
               "250"
             ],
             [
               "Explosion (爆発)",
-              "Lv.7",
-              "47",
-              "250"
-            ],
-            [
-              "Explosion (爆発)",
-              "Lv.8",
+              "Lv.3",
               "48",
               "250"
             ],
             [
               "Explosion (爆発)",
-              "Lv.9",
+              "Lv.4",
               "50",
+              "250"
+            ],
+            [
+              "Explosion (爆発)",
+              "Lv.5",
+              "52",
+              "250"
+            ],
+            [
+              "Explosion (爆発)",
+              "Lv.6",
+              "54",
+              "250"
+            ],
+            [
+              "Explosion (爆発)",
+              "Lv.7",
+              "56",
+              "250"
+            ],
+            [
+              "Explosion (爆発)",
+              "Lv.8",
+              "58",
+              "250"
+            ],
+            [
+              "Explosion (爆発)",
+              "Lv.9",
+              "60",
               "250"
             ]
           ]
@@ -2146,9 +2146,9 @@
             [
               "Lv.9",
               "1",
+              "x2",
               "x1",
-              "x1",
-              "7s",
+              "8s",
               "1"
             ]
           ]
@@ -4380,75 +4380,75 @@
           "rows": [
             [
               "Lv.1",
-              "55",
+              "54",
               "x7",
               "x1",
               "1s",
-              "50"
+              "100"
             ],
             [
               "Lv.2",
-              "60",
+              "56",
               "x7",
               "x1",
               "1s",
-              "50"
+              "100"
             ],
             [
               "Lv.3",
-              "65",
+              "58",
               "x7",
               "x1",
               "1s",
-              "50"
+              "100"
             ],
             [
               "Lv.4",
-              "70",
+              "60",
               "x8",
               "x1",
               "1s",
-              "50"
+              "100"
             ],
             [
               "Lv.5",
-              "72",
+              "62",
               "x8",
               "x1",
               "1s",
-              "50"
+              "100"
             ],
             [
               "Lv.6",
-              "74",
+              "64",
               "x8",
               "x1",
               "1s",
-              "50"
+              "100"
             ],
             [
               "Lv.7",
-              "76",
+              "66",
               "x8",
               "x1",
               "1s",
-              "50"
+              "100"
             ],
             [
               "Lv.8",
-              "78",
+              "68",
               "x8",
               "x1",
               "1s",
-              "50"
+              "100"
             ],
             [
               "Lv.9",
-              "80",
+              "70",
               "x9",
               "x1",
               "1s",
-              "50"
+              "100"
             ]
           ]
         },
@@ -9183,8 +9183,68 @@
           ]
         },
         "additional_values": {
-          "columns": [],
-          "rows": []
+          "columns": [
+            "Type",
+            "Level",
+            "Damage",
+            "Down Power"
+          ],
+          "rows": [
+            [
+              "Body Collision (本体衝突)",
+              "Lv.1",
+              "100",
+              "500"
+            ],
+            [
+              "Body Collision (本体衝突)",
+              "Lv.2",
+              "105",
+              "500"
+            ],
+            [
+              "Body Collision (本体衝突)",
+              "Lv.3",
+              "110",
+              "500"
+            ],
+            [
+              "Body Collision (本体衝突)",
+              "Lv.4",
+              "115",
+              "500"
+            ],
+            [
+              "Body Collision (本体衝突)",
+              "Lv.5",
+              "120",
+              "500"
+            ],
+            [
+              "Body Collision (本体衝突)",
+              "Lv.6",
+              "125",
+              "500"
+            ],
+            [
+              "Body Collision (本体衝突)",
+              "Lv.7",
+              "130",
+              "500"
+            ],
+            [
+              "Body Collision (本体衝突)",
+              "Lv.8",
+              "135",
+              "500"
+            ],
+            [
+              "Body Collision (本体衝突)",
+              "Lv.9",
+              "140",
+              "500"
+            ]
+          ]
         }
       },
       "γ": {
@@ -13865,55 +13925,55 @@
             [
               "Bullet (弾)",
               "Lv.1",
-              "40",
+              "36",
               "80"
             ],
             [
               "Bullet (弾)",
               "Lv.2",
-              "41",
+              "37",
               "80"
             ],
             [
               "Bullet (弾)",
               "Lv.3",
-              "42",
+              "38",
               "80"
             ],
             [
               "Bullet (弾)",
               "Lv.4",
-              "43",
+              "39",
               "80"
             ],
             [
               "Bullet (弾)",
               "Lv.5",
-              "44",
+              "40",
               "80"
             ],
             [
               "Bullet (弾)",
               "Lv.6",
-              "45",
+              "41",
               "80"
             ],
             [
               "Bullet (弾)",
               "Lv.7",
-              "46",
+              "42",
               "80"
             ],
             [
               "Bullet (弾)",
               "Lv.8",
-              "47",
+              "43",
               "80"
             ],
             [
               "Bullet (弾)",
               "Lv.9",
-              "48",
+              "44",
               "80"
             ]
           ]
@@ -17095,37 +17155,37 @@
             [
               "Homing (ホーミング)",
               "Lv.4",
-              "14",
+              "12",
               "50"
             ],
             [
               "Homing (ホーミング)",
               "Lv.5",
-              "14",
+              "12",
               "50"
             ],
             [
               "Homing (ホーミング)",
               "Lv.6",
-              "14",
+              "12",
               "50"
             ],
             [
               "Homing (ホーミング)",
               "Lv.7",
-              "14",
+              "12",
               "50"
             ],
             [
               "Homing (ホーミング)",
               "Lv.8",
-              "14",
+              "12",
               "50"
             ],
             [
               "Homing (ホーミング)",
               "Lv.9",
-              "18",
+              "14",
               "50"
             ]
           ]
@@ -17210,55 +17270,55 @@
             [
               "Melee Combat (格闘)",
               "Lv.1",
-              "90",
-              "500"
-            ],
-            [
-              "Melee Combat (格闘)",
-              "Lv.2",
-              "95",
-              "500"
-            ],
-            [
-              "Melee Combat (格闘)",
-              "Lv.3",
               "100",
               "500"
             ],
             [
               "Melee Combat (格闘)",
-              "Lv.4",
+              "Lv.2",
+              "105",
+              "500"
+            ],
+            [
+              "Melee Combat (格闘)",
+              "Lv.3",
               "110",
               "500"
             ],
             [
               "Melee Combat (格闘)",
-              "Lv.5",
-              "115",
-              "500"
-            ],
-            [
-              "Melee Combat (格闘)",
-              "Lv.6",
+              "Lv.4",
               "120",
               "500"
             ],
             [
               "Melee Combat (格闘)",
-              "Lv.7",
+              "Lv.5",
               "125",
               "500"
             ],
             [
               "Melee Combat (格闘)",
-              "Lv.8",
+              "Lv.6",
               "130",
               "500"
             ],
             [
               "Melee Combat (格闘)",
-              "Lv.9",
+              "Lv.7",
               "135",
+              "500"
+            ],
+            [
+              "Melee Combat (格闘)",
+              "Lv.8",
+              "140",
+              "500"
+            ],
+            [
+              "Melee Combat (格闘)",
+              "Lv.9",
+              "150",
               "500"
             ]
           ]
@@ -21376,6 +21436,506 @@
     }
   },
   {
+    "source_url": "https://ultrarumble.com/character/108",
+    "name": "Gentle Criminal",
+    "base_name": "Gentle Criminal",
+    "style_header": "Gentle Criminal",
+    "style_name": "Original",
+    "variant_index": 0,
+    "side": "villain",
+    "role": "technical",
+    "stats": {
+      "Max Main Health": 300,
+      "Max Guard Point": 250,
+      "Max Armor": 100,
+      "Max Break Down": 500,
+      "Max Freeze": 100,
+      "Max Shock": 100,
+      "Guard Break Rate": 1.0,
+      "Take Damage Rate Special": 1.0,
+      "Giant Armor Resistance Rate": 1.0,
+      "Giant Break Down Resistance Rate": 1.0,
+      "Giant Nagative Condition Resistance Rate": 1.0,
+      "Body Size": 3
+    },
+    "skills": {
+      "α": {
+        "name": "Gently Arrow",
+        "description": "Gently Arrow",
+        "level_up_effects": {
+          "columns": [
+            "Level",
+            "Level Up Effect"
+          ],
+          "rows": []
+        },
+        "base_values": {
+          "columns": [
+            "Level",
+            "Damage",
+            "Ammo",
+            "Use Ammo",
+            "Reload",
+            "Down Power"
+          ],
+          "rows": [
+            [
+              "Lv.1",
+              "60",
+              "x6",
+              "x1",
+              "1s",
+              "80"
+            ],
+            [
+              "Lv.2",
+              "63",
+              "x6",
+              "x1",
+              "1s",
+              "80"
+            ],
+            [
+              "Lv.3",
+              "66",
+              "x6",
+              "x1",
+              "1s",
+              "80"
+            ],
+            [
+              "Lv.4",
+              "69",
+              "x7",
+              "x1",
+              "1s",
+              "80"
+            ],
+            [
+              "Lv.5",
+              "72",
+              "x7",
+              "x1",
+              "1s",
+              "80"
+            ],
+            [
+              "Lv.6",
+              "75",
+              "x7",
+              "x1",
+              "1s",
+              "80"
+            ],
+            [
+              "Lv.7",
+              "78",
+              "x7",
+              "x1",
+              "1s",
+              "80"
+            ],
+            [
+              "Lv.8",
+              "81",
+              "x7",
+              "x1",
+              "1s",
+              "80"
+            ],
+            [
+              "Lv.9",
+              "84",
+              "x8",
+              "x1",
+              "1s",
+              "80"
+            ]
+          ]
+        },
+        "additional_values": {
+          "columns": [],
+          "rows": []
+        }
+      },
+      "β": {
+        "name": "Gently Rebound",
+        "description": "Gently Rebound",
+        "level_up_effects": {
+          "columns": [
+            "Level",
+            "Level Up Effect"
+          ],
+          "rows": []
+        },
+        "base_values": {
+          "columns": [],
+          "rows": []
+        },
+        "additional_values": {
+          "columns": [
+            "Type",
+            "Level",
+            "Damage",
+            "Down Power"
+          ],
+          "rows": [
+            [
+              "Shockwave (衝撃波)",
+              "Lv.1",
+              "70",
+              "500"
+            ],
+            [
+              "Shockwave (衝撃波)",
+              "Lv.2",
+              "75",
+              "500"
+            ],
+            [
+              "Shockwave (衝撃波)",
+              "Lv.3",
+              "80",
+              "500"
+            ],
+            [
+              "Shockwave (衝撃波)",
+              "Lv.4",
+              "85",
+              "500"
+            ],
+            [
+              "Shockwave (衝撃波)",
+              "Lv.5",
+              "90",
+              "500"
+            ],
+            [
+              "Shockwave (衝撃波)",
+              "Lv.6",
+              "95",
+              "500"
+            ],
+            [
+              "Shockwave (衝撃波)",
+              "Lv.7",
+              "100",
+              "500"
+            ],
+            [
+              "Shockwave (衝撃波)",
+              "Lv.8",
+              "105",
+              "500"
+            ],
+            [
+              "Shockwave (衝撃波)",
+              "Lv.9",
+              "110",
+              "500"
+            ],
+            [
+              "Bullet (弾)",
+              "Lv.1",
+              "20",
+              "250"
+            ],
+            [
+              "Bullet (弾)",
+              "Lv.2",
+              "21",
+              "250"
+            ],
+            [
+              "Bullet (弾)",
+              "Lv.3",
+              "22",
+              "250"
+            ],
+            [
+              "Bullet (弾)",
+              "Lv.4",
+              "24",
+              "250"
+            ],
+            [
+              "Bullet (弾)",
+              "Lv.5",
+              "25",
+              "250"
+            ],
+            [
+              "Bullet (弾)",
+              "Lv.6",
+              "26",
+              "250"
+            ],
+            [
+              "Bullet (弾)",
+              "Lv.7",
+              "27",
+              "250"
+            ],
+            [
+              "Bullet (弾)",
+              "Lv.8",
+              "28",
+              "250"
+            ],
+            [
+              "Bullet (弾)",
+              "Lv.9",
+              "30",
+              "250"
+            ]
+          ]
+        }
+      },
+      "γ": {
+        "name": "Gently Avant",
+        "description": "Gently Avant",
+        "level_up_effects": {
+          "columns": [
+            "Level",
+            "Level Up Effect"
+          ],
+          "rows": []
+        },
+        "base_values": {
+          "columns": [],
+          "rows": []
+        },
+        "additional_values": {
+          "columns": [
+            "Type",
+            "Level",
+            "Damage",
+            "Down Power"
+          ],
+          "rows": [
+            [
+              "Rush (突進)",
+              "Lv.1",
+              "40",
+              "10"
+            ],
+            [
+              "Rush (突進)",
+              "Lv.2",
+              "42",
+              "10"
+            ],
+            [
+              "Rush (突進)",
+              "Lv.3",
+              "44",
+              "10"
+            ],
+            [
+              "Rush (突進)",
+              "Lv.4",
+              "48",
+              "10"
+            ],
+            [
+              "Rush (突進)",
+              "Lv.5",
+              "50",
+              "10"
+            ],
+            [
+              "Rush (突進)",
+              "Lv.6",
+              "52",
+              "10"
+            ],
+            [
+              "Rush (突進)",
+              "Lv.7",
+              "54",
+              "10"
+            ],
+            [
+              "Rush (突進)",
+              "Lv.8",
+              "56",
+              "10"
+            ],
+            [
+              "Rush (突進)",
+              "Lv.9",
+              "60",
+              "10"
+            ],
+            [
+              "Rush (突進)",
+              "Lv.1",
+              "5",
+              "10"
+            ],
+            [
+              "Rush (突進)",
+              "Lv.2",
+              "5",
+              "10"
+            ],
+            [
+              "Rush (突進)",
+              "Lv.3",
+              "5",
+              "10"
+            ],
+            [
+              "Rush (突進)",
+              "Lv.4",
+              "5",
+              "10"
+            ],
+            [
+              "Rush (突進)",
+              "Lv.5",
+              "5",
+              "10"
+            ],
+            [
+              "Rush (突進)",
+              "Lv.6",
+              "5",
+              "10"
+            ],
+            [
+              "Rush (突進)",
+              "Lv.7",
+              "5",
+              "10"
+            ],
+            [
+              "Rush (突進)",
+              "Lv.8",
+              "5",
+              "10"
+            ],
+            [
+              "Rush (突進)",
+              "Lv.9",
+              "5",
+              "10"
+            ],
+            [
+              "Rush (突進)",
+              "Lv.1",
+              "40",
+              "500"
+            ],
+            [
+              "Rush (突進)",
+              "Lv.2",
+              "42",
+              "500"
+            ],
+            [
+              "Rush (突進)",
+              "Lv.3",
+              "44",
+              "500"
+            ],
+            [
+              "Rush (突進)",
+              "Lv.4",
+              "48",
+              "500"
+            ],
+            [
+              "Rush (突進)",
+              "Lv.5",
+              "50",
+              "500"
+            ],
+            [
+              "Rush (突進)",
+              "Lv.6",
+              "52",
+              "500"
+            ],
+            [
+              "Rush (突進)",
+              "Lv.7",
+              "54",
+              "500"
+            ],
+            [
+              "Rush (突進)",
+              "Lv.8",
+              "56",
+              "500"
+            ],
+            [
+              "Rush (突進)",
+              "Lv.9",
+              "60",
+              "500"
+            ]
+          ]
+        }
+      }
+    },
+    "special_action": {
+      "values": {
+        "columns": [],
+        "rows": []
+      }
+    },
+    "normal_tuning": [
+      {
+        "name": "Special Action Reload+",
+        "description": "Increases reload speed of Special Action",
+        "levels": [
+          "Lv.1 : 1.01",
+          "Lv.2 : 1.015",
+          "Lv.3 : 1.02",
+          "Lv.4 : 1.025"
+        ]
+      },
+      {
+        "name": "Forward Jump HT+",
+        "description": "Increases your forward Jump height",
+        "levels": [
+          "Lv.1 : 5",
+          "Lv.2 : 10",
+          "Lv.3 : 15",
+          "Lv.4 : 20"
+        ]
+      }
+    ],
+    "special_tuning": {
+      "name": "Gently Jump",
+      "description": "For a set amount of time after the battle starts, crouching for a while enables a huge jump.",
+      "levels": [
+        "Lv.1 : 60",
+        "Lv.2 : 90",
+        "Lv.3 : 120",
+        "Lv.4 : 150",
+        "Lv.5 : 180",
+        "Lv.6 : 370",
+        "Lv.7 : 490",
+        "Lv.8 : 610",
+        "Lv.9 : 730",
+        "Lv.10 : 850",
+        "Lv.11 : 1200",
+        "Sub Effect 1 : 0.6",
+        "Sub Effect 2 : 1300"
+      ]
+    },
+    "assets": {
+      "portrait": "https://ultrarumble.com/assets/Character/Ch108/GUI/FaceIcon/T_ui_Ch108_CharaImage.png",
+      "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch108_00.png",
+      "alpha": "https://ultrarumble.com/assets/Character/Ch108/GUI/Skill/T_ui_Skill_Ch108_Unique1.png",
+      "beta": "https://ultrarumble.com/assets/Character/Ch108/GUI/Skill/T_ui_Skill_Ch108_Unique2.png",
+      "gamma": "https://ultrarumble.com/assets/Character/Ch108/GUI/Skill/T_ui_Skill_Ch108_Unique3.png",
+      "special": "https://ultrarumble.com/assets/Character/Ch108/GUI/Skill/T_ui_SpecialSkill_Ch108.png"
+    }
+  },
+  {
     "source_url": "https://ultrarumble.com/character/109",
     "name": "Present Mic",
     "base_name": "Present Mic",
@@ -22975,109 +23535,109 @@
             [
               "Projectile (射撃)",
               "Lv.1",
-              "47",
+              "35",
               "100"
             ],
             [
               "Projectile (射撃)",
               "Lv.2",
-              "49",
+              "36",
               "100"
             ],
             [
               "Projectile (射撃)",
               "Lv.3",
-              "51",
+              "37",
               "100"
             ],
             [
               "Projectile (射撃)",
               "Lv.4",
-              "53",
+              "39",
               "100"
             ],
             [
               "Projectile (射撃)",
               "Lv.5",
-              "55",
+              "40",
               "100"
             ],
             [
               "Projectile (射撃)",
               "Lv.6",
-              "57",
+              "41",
               "100"
             ],
             [
               "Projectile (射撃)",
               "Lv.7",
-              "59",
+              "42",
               "100"
             ],
             [
               "Projectile (射撃)",
               "Lv.8",
-              "61",
+              "43",
               "100"
             ],
             [
               "Projectile (射撃)",
               "Lv.9",
-              "63",
+              "45",
               "100"
             ],
             [
               "Bullet (弾)",
               "Lv.1",
-              "6",
+              "3",
               "0"
             ],
             [
               "Bullet (弾)",
               "Lv.2",
-              "6",
+              "3",
               "0"
             ],
             [
               "Bullet (弾)",
               "Lv.3",
-              "6",
+              "3",
               "0"
             ],
             [
               "Bullet (弾)",
               "Lv.4",
-              "8",
+              "4",
               "0"
             ],
             [
               "Bullet (弾)",
               "Lv.5",
-              "8",
+              "4",
               "0"
             ],
             [
               "Bullet (弾)",
               "Lv.6",
-              "8",
+              "4",
               "0"
             ],
             [
               "Bullet (弾)",
               "Lv.7",
-              "8",
+              "4",
               "0"
             ],
             [
               "Bullet (弾)",
               "Lv.8",
-              "8",
+              "4",
               "0"
             ],
             [
               "Bullet (弾)",
               "Lv.9",
-              "10",
+              "5",
               "0"
             ]
           ]
@@ -23108,55 +23668,55 @@
             [
               "Bullet (弾)",
               "Lv.1",
-              "25",
+              "20",
               "100"
             ],
             [
               "Bullet (弾)",
               "Lv.2",
-              "26",
+              "21",
               "100"
             ],
             [
               "Bullet (弾)",
               "Lv.3",
-              "27",
+              "22",
               "100"
             ],
             [
               "Bullet (弾)",
               "Lv.4",
-              "29",
+              "24",
               "100"
             ],
             [
               "Bullet (弾)",
               "Lv.5",
-              "30",
+              "25",
               "100"
             ],
             [
               "Bullet (弾)",
               "Lv.6",
-              "31",
+              "26",
               "100"
             ],
             [
               "Bullet (弾)",
               "Lv.7",
-              "32",
+              "27",
               "100"
             ],
             [
               "Bullet (弾)",
               "Lv.8",
-              "33",
+              "28",
               "100"
             ],
             [
               "Bullet (弾)",
               "Lv.9",
-              "35",
+              "30",
               "100"
             ]
           ]
@@ -23187,55 +23747,55 @@
             [
               "Ground (地上) Bullet (弾)",
               "Lv.1",
-              "120",
+              "100",
               "500"
             ],
             [
               "Ground (地上) Bullet (弾)",
               "Lv.2",
-              "124",
+              "103",
               "500"
             ],
             [
               "Ground (地上) Bullet (弾)",
               "Lv.3",
-              "128",
+              "106",
               "500"
             ],
             [
               "Ground (地上) Bullet (弾)",
               "Lv.4",
-              "136",
+              "110",
               "500"
             ],
             [
               "Ground (地上) Bullet (弾)",
               "Lv.5",
-              "140",
+              "113",
               "500"
             ],
             [
               "Ground (地上) Bullet (弾)",
               "Lv.6",
-              "144",
+              "116",
               "500"
             ],
             [
               "Ground (地上) Bullet (弾)",
               "Lv.7",
-              "148",
+              "119",
               "500"
             ],
             [
               "Ground (地上) Bullet (弾)",
               "Lv.8",
-              "152",
+              "122",
               "500"
             ],
             [
               "Ground (地上) Bullet (弾)",
               "Lv.9",
-              "160",
+              "125",
               "500"
             ],
             [
@@ -23823,7 +24383,7 @@
     "side": "hero",
     "role": "rapid",
     "stats": {
-      "Max Main Health": 300,
+      "Max Main Health": 250,
       "Max Guard Point": 250,
       "Max Armor": 100,
       "Max Break Down": 500,

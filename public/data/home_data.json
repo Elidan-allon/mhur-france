@@ -1,13 +1,13 @@
 {
   "meta": {
-    "updated_at": "2026-07-29T04:03:31.193518+00:00",
+    "updated_at": "2026-07-29T04:32:17.536847+00:00",
     "source": "UltraRumble.com",
     "version": "v520-maintenance-sync"
   },
   "season": {
-    "number": 17,
-    "start": "2026-05-27T13:00:00+09:00",
-    "end": "2026-07-29T12:59:59+09:00"
+    "number": 18,
+    "start": "2026-07-29T13:00:00+09:00",
+    "end": "2026-09-30T12:59:59+09:00"
   },
   "latest_releases": [
     {
@@ -22,7 +22,7 @@
       "art": "assets/home/releases/aizawa_flow_runner.png",
       "word": "FLOW!",
       "theme": "red",
-      "url": "https://ultrarumble.com/character/13#Variant-1"
+      "url": "https://ultrarumble.com/character/108"
     },
     {
       "title": "Present Mic",
@@ -36,7 +36,7 @@
       "art": "assets/home/releases/present_mic_dj_board.png",
       "word": "YEAH!",
       "theme": "purple",
-      "url": "https://ultrarumble.com/character/109#Variant-1"
+      "url": "https://ultrarumble.com/character/13#Variant-1"
     },
     {
       "title": "Mirko",
@@ -50,7 +50,7 @@
       "art": "assets/home/releases/mirko_character.png",
       "word": "RABBIT!",
       "theme": "cyan",
-      "url": "https://ultrarumble.com/character/111"
+      "url": "https://ultrarumble.com/character/109#Variant-1"
     },
     {
       "title": "Katsuki Bakugo",
@@ -64,7 +64,7 @@
       "art": "assets/home/releases/bakugo_cluster.png",
       "word": "BOOM!",
       "theme": "orange",
-      "url": "https://ultrarumble.com/character/2#Variant-2"
+      "url": "https://ultrarumble.com/character/111"
     }
   ],
   "gachas": [
@@ -77,6 +77,56 @@
       "url": "https://ultrarumble.com/gasha/2513011",
       "image": "assets/home/gachas/gasha_2513011.webp",
       "banner_source": "https://ultrarumble.com/assets/Gasha/gasha_2513011.webp"
+    },
+    {
+      "id": "2618001",
+      "title": "PLUS ULTRA Character Roll: Original (S18) Gentle",
+      "type": "Personnage",
+      "start": "2026-07-29T13:00:00+09:00",
+      "end": "2026-09-30T12:59:59+09:00",
+      "url": "https://ultrarumble.com/gasha/2618001",
+      "image": "assets/home/gachas/gasha_2618001.webp",
+      "banner_source": "https://ultrarumble.com/assets/Gasha/gasha_2618001.webp"
+    },
+    {
+      "id": "2618002",
+      "title": "PLUS ULTRA Character Roll: Original (S18) Tokoyami",
+      "type": "Personnage",
+      "start": "2026-07-29T13:00:00+09:00",
+      "end": "2026-09-16T12:59:59+09:00",
+      "url": "https://ultrarumble.com/gasha/2618002",
+      "image": "assets/home/gachas/gasha_2618002.webp",
+      "banner_source": "https://ultrarumble.com/assets/Gasha/gasha_2618002.webp"
+    },
+    {
+      "id": "2618006",
+      "title": "QUIRK / SKILL Character Roll: Alternative (S18) Bakugo",
+      "type": "Alter",
+      "start": "2026-07-29T13:00:00+09:00",
+      "end": "2026-09-02T12:59:59+09:00",
+      "url": "https://ultrarumble.com/gasha/2618006",
+      "image": "assets/home/gachas/gasha_2618006.webp",
+      "banner_source": "https://ultrarumble.com/assets/Gasha/gasha_2618006.webp"
+    },
+    {
+      "id": "2618009",
+      "title": "QUIRK / SKILL Character Roll: Alternative (S18) Shigaraki",
+      "type": "Alter",
+      "start": "2026-07-29T13:00:00+09:00",
+      "end": "2026-09-02T12:59:59+09:00",
+      "url": "https://ultrarumble.com/gasha/2618009",
+      "image": "assets/home/gachas/gasha_2618009.webp",
+      "banner_source": "https://ultrarumble.com/assets/Gasha/gasha_2618009.webp"
+    },
+    {
+      "id": "2618011",
+      "title": "COSTUME Costume Pick Up Roll (S18) Vol. Disguise",
+      "type": "Costume",
+      "start": "2026-07-29T13:00:00+09:00",
+      "end": "2026-09-02T12:59:59+09:00",
+      "url": "https://ultrarumble.com/gasha/2618011",
+      "image": "assets/home/gachas/gasha_2618011.webp",
+      "banner_source": "https://ultrarumble.com/assets/Gasha/gasha_2618011.webp"
     }
   ],
   "events": [
@@ -90,9 +140,105 @@
       "image": "assets/home/events/event_251307.webp",
       "image_source": "https://ultrarumble.com/assets/Event/event_251307.webp",
       "official_image": true
+    },
+    {
+      "id": "261801",
+      "type": "Événement",
+      "title": "BATTLE Battle Event Vol. 10",
+      "start": "2026-07-29T13:00:00+09:00",
+      "end": "2026-08-26T12:59:59+09:00",
+      "url": "https://ultrarumble.com/event/261801",
+      "image": "assets/home/events/event_261801.webp",
+      "image_source": "https://ultrarumble.com/assets/Event/event_261801.webp",
+      "official_image": true
     }
   ],
-  "login_bonuses": [],
+  "login_bonuses": [
+    {
+      "type": "Connexion",
+      "title": "LOGIN 2000万ダウンロードログインボーナス",
+      "start": "2026-07-29T13:00:00+09:00",
+      "end": "2026-09-30T12:59:59+09:00",
+      "image": "https://ultrarumble.com/assets/LoginBonus/20million_DL.png"
+    },
+    {
+      "type": "Anniversaire",
+      "title": "LOGIN 2000万ダウンロードログインボーナス BIRTHDAY トガヒミコ誕生日キャンペーン2026 BIRTHDAY エンデヴァー誕生日キャンペーン2026 BIRTHDAY Mt.レディ誕生日キャンペーン2026 LOGIN シーズン18-スペシャルログインボーナス-vol.1 BIRTHDAY 飯田天哉誕生日キャンペーン2026 BIRTHDAY ジェントル・クリミナル誕生日キャンペーン2026 BIRTHDAY 塩崎茨誕生日キャンペーン2026 BIRTHDAY 拳藤一佳誕生日キャンペーン2026 LOGIN シーズン18-スペシャルログインボーナス-vol.2 BIRTHDAY 八百万百誕生日キャンペーン2026",
+      "start": "2026-07-29T13:00:00+09:00",
+      "end": "2026-09-30T12:59:59+09:00",
+      "image": "https://ultrarumble.com/assets/LoginBonus/20million_DL.png"
+    },
+    {
+      "type": "Anniversaire",
+      "title": "BIRTHDAY トガヒミコ誕生日キャンペーン2026",
+      "start": "2026-08-07T13:00:00+09:00",
+      "end": "2026-08-08T12:59:59+09:00",
+      "image": "https://ultrarumble.com/assets/LoginBonus/Birthday_18.png"
+    },
+    {
+      "type": "Anniversaire",
+      "title": "BIRTHDAY エンデヴァー誕生日キャンペーン2026",
+      "start": "2026-08-08T13:00:00+09:00",
+      "end": "2026-08-09T12:59:59+09:00",
+      "image": "https://ultrarumble.com/assets/LoginBonus/Birthday_23.png"
+    },
+    {
+      "type": "Anniversaire",
+      "title": "BIRTHDAY Mt.レディ誕生日キャンペーン2026",
+      "start": "2026-08-11T13:00:00+09:00",
+      "end": "2026-08-12T12:59:59+09:00",
+      "image": "https://ultrarumble.com/assets/LoginBonus/Birthday_100.png"
+    },
+    {
+      "type": "Connexion",
+      "title": "LOGIN シーズン18-スペシャルログインボーナス-vol.1",
+      "start": "2026-08-12T13:00:00+09:00",
+      "end": "2026-08-19T12:59:59+09:00",
+      "image": "assets/home/bonuses/login_18_vol_1.png"
+    },
+    {
+      "type": "Anniversaire",
+      "title": "BIRTHDAY 飯田天哉誕生日キャンペーン2026",
+      "start": "2026-08-22T13:00:00+09:00",
+      "end": "2026-08-23T12:59:59+09:00",
+      "image": "https://ultrarumble.com/assets/LoginBonus/Birthday_5.png"
+    },
+    {
+      "type": "Anniversaire",
+      "title": "BIRTHDAY ジェントル・クリミナル誕生日キャンペーン2026",
+      "start": "2026-08-29T13:00:00+09:00",
+      "end": "2026-08-30T12:59:59+09:00",
+      "image": "https://ultrarumble.com/assets/LoginBonus/Birthday_108.png"
+    },
+    {
+      "type": "Anniversaire",
+      "title": "BIRTHDAY 塩崎茨誕生日キャンペーン2026",
+      "start": "2026-09-08T13:00:00+09:00",
+      "end": "2026-09-09T12:59:59+09:00",
+      "image": "https://ultrarumble.com/assets/LoginBonus/Birthday_102.png"
+    },
+    {
+      "type": "Anniversaire",
+      "title": "BIRTHDAY 拳藤一佳誕生日キャンペーン2026",
+      "start": "2026-09-09T13:00:00+09:00",
+      "end": "2026-09-10T12:59:59+09:00",
+      "image": "https://ultrarumble.com/assets/LoginBonus/Birthday_46.png"
+    },
+    {
+      "type": "Anniversaire",
+      "title": "BIRTHDAY 八百万百誕生日キャンペーン2026",
+      "start": "2026-09-23T13:00:00+09:00",
+      "end": "2026-09-24T12:59:59+09:00",
+      "image": "https://ultrarumble.com/assets/LoginBonus/Birthday_10.png"
+    },
+    {
+      "type": "Connexion",
+      "title": "LOGIN シーズン18-スペシャルログインボーナス-vol.2",
+      "start": "2026-09-23T13:00:00+09:00",
+      "end": "2026-09-30T12:59:59+09:00",
+      "image": "assets/home/bonuses/login_18_vol_2.png"
+    }
+  ],
   "discounts": [
     {
       "name": "D.J. Board",
@@ -127,584 +273,1812 @@
   ],
   "patch_notes": [
     {
-      "title": "Mise à jour des données v1.16.3-Rc142",
-      "date": "2026-07-08T03:52:00Z",
-      "url": "https://ultrarumble.com/patch/1783497169",
-      "id": "1783497169",
+      "id": "1785298405",
+      "title": "Data Update v1.17.0-14.5",
+      "date": "2026-07-29T00:13:00+00:00",
+      "url": "https://ultrarumble.com/patch/1785298405",
       "sections": [
         {
-          "title": "PV",
+          "title": "Izuku Midoriya OFA",
           "items": [
-            "Tomura Shigaraki « Thousand-Hand Break » : 350 → 300 PV",
-            "All For One : 400 → 350 PV"
+            "HP: 300 -> 250"
           ]
         },
         {
-          "title": "Dégâts",
+          "title": "Quirk Skill γ - Howitzer Impact",
           "items": [
-            "Ajustements sur Eijiro Kirishima « Red Drive »",
-            "Améliorations sur Itsuka Kendo « Twin Palm Strike »",
-            "Ajustements sur Ibara Shiozaki, Tamaki Amajiki et Nejire Hado",
-            "Réduction des dégâts α d’All For One",
-            "Réduction des dégâts β et γ d’All For One jeune"
+            "Changes found for Damage, Guard Break from Level 1 to Level 9.",
+            "Damage: 4.0 -> 1.0 Guard Break: 4.0 -> 1.0"
           ]
         },
         {
-          "title": "Rechargement et munitions",
+          "title": "Quirk Skill α - AP Shot Cluster (Normal)",
           "items": [
-            "Modifications sur Katsuki Bakugo « Cluster »",
-            "Modifications sur Itsuka Kendo, Tamaki Amajiki et Cementoss"
+            "Changes found for Damage, Guard Break from Level 1 to Level 9.",
+            "Damage: 30.0 -> 40.0 Guard Break: 30.0 -> 40.0",
+            "Damage: 31.0 -> 41.0 Guard Break: 31.0 -> 41.0",
+            "Damage: 32.0 -> 42.0 Guard Break: 32.0 -> 42.0",
+            "Damage: 34.0 -> 44.0 Guard Break: 34.0 -> 44.0",
+            "Damage: 35.0 -> 45.0 Guard Break: 35.0 -> 45.0",
+            "Damage: 36.0 -> 46.0 Guard Break: 36.0 -> 46.0",
+            "Damage: 37.0 -> 47.0 Guard Break: 37.0 -> 47.0",
+            "Damage: 38.0 -> 48.0 Guard Break: 38.0 -> 48.0",
+            "Damage: 40.0 -> 50.0 Guard Break: 40.0 -> 50.0"
+          ]
+        },
+        {
+          "title": "Quirk Skill β - Nitro Cluster (Explosion)",
+          "items": [
+            "Changes found for Damage, Guard Break from Level 1 to Level 9.",
+            "Damage: 30.0 -> 35.0 Guard Break: 30.0 -> 35.0",
+            "Damage: 31.0 -> 36.0 Guard Break: 31.0 -> 36.0",
+            "Damage: 32.0 -> 37.0 Guard Break: 32.0 -> 37.0",
+            "Damage: 34.0 -> 39.0 Guard Break: 34.0 -> 39.0",
+            "Damage: 35.0 -> 40.0 Guard Break: 35.0 -> 40.0",
+            "Damage: 36.0 -> 41.0 Guard Break: 36.0 -> 41.0",
+            "Damage: 37.0 -> 42.0 Guard Break: 37.0 -> 42.0",
+            "Damage: 38.0 -> 43.0 Guard Break: 38.0 -> 43.0",
+            "Damage: 40.0 -> 45.0 Guard Break: 40.0 -> 45.0"
+          ]
+        },
+        {
+          "title": "Quirk Skill β - Nitro Cluster (ExplosionFollow-up)",
+          "items": [
+            "Changes found for Damage, Guard Break from Level 1 to Level 9.",
+            "Damage: 40.0 -> 44.0 Guard Break: 40.0 -> 44.0",
+            "Damage: 41.0 -> 46.0 Guard Break: 41.0 -> 46.0",
+            "Damage: 42.0 -> 48.0 Guard Break: 42.0 -> 48.0",
+            "Damage: 44.0 -> 50.0 Guard Break: 44.0 -> 50.0",
+            "Damage: 45.0 -> 52.0 Guard Break: 45.0 -> 52.0",
+            "Damage: 46.0 -> 54.0 Guard Break: 46.0 -> 54.0",
+            "Damage: 47.0 -> 56.0 Guard Break: 47.0 -> 56.0",
+            "Damage: 48.0 -> 58.0 Guard Break: 48.0 -> 58.0",
+            "Damage: 50.0 -> 60.0 Guard Break: 50.0 -> 60.0"
+          ]
+        },
+        {
+          "title": "Quirk Skill α - Electro-target",
+          "items": [
+            "Changes found for Damage, Guard Break, Down Power from Level 1 to Level 9.",
+            "Damage: 55.0 -> 54.0 Guard Break: 55.0 -> 54.0 Down Power: 50.0 -> 100.0",
+            "Damage: 60.0 -> 56.0 Guard Break: 60.0 -> 56.0 Down Power: 50.0 -> 100.0",
+            "Damage: 65.0 -> 58.0 Guard Break: 65.0 -> 58.0 Down Power: 50.0 -> 100.0",
+            "Damage: 70.0 -> 60.0 Guard Break: 70.0 -> 60.0 Down Power: 50.0 -> 100.0",
+            "Damage: 72.0 -> 62.0 Guard Break: 72.0 -> 62.0 Down Power: 50.0 -> 100.0",
+            "Damage: 74.0 -> 64.0 Guard Break: 74.0 -> 64.0 Down Power: 50.0 -> 100.0",
+            "Damage: 76.0 -> 66.0 Guard Break: 76.0 -> 66.0 Down Power: 50.0 -> 100.0",
+            "Damage: 78.0 -> 68.0 Guard Break: 78.0 -> 68.0 Down Power: 50.0 -> 100.0",
+            "Damage: 80.0 -> 70.0 Guard Break: 80.0 -> 70.0 Down Power: 50.0 -> 100.0"
+          ]
+        },
+        {
+          "title": "Quirk Skill α - Phantom Smash (Shot)",
+          "items": [
+            "Changes found for Damage, Guard Break from Level 1 to Level 9.",
+            "Damage: 40.0 -> 36.0 Guard Break: 40.0 -> 36.0",
+            "Damage: 41.0 -> 37.0 Guard Break: 41.0 -> 37.0",
+            "Damage: 42.0 -> 38.0 Guard Break: 42.0 -> 38.0",
+            "Damage: 43.0 -> 39.0 Guard Break: 43.0 -> 39.0",
+            "Damage: 44.0 -> 40.0 Guard Break: 44.0 -> 40.0",
+            "Damage: 45.0 -> 41.0 Guard Break: 45.0 -> 41.0",
+            "Damage: 46.0 -> 42.0 Guard Break: 46.0 -> 42.0",
+            "Damage: 47.0 -> 43.0 Guard Break: 47.0 -> 43.0",
+            "Damage: 48.0 -> 44.0 Guard Break: 48.0 -> 44.0"
+          ]
+        },
+        {
+          "title": "Quirk Skill α - Ice Bullet Shot (Burn)",
+          "items": [
+            "Changes found for Damage, Guard Break from Level 1 to Level 9.",
+            "Damage: 52.0 -> 48.0 Guard Break: 52.0 -> 48.0",
+            "Damage: 54.0 -> 50.0 Guard Break: 54.0 -> 50.0",
+            "Damage: 56.0 -> 52.0 Guard Break: 56.0 -> 52.0",
+            "Damage: 58.0 -> 54.0 Guard Break: 58.0 -> 54.0",
+            "Damage: 60.0 -> 55.0 Guard Break: 60.0 -> 55.0",
+            "Damage: 62.0 -> 56.0 Guard Break: 62.0 -> 56.0",
+            "Damage: 64.0 -> 57.0 Guard Break: 64.0 -> 57.0",
+            "Damage: 66.0 -> 58.0 Guard Break: 66.0 -> 58.0",
+            "Damage: 68.0 -> 60.0 Guard Break: 68.0 -> 60.0"
+          ]
+        },
+        {
+          "title": "Quirk Skill α - Wingbeat (Homing)",
+          "items": [
+            "Changes found for Damage, Guard Break from Level 4 to Level 9.",
+            "Damage: 14.0 -> 12.0 Guard Break: 14.0 -> 12.0",
+            "Damage: 18.0 -> 14.0 Guard Break: 18.0 -> 14.0"
+          ]
+        },
+        {
+          "title": "Quirk Skill β - Wind Cross (Melee)",
+          "items": [
+            "Changes found for Damage, Guard Break from Level 1 to Level 9.",
+            "Damage: 90.0 -> 100.0 Guard Break: 90.0 -> 100.0",
+            "Damage: 95.0 -> 105.0 Guard Break: 95.0 -> 105.0",
+            "Damage: 100.0 -> 110.0 Guard Break: 100.0 -> 110.0",
+            "Damage: 110.0 -> 120.0 Guard Break: 110.0 -> 120.0",
+            "Damage: 115.0 -> 125.0 Guard Break: 115.0 -> 125.0",
+            "Damage: 120.0 -> 130.0 Guard Break: 120.0 -> 130.0",
+            "Damage: 125.0 -> 135.0 Guard Break: 125.0 -> 135.0",
+            "Damage: 130.0 -> 140.0 Guard Break: 130.0 -> 140.0",
+            "Damage: 135.0 -> 150.0 Guard Break: 135.0 -> 150.0"
+          ]
+        },
+        {
+          "title": "Quirk Skill α - Hollow Point Shot (On-hit Shot AfterFollow-up)",
+          "items": [
+            "Changes found for Damage from Level 1 to Level 9.",
+            "Damage: 6.0 -> 3.0",
+            "Damage: 8.0 -> 4.0",
+            "Damage: 10.0 -> 5.0"
+          ]
+        },
+        {
+          "title": "Quirk Skill α - Hollow Point Shot (Shooting)",
+          "items": [
+            "Changes found for Damage, Guard Break from Level 1 to Level 9.",
+            "Damage: 47.0 -> 35.0 Guard Break: 47.0 -> 35.0",
+            "Damage: 49.0 -> 36.0 Guard Break: 49.0 -> 36.0",
+            "Damage: 51.0 -> 37.0 Guard Break: 51.0 -> 37.0",
+            "Damage: 53.0 -> 39.0 Guard Break: 53.0 -> 39.0",
+            "Damage: 55.0 -> 40.0 Guard Break: 55.0 -> 40.0",
+            "Damage: 57.0 -> 41.0 Guard Break: 57.0 -> 41.0",
+            "Damage: 59.0 -> 42.0 Guard Break: 59.0 -> 42.0",
+            "Damage: 61.0 -> 43.0 Guard Break: 61.0 -> 43.0",
+            "Damage: 63.0 -> 45.0 Guard Break: 63.0 -> 45.0"
+          ]
+        },
+        {
+          "title": "Quirk Skill β - High Angle Fire (ArcOn-hit Shot)",
+          "items": [
+            "Changes found for Damage, Guard Break from Level 1 to Level 9.",
+            "Damage: 25.0 -> 20.0 Guard Break: 25.0 -> 20.0",
+            "Damage: 26.0 -> 21.0 Guard Break: 26.0 -> 21.0",
+            "Damage: 27.0 -> 22.0 Guard Break: 27.0 -> 22.0",
+            "Damage: 29.0 -> 24.0 Guard Break: 29.0 -> 24.0",
+            "Damage: 30.0 -> 25.0 Guard Break: 30.0 -> 25.0",
+            "Damage: 31.0 -> 26.0 Guard Break: 31.0 -> 26.0",
+            "Damage: 32.0 -> 27.0 Guard Break: 32.0 -> 27.0",
+            "Damage: 33.0 -> 28.0 Guard Break: 33.0 -> 28.0",
+            "Damage: 35.0 -> 30.0 Guard Break: 35.0 -> 30.0"
+          ]
+        },
+        {
+          "title": "Quirk Skill γ - Kickback Shot (Spread Shot Ground)",
+          "items": [
+            "Changes found for Damage, Guard Break from Level 1 to Level 9.",
+            "Damage: 120.0 -> 100.0 Guard Break: 120.0 -> 100.0",
+            "Damage: 124.0 -> 103.0 Guard Break: 124.0 -> 103.0",
+            "Damage: 128.0 -> 106.0 Guard Break: 128.0 -> 106.0",
+            "Damage: 136.0 -> 110.0 Guard Break: 136.0 -> 110.0",
+            "Damage: 140.0 -> 113.0 Guard Break: 140.0 -> 113.0",
+            "Damage: 144.0 -> 116.0 Guard Break: 144.0 -> 116.0",
+            "Damage: 148.0 -> 119.0 Guard Break: 148.0 -> 119.0",
+            "Damage: 152.0 -> 122.0 Guard Break: 152.0 -> 122.0",
+            "Damage: 160.0 -> 125.0 Guard Break: 160.0 -> 125.0"
+          ]
+        },
+        {
+          "title": "Special Action - Scope Mode (Action Shooting)",
+          "items": [
+            "Changes found for Damage, Guard Break.",
+            "Damage: 150.0 -> 125.0 Guard Break: 150.0 -> 125.0"
+          ]
+        },
+        {
+          "title": "Special Action - Scope Mode (Action Shooting Headshot)",
+          "items": [
+            "Changes found for Damage, Guard Break.",
+            "Damage: 280.0 -> 230.0 Guard Break: 280.0 -> 230.0"
+          ]
+        },
+        {
+          "title": "Quirk Skill α - Delaware Smash Airblast",
+          "items": [
+            "Changes found for Ammo from Level 1 to Level 9.",
+            "Ammo: 6 -> 5",
+            "Ammo: 7 -> 6",
+            "Ammo: 8 -> 7"
+          ]
+        },
+        {
+          "title": "Quirk Skill α - AP Shot Cluster",
+          "items": [
+            "Changes found for Ammo from Level 1 to Level 9.",
+            "Ammo: 4 -> 5",
+            "Ammo: 5 -> 6",
+            "Ammo: 6 -> 7"
+          ]
+        },
+        {
+          "title": "Quirk Skill γ - Howitzer Impact Cluster",
+          "items": [
+            "Changes found for Ammo, Reload Time, Penalty Reload at Level 9.",
+            "Ammo: 1 -> 2 Reload Time: 7.0 -> 8.0 Penalty Reload: 7.0 -> 11.0"
+          ]
+        },
+        {
+          "title": "Special Action - Electrification",
+          "items": [
+            "Changes found for Penalty Reload.",
+            "Penalty Reload: 14.0 -> 9.0"
+          ]
+        },
+        {
+          "title": "Quirk Skill γ - Big Fist Grip",
+          "items": [
+            "_Changes found for penalty span from Level 1 to Level 3.",
+            "penalty_span: 1.0 -> 2.0"
+          ]
+        },
+        {
+          "title": "Quirk Skill α - Wingbeat",
+          "items": [
+            "Changes found for Ammo from Level 1 to Level 9.",
+            "Ammo: 40 -> 30",
+            "Ammo: 41 -> 31",
+            "Ammo: 42 -> 32",
+            "Ammo: 44 -> 34",
+            "Ammo: 45 -> 35",
+            "Ammo: 46 -> 36",
+            "Ammo: 47 -> 37",
+            "Ammo: 48 -> 38",
+            "Ammo: 50 -> 40"
+          ]
+        },
+        {
+          "title": "Quirk Skill γ - Foot Boost",
+          "items": [
+            "Changes found for Reload Time, Ammo, Penalty Reload from Level 1 to Level 9.",
+            "Reload Time: 5.0 -> 4.0",
+            "Ammo: 3 -> 4 Reload Time: 5.0 -> 4.0 Penalty Reload: 6.0 -> 8.0"
+          ]
+        },
+        {
+          "title": "Quirk Skill α - Hollow Point Shot",
+          "items": [
+            "Changes found for Ammo from Level 1 to Level 9.",
+            "Ammo: 6 -> 5",
+            "Ammo: 7 -> 6",
+            "Ammo: 8 -> 7"
+          ]
+        },
+        {
+          "title": "Quirk Skill γ - Kickback Shot",
+          "items": [
+            "Changes found for Reload Time, Penalty Reload, Ammo from Level 1 to Level 9.",
+            "Reload Time: 7.0 -> 9.0 Penalty Reload: 7.0 -> 9.0",
+            "Reload Time: 5.0 -> 8.0 Penalty Reload: 5.0 -> 8.0",
+            "Ammo: 2 -> 1 Reload Time: 5.0 -> 7.0 Penalty Reload: 8.0 -> 7.0"
+          ]
+        },
+        {
+          "title": "Normal TUNING Changes",
+          "items": [
+            "No changes detected."
+          ]
+        },
+        {
+          "title": "Special TUNING Changes",
+          "items": [
+            "No changes detected."
+          ]
+        },
+        {
+          "title": "Tomura Shigaraki",
+          "items": [
+            "Quirk Skill β - Ground Destruction (BodyImpact) (Lv 1–9)"
+          ]
+        },
+        {
+          "title": "Gentle Criminal",
+          "items": [
+            "Quirk Skill α - Gently Arrow (Lv 1–9)",
+            "Quirk Skill β - Gently Rebound (Shockwave) (Lv 1–9)",
+            "Quirk Skill β - Gently Rebound (空気Shot) (Lv 1–9)",
+            "Quirk Skill β - Gently Rebound (Lv 1–9)",
+            "Quirk Skill γ - Gently Avant (Charge) (Lv 1–9)",
+            "Quirk Skill γ - Gently Avant (Finisher) (Lv 1–9)",
+            "Quirk Skill γ - Gently Avant (範囲) (Lv 1–9)",
+            "Quirk Skill γ - Gently Avant (Lv 1–9)",
+            "Special Action - Gently Trampoline"
           ]
         }
       ],
-      "internal": true,
-      "details": [
+      "rich_blocks": [
         {
-          "title": "PV",
-          "accent": "health",
-          "changes": [
-            {
-              "character": "Tomura Shigaraki",
-              "style": "Thousand-Hand Break",
-              "role": "Technique",
-              "portrait": "assets/shigaraki/shigaraki_technical/portrait.webp",
-              "skill_name": "PV maximum",
-              "skill_image": "assets/shigaraki/shigaraki_technical/portrait.webp",
-              "before": "350",
-              "after": "300",
-              "tone": "nerf"
-            },
-            {
-              "character": "All For One",
-              "style": "Original",
-              "role": "Technique",
-              "portrait": "assets/all_for_one/all_for_one_technical/portrait.webp",
-              "skill_name": "PV maximum",
-              "skill_image": "assets/all_for_one/all_for_one_technical/portrait.webp",
-              "before": "400",
-              "after": "350",
-              "tone": "nerf"
-            }
-          ]
+          "type": "image",
+          "src": "assets/home/patches/1785298405/image_003.png",
+          "alt": ""
         },
         {
-          "title": "Dégâts",
-          "accent": "damage",
-          "changes": [
-            {
-              "character": "Eijiro Kirishima",
-              "style": "Red Drive",
-              "role": "Attaque",
-              "portrait": "assets/kirishima/kirishima_strike/portrait.webp",
-              "skill_name": "γ Red Strike",
-              "skill_image": "assets/kirishima/kirishima_strike/gamma.webp",
-              "label": "Dégâts par niveau",
-              "before": [
-                86,
-                88,
-                90,
-                94,
-                96,
-                98,
-                100,
-                102,
-                112
-              ],
-              "after": [
-                78,
-                80,
-                82,
-                87,
-                89,
-                91,
-                93,
-                95,
-                100
-              ],
-              "tone": "nerf"
-            },
-            {
-              "character": "Itsuka Kendo",
-              "style": "Twin Palm Strike",
-              "role": "Attaque",
-              "portrait": "assets/kendo/kendo_strike/portrait.webp",
-              "skill_name": "α Gale Burst",
-              "skill_image": "assets/kendo/kendo_strike/alpha.webp",
-              "label": "Dégâts par niveau",
-              "before": [
-                25,
-                27,
-                29,
-                30,
-                32,
-                34,
-                36,
-                38,
-                40
-              ],
-              "after": [
-                34,
-                36,
-                38,
-                40,
-                42,
-                44,
-                46,
-                48,
-                50
-              ],
-              "tone": "buff"
-            },
-            {
-              "character": "Itsuka Kendo",
-              "style": "Twin Palm Strike",
-              "role": "Attaque",
-              "portrait": "assets/kendo/kendo_strike/portrait.webp",
-              "skill_name": "γ Whirlwind Finisher",
-              "skill_image": "assets/kendo/kendo_strike/gamma.webp",
-              "label": "Dégâts de finition",
-              "before": [
-                60,
-                62,
-                64,
-                66,
-                68,
-                70,
-                72,
-                74,
-                75
-              ],
-              "after": [
-                70,
-                72,
-                74,
-                76,
-                78,
-                80,
-                82,
-                84,
-                85
-              ],
-              "tone": "buff"
-            },
-            {
-              "character": "Itsuka Kendo",
-              "style": "Twin Palm Strike",
-              "role": "Attaque",
-              "portrait": "assets/kendo/kendo_strike/portrait.webp",
-              "skill_name": "γ Whirlwind Spin",
-              "skill_image": "assets/kendo/kendo_strike/gamma.webp",
-              "label": "Dégâts de rotation",
-              "before": [
-                50,
-                52,
-                54,
-                55,
-                57,
-                59,
-                61,
-                63,
-                65
-              ],
-              "after": [
-                60,
-                62,
-                64,
-                66,
-                68,
-                70,
-                72,
-                74,
-                75
-              ],
-              "tone": "buff"
-            },
-            {
-              "character": "Ibara Shiozaki",
-              "style": "Original",
-              "role": "Soutien",
-              "portrait": "assets/ibara/ibara_support/portrait.webp",
-              "skill_name": "α Charge",
-              "skill_image": "assets/ibara/ibara_support/alpha.webp",
-              "label": "Dégâts par niveau",
-              "before": [
-                25,
-                28,
-                30,
-                33,
-                34,
-                36,
-                37,
-                39,
-                40
-              ],
-              "after": [
-                35,
-                36,
-                37,
-                39,
-                40,
-                41,
-                42,
-                43,
-                45
-              ],
-              "tone": "buff"
-            },
-            {
-              "character": "Tamaki Amajiki",
-              "style": "Original",
-              "role": "Attaque",
-              "portrait": "assets/tamaki/tamaki_strike/portrait.webp",
-              "skill_name": "γ — attaque normale",
-              "skill_image": "assets/tamaki/tamaki_strike/gamma.webp",
-              "label": "Dégâts par niveau",
-              "before": [
-                25,
-                26,
-                27,
-                29,
-                30,
-                31,
-                32,
-                33,
-                34
-              ],
-              "after": [
-                27,
-                28,
-                29,
-                31,
-                32,
-                33,
-                34,
-                35,
-                36
-              ],
-              "tone": "buff"
-            },
-            {
-              "character": "Tamaki Amajiki",
-              "style": "Original",
-              "role": "Attaque",
-              "portrait": "assets/tamaki/tamaki_strike/portrait.webp",
-              "skill_name": "γ — attaque chargée",
-              "skill_image": "assets/tamaki/tamaki_strike/gamma.webp",
-              "label": "Dégâts par niveau",
-              "before": [
-                34,
-                35,
-                36,
-                37,
-                38,
-                39,
-                40,
-                41,
-                42
-              ],
-              "after": [
-                36,
-                37,
-                38,
-                39,
-                40,
-                41,
-                42,
-                43,
-                44
-              ],
-              "tone": "buff"
-            },
-            {
-              "character": "Nejire Hado",
-              "style": "Original",
-              "role": "Technique",
-              "portrait": "assets/nejire/nejire_technical/portrait.webp",
-              "skill_name": "β",
-              "skill_image": "assets/nejire/nejire_technical/beta.webp",
-              "label": "Dégâts par niveau",
-              "before": [
-                21,
-                22,
-                23,
-                25,
-                26,
-                27,
-                28,
-                30,
-                33
-              ],
-              "after": [
-                23,
-                24,
-                25,
-                27,
-                28,
-                29,
-                30,
-                32,
-                35
-              ],
-              "tone": "buff"
-            },
-            {
-              "character": "All For One",
-              "style": "Original",
-              "role": "Technique",
-              "portrait": "assets/all_for_one/all_for_one_technical/portrait.webp",
-              "skill_name": "α",
-              "skill_image": "assets/all_for_one/all_for_one_technical/alpha.webp",
-              "label": "Dégâts par niveau",
-              "before": [
-                58,
-                60,
-                62,
-                66,
-                68,
-                70,
-                72,
-                74,
-                80
-              ],
-              "after": [
-                54,
-                56,
-                58,
-                60,
-                62,
-                64,
-                66,
-                68,
-                70
-              ],
-              "tone": "nerf"
-            },
-            {
-              "character": "All For One jeune",
-              "style": "Original",
-              "role": "Assaut",
-              "portrait": "assets/all_for_one_young/all_for_one_young_assault/portrait.webp",
-              "skill_name": "β",
-              "skill_image": "assets/all_for_one_young/all_for_one_young_assault/beta.webp",
-              "label": "Dégâts par niveau",
-              "before": [
-                150,
-                155,
-                160,
-                161,
-                171,
-                176,
-                181,
-                186,
-                200
-              ],
-              "after": [
-                140,
-                144,
-                148,
-                153,
-                156,
-                159,
-                162,
-                165,
-                170
-              ],
-              "tone": "nerf"
-            },
-            {
-              "character": "All For One jeune",
-              "style": "Original",
-              "role": "Assaut",
-              "portrait": "assets/all_for_one_young/all_for_one_young_assault/portrait.webp",
-              "skill_name": "γ",
-              "skill_image": "assets/all_for_one_young/all_for_one_young_assault/gamma.webp",
-              "label": "Dégâts par niveau",
-              "before": [
-                53,
-                55,
-                57,
-                61,
-                63,
-                65,
-                66,
-                67,
-                69
-              ],
-              "after": [
-                42,
-                43,
-                44,
-                46,
-                47,
-                48,
-                49,
-                50,
-                52
-              ],
-              "tone": "nerf"
-            }
-          ]
+          "type": "image",
+          "src": "assets/home/patches/1785298405/image_004.png",
+          "alt": ""
         },
         {
-          "title": "Rechargement et munitions",
-          "accent": "reload",
-          "changes": [
-            {
-              "character": "Katsuki Bakugo",
-              "style": "Cluster",
-              "role": "Technique",
-              "portrait": "assets/bakugo/bakugo_technical/portrait.webp",
-              "skill_name": "γ — temps de recharge",
-              "skill_image": "assets/bakugo/bakugo_technical/gamma.webp",
-              "label": "Secondes par niveau",
-              "before": [
-                11,
-                11,
-                11,
-                10,
-                10,
-                10,
-                10,
-                10,
-                9
-              ],
-              "after": [
-                9,
-                9,
-                9,
-                8,
-                8,
-                8,
-                8,
-                8,
-                7
-              ],
-              "tone": "buff"
-            },
-            {
-              "character": "Itsuka Kendo",
-              "style": "Original",
-              "role": "Assaut",
-              "portrait": "assets/kendo/kendo_assault/portrait.webp",
-              "skill_name": "γ Big Fist",
-              "skill_image": "assets/kendo/kendo_assault/gamma.webp",
-              "bullets": [
-                "Recharge : 2/3 s → 5 s selon le niveau",
-                "Pénalité : 2/3/5 s → 5/7,5/10 s",
-                "Pénalité de munitions Lv.1–3 : 2 → 1"
-              ],
-              "tone": "adjust"
-            },
-            {
-              "character": "Itsuka Kendo",
-              "style": "Twin Palm Strike",
-              "role": "Attaque",
-              "portrait": "assets/kendo/kendo_strike/portrait.webp",
-              "skill_name": "γ — recharge",
-              "skill_image": "assets/kendo/kendo_strike/gamma.webp",
-              "label": "Secondes par niveau",
-              "before": [
-                9,
-                9,
-                9,
-                8.5,
-                8.5,
-                8.5,
-                8.5,
-                8.5,
-                8
-              ],
-              "after": [
-                8,
-                8,
-                8,
-                7.5,
-                7.5,
-                7.5,
-                7.5,
-                7.5,
-                7
-              ],
-              "tone": "buff"
-            },
-            {
-              "character": "Tamaki Amajiki",
-              "style": "Original",
-              "role": "Attaque",
-              "portrait": "assets/tamaki/tamaki_strike/portrait.webp",
-              "skill_name": "γ — pénalité de recharge",
-              "skill_image": "assets/tamaki/tamaki_strike/gamma.webp",
-              "bullets": [
-                "Lv.4–8 : 14 s → 11 s",
-                "Lv.9 : 12 s → 10 s"
-              ],
-              "tone": "buff"
-            },
-            {
-              "character": "Cementoss",
-              "style": "Original",
-              "role": "Soutien",
-              "portrait": "assets/cementoss/cementoss_support/portrait.webp",
-              "skill_name": "γ — recharge",
-              "skill_image": "assets/cementoss/cementoss_support/gamma.webp",
-              "label": "Secondes par niveau",
-              "before": [
-                10,
-                10,
-                10,
-                9,
-                9,
-                9,
-                9,
-                9,
-                8
-              ],
-              "after": [
-                9,
-                9,
-                9,
-                8,
-                8,
-                8,
-                8,
-                8,
-                7
-              ],
-              "tone": "buff"
-            },
-            {
-              "character": "Cementoss",
-              "style": "Original",
-              "role": "Soutien",
-              "portrait": "assets/cementoss/cementoss_support/portrait.webp",
-              "skill_name": "Action spéciale — Mur défensif",
-              "skill_image": "assets/cementoss/cementoss_support/special.webp",
-              "before": "60 s",
-              "after": "50 s",
-              "tone": "buff"
-            },
-            {
-              "character": "Endeavor",
-              "style": "Original",
-              "role": "Attaque",
-              "portrait": "assets/endeavor/endeavor_strike/portrait.webp",
-              "skill_name": "Action spéciale — Vol",
-              "skill_image": "assets/endeavor/endeavor_strike/special.webp",
-              "bullets": [
-                "Recharge : 0,20 → 0,18",
-                "Munitions consommées : 15 → 10"
-              ],
-              "tone": "buff"
-            }
-          ]
+          "type": "image",
+          "src": "assets/home/patches/1785298405/image_005.png",
+          "alt": ""
         },
         {
-          "title": "T.U.N.I.N.G",
-          "accent": "tuning",
-          "note": "Aucune modification des T.U.N.I.N.G normaux ou spéciaux dans cette mise à jour.",
-          "changes": []
+          "type": "heading",
+          "level": 2,
+          "text": "Balance Changes: Health"
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "Izuku Midoriya OFA"
+        },
+        {
+          "type": "image",
+          "src": "assets/home/patches/1785298405/image_006.webp",
+          "alt": ""
+        },
+        {
+          "type": "text",
+          "text": "HP: 300 -> 250"
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "Balance Changes: Damage"
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "Katsuki Bakugo"
+        },
+        {
+          "type": "image",
+          "src": "assets/home/patches/1785298405/image_008.webp",
+          "alt": ""
+        },
+        {
+          "type": "heading",
+          "level": 3,
+          "text": "Quirk Skill γ - Howitzer Impact"
+        },
+        {
+          "type": "text",
+          "text": "Changes found for Damage, Guard Break from Level 1 to Level 9."
+        },
+        {
+          "type": "image",
+          "src": "assets/home/patches/1785298405/image_009.png",
+          "alt": ""
+        },
+        {
+          "type": "text",
+          "text": "Damage: 4.0 -> 1.0 Guard Break: 4.0 -> 1.0"
+        },
+        {
+          "type": "text",
+          "text": "Damage: 4.0 -> 1.0 Guard Break: 4.0 -> 1.0"
+        },
+        {
+          "type": "text",
+          "text": "Damage: 4.0 -> 1.0 Guard Break: 4.0 -> 1.0"
+        },
+        {
+          "type": "text",
+          "text": "Damage: 4.0 -> 1.0 Guard Break: 4.0 -> 1.0"
+        },
+        {
+          "type": "text",
+          "text": "Damage: 4.0 -> 1.0 Guard Break: 4.0 -> 1.0"
+        },
+        {
+          "type": "text",
+          "text": "Damage: 4.0 -> 1.0 Guard Break: 4.0 -> 1.0"
+        },
+        {
+          "type": "text",
+          "text": "Damage: 4.0 -> 1.0 Guard Break: 4.0 -> 1.0"
+        },
+        {
+          "type": "text",
+          "text": "Damage: 4.0 -> 1.0 Guard Break: 4.0 -> 1.0"
+        },
+        {
+          "type": "text",
+          "text": "Damage: 4.0 -> 1.0 Guard Break: 4.0 -> 1.0"
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "Katsuki Bakugo \"Cluster\""
+        },
+        {
+          "type": "image",
+          "src": "assets/home/patches/1785298405/image_028.webp",
+          "alt": ""
+        },
+        {
+          "type": "heading",
+          "level": 3,
+          "text": "Quirk Skill α - AP Shot Cluster (Normal)"
+        },
+        {
+          "type": "text",
+          "text": "Changes found for Damage, Guard Break from Level 1 to Level 9."
+        },
+        {
+          "type": "image",
+          "src": "assets/home/patches/1785298405/image_029.png",
+          "alt": ""
+        },
+        {
+          "type": "text",
+          "text": "Damage: 30.0 -> 40.0 Guard Break: 30.0 -> 40.0"
+        },
+        {
+          "type": "text",
+          "text": "Damage: 31.0 -> 41.0 Guard Break: 31.0 -> 41.0"
+        },
+        {
+          "type": "text",
+          "text": "Damage: 32.0 -> 42.0 Guard Break: 32.0 -> 42.0"
+        },
+        {
+          "type": "text",
+          "text": "Damage: 34.0 -> 44.0 Guard Break: 34.0 -> 44.0"
+        },
+        {
+          "type": "text",
+          "text": "Damage: 35.0 -> 45.0 Guard Break: 35.0 -> 45.0"
+        },
+        {
+          "type": "text",
+          "text": "Damage: 36.0 -> 46.0 Guard Break: 36.0 -> 46.0"
+        },
+        {
+          "type": "text",
+          "text": "Damage: 37.0 -> 47.0 Guard Break: 37.0 -> 47.0"
+        },
+        {
+          "type": "text",
+          "text": "Damage: 38.0 -> 48.0 Guard Break: 38.0 -> 48.0"
+        },
+        {
+          "type": "text",
+          "text": "Damage: 40.0 -> 50.0 Guard Break: 40.0 -> 50.0"
+        },
+        {
+          "type": "heading",
+          "level": 3,
+          "text": "Quirk Skill β - Nitro Cluster (Explosion)"
+        },
+        {
+          "type": "text",
+          "text": "Changes found for Damage, Guard Break from Level 1 to Level 9."
+        },
+        {
+          "type": "image",
+          "src": "assets/home/patches/1785298405/image_048.png",
+          "alt": ""
+        },
+        {
+          "type": "text",
+          "text": "Damage: 30.0 -> 35.0 Guard Break: 30.0 -> 35.0"
+        },
+        {
+          "type": "text",
+          "text": "Damage: 31.0 -> 36.0 Guard Break: 31.0 -> 36.0"
+        },
+        {
+          "type": "text",
+          "text": "Damage: 32.0 -> 37.0 Guard Break: 32.0 -> 37.0"
+        },
+        {
+          "type": "text",
+          "text": "Damage: 34.0 -> 39.0 Guard Break: 34.0 -> 39.0"
+        },
+        {
+          "type": "text",
+          "text": "Damage: 35.0 -> 40.0 Guard Break: 35.0 -> 40.0"
+        },
+        {
+          "type": "text",
+          "text": "Damage: 36.0 -> 41.0 Guard Break: 36.0 -> 41.0"
+        },
+        {
+          "type": "text",
+          "text": "Damage: 37.0 -> 42.0 Guard Break: 37.0 -> 42.0"
+        },
+        {
+          "type": "text",
+          "text": "Damage: 38.0 -> 43.0 Guard Break: 38.0 -> 43.0"
+        },
+        {
+          "type": "text",
+          "text": "Damage: 40.0 -> 45.0 Guard Break: 40.0 -> 45.0"
+        },
+        {
+          "type": "heading",
+          "level": 3,
+          "text": "Quirk Skill β - Nitro Cluster (ExplosionFollow-up)"
+        },
+        {
+          "type": "text",
+          "text": "Changes found for Damage, Guard Break from Level 1 to Level 9."
+        },
+        {
+          "type": "image",
+          "src": "assets/home/patches/1785298405/image_067.png",
+          "alt": ""
+        },
+        {
+          "type": "text",
+          "text": "Damage: 40.0 -> 44.0 Guard Break: 40.0 -> 44.0"
+        },
+        {
+          "type": "text",
+          "text": "Damage: 41.0 -> 46.0 Guard Break: 41.0 -> 46.0"
+        },
+        {
+          "type": "text",
+          "text": "Damage: 42.0 -> 48.0 Guard Break: 42.0 -> 48.0"
+        },
+        {
+          "type": "text",
+          "text": "Damage: 44.0 -> 50.0 Guard Break: 44.0 -> 50.0"
+        },
+        {
+          "type": "text",
+          "text": "Damage: 45.0 -> 52.0 Guard Break: 45.0 -> 52.0"
+        },
+        {
+          "type": "text",
+          "text": "Damage: 46.0 -> 54.0 Guard Break: 46.0 -> 54.0"
+        },
+        {
+          "type": "text",
+          "text": "Damage: 47.0 -> 56.0 Guard Break: 47.0 -> 56.0"
+        },
+        {
+          "type": "text",
+          "text": "Damage: 48.0 -> 58.0 Guard Break: 48.0 -> 58.0"
+        },
+        {
+          "type": "text",
+          "text": "Damage: 50.0 -> 60.0 Guard Break: 50.0 -> 60.0"
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "Denki Kaminari"
+        },
+        {
+          "type": "image",
+          "src": "assets/home/patches/1785298405/image_086.webp",
+          "alt": ""
+        },
+        {
+          "type": "heading",
+          "level": 3,
+          "text": "Quirk Skill α - Electro-target"
+        },
+        {
+          "type": "text",
+          "text": "Changes found for Damage, Guard Break, Down Power from Level 1 to Level 9."
+        },
+        {
+          "type": "image",
+          "src": "assets/home/patches/1785298405/image_087.png",
+          "alt": ""
+        },
+        {
+          "type": "text",
+          "text": "Damage: 55.0 -> 54.0 Guard Break: 55.0 -> 54.0 Down Power: 50.0 -> 100.0"
+        },
+        {
+          "type": "text",
+          "text": "Damage: 60.0 -> 56.0 Guard Break: 60.0 -> 56.0 Down Power: 50.0 -> 100.0"
+        },
+        {
+          "type": "text",
+          "text": "Damage: 65.0 -> 58.0 Guard Break: 65.0 -> 58.0 Down Power: 50.0 -> 100.0"
+        },
+        {
+          "type": "text",
+          "text": "Damage: 70.0 -> 60.0 Guard Break: 70.0 -> 60.0 Down Power: 50.0 -> 100.0"
+        },
+        {
+          "type": "text",
+          "text": "Damage: 72.0 -> 62.0 Guard Break: 72.0 -> 62.0 Down Power: 50.0 -> 100.0"
+        },
+        {
+          "type": "text",
+          "text": "Damage: 74.0 -> 64.0 Guard Break: 74.0 -> 64.0 Down Power: 50.0 -> 100.0"
+        },
+        {
+          "type": "text",
+          "text": "Damage: 76.0 -> 66.0 Guard Break: 76.0 -> 66.0 Down Power: 50.0 -> 100.0"
+        },
+        {
+          "type": "text",
+          "text": "Damage: 78.0 -> 68.0 Guard Break: 78.0 -> 68.0 Down Power: 50.0 -> 100.0"
+        },
+        {
+          "type": "text",
+          "text": "Damage: 80.0 -> 70.0 Guard Break: 80.0 -> 70.0 Down Power: 50.0 -> 100.0"
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "Mirio Togata \"Sheer Counter\""
+        },
+        {
+          "type": "image",
+          "src": "assets/home/patches/1785298405/image_115.webp",
+          "alt": ""
+        },
+        {
+          "type": "heading",
+          "level": 3,
+          "text": "Quirk Skill α - Phantom Smash (Shot)"
+        },
+        {
+          "type": "text",
+          "text": "Changes found for Damage, Guard Break from Level 1 to Level 9."
+        },
+        {
+          "type": "image",
+          "src": "assets/home/patches/1785298405/image_116.png",
+          "alt": ""
+        },
+        {
+          "type": "text",
+          "text": "Damage: 40.0 -> 36.0 Guard Break: 40.0 -> 36.0"
+        },
+        {
+          "type": "text",
+          "text": "Damage: 41.0 -> 37.0 Guard Break: 41.0 -> 37.0"
+        },
+        {
+          "type": "text",
+          "text": "Damage: 42.0 -> 38.0 Guard Break: 42.0 -> 38.0"
+        },
+        {
+          "type": "text",
+          "text": "Damage: 43.0 -> 39.0 Guard Break: 43.0 -> 39.0"
+        },
+        {
+          "type": "text",
+          "text": "Damage: 44.0 -> 40.0 Guard Break: 44.0 -> 40.0"
+        },
+        {
+          "type": "text",
+          "text": "Damage: 45.0 -> 41.0 Guard Break: 45.0 -> 41.0"
+        },
+        {
+          "type": "text",
+          "text": "Damage: 46.0 -> 42.0 Guard Break: 46.0 -> 42.0"
+        },
+        {
+          "type": "text",
+          "text": "Damage: 47.0 -> 43.0 Guard Break: 47.0 -> 43.0"
+        },
+        {
+          "type": "text",
+          "text": "Damage: 48.0 -> 44.0 Guard Break: 48.0 -> 44.0"
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "Armored All Might"
+        },
+        {
+          "type": "image",
+          "src": "assets/home/patches/1785298405/image_135.webp",
+          "alt": ""
+        },
+        {
+          "type": "heading",
+          "level": 3,
+          "text": "Quirk Skill α - Ice Bullet Shot (Burn)"
+        },
+        {
+          "type": "text",
+          "text": "Changes found for Damage, Guard Break from Level 1 to Level 9."
+        },
+        {
+          "type": "image",
+          "src": "assets/home/patches/1785298405/image_136.png",
+          "alt": ""
+        },
+        {
+          "type": "text",
+          "text": "Damage: 52.0 -> 48.0 Guard Break: 52.0 -> 48.0"
+        },
+        {
+          "type": "text",
+          "text": "Damage: 54.0 -> 50.0 Guard Break: 54.0 -> 50.0"
+        },
+        {
+          "type": "text",
+          "text": "Damage: 56.0 -> 52.0 Guard Break: 56.0 -> 52.0"
+        },
+        {
+          "type": "text",
+          "text": "Damage: 58.0 -> 54.0 Guard Break: 58.0 -> 54.0"
+        },
+        {
+          "type": "text",
+          "text": "Damage: 60.0 -> 55.0 Guard Break: 60.0 -> 55.0"
+        },
+        {
+          "type": "text",
+          "text": "Damage: 62.0 -> 56.0 Guard Break: 62.0 -> 56.0"
+        },
+        {
+          "type": "text",
+          "text": "Damage: 64.0 -> 57.0 Guard Break: 64.0 -> 57.0"
+        },
+        {
+          "type": "text",
+          "text": "Damage: 66.0 -> 58.0 Guard Break: 66.0 -> 58.0"
+        },
+        {
+          "type": "text",
+          "text": "Damage: 68.0 -> 60.0 Guard Break: 68.0 -> 60.0"
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "Hawks"
+        },
+        {
+          "type": "image",
+          "src": "assets/home/patches/1785298405/image_155.webp",
+          "alt": ""
+        },
+        {
+          "type": "heading",
+          "level": 3,
+          "text": "Quirk Skill α - Wingbeat (Homing)"
+        },
+        {
+          "type": "text",
+          "text": "Changes found for Damage, Guard Break from Level 4 to Level 9."
+        },
+        {
+          "type": "image",
+          "src": "assets/home/patches/1785298405/image_156.png",
+          "alt": ""
+        },
+        {
+          "type": "text",
+          "text": "Damage: 14.0 -> 12.0 Guard Break: 14.0 -> 12.0"
+        },
+        {
+          "type": "text",
+          "text": "Damage: 14.0 -> 12.0 Guard Break: 14.0 -> 12.0"
+        },
+        {
+          "type": "text",
+          "text": "Damage: 14.0 -> 12.0 Guard Break: 14.0 -> 12.0"
+        },
+        {
+          "type": "text",
+          "text": "Damage: 14.0 -> 12.0 Guard Break: 14.0 -> 12.0"
+        },
+        {
+          "type": "text",
+          "text": "Damage: 14.0 -> 12.0 Guard Break: 14.0 -> 12.0"
+        },
+        {
+          "type": "text",
+          "text": "Damage: 18.0 -> 14.0 Guard Break: 18.0 -> 14.0"
+        },
+        {
+          "type": "heading",
+          "level": 3,
+          "text": "Quirk Skill β - Wind Cross (Melee)"
+        },
+        {
+          "type": "text",
+          "text": "Changes found for Damage, Guard Break from Level 1 to Level 9."
+        },
+        {
+          "type": "image",
+          "src": "assets/home/patches/1785298405/image_169.png",
+          "alt": ""
+        },
+        {
+          "type": "text",
+          "text": "Damage: 90.0 -> 100.0 Guard Break: 90.0 -> 100.0"
+        },
+        {
+          "type": "text",
+          "text": "Damage: 95.0 -> 105.0 Guard Break: 95.0 -> 105.0"
+        },
+        {
+          "type": "text",
+          "text": "Damage: 100.0 -> 110.0 Guard Break: 100.0 -> 110.0"
+        },
+        {
+          "type": "text",
+          "text": "Damage: 110.0 -> 120.0 Guard Break: 110.0 -> 120.0"
+        },
+        {
+          "type": "text",
+          "text": "Damage: 115.0 -> 125.0 Guard Break: 115.0 -> 125.0"
+        },
+        {
+          "type": "text",
+          "text": "Damage: 120.0 -> 130.0 Guard Break: 120.0 -> 130.0"
+        },
+        {
+          "type": "text",
+          "text": "Damage: 125.0 -> 135.0 Guard Break: 125.0 -> 135.0"
+        },
+        {
+          "type": "text",
+          "text": "Damage: 130.0 -> 140.0 Guard Break: 130.0 -> 140.0"
+        },
+        {
+          "type": "text",
+          "text": "Damage: 135.0 -> 150.0 Guard Break: 135.0 -> 150.0"
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "Lady Nagant"
+        },
+        {
+          "type": "image",
+          "src": "assets/home/patches/1785298405/image_188.webp",
+          "alt": ""
+        },
+        {
+          "type": "heading",
+          "level": 3,
+          "text": "Quirk Skill α - Hollow Point Shot (On-hit Shot AfterFollow-up)"
+        },
+        {
+          "type": "text",
+          "text": "Changes found for Damage from Level 1 to Level 9."
+        },
+        {
+          "type": "image",
+          "src": "assets/home/patches/1785298405/image_189.png",
+          "alt": ""
+        },
+        {
+          "type": "text",
+          "text": "Damage: 6.0 -> 3.0"
+        },
+        {
+          "type": "text",
+          "text": "Damage: 6.0 -> 3.0"
+        },
+        {
+          "type": "text",
+          "text": "Damage: 6.0 -> 3.0"
+        },
+        {
+          "type": "text",
+          "text": "Damage: 8.0 -> 4.0"
+        },
+        {
+          "type": "text",
+          "text": "Damage: 8.0 -> 4.0"
+        },
+        {
+          "type": "text",
+          "text": "Damage: 8.0 -> 4.0"
+        },
+        {
+          "type": "text",
+          "text": "Damage: 8.0 -> 4.0"
+        },
+        {
+          "type": "text",
+          "text": "Damage: 8.0 -> 4.0"
+        },
+        {
+          "type": "text",
+          "text": "Damage: 10.0 -> 5.0"
+        },
+        {
+          "type": "heading",
+          "level": 3,
+          "text": "Quirk Skill α - Hollow Point Shot (Shooting)"
+        },
+        {
+          "type": "text",
+          "text": "Changes found for Damage, Guard Break from Level 1 to Level 9."
+        },
+        {
+          "type": "image",
+          "src": "assets/home/patches/1785298405/image_199.png",
+          "alt": ""
+        },
+        {
+          "type": "text",
+          "text": "Damage: 47.0 -> 35.0 Guard Break: 47.0 -> 35.0"
+        },
+        {
+          "type": "text",
+          "text": "Damage: 49.0 -> 36.0 Guard Break: 49.0 -> 36.0"
+        },
+        {
+          "type": "text",
+          "text": "Damage: 51.0 -> 37.0 Guard Break: 51.0 -> 37.0"
+        },
+        {
+          "type": "text",
+          "text": "Damage: 53.0 -> 39.0 Guard Break: 53.0 -> 39.0"
+        },
+        {
+          "type": "text",
+          "text": "Damage: 55.0 -> 40.0 Guard Break: 55.0 -> 40.0"
+        },
+        {
+          "type": "text",
+          "text": "Damage: 57.0 -> 41.0 Guard Break: 57.0 -> 41.0"
+        },
+        {
+          "type": "text",
+          "text": "Damage: 59.0 -> 42.0 Guard Break: 59.0 -> 42.0"
+        },
+        {
+          "type": "text",
+          "text": "Damage: 61.0 -> 43.0 Guard Break: 61.0 -> 43.0"
+        },
+        {
+          "type": "text",
+          "text": "Damage: 63.0 -> 45.0 Guard Break: 63.0 -> 45.0"
+        },
+        {
+          "type": "heading",
+          "level": 3,
+          "text": "Quirk Skill β - High Angle Fire (ArcOn-hit Shot)"
+        },
+        {
+          "type": "text",
+          "text": "Changes found for Damage, Guard Break from Level 1 to Level 9."
+        },
+        {
+          "type": "image",
+          "src": "assets/home/patches/1785298405/image_218.png",
+          "alt": ""
+        },
+        {
+          "type": "text",
+          "text": "Damage: 25.0 -> 20.0 Guard Break: 25.0 -> 20.0"
+        },
+        {
+          "type": "text",
+          "text": "Damage: 26.0 -> 21.0 Guard Break: 26.0 -> 21.0"
+        },
+        {
+          "type": "text",
+          "text": "Damage: 27.0 -> 22.0 Guard Break: 27.0 -> 22.0"
+        },
+        {
+          "type": "text",
+          "text": "Damage: 29.0 -> 24.0 Guard Break: 29.0 -> 24.0"
+        },
+        {
+          "type": "text",
+          "text": "Damage: 30.0 -> 25.0 Guard Break: 30.0 -> 25.0"
+        },
+        {
+          "type": "text",
+          "text": "Damage: 31.0 -> 26.0 Guard Break: 31.0 -> 26.0"
+        },
+        {
+          "type": "text",
+          "text": "Damage: 32.0 -> 27.0 Guard Break: 32.0 -> 27.0"
+        },
+        {
+          "type": "text",
+          "text": "Damage: 33.0 -> 28.0 Guard Break: 33.0 -> 28.0"
+        },
+        {
+          "type": "text",
+          "text": "Damage: 35.0 -> 30.0 Guard Break: 35.0 -> 30.0"
+        },
+        {
+          "type": "heading",
+          "level": 3,
+          "text": "Quirk Skill γ - Kickback Shot (Spread Shot Ground)"
+        },
+        {
+          "type": "text",
+          "text": "Changes found for Damage, Guard Break from Level 1 to Level 9."
+        },
+        {
+          "type": "image",
+          "src": "assets/home/patches/1785298405/image_237.png",
+          "alt": ""
+        },
+        {
+          "type": "text",
+          "text": "Damage: 120.0 -> 100.0 Guard Break: 120.0 -> 100.0"
+        },
+        {
+          "type": "text",
+          "text": "Damage: 124.0 -> 103.0 Guard Break: 124.0 -> 103.0"
+        },
+        {
+          "type": "text",
+          "text": "Damage: 128.0 -> 106.0 Guard Break: 128.0 -> 106.0"
+        },
+        {
+          "type": "text",
+          "text": "Damage: 136.0 -> 110.0 Guard Break: 136.0 -> 110.0"
+        },
+        {
+          "type": "text",
+          "text": "Damage: 140.0 -> 113.0 Guard Break: 140.0 -> 113.0"
+        },
+        {
+          "type": "text",
+          "text": "Damage: 144.0 -> 116.0 Guard Break: 144.0 -> 116.0"
+        },
+        {
+          "type": "text",
+          "text": "Damage: 148.0 -> 119.0 Guard Break: 148.0 -> 119.0"
+        },
+        {
+          "type": "text",
+          "text": "Damage: 152.0 -> 122.0 Guard Break: 152.0 -> 122.0"
+        },
+        {
+          "type": "text",
+          "text": "Damage: 160.0 -> 125.0 Guard Break: 160.0 -> 125.0"
+        },
+        {
+          "type": "heading",
+          "level": 3,
+          "text": "Special Action - Scope Mode (Action Shooting)"
+        },
+        {
+          "type": "text",
+          "text": "Changes found for Damage, Guard Break."
+        },
+        {
+          "type": "image",
+          "src": "assets/home/patches/1785298405/image_256.png",
+          "alt": ""
+        },
+        {
+          "type": "text",
+          "text": "Damage: 150.0 -> 125.0 Guard Break: 150.0 -> 125.0"
+        },
+        {
+          "type": "heading",
+          "level": 3,
+          "text": "Special Action - Scope Mode (Action Shooting Headshot)"
+        },
+        {
+          "type": "text",
+          "text": "Changes found for Damage, Guard Break."
+        },
+        {
+          "type": "image",
+          "src": "assets/home/patches/1785298405/image_259.png",
+          "alt": ""
+        },
+        {
+          "type": "text",
+          "text": "Damage: 280.0 -> 230.0 Guard Break: 280.0 -> 230.0"
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "Balance Changes: Magazine"
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "Izuku Midoriya OFA"
+        },
+        {
+          "type": "image",
+          "src": "assets/home/patches/1785298405/image_262.webp",
+          "alt": ""
+        },
+        {
+          "type": "heading",
+          "level": 3,
+          "text": "Quirk Skill α - Delaware Smash Airblast"
+        },
+        {
+          "type": "text",
+          "text": "Changes found for Ammo from Level 1 to Level 9."
+        },
+        {
+          "type": "image",
+          "src": "assets/home/patches/1785298405/image_263.png",
+          "alt": ""
+        },
+        {
+          "type": "text",
+          "text": "Ammo: 6 -> 5"
+        },
+        {
+          "type": "text",
+          "text": "Ammo: 6 -> 5"
+        },
+        {
+          "type": "text",
+          "text": "Ammo: 6 -> 5"
+        },
+        {
+          "type": "text",
+          "text": "Ammo: 7 -> 6"
+        },
+        {
+          "type": "text",
+          "text": "Ammo: 7 -> 6"
+        },
+        {
+          "type": "text",
+          "text": "Ammo: 7 -> 6"
+        },
+        {
+          "type": "text",
+          "text": "Ammo: 7 -> 6"
+        },
+        {
+          "type": "text",
+          "text": "Ammo: 7 -> 6"
+        },
+        {
+          "type": "text",
+          "text": "Ammo: 8 -> 7"
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "Katsuki Bakugo \"Cluster\""
+        },
+        {
+          "type": "image",
+          "src": "assets/home/patches/1785298405/image_273.webp",
+          "alt": ""
+        },
+        {
+          "type": "heading",
+          "level": 3,
+          "text": "Quirk Skill α - AP Shot Cluster"
+        },
+        {
+          "type": "text",
+          "text": "Changes found for Ammo from Level 1 to Level 9."
+        },
+        {
+          "type": "image",
+          "src": "assets/home/patches/1785298405/image_274.png",
+          "alt": ""
+        },
+        {
+          "type": "text",
+          "text": "Ammo: 4 -> 5"
+        },
+        {
+          "type": "text",
+          "text": "Ammo: 4 -> 5"
+        },
+        {
+          "type": "text",
+          "text": "Ammo: 4 -> 5"
+        },
+        {
+          "type": "text",
+          "text": "Ammo: 5 -> 6"
+        },
+        {
+          "type": "text",
+          "text": "Ammo: 5 -> 6"
+        },
+        {
+          "type": "text",
+          "text": "Ammo: 5 -> 6"
+        },
+        {
+          "type": "text",
+          "text": "Ammo: 5 -> 6"
+        },
+        {
+          "type": "text",
+          "text": "Ammo: 5 -> 6"
+        },
+        {
+          "type": "text",
+          "text": "Ammo: 6 -> 7"
+        },
+        {
+          "type": "heading",
+          "level": 3,
+          "text": "Quirk Skill γ - Howitzer Impact Cluster"
+        },
+        {
+          "type": "text",
+          "text": "Changes found for Ammo, Reload Time, Penalty Reload at Level 9."
+        },
+        {
+          "type": "image",
+          "src": "assets/home/patches/1785298405/image_284.png",
+          "alt": ""
+        },
+        {
+          "type": "text",
+          "text": "Ammo: 1 -> 2 Reload Time: 7.0 -> 8.0 Penalty Reload: 7.0 -> 11.0"
+        },
+        {
+          "type": "image",
+          "src": "assets/home/patches/1785298405/image_286.png",
+          "alt": ""
+        },
+        {
+          "type": "image",
+          "src": "assets/home/patches/1785298405/image_287.png",
+          "alt": ""
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "Denki Kaminari"
+        },
+        {
+          "type": "image",
+          "src": "assets/home/patches/1785298405/image_288.webp",
+          "alt": ""
+        },
+        {
+          "type": "heading",
+          "level": 3,
+          "text": "Special Action - Electrification"
+        },
+        {
+          "type": "text",
+          "text": "Changes found for Penalty Reload."
+        },
+        {
+          "type": "image",
+          "src": "assets/home/patches/1785298405/image_289.png",
+          "alt": ""
+        },
+        {
+          "type": "text",
+          "text": "Penalty Reload: 14.0 -> 9.0"
+        },
+        {
+          "type": "image",
+          "src": "assets/home/patches/1785298405/image_290.png",
+          "alt": ""
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "Itsuka Kendo"
+        },
+        {
+          "type": "image",
+          "src": "assets/home/patches/1785298405/image_291.webp",
+          "alt": ""
+        },
+        {
+          "type": "heading",
+          "level": 3,
+          "text": "Quirk Skill γ - Big Fist Grip"
+        },
+        {
+          "type": "text",
+          "text": "_Changes found for penalty span from Level 1 to Level 3."
+        },
+        {
+          "type": "image",
+          "src": "assets/home/patches/1785298405/image_292.png",
+          "alt": ""
+        },
+        {
+          "type": "text",
+          "text": "penalty_span: 1.0 -> 2.0"
+        },
+        {
+          "type": "image",
+          "src": "assets/home/patches/1785298405/image_293.png",
+          "alt": ""
+        },
+        {
+          "type": "text",
+          "text": "penalty_span: 1.0 -> 2.0"
+        },
+        {
+          "type": "image",
+          "src": "assets/home/patches/1785298405/image_294.png",
+          "alt": ""
+        },
+        {
+          "type": "text",
+          "text": "penalty_span: 1.0 -> 2.0"
+        },
+        {
+          "type": "image",
+          "src": "assets/home/patches/1785298405/image_295.png",
+          "alt": ""
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "Hawks"
+        },
+        {
+          "type": "image",
+          "src": "assets/home/patches/1785298405/image_296.webp",
+          "alt": ""
+        },
+        {
+          "type": "heading",
+          "level": 3,
+          "text": "Quirk Skill α - Wingbeat"
+        },
+        {
+          "type": "text",
+          "text": "Changes found for Ammo from Level 1 to Level 9."
+        },
+        {
+          "type": "image",
+          "src": "assets/home/patches/1785298405/image_297.png",
+          "alt": ""
+        },
+        {
+          "type": "text",
+          "text": "Ammo: 40 -> 30"
+        },
+        {
+          "type": "text",
+          "text": "Ammo: 41 -> 31"
+        },
+        {
+          "type": "text",
+          "text": "Ammo: 42 -> 32"
+        },
+        {
+          "type": "text",
+          "text": "Ammo: 44 -> 34"
+        },
+        {
+          "type": "text",
+          "text": "Ammo: 45 -> 35"
+        },
+        {
+          "type": "text",
+          "text": "Ammo: 46 -> 36"
+        },
+        {
+          "type": "text",
+          "text": "Ammo: 47 -> 37"
+        },
+        {
+          "type": "text",
+          "text": "Ammo: 48 -> 38"
+        },
+        {
+          "type": "text",
+          "text": "Ammo: 50 -> 40"
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "Twice"
+        },
+        {
+          "type": "image",
+          "src": "assets/home/patches/1785298405/image_307.webp",
+          "alt": ""
+        },
+        {
+          "type": "heading",
+          "level": 3,
+          "text": "Quirk Skill γ - Foot Boost"
+        },
+        {
+          "type": "text",
+          "text": "Changes found for Reload Time, Ammo, Penalty Reload from Level 1 to Level 9."
+        },
+        {
+          "type": "image",
+          "src": "assets/home/patches/1785298405/image_308.png",
+          "alt": ""
+        },
+        {
+          "type": "text",
+          "text": "Reload Time: 5.0 -> 4.0"
+        },
+        {
+          "type": "image",
+          "src": "assets/home/patches/1785298405/image_309.png",
+          "alt": ""
+        },
+        {
+          "type": "text",
+          "text": "Reload Time: 5.0 -> 4.0"
+        },
+        {
+          "type": "image",
+          "src": "assets/home/patches/1785298405/image_310.png",
+          "alt": ""
+        },
+        {
+          "type": "text",
+          "text": "Reload Time: 5.0 -> 4.0"
+        },
+        {
+          "type": "image",
+          "src": "assets/home/patches/1785298405/image_311.png",
+          "alt": ""
+        },
+        {
+          "type": "text",
+          "text": "Reload Time: 5.0 -> 4.0"
+        },
+        {
+          "type": "image",
+          "src": "assets/home/patches/1785298405/image_312.png",
+          "alt": ""
+        },
+        {
+          "type": "text",
+          "text": "Reload Time: 5.0 -> 4.0"
+        },
+        {
+          "type": "image",
+          "src": "assets/home/patches/1785298405/image_313.png",
+          "alt": ""
+        },
+        {
+          "type": "text",
+          "text": "Reload Time: 5.0 -> 4.0"
+        },
+        {
+          "type": "image",
+          "src": "assets/home/patches/1785298405/image_314.png",
+          "alt": ""
+        },
+        {
+          "type": "text",
+          "text": "Reload Time: 5.0 -> 4.0"
+        },
+        {
+          "type": "image",
+          "src": "assets/home/patches/1785298405/image_315.png",
+          "alt": ""
+        },
+        {
+          "type": "text",
+          "text": "Reload Time: 5.0 -> 4.0"
+        },
+        {
+          "type": "image",
+          "src": "assets/home/patches/1785298405/image_316.png",
+          "alt": ""
+        },
+        {
+          "type": "text",
+          "text": "Ammo: 3 -> 4 Reload Time: 5.0 -> 4.0 Penalty Reload: 6.0 -> 8.0"
+        },
+        {
+          "type": "image",
+          "src": "assets/home/patches/1785298405/image_318.png",
+          "alt": ""
+        },
+        {
+          "type": "image",
+          "src": "assets/home/patches/1785298405/image_319.png",
+          "alt": ""
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "Lady Nagant"
+        },
+        {
+          "type": "image",
+          "src": "assets/home/patches/1785298405/image_320.webp",
+          "alt": ""
+        },
+        {
+          "type": "heading",
+          "level": 3,
+          "text": "Quirk Skill α - Hollow Point Shot"
+        },
+        {
+          "type": "text",
+          "text": "Changes found for Ammo from Level 1 to Level 9."
+        },
+        {
+          "type": "image",
+          "src": "assets/home/patches/1785298405/image_321.png",
+          "alt": ""
+        },
+        {
+          "type": "text",
+          "text": "Ammo: 6 -> 5"
+        },
+        {
+          "type": "text",
+          "text": "Ammo: 6 -> 5"
+        },
+        {
+          "type": "text",
+          "text": "Ammo: 6 -> 5"
+        },
+        {
+          "type": "text",
+          "text": "Ammo: 7 -> 6"
+        },
+        {
+          "type": "text",
+          "text": "Ammo: 7 -> 6"
+        },
+        {
+          "type": "text",
+          "text": "Ammo: 7 -> 6"
+        },
+        {
+          "type": "text",
+          "text": "Ammo: 7 -> 6"
+        },
+        {
+          "type": "text",
+          "text": "Ammo: 7 -> 6"
+        },
+        {
+          "type": "text",
+          "text": "Ammo: 8 -> 7"
+        },
+        {
+          "type": "heading",
+          "level": 3,
+          "text": "Quirk Skill γ - Kickback Shot"
+        },
+        {
+          "type": "text",
+          "text": "Changes found for Reload Time, Penalty Reload, Ammo from Level 1 to Level 9."
+        },
+        {
+          "type": "image",
+          "src": "assets/home/patches/1785298405/image_331.png",
+          "alt": ""
+        },
+        {
+          "type": "text",
+          "text": "Reload Time: 7.0 -> 9.0 Penalty Reload: 7.0 -> 9.0"
+        },
+        {
+          "type": "image",
+          "src": "assets/home/patches/1785298405/image_332.png",
+          "alt": ""
+        },
+        {
+          "type": "image",
+          "src": "assets/home/patches/1785298405/image_333.png",
+          "alt": ""
+        },
+        {
+          "type": "text",
+          "text": "Reload Time: 7.0 -> 9.0 Penalty Reload: 7.0 -> 9.0"
+        },
+        {
+          "type": "image",
+          "src": "assets/home/patches/1785298405/image_334.png",
+          "alt": ""
+        },
+        {
+          "type": "image",
+          "src": "assets/home/patches/1785298405/image_335.png",
+          "alt": ""
+        },
+        {
+          "type": "text",
+          "text": "Reload Time: 7.0 -> 9.0 Penalty Reload: 7.0 -> 9.0"
+        },
+        {
+          "type": "image",
+          "src": "assets/home/patches/1785298405/image_336.png",
+          "alt": ""
+        },
+        {
+          "type": "image",
+          "src": "assets/home/patches/1785298405/image_337.png",
+          "alt": ""
+        },
+        {
+          "type": "text",
+          "text": "Reload Time: 5.0 -> 8.0 Penalty Reload: 5.0 -> 8.0"
+        },
+        {
+          "type": "image",
+          "src": "assets/home/patches/1785298405/image_338.png",
+          "alt": ""
+        },
+        {
+          "type": "image",
+          "src": "assets/home/patches/1785298405/image_339.png",
+          "alt": ""
+        },
+        {
+          "type": "text",
+          "text": "Reload Time: 5.0 -> 8.0 Penalty Reload: 5.0 -> 8.0"
+        },
+        {
+          "type": "image",
+          "src": "assets/home/patches/1785298405/image_340.png",
+          "alt": ""
+        },
+        {
+          "type": "image",
+          "src": "assets/home/patches/1785298405/image_341.png",
+          "alt": ""
+        },
+        {
+          "type": "text",
+          "text": "Reload Time: 5.0 -> 8.0 Penalty Reload: 5.0 -> 8.0"
+        },
+        {
+          "type": "image",
+          "src": "assets/home/patches/1785298405/image_342.png",
+          "alt": ""
+        },
+        {
+          "type": "image",
+          "src": "assets/home/patches/1785298405/image_343.png",
+          "alt": ""
+        },
+        {
+          "type": "text",
+          "text": "Reload Time: 5.0 -> 8.0 Penalty Reload: 5.0 -> 8.0"
+        },
+        {
+          "type": "image",
+          "src": "assets/home/patches/1785298405/image_344.png",
+          "alt": ""
+        },
+        {
+          "type": "image",
+          "src": "assets/home/patches/1785298405/image_345.png",
+          "alt": ""
+        },
+        {
+          "type": "text",
+          "text": "Reload Time: 5.0 -> 8.0 Penalty Reload: 5.0 -> 8.0"
+        },
+        {
+          "type": "image",
+          "src": "assets/home/patches/1785298405/image_346.png",
+          "alt": ""
+        },
+        {
+          "type": "image",
+          "src": "assets/home/patches/1785298405/image_347.png",
+          "alt": ""
+        },
+        {
+          "type": "text",
+          "text": "Ammo: 2 -> 1 Reload Time: 5.0 -> 7.0 Penalty Reload: 8.0 -> 7.0"
+        },
+        {
+          "type": "image",
+          "src": "assets/home/patches/1785298405/image_349.png",
+          "alt": ""
+        },
+        {
+          "type": "image",
+          "src": "assets/home/patches/1785298405/image_350.png",
+          "alt": ""
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "Normal TUNING Changes"
+        },
+        {
+          "type": "text",
+          "text": "No changes detected."
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "Special TUNING Changes"
+        },
+        {
+          "type": "text",
+          "text": "No changes detected."
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "New Content Added since v1.16.3-Rc142"
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "Tomura Shigaraki"
+        },
+        {
+          "type": "image",
+          "src": "assets/home/patches/1785298405/image_351.webp",
+          "alt": ""
+        },
+        {
+          "type": "text",
+          "text": "Quirk Skill β - Ground Destruction (BodyImpact) (Lv 1–9)"
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "Gentle Criminal"
+        },
+        {
+          "type": "image",
+          "src": "assets/home/patches/1785298405/image_352.webp",
+          "alt": ""
+        },
+        {
+          "type": "text",
+          "text": "Quirk Skill α - Gently Arrow (Lv 1–9)"
+        },
+        {
+          "type": "text",
+          "text": "Quirk Skill α - Gently Arrow (Lv 1–9)"
+        },
+        {
+          "type": "text",
+          "text": "Quirk Skill β - Gently Rebound (Shockwave) (Lv 1–9)"
+        },
+        {
+          "type": "text",
+          "text": "Quirk Skill β - Gently Rebound (空気Shot) (Lv 1–9)"
+        },
+        {
+          "type": "text",
+          "text": "Quirk Skill β - Gently Rebound (Lv 1–9)"
+        },
+        {
+          "type": "text",
+          "text": "Quirk Skill γ - Gently Avant (Charge) (Lv 1–9)"
+        },
+        {
+          "type": "text",
+          "text": "Quirk Skill γ - Gently Avant (Finisher) (Lv 1–9)"
+        },
+        {
+          "type": "text",
+          "text": "Quirk Skill γ - Gently Avant (範囲) (Lv 1–9)"
+        },
+        {
+          "type": "text",
+          "text": "Quirk Skill γ - Gently Avant (Lv 1–9)"
+        },
+        {
+          "type": "text",
+          "text": "Special Action - Gently Trampoline"
+        },
+        {
+          "type": "text",
+          "text": "Special Action - Gently Trampoline"
+        },
+        {
+          "type": "image",
+          "src": "assets/home/patches/1785298405/image_353.png",
+          "alt": ""
+        },
+        {
+          "type": "image",
+          "src": "assets/home/patches/1785298405/image_354.png",
+          "alt": "DigitalOcean Referral Badge"
         }
-      ]
+      ],
+      "internal": true
     }
   ],
   "maintenance": {

@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import annotations
 
-import argparse, copy, json, re, time, unicodedata, hashlib
+import argparse, copy, json, re, sys, time, unicodedata, hashlib
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
@@ -12,6 +12,19 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 
 import requests
 from bs4 import BeautifulSoup
+
+
+def _configure_utf8_stdio() -> None:
+    """Empêche la console Windows (CP1255/CP1252) de faire planter les accents."""
+    for stream_name in ("stdout", "stderr"):
+        stream = getattr(sys, stream_name, None)
+        try:
+            stream.reconfigure(encoding="utf-8", errors="backslashreplace")
+        except (AttributeError, OSError):
+            pass
+
+
+_configure_utf8_stdio()
 
 BASE_URL = "https://ultrarumble.com"
 # Costume names are fetched from the official French mirror. The costume IDs,
