@@ -98,7 +98,8 @@ function originalRemotePortrait(row){
 }
 function manualPortrait(styleId){
   const id=String(styleId||'');
-  if(id==='fullbullet'||/midoriya.*attack/i.test(id))return 'assets/home/season18/midoriya_fullbullet_profile.png';
+  /* Aucun portrait manuel pour Full Bullet : la base UltraRumble reste la
+     source prioritaire de chaque style. */
   if(/gentle[_-]?criminal/i.test(id))return 'assets/home/season18/gentle_s18_profile_hd.webp';
   return '';
 }
@@ -106,8 +107,9 @@ function portraitCandidates(styleId,fallback){
   const sync=window.MHUR_SEASON18_DATA?.official_portraits||{};
   const row=remoteRowForStyle(styleId)||null;
   const local=(typeof styles!=='undefined'&&styles?.[styleId]?._s18LocalPortrait)||'';
-  /* Prefer a verified style-specific picture. Invalid guessed URLs are kept last. */
-  const list=[manualPortrait(styleId),sync[styleId],row?.assets?.portrait,local,fallback,...inferredRemotePortraits(row),originalRemotePortrait(row)].filter(Boolean).map(String);
+  /* La photo exacte du style depuis UltraRumble passe avant toutes les anciennes
+     images locales. Les propositions déduites ne servent qu'en dernier recours. */
+  const list=[sync[styleId],row?.assets?.portrait,manualPortrait(styleId),local,fallback,...inferredRemotePortraits(row),originalRemotePortrait(row)].filter(Boolean).map(String);
   return Array.from(new Set(list));
 }
 window.MHUR_S18_NEXT_IMAGE=function(image){
@@ -182,7 +184,7 @@ function patchGentle(){
   const row=exact[styleId]||{};
   const oldSkills=Array.isArray(st.skills)?st.skills:[];
   ch.name='Gentle Criminal'; ch.side='villain';
-  ch.styles=[styleId,...uniqueStyleIds(ch).filter(id=>id!==styleId&&norm(styles[id]?.name)!=='original')];
+  ch.styles=[styleId];
   st.name={fr:'Original',en:'Original'}; st.role='technical'; st.pv=String(row?.stats?.['Max Main Health']||row?.stats?.['Max Health']||st.pv||300);
   st.portrait='assets/home/season18/gentle_s18_profile_hd.webp';
   ch.portrait=st.portrait;
@@ -365,37 +367,28 @@ function seasonReleases(){
   const twice=characterBy('twice');
   const tsuyu=characterBy('tsuyu')||characterBy('froppy');
   const gentleStyle=styleIds(gentle)[0]||'';
-  const twiceStyle=findStyle(twice,(st,id)=>NORM(st?.name).includes('sad_man')||ROLE(st?.role)==='support')||'';
-  const tsuyuStyle=findStyle(tsuyu,st=>ROLE(st?.role)==='attack')||'';
+  const twiceStyle=findStyle(twice,(st,id)=>NORM(st?.name).includes('sad_man')||ROLE(st?.role)==='support')||styleIds(twice)[0]||'';
+  const tsuyuStyle=findStyle(tsuyu,st=>ROLE(st?.role)==='attack')||styleIds(tsuyu)[0]||'';
   return [
-    {key:'gentle',kind:'character',charId:gentle?.id||'gentle_criminal',styleId:gentleStyle,title:'Gentle Criminal',subtitle:TX('Nouveau personnage · Technique','New character · Technical'),date:TX('Disponible depuis le 29 juillet','Available since July 29'),role:'technical',art:'assets/home/season18/gentle_portal_s18.webp',clickable:true},
-    {key:'twice',kind:'style',charId:'',styleId:twiceStyle,title:'Twice',subtitle:"Sad Man's Parade · "+TX('Soutien','Support'),date:TX('Sortie prévue le 19 août','Planned for August 19'),role:'support',art:'assets/home/season18/twice_portal_s18.webp',clickable:false},
-    {key:'tsuyu',kind:'style',charId:'',styleId:tsuyuStyle,title:tsuyu?.name||'Tsuyu Asui',subtitle:TX('Nouveau style · nom à venir','New style · name to be announced'),date:TX('Prévu pendant la Saison 18','Planned during Season 18'),role:'attack',art:styles?.[tsuyuStyle]?.portrait||tsuyu?.portrait||'',black:true,clickable:false}
+    {key:'gentle',kind:'character',charId:gentle?.id||'gentle_criminal',styleId:gentleStyle,title:'Gentle Criminal',subtitle:TX('Nouveau personnage · Technique','New character · Technical'),date:TX('Disponible depuis le 29 juillet','Available since July 29'),role:'technical',art:'assets/home/season18/gentle_s18_portrait.webp'},
+    {key:'twice',kind:'style',charId:twice?.id||'twice',styleId:twiceStyle,title:'Twice',subtitle:"Sad Man's Parade · "+TX('Soutien','Support'),date:TX('Sortie le 19 août','Releases August 19'),role:'support',art:'assets/home/season18/twice_s18_portrait.webp'},
+    {key:'tsuyu',kind:'style',charId:tsuyu?.id||'tsuyu',styleId:tsuyuStyle,title:tsuyu?.name||'Tsuyu Asui',subtitle:TX('Nouveau style · nom à venir','New style · name to be announced'),date:TX('Prévu pendant la Saison 18','Planned during Season 18'),role:'attack',art:styles?.[tsuyuStyle]?.portrait||tsuyu?.portrait||'',black:true}
   ];
 }
-window.openSeason18GentleV12=function(){
-  const gentle=characterBy('gentle criminal');if(!gentle)return;
-  page='characters';selectedChar=gentle.id;selectedStyle=styleIds(gentle)[0]||null;selectedCostume=null;
-  document.getElementById('drawer')?.classList.remove('open');
-  if(location.hash!=='#characters')history.pushState(null,'','#characters');
-  if(typeof layout==='function')layout();else if(typeof render==='function')render();
-};
 function seasonCard(item){
   const icon=item.kind==='character'?'assets/home/icons/release_character.png':'assets/home/icons/release_style.png';
-  const art=item.black?`<span class="s18SeasonBlackV12">${imgHtml(item.art,item.title,'s18SeasonProfileV12')}</span>`:`<span class="s18SeasonPortalV12" style="background-image:url('${ESC(item.art).replace(/'/g,'%27')}')"></span>`;
-  const body=`${art}<span class="s18SeasonShadeV12"></span><span class="releaseBadgeV299 ${item.kind}">${typeof img==='function'?img(icon,item.kind):imgHtml(icon,item.kind)}</span><span class="s18SeasonNewV12" aria-hidden="true"></span><span class="releaseNamesV299"><b>${ESC(item.title)}</b><small>${ESC(item.subtitle)}</small><em>${ESC(item.date)}</em></span>`;
-  if(item.clickable)return `<button type="button" class="releaseCardV299 s18SeasonReleaseV12 role-${ESC(ROLE(item.role))} is-clickable" onclick="openSeason18GentleV12()" title="${ESC(item.title)} — ${ESC(item.subtitle)}">${body}</button>`;
-  return `<article class="releaseCardV299 s18SeasonReleaseV12 role-${ESC(ROLE(item.role))} is-coming" aria-label="${ESC(item.title)} — ${ESC(item.subtitle)}">${body}<span class="s18ComingSoonV12">${TX('BIENTÔT','COMING SOON')}</span></article>`;
+  const art=item.black?`<span class="s18SeasonBlackV10">${imgHtml(item.art,item.title,'s18SeasonProfileV10')}</span>`:`<span class="s18SeasonArtV10" style="background-image:url('${ESC(item.art).replace(/'/g,'%27')}')"></span>`;
+  return `<button type="button" class="releaseCardV299 s18SeasonReleaseV10 role-${ESC(ROLE(item.role))}" data-release-char="${ESC(item.charId)}" data-release-style="${ESC(item.styleId)}" onclick="openHomeReleaseV298(this)" title="${ESC(item.title)} — ${ESC(item.subtitle)}">${art}<span class="s18SeasonShadeV10"></span><span class="releaseBadgeV299 ${item.kind}">${typeof img==='function'?img(icon,item.kind):imgHtml(icon,item.kind)}</span><span class="s18SeasonNewV10" aria-hidden="true"></span><span class="releaseNamesV299"><b>${ESC(item.title)}</b><small>${ESC(item.subtitle)}</small><em>${ESC(item.date)}</em></span></button>`;
 }
 function patchHome(){
   const home=document.querySelector('.homeV296');if(!home)return;
   const headings=[...home.querySelectorAll('.homeTitleV296')];
-  const releaseHeading=headings.find(h=>/derni[eè]res sorties|latest releases|sorties pr[eé]vues|season 18 releases/i.test(h.textContent||''));
+  const releaseHeading=headings.find(h=>/derni[eè]res sorties|latest releases/i.test(h.textContent||''));
   if(releaseHeading)releaseHeading.textContent=TX('SORTIES PRÉVUES — SAISON 18','SEASON 18 RELEASES');
   const grid=home.querySelector('.releaseGridV296');
-  if(grid&&grid.dataset.s18SeasonV12!==L()){
+  if(grid&&grid.dataset.s18SeasonV10!==L()){
     grid.innerHTML=seasonReleases().map(seasonCard).join('');
-    grid.dataset.s18SeasonV12=L();
+    grid.dataset.s18SeasonV10=L();
   }
   const patchHeading=headings.find(h=>/derni[eè]re note de mise [aà] jour|latest patch note/i.test(h.textContent||''));
   if(patchHeading){
@@ -528,9 +521,9 @@ function openNotes(){
 function ensureHeaderButton(){
   const admin=document.getElementById('mhurAdminButton');if(admin)admin.style.setProperty('display','none','important');
   const account=document.getElementById('mhurAccountButton');if(!account?.parentNode)return;
-  let button=document.getElementById('mhurPatchDevButtonV10');
-  if(!button){button=document.createElement('button');button.id='mhurPatchDevButtonV10';button.type='button';button.className='nexusHeaderBtn mhurPatchDevButtonV10';button.innerHTML=`📝 <span>${TX('Patchs / Dev Notes','Patch / Dev Notes')}</span>`;button.onclick=openNotes;account.parentNode.insertBefore(button,account)}
-  else button.querySelector('span').textContent=TX('Patchs / Dev Notes','Patch / Dev Notes');
+  let button=document.getElementById('mhurPatchDevButtonV12')||document.getElementById('mhurPatchDevButtonV10');
+  if(!button){button=document.createElement('button');button.id='mhurPatchDevButtonV12';button.type='button';button.className='nexusHeaderBtn mhurPatchDevButtonV10';button.innerHTML=`📝 <span>${TX('Notes de patch / Notes des développeurs','Patch Notes / Dev Notes')}</span>`;button.onclick=openNotes;account.parentNode.insertBefore(button,account)}
+  else button.querySelector('span').textContent=TX('Notes de patch / Notes des développeurs','Patch Notes / Dev Notes');
 }
 
 /* -------------------------- Administration profil ------------------------ */

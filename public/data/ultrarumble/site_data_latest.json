@@ -1,6 +1,6 @@
 {
   "meta": {
-    "updated_at": "2026-07-29T16:35:02.450577+00:00",
+    "updated_at": "2026-07-29T17:06:38.042103+00:00",
     "updater_version": "v354_afo_young_mapped",
     "source": "https://ultrarumble.com",
     "new_styles_added": 0,
@@ -9,7 +9,7 @@
       "special_cards": 60,
       "styles_enriched": 60
     },
-    "season18_postprocess": "2026-07-29T16:36:02.435015+00:00"
+    "season18_postprocess": "2026-07-29T17:07:33.088186+00:00"
   },
   "characters": [
     {
@@ -17004,8 +17004,18 @@
       },
       "special_action": {
         "values": {
-          "columns": [],
-          "rows": []
+          "columns": [
+            "Ammo",
+            "Use Ammo",
+            "Reload"
+          ],
+          "rows": [
+            [
+              "x1",
+              "x1",
+              "1s"
+            ]
+          ]
         }
       },
       "normal_tuning": [
@@ -47935,8 +47945,18 @@
       },
       "special_action": {
         "values": {
-          "columns": [],
-          "rows": []
+          "columns": [
+            "Ammo",
+            "Use Ammo",
+            "Reload"
+          ],
+          "rows": [
+            [
+              "x1",
+              "x1",
+              "1s"
+            ]
+          ]
         }
       },
       "normal_tuning": [

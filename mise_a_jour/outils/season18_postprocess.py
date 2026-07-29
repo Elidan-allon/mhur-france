@@ -760,10 +760,10 @@ def ensure_assets_in_index(root: Path) -> None:
     """
     idx = root / "index.html"
     text = idx.read_text(encoding="utf-8", errors="ignore")
-    version = "2000"
+    version = "12000"
     css = f'<link rel="stylesheet" href="css/season18-fixes.css?v={version}">'
     early = f'<script src="data/season18_sync.js?v={version}"></script>\n<script src="js/season18-early.js?v={version}"></script>'
-    late = f'<script src="js/season18-fixes.js?v={version}"></script>'
+    late = f'<script src="js/season18-fixes.js?v={version}"></script>\n<script src="js/season18-v12.js?v={version}"></script>'
 
     # Remove every previous injection so repeated updates stay idempotent.
     patterns = (
@@ -771,9 +771,39 @@ def ensure_assets_in_index(root: Path) -> None:
         r'\s*<script src="data/season18_sync\.js[^>]*></script>\s*',
         r'\s*<script src="js/season18-early\.js[^>]*></script>\s*',
         r'\s*<script src="js/season18-fixes\.js[^>]*></script>\s*',
+        r'\s*<script src="js/season18-v12\.js[^>]*></script>\s*',
     )
     for pattern in patterns:
         text = re.sub(pattern, "\n", text)
+
+    # Le bouton de modération n'appartient plus au header. Le bouton Notes est
+    # écrit directement dans l'HTML afin qu'il soit présent dès le premier
+    # affichage, sans apparition/disparition après JavaScript.
+    text = re.sub(
+        r'<button\b[^>]*id=["\']mhurAdminButton["\'][^>]*>[\s\S]*?</button>\s*',
+        '',
+        text,
+        count=1,
+        flags=re.I,
+    )
+    text = re.sub(
+        r'<button\b[^>]*id=["\']mhurPatchDevButtonV(?:10|12)["\'][^>]*>[\s\S]*?</button>\s*',
+        '',
+        text,
+        flags=re.I,
+    )
+    patch_button = (
+        '<button id="mhurPatchDevButtonV12" '
+        'class="nexusHeaderBtn mhurPatchDevButtonV10 mhurPatchDevButtonV12" '
+        'type="button" '
+        'onclick="window.MHUR_S18_V12?.openNotes?.() || window.MHUR_S18_V10?.openNotes?.()">'
+        '<span class="mhurPatchDevIconV12">📝</span>'
+        '<span>Notes de patch / Notes des développeurs</span>'
+        '</button>\n'
+    )
+    account_match = re.search(r'<button\b[^>]*id=["\']mhurAccountButton["\']', text, flags=re.I)
+    if account_match:
+        text = text[:account_match.start()] + patch_button + text[account_match.start():]
 
     if "</head>" in text:
         text = text.replace("</head>", f"\n{css}\n</head>", 1)
@@ -788,7 +818,7 @@ def ensure_assets_in_index(root: Path) -> None:
         text = text.replace("</body>", early + "\n</body>", 1)
 
     if "</body>" in text:
-        text = text.replace("</body>", f"\n<!-- Season 18 v9 targeted compatibility layer. -->\n{late}\n</body>", 1)
+        text = text.replace("</body>", f"\n<!-- Season 18 v12 compatibility layer. -->\n{late}\n</body>", 1)
     else:
         text += "\n" + late
     idx.write_text(text, encoding="utf-8")

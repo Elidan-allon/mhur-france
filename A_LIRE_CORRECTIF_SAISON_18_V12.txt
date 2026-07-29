@@ -1,13 +1,18 @@
-CORRECTIF SAISON 18 V12 — SORTIES PRÉVUES
+CORRECTIF SAISON 18 V12 — PREMIER AFFICHAGE ET PORTRAITS
 
 1. Copie le dossier mhur-france par-dessus ton dossier actuel.
-2. Accepte tous les remplacements.
+2. Accepte le remplacement des fichiers.
 3. Lance METTRE_A_JOUR_MHUR_FRANCE.bat.
-4. Redéploie public puis fais Ctrl + F5.
+4. Attends [OK], puis redéploie le dossier public.
+5. Fais Ctrl + F5 une fois sur le site.
 
-CORRECTIONS :
-- Gentle Criminal utilise le portail officiel complet et ouvre uniquement Gentle Criminal.
-- Twice utilise le portail officiel complet et ne redirige vers aucun personnage.
-- Tsuyu reste affichée sur fond noir et ne redirige vers aucun personnage.
-- Les trois cartes ont désormais un format homogène en trois colonnes sur grand écran.
-- Twice et Tsuyu affichent BIENTÔT et n'ont plus de comportement cliquable.
+CORRECTIONS V12
+- Le bouton Notes de patch / Notes des développeurs est écrit directement dans le header : il ne doit plus apparaître en retard.
+- Le bouton Modération est retiré du header dès le HTML initial. L'accès admin reste dans Mon compte.
+- La section Sorties prévues est rendue dès le premier affichage et ne reste plus vide.
+- Gentle Criminal est la seule carte cliquable. Twice et Tsuyu n'ouvrent aucune mauvaise page.
+- Gentle et Twice utilisent les bannières officielles fournies. Tsuyu utilise son portrait sur fond noir.
+- Les cartes personnages, les choix de styles et les fiches détaillées ont des fonds par rôle.
+- Les portraits sont agrandis, centrés et posés au bas des cadres, y compris pour les personnages à plusieurs styles.
+- Les portraits exacts UltraRumble sont prioritaires sur les anciennes images locales. Le remplacement manuel incorrect de Full Bullet a été retiré.
+- Gentle Criminal ne conserve qu'un seul style Original.
