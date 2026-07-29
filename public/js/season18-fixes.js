@@ -20,6 +20,21 @@ function exactData(){
   catch(_e){ window.__S18_EXACT_V9=null; }
   return window.__S18_EXACT_V9;
 }
+function remoteRowForStyle(styleId){
+  const data=exactData()||{};
+  if(data.exact_by_style?.[styleId]) return data.exact_by_style[styleId];
+  if(typeof characters==='undefined'||typeof styles==='undefined') return null;
+  const ch=(characters||[]).find(c=>(c.styles||[]).map(String).includes(String(styleId)));
+  if(!ch) return null;
+  const candidates=(Array.isArray(data.characters)?data.characters:[]).filter(row=>norm(row?.base_name||row?.name)===norm(ch.name));
+  if(!candidates.length) return null;
+  const wanted=norm(styles[styleId]?.name||'Original');
+  const byName=candidates.find(row=>norm(row?.style_name||row?.style_header||'Original')===wanted||norm(row?.style_header||'').includes(wanted));
+  if(byName) return byName;
+  const ids=Array.from(new Set((ch.styles||[]).map(String))).filter(id=>styles[id]);
+  const index=Math.max(0,ids.indexOf(String(styleId)));
+  return candidates.find(row=>Number(row?.variant_index||0)===index)||candidates[index]||candidates[0];
+}
 function roleKey(v){
   return ({strike:'attack',attack:'attack',assault:'assault',technical:'technical',support:'support',rapid:'rapid',speed:'rapid'})[norm(v)]||norm(v)||'technical';
 }
@@ -58,21 +73,34 @@ function newSets(){
 }
 
 /* ---------- Portraits officiels ---------- */
-function inferredRemotePortrait(row){
+function inferredRemotePortraits(row){
   const alpha=String(row?.assets?.alpha||'');
-  if(!alpha) return '';
-  return alpha.replace('/GUI/Skill/','/GUI/FaceIcon/').replace(/T_ui_Skill_(Ch\d+)_Unique1\.png(?:\?.*)?$/i,'T_ui_$1_CharaImage.png');
+  if(!alpha) return [];
+  const variant=Number(row?.variant_index||0);
+  const base=alpha.replace('/GUI/Skill/','/GUI/FaceIcon/');
+  const char=(alpha.match(/T_ui_Skill_(Ch\d+)_Unique1/i)||[])[1]||'';
+  if(!char) return [];
+  const prefix=base.replace(/T_ui_Skill_Ch\d+_Unique1\.png(?:\?.*)?$/i,'');
+  const suffix=String(variant).padStart(2,'0');
+  return [
+    `${prefix}T_ui_${char}_CharaImage.png`,
+    `${prefix}T_ui_${char}_CharaImage_${suffix}.png`,
+    `${prefix}T_ui_${char}_${suffix}_CharaImage.png`,
+    `${prefix}T_ui_${char}_CharaImage_Var${suffix}.png`
+  ];
 }
 function originalRemotePortrait(row){
-  const data=exactData()?.exact_by_style||{};
+  const data=exactData()||{};
+  const list=[...(Array.isArray(data.characters)?data.characters:[]),...Object.values(data.exact_by_style||{})];
   const base=norm(row?.base_name||row?.name||'');
-  const original=Object.values(data).find(x=>norm(x?.base_name||x?.name||'')===base&&Number(x?.variant_index||0)===0&&x?.assets?.portrait);
+  const original=list.find(x=>norm(x?.base_name||x?.name||'')===base&&Number(x?.variant_index||0)===0&&x?.assets?.portrait);
   return original?.assets?.portrait||'';
 }
 function portraitCandidates(styleId,fallback){
   const sync=window.MHUR_SEASON18_DATA?.official_portraits||{};
-  const row=exactData()?.exact_by_style?.[styleId]||null;
-  const list=[sync[styleId],row?.assets?.portrait,inferredRemotePortrait(row),fallback,originalRemotePortrait(row)].filter(Boolean).map(String);
+  const row=remoteRowForStyle(styleId)||null;
+  const local=(typeof styles!=='undefined'&&styles?.[styleId]?._s18LocalPortrait)||'';
+  const list=[sync[styleId],row?.assets?.portrait,...inferredRemotePortraits(row),fallback,local,originalRemotePortrait(row)].filter(Boolean).map(String);
   return Array.from(new Set(list));
 }
 window.MHUR_S18_NEXT_IMAGE=function(image){
@@ -92,11 +120,10 @@ function portraitImg(styleId,fallback,alt,className=''){
 }
 function applyOfficialPortraits(){
   if(typeof styles==='undefined') return;
-  const sync=window.MHUR_SEASON18_DATA?.official_portraits||{};
-  const exact=exactData()?.exact_by_style||{};
   Object.keys(styles).forEach(id=>{
-    const official=sync[id]||exact[id]?.assets?.portrait||'';
-    if(official) styles[id].portrait=official;
+    if(!styles[id]._s18LocalPortrait) styles[id]._s18LocalPortrait=styles[id]?.portrait||'';
+    const candidates=portraitCandidates(id,styles[id]._s18LocalPortrait);
+    if(candidates[0]) styles[id].portrait=candidates[0];
   });
   if(typeof characters!=='undefined'){
     characters.forEach(ch=>{
@@ -215,6 +242,15 @@ function uniqueRoles(ids){
   ids.forEach(id=>{ const role=styles[id]?.role; const key=roleKey(role); if(role&&!seen.has(key)){seen.add(key);out.push(role);} });
   return out;
 }
+function roleGradient(ids){
+  const colors={attack:'#d71938',assault:'#d6b600',technical:'#8c16bd',support:'#18a94d',rapid:'#16b9d6'};
+  const roles=[];
+  (ids||[]).forEach(id=>{const key=roleKey(styles[id]?.role);if(!roles.includes(key))roles.push(key)});
+  if(!roles.length) roles.push('technical');
+  if(roles.length===1){const c=colors[roles[0]];return `radial-gradient(circle at 50% 28%,color-mix(in srgb, ${c} 62%, white) 0%,${c} 52%,color-mix(in srgb, ${c} 62%, black) 100%)`;}
+  const stops=[];roles.forEach((r,i)=>{const a=(i/roles.length)*100,b=((i+1)/roles.length)*100;stops.push(`${colors[r]} ${a}%`,`${colors[r]} ${b}%`)});
+  return `linear-gradient(135deg,${stops.join(',')})`;
+}
 function cardV9(character,mode='characters'){
   const sets=newSets();
   const ids=uniqueStyleIds(character); character.styles=ids;
@@ -222,13 +258,13 @@ function cardV9(character,mode='characters'){
   const modeClass=mode==='costumes'?' costumeMode':mode==='builds'?' buildMode':mode==='tunings'?' tuningMode':' characterMode';
   const tag=mode==='costumes'?`<div class="cardModeTag">${tr('costumeTag')}</div>`:mode==='builds'?`<div class="cardModeTag">${tr('buildTag')}</div>`:mode==='tunings'?'<div class="cardModeTag">T.U.N.I.N.G</div>':'<div class="cardModeTag">PERSONNAGE</div>';
   const message=mode==='costumes'?tr('costumeChoose'):mode==='builds'?tr('buildChoose'):mode==='tunings'?tr('tuningChoose'):tr('choose');
-  return `<button class="card${modeClass} s18CharacterCardV9 role-${role}" data-char="${esc(character.id)}" onclick="selectChar('${String(character.id).replace(/'/g,"\\'")}')">${sets.characters.has(String(character.id))?NEW_HTML:''}${tag}<div class="thumb">${portraitImg(first,styles[first]?.portrait||character.portrait,character.name,'s18PortraitImgV9')}</div><div class="cardBody"><h3>${esc(character.name)}</h3><div class="badges">${sideBadge(character.side)}${uniqueRoles(ids).map(r=>roleBadge(r)).join('')}</div><p style="color:#c9d7ee">${esc(message)}</p></div></button>`;
+  return `<button class="card${modeClass} s18CharacterCardV9 s18CharacterCardV10 role-${role}" style="--s18-card-bg:${esc(roleGradient(ids))}" data-char="${esc(character.id)}" onclick="selectChar('${String(character.id).replace(/'/g,"\\'")}')">${tag}<div class="thumb">${portraitImg(first,styles[first]?.portrait||character.portrait,character.name,'s18PortraitImgV9 s18PortraitImgV10')}</div><div class="cardBody"><h3>${esc(character.name)}</h3><div class="badges">${sideBadge(character.side)}${uniqueRoles(ids).map(r=>roleBadge(r)).join('')}</div><p style="color:#c9d7ee">${esc(message)}</p></div></button>`;
 }
 function stylePickerV9(){
   const sets=newSets();
   const character=characters.find(x=>x.id===selectedChar); if(!character) return '';
   const ids=uniqueStyleIds(character); character.styles=ids;
-  return `<button class="back" onclick="selectedChar=null;render()">← ${tr('back')}</button><h1 class="title">${esc(character.name)}</h1><div class="styleGrid">${ids.map(id=>{ const st=styles[id]; const role=roleKey(st.role); return `<button class="styleCard s18StyleCardV9 role-${role}" data-style="${esc(id)}" onclick="selectStyle('${String(id).replace(/'/g,"\\'")}')">${sets.styles.has(String(id))?NEW_HTML:''}<div class="styleBanner">${portraitImg(id,st.portrait,`${character.name} ${clean(st.name)}`,'s18StylePortraitV9')}</div><div class="styleInfo"><h2>${esc(clean(st.name)||'Original')}</h2><div class="badges">${sideBadge(character.side)}${roleBadge(st.role)}</div></div></button>`; }).join('')}</div>`;
+  return `<button class="back" onclick="selectedChar=null;render()">← ${tr('back')}</button><h1 class="title">${esc(character.name)}</h1><div class="styleGrid">${ids.map(id=>{ const st=styles[id]; const role=roleKey(st.role); return `<button class="styleCard s18StyleCardV9 s18StyleCardV10 role-${role}" data-style="${esc(id)}" onclick="selectStyle('${String(id).replace(/'/g,"\\'")}')">${sets.styles.has(String(id))?NEW_HTML:''}<div class="styleBanner">${portraitImg(id,st.portrait,`${character.name} ${clean(st.name)}`,'s18StylePortraitV9 s18StylePortraitV10')}</div><div class="styleInfo"><h2>${esc(clean(st.name)||'Original')}</h2><div class="badges">${sideBadge(character.side)}${roleBadge(st.role)}</div></div></button>`; }).join('')}</div>`;
 }
 function characterDetailV9(styleId){
   const st=styles[styleId]; if(!st) return '';
@@ -237,7 +273,7 @@ function characterDetailV9(styleId){
   const back=currentLang()==='fr'?'Retour':'Back';
   const roleTitle=currentLang()==='fr'?'Rôle':'Role';
   const quirkTitle=currentLang()==='fr'?'Alter':'Quirk Skills';
-  return `<button class="back" onclick="selectedStyle=null;if((characters.find(x=>x.id===selectedChar)||{}).styles?.length===1)selectedChar=null;render()">← ${back}</button><div class="charPanel role-${role} s18CharacterDetailV9"><div class="charTop"><div class="portrait">${portraitImg(styleId,st.portrait,character.name,'s18DetailPortraitV9')}</div><div class="meta"><h2>${esc(character.name)}</h2><div class="badges">${roleBadge(st.role)}<span class="badge s18HpBadgeV9">${currentLang()==='fr'?'PV':'HP'} : ${esc(st.pv)}</span></div><p><b>Style :</b> ${esc(clean(st.name)||'Original')}</p><p>${esc(clean(st.description))}</p><p><b>${roleTitle} :</b> ${esc(clean(st.roleDesc))}</p></div></div>${skillSection({letter:'SP',...st.special},true)}<h2 class="s18QuirkTitleV9">${quirkTitle}</h2>${(st.skills||[]).map(skill=>skillSection(skill,false)).join('')}</div>`;
+  return `<button class="back" onclick="selectedStyle=null;if((characters.find(x=>x.id===selectedChar)||{}).styles?.length===1)selectedChar=null;render()">← ${back}</button><div class="charPanel role-${role} s18CharacterDetailV9 s18CharacterDetailV10"><div class="charTop"><div class="portrait">${portraitImg(styleId,st.portrait,character.name,'s18DetailPortraitV9 s18DetailPortraitV10')}</div><div class="meta"><h2>${esc(character.name)}</h2><div class="badges">${roleBadge(st.role)}<span class="badge s18HpBadgeV9">${currentLang()==='fr'?'PV':'HP'} : ${esc(st.pv)}</span></div><p><b>Style :</b> ${esc(clean(st.name)||'Original')}</p><p>${esc(clean(st.description))}</p><p><b>${roleTitle} :</b> ${esc(clean(st.roleDesc))}</p></div></div>${skillSection({letter:'SP',...st.special},true)}<h2 class="s18QuirkTitleV9">${quirkTitle}</h2>${(st.skills||[]).map(skill=>skillSection(skill,false)).join('')}</div>`;
 }
 
 let baseCostumeCard=null;
@@ -282,228 +318,229 @@ window.addEventListener('mhur:languagechange',()=>{
   try{ applyAll(); if(typeof render==='function') render(); }catch(_e){}
 });
 })();
-
 /* ========================================================================== */
-/* MHUR Nexus — Saison 18 v10 : portraits, styles, tableaux et patchs FR      */
+/* MHUR Nexus — Saison 18 v10 : navigation, sorties, patch/dev notes, mods   */
 /* ========================================================================== */
 (function(){
 'use strict';
 
-const langNow=()=>typeof lang!=='undefined'&&lang==='en'?'en':'fr';
-const pick=v=>v&&typeof v==='object'&&!Array.isArray(v)?(v[langNow()]??v.fr??v.en??''):v;
-const cjk=/[\u3040-\u30ff\u3400-\u9fff\uf900-\ufaff]/g;
-const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const clean=v=>String(pick(v)??'').replace(/\s*[（(][^()（）]*[\u3040-\u30ff\u3400-\u9fff][^()（）]*[）)]/g,'').replace(cjk,'').replace(/\s{2,}/g,' ').trim();
-const norm=v=>clean(v).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'_').replace(/^_|_$/g,'');
-const roleKey=v=>({strike:'attack',attack:'attack',assault:'assault',technical:'technical',support:'support',rapid:'rapid',speed:'rapid'})[norm(v)]||norm(v)||'technical';
-const NEW_HTML='<span class="s18NewBadge s18NewBadgeV10" aria-label="NEW">NEW!</span>';
+const L=()=>typeof lang!=='undefined'&&lang==='en'?'en':'fr';
+const TX=(fr,en)=>L()==='en'?en:fr;
+const PICK=v=>v&&typeof v==='object'&&!Array.isArray(v)?(v[L()]??v.fr??v.en??''):v;
+const ESC=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const CLEAN=v=>String(PICK(v)??'').replace(/[\u3040-\u30ff\u3400-\u9fff\uf900-\ufaff]/g,'').replace(/\s{2,}/g,' ').trim();
+const NORM=v=>CLEAN(v).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'_').replace(/^_|_$/g,'');
+const ROLE=v=>({strike:'attack',attack:'attack',assault:'assault',technical:'technical',support:'support',rapid:'rapid',speed:'rapid'})[NORM(v)]||'technical';
+const ROLE_TEXT=v=>({fr:{attack:'Attaque',assault:'Assaut',technical:'Technique',support:'Soutien',rapid:'Vitesse'},en:{attack:'Strike',assault:'Assault',technical:'Technical',support:'Support',rapid:'Rapid'}}[L()][ROLE(v)]||CLEAN(v));
+const SIDE_TEXT=v=>TX(NORM(v)==='villain'?'SUPER-VILAINS':'HÉROS',NORM(v)==='villain'?'SUPER-VILLAINS':'HEROES');
 
-function exactData(){
-  const el=document.getElementById('ultrarumble-exact-data');
-  if(!el) return null;
-  if(window.__S18_EXACT_V10!==undefined) return window.__S18_EXACT_V10;
-  try{window.__S18_EXACT_V10=JSON.parse(el.textContent||'{}');}
-  catch(_e){window.__S18_EXACT_V10=null;}
-  return window.__S18_EXACT_V10;
+function characterBy(fragment){
+  if(typeof characters==='undefined')return null;
+  const n=NORM(fragment);
+  return (characters||[]).find(c=>NORM(c.id)===n||NORM(c.name)===n||NORM(c.id).includes(n)||NORM(c.name).includes(n))||null;
 }
-function uniqueStyleIds(character){
-  if(!character||typeof styles==='undefined') return [];
-  const output=[]; const ids=new Set(); const signatures=new Set();
-  (Array.isArray(character.styles)?character.styles:[]).forEach(raw=>{
-    const id=String(raw),st=styles[id];
-    if(!id||!st||ids.has(id)) return;
-    ids.add(id);
-    const sig=[norm(st.name||'Original'),roleKey(st.role),norm(st.portrait||'')].join('|');
-    if(signatures.has(sig)) return;
-    signatures.add(sig); output.push(id);
-  });
-  return output;
-}
-function originalStyleId(character){
-  const ids=uniqueStyleIds(character);
-  if(!ids.length) return '';
-  const exact=exactData()?.exact_by_style||{};
-  return ids.find(id=>Number(exact[id]?.variant_index||0)===0)
-    ||ids.find(id=>norm(styles[id]?.name||'Original')==='original')
-    ||ids.find(id=>/_original(?:_|$)/i.test(id))
-    ||ids[0];
-}
-function officialPortrait(styleId,fallback=''){
-  const sync=window.MHUR_SEASON18_DATA?.official_portraits||{};
-  const exact=exactData()?.exact_by_style||{};
-  return sync[styleId]||exact[styleId]?.assets?.portrait||styles?.[styleId]?.portrait||fallback||'';
-}
-window.MHUR_S18_NEXT_IMAGE_V10=function(image){
-  try{
-    const list=JSON.parse(decodeURIComponent(image.dataset.s18Fallbacks||'%5B%5D'));
-    const next=list.shift();
-    image.dataset.s18Fallbacks=encodeURIComponent(JSON.stringify(list));
-    if(next){image.src=next;return;}
-  }catch(_e){}
-  image.onerror=null;
-};
-function portraitImg(styleId,fallback,alt,className=''){
-  const sync=window.MHUR_SEASON18_DATA?.official_portraits||{};
-  const exact=exactData()?.exact_by_style||{};
-  const list=Array.from(new Set([sync[styleId],exact[styleId]?.assets?.portrait,styles?.[styleId]?.portrait,fallback].filter(Boolean).map(String)));
-  const src=list.shift()||'';
-  return `<img src="${esc(src)}" alt="${esc(alt)}" class="${esc(className)}" loading="eager" decoding="async" fetchpriority="high" data-s18-fallbacks="${esc(encodeURIComponent(JSON.stringify(list)))}" onload="this.classList.add('s18PortraitLoadedV10')" onerror="MHUR_S18_NEXT_IMAGE_V10(this)">`;
-}
-function newSets(){
-  const data=window.MHUR_SEASON18_DATA?.new_content||{};
-  return {styles:new Set((data.styles||[]).map(String)),costumes:new Set((data.costumes||[]).map(String))};
-}
-function uniqueRoles(ids){
-  const seen=new Set(),out=[];
-  ids.forEach(id=>{const role=styles?.[id]?.role,key=roleKey(role);if(role&&!seen.has(key)){seen.add(key);out.push(role);}});
+function styleIds(ch){
+  if(!ch||typeof styles==='undefined')return [];
+  const seen=new Set();const out=[];
+  (ch.styles||[]).forEach(raw=>{const id=String(raw);if(!id||seen.has(id)||!styles[id])return;seen.add(id);out.push(id)});
   return out;
 }
-
-/* La carte d'un personnage garde toujours le portrait de son style Original. */
-function characterCardV10(character,mode='characters'){
-  const ids=uniqueStyleIds(character); character.styles=ids;
-  const original=originalStyleId(character); const role=roleKey(styles?.[original]?.role);
-  const modeClass=mode==='costumes'?' costumeMode':mode==='builds'?' buildMode':mode==='tunings'?' tuningMode':' characterMode';
-  const tag=mode==='costumes'?`<div class="cardModeTag">${tr('costumeTag')}</div>`:mode==='builds'?`<div class="cardModeTag">${tr('buildTag')}</div>`:mode==='tunings'?'<div class="cardModeTag">T.U.N.I.N.G</div>':'<div class="cardModeTag">PERSONNAGE</div>';
-  const message=mode==='costumes'?tr('costumeChoose'):mode==='builds'?tr('buildChoose'):mode==='tunings'?tr('tuningChoose'):tr('choose');
-  /* Le NEW a été retiré des cartes personnages à la demande de l'utilisateur. */
-  return `<button class="card${modeClass} s18CharacterCardV10 role-${role}" data-char="${esc(character.id)}" onclick="selectChar('${String(character.id).replace(/'/g,"\\'")}')">${tag}<div class="thumb">${portraitImg(original,character.portrait,character.name,'s18PortraitImgV10')}</div><div class="cardBody"><h3>${esc(character.name)}</h3><div class="badges">${sideBadge(character.side)}${uniqueRoles(ids).map(r=>roleBadge(r)).join('')}</div><p style="color:#c9d7ee">${esc(message)}</p></div></button>`;
+function findStyle(ch,matcher){
+  return styleIds(ch).find(id=>matcher(styles[id],id))||'';
 }
-function stylePickerV10(){
-  const sets=newSets();
-  const character=characters.find(x=>x.id===selectedChar); if(!character) return '';
-  const ids=uniqueStyleIds(character); character.styles=ids;
-  return `<button class="back" onclick="selectedChar=null;render()">← ${tr('back')}</button><h1 class="title">${esc(character.name)}</h1><div class="styleGrid">${ids.map(id=>{const st=styles[id],role=roleKey(st.role);return `<button class="styleCard s18StyleCardV10 role-${role}" data-style="${esc(id)}" onclick="selectStyle('${String(id).replace(/'/g,"\\'")}')">${sets.styles.has(String(id))?NEW_HTML:''}<div class="styleBanner">${portraitImg(id,st.portrait,`${character.name} ${clean(st.name)}`,'s18StylePortraitV10')}</div><div class="styleInfo"><h2>${esc(clean(st.name)||'Original')}</h2><div class="badges">${sideBadge(character.side)}${roleBadge(st.role)}</div></div></button>`;}).join('')}</div>`;
+function imgHtml(src,alt,cls=''){
+  return src?`<img src="${ESC(src)}" alt="${ESC(alt)}" class="${ESC(cls)}" loading="lazy">`:'';
 }
 
-/* Effets de montée toujours en première position et traduction des tableaux. */
-const frWords={
-  level:'Niveau',type:'Type',damage:'Dégâts',ammo:'Munitions',use_ammo:'Consommation',reload:'Recharge',reload_time:'Temps de recharge',cooldown:'Recharge',cooldown_time:'Temps de recharge',guard_break:'Brise-garde',health:'PV',hp:'PV',size:'Taille',range:'Portée',duration:'Durée',level_up_effect:'Effet de montée',effect:'Effet',penalty_recharge:'Pénalité de recharge',recharge_time:'Temps de recharge'
-};
-function translateFr(value){
-  let text=clean(value); if(langNow()!=='fr') return text;
-  const exact=frWords[norm(text)]; if(exact) return exact;
-  const replacements=[
-    [/Level Up Effects?/gi,'Effets de montée'],[/Base Values?/gi,'Valeurs de base'],[/Additional Values?/gi,'Valeurs supplémentaires'],[/Detailed Values?/gi,'Valeurs détaillées'],
-    [/Recharge Time/gi,'Temps de recharge'],[/Reload Time/gi,'Temps de recharge'],[/Penalty Recharge/gi,'Pénalité de recharge'],[/Use Ammo/gi,'Consommation'],[/Guard Break/gi,'Brise-garde'],[/Damage/gi,'Dégâts'],[/Ammo/gi,'Munitions'],[/Health/gi,'PV'],[/Level/gi,'Niveau'],[/Effect/gi,'Effet']
+/* --------------------------- Sorties de la saison ------------------------ */
+function seasonReleases(){
+  const gentle=characterBy('gentle criminal');
+  const twice=characterBy('twice');
+  const tsuyu=characterBy('tsuyu')||characterBy('froppy');
+  const gentleStyle=styleIds(gentle)[0]||'';
+  const twiceStyle=findStyle(twice,(st,id)=>NORM(st?.name).includes('sad_man')||ROLE(st?.role)==='support')||styleIds(twice)[0]||'';
+  const tsuyuStyle=findStyle(tsuyu,st=>ROLE(st?.role)==='attack')||styleIds(tsuyu)[0]||'';
+  return [
+    {key:'gentle',kind:'character',charId:gentle?.id||'gentle_criminal',styleId:gentleStyle,title:'Gentle Criminal',subtitle:TX('Nouveau personnage · Technique','New character · Technical'),date:TX('Disponible depuis le 29 juillet','Available since July 29'),role:'technical',art:'assets/home/season18/gentle_s18_portrait.webp'},
+    {key:'twice',kind:'style',charId:twice?.id||'twice',styleId:twiceStyle,title:'Twice',subtitle:"Sad Man's Parade · "+TX('Soutien','Support'),date:TX('Sortie le 19 août','Releases August 19'),role:'support',art:'assets/home/season18/twice_s18_portrait.webp'},
+    {key:'tsuyu',kind:'style',charId:tsuyu?.id||'tsuyu',styleId:tsuyuStyle,title:tsuyu?.name||'Tsuyu Asui',subtitle:TX('Nouveau style · nom à venir','New style · name to be announced'),date:TX('Prévu pendant la Saison 18','Planned during Season 18'),role:'attack',art:styles?.[tsuyuStyle]?.portrait||tsuyu?.portrait||'',black:true}
   ];
-  replacements.forEach(([a,b])=>{text=text.replace(a,b);});
-  return text;
 }
-function localArray(value){
-  const selected=pick(value); return Array.isArray(selected)?selected:[];
+function seasonCard(item){
+  const icon=item.kind==='character'?'assets/home/icons/release_character.png':'assets/home/icons/release_style.png';
+  const art=item.black?`<span class="s18SeasonBlackV10">${imgHtml(item.art,item.title,'s18SeasonProfileV10')}</span>`:`<span class="s18SeasonArtV10" style="background-image:url('${ESC(item.art).replace(/'/g,'%27')}')"></span>`;
+  return `<button type="button" class="releaseCardV299 s18SeasonReleaseV10 role-${ESC(ROLE(item.role))}" data-release-char="${ESC(item.charId)}" data-release-style="${ESC(item.styleId)}" onclick="openHomeReleaseV298(this)" title="${ESC(item.title)} — ${ESC(item.subtitle)}">${art}<span class="s18SeasonShadeV10"></span><span class="releaseBadgeV299 ${item.kind}">${typeof img==='function'?img(icon,item.kind):imgHtml(icon,item.kind)}</span><span class="s18SeasonNewV10" aria-hidden="true"></span><span class="releaseNamesV299"><b>${ESC(item.title)}</b><small>${ESC(item.subtitle)}</small><em>${ESC(item.date)}</em></span></button>`;
 }
-function cleanTable(table){
-  const cols=localArray(table?.cols||table?.columns||[]); const rows=localArray(table?.rows||[]); const keep=[];
-  cols.forEach((column,index)=>{if(norm(column)!=='down_power')keep.push(index);});
-  return {title:translateFr(table?.title),cols:keep.map(i=>translateFr(cols[i])),rows:rows.map(row=>keep.map(i=>translateFr((row||[])[i]??'')))};
-}
-function tablePriority(table){
-  const title=norm(table.title);
-  if(title.includes('effets_de_montee')||title.includes('level_up_effect')) return 0;
-  if(title.includes('valeurs_de_base')||title.includes('base_value')) return 1;
-  return 2;
-}
-function tablesV10(value){
-  const source=Array.isArray(value)?value:[];
-  const list=source.map(cleanTable).filter(t=>t.cols.length&&t.rows.length).sort((a,b)=>tablePriority(a)-tablePriority(b));
-  return `<div class="tables">${list.map((table,index)=>`<button class="toggle s18TableToggleV10" type="button" onclick="this.nextElementSibling.classList.toggle('hidden')"><span class="statsToggleTitle">${esc(table.title)}</span><span class="statsToggleArrow">▾</span></button><div class="simpleTable ${index===0?'':'hidden'}"><table class="dataTable"><thead><tr>${table.cols.map(c=>`<th>${esc(c)}</th>`).join('')}</tr></thead><tbody>${table.rows.map(row=>`<tr>${row.map(cell=>`<td>${esc(cell)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`).join('')}</div>`;
-}
-
-/* Notes de patch : métadonnées exactes, traduction et sens des changements. */
-let originalPatchNotes=null;
-function clone(value){return JSON.parse(JSON.stringify(value));}
-function roleText(role){
-  const key=roleKey(role); const fr={attack:'Attaque',assault:'Assaut',technical:'Technique',support:'Soutien',rapid:'Vitesse'}; const en={attack:'Strike',assault:'Assault',technical:'Technical',support:'Support',rapid:'Rapid'};
-  return (langNow()==='fr'?fr:en)[key]||clean(role);
-}
-function resolvePatchStyle(change){
-  if(typeof characters==='undefined'||typeof styles==='undefined') return {character:null,id:'',style:null};
-  const ch=(characters||[]).find(c=>norm(c.name)===norm(change?.character)||norm(c.id)===norm(change?.character))||null;
-  if(!ch) return {character:null,id:'',style:null};
-  const ids=uniqueStyleIds(ch); const wanted=norm(change?.style||'Original');
-  let id=ids.find(key=>norm(styles[key]?.name||'Original')===wanted)||'';
-  if(!id){
-    const raw=norm(change?.skill_name||change?.label||'');
-    id=ids.find(key=>[{...(styles[key]?.special||{}),letter:'SP'},...(styles[key]?.skills||[])].some(skill=>{const n=norm(skill.name),l=norm(skill.letter);return (n&&raw.includes(n))||(l&&raw.startsWith(l));}))||'';
+function patchHome(){
+  const home=document.querySelector('.homeV296');if(!home)return;
+  const headings=[...home.querySelectorAll('.homeTitleV296')];
+  const releaseHeading=headings.find(h=>/derni[eè]res sorties|latest releases/i.test(h.textContent||''));
+  if(releaseHeading)releaseHeading.textContent=TX('SORTIES PRÉVUES — SAISON 18','SEASON 18 RELEASES');
+  const grid=home.querySelector('.releaseGridV296');
+  if(grid&&grid.dataset.s18SeasonV10!==L()){
+    grid.innerHTML=seasonReleases().map(seasonCard).join('');
+    grid.dataset.s18SeasonV10=L();
   }
-  if(!id) id=originalStyleId(ch)||ids[0]||'';
-  return {character:ch,id,style:styles[id]||null};
-}
-function resolvePatchSkill(style,change){
-  if(!style) return null;
-  const raw=norm(change?.skill_name||change?.label||'');
-  const skills=[{...(style.special||{}),letter:'SP'},...(style.skills||[])];
-  return skills.find(skill=>{const n=norm(skill.name),l=norm(skill.letter);return (n&&raw.includes(n))||(l&&raw.startsWith(l));})||null;
-}
-function numericValues(value){
-  return (Array.isArray(value)?value:[value]).map(v=>parseFloat(String(v??'').replace(',','.'))).filter(Number.isFinite);
-}
-function toneForMetric(label,before,after,existing){
-  const b=numericValues(before),a=numericValues(after); if(!b.length||!a.length) return ['buff','nerf','adjust'].includes(norm(existing))?norm(existing):'adjust';
-  const beforeAvg=b.reduce((x,y)=>x+y,0)/b.length,afterAvg=a.reduce((x,y)=>x+y,0)/a.length;
-  if(afterAvg===beforeAvg) return 'adjust';
-  const metric=norm(label);
-  const lowerIsBetter=/(reload|recharge|cooldown|temps_de_recharge|penalty|penalite|consommation|use_ammo)/.test(metric);
-  const improved=lowerIsBetter?afterAvg<beforeAvg:afterAvg>beforeAvg;
-  return improved?'buff':'nerf';
-}
-function transformPatchNotes(){
-  const data=window.MHUR_HOME_DATA; if(!data||!Array.isArray(data.patch_notes)) return;
-  if(!originalPatchNotes) originalPatchNotes=clone(data.patch_notes);
-  const notes=clone(originalPatchNotes);
-  notes.forEach(note=>{
-    note.title=translateFr(note.title);
-    (note.details||[]).forEach(section=>{
-      section.title=translateFr(section.title); section.note=translateFr(section.note);
-      section.changes=(section.changes||[]).filter(change=>!/^no_changes_detected\.?$/i.test(norm(change?.text||change?.note||''))).map(change=>{
-        const info=resolvePatchStyle(change); const skill=resolvePatchSkill(info.style,change);
-        const rawLabel=change.label||change.skill_name||'';
-        change.character=info.character?.name||clean(change.character);
-        change.style=clean(info.style?.name||change.style||'Original');
-        change.role=roleText(info.style?.role||change.role);
-        change.portrait=officialPortrait(info.id,change.portrait);
-        if(skill?.img) change.skill_image=skill.img;
-        if(skill?.name) change.skill_name=clean(`${skill.letter&&skill.letter!=='SP'?`${skill.letter} - `:''}${pick(skill.name)}`);
-        else change.skill_name=translateFr(change.skill_name);
-        change.label=translateFr(change.label);
-        change.bullets=(change.bullets||[]).map(translateFr);
-        change.tone=toneForMetric(rawLabel,change.before,change.after,change.tone);
-        return change;
-      });
-    });
-  });
-  data.patch_notes=notes;
-}
-function decoratePatchModal(){
-  const modal=document.getElementById('patchModalV296'); if(!modal) return;
-  const adjust=modal.querySelector('.legendV296 .adjust'); if(adjust) adjust.textContent=langNow()==='fr'?'NEUTRE':'NEUTRAL';
-  modal.querySelectorAll('.detailCardV296').forEach(card=>{
-    const tone=card.classList.contains('buff')?'BUFF':card.classList.contains('nerf')?'NERF':(langNow()==='fr'?'NEUTRE':'NEUTRAL');
-    card.dataset.toneLabel=tone;
-  });
-}
-let originalOpenPatch=null;
-function installPatchWrapper(){
-  if(!originalOpenPatch&&typeof window.openPatchNoteV296==='function') originalOpenPatch=window.openPatchNoteV296;
-  if(!originalOpenPatch) return;
-  window.openPatchNoteV296=function(index){transformPatchNotes();const result=originalOpenPatch(index);setTimeout(decoratePatchModal,0);return result;};
+  const patchHeading=headings.find(h=>/derni[eè]re note de mise [aà] jour|latest patch note/i.test(h.textContent||''));
+  if(patchHeading){
+    patchHeading.hidden=true;
+    const previous=patchHeading.previousElementSibling;if(previous?.classList.contains('homeDividerV296'))previous.hidden=true;
+    let next=patchHeading.nextElementSibling;
+    while(next&&!next.classList.contains('homeFootV296')){const current=next;next=next.nextElementSibling;current.hidden=true;}
+  }
 }
 
-function install(){
-  if(typeof characters!=='undefined') characters.forEach(ch=>{ch.styles=uniqueStyleIds(ch);});
-  if(typeof card==='function'){window.card=characterCardV10;try{card=characterCardV10}catch(_e){}}
-  if(typeof stylePicker==='function'){window.stylePicker=stylePickerV10;try{stylePicker=stylePickerV10}catch(_e){}}
-  window.tables=tablesV10;try{tables=tablesV10}catch(_e){}
-  transformPatchNotes(); installPatchWrapper();
+/* --------------------------- Patch / Dev Notes --------------------------- */
+function translatePatch(v){
+  let out=CLEAN(v);
+  if(L()==='en')return out;
+  const replacements=[
+    [/^Data Update/i,'Mise à jour des données'],[/^Balance Changes:\s*/i,"Équilibrage : "],
+    [/Magazine/gi,'Munitions max.'],[/No\. of Rounds/gi,'Munitions max.'],[/Ammo/gi,'Munitions'],[/Use Ammo/gi,'Consommation'],
+    [/Reload Speed/gi,'Vitesse de recharge'],[/Reload|Cooldown/gi,'Recharge'],[/Damage/gi,'Dégâts'],[/Guard Break/gi,'Brise-garde'],
+    [/Maximum HP|Max HP/gi,'PV maximum'],[/Health/gi,'PV'],[/Special Action/gi,'Action spéciale'],[/Quirk Skill/gi,'Alter'],
+    [/Before/gi,'Avant'],[/After/gi,'Après'],[/Adjustment/gi,'Neutre'],[/No changes detected\.?/gi,'Aucun changement détecté.']
+  ];
+  replacements.forEach(([a,b])=>{out=out.replace(a,b)});return out;
 }
-function wrapRender(){
-  if(typeof render!=='function'||render.__s18V10) return;
-  const old=render;
-  const next=function(){install();const output=old.apply(this,arguments);return output;};
-  next.__s18V10=true;window.render=next;try{render=next}catch(_e){}
+function styleForChange(change){
+  const ch=characterBy(change?.character||'');if(!ch)return {ch:null,id:'',st:null};
+  const ids=styleIds(ch);const wanted=NORM(change?.style||'Original');
+  let id=ids.find(x=>NORM(styles[x]?.name||'Original')===wanted)||'';
+  if(!id){
+    const skill=NORM(change?.skill_name||change?.label||'');
+    id=ids.find(x=>[{...(styles[x]?.special||{}),letter:'SP'},...(styles[x]?.skills||[])].some(s=>{const n=NORM(s?.name),l=NORM(s?.letter);return (n&&skill.includes(n))||(l&&skill.startsWith(l))}))||'';
+  }
+  if(!id)id=ids[0]||'';
+  return {ch,id,st:styles[id]||null};
 }
-install();wrapRender();
-setTimeout(()=>{try{install();if(typeof render==='function'){window.__keepScroll=true;render();}}catch(error){console.error('[MHUR S18 V10]',error);}},0);
-window.addEventListener('mhur:languagechange',()=>{try{install();if(typeof render==='function')render();}catch(_e){}});
+function skillForChange(st,change){
+  if(!st)return null;const raw=NORM(change?.skill_name||change?.label||'');
+  const all=[{...(st.special||{}),letter:'SP'},...(st.skills||[])];
+  return all.find(s=>{const n=NORM(s?.name),l=NORM(s?.letter);return (n&&raw.includes(n))||(l&&raw.startsWith(l))})||null;
+}
+function average(values){const n=(Array.isArray(values)?values:[values]).map(v=>parseFloat(String(v).replace(',','.'))).filter(Number.isFinite);return n.length?n.reduce((a,b)=>a+b,0)/n.length:null}
+function toneFor(change,sectionTitle=''){
+  const explicit=NORM(change?.tone||change?.type||'');
+  if(/buff|increase|improve|up/.test(explicit))return 'buff';
+  if(/nerf|decrease|reduce|down/.test(explicit))return 'nerf';
+  const before=average(change?.before),after=average(change?.after);if(before==null||after==null||before===after)return 'adjust';
+  const context=NORM(`${sectionTitle} ${change?.label||''} ${change?.skill_name||''}`);
+  const lowerIsBetter=/reload|cooldown|recharge|time|second|seconde/.test(context);
+  if(lowerIsBetter)return after<before?'buff':'nerf';
+  return after>before?'buff':'nerf';
+}
+function valuesHtml(change,tone){
+  const before=Array.isArray(change?.before)?change.before:[change?.before];const after=Array.isArray(change?.after)?change.after:[change?.after];const count=Math.max(before.length,after.length);
+  if(count>1)return `<div class="s18PatchTableWrapV10"><table class="s18PatchTableV10"><thead><tr><th></th>${Array.from({length:count},(_,i)=>`<th>Lv.${i+1}</th>`).join('')}</tr></thead><tbody><tr class="before"><th>${TX('Avant','Before')}</th>${Array.from({length:count},(_,i)=>`<td>${ESC(CLEAN(before[i]??''))}</td>`).join('')}</tr><tr class="after ${tone}"><th>${TX('Après','After')}</th>${Array.from({length:count},(_,i)=>`<td>${ESC(CLEAN(after[i]??''))}</td>`).join('')}</tr></tbody></table></div>`;
+  if(change?.before!=null||change?.after!=null)return `<div class="s18PatchRow"><span class="s18PatchBefore">${ESC(CLEAN(before[0]??'—'))}</span><span class="s18PatchArrow">→</span><span class="s18PatchAfter ${tone}">${ESC(CLEAN(after[0]??'—'))}</span></div>`;
+  return '';
+}
+function groupsForSection(section){
+  const groups=[];const map=new Map();
+  (section?.changes||[]).forEach(change=>{
+    if(/no changes detected|aucun changement/i.test(CLEAN(change?.text||change?.note||'')))return;
+    const info=styleForChange(change);const key=`${NORM(change?.character)}__${info.id||NORM(change?.style||'Original')}`;
+    if(!map.has(key)){const group={ch:info.ch,st:info.st,id:info.id,character:info.ch?.name||CLEAN(change?.character),style:CLEAN(info.st?.name||change?.style||'Original'),changes:[]};map.set(key,group);groups.push(group)}
+    map.get(key).changes.push(change);
+  });return groups;
+}
+function groupHtml(group,sectionTitle){
+  const role=ROLE(group.st?.role||'technical');const side=group.ch?.side||'hero';
+  return `<article class="s18PatchCharacterV10 role-${role}"><header><div class="s18PatchPortraitV10">${group.st?.portrait&&typeof asset==='function'?asset(group.st.portrait,group.character):''}</div><div><h4>${ESC(group.character)}</h4><strong>${ESC(group.style)}</strong><div class="s18PatchBadgesV10"><span class="badge ${side==='villain'?'villain':'hero'}">${ESC(SIDE_TEXT(side))}</span><span class="badge ${role}">${ESC(ROLE_TEXT(role))}</span></div></div></header><div class="s18PatchChangesV10">${group.changes.map(change=>{const tone=toneFor(change,sectionTitle);const skill=skillForChange(group.st,change);const title=CLEAN(skill?.name||change?.skill_name||change?.label||TX('Ajustement','Adjustment'));const picture=skill?.img||change?.skill_image||'';const bullets=(change?.bullets||[]).map(translatePatch).filter(Boolean);return `<section class="s18PatchChangeV10 ${tone}"><span class="s18ToneV10 ${tone}">${tone==='buff'?'BUFF':tone==='nerf'?'NERF':TX('NEUTRE','NEUTRAL')}</span><div class="s18PatchSkillV10">${picture&&typeof asset==='function'?`<div>${asset(picture,title)}</div>`:''}<main><h5>${ESC(title)}</h5>${change?.label?`<p class="s18PatchLabelV10">${ESC(translatePatch(change.label))}</p>`:''}${valuesHtml(change,tone)}${bullets.length?`<ul>${bullets.map(b=>`<li>${ESC(b)}</li>`).join('')}</ul>`:''}</main></div></section>`}).join('')}</div></article>`;
+}
+function patchDetailHtml(note){
+  const sections=(note?.details||[]).map(sec=>({...sec,changes:(sec.changes||[]).filter(Boolean)})).filter(sec=>sec.changes.length);
+  if(sections.length)return sections.map(sec=>`<section class="s18PatchSectionV10"><h3>${ESC(translatePatch(sec.title))}</h3>${sec.note?`<p>${ESC(translatePatch(sec.note))}</p>`:''}<div class="s18PatchSeparatedV10">${groupsForSection(sec).map(g=>groupHtml(g,sec.title)).join('')}</div></section>`).join('');
+  if((note?.rich_blocks||[]).length)return `<div class="s18DevArticleV10">${note.rich_blocks.map(b=>b.type==='heading'?`<h3>${ESC(translatePatch(b.text))}</h3>`:b.type==='image'&&typeof asset==='function'?`<figure>${asset(b.src,b.alt||'')}</figure>`:`<p>${ESC(translatePatch(b.text))}</p>`).join('')}</div>`;
+  return `<p>${TX('Aucun détail disponible.','No details available.')}</p>`;
+}
+function devHtml(){
+  return `<article class="s18DevArticleV10"><div class="s18DevHeroV10"><span>DEV BLOG VOL. 27</span><h2>${TX('Notes des développeurs — Saison 18','Developer Notes — Season 18')}</h2><p>29/07/2026 · Bandai Namco / Byking</p></div><section><h3>20 ${TX('millions de téléchargements','million downloads')}</h3><p>${TX('Un bonus de connexion spécial de 28 jours célèbre ce cap, avec notamment 6 000 Cristaux Héros et 100 Tickets de tirage.','A special 28-day login bonus celebrates the milestone, including 6,000 Hero Crystals and 100 Roll Tickets.')}</p></section><section><h3>Gentle Criminal & La Brava</h3><p>${TX("Gentle est pensé comme un personnage Technique très mobile. Son Alter Élasticité crée des rebonds, une barrière d'air et un trampoline utilisable par les alliés. La Brava le soutient avec son drone et Lover Mode augmente sa puissance et sa recharge pendant Plus Chaos.","Gentle is designed as a highly mobile Technical character. Elasticity creates rebounds, an air barrier, and an ally-usable trampoline. La Brava supports him with her drone, while Lover Mode boosts attack and reload during Plus Chaos.")}</p></section><section><h3>Chaos City Ver. 02</h3><p>${TX("Le quartier commercial a été profondément rénové et une nouvelle zone souterraine, Tentoin Alley, permet de circuler par des passages sous la ville.","The shopping district has been heavily renovated, with the new underground Tentoin Alley area connecting parts of the city.")}</p></section><section><h3>Research Notebook</h3><p>${TX('La Mission n° 3, plus difficile, est ajoutée. Le niveau maximum passe à 200 avec de nouvelles récompenses, dont des Tickets et des objets T.U.N.I.N.G.','The more challenging Mission No. 3 is added. The level cap rises to 200 with new rewards, including Tickets and T.U.N.I.N.G items.')}</p></section><section><h3>3-Pick Battle</h3><p>${TX('Ce nouveau mode est prévu à partir de la fin août. Chaque joueur choisit trois styles et le vainqueur est celui qui inflige le plus de dégâts.','This new mode is planned from late August. Each player selects three styles, and the winner is the player who deals the most damage.')}</p></section><div class="s18OfficialLinksV10"><a href="https://en.bandainamcoent.eu/my-hero-academia/news/my-hero-ultra-rumble-development-blog-vol-27" target="_blank" rel="noopener">${TX('Lire la Dev Note officielle','Read the official Dev Note')}</a><a href="https://en.bandainamcoent.eu/my-hero-academia/news/my-hero-ultra-rumble-season-18" target="_blank" rel="noopener">${TX('Voir la page officielle Saison 18','View the official Season 18 page')}</a></div></article>`;
+}
+function notesModal(){
+  let modal=document.getElementById('s18NotesDevModalV10');if(modal)return modal;
+  modal=document.createElement('div');modal.id='s18NotesDevModalV10';modal.className='s18NotesOverlayV10';
+  modal.innerHTML=`<section class="s18NotesPanelV10"><header><div><span>MHUR NEXUS</span><h2>${TX('Patch Notes / Dev Notes','Patch Notes / Dev Notes')}</h2></div><button type="button" data-close>×</button></header><nav><button type="button" data-tab="patch" class="active">Patch Notes</button><button type="button" data-tab="dev">Dev Notes</button></nav><div class="s18NotesBodyV10"><aside></aside><main></main></div></section>`;
+  document.body.appendChild(modal);
+  modal.querySelector('[data-close]').onclick=()=>modal.classList.remove('open');
+  modal.onclick=e=>{if(e.target===modal)modal.classList.remove('open')};
+  modal.querySelectorAll('[data-tab]').forEach(btn=>btn.onclick=()=>showNotesTab(btn.dataset.tab));
+  return modal;
+}
+function showPatch(index=0){
+  const modal=notesModal();const notes=window.MHUR_HOME_DATA?.patch_notes||[];const note=notes[index];
+  modal.querySelector('aside').innerHTML=notes.map((n,i)=>`<button type="button" data-patch-index="${i}" class="${i===index?'active':''}"><b>${ESC(translatePatch(n.title))}</b><small>${n.date?new Date(n.date).toLocaleDateString(L()==='fr'?'fr-FR':'en-US'):''}</small></button>`).join('')||`<p>${TX('Aucune note disponible.','No notes available.')}</p>`;
+  modal.querySelector('main').innerHTML=note?`<div class="s18PatchDetailHeadV10"><h2>${ESC(translatePatch(note.title))}</h2><div><span class="buff">BUFF</span><span class="nerf">NERF</span><span class="adjust">${TX('NEUTRE','NEUTRAL')}</span></div></div>${patchDetailHtml(note)}`:`<p>${TX('Aucune note disponible.','No notes available.')}</p>`;
+  modal.querySelectorAll('[data-patch-index]').forEach(b=>b.onclick=()=>showPatch(Number(b.dataset.patchIndex)));
+}
+function showNotesTab(tab){
+  const modal=notesModal();modal.querySelectorAll('[data-tab]').forEach(b=>b.classList.toggle('active',b.dataset.tab===tab));
+  const aside=modal.querySelector('aside'),main=modal.querySelector('main');
+  if(tab==='dev'){aside.innerHTML=`<div class="s18DevSideV10"><b>DEV BLOG VOL. 27</b><small>${TX('Saison 18','Season 18')}</small></div>`;main.innerHTML=devHtml();}
+  else showPatch(0);
+}
+function openNotes(){const modal=notesModal();modal.classList.add('open');showNotesTab('patch')}
+function ensureHeaderButton(){
+  const admin=document.getElementById('mhurAdminButton');if(admin)admin.style.setProperty('display','none','important');
+  const account=document.getElementById('mhurAccountButton');if(!account?.parentNode)return;
+  let button=document.getElementById('mhurPatchDevButtonV10');
+  if(!button){button=document.createElement('button');button.id='mhurPatchDevButtonV10';button.type='button';button.className='nexusHeaderBtn mhurPatchDevButtonV10';button.innerHTML=`📝 <span>${TX('Patch / Dev Notes','Patch / Dev Notes')}</span>`;button.onclick=openNotes;account.parentNode.insertBefore(button,account)}
+  else button.querySelector('span').textContent=TX('Patch / Dev Notes','Patch / Dev Notes');
+}
+
+/* -------------------------- Administration profil ------------------------ */
+const CFG=window.MHUR_COMMUNITY_CONFIG||{};const API=String(CFG.supabaseUrl||'').replace(/\/+$/,'');
+async function api(path,opt={}){const runner=window.MHUR_AUTH?.fetch||fetch;const response=await runner(API+path,{...opt,headers:{'Content-Type':'application/json',...(opt.headers||{})}});const raw=await response.text();let data=raw;try{data=raw?JSON.parse(raw):null}catch(_e){}if(!response.ok)throw new Error(data?.message||data?.hint||data?.error||raw||`HTTP ${response.status}`);return data}
+function isAdmin(){return Boolean(window.MHUR_MODERATION?.isAdmin?.()||['admin','administrator','moderator'].includes(String(window.MHUR_MODERATION?.state?.role||'').toLowerCase()))}
+function adminCenter(){
+  let modal=document.getElementById('s18AdminCenterV10');if(modal)return modal;
+  modal=document.createElement('div');modal.id='s18AdminCenterV10';modal.className='s18AdminOverlayV10';modal.innerHTML=`<section class="s18AdminPanelV10"><header><div><span>ADMINISTRATION</span><h2>${TX('Panneau admin','Admin panel')}</h2></div><button type="button" data-admin-close>×</button></header><nav><button data-admin-tab="deletion" class="active">${TX('Suppressions de compte','Account deletions')}</button><button data-admin-tab="moderation">${TX('Modération','Moderation')}</button><button data-admin-tab="profiles">${TX('Profils','Profiles')}</button></nav><main></main></section>`;document.body.appendChild(modal);
+  modal.querySelector('[data-admin-close]').onclick=()=>modal.classList.remove('open');modal.onclick=e=>{if(e.target===modal)modal.classList.remove('open')};
+  modal.querySelectorAll('[data-admin-tab]').forEach(b=>b.onclick=()=>adminTab(b.dataset.adminTab));return modal;
+}
+async function deletionRequests(){
+  const modal=adminCenter(),main=modal.querySelector('main');main.innerHTML=`<div class="s18AdminLoadingV10">${TX('Chargement des demandes…','Loading requests…')}</div>`;
+  try{
+    const rows=await api('/rest/v1/account_deletion_requests?select=*&order=requested_at.desc&limit=200')||[];
+    const ids=[...new Set(rows.map(r=>r.user_id).filter(Boolean))];let profiles=[];
+    if(ids.length)profiles=await api(`/rest/v1/profiles?select=id,username,avatar_url,provider&id=in.(${ids.map(encodeURIComponent).join(',')})`)||[];
+    const map=new Map(profiles.map(p=>[String(p.id),p]));
+    main.innerHTML=`<div class="s18AdminTitleV10"><div><h3>${TX('Demandes de suppression','Deletion requests')}</h3><p>${TX('Les demandes envoyées depuis Confidentialité apparaissent ici.','Requests submitted from Privacy appear here.')}</p></div><button type="button" data-refresh-deletions>${TX('Actualiser','Refresh')}</button></div>${rows.length?`<div class="s18DeletionListV10">${rows.map(r=>{const p=map.get(String(r.user_id))||{};return `<article><div class="s18DeletionUserV10">${p.avatar_url?imgHtml(p.avatar_url,p.username||''):'<span>👤</span>'}<div><b>${ESC(p.username||TX('Utilisateur inconnu','Unknown user'))}</b><small>${ESC(p.provider||'')} · ${ESC(String(r.user_id||''))}</small></div></div><div><strong class="status-${ESC(r.status||'pending')}">${ESC(r.status||'pending')}</strong><small>${r.requested_at?new Date(r.requested_at).toLocaleString(L()==='fr'?'fr-FR':'en-US'):''}</small></div><div class="s18DeletionActionsV10"><button type="button" data-copy-user="${ESC(r.user_id)}">${TX("Copier l'ID",'Copy ID')}</button><button type="button" data-delete-status="rejected" data-delete-user="${ESC(r.user_id)}">${TX('Refuser','Reject')}</button><button type="button" class="success" data-delete-status="processed" data-delete-user="${ESC(r.user_id)}">${TX('Marquer traitée','Mark processed')}</button></div></article>`}).join('')}</div>`:`<div class="s18AdminEmptyV10">${TX('Aucune demande de suppression.','No deletion requests.')}</div>`}`;
+    main.querySelector('[data-refresh-deletions]')?.addEventListener('click',deletionRequests);
+    main.querySelectorAll('[data-copy-user]').forEach(b=>b.onclick=()=>navigator.clipboard?.writeText(b.dataset.copyUser));
+    main.querySelectorAll('[data-delete-status]').forEach(b=>b.onclick=async()=>{try{await api(`/rest/v1/account_deletion_requests?user_id=eq.${encodeURIComponent(b.dataset.deleteUser)}`,{method:'PATCH',headers:{Prefer:'return=minimal'},body:JSON.stringify({status:b.dataset.deleteStatus})});await deletionRequests()}catch(e){alert(e.message)}});
+  }catch(error){main.innerHTML=`<div class="s18AdminErrorV10">${ESC(error.message||error)}</div>`}
+}
+function adminTab(tab){
+  const modal=adminCenter();modal.querySelectorAll('[data-admin-tab]').forEach(b=>b.classList.toggle('active',b.dataset.adminTab===tab));const main=modal.querySelector('main');
+  if(tab==='deletion')deletionRequests();
+  else if(tab==='moderation')main.innerHTML=`<div class="s18AdminLauncherV10"><span>🛡️</span><h3>${TX('Centre de modération','Moderation center')}</h3><p>${TX('Ouvre le panneau existant pour gérer les signalements et sanctions.','Open the existing panel to manage reports and sanctions.')}</p><button type="button" data-open-moderation>${TX('Ouvrir la modération','Open moderation')}</button></div>`,main.querySelector('[data-open-moderation]').onclick=()=>{modal.classList.remove('open');window.MHUR_MODERATION?.openAdmin?.()};
+  else main.innerHTML=`<div class="s18AdminLauncherV10"><span>👥</span><h3>${TX('Liste des profils','Profile list')}</h3><p>${TX('Consulte les membres et ouvre leur profil public.','Browse members and open their public profile.')}</p><button type="button" data-open-profiles>${TX('Ouvrir la liste','Open list')}</button></div>`,main.querySelector('[data-open-profiles]').onclick=()=>{modal.classList.remove('open');window.MHUR_PROFILE_DIRECTORY?.open?.()};
+}
+function openAdminCenter(){if(!isAdmin())return;window.MHUR_AUTH?.close?.();const modal=adminCenter();modal.classList.add('open');adminTab('deletion')}
+function injectAdminProfileButton(){
+  const admin=document.getElementById('mhurAdminButton');if(admin)admin.style.setProperty('display','none','important');
+  const card=document.querySelector('#mhurAuthOverlay .mhurProfileCard');if(!card||!isAdmin())return;
+  let button=card.querySelector('.s18ProfileAdminButtonV10');if(button)return;
+  button=document.createElement('button');button.type='button';button.className='s18ProfileAdminButtonV10';button.innerHTML=`🛡️ ${TX('Admin / Modération','Admin / Moderation')}`;button.onclick=openAdminCenter;
+  const logout=card.querySelector('.mhurLogout');if(logout)card.insertBefore(button,logout);else card.appendChild(button);
+}
+
+/* ------------------------------- Mods ------------------------------------ */
+let modsSeen=false;
+function patchMods(){
+  const page=document.querySelector('.modsPage');
+  if(page&&!modsSeen){modsSeen=true;requestAnimationFrame(()=>{document.scrollingElement.scrollTop=0;window.scrollTo(0,0)});}
+  if(!page)modsSeen=false;
+  const details=document.querySelector('.modsTutorial');if(details){const summary=details.querySelector('summary');if(summary&&!summary.querySelector('.s18ModsHintV10'))summary.insertAdjacentHTML('beforeend',`<span class="s18ModsHintV10">${TX('Voir le tutoriel','Open tutorial')}</span>`);}
+}
+
+/* ------------------------------- DOM ------------------------------------- */
+function removeCharacterNew(){document.querySelectorAll('.card[data-char] .s18NewBadge').forEach(el=>el.remove())}
+function afterDom(){ensureHeaderButton();injectAdminProfileButton();patchHome();patchMods();removeCharacterNew();}
+let queued=false;const observer=new MutationObserver(()=>{if(queued)return;queued=true;requestAnimationFrame(()=>{queued=false;afterDom()})});
+function init(){observer.observe(document.documentElement,{childList:true,subtree:true,attributes:true,attributeFilter:['class','hidden']});afterDom();window.addEventListener('mhur-auth-change',()=>setTimeout(afterDom,80));window.addEventListener('mhur-role-change',()=>setTimeout(afterDom,80));window.addEventListener('mhur:languagechange',()=>setTimeout(afterDom,0));}
+window.MHUR_S18_V10={openNotes,openAdminCenter,showPatch};
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
 })();

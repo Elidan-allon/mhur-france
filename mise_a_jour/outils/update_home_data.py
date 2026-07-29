@@ -99,10 +99,6 @@ def existing_asset(root: Path, rel_stem: str) -> str:
 def download_asset(root: Path, url: str, rel_stem: str, retries: int = 4) -> str:
     if not url:
         return ""
-    # UltraRumble exposes tiny BUFF/NERF marker images. The site renders these
-    # labels itself, so do not download them or repeat harmless warnings.
-    if Path(urlparse(url).path).name.lower() in {"buff.png", "nerf.png", "adjust.png"}:
-        return ""
     cached = existing_asset(root, rel_stem)
     if cached:
         return cached

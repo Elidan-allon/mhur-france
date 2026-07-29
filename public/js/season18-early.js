@@ -1,78 +1,27 @@
-/* MHUR Nexus — Saison 18 v9
-   Chargé juste après home.js et avant le premier rendu.
-   Objectif : éviter le flash des cartes rouges vides sur l'accueil. */
+/* MHUR Nexus — Saison 18 v10 : sorties prévues avant le premier rendu. */
 (function(){
 'use strict';
-
-function currentLang(){ return typeof lang !== 'undefined' && lang === 'en' ? 'en' : 'fr'; }
-function esc(value){
-  return String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const L=()=>typeof lang!=='undefined'&&lang==='en'?'en':'fr';
+const TX=(fr,en)=>L()==='en'?en:fr;
+const ESC=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot',"'":'&#39;'}[c]));
+const NORM=v=>String(v??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'_').replace(/^_|_$/g,'');
+function char(name){if(typeof characters==='undefined')return null;const n=NORM(name);return (characters||[]).find(c=>NORM(c.name).includes(n)||NORM(c.id).includes(n))||null}
+function ids(c){return c&&typeof styles!=='undefined'?[...new Set((c.styles||[]).map(String))].filter(id=>styles[id]):[]}
+function role(v){return ({strike:'attack',attack:'attack',assault:'assault',technical:'technical',support:'support',rapid:'rapid',speed:'rapid'})[NORM(v)]||'technical'}
+function releases(){
+ const gentle=char('gentle criminal'),twice=char('twice'),tsuyu=char('tsuyu')||char('froppy');
+ const gs=ids(gentle)[0]||'',ts=ids(twice).find(id=>NORM(styles[id]?.name).includes('sad_man')||role(styles[id]?.role)==='support')||ids(twice)[0]||'',fs=ids(tsuyu).find(id=>role(styles[id]?.role)==='attack')||ids(tsuyu)[0]||'';
+ return [
+  {title:'Gentle Criminal',subtitle:TX('Nouveau personnage · Technique','New character · Technical'),character_id:gentle?.id||'gentle_criminal',style_id:gs,kind:'character',role:'technical',image:'assets/home/season18/gentle_s18_portrait.webp',date:TX('Disponible depuis le 29 juillet','Available since July 29')},
+  {title:'Twice',subtitle:"Sad Man's Parade · "+TX('Soutien','Support'),character_id:twice?.id||'twice',style_id:ts,kind:'style',role:'support',image:'assets/home/season18/twice_s18_portrait.webp',date:TX('Sortie le 19 août','Releases August 19')},
+  {title:tsuyu?.name||'Tsuyu Asui',subtitle:TX('Nouveau style · nom à venir','New style · name to be announced'),character_id:tsuyu?.id||'tsuyu',style_id:fs,kind:'style',role:'attack',image:styles?.[fs]?.portrait||tsuyu?.portrait||'',date:TX('Prévu pendant la Saison 18','Planned during Season 18'),black:true}
+ ];
 }
-function clean(value){ return String(value ?? '').replace(/[\u3040-\u30ff\u3400-\u9fff\uf900-\ufaff]/g,'').replace(/\s{2,}/g,' ').trim(); }
-function norm(value){ return clean(value).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'_').replace(/^_|_$/g,''); }
-
-const numericCharacters = {
-  '1':'midoriya','2':'bakugo','3':'ochaco','4':'shoto','5':'tenya','6':'tsuyu','7':'kaminari','8':'kirishima',
-  '13':'aizawa','24':'mirio','34':'overhaul','37':'twice','108':'gentle_criminal','109':'present_mic','111':'mirko'
-};
-
-function releaseKind(item){
-  const raw = norm(item?.release_kind || item?.type || '');
-  if(raw.includes('costume')) return 'costume';
-  if(raw.includes('character') || raw.includes('personnage')) return 'character';
-  return 'style';
+if(window.MHUR_HOME_DATA)window.MHUR_HOME_DATA.latest_releases=releases();
+function card(x){
+ const icon=x.kind==='character'?'assets/home/icons/release_character.png':'assets/home/icons/release_style.png';
+ const art=x.black?`<span class="s18SeasonBlackV10">${typeof img==='function'?img(x.image,x.title,'s18SeasonProfileV10'):''}</span>`:`<span class="s18SeasonArtV10" style="background-image:url('${ESC(x.image).replace(/'/g,'%27')}')"></span>`;
+ return `<button type="button" class="releaseCardV299 s18SeasonReleaseV10 role-${role(x.role)}" data-release-char="${ESC(x.character_id)}" data-release-style="${ESC(x.style_id)}" onclick="openHomeReleaseV298(this)" title="${ESC(x.title)} — ${ESC(x.subtitle)}">${art}<span class="s18SeasonShadeV10"></span><span class="releaseBadgeV299 ${x.kind}">${typeof img==='function'?img(icon,x.kind):''}</span><span class="s18SeasonNewV10"></span><span class="releaseNamesV299"><b>${ESC(x.title)}</b><small>${ESC(x.subtitle)}</small><em>${ESC(x.date)}</em></span></button>`;
 }
-function labelFor(kind){
-  if(currentLang()==='en') return kind==='character'?'Playable character':kind==='costume'?'New costume':'New style';
-  return kind==='character'?'Personnage jouable':kind==='costume'?'Nouveau costume':'Nouveau style';
-}
-function resolveCharacter(item){
-  if(typeof characters === 'undefined' || !Array.isArray(characters)) return null;
-  let id = String(item?.character_id || item?.char_id || '');
-  if(!id){
-    const match = String(item?.source_url || item?.url || '').match(/\/character\/0*(\d+)/i);
-    if(match) id = numericCharacters[String(Number(match[1]))] || '';
-  }
-  if(id){
-    const direct = characters.find(c => String(c.id) === id);
-    if(direct) return direct;
-  }
-  const title = norm(item?.title || '');
-  return characters.find(c => norm(c.name) === title) || null;
-}
-function resolveStyle(item, character){
-  if(typeof styles === 'undefined' || !character) return null;
-  const explicit = String(item?.style_id || '');
-  if(explicit && styles[explicit]) return {id:explicit, value:styles[explicit]};
-  const subtitle = norm((currentLang()==='fr' ? item?.subtitle_fr : item?.subtitle_en) || item?.subtitle || '');
-  const ids = Array.from(new Set((character.styles || []).map(String)));
-  const id = ids.find(key => styles[key] && norm(typeof styles[key].name==='object' ? (styles[key].name[currentLang()] || styles[key].name.fr || styles[key].name.en) : styles[key].name) === subtitle) || ids[0];
-  return id && styles[id] ? {id, value:styles[id]} : null;
-}
-function displayTitle(item, character){
-  const raw = clean(item?.title || '');
-  if(character && (!raw || /^character\s*\d+$/i.test(raw))) return character.name;
-  return raw || character?.name || 'My Hero Ultra Rumble';
-}
-
-function install(){
-  if(typeof releaseCard !== 'function') return;
-  const next = function(item){
-    const kind = releaseKind(item);
-    const character = resolveCharacter(item);
-    const style = resolveStyle(item, character);
-    const title = displayTitle(item, character);
-    const subtitleRaw = (currentLang()==='fr' ? item?.subtitle_fr : item?.subtitle_en) || item?.subtitle || '';
-    const subtitle = kind==='style' && style ? (typeof style.value.name==='object' ? (style.value.name[currentLang()] || style.value.name.fr || style.value.name.en) : style.value.name) : (clean(subtitleRaw) || labelFor(kind));
-    /* Les images de Latest Releases sont déjà des bannières officielles : on les utilise directement. */
-    const banner = item?.image || item?.banner || item?.art || item?.character_art || style?.value?.portrait || character?.portrait || '';
-    const typeIcon = kind==='character' ? 'assets/home/icons/release_character.png' : kind==='costume' ? 'assets/home/icons/release_costume.png' : 'assets/home/icons/release_style.png';
-    const charId = character?.id || item?.character_id || '';
-    const styleId = style?.id || item?.style_id || '';
-    return `<button type="button" class="releaseCardV299 releaseBannerCardV9" data-release-char="${esc(charId)}" data-release-style="${esc(styleId)}" onclick="openHomeReleaseV298(this)" aria-label="${esc(title)} — ${esc(subtitle)}" title="${esc(title)} — ${esc(subtitle)}"><span class="releaseBannerImageV9">${typeof img==='function' ? img(banner,title,'releaseBannerImgV9') : `<img src="${esc(banner)}" alt="${esc(title)}">`}</span><span class="releaseBannerShadeV9"></span><span class="releaseBadgeV299 ${kind}">${typeof img==='function' ? img(typeIcon,labelFor(kind)) : ''}</span><span class="releaseNewBadgeV9" aria-hidden="true"></span><span class="releaseNamesV299"><b>${esc(title)}</b><small>${esc(subtitle)}</small></span></button>`;
-  };
-  window.releaseCard = next;
-  try{ releaseCard = next; }catch(_e){}
-}
-install();
+if(typeof releaseCard==='function'){window.releaseCard=card;try{releaseCard=card}catch(_e){}}
 })();

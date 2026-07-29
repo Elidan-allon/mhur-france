@@ -230,27 +230,13 @@ def heading_image(tag: Tag, *, skill: bool = False) -> str:
     return ""
 
 
-def patch_tone(label: str, before: list[str], after: list[str]) -> str:
-    """Classify a balance change using the meaning of the metric.
-
-    A lower reload/cooldown/consumption value is a buff, while higher damage,
-    ammo, range, duration, HP, etc. is a buff. This prevents changes such as
-    Recharge Time 5.0 -> 4.0 from being incorrectly marked as a nerf.
-    """
+def patch_tone(before: list[str], after: list[str]) -> str:
     try:
-        b = sum(float(str(x).replace(",", ".")) for x in before) / max(1, len(before))
-        a = sum(float(str(x).replace(",", ".")) for x in after) / max(1, len(after))
+        b = sum(float(x) for x in before) / max(1, len(before))
+        a = sum(float(x) for x in after) / max(1, len(after))
+        return "buff" if a > b else "nerf" if a < b else "adjust"
     except (TypeError, ValueError):
         return "adjust"
-    if a == b:
-        return "adjust"
-    metric = norm(label)
-    lower_is_better = any(token in metric for token in (
-        "reload", "recharge", "cooldown", "temps_de_recharge",
-        "penalty", "penalite", "consumption", "consommation", "use_ammo",
-    ))
-    improved = a < b if lower_is_better else a > b
-    return "buff" if improved else "nerf"
 
 
 def parse_patch_structured(session: requests.Session, root: Path, url: str, old: dict[str, Any] | None = None) -> dict[str, Any]:
@@ -309,7 +295,7 @@ def parse_patch_structured(session: requests.Session, root: Path, url: str, old:
                 "skill_image": skill_image, "label": label,
                 "before": before if len(before) > 1 else before[0],
                 "after": after if len(after) > 1 else after[0],
-                "tone": patch_tone(label, before, after),
+                "tone": patch_tone(before, after),
             })
         texts = []
 
@@ -329,7 +315,7 @@ def parse_patch_structured(session: requests.Session, root: Path, url: str, old:
                 "character": current_character, "style": current_style, "role": "",
                 "portrait": portrait, "skill_name": m.group(1), "skill_image": "",
                 "label": m.group(1), "before": before, "after": after,
-                "tone": patch_tone(m.group(1), [before], [after]),
+                "tone": patch_tone([before], [after]),
             })
 
     first_h1 = soup.find("h1")
@@ -774,7 +760,7 @@ def ensure_assets_in_index(root: Path) -> None:
     """
     idx = root / "index.html"
     text = idx.read_text(encoding="utf-8", errors="ignore")
-    version = "2010"
+    version = "2000"
     css = f'<link rel="stylesheet" href="css/season18-fixes.css?v={version}">'
     early = f'<script src="data/season18_sync.js?v={version}"></script>\n<script src="js/season18-early.js?v={version}"></script>'
     late = f'<script src="js/season18-fixes.js?v={version}"></script>'
@@ -802,7 +788,7 @@ def ensure_assets_in_index(root: Path) -> None:
         text = text.replace("</body>", early + "\n</body>", 1)
 
     if "</body>" in text:
-        text = text.replace("</body>", f"\n<!-- Season 18 v10 targeted compatibility layer. -->\n{late}\n</body>", 1)
+        text = text.replace("</body>", f"\n<!-- Season 18 v9 targeted compatibility layer. -->\n{late}\n</body>", 1)
     else:
         text += "\n" + late
     idx.write_text(text, encoding="utf-8")
