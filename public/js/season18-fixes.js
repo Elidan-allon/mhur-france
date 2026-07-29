@@ -510,7 +510,12 @@ function openNotes(){
   const modal=notesModal();
   modal.classList.add('open');document.body.classList.add('s18NotesOpenV11');
   showNotesTab('patch');
-  requestAnimationFrame(()=>{resetNotesScroll(modal,true);modal.querySelector('.s18NotesPanelV10')?.focus?.({preventScroll:true});});
+  requestAnimationFrame(()=>{
+    window.MHUR_S18_V18?.refreshNotesLayout?.();
+    window.MHUR_S18_V17?.refreshNotesLayout?.();
+    resetNotesScroll(modal,true);
+    modal.querySelector('.s18NotesPanelV10')?.focus?.({preventScroll:true});
+  });
 }
 function ensureHeaderButton(){
   const candidates=[...document.querySelectorAll('button,a,[role="button"]')].filter(button=>{
@@ -585,6 +590,20 @@ function patchMods(){
 }
 
 /* ------------------------------- DOM ------------------------------------- */
+function watchHeaderButton(){
+  if(window.__s18HeaderButtonEventsV18) return;
+  window.__s18HeaderButtonEventsV18=true;
+  let queued=false;
+  const schedule=()=>{
+    if(queued) return;
+    queued=true;
+    requestAnimationFrame(()=>{queued=false;ensureHeaderButton();});
+  };
+  window.addEventListener('resize',schedule,{passive:true});
+  window.addEventListener('mhur-auth-change',schedule);
+  window.addEventListener('mhur-role-change',schedule);
+  window.addEventListener('mhur:languagechange',schedule);
+}
 function removeCharacterNew(){document.querySelectorAll('.card[data-char] .s18NewBadge').forEach(el=>el.remove())}
 function afterDom(){ensureHeaderButton();watchHeaderButton();injectAdminProfileButton();patchHome();patchMods();removeCharacterNew();}
 function wrapDomRender(){
@@ -647,30 +666,29 @@ function closeNotesV17(){
   document.body.classList.remove('s18NotesOpenV11');
 }
 function installNotesGuardsV17(){
-  if(window.__s18NotesGuardsV17) return;
-  window.__s18NotesGuardsV17=true;
-  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&notesModalV17()?.classList.contains('open'))closeNotesV17()});
-  window.addEventListener('resize',()=>requestAnimationFrame(refreshNotesLayoutV17),{passive:true});
-  window.addEventListener('orientationchange',()=>setTimeout(refreshNotesLayoutV17,80),{passive:true});
+  if(window.__s18NotesGuardsV18) return;
+  window.__s18NotesGuardsV18=true;
+  let queued=false;
+  const schedule=()=>{
+    if(queued) return;
+    queued=true;
+    requestAnimationFrame(()=>{queued=false;refreshNotesLayoutV17();});
+  };
+  document.addEventListener('keydown',e=>{
+    if(e.key==='Escape'&&notesModalV17()?.classList.contains('open')) closeNotesV17();
+  });
+  window.addEventListener('resize',schedule,{passive:true});
+  window.addEventListener('orientationchange',()=>setTimeout(schedule,80),{passive:true});
   document.addEventListener('click',e=>{
     const modal=notesModalV17();
     if(!modal||!modal.classList.contains('open')) return;
     const panel=modal.querySelector('.s18NotesPanelV10');
-    if(!panel) return;
-    if(panel.contains(e.target)) return;
+    if(!panel||panel.contains(e.target)) return;
     if(noteButtonsV17().some(btn=>btn.contains(e.target))) return;
-    if(e.target===modal||modal.contains(e.target)) closeNotesV17();
+    closeNotesV17();
   },true);
-  const observer=new MutationObserver(()=>{
-    refreshNotesLayoutV17();
-    const modal=notesModalV17();
-    if(modal&&!modal.dataset.s18v17Bound){
-      modal.dataset.s18v17Bound='1';
-      modal.querySelectorAll('img').forEach(img=>img.loading='eager');
-    }
-  });
-  observer.observe(document.documentElement,{childList:true,subtree:true,attributes:true,attributeFilter:['class']});
 }
+
 
 measureHeaderOffsetV17();
 installNotesGuardsV17();
@@ -679,4 +697,5 @@ window.addEventListener('mhur-auth-change',()=>setTimeout(refreshNotesLayoutV17,
 window.addEventListener('mhur-role-change',()=>setTimeout(refreshNotesLayoutV17,60));
 window.addEventListener('mhur:languagechange',()=>setTimeout(refreshNotesLayoutV17,20));
 window.MHUR_S18_V17={refreshNotesLayout:refreshNotesLayoutV17,measureHeaderOffset:measureHeaderOffsetV17};
+window.MHUR_S18_V18={refreshNotesLayout:refreshNotesLayoutV17,measureHeaderOffset:measureHeaderOffsetV17};
 })();

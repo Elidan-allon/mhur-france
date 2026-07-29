@@ -1,0 +1,18 @@
+MHUR NEXUS — HOTFIX V18 CHARGEMENT STABLE
+
+Le chargement infini venait de surveillances automatiques du header qui se relançaient après leurs propres modifications.
+
+Corrigé :
+- suppression des MutationObserver sur tout le site ;
+- correction de la fonction watchHeaderButton manquante ;
+- mise à jour du bouton Patch Notes uniquement lors des vrais événements ;
+- positionnement mobile recalculé uniquement à l'ouverture, au changement de langue et au redimensionnement ;
+- fermeture extérieure et touche Échap conservées ;
+- toutes les corrections visuelles de la v17 sont conservées.
+
+Installation :
+1. Fermer l'onglet bloqué.
+2. Copier le dossier mhur-france de ce ZIP par-dessus le site.
+3. Accepter les remplacements.
+4. Redéployer public.
+5. Fermer puis rouvrir le navigateur et faire un rechargement forcé une fois.

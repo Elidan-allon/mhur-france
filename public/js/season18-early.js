@@ -121,15 +121,18 @@ installOfficialPortraits();
 repairHeader();
 preloadPortraits();
 const watchHeader=()=>{
-  if(window.__s18HeaderObserverV15) return;
-  const target=document.body||document.documentElement;
-  if(!target) return;
-  const observer=new MutationObserver(()=>repairHeader());
-  observer.observe(target,{childList:true,subtree:true});
-  window.__s18HeaderObserverV15=observer;
-  window.addEventListener('mhur-auth-change',()=>setTimeout(repairHeader,50));
-  window.addEventListener('mhur-role-change',()=>setTimeout(repairHeader,50));
-  window.addEventListener('resize',()=>requestAnimationFrame(repairHeader));
+  if(window.__s18HeaderEventsV18) return;
+  window.__s18HeaderEventsV18=true;
+  let queued=false;
+  const schedule=()=>{
+    if(queued) return;
+    queued=true;
+    requestAnimationFrame(()=>{queued=false;repairHeader();});
+  };
+  window.addEventListener('mhur-auth-change',schedule);
+  window.addEventListener('mhur-role-change',schedule);
+  window.addEventListener('mhur:languagechange',schedule);
+  window.addEventListener('resize',schedule,{passive:true});
 };
 watchHeader();
 window.MHUR_S18_V14_EARLY={repairHeader,installOfficialPortraits,patchHomeMarkup,watchHeader};
