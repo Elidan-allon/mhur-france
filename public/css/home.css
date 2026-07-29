@@ -345,3 +345,80 @@
   .countdownV296 b{font-size:31px}
   .countdownV296 small{font-size:10px}
 }
+
+
+/* V520 — maintenance dynamique, adaptée au style MHUR Nexus */
+.maintenanceV520{
+  position:relative;
+  display:grid;
+  grid-template-columns:auto minmax(0,1fr) minmax(330px,.72fr);
+  align-items:center;
+  gap:22px;
+  max-width:1220px;
+  margin:10px auto 30px;
+  padding:24px 26px;
+  overflow:hidden;
+  border:4px solid #050609;
+  border-radius:20px;
+  background:
+    linear-gradient(120deg,rgba(25,201,222,.16),transparent 42%),
+    linear-gradient(180deg,#18263a,#0a111d);
+  box-shadow:0 0 0 3px #19c9de inset,0 8px 0 #050609,0 0 30px rgba(25,201,222,.2);
+}
+.maintenanceV520:before{
+  content:"";
+  position:absolute;
+  inset:0 0 auto;
+  height:8px;
+  background:repeating-linear-gradient(135deg,#19c9de 0 22px,#ffe100 22px 44px,#10131a 44px 52px);
+}
+.maintenanceV520.is-active{
+  background:linear-gradient(120deg,rgba(255,90,31,.18),transparent 42%),linear-gradient(180deg,#2a1b22,#0d111b);
+  box-shadow:0 0 0 3px #ff6a25 inset,0 8px 0 #050609,0 0 32px rgba(255,77,25,.24);
+}
+.maintenanceV520.is-active:before{background:repeating-linear-gradient(135deg,#ff5a1f 0 22px,#ffe100 22px 44px,#10131a 44px 52px)}
+.maintenanceSignalV520{
+  position:relative;
+  z-index:1;
+  width:88px;
+  height:88px;
+  display:grid;
+  place-items:center;
+  border:4px solid #050609;
+  border-radius:22px;
+  transform:rotate(-4deg);
+  background:linear-gradient(145deg,#20d7eb,#147a9d);
+  color:#fff;
+  box-shadow:0 0 0 3px #bdf8ff inset,0 6px 0 #050609;
+}
+.maintenanceV520.is-active .maintenanceSignalV520{background:linear-gradient(145deg,#ff8a21,#c72f24);box-shadow:0 0 0 3px #ffd66e inset,0 6px 0 #050609}
+.maintenanceSignalV520 span{font-size:48px;line-height:1;filter:drop-shadow(3px 3px 0 #000)}
+.maintenanceIntroV520{position:relative;z-index:1;min-width:0}
+.maintenanceEyebrowV520{display:inline-block;padding:6px 10px;border:2px solid #050609;border-radius:999px;background:#19c9de;color:#061018;font-size:11px;font-weight:1000;letter-spacing:1px}
+.maintenanceV520.is-active .maintenanceEyebrowV520{background:#ff5a1f;color:#fff}
+.maintenanceIntroV520 h2{margin:9px 0 6px;font-size:clamp(25px,3vw,40px);line-height:1;text-transform:uppercase;font-style:italic;text-shadow:3px 3px 0 #000}
+.maintenanceIntroV520 p{margin:0;color:#d7e1ef;font-weight:800;line-height:1.4}
+.maintenanceScheduleV520{display:flex;align-items:center;gap:8px;margin-top:12px;color:#ffe100;font-size:13px}
+.maintenanceTimerV520{position:relative;z-index:1;padding:14px;border:3px solid #3c5574;border-radius:15px;background:rgba(5,10,18,.72);box-shadow:0 4px 0 #050609}
+.maintenanceV520.is-active .maintenanceTimerV520{border-color:#7c4531}
+.maintenanceTimerV520>strong{display:block;margin-bottom:10px;text-align:center;color:#ffe100;font-size:13px;letter-spacing:1px}
+.maintenanceCountdownV520{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.maintenanceCountdownV520 span{min-width:0;padding:9px 4px;border:2px solid #050609;border-radius:10px;background:linear-gradient(180deg,#263a58,#152135);text-align:center;box-shadow:0 3px 0 #050609}
+.maintenanceV520.is-active .maintenanceCountdownV520 span{background:linear-gradient(180deg,#543026,#271820)}
+.maintenanceCountdownV520 b{display:block;font-size:clamp(22px,2.6vw,34px);line-height:1;text-shadow:2px 2px 0 #000}
+.maintenanceCountdownV520 small{display:block;margin-top:5px;color:#ffe100;font-size:9px;font-weight:1000}
+.maintenanceV520[hidden]{display:none!important}
+@media(max-width:900px){
+  .maintenanceV520{grid-template-columns:auto minmax(0,1fr);padding:22px 18px 18px}
+  .maintenanceTimerV520{grid-column:1/-1}
+}
+@media(max-width:560px){
+  .maintenanceV520{grid-template-columns:1fr;gap:15px;text-align:center;border-radius:16px}
+  .maintenanceSignalV520{width:70px;height:70px;margin:auto}
+  .maintenanceSignalV520 span{font-size:38px}
+  .maintenanceScheduleV520{justify-content:center;flex-wrap:wrap}
+  .maintenanceCountdownV520{gap:5px}
+  .maintenanceCountdownV520 span{padding:8px 2px}
+  .maintenanceCountdownV520 b{font-size:23px}
+  .maintenanceCountdownV520 small{font-size:8px}
+}

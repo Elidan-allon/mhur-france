@@ -1107,9 +1107,84 @@ def parse_login_bonuses(root: Path, soup: BeautifulSoup, previous: list[dict] | 
         print("[HOME] Aucun bonus de connexion actif : suppression des anciennes cartes.", flush=True)
     return bonuses
 
+def parse_maintenance(soup: BeautifulSoup):
+    """Récupère la fenêtre de maintenance affichée en haut d'UltraRumble.
+
+    La carte n'est présente sur la source que lorsqu'une maintenance est
+    programmée ou en cours. On ne conserve donc jamais une ancienne valeur si
+    la source ne l'affiche plus.
+    """
+    text = clean(soup.get_text(" "))
+    status_match = re.search(
+        r"(?:⚠️?\s*)?(SCHEDULED\s+MAINTENANCE|MAINTENANCE\s+IN\s+PROGRESS)!?",
+        text,
+        re.I,
+    )
+    if not status_match:
+        print("[HOME] Aucune maintenance annoncée.", flush=True)
+        return None
+
+    # Les deux dates sont placées juste après le titre et le compte à rebours.
+    # Une fenêtre limitée évite de confondre ces dates avec celles de la saison.
+    nearby = text[status_match.start(): status_match.start() + 900]
+    date_values = re.findall(
+        r"20\d{2}-\d{2}-\d{2}\s+\d{2}:\d{2}:\d{2}",
+        nearby,
+    )
+
+    # Repli sur le conteneur DOM le plus proche si la présentation du site
+    # source change légèrement.
+    if len(date_values) < 2:
+        for node in soup.find_all(string=re.compile(r"maintenance", re.I)):
+            parent = node.parent if isinstance(node.parent, Tag) else None
+            for _ in range(6):
+                if not isinstance(parent, Tag):
+                    break
+                candidate = clean(parent.get_text(" "))
+                if re.search(r"maintenance", candidate, re.I):
+                    values = re.findall(
+                        r"20\d{2}-\d{2}-\d{2}\s+\d{2}:\d{2}:\d{2}",
+                        candidate,
+                    )
+                    if len(values) >= 2:
+                        date_values = values
+                        break
+                parent = parent.parent if isinstance(parent.parent, Tag) else None
+            if len(date_values) >= 2:
+                break
+
+    if len(date_values) < 2:
+        print(
+            "[HOME WARNING] Maintenance détectée, mais ses dates sont introuvables.",
+            flush=True,
+        )
+        return None
+
+    start, end = parse_dates(" ".join(date_values[:2]))
+    if not start or not end:
+        return None
+
+    source_status = (
+        "active"
+        if re.search(r"IN\s+PROGRESS|ENDS\s+IN", nearby, re.I)
+        else "scheduled"
+    )
+    print(
+        f"[HOME] Maintenance {source_status} : {start} -> {end}",
+        flush=True,
+    )
+    return {
+        "start": start,
+        "end": end,
+        "source_status": source_status,
+        "source": BASE,
+    }
+
+
 def parse_home(session: requests.Session, root: Path, previous: dict):
     soup = BeautifulSoup(get(session, BASE).text, "lxml")
     text = clean(soup.get_text(" "))
+    maintenance = parse_maintenance(soup)
     season = previous.get("season", {})
     season_match = re.search(
         r"Season\s+(\d+).*?Start:\s*(20\d{2}-[^•]+).*?End:\s*(20\d{2}-[^*]+)",
@@ -1233,9 +1308,10 @@ def parse_home(session: requests.Session, root: Path, previous: dict):
         "meta": {
             "updated_at": datetime.now(timezone.utc).isoformat(),
             "source": "UltraRumble.com",
-            "version": "v303-active-gachas-latest-full-patch",
+            "version": "v520-maintenance-sync",
         },
         "season": season,
+        "maintenance": maintenance,
         "latest_releases": releases or previous_releases,
         "gachas": gachas,
         "events": events,
@@ -1273,7 +1349,8 @@ def main():
         f"[HOME DONE] gachas={len(new_data.get('gachas', []))} "
         f"patches={len(new_data.get('patch_notes', []))} "
         f"events={len(new_data.get('events', []))} "
-        f"bonus={len(new_data.get('login_bonuses', []))}",
+        f"bonus={len(new_data.get('login_bonuses', []))} "
+        f"maintenance={'oui' if new_data.get('maintenance') else 'non'}",
         flush=True,
     )
     for gacha in new_data.get("gachas", []):

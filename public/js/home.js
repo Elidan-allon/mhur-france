@@ -110,6 +110,25 @@ const img=(src,alt='',cls='')=>src?`<img class="${esc(cls)}" src="${esc(src)}" a
 const divider=()=>'<div class="homeDividerV296"></div>';
 const heading=(txt,color='orange')=>`<h2 class="homeTitleV296 ${color}">${esc(txt)}</h2>`;
 const countdown=end=>`<div class="countdownV296" data-home-count="${esc(end)}"><span><b data-u="d">--</b><small>${ht('JOURS','DAYS')}</small></span><span><b data-u="h">--</b><small>${ht('HEURES','HOURS')}</small></span><span><b data-u="m">--</b><small>${ht('MINUTES','MINUTES')}</small></span><span><b data-u="s">--</b><small>${ht('SECONDES','SECONDS')}</small></span></div>`;
+const maintenanceCountdownV520=()=>`<div class="maintenanceCountdownV520" aria-live="polite"><span><b data-maintenance-u="d">--</b><small>${ht('JOURS','DAYS')}</small></span><span><b data-maintenance-u="h">--</b><small>${ht('HEURES','HOURS')}</small></span><span><b data-maintenance-u="m">--</b><small>${ht('MINUTES','MINUTES')}</small></span><span><b data-maintenance-u="s">--</b><small>${ht('SECONDES','SECONDS')}</small></span></div>`;
+function maintenanceCardV520(m){
+  const start=Date.parse(m?.start||''),end=Date.parse(m?.end||''),now=Date.now();
+  if(!Number.isFinite(start)||!Number.isFinite(end)||now>=end)return '';
+  const active=now>=start;
+  return `<section class="maintenanceV520 ${active?'is-active':'is-scheduled'}" data-maintenance-panel data-maintenance-start="${esc(m.start)}" data-maintenance-end="${esc(m.end)}">
+    <div class="maintenanceSignalV520" aria-hidden="true"><span>⚙</span></div>
+    <div class="maintenanceIntroV520">
+      <span class="maintenanceEyebrowV520" data-maintenance-eyebrow>${active?ht('SERVEURS EN MAINTENANCE','SERVERS UNDER MAINTENANCE'):ht('INTERRUPTION À VENIR','UPCOMING INTERRUPTION')}</span>
+      <h2 data-maintenance-title>${active?ht('Maintenance du jeu en cours','Game maintenance in progress'):ht('Maintenance du jeu programmée','Scheduled game maintenance')}</h2>
+      <p data-maintenance-copy>${active?ht('Les serveurs de My Hero Ultra Rumble sont temporairement indisponibles. Le site MHUR Nexus reste accessible.','My Hero Ultra Rumble servers are temporarily unavailable. MHUR Nexus remains accessible.'):ht('Une interruption des serveurs de My Hero Ultra Rumble est programmée.','A My Hero Ultra Rumble server interruption is scheduled.')}</p>
+      <div class="maintenanceScheduleV520"><span>🕒</span><b>${fmt(m.start,true)} → ${fmt(m.end,true)}</b></div>
+    </div>
+    <div class="maintenanceTimerV520">
+      <strong data-maintenance-label>${active?ht('RETOUR ESTIMÉ DANS','ESTIMATED RETURN IN'):ht('DÉBUT PRÉVU DANS','EXPECTED TO START IN')}</strong>
+      ${maintenanceCountdownV520()}
+    </div>
+  </section>`;
+}
 
 function normalizeReleaseText(v){return String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim()}
 function releaseTarget(x){
@@ -193,6 +212,7 @@ function latestPatchCard(x){
 window.renderHomeDashboard=function(){
   const d=D(),s=d.season||{},latest=(d.patch_notes||[])[0];
   return `<main class="homeV296">
+    ${maintenanceCardV520(d.maintenance)}
     <section class="seasonV296">
       <h1>${ht('SAISON','SEASON')} ${esc(s.number||'?')}</h1>
       <div class="seasonLineV296">
@@ -222,7 +242,30 @@ window.renderHomeDashboard=function(){
   </main>`;
 };
 
-function refresh(){document.querySelectorAll('[data-home-count]').forEach(el=>{const n=new Date(el.dataset.homeCount)-Date.now();el.classList.toggle('urgent',n>0&&n<=86400000);el.classList.toggle('ended',n<=0);if(n<=0){el.innerHTML=`<div class="seasonEndedV334">${ht('NOUVELLE SAISON DISPONIBLE !','NEW SEASON AVAILABLE!')}<small>${ht('Mise à jour en attente…','Waiting for update…')}</small></div>`;return;}const v=[Math.floor(n/86400000),Math.floor(n/3600000)%24,Math.floor(n/60000)%60,Math.floor(n/1000)%60];['d','h','m','s'].forEach((k,i)=>{const q=el.querySelector(`[data-u="${k}"]`);if(q){const next=String(v[i]).padStart(2,'0');if(q.textContent!==next){q.textContent=next;q.classList.remove('tickV334');void q.offsetWidth;q.classList.add('tickV334')}}})})}
+function refreshMaintenanceV520(){
+  document.querySelectorAll('[data-maintenance-panel]').forEach(panel=>{
+    const start=Date.parse(panel.dataset.maintenanceStart||''),end=Date.parse(panel.dataset.maintenanceEnd||''),now=Date.now();
+    if(!Number.isFinite(start)||!Number.isFinite(end)||now>=end){panel.hidden=true;return}
+    panel.hidden=false;
+    const active=now>=start,target=active?end:start,n=Math.max(0,target-now);
+    panel.classList.toggle('is-active',active);panel.classList.toggle('is-scheduled',!active);
+    const eyebrow=panel.querySelector('[data-maintenance-eyebrow]');
+    const title=panel.querySelector('[data-maintenance-title]');
+    const copy=panel.querySelector('[data-maintenance-copy]');
+    const labelNode=panel.querySelector('[data-maintenance-label]');
+    if(eyebrow)eyebrow.textContent=active?ht('SERVEURS EN MAINTENANCE','SERVERS UNDER MAINTENANCE'):ht('INTERRUPTION À VENIR','UPCOMING INTERRUPTION');
+    if(title)title.textContent=active?ht('Maintenance du jeu en cours','Game maintenance in progress'):ht('Maintenance du jeu programmée','Scheduled game maintenance');
+    if(copy)copy.textContent=active?ht('Les serveurs de My Hero Ultra Rumble sont temporairement indisponibles. Le site MHUR Nexus reste accessible.','My Hero Ultra Rumble servers are temporarily unavailable. MHUR Nexus remains accessible.'):ht('Une interruption des serveurs de My Hero Ultra Rumble est programmée.','A My Hero Ultra Rumble server interruption is scheduled.');
+    if(labelNode)labelNode.textContent=active?ht('RETOUR ESTIMÉ DANS','ESTIMATED RETURN IN'):ht('DÉBUT PRÉVU DANS','EXPECTED TO START IN');
+    const values=[Math.floor(n/86400000),Math.floor(n/3600000)%24,Math.floor(n/60000)%60,Math.floor(n/1000)%60];
+    ['d','h','m','s'].forEach((key,i)=>{const node=panel.querySelector(`[data-maintenance-u="${key}"]`);if(node){const next=String(values[i]).padStart(2,'0');if(node.textContent!==next){node.textContent=next;node.classList.remove('tickV334');void node.offsetWidth;node.classList.add('tickV334')}}});
+  });
+}
+function refresh(){
+  document.querySelectorAll('[data-home-count]').forEach(el=>{const n=new Date(el.dataset.homeCount)-Date.now();el.classList.toggle('urgent',n>0&&n<=86400000);el.classList.toggle('ended',n<=0);if(n<=0){el.innerHTML=`<div class="seasonEndedV334">${ht('NOUVELLE SAISON DISPONIBLE !','NEW SEASON AVAILABLE!')}<small>${ht('Mise à jour en attente…','Waiting for update…')}</small></div>`;return;}const v=[Math.floor(n/86400000),Math.floor(n/3600000)%24,Math.floor(n/60000)%60,Math.floor(n/1000)%60];['d','h','m','s'].forEach((k,i)=>{const q=el.querySelector(`[data-u="${k}"]`);if(q){const next=String(v[i]).padStart(2,'0');if(q.textContent!==next){q.textContent=next;q.classList.remove('tickV334');void q.offsetWidth;q.classList.add('tickV334')}}})});
+  refreshMaintenanceV520();
+}
+
 function modal(id,panelClass=''){let m=document.getElementById(id);if(!m){m=document.createElement('div');m.id=id;m.className='modalV296';m.innerHTML=`<div class="modalPanelV296 ${panelClass}"><header><h2></h2><button onclick="closeHomeModalV296('${id}')">×</button></header><div class="modalBodyV296"></div></div>`;document.body.appendChild(m);m.addEventListener('click',e=>{if(e.target===m)closeHomeModalV296(id)})}return m}
 window.closeHomeModalV296=id=>{document.getElementById(id)?.classList.remove('open');if(!document.querySelector('.modalV296.open'))document.body.classList.remove('homeModalOpenV296')};
 function valueTable(c){if(Array.isArray(c.before)&&Array.isArray(c.after)){const levels=c.before.map((_,i)=>`<th>Lv.${i+1}</th>`).join('');const before=c.before.map(v=>`<td>${esc(v)}</td>`).join('');const after=c.after.map(v=>`<td>${esc(v)}</td>`).join('');return `<div class="changeLabelV296">${esc(patchText(c.label||ht('Valeurs par niveau','Values by level')))}</div><div class="valueTableWrapV296"><table class="valueTableV296"><thead><tr><th></th>${levels}</tr></thead><tbody><tr class="before"><th>${ht('Avant','Before')}</th>${before}</tr><tr class="after"><th>${ht('Après','After')}</th>${after}</tr></tbody></table></div>`}if(c.before!=null||c.after!=null)return `<div class="singleChangeV296"><span>${ht('Avant','Before')} <b>${esc(c.before??'—')}</b></span><i>→</i><span>${ht('Après','After')} <b>${esc(c.after??'—')}</b></span></div>`;return ''}

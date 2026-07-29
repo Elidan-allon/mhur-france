@@ -1,0 +1,9 @@
+CORRECTIF MAINTENANCE DYNAMIQUE
+
+- La mise à jour récupère maintenant les maintenances annoncées sur UltraRumble.com.
+- La carte apparaît uniquement avant ou pendant la maintenance.
+- Elle passe automatiquement de « programmée » à « en cours » sans nouvelle mise à jour.
+- Elle disparaît automatiquement à la fin.
+- Le design a été créé pour MHUR Nexus et ne copie pas la carte du site source.
+
+Après une mise à jour, redéployez le dossier public sur Cloudflare.

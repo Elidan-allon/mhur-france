@@ -1,8 +1,8 @@
 {
   "meta": {
-    "updated_at": "2026-07-29T03:42:45.470855+00:00",
+    "updated_at": "2026-07-29T04:03:31.193518+00:00",
     "source": "UltraRumble.com",
-    "version": "v303-active-gachas-latest-full-patch"
+    "version": "v520-maintenance-sync"
   },
   "season": {
     "number": 17,
@@ -77,86 +77,6 @@
       "url": "https://ultrarumble.com/gasha/2513011",
       "image": "assets/home/gachas/gasha_2513011.webp",
       "banner_source": "https://ultrarumble.com/assets/Gasha/gasha_2513011.webp"
-    },
-    {
-      "id": "2617001",
-      "title": "PLUS ULTRA Character Roll: Original (S17) Mirko",
-      "type": "Personnage",
-      "start": "2026-05-27T13:00:00+09:00",
-      "end": "2026-07-29T12:59:59+09:00",
-      "url": "https://ultrarumble.com/gasha/2617001",
-      "image": "assets/home/gachas/gasha_2617001.webp",
-      "banner_source": "https://ultrarumble.com/assets/Gasha/gasha_2617001.webp"
-    },
-    {
-      "id": "2617008",
-      "title": "QUIRK / SKILL Character Roll: Alternative (S17) Present Mic",
-      "type": "Alter",
-      "start": "2026-06-10T13:00:00+09:00",
-      "end": "2026-07-29T12:59:59+09:00",
-      "url": "https://ultrarumble.com/gasha/2617008",
-      "image": "assets/home/gachas/gasha_2617008.webp",
-      "banner_source": "https://ultrarumble.com/assets/Gasha/gasha_2617008.webp"
-    },
-    {
-      "id": "2617005",
-      "title": "PLUS ULTRA Character Roll: Original (S17) Lady Nagant",
-      "type": "Personnage",
-      "start": "2026-06-24T13:00:00+09:00",
-      "end": "2026-07-29T12:59:59+09:00",
-      "url": "https://ultrarumble.com/gasha/2617005",
-      "image": "assets/home/gachas/gasha_2617005.webp",
-      "banner_source": "https://ultrarumble.com/assets/Gasha/gasha_2617005.webp"
-    },
-    {
-      "id": "2617007",
-      "title": "QUIRK / SKILL Character Roll: Alternative (S17) Overhaul",
-      "type": "Alter",
-      "start": "2026-06-24T13:00:00+09:00",
-      "end": "2026-07-29T12:59:59+09:00",
-      "url": "https://ultrarumble.com/gasha/2617007",
-      "image": "assets/home/gachas/gasha_2617007.webp",
-      "banner_source": "https://ultrarumble.com/assets/Gasha/gasha_2617007.webp"
-    },
-    {
-      "id": "2617009",
-      "title": "QUIRK / SKILL Character Roll: Alternative (S17) Aizawa",
-      "type": "Alter",
-      "start": "2026-06-24T13:00:00+09:00",
-      "end": "2026-07-29T12:59:59+09:00",
-      "url": "https://ultrarumble.com/gasha/2617009",
-      "image": "assets/home/gachas/gasha_2617009.webp",
-      "banner_source": "https://ultrarumble.com/assets/Gasha/gasha_2617009.webp"
-    },
-    {
-      "id": "2617013",
-      "title": "COSTUME Costume Pick Up Roll (S17) Vol. Casual Style",
-      "type": "Costume",
-      "start": "2026-06-24T13:00:00+09:00",
-      "end": "2026-07-29T12:59:59+09:00",
-      "url": "https://ultrarumble.com/gasha/2617013",
-      "image": "assets/home/gachas/gasha_2617013.webp",
-      "banner_source": "https://ultrarumble.com/assets/Gasha/gasha_2617013.webp"
-    },
-    {
-      "id": "2617003",
-      "title": "PLUS ULTRA Character Roll: Original (S17) Amajiki",
-      "type": "Personnage",
-      "start": "2026-07-08T13:00:00+09:00",
-      "end": "2026-07-29T12:59:59+09:00",
-      "url": "https://ultrarumble.com/gasha/2617003",
-      "image": "assets/home/gachas/gasha_2617003.webp",
-      "banner_source": "https://ultrarumble.com/assets/Gasha/gasha_2617003.webp"
-    },
-    {
-      "id": "2617011",
-      "title": "QUIRK / SKILL Character Roll: Alternative (S17) All Might and Kendo",
-      "type": "Alter",
-      "start": "2026-07-08T13:00:00+09:00",
-      "end": "2026-07-29T12:59:59+09:00",
-      "url": "https://ultrarumble.com/gasha/2617011",
-      "image": "assets/home/gachas/gasha_2617011.webp",
-      "banner_source": "https://ultrarumble.com/assets/Gasha/gasha_2617011.webp"
     }
   ],
   "events": [
@@ -169,50 +89,6 @@
       "url": "https://ultrarumble.com/event/251307",
       "image": "assets/home/events/event_251307.webp",
       "image_source": "https://ultrarumble.com/assets/Event/event_251307.webp",
-      "official_image": true
-    },
-    {
-      "id": "261701",
-      "type": "Mission",
-      "title": "MISSION Mission Event Vol. 17",
-      "start": "2026-07-08T13:00:00+09:00",
-      "end": "2026-07-29T12:59:59+09:00",
-      "url": "https://ultrarumble.com/event/261701",
-      "image": "assets/home/events/event_261701.webp",
-      "image_source": "https://ultrarumble.com/assets/Event/event_261701.webp",
-      "official_image": true
-    },
-    {
-      "id": "261705",
-      "type": "Événement",
-      "title": "EVENT Area Control Battle Event Vol. 6",
-      "start": "2026-06-24T13:00:00+09:00",
-      "end": "2026-07-29T12:59:59+09:00",
-      "url": "https://ultrarumble.com/event/261705",
-      "image": "assets/home/events/event_261705.webp",
-      "image_source": "https://ultrarumble.com/assets/Event/event_261705.webp",
-      "official_image": true
-    },
-    {
-      "id": "261706",
-      "type": "T.U.N.I.N.G",
-      "title": "EVENT T.U.N.I.N.G. Mission Event Vol. 4",
-      "start": "2026-07-08T13:00:00+09:00",
-      "end": "2026-07-29T12:59:59+09:00",
-      "url": "https://ultrarumble.com/event/261706",
-      "image": "assets/home/events/event_261706.webp",
-      "image_source": "https://ultrarumble.com/assets/Event/event_261706.webp",
-      "official_image": true
-    },
-    {
-      "id": "261707",
-      "type": "Événement",
-      "title": "EVENT License Event Vol. 3",
-      "start": "2026-07-15T13:00:00+09:00",
-      "end": "2026-07-29T12:59:59+09:00",
-      "url": "https://ultrarumble.com/event/261707",
-      "image": "assets/home/events/event_261707.webp",
-      "image_source": "https://ultrarumble.com/assets/Event/event_261707.webp",
       "official_image": true
     }
   ],
@@ -830,5 +706,11 @@
         }
       ]
     }
-  ]
+  ],
+  "maintenance": {
+    "start": "2026-07-29T12:30:00+09:00",
+    "end": "2026-07-29T19:00:00+09:00",
+    "source_status": "active",
+    "source": "https://ultrarumble.com/"
+  }
 }
