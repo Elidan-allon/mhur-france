@@ -1,0 +1,18 @@
+CORRECTIF SAISON 18 V11
+=======================
+
+Corrections ciblées :
+- fenêtre Notes de patch / Notes des développeurs placée sous le header ;
+- retour automatique en haut de la note à chaque ouverture et changement de patch ;
+- onglets et libellés français en version française ;
+- traduction de HP, Magazine, Foot Boost, Penalty Recharge, Hollow Point Shot, etc. ;
+- portraits des personnages et styles plus grands, centrés et posés au bas des cartes ;
+- portrait officiel distinct pour Izuku Midoriya Full Bullet ;
+- portrait propre de Gentle Criminal sans halo flou en haut ;
+- fonds de rôle nets sur les cartes de styles, y compris en petit format.
+
+INSTALLATION
+1. Copier le dossier mhur-france par-dessus le dossier existant.
+2. Accepter le remplacement des fichiers.
+3. Lancer METTRE_A_JOUR_MHUR_FRANCE.bat.
+4. Attendre [OK], redéployer public, puis faire Ctrl+F5 une fois.

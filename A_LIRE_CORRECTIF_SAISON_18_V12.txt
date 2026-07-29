@@ -1,0 +1,13 @@
+CORRECTIF SAISON 18 V12 — SORTIES PRÉVUES
+
+1. Copie le dossier mhur-france par-dessus ton dossier actuel.
+2. Accepte tous les remplacements.
+3. Lance METTRE_A_JOUR_MHUR_FRANCE.bat.
+4. Redéploie public puis fais Ctrl + F5.
+
+CORRECTIONS :
+- Gentle Criminal utilise le portail officiel complet et ouvre uniquement Gentle Criminal.
+- Twice utilise le portail officiel complet et ne redirige vers aucun personnage.
+- Tsuyu reste affichée sur fond noir et ne redirige vers aucun personnage.
+- Les trois cartes ont désormais un format homogène en trois colonnes sur grand écran.
+- Twice et Tsuyu affichent BIENTÔT et n'ont plus de comportement cliquable.

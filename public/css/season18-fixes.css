@@ -364,3 +364,260 @@
 }
 /* Évite d'afficher les anciennes cartes rouges avant le remplacement v10. */
 .releaseGridV296:not([data-s18-season-v10]){visibility:hidden!important;min-height:200px!important}
+
+/* ========================================================================== */
+/* MHUR Nexus — Saison 18 v11 : fenêtre notes et portraits                   */
+/* ========================================================================== */
+body.s18NotesOpenV11{overflow:hidden!important}
+.s18NotesOverlayV10{
+  align-items:flex-start!important;
+  justify-content:center!important;
+  padding:88px 18px 16px!important;
+  overflow:hidden!important;
+}
+.s18NotesPanelV10{
+  width:min(1220px,calc(100vw - 36px))!important;
+  height:calc(100dvh - 104px)!important;
+  max-height:calc(100dvh - 104px)!important;
+  margin:0 auto!important;
+  outline:none!important;
+}
+.s18NotesBodyV10{
+  height:calc(100dvh - 252px)!important;
+  min-height:0!important;
+}
+.s18NotesBodyV10>aside,
+.s18NotesBodyV10>main{overscroll-behavior:contain!important;scroll-behavior:auto!important}
+
+/* Les portraits commencent bien au bas de la carte et occupent plus d'espace. */
+.s18CharacterCardV10 .thumb{
+  position:relative!important;
+  height:430px!important;
+  min-height:430px!important;
+  overflow:hidden!important;
+  align-items:flex-end!important;
+  justify-content:center!important;
+}
+.s18CharacterCardV10 .thumb img,
+.s18PortraitImgV10{
+  position:absolute!important;
+  left:50%!important;
+  bottom:0!important;
+  width:116%!important;
+  height:116%!important;
+  max-width:none!important;
+  max-height:none!important;
+  object-fit:contain!important;
+  object-position:center bottom!important;
+  transform:translateX(-50%) scale(1.10)!important;
+  transform-origin:center bottom!important;
+  margin:0!important;
+  padding:0!important;
+}
+.s18StyleCardV10 .styleBanner{
+  position:relative!important;
+  height:520px!important;
+  min-height:520px!important;
+  overflow:hidden!important;
+  align-items:flex-end!important;
+  justify-content:center!important;
+}
+.s18StyleCardV10 .styleBanner img,
+.s18StylePortraitV10{
+  position:absolute!important;
+  left:50%!important;
+  bottom:0!important;
+  width:118%!important;
+  height:118%!important;
+  max-width:none!important;
+  max-height:none!important;
+  object-fit:contain!important;
+  object-position:center bottom!important;
+  transform:translateX(-50%) scale(1.08)!important;
+  transform-origin:center bottom!important;
+  margin:0!important;
+  padding:0!important;
+}
+/* Fonds nets par rôle : plus de halo flou dans la partie haute. */
+.s18StyleCardV10.role-technical .styleBanner{background:linear-gradient(180deg,#a532d4 0%,#7411a4 55%,#42075f 100%)!important}
+.s18StyleCardV10.role-attack .styleBanner{background:linear-gradient(180deg,#ef354d 0%,#bd102a 55%,#680716 100%)!important}
+.s18StyleCardV10.role-assault .styleBanner{background:linear-gradient(180deg,#ffe547 0%,#cba800 55%,#756000 100%)!important}
+.s18StyleCardV10.role-support .styleBanner{background:linear-gradient(180deg,#54e978 0%,#13a842 55%,#075a25 100%)!important}
+.s18StyleCardV10.role-rapid .styleBanner{background:linear-gradient(180deg,#48daf1 0%,#12a8ca 55%,#07566e 100%)!important}
+
+/* Image officielle dédiée à Full Bullet. */
+.s18StyleCardV10[data-style="fullbullet"] .styleBanner img,
+.s18StyleCardV10[data-style*="midoriya_attack"] .styleBanner img{
+  width:128%!important;
+  height:112%!important;
+  transform:translateX(-50%) scale(1.16)!important;
+  filter:drop-shadow(0 12px 14px rgba(0,0,0,.45))!important;
+}
+/* Gentle : image officielle propre, sans étirement ni zone floue en haut. */
+.s18StyleCardV10[data-style*="gentle"] .styleBanner img{
+  width:100%!important;
+  height:100%!important;
+  object-fit:cover!important;
+  object-position:center top!important;
+  transform:translateX(-50%)!important;
+  filter:none!important;
+}
+
+@media(max-width:900px){
+  .s18NotesOverlayV10{padding:82px 8px 8px!important}
+  .s18NotesPanelV10{width:calc(100vw - 16px)!important;height:calc(100dvh - 90px)!important;max-height:calc(100dvh - 90px)!important}
+  .s18NotesBodyV10{height:calc(100dvh - 240px)!important}
+  .s18CharacterCardV10 .thumb{height:350px!important;min-height:350px!important}
+  .s18CharacterCardV10 .thumb img,.s18PortraitImgV10{width:120%!important;height:120%!important;transform:translateX(-50%) scale(1.08)!important}
+  .s18StyleCardV10 .styleBanner{height:420px!important;min-height:420px!important}
+  .s18StyleCardV10 .styleBanner img,.s18StylePortraitV10{width:122%!important;height:122%!important;transform:translateX(-50%) scale(1.06)!important}
+  .s18StyleCardV10[data-style*="gentle"] .styleBanner img{width:100%!important;height:100%!important;transform:translateX(-50%)!important}
+}
+@media(max-width:600px){
+  .s18NotesOverlayV10{padding:72px 4px 4px!important}
+  .s18NotesPanelV10{width:calc(100vw - 8px)!important;height:calc(100dvh - 76px)!important;max-height:calc(100dvh - 76px)!important;border-radius:10px!important}
+  .s18NotesBodyV10{height:calc(100dvh - 224px)!important}
+  .s18NotesPanelV10>header{padding:10px 12px!important}
+  .s18NotesPanelV10>header h2{font-size:22px!important}
+  .s18NotesPanelV10>nav button{padding:8px 11px!important}
+  .s18CharacterCardV10 .thumb{height:300px!important;min-height:300px!important}
+  .s18StyleCardV10 .styleBanner{height:360px!important;min-height:360px!important}
+}
+
+/* ========================================================================== */
+/* Saison 18 v12 — cartes de sorties prévues et navigation sûre              */
+/* ========================================================================== */
+.homeV296 .releaseGridV296{
+  display:grid!important;
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  gap:16px!important;
+}
+.s18SeasonReleaseV12{
+  position:relative!important;
+  display:block!important;
+  width:100%!important;
+  min-height:230px!important;
+  overflow:hidden!important;
+  padding:0!important;
+  border:4px solid #05070b!important;
+  border-radius:16px!important;
+  background:#05070b!important;
+  box-shadow:0 7px 0 #050506!important;
+  color:#fff!important;
+  text-align:left!important;
+}
+button.s18SeasonReleaseV12.is-clickable{cursor:pointer!important}
+button.s18SeasonReleaseV12.is-clickable:hover,
+button.s18SeasonReleaseV12.is-clickable:focus-visible{
+  transform:translateY(-3px)!important;
+  border-color:#ffe000!important;
+  box-shadow:0 10px 0 #050506,0 0 0 3px rgba(255,224,0,.25)!important;
+}
+.s18SeasonReleaseV12.is-coming{cursor:default!important}
+.s18SeasonPortalV12,.s18SeasonBlackV12{
+  position:absolute!important;
+  inset:0!important;
+  z-index:1!important;
+  display:block!important;
+  overflow:hidden!important;
+}
+.s18SeasonPortalV12{
+  background-size:cover!important;
+  background-position:center center!important;
+  background-repeat:no-repeat!important;
+}
+.s18SeasonBlackV12{
+  display:flex!important;
+  align-items:flex-end!important;
+  justify-content:center!important;
+  background:#000!important;
+}
+.s18SeasonProfileV12{
+  display:block!important;
+  width:100%!important;
+  height:118%!important;
+  object-fit:contain!important;
+  object-position:center bottom!important;
+  transform:scale(1.18)!important;
+  transform-origin:center bottom!important;
+}
+.s18SeasonShadeV12{
+  position:absolute!important;
+  inset:0!important;
+  z-index:2!important;
+  background:linear-gradient(180deg,rgba(0,0,0,.02) 0%,rgba(0,0,0,.04) 42%,rgba(0,0,0,.82) 100%)!important;
+}
+.s18SeasonReleaseV12 .releaseBadgeV299{
+  position:absolute!important;
+  z-index:6!important;
+  left:10px!important;
+  top:10px!important;
+  width:38px!important;
+  height:38px!important;
+}
+.s18SeasonNewV12{
+  position:absolute!important;
+  z-index:7!important;
+  top:8px!important;
+  right:8px!important;
+  width:86px!important;
+  height:43px!important;
+  background:url('../assets/home/icons/new_badge_custom.png') center/contain no-repeat!important;
+  filter:drop-shadow(0 3px 0 rgba(0,0,0,.75))!important;
+}
+.s18SeasonReleaseV12 .releaseNamesV299{
+  position:absolute!important;
+  z-index:8!important;
+  left:14px!important;
+  right:14px!important;
+  bottom:12px!important;
+  display:block!important;
+  text-align:left!important;
+}
+.s18SeasonReleaseV12 .releaseNamesV299 b{
+  display:block!important;
+  color:#fff!important;
+  font-size:clamp(22px,2vw,31px)!important;
+  line-height:1!important;
+  text-shadow:0 3px 0 #000!important;
+}
+.s18SeasonReleaseV12 .releaseNamesV299 small{
+  display:block!important;
+  margin-top:5px!important;
+  color:#ffe800!important;
+  font-size:clamp(12px,1vw,16px)!important;
+  font-weight:1000!important;
+  text-shadow:0 2px 0 #000!important;
+}
+.s18SeasonReleaseV12 .releaseNamesV299 em{
+  display:block!important;
+  margin-top:3px!important;
+  color:#fff!important;
+  font-size:12px!important;
+  font-style:normal!important;
+  font-weight:900!important;
+  text-shadow:0 2px 0 #000!important;
+}
+.s18ComingSoonV12{
+  position:absolute!important;
+  z-index:9!important;
+  top:13px!important;
+  left:58px!important;
+  padding:6px 10px!important;
+  border:2px solid #000!important;
+  border-radius:999px!important;
+  background:rgba(6,11,20,.88)!important;
+  color:#fff!important;
+  font-size:11px!important;
+  font-weight:1000!important;
+  letter-spacing:.5px!important;
+  box-shadow:0 3px 0 rgba(0,0,0,.6)!important;
+}
+@media(max-width:1100px){
+  .homeV296 .releaseGridV296{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  .s18SeasonReleaseV12:last-child{grid-column:1/-1!important;min-height:220px!important}
+}
+@media(max-width:700px){
+  .homeV296 .releaseGridV296{grid-template-columns:1fr!important}
+  .s18SeasonReleaseV12,.s18SeasonReleaseV12:last-child{grid-column:auto!important;min-height:205px!important}
+}

@@ -96,11 +96,18 @@ function originalRemotePortrait(row){
   const original=list.find(x=>norm(x?.base_name||x?.name||'')===base&&Number(x?.variant_index||0)===0&&x?.assets?.portrait);
   return original?.assets?.portrait||'';
 }
+function manualPortrait(styleId){
+  const id=String(styleId||'');
+  if(id==='fullbullet'||/midoriya.*attack/i.test(id))return 'assets/home/season18/midoriya_fullbullet_profile.png';
+  if(/gentle[_-]?criminal/i.test(id))return 'assets/home/season18/gentle_s18_profile_hd.webp';
+  return '';
+}
 function portraitCandidates(styleId,fallback){
   const sync=window.MHUR_SEASON18_DATA?.official_portraits||{};
   const row=remoteRowForStyle(styleId)||null;
   const local=(typeof styles!=='undefined'&&styles?.[styleId]?._s18LocalPortrait)||'';
-  const list=[sync[styleId],row?.assets?.portrait,...inferredRemotePortraits(row),fallback,local,originalRemotePortrait(row)].filter(Boolean).map(String);
+  /* Prefer a verified style-specific picture. Invalid guessed URLs are kept last. */
+  const list=[manualPortrait(styleId),sync[styleId],row?.assets?.portrait,local,fallback,...inferredRemotePortraits(row),originalRemotePortrait(row)].filter(Boolean).map(String);
   return Array.from(new Set(list));
 }
 window.MHUR_S18_NEXT_IMAGE=function(image){
@@ -177,8 +184,8 @@ function patchGentle(){
   ch.name='Gentle Criminal'; ch.side='villain';
   ch.styles=[styleId,...uniqueStyleIds(ch).filter(id=>id!==styleId&&norm(styles[id]?.name)!=='original')];
   st.name={fr:'Original',en:'Original'}; st.role='technical'; st.pv=String(row?.stats?.['Max Main Health']||row?.stats?.['Max Health']||st.pv||300);
-  if(row?.assets?.portrait) st.portrait=row.assets.portrait;
-  ch.portrait=st.portrait||ch.portrait;
+  st.portrait='assets/home/season18/gentle_s18_profile_hd.webp';
+  ch.portrait=st.portrait;
   st.description={
     fr:"Un hors-la-loi des temps modernes qui entrera dans l'Histoire ! Son Alter Élasticité lui permet de virevolter dans les airs en narguant ses ennemis avec panache !",
     en:'A modern-day gentleman thief whose name will go down in history! With his Quirk, Elasticity, he flies freely in every direction and gracefully toys with his opponents!'
@@ -358,28 +365,37 @@ function seasonReleases(){
   const twice=characterBy('twice');
   const tsuyu=characterBy('tsuyu')||characterBy('froppy');
   const gentleStyle=styleIds(gentle)[0]||'';
-  const twiceStyle=findStyle(twice,(st,id)=>NORM(st?.name).includes('sad_man')||ROLE(st?.role)==='support')||styleIds(twice)[0]||'';
-  const tsuyuStyle=findStyle(tsuyu,st=>ROLE(st?.role)==='attack')||styleIds(tsuyu)[0]||'';
+  const twiceStyle=findStyle(twice,(st,id)=>NORM(st?.name).includes('sad_man')||ROLE(st?.role)==='support')||'';
+  const tsuyuStyle=findStyle(tsuyu,st=>ROLE(st?.role)==='attack')||'';
   return [
-    {key:'gentle',kind:'character',charId:gentle?.id||'gentle_criminal',styleId:gentleStyle,title:'Gentle Criminal',subtitle:TX('Nouveau personnage · Technique','New character · Technical'),date:TX('Disponible depuis le 29 juillet','Available since July 29'),role:'technical',art:'assets/home/season18/gentle_s18_portrait.webp'},
-    {key:'twice',kind:'style',charId:twice?.id||'twice',styleId:twiceStyle,title:'Twice',subtitle:"Sad Man's Parade · "+TX('Soutien','Support'),date:TX('Sortie le 19 août','Releases August 19'),role:'support',art:'assets/home/season18/twice_s18_portrait.webp'},
-    {key:'tsuyu',kind:'style',charId:tsuyu?.id||'tsuyu',styleId:tsuyuStyle,title:tsuyu?.name||'Tsuyu Asui',subtitle:TX('Nouveau style · nom à venir','New style · name to be announced'),date:TX('Prévu pendant la Saison 18','Planned during Season 18'),role:'attack',art:styles?.[tsuyuStyle]?.portrait||tsuyu?.portrait||'',black:true}
+    {key:'gentle',kind:'character',charId:gentle?.id||'gentle_criminal',styleId:gentleStyle,title:'Gentle Criminal',subtitle:TX('Nouveau personnage · Technique','New character · Technical'),date:TX('Disponible depuis le 29 juillet','Available since July 29'),role:'technical',art:'assets/home/season18/gentle_portal_s18.webp',clickable:true},
+    {key:'twice',kind:'style',charId:'',styleId:twiceStyle,title:'Twice',subtitle:"Sad Man's Parade · "+TX('Soutien','Support'),date:TX('Sortie prévue le 19 août','Planned for August 19'),role:'support',art:'assets/home/season18/twice_portal_s18.webp',clickable:false},
+    {key:'tsuyu',kind:'style',charId:'',styleId:tsuyuStyle,title:tsuyu?.name||'Tsuyu Asui',subtitle:TX('Nouveau style · nom à venir','New style · name to be announced'),date:TX('Prévu pendant la Saison 18','Planned during Season 18'),role:'attack',art:styles?.[tsuyuStyle]?.portrait||tsuyu?.portrait||'',black:true,clickable:false}
   ];
 }
+window.openSeason18GentleV12=function(){
+  const gentle=characterBy('gentle criminal');if(!gentle)return;
+  page='characters';selectedChar=gentle.id;selectedStyle=styleIds(gentle)[0]||null;selectedCostume=null;
+  document.getElementById('drawer')?.classList.remove('open');
+  if(location.hash!=='#characters')history.pushState(null,'','#characters');
+  if(typeof layout==='function')layout();else if(typeof render==='function')render();
+};
 function seasonCard(item){
   const icon=item.kind==='character'?'assets/home/icons/release_character.png':'assets/home/icons/release_style.png';
-  const art=item.black?`<span class="s18SeasonBlackV10">${imgHtml(item.art,item.title,'s18SeasonProfileV10')}</span>`:`<span class="s18SeasonArtV10" style="background-image:url('${ESC(item.art).replace(/'/g,'%27')}')"></span>`;
-  return `<button type="button" class="releaseCardV299 s18SeasonReleaseV10 role-${ESC(ROLE(item.role))}" data-release-char="${ESC(item.charId)}" data-release-style="${ESC(item.styleId)}" onclick="openHomeReleaseV298(this)" title="${ESC(item.title)} — ${ESC(item.subtitle)}">${art}<span class="s18SeasonShadeV10"></span><span class="releaseBadgeV299 ${item.kind}">${typeof img==='function'?img(icon,item.kind):imgHtml(icon,item.kind)}</span><span class="s18SeasonNewV10" aria-hidden="true"></span><span class="releaseNamesV299"><b>${ESC(item.title)}</b><small>${ESC(item.subtitle)}</small><em>${ESC(item.date)}</em></span></button>`;
+  const art=item.black?`<span class="s18SeasonBlackV12">${imgHtml(item.art,item.title,'s18SeasonProfileV12')}</span>`:`<span class="s18SeasonPortalV12" style="background-image:url('${ESC(item.art).replace(/'/g,'%27')}')"></span>`;
+  const body=`${art}<span class="s18SeasonShadeV12"></span><span class="releaseBadgeV299 ${item.kind}">${typeof img==='function'?img(icon,item.kind):imgHtml(icon,item.kind)}</span><span class="s18SeasonNewV12" aria-hidden="true"></span><span class="releaseNamesV299"><b>${ESC(item.title)}</b><small>${ESC(item.subtitle)}</small><em>${ESC(item.date)}</em></span>`;
+  if(item.clickable)return `<button type="button" class="releaseCardV299 s18SeasonReleaseV12 role-${ESC(ROLE(item.role))} is-clickable" onclick="openSeason18GentleV12()" title="${ESC(item.title)} — ${ESC(item.subtitle)}">${body}</button>`;
+  return `<article class="releaseCardV299 s18SeasonReleaseV12 role-${ESC(ROLE(item.role))} is-coming" aria-label="${ESC(item.title)} — ${ESC(item.subtitle)}">${body}<span class="s18ComingSoonV12">${TX('BIENTÔT','COMING SOON')}</span></article>`;
 }
 function patchHome(){
   const home=document.querySelector('.homeV296');if(!home)return;
   const headings=[...home.querySelectorAll('.homeTitleV296')];
-  const releaseHeading=headings.find(h=>/derni[eè]res sorties|latest releases/i.test(h.textContent||''));
+  const releaseHeading=headings.find(h=>/derni[eè]res sorties|latest releases|sorties pr[eé]vues|season 18 releases/i.test(h.textContent||''));
   if(releaseHeading)releaseHeading.textContent=TX('SORTIES PRÉVUES — SAISON 18','SEASON 18 RELEASES');
   const grid=home.querySelector('.releaseGridV296');
-  if(grid&&grid.dataset.s18SeasonV10!==L()){
+  if(grid&&grid.dataset.s18SeasonV12!==L()){
     grid.innerHTML=seasonReleases().map(seasonCard).join('');
-    grid.dataset.s18SeasonV10=L();
+    grid.dataset.s18SeasonV12=L();
   }
   const patchHeading=headings.find(h=>/derni[eè]re note de mise [aà] jour|latest patch note/i.test(h.textContent||''));
   if(patchHeading){
@@ -394,12 +410,24 @@ function patchHome(){
 function translatePatch(v){
   let out=CLEAN(v);
   if(L()==='en')return out;
+  const exact={
+    'HP':'PV','Foot Boost':'Boost du pied','Penalty Recharge':'Pénalité de recharge',
+    'Hollow Point Shot':'Tir à pointe creuse','AP Shot Cluster':'Tir AP : Cluster',
+    'Delaware Smash Airblast':"Delaware Smash : Rafale d'air",
+    'Delaware Smash Full Bullet!':'Delaware Smash Full Bullet !',
+    'No. of Rounds':'Munitions max.','Magazine':'Munitions max.',
+    'Special Action':'Action spéciale','Adjustment':'Neutre'
+  };
+  if(exact[out])return exact[out];
   const replacements=[
     [/^Data Update/i,'Mise à jour des données'],[/^Balance Changes:\s*/i,"Équilibrage : "],
-    [/Magazine/gi,'Munitions max.'],[/No\. of Rounds/gi,'Munitions max.'],[/Ammo/gi,'Munitions'],[/Use Ammo/gi,'Consommation'],
-    [/Reload Speed/gi,'Vitesse de recharge'],[/Reload|Cooldown/gi,'Recharge'],[/Damage/gi,'Dégâts'],[/Guard Break/gi,'Brise-garde'],
-    [/Maximum HP|Max HP/gi,'PV maximum'],[/Health/gi,'PV'],[/Special Action/gi,'Action spéciale'],[/Quirk Skill/gi,'Alter'],
-    [/Before/gi,'Avant'],[/After/gi,'Après'],[/Adjustment/gi,'Neutre'],[/No changes detected\.?/gi,'Aucun changement détecté.']
+    [/Maximum Main Health|Maximum HP|Max HP/gi,'PV maximum'],[/^HP$/gi,'PV'],[/Health/gi,'PV'],
+    [/No\. of Rounds|Magazine/gi,'Munitions max.'],[/Use Ammo/gi,'Consommation'],[/Ammo/gi,'Munitions'],
+    [/Penalty Recharge/gi,'Pénalité de recharge'],[/Reload Speed/gi,'Vitesse de recharge'],[/Reload|Cooldown/gi,'Recharge'],
+    [/Guard Break/gi,'Brise-garde'],[/Damage/gi,'Dégâts'],[/Special Action/gi,'Action spéciale'],[/Quirk Skill/gi,'Alter'],
+    [/Foot Boost/gi,'Boost du pied'],[/Hollow Point Shot/gi,'Tir à pointe creuse'],[/Airblast/gi,"Rafale d'air"],
+    [/Before/gi,'Avant'],[/After/gi,'Après'],[/Adjustment/gi,'Neutre'],[/No changes detected\.?/gi,'Aucun changement détecté.'],
+    [/Technical/gi,'Technique'],[/Strike/gi,'Attaque'],[/Rapid/gi,'Vitesse'],[/Support/gi,'Soutien'],[/Assault/gi,'Assaut']
   ];
   replacements.forEach(([a,b])=>{out=out.replace(a,b)});return out;
 }
@@ -447,7 +475,7 @@ function groupsForSection(section){
 }
 function groupHtml(group,sectionTitle){
   const role=ROLE(group.st?.role||'technical');const side=group.ch?.side||'hero';
-  return `<article class="s18PatchCharacterV10 role-${role}"><header><div class="s18PatchPortraitV10">${group.st?.portrait&&typeof asset==='function'?asset(group.st.portrait,group.character):''}</div><div><h4>${ESC(group.character)}</h4><strong>${ESC(group.style)}</strong><div class="s18PatchBadgesV10"><span class="badge ${side==='villain'?'villain':'hero'}">${ESC(SIDE_TEXT(side))}</span><span class="badge ${role}">${ESC(ROLE_TEXT(role))}</span></div></div></header><div class="s18PatchChangesV10">${group.changes.map(change=>{const tone=toneFor(change,sectionTitle);const skill=skillForChange(group.st,change);const title=CLEAN(skill?.name||change?.skill_name||change?.label||TX('Ajustement','Adjustment'));const picture=skill?.img||change?.skill_image||'';const bullets=(change?.bullets||[]).map(translatePatch).filter(Boolean);return `<section class="s18PatchChangeV10 ${tone}"><span class="s18ToneV10 ${tone}">${tone==='buff'?'BUFF':tone==='nerf'?'NERF':TX('NEUTRE','NEUTRAL')}</span><div class="s18PatchSkillV10">${picture&&typeof asset==='function'?`<div>${asset(picture,title)}</div>`:''}<main><h5>${ESC(title)}</h5>${change?.label?`<p class="s18PatchLabelV10">${ESC(translatePatch(change.label))}</p>`:''}${valuesHtml(change,tone)}${bullets.length?`<ul>${bullets.map(b=>`<li>${ESC(b)}</li>`).join('')}</ul>`:''}</main></div></section>`}).join('')}</div></article>`;
+  return `<article class="s18PatchCharacterV10 role-${role}"><header><div class="s18PatchPortraitV10">${group.st?.portrait&&typeof asset==='function'?asset(group.st.portrait,group.character):''}</div><div><h4>${ESC(group.character)}</h4><strong>${ESC(group.style)}</strong><div class="s18PatchBadgesV10"><span class="badge ${side==='villain'?'villain':'hero'}">${ESC(SIDE_TEXT(side))}</span><span class="badge ${role}">${ESC(ROLE_TEXT(role))}</span></div></div></header><div class="s18PatchChangesV10">${group.changes.map(change=>{const tone=toneFor(change,sectionTitle);const skill=skillForChange(group.st,change);const title=translatePatch(CLEAN(skill?.name||change?.skill_name||change?.label||TX('Ajustement','Adjustment')));const picture=skill?.img||change?.skill_image||'';const bullets=(change?.bullets||[]).map(translatePatch).filter(Boolean);return `<section class="s18PatchChangeV10 ${tone}"><span class="s18ToneV10 ${tone}">${tone==='buff'?'BUFF':tone==='nerf'?'NERF':TX('NEUTRE','NEUTRAL')}</span><div class="s18PatchSkillV10">${picture&&typeof asset==='function'?`<div>${asset(picture,title)}</div>`:''}<main><h5>${ESC(title)}</h5>${change?.label?`<p class="s18PatchLabelV10">${ESC(translatePatch(change.label))}</p>`:''}${valuesHtml(change,tone)}${bullets.length?`<ul>${bullets.map(b=>`<li>${ESC(b)}</li>`).join('')}</ul>`:''}</main></div></section>`}).join('')}</div></article>`;
 }
 function patchDetailHtml(note){
   const sections=(note?.details||[]).map(sec=>({...sec,changes:(sec.changes||[]).filter(Boolean)})).filter(sec=>sec.changes.length);
@@ -459,34 +487,50 @@ function devHtml(){
   return `<article class="s18DevArticleV10"><div class="s18DevHeroV10"><span>DEV BLOG VOL. 27</span><h2>${TX('Notes des développeurs — Saison 18','Developer Notes — Season 18')}</h2><p>29/07/2026 · Bandai Namco / Byking</p></div><section><h3>20 ${TX('millions de téléchargements','million downloads')}</h3><p>${TX('Un bonus de connexion spécial de 28 jours célèbre ce cap, avec notamment 6 000 Cristaux Héros et 100 Tickets de tirage.','A special 28-day login bonus celebrates the milestone, including 6,000 Hero Crystals and 100 Roll Tickets.')}</p></section><section><h3>Gentle Criminal & La Brava</h3><p>${TX("Gentle est pensé comme un personnage Technique très mobile. Son Alter Élasticité crée des rebonds, une barrière d'air et un trampoline utilisable par les alliés. La Brava le soutient avec son drone et Lover Mode augmente sa puissance et sa recharge pendant Plus Chaos.","Gentle is designed as a highly mobile Technical character. Elasticity creates rebounds, an air barrier, and an ally-usable trampoline. La Brava supports him with her drone, while Lover Mode boosts attack and reload during Plus Chaos.")}</p></section><section><h3>Chaos City Ver. 02</h3><p>${TX("Le quartier commercial a été profondément rénové et une nouvelle zone souterraine, Tentoin Alley, permet de circuler par des passages sous la ville.","The shopping district has been heavily renovated, with the new underground Tentoin Alley area connecting parts of the city.")}</p></section><section><h3>Research Notebook</h3><p>${TX('La Mission n° 3, plus difficile, est ajoutée. Le niveau maximum passe à 200 avec de nouvelles récompenses, dont des Tickets et des objets T.U.N.I.N.G.','The more challenging Mission No. 3 is added. The level cap rises to 200 with new rewards, including Tickets and T.U.N.I.N.G items.')}</p></section><section><h3>3-Pick Battle</h3><p>${TX('Ce nouveau mode est prévu à partir de la fin août. Chaque joueur choisit trois styles et le vainqueur est celui qui inflige le plus de dégâts.','This new mode is planned from late August. Each player selects three styles, and the winner is the player who deals the most damage.')}</p></section><div class="s18OfficialLinksV10"><a href="https://en.bandainamcoent.eu/my-hero-academia/news/my-hero-ultra-rumble-development-blog-vol-27" target="_blank" rel="noopener">${TX('Lire la Dev Note officielle','Read the official Dev Note')}</a><a href="https://en.bandainamcoent.eu/my-hero-academia/news/my-hero-ultra-rumble-season-18" target="_blank" rel="noopener">${TX('Voir la page officielle Saison 18','View the official Season 18 page')}</a></div></article>`;
 }
 function notesModal(){
-  let modal=document.getElementById('s18NotesDevModalV10');if(modal)return modal;
-  modal=document.createElement('div');modal.id='s18NotesDevModalV10';modal.className='s18NotesOverlayV10';
-  modal.innerHTML=`<section class="s18NotesPanelV10"><header><div><span>MHUR NEXUS</span><h2>${TX('Patch Notes / Dev Notes','Patch Notes / Dev Notes')}</h2></div><button type="button" data-close>×</button></header><nav><button type="button" data-tab="patch" class="active">Patch Notes</button><button type="button" data-tab="dev">Dev Notes</button></nav><div class="s18NotesBodyV10"><aside></aside><main></main></div></section>`;
-  document.body.appendChild(modal);
-  modal.querySelector('[data-close]').onclick=()=>modal.classList.remove('open');
-  modal.onclick=e=>{if(e.target===modal)modal.classList.remove('open')};
-  modal.querySelectorAll('[data-tab]').forEach(btn=>btn.onclick=()=>showNotesTab(btn.dataset.tab));
+  let modal=document.getElementById('s18NotesDevModalV10');
+  if(!modal){
+    modal=document.createElement('div');modal.id='s18NotesDevModalV10';modal.className='s18NotesOverlayV10';
+    modal.innerHTML=`<section class="s18NotesPanelV10" tabindex="-1"><header><div><span>MHUR NEXUS</span><h2 data-notes-title></h2></div><button type="button" data-close>×</button></header><nav><button type="button" data-tab="patch" class="active"></button><button type="button" data-tab="dev"></button></nav><div class="s18NotesBodyV10"><aside></aside><main></main></div></section>`;
+    document.body.appendChild(modal);
+    modal.querySelector('[data-close]').onclick=()=>{modal.classList.remove('open');document.body.classList.remove('s18NotesOpenV11')};
+    modal.onclick=e=>{if(e.target===modal){modal.classList.remove('open');document.body.classList.remove('s18NotesOpenV11')}};
+    modal.querySelectorAll('[data-tab]').forEach(btn=>btn.onclick=()=>showNotesTab(btn.dataset.tab));
+  }
+  modal.querySelector('[data-notes-title]').textContent=TX('Notes de patch / Notes des développeurs','Patch Notes / Dev Notes');
+  modal.querySelector('[data-tab="patch"]').textContent=TX('Notes de patch','Patch Notes');
+  modal.querySelector('[data-tab="dev"]').textContent=TX('Notes des développeurs','Dev Notes');
   return modal;
+}
+function resetNotesScroll(modal,resetAside=false){
+  const main=modal.querySelector('.s18NotesBodyV10>main'),aside=modal.querySelector('.s18NotesBodyV10>aside');
+  if(main)main.scrollTop=0;if(resetAside&&aside)aside.scrollTop=0;
+  const panel=modal.querySelector('.s18NotesPanelV10');if(panel)panel.scrollTop=0;
 }
 function showPatch(index=0){
   const modal=notesModal();const notes=window.MHUR_HOME_DATA?.patch_notes||[];const note=notes[index];
   modal.querySelector('aside').innerHTML=notes.map((n,i)=>`<button type="button" data-patch-index="${i}" class="${i===index?'active':''}"><b>${ESC(translatePatch(n.title))}</b><small>${n.date?new Date(n.date).toLocaleDateString(L()==='fr'?'fr-FR':'en-US'):''}</small></button>`).join('')||`<p>${TX('Aucune note disponible.','No notes available.')}</p>`;
   modal.querySelector('main').innerHTML=note?`<div class="s18PatchDetailHeadV10"><h2>${ESC(translatePatch(note.title))}</h2><div><span class="buff">BUFF</span><span class="nerf">NERF</span><span class="adjust">${TX('NEUTRE','NEUTRAL')}</span></div></div>${patchDetailHtml(note)}`:`<p>${TX('Aucune note disponible.','No notes available.')}</p>`;
   modal.querySelectorAll('[data-patch-index]').forEach(b=>b.onclick=()=>showPatch(Number(b.dataset.patchIndex)));
+  requestAnimationFrame(()=>resetNotesScroll(modal,false));
 }
 function showNotesTab(tab){
   const modal=notesModal();modal.querySelectorAll('[data-tab]').forEach(b=>b.classList.toggle('active',b.dataset.tab===tab));
   const aside=modal.querySelector('aside'),main=modal.querySelector('main');
-  if(tab==='dev'){aside.innerHTML=`<div class="s18DevSideV10"><b>DEV BLOG VOL. 27</b><small>${TX('Saison 18','Season 18')}</small></div>`;main.innerHTML=devHtml();}
+  if(tab==='dev'){aside.innerHTML=`<div class="s18DevSideV10"><b>DEV BLOG VOL. 27</b><small>${TX('Saison 18','Season 18')}</small></div>`;main.innerHTML=devHtml();requestAnimationFrame(()=>resetNotesScroll(modal,true));}
   else showPatch(0);
 }
-function openNotes(){const modal=notesModal();modal.classList.add('open');showNotesTab('patch')}
+function openNotes(){
+  const modal=notesModal();
+  modal.classList.add('open');document.body.classList.add('s18NotesOpenV11');
+  showNotesTab('patch');
+  requestAnimationFrame(()=>{resetNotesScroll(modal,true);modal.querySelector('.s18NotesPanelV10')?.focus?.({preventScroll:true});});
+}
 function ensureHeaderButton(){
   const admin=document.getElementById('mhurAdminButton');if(admin)admin.style.setProperty('display','none','important');
   const account=document.getElementById('mhurAccountButton');if(!account?.parentNode)return;
   let button=document.getElementById('mhurPatchDevButtonV10');
-  if(!button){button=document.createElement('button');button.id='mhurPatchDevButtonV10';button.type='button';button.className='nexusHeaderBtn mhurPatchDevButtonV10';button.innerHTML=`📝 <span>${TX('Patch / Dev Notes','Patch / Dev Notes')}</span>`;button.onclick=openNotes;account.parentNode.insertBefore(button,account)}
-  else button.querySelector('span').textContent=TX('Patch / Dev Notes','Patch / Dev Notes');
+  if(!button){button=document.createElement('button');button.id='mhurPatchDevButtonV10';button.type='button';button.className='nexusHeaderBtn mhurPatchDevButtonV10';button.innerHTML=`📝 <span>${TX('Patchs / Dev Notes','Patch / Dev Notes')}</span>`;button.onclick=openNotes;account.parentNode.insertBefore(button,account)}
+  else button.querySelector('span').textContent=TX('Patchs / Dev Notes','Patch / Dev Notes');
 }
 
 /* -------------------------- Administration profil ------------------------ */
