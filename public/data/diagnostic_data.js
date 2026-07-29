@@ -1,1 +1,1 @@
-window.MHUR_SYNC_STATUS = {"status": "mis_à_jour", "updated_at": "2026-07-29T06:15:41.586077+00:00", "changed_urls": ["synchronisation_forcée"], "backup": "sauvegardes\\sync_auto_20260729_091217", "message": "Le site local a été synchronisé avec UltraRumble."};
+window.MHUR_SYNC_STATUS = {"status": "mis_à_jour", "updated_at": "2026-07-29T06:45:00.439480+00:00", "changed_urls": ["synchronisation_forcée"], "backup": "sauvegardes\\sync_auto_20260729_094052", "message": "Le site local a été synchronisé avec UltraRumble."};

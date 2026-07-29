@@ -110,3 +110,73 @@
 .s18ReleaseDate{position:static!important;display:inline-flex!important;align-self:flex-start;background:#081220!important;color:#ffe95e!important;border:2px solid #26d6f2!important;border-radius:999px!important;padding:7px 12px!important;font-size:14px!important;font-weight:1000!important;line-height:1.1!important;box-shadow:none!important;margin:2px 0 0 2px!important}
 .s18AvailableTitle{margin:20px 0 10px;color:#fff;text-shadow:0 3px 0 #000}
 @media (max-width: 900px){.charPanel.s18EnhancedCharPanel .charTop{grid-template-columns:1fr!important}.charPanel.s18EnhancedCharPanel .portrait{height:420px}.s18PatchSkill{grid-template-columns:1fr}.s18PatchSkillImg{width:100%;height:160px}.s18PatchHeader{grid-template-columns:64px 1fr}.s18PatchPortrait{width:64px;height:64px}}
+
+/* ---------- Season 18 corrective pass v3 ---------- */
+.s18StyleCard{position:relative;overflow:hidden;border:4px solid #0a0f1a!important;border-radius:26px!important;background:linear-gradient(180deg,#10213a 0%,#07111d 100%)!important;box-shadow:0 10px 0 #000,inset 0 0 0 2px rgba(255,255,255,.08)!important}
+.s18StyleCard .styleBanner{position:relative;min-height:430px;background:linear-gradient(180deg,#0c1730 0%,#08111f 100%)!important;display:flex;align-items:flex-end;justify-content:center;overflow:hidden}
+.s18StyleCard .styleBanner::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 18%,rgba(255,255,255,.22),rgba(255,255,255,0) 26%),var(--s18CardBg,linear-gradient(135deg,#203657,#08101d));opacity:.95}
+.s18StyleCard .styleBanner img{position:relative;z-index:1;width:100%;height:100%;object-fit:contain!important;object-position:center bottom!important;padding:18px 14px 0;filter:drop-shadow(0 10px 18px rgba(0,0,0,.4))}
+.s18StyleCard .styleInfo{background:linear-gradient(180deg,#071426 0%,#050d18 100%)!important;padding:18px 16px 20px!important}
+.s18StyleCard .styleInfo h2{margin:0 0 12px;color:#fff;font-size:20px;text-shadow:0 3px 0 #000}
+.s18StyleCard.role-technical,.s18StyleCard.role-technical .styleBanner{--s18CardBg:radial-gradient(circle at 50% 26%,rgba(255,158,255,.42),rgba(255,158,255,0) 28%),linear-gradient(135deg,#7c10b9 0%,#430b69 58%,#0c1020 100%)}
+.s18StyleCard.role-strike,.s18StyleCard.role-strike .styleBanner{--s18CardBg:radial-gradient(circle at 50% 26%,rgba(255,170,170,.42),rgba(255,170,170,0) 28%),linear-gradient(135deg,#d8162c 0%,#7e0818 58%,#14070a 100%)}
+.s18StyleCard.role-assault,.s18StyleCard.role-assault .styleBanner{--s18CardBg:radial-gradient(circle at 50% 26%,rgba(255,246,148,.48),rgba(255,246,148,0) 28%),linear-gradient(135deg,#f2d000 0%,#8a7300 58%,#171308 100%)}
+.s18StyleCard.role-support,.s18StyleCard.role-support .styleBanner{--s18CardBg:radial-gradient(circle at 50% 26%,rgba(170,255,188,.42),rgba(170,255,188,0) 28%),linear-gradient(135deg,#19db45 0%,#0e7d28 58%,#08170c 100%)}
+.s18StyleCard.role-speed,.s18StyleCard.role-speed .styleBanner{--s18CardBg:radial-gradient(circle at 50% 26%,rgba(171,246,255,.42),rgba(171,246,255,0) 28%),linear-gradient(135deg,#18c9ef 0%,#0c6f86 58%,#071219 100%)}
+
+.s18PatchGroupGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.s18PatchGroupCard{overflow:hidden;border:2px solid #465165;border-radius:16px;background:linear-gradient(180deg,#192130 0%,#09111d 100%)}
+.s18PatchGroupCard .s18PatchHeader{background:rgba(255,255,255,.08)}
+.s18PatchGroupBody{padding:0 12px 12px}
+.s18PatchSkillBlock+.s18PatchSkillBlock{border-top:1px solid rgba(255,255,255,.08)}
+.s18PatchBullets{margin:10px 0 0;padding-left:18px;color:#d8e4f7}
+.s18PatchBullets li+li{margin-top:6px}
+.s18PatchGroupCard.role-technical{box-shadow:inset 5px 0 0 #d03ef2}
+.s18PatchGroupCard.role-strike{box-shadow:inset 5px 0 0 #f14d4d}
+.s18PatchGroupCard.role-assault{box-shadow:inset 5px 0 0 #ffd84e}
+.s18PatchGroupCard.role-support{box-shadow:inset 5px 0 0 #3fe86c}
+.s18PatchGroupCard.role-speed{box-shadow:inset 5px 0 0 #35cdf2}
+
+.charPanel.s18EnhancedCharPanel .meta .badge{font-weight:900!important}
+.charPanel.s18EnhancedCharPanel .meta .badges{gap:8px!important;align-items:center}
+.charPanel.s18EnhancedCharPanel .meta .badge:last-child{background:rgba(255,255,255,.92)!important;color:#000!important}
+
+@media (max-width:900px){
+  .s18PatchGroupGrid{grid-template-columns:1fr}
+  .s18StyleCard .styleBanner{min-height:320px}
+}
+@media (max-width:640px){
+  .s18StyleCard .styleBanner{min-height:250px}
+  .s18StyleCard .styleInfo{padding:14px 12px 16px!important}
+}
+
+/* ---------- Homepage latest releases redesign ---------- */
+.releaseCardV299.releaseFullBleedV304{
+  background:#080b12!important;
+  border:4px solid #06070b!important;
+  border-radius:16px!important;
+  box-shadow:0 6px 0 #050506!important;
+  overflow:hidden!important;
+}
+.releaseCardV299.releaseFullBleedV304:hover,
+.releaseCardV299.releaseFullBleedV304:focus-visible{border-color:#fff000!important}
+.releaseFullArtV304,.releaseFullArtImgV304{position:absolute;inset:0;display:block;width:100%;height:100%}
+.releaseFullArtV304 img,.releaseFullArtImgV304{width:100%;height:100%;object-fit:cover!important;object-position:center center!important;display:block;transform:scale(1.01)}
+.releaseShadeV304{position:absolute;inset:0;z-index:2;background:linear-gradient(90deg,rgba(6,8,12,.68) 0%,rgba(6,8,12,.28) 35%,rgba(6,8,12,.10) 60%,rgba(6,8,12,.38) 100%),linear-gradient(180deg,rgba(0,0,0,.08) 0%,rgba(0,0,0,.18) 56%,rgba(0,0,0,.72) 100%)}
+.releaseCardV299.releaseFullBleedV304 .releaseDotsV299,
+.releaseCardV299.releaseFullBleedV304 .releaseSlashV299,
+.releaseCardV299.releaseFullBleedV304 .releaseWordV299,
+.releaseCardV299.releaseFullBleedV304 .releaseBadgeV299,
+.releaseCardV299.releaseFullBleedV304 .releaseNamesV299,
+.releaseCardV299.releaseFullBleedV304 .releasePersonWrapV299{display:none!important}
+.releaseBadgeV304{position:absolute;z-index:4;left:10px;top:10px;width:34px;height:34px;display:block;filter:drop-shadow(0 2px 0 #000)}
+.releaseBadgeV304 img{width:100%;height:100%;object-fit:contain;display:block}
+.releaseNewV304{position:absolute;z-index:4;left:28px;top:40px;color:#fff000;font-family:Impact,Arial Black,sans-serif;font-size:clamp(34px,4.1vw,58px);line-height:.88;letter-spacing:.5px;text-shadow:4px 4px 0 #000,-2px -2px 0 #000,2px -2px 0 #000,-2px 2px 0 #000;transform:skew(-8deg)}
+.releaseNamesV304{position:absolute;z-index:4;left:14px;right:14px;bottom:12px;display:block;text-align:left;text-shadow:2px 2px 0 #000}
+.releaseNamesV304 b{display:block;color:#fff;font-size:clamp(15px,1.55vw,24px);font-weight:1000;line-height:1.02}
+.releaseNamesV304 small{display:block;margin-top:4px;color:#fff000;font-size:clamp(11px,1vw,15px);font-weight:1000}
+@media (max-width:760px){
+  .releaseNewV304{left:24px;top:34px;font-size:clamp(28px,8vw,48px)}
+  .releaseNamesV304 b{font-size:clamp(13px,4vw,18px)}
+  .releaseNamesV304 small{font-size:clamp(10px,3vw,13px)}
+}

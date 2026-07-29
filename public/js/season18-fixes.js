@@ -503,3 +503,294 @@ if(typeof render==='function') setTimeout(()=>{try{decorateDom()}catch(_e){}},0)
 const mo=new MutationObserver(()=>decorateDom());
 if(document.documentElement) mo.observe(document.documentElement,{childList:true,subtree:true});
 })();
+
+/* ---------- Season 18 corrective pass v3: exact data, style picker, grouped patches ---------- */
+(function(){
+'use strict';
+const langNow=()=>typeof lang!=='undefined'&&lang==='en'?'en':'fr';
+const pick=(v,l=langNow())=>v&&typeof v==='object'&&!Array.isArray(v)?(v[l]??v.fr??v.en??''):v;
+const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const CJK=/[\u3040-\u30ff\u3400-\u9fff\uf900-\ufaff]/g;
+const clean=v=>String(pick(v)??'').replace(/\s*[（(][^()（）]*[\u3040-\u30ff\u3400-\u9fff][^()（）]*[）)]/g,'').replace(CJK,'').replace(/\s{2,}/g,' ').trim();
+const normalize=v=>String(clean(v)).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'_').replace(/^_|_$/g,'');
+const roleKey=r=>({attack:'strike',strike:'strike',assault:'assault',technical:'technical',support:'support',speed:'speed',rapid:'speed'})[normalize(r)]||'technical';
+const newContent=window.MHUR_SEASON18_DATA?.new_content||{};
+const newStylesSet=new Set((newContent.styles||[]).map(String));
+const newCharsSet=new Set((newContent.characters||[]).map(String));
+const NEW_BADGE='<span class="s18NewBadge" aria-label="NEW">NEW</span>';
+
+function dedupeCharacterStyles(){
+  if(typeof characters==='undefined' || !Array.isArray(characters)) return;
+  characters.forEach(ch=>{
+    const seen=new Set();
+    ch.styles=(Array.isArray(ch.styles)?ch.styles:[]).filter(id=>{
+      id=String(id);
+      if(seen.has(id)) return false;
+      seen.add(id);
+      return true;
+    });
+  });
+}
+
+let __exactCache=null;
+function readExactData(){
+  if(__exactCache) return __exactCache;
+  const el=document.getElementById('ultrarumble-exact-data');
+  if(!el) return null;
+  try{__exactCache=JSON.parse(el.textContent||'{}');}catch(_e){__exactCache=null;}
+  return __exactCache;
+}
+function translateHeaderCell(value,l){
+  const key=normalize(value);
+  const fr={level:'Niveau',type:'Type',damage:'Dégâts',ammo:'Munitions',use_ammo:'Consommation',reload:'Recharge',level_up_effect:'Effet de montée',effect:'Effet',guard_break:'Brise-garde',hp:'PV',health:'PV'};
+  const en={level:'Level',type:'Type',damage:'Damage',ammo:'Ammo',use_ammo:'Use Ammo',reload:'Reload',level_up_effect:'Level Up Effect',effect:'Effect',guard_break:'Guard Break',hp:'HP',health:'Health'};
+  const dict=l==='fr'?fr:en;
+  return dict[key]||clean(value);
+}
+function mapRows(rows){
+  return (Array.isArray(rows)?rows:[]).map(r=>(Array.isArray(r)?r:[]).map(x=>clean(x)));
+}
+function mapCols(cols,l){
+  const raw=Array.isArray(cols)?cols:[];
+  const keep=[];
+  raw.forEach((c,i)=>{ if(normalize(c)!=='down_power') keep.push([i,translateHeaderCell(c,l)]); });
+  return {indexes:keep.map(x=>x[0]), labels:keep.map(x=>x[1])};
+}
+function localTable(titleFr,titleEn,cols,rows){
+  const fr=mapCols(cols,'fr'), en=mapCols(cols,'en');
+  const baseRows=mapRows(rows);
+  const sliceRows=indexes=>baseRows.map(r=>indexes.map(i=>r[i]??''));
+  if(!fr.labels.length || !baseRows.length) return null;
+  return {title:{fr:titleFr,en:titleEn}, cols:{fr:fr.labels,en:en.labels}, rows:{fr:sliceRows(fr.indexes),en:sliceRows(en.indexes)}};
+}
+function usefulDesc(v,name){
+  const txt=clean(v), nm=clean(name);
+  if(!txt) return false;
+  if(normalize(txt)===normalize(nm)) return false;
+  return txt.length>8;
+}
+function remoteCandidatesForCharacter(localChar){
+  const data=readExactData();
+  const list=Array.isArray(data?.characters)?data.characters:[];
+  const chNorm=normalize(localChar?.name||'');
+  return list.filter(r=>{
+    const n1=normalize(r.base_name||r.name||'');
+    const n2=normalize(r.name||'');
+    return n1===chNorm || n2===chNorm;
+  }).sort((a,b)=>(Number(a.variant_index||0)-Number(b.variant_index||0)));
+}
+function findRemoteForStyle(styleKey){
+  if(typeof styles==='undefined' || typeof characters==='undefined') return null;
+  const st=styles[styleKey]; if(!st) return null;
+  const ch=(characters||[]).find(x=>(x.styles||[]).includes(styleKey));
+  if(!ch) return null;
+  const candidates=remoteCandidatesForCharacter(ch);
+  if(!candidates.length) return null;
+  const localStyle=normalize(st.name||'Original');
+  let hit=candidates.find(r=>normalize(r.style_name||'Original')===localStyle || normalize(r.style_header||'')===localStyle);
+  if(!hit && (localStyle==='original' || !localStyle)) hit=candidates.find(r=>Number(r.variant_index||0)===0 || normalize(r.style_name||'Original')==='original');
+  if(!hit){
+    const uniqueStyles=[...new Set((ch.styles||[]).map(String))];
+    const idx=Math.max(0,uniqueStyles.indexOf(String(styleKey)));
+    hit=candidates[Math.min(idx,candidates.length-1)]||null;
+  }
+  if(!hit) hit=candidates.find(r=>roleKey(r.role)===roleKey(st.role))||candidates[0];
+  return hit||null;
+}
+function setIfBetter(obj,key,value){ if(value!=null && value!=='' ) obj[key]=value; }
+function rebuildStyleTablesFromRemote(styleKey){
+  if(typeof styles==='undefined') return false;
+  const st=styles[styleKey], remote=findRemoteForStyle(styleKey); if(!st || !remote) return false;
+  let changed=false;
+  const remotePortrait=remote.assets?.portrait||'';
+  if(remotePortrait && st.portrait!==remotePortrait){ st.portrait=remotePortrait; changed=true; }
+  if(remote.stats){
+    const hp=remote.stats['Max Main Health']??remote.stats['Max Health']??remote.stats['Max HP']??remote.stats['HP'];
+    if(hp && String(st.pv)!==String(hp)){ st.pv=hp; changed=true; }
+  }
+  const skillOrder=['α','β','γ'];
+  const remoteSkills=remote.skills||{};
+  (st.skills||[]).forEach((sk,idx)=>{
+    const letter=sk.letter||skillOrder[idx];
+    const rk=remoteSkills[letter];
+    if(!rk) return;
+    const tables=[];
+    const levelRows=(rk.level_up_effects?.rows)||[];
+    const levelCols=(rk.level_up_effects?.columns)||[];
+    const baseRows=(rk.base_values?.rows)||[];
+    const baseCols=(rk.base_values?.columns)||[];
+    const addRows=(rk.additional_values?.rows)||[];
+    const addCols=(rk.additional_values?.columns)||[];
+    const t1=localTable(`Effets de montée ${letter}`,`${letter} Level Up Effects`,levelCols,levelRows); if(t1) tables.push(t1);
+    const t2=localTable(`Valeurs de base ${letter}`,`${letter} Base Values`,baseCols,baseRows); if(t2) tables.push(t2);
+    const t3=localTable(`Valeurs additionnelles ${letter}`,`${letter} Additional Values`,addCols,addRows); if(t3) tables.push(t3);
+    if(tables.length){ sk.tables=tables; changed=true; }
+    if(remote.assets){
+      if(letter==='α' && remote.assets.alpha){ sk.img=remote.assets.alpha; changed=true; }
+      if(letter==='β' && remote.assets.beta){ sk.img=remote.assets.beta; changed=true; }
+      if(letter==='γ' && remote.assets.gamma){ sk.img=remote.assets.gamma; changed=true; }
+    }
+    if(!usefulDesc(sk.desc,sk.name) && usefulDesc(rk.description,rk.name)){ sk.desc={fr:clean(rk.description),en:clean(rk.description)}; changed=true; }
+    if(clean(rk.name) && clean(sk.name)!==clean(rk.name) && (!clean(sk.name) || clean(sk.name).length<2)){ sk.name={fr:clean(rk.name),en:clean(rk.name)}; changed=true; }
+  });
+  if(st.special){
+    const sp=remote.special_action||{};
+    const spTable=localTable('Valeurs action spéciale','Special Action Values',sp.values?.columns||[],sp.values?.rows||[]);
+    if(spTable){ st.special.tables=[spTable]; changed=true; }
+    if(remote.assets?.special){ st.special.img=remote.assets.special; changed=true; }
+    if(!usefulDesc(st.special.desc,st.special.name) && usefulDesc(sp.description,st.special.name)){ st.special.desc={fr:clean(sp.description),en:clean(sp.description)}; changed=true; }
+  }
+  return changed;
+}
+function applyExactData(){
+  if(typeof styles==='undefined' || typeof characters==='undefined') return;
+  dedupeCharacterStyles();
+  Object.keys(styles).forEach(rebuildStyleTablesFromRemote);
+  (characters||[]).forEach(ch=>{
+    const first=(ch.styles||[]).find(id=>styles[id]);
+    if(first && styles[first]?.portrait) ch.portrait=styles[first].portrait;
+  });
+}
+
+function uniqRoles(styleIds){
+  const seen=new Set();
+  return (styleIds||[]).map(id=>styles[id]?.role).filter(Boolean).filter(r=>{ const k=roleKey(r); if(seen.has(k)) return false; seen.add(k); return true;});
+}
+function bestPortraitForCharacter(ch){
+  const first=(ch.styles||[]).find(id=>styles[id]?.portrait);
+  return first?styles[first].portrait:(ch.portrait||'');
+}
+function cardHtml(c,mode='characters'){
+  const modeClass=mode==='costumes'?' costumeMode':mode==='builds'?' buildMode':mode==='tunings'?' tuningMode':' characterMode';
+  const tag=mode==='costumes'?`<div class="cardModeTag">${tr('costumeTag')}</div>`:mode==='builds'?`<div class="cardModeTag">${tr('buildTag')}</div>`:mode==='tunings'?`<div class="cardModeTag">T.U.N.I.N.G</div>`:`<div class="cardModeTag">PERSONNAGE</div>`;
+  const msg=mode==='costumes'?tr('costumeChoose'):mode==='builds'?tr('buildChoose'):mode==='tunings'?tr('tuningChoose'):tr('choose');
+  const stylesList=[...new Set((c.styles||[]).map(String))].filter(id=>styles[id]);
+  const firstStyle=stylesList[0]||'';
+  const role=roleKey(styles[firstStyle]?.role||'technical');
+  const roleBadges=uniqRoles(stylesList).map(r=>roleBadge(r)).join('');
+  const portrait=bestPortraitForCharacter(c);
+  return `<button class="card${modeClass} s18RoleCard role-${role}" data-char="${esc(c.id)}" onclick="selectChar('${String(c.id).replace(/'/g,"\\'")}')">${newCharsSet.has(String(c.id))?NEW_BADGE:''}${tag}<div class="thumb">${asset(portrait,c.name)}</div><div class="cardBody"><h3>${esc(c.name)}</h3><div class="badges">${sideBadge(c.side)}${roleBadges}</div><p style="color:#c9d7ee">${esc(msg)}</p></div></button>`;
+}
+function stylePickerHtml(){
+  const c=(characters||[]).find(x=>x.id===selectedChar); if(!c) return '';
+  const stylesList=[...new Set((c.styles||[]).map(String))].filter(id=>styles[id]);
+  return `<button class="back" onclick="selectedChar=null;render()">← ${tr('back')}</button><h1 class="title">${esc(c.name)}</h1><div class="styleGrid">${stylesList.map(id=>{const st=styles[id];const role=roleKey(st.role);return `<button class="styleCard s18StyleCard role-${role}" data-style="${esc(id)}" onclick="selectStyle('${String(id).replace(/'/g,"\\'")}')">${newStylesSet.has(String(id))?NEW_BADGE:''}<div class="styleBanner">${asset(st.portrait,c.name+' '+clean(st.name))}</div><div class="styleInfo"><h2>${esc(clean(st.name)||'Original')}</h2><div class="badges">${sideBadge(c.side)}${roleBadge(st.role)}</div></div></button>`}).join('')}</div>`;
+}
+
+function fmtPatchDate(v){
+  const d=new Date(v); if(Number.isNaN(d.getTime())) return '';
+  return new Intl.DateTimeFormat(langNow()==='fr'?'fr-FR':'en-US',{dateStyle:'medium'}).format(d);
+}
+function renderPatchDiff(change){
+  const b=Array.isArray(change.before)?change.before:[change.before];
+  const a=Array.isArray(change.after)?change.after:[change.after];
+  const isMulti=(b.length>1||a.length>1);
+  if(!isMulti){
+    return `<div class="s18PatchRow"><span class="s18PatchBefore">${esc(clean(b[0]??'—'))}</span><span class="s18PatchArrow">→</span><span class="s18PatchAfter">${esc(clean(a[0]??'—'))}</span></div>`;
+  }
+  return `<div class="s18PatchRows">${Array.from({length:Math.max(b.length,a.length)},(_,i)=>`<div class="s18PatchRow"><span class="s18PatchBefore">${esc(clean(b[i]??''))}</span><span class="s18PatchArrow">→</span><span class="s18PatchAfter">${esc(clean(a[i]??''))}</span></div>`).join('')}</div>`;
+}
+function groupedPatchSection(section){
+  const groups=[]; const map=new Map();
+  (section.changes||[]).forEach(change=>{
+    const key=`${clean(change.character)}__${clean(change.style||'Original')}`;
+    if(!map.has(key)){
+      const hit=findRemoteForStyle(((characters||[]).find(ch=>normalize(ch.name)===normalize(change.character) || normalize(ch.id)===normalize(change.character))?.styles||[]).find(id=>normalize(styles[id]?.name||'')===normalize(change.style||'Original'))||'');
+      const stHit=resolvePatchStyle(change);
+      const entry={key,character:clean(change.character),style:clean(change.style||'Original'),role:stHit?.role||change.role||'',side:stHit?.side||'',portrait:stHit?.portrait||change.portrait||hit?.assets?.portrait||'',changes:[]};
+      map.set(key,entry); groups.push(entry);
+    }
+    map.get(key).changes.push(change);
+  });
+  return `<section class="detailSectionV296 ${esc(section.accent||'')}"><h3>${esc(clean(section.title))}</h3>${section.note?`<p class="patchNoteV296">${esc(clean(section.note))}</p>`:''}<div class="s18PatchGroupGrid">${groups.map(group=>patchGroupCard(group)).join('')}</div></section>`;
+}
+function resolvePatchStyle(change){
+  const charNorm=normalize(change.character||"");
+  const styleNorm=normalize(change.style||"Original");
+  let styleId="", st=null, side="";
+  if(Array.isArray(characters)){
+    for(const ch of characters){
+      const nameHit=normalize(ch.name||ch.id||"")===charNorm;
+      if(!nameHit) continue;
+      const list=[...(new Set((ch.styles||[]).map(String)))];
+      styleId=list.find(id=>normalize(styles[id]?.name||"Original")===styleNorm) || list[0] || "";
+      st=styleId?styles[styleId]:null;
+      side=ch.side||"";
+      break;
+    }
+  }
+  return {styleId, st, role:st?.role||change.role||"", side, portrait:st?.portrait||change.portrait||""};
+}
+function patchGroupCard(group){
+  const role=roleKey(group.role);
+  const sideBadgeHtml=group.side?`<span class="badge ${normalize(group.side)==='hero'?'hero':'villain'}">${normalize(group.side)==='hero'?(langNow()==='fr'?'HÉROS':'HEROES'):(langNow()==='fr'?'SUPER-VILAINS':'SUPER-VILLAINS')}</span>`:'';
+  const roleBadgeHtml=typeof roleBadge==='function'?roleBadge(role):'';
+  return `<article class="s18PatchGroupCard role-${role}"><header class="s18PatchHeader"><div class="s18PatchPortrait">${group.portrait?asset(group.portrait,group.character):''}</div><div class="s18PatchMeta"><div class="s18PatchTopLine"><h4>${esc(group.character)}</h4>${sideBadgeHtml}</div><div class="s18PatchStyle">${esc(group.style||'Original')}</div><div class="s18PatchBadges">${roleBadgeHtml}</div></div></header><div class="s18PatchGroupBody">${group.changes.map(change=>`<div class="s18PatchSkillBlock"><div class="s18PatchSkill"><div class="s18PatchSkillImg">${change.skill_image?asset(change.skill_image,change.skill_name):''}</div><div class="s18PatchSkillMeta"><h5>${esc(clean(change.skill_name)||'Skill')}</h5>${change.label?`<div class="s18PatchLabel">${esc(clean(change.label))}</div>`:''}${change.before!=null||change.after!=null?renderPatchDiff(change):''}${(change.bullets||[]).length?`<ul class="s18PatchBullets">${change.bullets.map(x=>`<li>${esc(clean(x))}</li>`).join('')}</ul>`:''}</div></div></div>`).join('')}</div></article>`;
+}
+function ensurePatchModal(){
+  let m=document.getElementById('patchModalV296');
+  if(!m){
+    m=document.createElement('div');
+    m.id='patchModalV296';
+    m.className='modalV296';
+    m.innerHTML=`<div class="modalPanelV296 patchPanelV296"><header><h2></h2><button onclick="closeHomeModalV296('patchModalV296')">×</button></header><div class="modalBodyV296"></div></div>`;
+    document.body.appendChild(m);
+    m.addEventListener('click',e=>{ if(e.target===m) closeHomeModalV296('patchModalV296'); });
+  }
+  return m;
+}
+function openGroupedPatch(i){
+  const note=(window.MHUR_HOME_DATA?.patch_notes||[])[i]; if(!note) return;
+  const m=ensurePatchModal();
+  m.querySelector('header h2').textContent=clean(note.title);
+  const details=Array.isArray(note.details)?note.details.filter(sec=>(sec.changes||[]).length||sec.note):[];
+  let body=`<div class="patchDateV296">${esc(fmtPatchDate(note.date))}</div><div class="legendV296"><span class="buff">${langNow()==='fr'?'AMÉLIORATION':'BUFF'}</span><span class="nerf">${langNow()==='fr'?'RÉDUCTION':'NERF'}</span><span class="adjust">${langNow()==='fr'?'AJUSTEMENT':'ADJUSTMENT'}</span></div>`;
+  if(details.length) body+=details.map(groupedPatchSection).join('');
+  else if((note.sections||[]).length) body+=(note.sections||[]).map(s=>`<section class="simplePatchV296"><h3>${esc(clean(s.title||''))}</h3><ul>${(s.items||[]).map(x=>`<li>${esc(clean(x))}</li>`).join('')}</ul></section>`).join('');
+  else body+=`<div class="emptyV296">${langNow()==='fr'?'Aucun détail disponible.':'No details available.'}</div>`;
+  m.querySelector('.modalBodyV296').innerHTML=body;
+  m.classList.add('open');
+  document.body.classList.add('homeModalOpenV296');
+}
+
+function installOverrides(){
+  applyExactData();
+  dedupeCharacterStyles();
+  if(typeof card==='function'){ window.card=card=cardHtml; }
+  if(typeof stylePicker==='function'){ window.stylePicker=stylePicker=stylePickerHtml; }
+  window.openPatchNoteV296=openGroupedPatch;
+}
+
+installOverrides();
+if(typeof render==='function') setTimeout(()=>{ try{ applyExactData(); dedupeCharacterStyles(); render(); }catch(_e){} },0);
+window.addEventListener('mhur:languagechange',()=>{ applyExactData(); dedupeCharacterStyles(); if(typeof render==='function') render(); });
+})();
+
+/* ---------- Homepage latest releases redesign: full-width art cards ---------- */
+(function(){
+'use strict';
+if(typeof window==='undefined') return;
+const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const currentLang=()=>typeof lang!=='undefined'&&lang==='en'?'en':'fr';
+const labelForKind=(isCostume,isChar)=>currentLang()==='fr'?(isCostume?'Nouveau costume':isChar?'Nouveau personnage':'Nouveau style'):(isCostume?'New costume':isChar?'New character':'New style');
+function overrideReleaseCard(){
+  if(typeof releaseCard!=='function') return false;
+  const fn=function(x){
+    const kind=String(x.release_kind||x.type||'').toLowerCase();
+    const isCostume=kind.includes('costume');
+    const isChar=!isCostume&&(kind.includes('character')||kind.includes('personnage'));
+    const badge=isCostume?'assets/home/icons/release_costume.png':isChar?'assets/home/icons/release_character.png':'assets/home/icons/release_style.png';
+    const label=labelForKind(isCostume,isChar);
+    const target=releaseTarget(x);
+    const art=x.banner||x.art||x.character_art||x.image;
+    const title=typeof patchText==='function'?patchText(x.title):String(x.title||'');
+    const subtitle=x.subtitle||label;
+    return `<button type="button" class="releaseCardV299 releaseFullBleedV304" data-release-char="${esc(target.charId)}" data-release-style="${esc(target.styleId)}" onclick="openHomeReleaseV298(this)" aria-label="${esc(title)} — ${esc(subtitle)}" title="${esc(title)} — ${esc(subtitle)}"><span class="releaseFullArtV304">${typeof img==='function'?img(art,x.title,'releaseFullArtImgV304'):''}</span><span class="releaseShadeV304"></span><span class="releaseBadgeV304 ${isCostume?'costume':isChar?'character':'style'}">${typeof img==='function'?img(badge,label):''}</span><span class="releaseNewV304">NEW!</span><span class="releaseNamesV304"><b>${esc(title)}</b><small>${esc(subtitle)}</small></span></button>`;
+  };
+  window.releaseCard=releaseCard=fn;
+  return true;
+}
+if(overrideReleaseCard() && typeof page!=='undefined' && page==='home' && typeof render==='function'){
+  try{window.__keepScroll=true; render();}catch(_e){}
+}
+})();
