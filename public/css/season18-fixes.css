@@ -1779,3 +1779,126 @@ article[data-planned="tsuyu"] .s18PlannedTsuyuV14 img{
   .s18DiscountArtV19{height:136px!important}
   .s18DiscountArtV19 img{width:100%!important;height:100%!important}
 }
+
+
+/* ========================================================================== */
+/* MHUR Nexus — Saison 18 v30 : corrections strictement demandées            */
+/* ========================================================================== */
+
+/* 1) Date des costumes à venir : visible sous le badge, sans chevauchement. */
+.s18UpcomingCostumeTileV25 .s18UpcomingDateV25{
+  top:43px!important;
+  left:8px!important;
+  right:auto!important;
+  bottom:auto!important;
+  max-width:calc(100% - 16px)!important;
+  transform:none!important;
+  z-index:35!important;
+  padding:6px 8px!important;
+  font-size:11px!important;
+  white-space:nowrap!important;
+}
+
+/* 2) Tsuyu : uniquement le portrait MHUR Database local, entier et centré. */
+article[data-planned="tsuyu"] .s18PlannedTsuyuV12,
+article[data-planned="tsuyu"] .s18PlannedTsuyuV14,
+.releaseCardV299[data-release-char="tsuyu"] .s18SeasonBlackV10,
+.releaseCardV299[data-release-char="froppy"] .s18SeasonBlackV10{
+  position:absolute!important;
+  inset:0!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  padding:0!important;
+  background:#000!important;
+  overflow:hidden!important;
+}
+article[data-planned="tsuyu"] .s18PlannedTsuyuV12 img,
+article[data-planned="tsuyu"] .s18PlannedTsuyuV14 img,
+.releaseCardV299[data-release-char="tsuyu"] .s18SeasonProfileV10,
+.releaseCardV299[data-release-char="froppy"] .s18SeasonProfileV10{
+  position:relative!important;
+  inset:auto!important;
+  width:auto!important;
+  height:100%!important;
+  max-width:48%!important;
+  max-height:100%!important;
+  margin:0 auto!important;
+  object-fit:contain!important;
+  object-position:center center!important;
+  transform:none!important;
+  filter:none!important;
+  display:block!important;
+}
+
+/* 3) Interface des Alters : restauration du fond sombre selon le rôle. */
+.charPanel.s18CharacterDetailV10.role-technical,
+.charPanel.s18CharacterDetailV9.role-technical,
+.charPanel.s18V14CharacterDetail.role-technical,
+.charPanel.s18V13CharacterDetail.role-technical,
+.charPanel.s18V12CharacterDetail.role-technical{
+  background:#21092f!important;
+  border-color:#c524eb!important;
+}
+.charPanel.s18CharacterDetailV10.role-attack,
+.charPanel.s18CharacterDetailV9.role-attack,
+.charPanel.s18V14CharacterDetail.role-attack,
+.charPanel.s18V13CharacterDetail.role-attack,
+.charPanel.s18V12CharacterDetail.role-attack{
+  background:#300b13!important;
+  border-color:#ff304b!important;
+}
+.charPanel.s18CharacterDetailV10.role-assault,
+.charPanel.s18CharacterDetailV9.role-assault,
+.charPanel.s18V14CharacterDetail.role-assault,
+.charPanel.s18V13CharacterDetail.role-assault,
+.charPanel.s18V12CharacterDetail.role-assault{
+  background:#302800!important;
+  border-color:#ffe000!important;
+}
+.charPanel.s18CharacterDetailV10.role-support,
+.charPanel.s18CharacterDetailV9.role-support,
+.charPanel.s18V14CharacterDetail.role-support,
+.charPanel.s18V13CharacterDetail.role-support,
+.charPanel.s18V12CharacterDetail.role-support{
+  background:#082b16!important;
+  border-color:#31d56b!important;
+}
+.charPanel.s18CharacterDetailV10.role-rapid,
+.charPanel.s18CharacterDetailV9.role-rapid,
+.charPanel.s18V14CharacterDetail.role-rapid,
+.charPanel.s18V13CharacterDetail.role-rapid,
+.charPanel.s18V12CharacterDetail.role-rapid{
+  background:#062c36!important;
+  border-color:#24c6dc!important;
+}
+
+.charPanel.role-technical .skillBox{background:#170720!important;border-color:#a92bd2!important}
+.charPanel.role-technical .skillHead{background:linear-gradient(90deg,#491064,#7c1da0)!important;border-bottom-color:#d44cff!important}
+.charPanel.role-technical .toggle{background:#351047!important;color:#e3a2ff!important}
+
+.charPanel.role-attack .skillBox{background:#210810!important;border-color:#d92842!important}
+.charPanel.role-attack .skillHead{background:linear-gradient(90deg,#5e101d,#9c172b)!important;border-bottom-color:#ff5369!important}
+.charPanel.role-attack .toggle{background:#40101a!important;color:#ff9baa!important}
+
+.charPanel.role-assault .skillBox{background:#211d03!important;border-color:#d5bd00!important}
+.charPanel.role-assault .skillHead{background:linear-gradient(90deg,#5a4e00,#8c7800)!important;border-bottom-color:#ffe43d!important}
+.charPanel.role-assault .toggle{background:#403700!important;color:#fff17d!important}
+
+.charPanel.role-support .skillBox{background:#071f10!important;border-color:#24b95a!important}
+.charPanel.role-support .skillHead{background:linear-gradient(90deg,#0d4a24,#147337)!important;border-bottom-color:#45e881!important}
+.charPanel.role-support .toggle{background:#103a20!important;color:#8cf0ae!important}
+
+.charPanel.role-rapid .skillBox{background:#061f27!important;border-color:#21abc0!important}
+.charPanel.role-rapid .skillHead{background:linear-gradient(90deg,#075066,#087c96)!important;border-bottom-color:#42def0!important}
+.charPanel.role-rapid .toggle{background:#0a3c49!important;color:#92edf7!important}
+
+@media(max-width:760px){
+  article[data-planned="tsuyu"] .s18PlannedTsuyuV12 img,
+  article[data-planned="tsuyu"] .s18PlannedTsuyuV14 img,
+  .releaseCardV299[data-release-char="tsuyu"] .s18SeasonProfileV10,
+  .releaseCardV299[data-release-char="froppy"] .s18SeasonProfileV10{
+    max-width:58%!important;
+    height:100%!important;
+  }
+}
