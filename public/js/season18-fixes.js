@@ -133,11 +133,12 @@ function manualPortrait(styleId){
 }
 function portraitCandidates(styleId,fallback){
   const sync=window.MHUR_SEASON18_DATA?.official_portraits||{};
-  const row=remoteRowForStyle(styleId)||null;
   const database=databaseStyleAssets(styleId);
-  const official=[database.portrait,sync[styleId],row?.assets?.portrait,...inferredRemotePortraits(row),originalRemotePortrait(row)].filter(Boolean).map(String);
-  if(official.length) return Array.from(new Set(official));
-  return Array.from(new Set([fallback].filter(Boolean).map(String)));
+  const localOnly=[database.portrait,sync[styleId],fallback]
+    .filter(Boolean)
+    .map(String)
+    .filter(value=>!/^https?:/i.test(value));
+  return Array.from(new Set(localOnly));
 }
 window.MHUR_S18_NEXT_IMAGE=function(image){
   try{
@@ -410,7 +411,7 @@ function seasonReleases(){
   return [
     {key:'gentle',kind:'character',charId:gentle?.id||'gentle_criminal',styleId:gentleStyle,title:'Gentle Criminal',subtitle:TX('Nouveau personnage · Technique','New character · Technical'),date:TX('Disponible depuis le 29 juillet','Available since July 29'),role:'technical',art:'assets/home/season18/gentle_s18_portrait.webp'},
     {key:'twice',kind:'style',charId:twice?.id||'twice',styleId:twiceStyle,title:'Twice',subtitle:"Sad Man's Parade · "+TX('Soutien','Support'),date:TX('Sortie le 19 août','Releases August 19'),role:'support',art:'assets/home/season18/twice_s18_portrait.webp'},
-    {key:'tsuyu',kind:'style',charId:tsuyu?.id||'tsuyu',styleId:tsuyuStyle,title:tsuyu?.name||'Tsuyu Asui',subtitle:TX('Nouveau style · nom à venir','New style · name to be announced'),date:TX('Prévu pendant la Saison 18','Planned during Season 18'),role:'attack',art:'assets/mhur_database/characters/tsuyu_rapid/portrait.webp',black:true}
+    {key:'tsuyu',kind:'style',charId:tsuyu?.id||'tsuyu',styleId:tsuyuStyle,title:tsuyu?.name||'Tsuyu Asui',subtitle:TX('Nouveau style · nom à venir','New style · name to be announced'),date:TX('Prévu pendant la Saison 18','Planned during Season 18'),role:'attack',art:'assets/tsuyu/tsuyu_rapid/portrait.png',black:true}
   ];
 }
 function seasonCard(item){

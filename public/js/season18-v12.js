@@ -45,9 +45,11 @@ function portraitCandidates(styleId,fallback=''){
   const id=String(styleId||'');
   const database=window.MHUR_DATABASE_ASSETS?.styles||{};
   const local=(database[id]||(/gentle[_-]?criminal/i.test(id)?database.gentle_criminal_technical:null)||{}).portrait||'';
-  const official=[local,sync[id],row?.assets?.portrait].filter(Boolean).map(String);
-  if(official.length)return Array.from(new Set(official));
-  return Array.from(new Set([fallback].filter(Boolean).map(String)));
+  const official=[local,sync[id],fallback]
+    .filter(Boolean)
+    .map(String)
+    .filter(value=>!/^https?:/i.test(value));
+  return Array.from(new Set(official));
 }
 function applyImage(img,candidates){
   if(!img||!candidates.length) return;

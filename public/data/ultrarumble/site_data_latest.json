@@ -1,6 +1,6 @@
 {
   "meta": {
-    "updated_at": "2026-07-30T09:12:47.896110+00:00",
+    "updated_at": "2026-07-30T12:09:48.740586+00:00",
     "updater_version": "v354_afo_young_mapped",
     "source": "https://ultrarumble.com",
     "new_styles_added": 0,
@@ -9,7 +9,7 @@
       "special_cards": 60,
       "styles_enriched": 60
     },
-    "season18_postprocess": "2026-07-30T09:13:14.018109+00:00"
+    "season18_postprocess": "2026-07-30T12:10:05.863975+00:00"
   },
   "characters": [
     {
@@ -238,13 +238,13 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/assault/portrait.webp",
-        "tuning": "assets/mhur_database/characters/assault/tuning.png",
-        "alpha": "assets/mhur_database/characters/assault/alpha.webp",
-        "beta": "assets/mhur_database/characters/assault/beta.webp",
-        "gamma": "assets/mhur_database/characters/assault/gamma.webp",
-        "special": "assets/mhur_database/characters/assault/special.png",
-        "alpha_fullburst": "assets/mhur_database/characters/assault/alpha_fullburst.webp"
+        "portrait": "assets/midoriya/midoriya_assault/portrait.png",
+        "tuning": "assets/midoriya/midoriya_assault/tuning.png",
+        "alpha": "assets/midoriya/midoriya_assault/alpha.webp",
+        "beta": "assets/midoriya/midoriya_assault/beta.webp",
+        "gamma": "assets/midoriya/midoriya_assault/gamma.webp",
+        "special": "assets/midoriya/midoriya_assault/special.png",
+        "alpha_fullburst": "assets/midoriya/midoriya_assault/alpha_fullburst.webp"
       }
     },
     {
@@ -754,12 +754,12 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/fullbullet/portrait.webp",
-        "tuning": "assets/mhur_database/characters/fullbullet/tuning.webp",
-        "alpha": "assets/mhur_database/characters/fullbullet/alpha.webp",
-        "beta": "assets/mhur_database/characters/fullbullet/beta.webp",
-        "gamma": "assets/mhur_database/characters/fullbullet/gamma.webp",
-        "special": "assets/mhur_database/characters/fullbullet/special.png"
+        "portrait": "assets/midoriya/midoriya_attack/portrait.png",
+        "tuning": "assets/midoriya/midoriya_attack/tuning.webp",
+        "alpha": "assets/midoriya/midoriya_attack/alpha.webp",
+        "beta": "assets/midoriya/midoriya_attack/beta.webp",
+        "gamma": "assets/midoriya/midoriya_attack/gamma.webp",
+        "special": "assets/midoriya/midoriya_attack/special.png"
       }
     },
     {
@@ -1186,12 +1186,12 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/bakugo_attack/portrait.webp",
-        "tuning": "assets/mhur_database/characters/bakugo_attack/tuning.webp",
-        "alpha": "assets/mhur_database/characters/bakugo_attack/alpha.webp",
-        "beta": "assets/mhur_database/characters/bakugo_attack/beta.webp",
-        "gamma": "assets/mhur_database/characters/bakugo_attack/gamma.webp",
-        "special": "assets/mhur_database/characters/bakugo_attack/special.webp"
+        "portrait": "assets/bakugo/bakugo_attack/portrait.png",
+        "tuning": "assets/bakugo/bakugo_attack/tuning.webp",
+        "alpha": "assets/bakugo/bakugo_attack/alpha.webp",
+        "beta": "assets/bakugo/bakugo_attack/beta.webp",
+        "gamma": "assets/bakugo/bakugo_attack/gamma.webp",
+        "special": "assets/bakugo/bakugo_attack/special.webp"
       }
     },
     {
@@ -1563,12 +1563,12 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/bakugo_rapid/portrait.webp",
-        "tuning": "assets/mhur_database/characters/bakugo_rapid/tuning.webp",
-        "alpha": "assets/mhur_database/characters/bakugo_rapid/alpha.webp",
-        "beta": "assets/mhur_database/characters/bakugo_rapid/beta.webp",
-        "gamma": "assets/mhur_database/characters/bakugo_rapid/gamma.webp",
-        "special": "assets/mhur_database/characters/bakugo_rapid/special.webp"
+        "portrait": "assets/bakugo/bakugo_rapid/portrait.png",
+        "tuning": "assets/bakugo/bakugo_rapid/tuning.webp",
+        "alpha": "assets/bakugo/bakugo_rapid/alpha.webp",
+        "beta": "assets/bakugo/bakugo_rapid/beta.webp",
+        "gamma": "assets/bakugo/bakugo_rapid/gamma.webp",
+        "special": "assets/bakugo/bakugo_rapid/special.webp"
       }
     },
     {
@@ -2402,12 +2402,12 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/bakugo_technical/portrait.webp",
-        "tuning": "assets/mhur_database/characters/bakugo_technical/tuning.webp",
-        "alpha": "assets/mhur_database/characters/bakugo_technical/alpha.webp",
-        "beta": "assets/mhur_database/characters/bakugo_technical/beta.webp",
-        "gamma": "assets/mhur_database/characters/bakugo_technical/gamma.webp",
-        "special": "assets/mhur_database/characters/bakugo_technical/special.webp"
+        "portrait": "assets/bakugo/bakugo_technical/portrait.png",
+        "tuning": "assets/bakugo/bakugo_technical/tuning.webp",
+        "alpha": "assets/bakugo/bakugo_technical/alpha.webp",
+        "beta": "assets/bakugo/bakugo_technical/beta.webp",
+        "gamma": "assets/bakugo/bakugo_technical/gamma.webp",
+        "special": "assets/bakugo/bakugo_technical/special.webp"
       }
     },
     {
@@ -2746,13 +2746,13 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/ochaco_rapid/portrait.webp",
-        "tuning": "assets/mhur_database/characters/ochaco_rapid/tuning.webp",
-        "alpha": "assets/mhur_database/characters/ochaco_rapid/alpha.webp",
-        "beta": "assets/mhur_database/characters/ochaco_rapid/beta.webp",
-        "gamma": "assets/mhur_database/characters/ochaco_rapid/gamma.webp",
-        "special": "assets/mhur_database/characters/ochaco_rapid/special.webp",
-        "gamma_hold": "assets/mhur_database/characters/ochaco_rapid/gamma_hold.webp"
+        "portrait": "assets/ochaco/ochaco_rapid/portrait.png",
+        "tuning": "assets/ochaco/ochaco_rapid/tuning.webp",
+        "alpha": "assets/ochaco/ochaco_rapid/alpha.webp",
+        "beta": "assets/ochaco/ochaco_rapid/beta.webp",
+        "gamma": "assets/ochaco/ochaco_rapid/gamma.webp",
+        "special": "assets/ochaco/ochaco_rapid/special.webp",
+        "gamma_hold": "assets/ochaco/ochaco_rapid/gamma_hold.webp"
       }
     },
     {
@@ -2959,14 +2959,14 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/ochaco_assault/portrait.webp",
-        "tuning": "assets/mhur_database/characters/ochaco_assault/tuning.webp",
-        "alpha": "assets/mhur_database/characters/ochaco_assault/alpha.webp",
-        "beta": "assets/mhur_database/characters/ochaco_assault/beta.webp",
-        "gamma": "assets/mhur_database/characters/ochaco_assault/gamma.webp",
-        "special": "assets/mhur_database/characters/ochaco_assault/special.webp",
-        "gamma_hold": "assets/mhur_database/characters/ochaco_assault/gamma_hold.webp",
-        "alpha_hold": "assets/mhur_database/characters/ochaco_assault/alpha_hold.webp"
+        "portrait": "assets/ochaco/ochaco_assault/portrait.png",
+        "tuning": "assets/ochaco/ochaco_assault/tuning.webp",
+        "alpha": "assets/ochaco/ochaco_assault/alpha.webp",
+        "beta": "assets/ochaco/ochaco_assault/beta.webp",
+        "gamma": "assets/ochaco/ochaco_assault/gamma.webp",
+        "alpha_hold": "assets/ochaco/ochaco_assault/alpha_hold.webp",
+        "gamma_hold": "assets/ochaco/ochaco_assault/gamma_hold.webp",
+        "special": "assets/ochaco/ochaco_assault/special.webp"
       }
     },
     {
@@ -3305,13 +3305,13 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/shoto_attack/portrait.webp",
-        "tuning": "assets/mhur_database/characters/shoto_attack/tuning.webp",
-        "alpha": "assets/mhur_database/characters/shoto_attack/alpha.webp",
-        "beta": "assets/mhur_database/characters/shoto_attack/beta.webp",
-        "gamma": "assets/mhur_database/characters/shoto_attack/gamma.webp",
-        "special": "assets/mhur_database/characters/shoto_attack/special.webp",
-        "gamma_hold": "assets/mhur_database/characters/shoto_attack/gamma_hold.webp"
+        "portrait": "assets/shoto/shoto_attack/portrait.png",
+        "tuning": "assets/shoto/shoto_attack/tuning.webp",
+        "alpha": "assets/shoto/shoto_attack/alpha.webp",
+        "beta": "assets/shoto/shoto_attack/beta.webp",
+        "gamma": "assets/shoto/shoto_attack/gamma.webp",
+        "special": "assets/shoto/shoto_attack/special.webp",
+        "gamma_hold": "assets/shoto/shoto_attack/gamma_hold.webp"
       }
     },
     {
@@ -3720,13 +3720,13 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/shoto_technical/portrait.webp",
-        "tuning": "assets/mhur_database/characters/shoto_technical/tuning.webp",
-        "alpha": "assets/mhur_database/characters/shoto_technical/alpha.webp",
-        "beta": "assets/mhur_database/characters/shoto_technical/beta.webp",
-        "gamma": "assets/mhur_database/characters/shoto_technical/gamma.webp",
-        "special": "assets/mhur_database/characters/shoto_technical/special.webp",
-        "alpha_aim": "assets/mhur_database/characters/shoto_technical/alpha_aim.webp"
+        "portrait": "assets/shoto/shoto_technical/portrait.png",
+        "tuning": "assets/shoto/shoto_technical/tuning.webp",
+        "alpha": "assets/shoto/shoto_technical/alpha.webp",
+        "beta": "assets/shoto/shoto_technical/beta.webp",
+        "gamma": "assets/shoto/shoto_technical/gamma.webp",
+        "alpha_aim": "assets/shoto/shoto_technical/alpha_aim.webp",
+        "special": "assets/shoto/shoto_technical/special.webp"
       }
     },
     {
@@ -4008,12 +4008,12 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/tenya_rapid/portrait.webp",
-        "tuning": "assets/mhur_database/characters/tenya_rapid/tuning.webp",
-        "alpha": "assets/mhur_database/characters/tenya_rapid/alpha.webp",
-        "beta": "assets/mhur_database/characters/tenya_rapid/beta.webp",
-        "gamma": "assets/mhur_database/characters/tenya_rapid/gamma.webp",
-        "special": "assets/mhur_database/characters/tenya_rapid/special.webp"
+        "portrait": "assets/tenya/tenya_rapid/portrait.png",
+        "tuning": "assets/tenya/tenya_rapid/tuning.webp",
+        "alpha": "assets/tenya/tenya_rapid/alpha.webp",
+        "beta": "assets/tenya/tenya_rapid/beta.webp",
+        "gamma": "assets/tenya/tenya_rapid/gamma.webp",
+        "special": "assets/tenya/tenya_rapid/special.webp"
       }
     },
     {
@@ -4355,12 +4355,12 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/tsuyu_rapid/portrait.webp",
-        "tuning": "assets/mhur_database/characters/tsuyu_rapid/tuning.webp",
-        "alpha": "assets/mhur_database/characters/tsuyu_rapid/alpha.webp",
-        "beta": "assets/mhur_database/characters/tsuyu_rapid/beta.webp",
-        "gamma": "assets/mhur_database/characters/tsuyu_rapid/gamma.webp",
-        "special": "assets/mhur_database/characters/tsuyu_rapid/special.webp"
+        "portrait": "assets/tsuyu/tsuyu_rapid/portrait.png",
+        "tuning": "assets/tsuyu/tsuyu_rapid/tuning.webp",
+        "alpha": "assets/tsuyu/tsuyu_rapid/alpha.webp",
+        "beta": "assets/tsuyu/tsuyu_rapid/beta.webp",
+        "gamma": "assets/tsuyu/tsuyu_rapid/gamma.webp",
+        "special": "assets/tsuyu/tsuyu_rapid/special.webp"
       }
     },
     {
@@ -4902,12 +4902,12 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/kaminari_strike/portrait.webp",
-        "tuning": "assets/mhur_database/characters/kaminari_strike/tuning.webp",
-        "alpha": "assets/mhur_database/characters/kaminari_strike/alpha.webp",
-        "beta": "assets/mhur_database/characters/kaminari_strike/beta.webp",
-        "gamma": "assets/mhur_database/characters/kaminari_strike/gamma.webp",
-        "special": "assets/mhur_database/characters/kaminari_strike/special.webp"
+        "portrait": "assets/kaminari/kaminari_strike/portrait.png",
+        "tuning": "assets/kaminari/kaminari_strike/tuning.webp",
+        "alpha": "assets/kaminari/kaminari_strike/alpha.webp",
+        "beta": "assets/kaminari/kaminari_strike/beta.webp",
+        "gamma": "assets/kaminari/kaminari_strike/gamma.webp",
+        "special": "assets/kaminari/kaminari_strike/special.webp"
       }
     },
     {
@@ -5344,13 +5344,13 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/kaminari_technical/portrait.webp",
-        "tuning": "assets/mhur_database/characters/kaminari_technical/tuning.webp",
-        "alpha": "assets/mhur_database/characters/kaminari_technical/alpha.webp",
-        "beta": "assets/mhur_database/characters/kaminari_technical/beta.webp",
-        "gamma": "assets/mhur_database/characters/kaminari_technical/gamma.webp",
-        "special": "assets/mhur_database/characters/kaminari_technical/special.webp",
-        "alpha_hold": "assets/mhur_database/characters/kaminari_technical/alpha_hold.webp"
+        "portrait": "assets/kaminari/kaminari_technical/portrait.png",
+        "tuning": "assets/kaminari/kaminari_technical/tuning.webp",
+        "alpha": "assets/kaminari/kaminari_technical/alpha.webp",
+        "beta": "assets/kaminari/kaminari_technical/beta.webp",
+        "gamma": "assets/kaminari/kaminari_technical/gamma.webp",
+        "alpha_hold": "assets/kaminari/kaminari_technical/alpha_hold.webp",
+        "special": "assets/kaminari/kaminari_technical/special.webp"
       }
     },
     {
@@ -5772,12 +5772,12 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/kirishima_assault/portrait.webp",
-        "tuning": "assets/mhur_database/characters/kirishima_assault/tuning.webp",
-        "alpha": "assets/mhur_database/characters/kirishima_assault/alpha.webp",
-        "beta": "assets/mhur_database/characters/kirishima_assault/beta.webp",
-        "gamma": "assets/mhur_database/characters/kirishima_assault/gamma.webp",
-        "special": "assets/mhur_database/characters/kirishima_assault/special.webp"
+        "portrait": "assets/kirishima/kirishima_assault/portrait.png",
+        "tuning": "assets/kirishima/kirishima_assault/tuning.webp",
+        "alpha": "assets/kirishima/kirishima_assault/alpha.webp",
+        "beta": "assets/kirishima/kirishima_assault/beta.webp",
+        "gamma": "assets/kirishima/kirishima_assault/gamma.webp",
+        "special": "assets/kirishima/kirishima_assault/special.webp"
       }
     },
     {
@@ -6431,12 +6431,12 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/kirishima_strike/portrait.webp",
-        "tuning": "assets/mhur_database/characters/kirishima_strike/tuning.webp",
-        "alpha": "assets/mhur_database/characters/kirishima_strike/alpha.webp",
-        "beta": "assets/mhur_database/characters/kirishima_strike/beta.webp",
-        "gamma": "assets/mhur_database/characters/kirishima_strike/gamma.webp",
-        "special": "assets/mhur_database/characters/kirishima_strike/special.webp"
+        "portrait": "assets/kirishima/kirishima_strike/portrait.png",
+        "tuning": "assets/kirishima/kirishima_strike/tuning.webp",
+        "alpha": "assets/kirishima/kirishima_strike/alpha.webp",
+        "beta": "assets/kirishima/kirishima_strike/beta.webp",
+        "gamma": "assets/kirishima/kirishima_strike/gamma.webp",
+        "special": "assets/kirishima/kirishima_strike/special.webp"
       }
     },
     {
@@ -6858,12 +6858,12 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/momo_support/portrait.webp",
-        "tuning": "assets/mhur_database/characters/momo_support/tuning.webp",
-        "alpha": "assets/mhur_database/characters/momo_support/alpha.webp",
-        "beta": "assets/mhur_database/characters/momo_support/beta.webp",
-        "gamma": "assets/mhur_database/characters/momo_support/gamma.webp",
-        "special": "assets/mhur_database/characters/momo_support/special.webp"
+        "portrait": "assets/momo/momo_support/portrait.png",
+        "tuning": "assets/momo/momo_support/tuning.webp",
+        "alpha": "assets/momo/momo_support/alpha.webp",
+        "beta": "assets/momo/momo_support/beta.webp",
+        "gamma": "assets/momo/momo_support/gamma.webp",
+        "special": "assets/momo/momo_support/special.webp"
       }
     },
     {
@@ -7160,12 +7160,12 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/tokoyami_assault/portrait.webp",
-        "tuning": "assets/mhur_database/characters/tokoyami_assault/tuning.webp",
-        "alpha": "assets/mhur_database/characters/tokoyami_assault/alpha.webp",
-        "beta": "assets/mhur_database/characters/tokoyami_assault/beta.webp",
-        "gamma": "assets/mhur_database/characters/tokoyami_assault/gamma.webp",
-        "special": "assets/mhur_database/characters/tokoyami_assault/special.webp"
+        "portrait": "assets/tokoyami/tokoyami_assault/portrait.png",
+        "tuning": "assets/tokoyami/tokoyami_assault/tuning.webp",
+        "alpha": "assets/tokoyami/tokoyami_assault/alpha.webp",
+        "beta": "assets/tokoyami/tokoyami_assault/beta.webp",
+        "gamma": "assets/tokoyami/tokoyami_assault/gamma.webp",
+        "special": "assets/tokoyami/tokoyami_assault/special.webp"
       }
     },
     {
@@ -7647,12 +7647,12 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/all_might_assault/portrait.webp",
-        "tuning": "assets/mhur_database/characters/all_might_assault/tuning.webp",
-        "alpha": "assets/mhur_database/characters/all_might_assault/alpha.webp",
-        "beta": "assets/mhur_database/characters/all_might_assault/beta.webp",
-        "gamma": "assets/mhur_database/characters/all_might_assault/gamma.webp",
-        "special": "assets/mhur_database/characters/all_might_assault/special.webp"
+        "portrait": "assets/all_might/all_might_assault/portrait.png",
+        "tuning": "assets/all_might/all_might_assault/tuning.webp",
+        "alpha": "assets/all_might/all_might_assault/alpha.webp",
+        "beta": "assets/all_might/all_might_assault/beta.webp",
+        "gamma": "assets/all_might/all_might_assault/gamma.webp",
+        "special": "assets/all_might/all_might_assault/special.webp"
       }
     },
     {
@@ -8092,12 +8092,12 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/all_might_rapid/portrait.webp",
-        "tuning": "assets/mhur_database/characters/all_might_rapid/tuning.webp",
-        "alpha": "assets/mhur_database/characters/all_might_rapid/alpha.webp",
-        "beta": "assets/mhur_database/characters/all_might_rapid/beta.webp",
-        "gamma": "assets/mhur_database/characters/all_might_rapid/gamma.webp",
-        "special": "assets/mhur_database/characters/all_might_rapid/special.webp"
+        "portrait": "assets/all_might/all_might_rapid/portrait.png",
+        "tuning": "assets/all_might/all_might_rapid/tuning.webp",
+        "alpha": "assets/all_might/all_might_rapid/alpha.webp",
+        "beta": "assets/all_might/all_might_rapid/beta.webp",
+        "gamma": "assets/all_might/all_might_rapid/gamma.webp",
+        "special": "assets/all_might/all_might_rapid/special.webp"
       }
     },
     {
@@ -8579,12 +8579,12 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/aizawa_technical/portrait.webp",
-        "tuning": "assets/mhur_database/characters/aizawa_technical/tuning.webp",
-        "alpha": "assets/mhur_database/characters/aizawa_technical/alpha.webp",
-        "beta": "assets/mhur_database/characters/aizawa_technical/beta.webp",
-        "gamma": "assets/mhur_database/characters/aizawa_technical/gamma.webp",
-        "special": "assets/mhur_database/characters/aizawa_technical/special.webp"
+        "portrait": "assets/aizawa/aizawa_technical/portrait.png",
+        "tuning": "assets/aizawa/aizawa_technical/tuning.webp",
+        "alpha": "assets/aizawa/aizawa_technical/alpha.webp",
+        "beta": "assets/aizawa/aizawa_technical/beta.webp",
+        "gamma": "assets/aizawa/aizawa_technical/gamma.webp",
+        "special": "assets/aizawa/aizawa_technical/special.webp"
       }
     },
     {
@@ -8995,13 +8995,13 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/aizawa_strike/portrait.webp",
-        "tuning": "assets/mhur_database/characters/aizawa_strike/tuning.webp",
-        "alpha": "assets/mhur_database/characters/aizawa_strike/alpha.webp",
-        "beta": "assets/mhur_database/characters/aizawa_strike/beta.webp",
-        "gamma": "assets/mhur_database/characters/aizawa_strike/gamma.webp",
-        "special": "assets/mhur_database/characters/aizawa_strike/special.webp",
-        "beta_hold": "assets/mhur_database/characters/aizawa_strike/beta_hold.webp"
+        "portrait": "assets/aizawa/aizawa_strike/portrait.png",
+        "tuning": "assets/aizawa/aizawa_strike/tuning.webp",
+        "alpha": "assets/aizawa/aizawa_strike/alpha.webp",
+        "beta": "assets/aizawa/aizawa_strike/beta.webp",
+        "gamma": "assets/aizawa/aizawa_strike/gamma.webp",
+        "beta_hold": "assets/aizawa/aizawa_strike/beta_hold.webp",
+        "special": "assets/aizawa/aizawa_strike/special.webp"
       }
     },
     {
@@ -9457,12 +9457,12 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/shigaraki_strike/portrait.webp",
-        "tuning": "assets/mhur_database/characters/shigaraki_strike/tuning.webp",
-        "alpha": "assets/mhur_database/characters/shigaraki_strike/alpha.webp",
-        "beta": "assets/mhur_database/characters/shigaraki_strike/beta.webp",
-        "gamma": "assets/mhur_database/characters/shigaraki_strike/gamma.webp",
-        "special": "assets/mhur_database/characters/shigaraki_strike/special.webp"
+        "portrait": "assets/shigaraki/shigaraki_strike/portrait.png",
+        "tuning": "assets/shigaraki/shigaraki_strike/tuning.webp",
+        "alpha": "assets/shigaraki/shigaraki_strike/alpha.webp",
+        "beta": "assets/shigaraki/shigaraki_strike/beta.webp",
+        "gamma": "assets/shigaraki/shigaraki_strike/gamma.webp",
+        "special": "assets/shigaraki/shigaraki_strike/special.webp"
       }
     },
     {
@@ -10014,12 +10014,12 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/shigaraki_assault/portrait.webp",
-        "tuning": "assets/mhur_database/characters/shigaraki_assault/tuning.webp",
-        "alpha": "assets/mhur_database/characters/shigaraki_assault/alpha.webp",
-        "beta": "assets/mhur_database/characters/shigaraki_assault/beta.webp",
-        "gamma": "assets/mhur_database/characters/shigaraki_assault/gamma.webp",
-        "special": "assets/mhur_database/characters/shigaraki_assault/special.webp"
+        "portrait": "assets/shigaraki/shigaraki_assault/portrait.png",
+        "tuning": "assets/shigaraki/shigaraki_assault/tuning.webp",
+        "alpha": "assets/shigaraki/shigaraki_assault/alpha.webp",
+        "beta": "assets/shigaraki/shigaraki_assault/beta.webp",
+        "gamma": "assets/shigaraki/shigaraki_assault/gamma.webp",
+        "special": "assets/shigaraki/shigaraki_assault/special.webp"
       }
     },
     {
@@ -10377,13 +10377,13 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/shigaraki_technical/portrait.webp",
-        "tuning": "assets/mhur_database/characters/shigaraki_technical/tuning.webp",
-        "alpha": "assets/mhur_database/characters/shigaraki_technical/alpha.webp",
-        "beta": "assets/mhur_database/characters/shigaraki_technical/beta.webp",
-        "gamma": "assets/mhur_database/characters/shigaraki_technical/gamma.webp",
-        "special": "assets/mhur_database/characters/shigaraki_technical/special.webp",
-        "alpha_hold": "assets/mhur_database/characters/shigaraki_technical/alpha_hold.webp"
+        "portrait": "assets/shigaraki/shigaraki_technical/portrait.png",
+        "tuning": "assets/shigaraki/shigaraki_technical/tuning.webp",
+        "alpha": "assets/shigaraki/shigaraki_technical/alpha.webp",
+        "beta": "assets/shigaraki/shigaraki_technical/beta.webp",
+        "gamma": "assets/shigaraki/shigaraki_technical/gamma.webp",
+        "alpha_hold": "assets/shigaraki/shigaraki_technical/alpha_hold.webp",
+        "special": "assets/shigaraki/shigaraki_technical/special.webp"
       }
     },
     {
@@ -10740,12 +10740,12 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/all_for_one_technical/portrait.webp",
-        "tuning": "assets/mhur_database/characters/all_for_one_technical/tuning.webp",
-        "alpha": "assets/mhur_database/characters/all_for_one_technical/alpha.webp",
-        "beta": "assets/mhur_database/characters/all_for_one_technical/beta.webp",
-        "gamma": "assets/mhur_database/characters/all_for_one_technical/gamma.webp",
-        "special": "assets/mhur_database/characters/all_for_one_technical/special.webp"
+        "portrait": "assets/all_for_one/all_for_one_technical/portrait.png",
+        "tuning": "assets/all_for_one/all_for_one_technical/tuning.webp",
+        "alpha": "assets/all_for_one/all_for_one_technical/alpha.webp",
+        "beta": "assets/all_for_one/all_for_one_technical/beta.webp",
+        "gamma": "assets/all_for_one/all_for_one_technical/gamma.webp",
+        "special": "assets/all_for_one/all_for_one_technical/special.webp"
       }
     },
     {
@@ -11273,12 +11273,12 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/all_for_one_strike/portrait.webp",
-        "tuning": "assets/mhur_database/characters/all_for_one_strike/tuning.webp",
-        "alpha": "assets/mhur_database/characters/all_for_one_strike/alpha.webp",
-        "beta": "assets/mhur_database/characters/all_for_one_strike/beta.webp",
-        "gamma": "assets/mhur_database/characters/all_for_one_strike/gamma.webp",
-        "special": "assets/mhur_database/characters/all_for_one_strike/special.webp"
+        "portrait": "assets/all_for_one/all_for_one_strike/portrait.png",
+        "tuning": "assets/all_for_one/all_for_one_strike/tuning.webp",
+        "alpha": "assets/all_for_one/all_for_one_strike/alpha.webp",
+        "beta": "assets/all_for_one/all_for_one_strike/beta.webp",
+        "gamma": "assets/all_for_one/all_for_one_strike/gamma.webp",
+        "special": "assets/all_for_one/all_for_one_strike/special.webp"
       }
     },
     {
@@ -11600,12 +11600,12 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/dabi_technical/portrait.webp",
-        "tuning": "assets/mhur_database/characters/dabi_technical/tuning.webp",
-        "alpha": "assets/mhur_database/characters/dabi_technical/alpha.webp",
-        "beta": "assets/mhur_database/characters/dabi_technical/beta.webp",
-        "gamma": "assets/mhur_database/characters/dabi_technical/gamma.webp",
-        "special": "assets/mhur_database/characters/dabi_technical/special.webp"
+        "portrait": "assets/dabi/dabi_technical/portrait.png",
+        "tuning": "assets/dabi/dabi_technical/tuning.webp",
+        "alpha": "assets/dabi/dabi_technical/alpha.webp",
+        "beta": "assets/dabi/dabi_technical/beta.webp",
+        "gamma": "assets/dabi/dabi_technical/gamma.webp",
+        "special": "assets/dabi/dabi_technical/special.webp"
       }
     },
     {
@@ -11942,12 +11942,12 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/dabi_strike/portrait.webp",
-        "tuning": "assets/mhur_database/characters/dabi_strike/tuning.webp",
-        "alpha": "assets/mhur_database/characters/dabi_strike/alpha.webp",
-        "beta": "assets/mhur_database/characters/dabi_strike/beta.webp",
-        "gamma": "assets/mhur_database/characters/dabi_strike/gamma.webp",
-        "special": "assets/mhur_database/characters/dabi_strike/special.webp"
+        "portrait": "assets/dabi/dabi_strike/portrait.png",
+        "tuning": "assets/dabi/dabi_strike/tuning.webp",
+        "alpha": "assets/dabi/dabi_strike/alpha.webp",
+        "beta": "assets/dabi/dabi_strike/beta.webp",
+        "gamma": "assets/dabi/dabi_strike/gamma.webp",
+        "special": "assets/dabi/dabi_strike/special.webp"
       }
     },
     {
@@ -12369,12 +12369,12 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/toga_technical/portrait.webp",
-        "tuning": "assets/mhur_database/characters/toga_technical/tuning.webp",
-        "alpha": "assets/mhur_database/characters/toga_technical/alpha.webp",
-        "beta": "assets/mhur_database/characters/toga_technical/beta.webp",
-        "gamma": "assets/mhur_database/characters/toga_technical/gamma.webp",
-        "special": "assets/mhur_database/characters/toga_technical/special.webp"
+        "portrait": "assets/toga/toga_technical/portrait.png",
+        "tuning": "assets/toga/toga_technical/tuning.webp",
+        "alpha": "assets/toga/toga_technical/alpha.webp",
+        "beta": "assets/toga/toga_technical/beta.webp",
+        "gamma": "assets/toga/toga_technical/gamma.webp",
+        "special": "assets/toga/toga_technical/special.webp"
       }
     },
     {
@@ -12866,12 +12866,12 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/toga_rapid/portrait.webp",
-        "tuning": "assets/mhur_database/characters/toga_rapid/tuning.webp",
-        "alpha": "assets/mhur_database/characters/toga_rapid/alpha.webp",
-        "beta": "assets/mhur_database/characters/toga_rapid/beta.webp",
-        "gamma": "assets/mhur_database/characters/toga_rapid/gamma.webp",
-        "special": "assets/mhur_database/characters/toga_rapid/special.webp"
+        "portrait": "assets/toga/toga_rapid/portrait.png",
+        "tuning": "assets/toga/toga_rapid/tuning.webp",
+        "alpha": "assets/toga/toga_rapid/alpha.webp",
+        "beta": "assets/toga/toga_rapid/beta.webp",
+        "gamma": "assets/toga/toga_rapid/gamma.webp",
+        "special": "assets/toga/toga_rapid/special.webp"
       }
     },
     {
@@ -13238,12 +13238,12 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/endeavor_strike/portrait.webp",
-        "tuning": "assets/mhur_database/characters/endeavor_strike/tuning.webp",
-        "alpha": "assets/mhur_database/characters/endeavor_strike/alpha.webp",
-        "beta": "assets/mhur_database/characters/endeavor_strike/beta.webp",
-        "gamma": "assets/mhur_database/characters/endeavor_strike/gamma.webp",
-        "special": "assets/mhur_database/characters/endeavor_strike/special.webp"
+        "portrait": "assets/endeavor/endeavor_strike/portrait.png",
+        "tuning": "assets/endeavor/endeavor_strike/tuning.webp",
+        "alpha": "assets/endeavor/endeavor_strike/alpha.webp",
+        "beta": "assets/endeavor/endeavor_strike/beta.webp",
+        "gamma": "assets/endeavor/endeavor_strike/gamma.webp",
+        "special": "assets/endeavor/endeavor_strike/special.webp"
       }
     },
     {
@@ -13626,13 +13626,13 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/endeavor_assault/portrait.webp",
-        "tuning": "assets/mhur_database/characters/endeavor_assault/tuning.webp",
-        "alpha": "assets/mhur_database/characters/endeavor_assault/alpha.webp",
-        "beta": "assets/mhur_database/characters/endeavor_assault/beta.webp",
-        "gamma": "assets/mhur_database/characters/endeavor_assault/gamma.webp",
-        "special": "assets/mhur_database/characters/endeavor_assault/special.webp",
-        "beta_hold": "assets/mhur_database/characters/endeavor_assault/beta_hold.webp"
+        "portrait": "assets/endeavor/endeavor_assault/portrait.png",
+        "tuning": "assets/endeavor/endeavor_assault/tuning.webp",
+        "alpha": "assets/endeavor/endeavor_assault/alpha.webp",
+        "beta": "assets/endeavor/endeavor_assault/beta.webp",
+        "gamma": "assets/endeavor/endeavor_assault/gamma.webp",
+        "beta_hold": "assets/endeavor/endeavor_assault/beta_hold.webp",
+        "special": "assets/endeavor/endeavor_assault/special.webp"
       }
     },
     {
@@ -13921,13 +13921,13 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/mirio_rapid/portrait.webp",
-        "tuning": "assets/mhur_database/characters/mirio_rapid/tuning.webp",
-        "alpha": "assets/mhur_database/characters/mirio_rapid/alpha.webp",
-        "beta": "assets/mhur_database/characters/mirio_rapid/beta.webp",
-        "gamma": "assets/mhur_database/characters/mirio_rapid/gamma.webp",
-        "special": "assets/mhur_database/characters/mirio_rapid/special.webp",
-        "alpha_hold": "assets/mhur_database/characters/mirio_rapid/alpha_hold.webp"
+        "portrait": "assets/mirio/mirio_rapid/portrait.png",
+        "tuning": "assets/mirio/mirio_rapid/tuning.webp",
+        "alpha": "assets/mirio/mirio_rapid/alpha.webp",
+        "beta": "assets/mirio/mirio_rapid/beta.webp",
+        "gamma": "assets/mirio/mirio_rapid/gamma.webp",
+        "special": "assets/mirio/mirio_rapid/special.webp",
+        "alpha_hold": "assets/mirio/mirio_rapid/alpha_hold.webp"
       }
     },
     {
@@ -14402,12 +14402,12 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/mirio_technical/portrait.webp",
-        "tuning": "assets/mhur_database/characters/mirio_technical/tuning.webp",
-        "alpha": "assets/mhur_database/characters/mirio_technical/alpha.webp",
-        "beta": "assets/mhur_database/characters/mirio_technical/beta.webp",
-        "gamma": "assets/mhur_database/characters/mirio_technical/gamma.webp",
-        "special": "assets/mhur_database/characters/mirio_technical/special.webp"
+        "portrait": "assets/mirio/mirio_technical/portrait.png",
+        "tuning": "assets/mirio/mirio_technical/tuning.webp",
+        "alpha": "assets/mirio/mirio_technical/alpha.webp",
+        "beta": "assets/mirio/mirio_technical/beta.webp",
+        "gamma": "assets/mirio/mirio_technical/gamma.webp",
+        "special": "assets/mirio/mirio_technical/special.webp"
       }
     },
     {
@@ -14779,12 +14779,12 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/nejire_technical/portrait.webp",
-        "tuning": "assets/mhur_database/characters/nejire_technical/tuning.webp",
-        "alpha": "assets/mhur_database/characters/nejire_technical/alpha.webp",
-        "beta": "assets/mhur_database/characters/nejire_technical/beta.webp",
-        "gamma": "assets/mhur_database/characters/nejire_technical/gamma.webp",
-        "special": "assets/mhur_database/characters/nejire_technical/special.webp"
+        "portrait": "assets/nejire/nejire_technical/portrait.png",
+        "tuning": "assets/nejire/nejire_technical/tuning.webp",
+        "alpha": "assets/nejire/nejire_technical/alpha.webp",
+        "beta": "assets/nejire/nejire_technical/beta.webp",
+        "gamma": "assets/nejire/nejire_technical/gamma.webp",
+        "special": "assets/nejire/nejire_technical/special.webp"
       }
     },
     {
@@ -15170,12 +15170,12 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/nejire_support/portrait.webp",
-        "tuning": "assets/mhur_database/characters/nejire_support/tuning.webp",
-        "alpha": "assets/mhur_database/characters/nejire_support/alpha.webp",
-        "beta": "assets/mhur_database/characters/nejire_support/beta.webp",
-        "gamma": "assets/mhur_database/characters/nejire_support/gamma.webp",
-        "special": "assets/mhur_database/characters/nejire_support/special.webp"
+        "portrait": "assets/nejire/nejire_support/portrait.png",
+        "tuning": "assets/nejire/nejire_support/tuning.webp",
+        "alpha": "assets/nejire/nejire_support/alpha.webp",
+        "beta": "assets/nejire/nejire_support/beta.webp",
+        "gamma": "assets/nejire/nejire_support/gamma.webp",
+        "special": "assets/nejire/nejire_support/special.webp"
       }
     },
     {
@@ -15524,13 +15524,13 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/tamaki_strike/portrait.webp",
-        "tuning": "assets/mhur_database/characters/tamaki_strike/tuning.webp",
-        "alpha": "assets/mhur_database/characters/tamaki_strike/alpha.webp",
-        "beta": "assets/mhur_database/characters/tamaki_strike/beta.webp",
-        "gamma": "assets/mhur_database/characters/tamaki_strike/gamma.webp",
-        "special": "assets/mhur_database/characters/tamaki_strike/special.webp",
-        "alpha_hold": "assets/mhur_database/characters/tamaki_strike/alpha_hold.webp"
+        "portrait": "assets/tamaki/tamaki_strike/portrait.png",
+        "tuning": "assets/tamaki/tamaki_strike/tuning.webp",
+        "alpha": "assets/tamaki/tamaki_strike/alpha.webp",
+        "beta": "assets/tamaki/tamaki_strike/beta.webp",
+        "gamma": "assets/tamaki/tamaki_strike/gamma.webp",
+        "special": "assets/tamaki/tamaki_strike/special.webp",
+        "alpha_hold": "assets/tamaki/tamaki_strike/alpha_hold.webp"
       }
     },
     {
@@ -15962,12 +15962,12 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/overhaul_support/portrait.webp",
-        "tuning": "assets/mhur_database/characters/overhaul_support/tuning.webp",
-        "alpha": "assets/mhur_database/characters/overhaul_support/alpha.webp",
-        "beta": "assets/mhur_database/characters/overhaul_support/beta.webp",
-        "gamma": "assets/mhur_database/characters/overhaul_support/gamma.webp",
-        "special": "assets/mhur_database/characters/overhaul_support/special.webp"
+        "portrait": "assets/overhaul/overhaul_support/portrait.png",
+        "tuning": "assets/overhaul/overhaul_support/tuning.webp",
+        "alpha": "assets/overhaul/overhaul_support/alpha.webp",
+        "beta": "assets/overhaul/overhaul_support/beta.webp",
+        "gamma": "assets/overhaul/overhaul_support/gamma.webp",
+        "special": "assets/overhaul/overhaul_support/special.webp"
       }
     },
     {
@@ -16378,13 +16378,13 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/overhaul_assault/portrait.webp",
-        "tuning": "assets/mhur_database/characters/overhaul_assault/tuning.webp",
-        "alpha": "assets/mhur_database/characters/overhaul_assault/alpha.webp",
-        "beta": "assets/mhur_database/characters/overhaul_assault/beta.webp",
-        "gamma": "assets/mhur_database/characters/overhaul_assault/gamma.webp",
-        "special": "assets/mhur_database/characters/overhaul_assault/special.webp",
-        "alpha_hold": "assets/mhur_database/characters/overhaul_assault/alpha_hold.webp"
+        "portrait": "assets/overhaul/overhaul_assault/portrait.png",
+        "tuning": "assets/overhaul/overhaul_assault/tuning.webp",
+        "alpha": "assets/overhaul/overhaul_assault/alpha.webp",
+        "beta": "assets/overhaul/overhaul_assault/beta.webp",
+        "gamma": "assets/overhaul/overhaul_assault/gamma.webp",
+        "alpha_hold": "assets/overhaul/overhaul_assault/alpha_hold.webp",
+        "special": "assets/overhaul/overhaul_assault/special.webp"
       }
     },
     {
@@ -16681,12 +16681,12 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/twice_rapid/portrait.webp",
-        "tuning": "assets/mhur_database/characters/twice_rapid/tuning.webp",
-        "alpha": "assets/mhur_database/characters/twice_rapid/alpha.webp",
-        "beta": "assets/mhur_database/characters/twice_rapid/beta.webp",
-        "gamma": "assets/mhur_database/characters/twice_rapid/gamma.webp",
-        "special": "assets/mhur_database/characters/twice_rapid/special.webp"
+        "portrait": "assets/twice/twice_rapid/portrait.png",
+        "tuning": "assets/twice/twice_rapid/tuning.webp",
+        "alpha": "assets/twice/twice_rapid/alpha.webp",
+        "beta": "assets/twice/twice_rapid/beta.webp",
+        "gamma": "assets/twice/twice_rapid/gamma.webp",
+        "special": "assets/twice/twice_rapid/special.webp"
       }
     },
     {
@@ -17053,8 +17053,18 @@
       },
       "special_action": {
         "values": {
-          "columns": [],
-          "rows": []
+          "columns": [
+            "Ammo",
+            "Use Ammo",
+            "Reload"
+          ],
+          "rows": [
+            [
+              "x1",
+              "x1",
+              "1s"
+            ]
+          ]
         }
       },
       "normal_tuning": [
@@ -17088,12 +17098,12 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/mr_compress_support/portrait.webp",
-        "tuning": "assets/mhur_database/characters/mr_compress_support/tuning.webp",
-        "alpha": "assets/mhur_database/characters/mr_compress_support/alpha.webp",
-        "beta": "assets/mhur_database/characters/mr_compress_support/beta.webp",
-        "gamma": "assets/mhur_database/characters/mr_compress_support/gamma.webp",
-        "special": "assets/mhur_database/characters/mr_compress_support/special.webp"
+        "portrait": "assets/mr_compress/mr_compress_support/portrait.png",
+        "tuning": "assets/mr_compress/mr_compress_support/tuning.webp",
+        "alpha": "assets/mr_compress/mr_compress_support/alpha.webp",
+        "beta": "assets/mr_compress/mr_compress_support/beta.webp",
+        "gamma": "assets/mr_compress/mr_compress_support/gamma.webp",
+        "special": "assets/mr_compress/mr_compress_support/special.webp"
       }
     },
     {
@@ -17567,12 +17577,13 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/hawks_rapid/portrait.webp",
-        "tuning": "assets/mhur_database/characters/hawks_rapid/tuning.webp",
-        "alpha": "assets/mhur_database/characters/hawks_rapid/alpha.webp",
-        "beta": "assets/mhur_database/characters/hawks_rapid/beta.webp",
-        "gamma": "assets/mhur_database/characters/hawks_rapid/gamma.webp",
-        "special": "assets/mhur_database/characters/hawks_rapid/special.webp"
+        "portrait": "assets/hawks/hawks_rapid/hawks_rapid.png",
+        "tuning": "assets/hawks/hawks_rapid/tuning.webp",
+        "alpha": "assets/hawks/hawks_rapid/alpha.webp",
+        "beta": "assets/hawks/hawks_rapid/beta.webp",
+        "gamma": "assets/hawks/hawks_rapid/gamma.webp",
+        "special": "assets/hawks/hawks_rapid/special.webp",
+        "hawks_rapid": "assets/hawks/hawks_rapid/hawks_rapid.png"
       }
     },
     {
@@ -18100,12 +18111,12 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/hawks_strike/portrait.webp",
-        "tuning": "assets/mhur_database/characters/hawks_strike/tuning.webp",
-        "alpha": "assets/mhur_database/characters/hawks_strike/alpha.webp",
-        "beta": "assets/mhur_database/characters/hawks_strike/beta.webp",
-        "gamma": "assets/mhur_database/characters/hawks_strike/gamma.webp",
-        "special": "assets/mhur_database/characters/hawks_strike/special.webp"
+        "portrait": "assets/hawks/hawks_strike/portrait.png",
+        "tuning": "assets/hawks/hawks_strike/tuning.webp",
+        "alpha": "assets/hawks/hawks_strike/alpha.webp",
+        "beta": "assets/hawks/hawks_strike/beta.webp",
+        "gamma": "assets/hawks/hawks_strike/gamma.webp",
+        "special": "assets/hawks/hawks_strike/special.webp"
       }
     },
     {
@@ -18473,12 +18484,12 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/kendo_assault/portrait.webp",
-        "tuning": "assets/mhur_database/characters/kendo_assault/tuning.webp",
-        "alpha": "assets/mhur_database/characters/kendo_assault/alpha.webp",
-        "beta": "assets/mhur_database/characters/kendo_assault/beta.webp",
-        "gamma": "assets/mhur_database/characters/kendo_assault/gamma.webp",
-        "special": "assets/mhur_database/characters/kendo_assault/special.webp"
+        "portrait": "assets/kendo/kendo_assault/portrait.png",
+        "tuning": "assets/kendo/kendo_assault/tuning.webp",
+        "alpha": "assets/kendo/kendo_assault/alpha.webp",
+        "beta": "assets/kendo/kendo_assault/beta.webp",
+        "gamma": "assets/kendo/kendo_assault/gamma.webp",
+        "special": "assets/kendo/kendo_assault/special.webp"
       }
     },
     {
@@ -18836,12 +18847,12 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/kendo_strike/portrait.webp",
-        "tuning": "assets/mhur_database/characters/kendo_strike/tuning.webp",
-        "alpha": "assets/mhur_database/characters/kendo_strike/alpha.webp",
-        "beta": "assets/mhur_database/characters/kendo_strike/beta.webp",
-        "gamma": "assets/mhur_database/characters/kendo_strike/gamma.webp",
-        "special": "assets/mhur_database/characters/kendo_strike/special.webp"
+        "portrait": "assets/kendo/kendo_strike/portrait.png",
+        "tuning": "assets/kendo/kendo_strike/tuning.webp",
+        "alpha": "assets/kendo/kendo_strike/alpha.webp",
+        "beta": "assets/kendo/kendo_strike/beta.webp",
+        "gamma": "assets/kendo/kendo_strike/gamma.webp",
+        "special": "assets/kendo/kendo_strike/special.webp"
       }
     },
     {
@@ -19491,12 +19502,12 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/mt_lady_assault/portrait.webp",
-        "tuning": "assets/mhur_database/characters/mt_lady_assault/tuning.webp",
-        "alpha": "assets/mhur_database/characters/mt_lady_assault/alpha.webp",
-        "beta": "assets/mhur_database/characters/mt_lady_assault/beta.webp",
-        "gamma": "assets/mhur_database/characters/mt_lady_assault/gamma.webp",
-        "special": "assets/mhur_database/characters/mt_lady_assault/special.webp"
+        "portrait": "assets/mt_lady/mt_lady_assault/portrait.png",
+        "tuning": "assets/mt_lady/mt_lady_assault/tuning.webp",
+        "alpha": "assets/mt_lady/mt_lady_assault/alpha.webp",
+        "beta": "assets/mt_lady/mt_lady_assault/beta.webp",
+        "gamma": "assets/mt_lady/mt_lady_assault/gamma.webp",
+        "special": "assets/mt_lady/mt_lady_assault/special.webp"
       }
     },
     {
@@ -19978,12 +19989,12 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/cementoss_support/portrait.webp",
-        "tuning": "assets/mhur_database/characters/cementoss_support/tuning.webp",
-        "alpha": "assets/mhur_database/characters/cementoss_support/alpha.webp",
-        "beta": "assets/mhur_database/characters/cementoss_support/beta.webp",
-        "gamma": "assets/mhur_database/characters/cementoss_support/gamma.webp",
-        "special": "assets/mhur_database/characters/cementoss_support/special.webp"
+        "portrait": "assets/cementoss/cementoss_support/portrait.png",
+        "tuning": "assets/cementoss/cementoss_support/tuning.webp",
+        "alpha": "assets/cementoss/cementoss_support/alpha.webp",
+        "beta": "assets/cementoss/cementoss_support/beta.webp",
+        "gamma": "assets/cementoss/cementoss_support/gamma.webp",
+        "special": "assets/cementoss/cementoss_support/special.webp"
       }
     },
     {
@@ -20499,12 +20510,12 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/ibara_support/portrait.webp",
-        "tuning": "assets/mhur_database/characters/ibara_support/tuning.webp",
-        "alpha": "assets/mhur_database/characters/ibara_support/alpha.webp",
-        "beta": "assets/mhur_database/characters/ibara_support/beta.webp",
-        "gamma": "assets/mhur_database/characters/ibara_support/gamma.webp",
-        "special": "assets/mhur_database/characters/ibara_support/special.webp"
+        "portrait": "assets/ibara/ibara_support/portrait.png",
+        "tuning": "assets/ibara/ibara_support/tuning.webp",
+        "alpha": "assets/ibara/ibara_support/alpha.webp",
+        "beta": "assets/ibara/ibara_support/beta.webp",
+        "gamma": "assets/ibara/ibara_support/gamma.webp",
+        "special": "assets/ibara/ibara_support/special.webp"
       }
     },
     {
@@ -20808,13 +20819,13 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/kurogiri_support/portrait.webp",
-        "tuning": "assets/mhur_database/characters/kurogiri_support/tuning.webp",
-        "alpha": "assets/mhur_database/characters/kurogiri_support/alpha.webp",
-        "beta": "assets/mhur_database/characters/kurogiri_support/beta.webp",
-        "gamma": "assets/mhur_database/characters/kurogiri_support/gamma.webp",
-        "special": "assets/mhur_database/characters/kurogiri_support/special.webp",
-        "gamma_hold": "assets/mhur_database/characters/kurogiri_support/gamma_hold.webp"
+        "portrait": "assets/kurogiri/kurogiri_support/portrait.png",
+        "tuning": "assets/kurogiri/kurogiri_support/tuning.webp",
+        "alpha": "assets/kurogiri/kurogiri_support/alpha.webp",
+        "beta": "assets/kurogiri/kurogiri_support/beta.webp",
+        "gamma": "assets/kurogiri/kurogiri_support/gamma.webp",
+        "special": "assets/kurogiri/kurogiri_support/special.webp",
+        "gamma_hold": "assets/kurogiri/kurogiri_support/gamma_hold.webp"
       }
     },
     {
@@ -21086,12 +21097,12 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/monoma_technical/portrait.webp",
-        "tuning": "assets/mhur_database/characters/monoma_technical/tuning.webp",
-        "alpha": "assets/mhur_database/characters/monoma_technical/alpha.webp",
-        "beta": "assets/mhur_database/characters/monoma_technical/beta.webp",
-        "gamma": "assets/mhur_database/characters/monoma_technical/gamma.webp",
-        "special": "assets/mhur_database/characters/monoma_technical/special.webp"
+        "portrait": "assets/monoma/monoma_technical/portrait.png",
+        "tuning": "assets/monoma/monoma_technical/tuning.webp",
+        "alpha": "assets/monoma/monoma_technical/alpha.webp",
+        "beta": "assets/monoma/monoma_technical/beta.webp",
+        "gamma": "assets/monoma/monoma_technical/gamma.webp",
+        "special": "assets/monoma/monoma_technical/special.webp"
       }
     },
     {
@@ -21494,13 +21505,13 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/shinso_strike/portrait.webp",
-        "tuning": "assets/mhur_database/characters/shinso_strike/tuning.webp",
-        "alpha": "assets/mhur_database/characters/shinso_strike/alpha.webp",
-        "beta": "assets/mhur_database/characters/shinso_strike/beta.webp",
-        "gamma": "assets/mhur_database/characters/shinso_strike/gamma.webp",
-        "special": "assets/mhur_database/characters/shinso_strike/special.webp",
-        "beta_hold": "assets/mhur_database/characters/shinso_strike/beta_hold.webp"
+        "portrait": "assets/shinso/shinso_strike/portrait.png",
+        "tuning": "assets/shinso/shinso_strike/tuning.webp",
+        "alpha": "assets/shinso/shinso_strike/alpha.webp",
+        "beta": "assets/shinso/shinso_strike/beta.webp",
+        "gamma": "assets/shinso/shinso_strike/gamma.webp",
+        "special": "assets/shinso/shinso_strike/special.webp",
+        "beta_hold": "assets/shinso/shinso_strike/beta_hold.webp"
       }
     },
     {
@@ -21995,12 +22006,12 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/gentle_criminal_technical/portrait.png",
-        "tuning": "assets/mhur_database/characters/gentle_criminal_technical/tuning.png",
-        "alpha": "assets/mhur_database/characters/gentle_criminal_technical/alpha.png",
-        "beta": "assets/mhur_database/characters/gentle_criminal_technical/beta.png",
-        "gamma": "assets/mhur_database/characters/gentle_criminal_technical/gamma.png",
-        "special": "assets/mhur_database/characters/gentle_criminal_technical/special.png"
+        "portrait": "assets/gentle_criminal/gentle_criminal_technical/portrait.png",
+        "tuning": "assets/gentle_criminal/gentle_criminal_technical/tuning.png",
+        "alpha": "assets/gentle_criminal/gentle_criminal_technical/alpha.png",
+        "beta": "assets/gentle_criminal/gentle_criminal_technical/beta.png",
+        "gamma": "assets/gentle_criminal/gentle_criminal_technical/gamma.png",
+        "special": "assets/gentle_criminal/gentle_criminal_technical/special.png"
       }
     },
     {
@@ -22349,13 +22360,13 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/present_mic_strike/portrait.webp",
-        "tuning": "assets/mhur_database/characters/present_mic_strike/tuning.webp",
-        "alpha": "assets/mhur_database/characters/present_mic_strike/alpha.webp",
-        "beta": "assets/mhur_database/characters/present_mic_strike/beta.webp",
-        "gamma": "assets/mhur_database/characters/present_mic_strike/gamma.webp",
-        "special": "assets/mhur_database/characters/present_mic_strike/special.webp",
-        "beta_hold": "assets/mhur_database/characters/present_mic_strike/beta_hold.webp"
+        "portrait": "assets/present_mic/present_mic_strike/portrait.png",
+        "tuning": "assets/present_mic/present_mic_strike/tuning.webp",
+        "alpha": "assets/present_mic/present_mic_strike/alpha.webp",
+        "beta": "assets/present_mic/present_mic_strike/beta.webp",
+        "gamma": "assets/present_mic/present_mic_strike/gamma.webp",
+        "special": "assets/present_mic/present_mic_strike/special.webp",
+        "beta_hold": "assets/present_mic/present_mic_strike/beta_hold.webp"
       }
     },
     {
@@ -22622,14 +22633,14 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/present_mic_technical/portrait.webp",
-        "tuning": "assets/mhur_database/characters/present_mic_technical/tuning.webp",
-        "alpha": "assets/mhur_database/characters/present_mic_technical/alpha.webp",
-        "beta": "assets/mhur_database/characters/present_mic_technical/beta.webp",
-        "gamma": "assets/mhur_database/characters/present_mic_technical/gamma.webp",
-        "special": "assets/mhur_database/characters/present_mic_technical/special.webp",
-        "beta_hold": "assets/mhur_database/characters/present_mic_technical/beta_hold.webp",
-        "alpha_hold": "assets/mhur_database/characters/present_mic_technical/alpha_hold.webp"
+        "portrait": "assets/present_mic/present_mic_technical/portrait.png",
+        "tuning": "assets/present_mic/present_mic_technical/tuning.webp",
+        "alpha": "assets/present_mic/present_mic_technical/alpha.webp",
+        "beta": "assets/present_mic/present_mic_technical/beta.webp",
+        "gamma": "assets/present_mic/present_mic_technical/gamma.webp",
+        "alpha_hold": "assets/present_mic/present_mic_technical/alpha_hold.webp",
+        "beta_hold": "assets/present_mic/present_mic_technical/beta_hold.webp",
+        "special": "assets/present_mic/present_mic_technical/special.webp"
       }
     },
     {
@@ -23075,12 +23086,12 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/mirko_rapid/portrait.webp",
-        "tuning": "assets/mhur_database/characters/mirko_rapid/tuning.webp",
-        "alpha": "assets/mhur_database/characters/mirko_rapid/alpha.webp",
-        "beta": "assets/mhur_database/characters/mirko_rapid/beta.webp",
-        "gamma": "assets/mhur_database/characters/mirko_rapid/gamma.webp",
-        "special": "assets/mhur_database/characters/mirko_rapid/special.webp"
+        "portrait": "assets/mirko/mirko_rapid/portrait.png",
+        "tuning": "assets/mirko/mirko_rapid/tuning.webp",
+        "alpha": "assets/mirko/mirko_rapid/alpha.webp",
+        "beta": "assets/mirko/mirko_rapid/beta.webp",
+        "gamma": "assets/mirko/mirko_rapid/gamma.webp",
+        "special": "assets/mirko/mirko_rapid/special.webp"
       }
     },
     {
@@ -23551,12 +23562,12 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/star_and_stripe_strike/portrait.webp",
-        "tuning": "assets/mhur_database/characters/star_and_stripe_strike/tuning.webp",
-        "alpha": "assets/mhur_database/characters/star_and_stripe_strike/alpha.webp",
-        "beta": "assets/mhur_database/characters/star_and_stripe_strike/beta.webp",
-        "gamma": "assets/mhur_database/characters/star_and_stripe_strike/gamma.webp",
-        "special": "assets/mhur_database/characters/star_and_stripe_strike/special.webp"
+        "portrait": "assets/star_and_stripe/star_and_stripe_strike/portrait.png",
+        "tuning": "assets/star_and_stripe/star_and_stripe_strike/tuning.webp",
+        "alpha": "assets/star_and_stripe/star_and_stripe_strike/alpha.webp",
+        "beta": "assets/star_and_stripe/star_and_stripe_strike/beta.webp",
+        "gamma": "assets/star_and_stripe/star_and_stripe_strike/gamma.webp",
+        "special": "assets/star_and_stripe/star_and_stripe_strike/special.webp"
       }
     },
     {
@@ -23976,12 +23987,12 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/lady_nagant_strike/portrait.webp",
-        "tuning": "assets/mhur_database/characters/lady_nagant_strike/tuning.webp",
-        "alpha": "assets/mhur_database/characters/lady_nagant_strike/alpha.webp",
-        "beta": "assets/mhur_database/characters/lady_nagant_strike/beta.webp",
-        "gamma": "assets/mhur_database/characters/lady_nagant_strike/gamma.webp",
-        "special": "assets/mhur_database/characters/lady_nagant_strike/special.webp"
+        "portrait": "assets/lady_nagant/lady_nagant_strike/portrait.png",
+        "tuning": "assets/lady_nagant/lady_nagant_strike/tuning.webp",
+        "alpha": "assets/lady_nagant/lady_nagant_strike/alpha.webp",
+        "beta": "assets/lady_nagant/lady_nagant_strike/beta.webp",
+        "gamma": "assets/lady_nagant/lady_nagant_strike/gamma.webp",
+        "special": "assets/lady_nagant/lady_nagant_strike/special.webp"
       }
     },
     {
@@ -24166,14 +24177,14 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/armored_all_might_technical/portrait.webp",
-        "tuning": "assets/mhur_database/characters/armored_all_might_technical/tuning.webp",
-        "alpha": "assets/mhur_database/characters/armored_all_might_technical/alpha.webp",
-        "beta": "assets/mhur_database/characters/armored_all_might_technical/beta.webp",
-        "gamma": "assets/mhur_database/characters/armored_all_might_technical/gamma.webp",
-        "special": "assets/mhur_database/characters/armored_all_might_technical/special.webp",
-        "beta_hold": "assets/mhur_database/characters/armored_all_might_technical/beta_hold.webp",
-        "alpha_hold": "assets/mhur_database/characters/armored_all_might_technical/alpha_hold.webp"
+        "portrait": "assets/armored_all_might/armored_all_might_technical/portrait.png",
+        "tuning": "assets/armored_all_might/armored_all_might_technical/tuning.webp",
+        "alpha": "assets/armored_all_might/armored_all_might_technical/alpha.webp",
+        "beta": "assets/armored_all_might/armored_all_might_technical/beta.webp",
+        "gamma": "assets/armored_all_might/armored_all_might_technical/gamma.webp",
+        "special": "assets/armored_all_might/armored_all_might_technical/special.webp",
+        "alpha_hold": "assets/armored_all_might/armored_all_might_technical/alpha_hold.webp",
+        "beta_hold": "assets/armored_all_might/armored_all_might_technical/beta_hold.webp"
       }
     },
     {
@@ -24440,14 +24451,14 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/all_for_one_young_assault/portrait.webp",
-        "tuning": "assets/mhur_database/characters/all_for_one_young_assault/tuning.webp",
-        "alpha": "assets/mhur_database/characters/all_for_one_young_assault/alpha.webp",
-        "beta": "assets/mhur_database/characters/all_for_one_young_assault/beta.webp",
-        "gamma": "assets/mhur_database/characters/all_for_one_young_assault/gamma.webp",
-        "special": "assets/mhur_database/characters/all_for_one_young_assault/special.webp",
-        "gamma_hold": "assets/mhur_database/characters/all_for_one_young_assault/gamma_hold.webp",
-        "beta_hold": "assets/mhur_database/characters/all_for_one_young_assault/beta_hold.webp"
+        "portrait": "assets/all_for_one_young/all_for_one_young_assault/portrait.png",
+        "tuning": "assets/all_for_one_young/all_for_one_young_assault/tuning.webp",
+        "alpha": "assets/all_for_one_young/all_for_one_young_assault/alpha.webp",
+        "beta": "assets/all_for_one_young/all_for_one_young_assault/beta.webp",
+        "gamma": "assets/all_for_one_young/all_for_one_young_assault/gamma.webp",
+        "special": "assets/all_for_one_young/all_for_one_young_assault/special.webp",
+        "beta_hold": "assets/all_for_one_young/all_for_one_young_assault/beta_hold.webp",
+        "gamma_hold": "assets/all_for_one_young/all_for_one_young_assault/gamma_hold.webp"
       }
     },
     {
@@ -24688,15 +24699,14 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/ofa/portrait.webp",
-        "tuning": "assets/mhur_database/characters/ofa/tuning.webp",
-        "alpha": "assets/mhur_database/characters/ofa/alpha.webp",
-        "beta": "assets/mhur_database/characters/ofa/beta.webp",
-        "gamma": "assets/mhur_database/characters/ofa/gamma.webp",
-        "special": "assets/mhur_database/characters/ofa/special.webp",
-        "gamma_hold": "assets/mhur_database/characters/ofa/gamma_hold.webp",
-        "beta_hold": "assets/mhur_database/characters/ofa/beta_hold.webp",
-        "character": "assets/mhur_database/characters/ofa/character.webp"
+        "portrait": "assets/midoriya_ofa/portrait.png",
+        "tuning": "assets/midoriya_ofa/tuning.webp",
+        "alpha": "assets/midoriya_ofa/alpha.webp",
+        "beta": "assets/midoriya_ofa/beta.webp",
+        "gamma": "assets/midoriya_ofa/gamma.webp",
+        "special": "assets/midoriya_ofa/special.webp",
+        "beta_hold": "assets/midoriya_ofa/beta_hold.webp",
+        "gamma_hold": "assets/midoriya_ofa/gamma_hold.webp"
       }
     }
   ],
@@ -24965,14 +24975,14 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/all_for_one_young_assault/portrait.webp",
-        "tuning": "assets/mhur_database/characters/all_for_one_young_assault/tuning.webp",
-        "alpha": "assets/mhur_database/characters/all_for_one_young_assault/alpha.webp",
-        "beta": "assets/mhur_database/characters/all_for_one_young_assault/beta.webp",
-        "gamma": "assets/mhur_database/characters/all_for_one_young_assault/gamma.webp",
-        "special": "assets/mhur_database/characters/all_for_one_young_assault/special.webp",
-        "gamma_hold": "assets/mhur_database/characters/all_for_one_young_assault/gamma_hold.webp",
-        "beta_hold": "assets/mhur_database/characters/all_for_one_young_assault/beta_hold.webp"
+        "portrait": "assets/all_for_one_young/all_for_one_young_assault/portrait.png",
+        "tuning": "assets/all_for_one_young/all_for_one_young_assault/tuning.webp",
+        "alpha": "assets/all_for_one_young/all_for_one_young_assault/alpha.webp",
+        "beta": "assets/all_for_one_young/all_for_one_young_assault/beta.webp",
+        "gamma": "assets/all_for_one_young/all_for_one_young_assault/gamma.webp",
+        "special": "assets/all_for_one_young/all_for_one_young_assault/special.webp",
+        "beta_hold": "assets/all_for_one_young/all_for_one_young_assault/beta_hold.webp",
+        "gamma_hold": "assets/all_for_one_young/all_for_one_young_assault/gamma_hold.webp"
       }
     },
     "gentle_criminal_technical": {
@@ -25467,12 +25477,12 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/gentle_criminal_technical/portrait.png",
-        "tuning": "assets/mhur_database/characters/gentle_criminal_technical/tuning.png",
-        "alpha": "assets/mhur_database/characters/gentle_criminal_technical/alpha.png",
-        "beta": "assets/mhur_database/characters/gentle_criminal_technical/beta.png",
-        "gamma": "assets/mhur_database/characters/gentle_criminal_technical/gamma.png",
-        "special": "assets/mhur_database/characters/gentle_criminal_technical/special.png"
+        "portrait": "assets/gentle_criminal/gentle_criminal_technical/portrait.png",
+        "tuning": "assets/gentle_criminal/gentle_criminal_technical/tuning.png",
+        "alpha": "assets/gentle_criminal/gentle_criminal_technical/alpha.png",
+        "beta": "assets/gentle_criminal/gentle_criminal_technical/beta.png",
+        "gamma": "assets/gentle_criminal/gentle_criminal_technical/gamma.png",
+        "special": "assets/gentle_criminal/gentle_criminal_technical/special.png"
       }
     },
     "kaminari_technical": {
@@ -25909,13 +25919,13 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/kaminari_technical/portrait.webp",
-        "tuning": "assets/mhur_database/characters/kaminari_technical/tuning.webp",
-        "alpha": "assets/mhur_database/characters/kaminari_technical/alpha.webp",
-        "beta": "assets/mhur_database/characters/kaminari_technical/beta.webp",
-        "gamma": "assets/mhur_database/characters/kaminari_technical/gamma.webp",
-        "special": "assets/mhur_database/characters/kaminari_technical/special.webp",
-        "alpha_hold": "assets/mhur_database/characters/kaminari_technical/alpha_hold.webp"
+        "portrait": "assets/kaminari/kaminari_technical/portrait.png",
+        "tuning": "assets/kaminari/kaminari_technical/tuning.webp",
+        "alpha": "assets/kaminari/kaminari_technical/alpha.webp",
+        "beta": "assets/kaminari/kaminari_technical/beta.webp",
+        "gamma": "assets/kaminari/kaminari_technical/gamma.webp",
+        "alpha_hold": "assets/kaminari/kaminari_technical/alpha_hold.webp",
+        "special": "assets/kaminari/kaminari_technical/special.webp"
       }
     },
     "armored_all_might_technical": {
@@ -26100,14 +26110,14 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/armored_all_might_technical/portrait.webp",
-        "tuning": "assets/mhur_database/characters/armored_all_might_technical/tuning.webp",
-        "alpha": "assets/mhur_database/characters/armored_all_might_technical/alpha.webp",
-        "beta": "assets/mhur_database/characters/armored_all_might_technical/beta.webp",
-        "gamma": "assets/mhur_database/characters/armored_all_might_technical/gamma.webp",
-        "special": "assets/mhur_database/characters/armored_all_might_technical/special.webp",
-        "beta_hold": "assets/mhur_database/characters/armored_all_might_technical/beta_hold.webp",
-        "alpha_hold": "assets/mhur_database/characters/armored_all_might_technical/alpha_hold.webp"
+        "portrait": "assets/armored_all_might/armored_all_might_technical/portrait.png",
+        "tuning": "assets/armored_all_might/armored_all_might_technical/tuning.webp",
+        "alpha": "assets/armored_all_might/armored_all_might_technical/alpha.webp",
+        "beta": "assets/armored_all_might/armored_all_might_technical/beta.webp",
+        "gamma": "assets/armored_all_might/armored_all_might_technical/gamma.webp",
+        "special": "assets/armored_all_might/armored_all_might_technical/special.webp",
+        "alpha_hold": "assets/armored_all_might/armored_all_might_technical/alpha_hold.webp",
+        "beta_hold": "assets/armored_all_might/armored_all_might_technical/beta_hold.webp"
       }
     },
     "kurogiri_support": {
@@ -26411,13 +26421,13 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/kurogiri_support/portrait.webp",
-        "tuning": "assets/mhur_database/characters/kurogiri_support/tuning.webp",
-        "alpha": "assets/mhur_database/characters/kurogiri_support/alpha.webp",
-        "beta": "assets/mhur_database/characters/kurogiri_support/beta.webp",
-        "gamma": "assets/mhur_database/characters/kurogiri_support/gamma.webp",
-        "special": "assets/mhur_database/characters/kurogiri_support/special.webp",
-        "gamma_hold": "assets/mhur_database/characters/kurogiri_support/gamma_hold.webp"
+        "portrait": "assets/kurogiri/kurogiri_support/portrait.png",
+        "tuning": "assets/kurogiri/kurogiri_support/tuning.webp",
+        "alpha": "assets/kurogiri/kurogiri_support/alpha.webp",
+        "beta": "assets/kurogiri/kurogiri_support/beta.webp",
+        "gamma": "assets/kurogiri/kurogiri_support/gamma.webp",
+        "special": "assets/kurogiri/kurogiri_support/special.webp",
+        "gamma_hold": "assets/kurogiri/kurogiri_support/gamma_hold.webp"
       }
     },
     "assault": {
@@ -26646,13 +26656,13 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/assault/portrait.webp",
-        "tuning": "assets/mhur_database/characters/assault/tuning.png",
-        "alpha": "assets/mhur_database/characters/assault/alpha.webp",
-        "beta": "assets/mhur_database/characters/assault/beta.webp",
-        "gamma": "assets/mhur_database/characters/assault/gamma.webp",
-        "special": "assets/mhur_database/characters/assault/special.png",
-        "alpha_fullburst": "assets/mhur_database/characters/assault/alpha_fullburst.webp"
+        "portrait": "assets/midoriya/midoriya_assault/portrait.png",
+        "tuning": "assets/midoriya/midoriya_assault/tuning.png",
+        "alpha": "assets/midoriya/midoriya_assault/alpha.webp",
+        "beta": "assets/midoriya/midoriya_assault/beta.webp",
+        "gamma": "assets/midoriya/midoriya_assault/gamma.webp",
+        "special": "assets/midoriya/midoriya_assault/special.png",
+        "alpha_fullburst": "assets/midoriya/midoriya_assault/alpha_fullburst.webp"
       }
     },
     "fullbullet": {
@@ -27162,12 +27172,12 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/fullbullet/portrait.webp",
-        "tuning": "assets/mhur_database/characters/fullbullet/tuning.webp",
-        "alpha": "assets/mhur_database/characters/fullbullet/alpha.webp",
-        "beta": "assets/mhur_database/characters/fullbullet/beta.webp",
-        "gamma": "assets/mhur_database/characters/fullbullet/gamma.webp",
-        "special": "assets/mhur_database/characters/fullbullet/special.png"
+        "portrait": "assets/midoriya/midoriya_attack/portrait.png",
+        "tuning": "assets/midoriya/midoriya_attack/tuning.webp",
+        "alpha": "assets/midoriya/midoriya_attack/alpha.webp",
+        "beta": "assets/midoriya/midoriya_attack/beta.webp",
+        "gamma": "assets/midoriya/midoriya_attack/gamma.webp",
+        "special": "assets/midoriya/midoriya_attack/special.png"
       }
     },
     "ofa": {
@@ -27408,15 +27418,14 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/ofa/portrait.webp",
-        "tuning": "assets/mhur_database/characters/ofa/tuning.webp",
-        "alpha": "assets/mhur_database/characters/ofa/alpha.webp",
-        "beta": "assets/mhur_database/characters/ofa/beta.webp",
-        "gamma": "assets/mhur_database/characters/ofa/gamma.webp",
-        "special": "assets/mhur_database/characters/ofa/special.webp",
-        "gamma_hold": "assets/mhur_database/characters/ofa/gamma_hold.webp",
-        "beta_hold": "assets/mhur_database/characters/ofa/beta_hold.webp",
-        "character": "assets/mhur_database/characters/ofa/character.webp"
+        "portrait": "assets/midoriya_ofa/portrait.png",
+        "tuning": "assets/midoriya_ofa/tuning.webp",
+        "alpha": "assets/midoriya_ofa/alpha.webp",
+        "beta": "assets/midoriya_ofa/beta.webp",
+        "gamma": "assets/midoriya_ofa/gamma.webp",
+        "special": "assets/midoriya_ofa/special.webp",
+        "beta_hold": "assets/midoriya_ofa/beta_hold.webp",
+        "gamma_hold": "assets/midoriya_ofa/gamma_hold.webp"
       }
     },
     "bakugo_attack": {
@@ -27843,12 +27852,12 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/bakugo_attack/portrait.webp",
-        "tuning": "assets/mhur_database/characters/bakugo_attack/tuning.webp",
-        "alpha": "assets/mhur_database/characters/bakugo_attack/alpha.webp",
-        "beta": "assets/mhur_database/characters/bakugo_attack/beta.webp",
-        "gamma": "assets/mhur_database/characters/bakugo_attack/gamma.webp",
-        "special": "assets/mhur_database/characters/bakugo_attack/special.webp"
+        "portrait": "assets/bakugo/bakugo_attack/portrait.png",
+        "tuning": "assets/bakugo/bakugo_attack/tuning.webp",
+        "alpha": "assets/bakugo/bakugo_attack/alpha.webp",
+        "beta": "assets/bakugo/bakugo_attack/beta.webp",
+        "gamma": "assets/bakugo/bakugo_attack/gamma.webp",
+        "special": "assets/bakugo/bakugo_attack/special.webp"
       }
     },
     "bakugo_rapid": {
@@ -28220,12 +28229,12 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/bakugo_rapid/portrait.webp",
-        "tuning": "assets/mhur_database/characters/bakugo_rapid/tuning.webp",
-        "alpha": "assets/mhur_database/characters/bakugo_rapid/alpha.webp",
-        "beta": "assets/mhur_database/characters/bakugo_rapid/beta.webp",
-        "gamma": "assets/mhur_database/characters/bakugo_rapid/gamma.webp",
-        "special": "assets/mhur_database/characters/bakugo_rapid/special.webp"
+        "portrait": "assets/bakugo/bakugo_rapid/portrait.png",
+        "tuning": "assets/bakugo/bakugo_rapid/tuning.webp",
+        "alpha": "assets/bakugo/bakugo_rapid/alpha.webp",
+        "beta": "assets/bakugo/bakugo_rapid/beta.webp",
+        "gamma": "assets/bakugo/bakugo_rapid/gamma.webp",
+        "special": "assets/bakugo/bakugo_rapid/special.webp"
       }
     },
     "bakugo_technical": {
@@ -29059,12 +29068,12 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/bakugo_technical/portrait.webp",
-        "tuning": "assets/mhur_database/characters/bakugo_technical/tuning.webp",
-        "alpha": "assets/mhur_database/characters/bakugo_technical/alpha.webp",
-        "beta": "assets/mhur_database/characters/bakugo_technical/beta.webp",
-        "gamma": "assets/mhur_database/characters/bakugo_technical/gamma.webp",
-        "special": "assets/mhur_database/characters/bakugo_technical/special.webp"
+        "portrait": "assets/bakugo/bakugo_technical/portrait.png",
+        "tuning": "assets/bakugo/bakugo_technical/tuning.webp",
+        "alpha": "assets/bakugo/bakugo_technical/alpha.webp",
+        "beta": "assets/bakugo/bakugo_technical/beta.webp",
+        "gamma": "assets/bakugo/bakugo_technical/gamma.webp",
+        "special": "assets/bakugo/bakugo_technical/special.webp"
       }
     },
     "ochaco_rapid": {
@@ -29403,13 +29412,13 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/ochaco_rapid/portrait.webp",
-        "tuning": "assets/mhur_database/characters/ochaco_rapid/tuning.webp",
-        "alpha": "assets/mhur_database/characters/ochaco_rapid/alpha.webp",
-        "beta": "assets/mhur_database/characters/ochaco_rapid/beta.webp",
-        "gamma": "assets/mhur_database/characters/ochaco_rapid/gamma.webp",
-        "special": "assets/mhur_database/characters/ochaco_rapid/special.webp",
-        "gamma_hold": "assets/mhur_database/characters/ochaco_rapid/gamma_hold.webp"
+        "portrait": "assets/ochaco/ochaco_rapid/portrait.png",
+        "tuning": "assets/ochaco/ochaco_rapid/tuning.webp",
+        "alpha": "assets/ochaco/ochaco_rapid/alpha.webp",
+        "beta": "assets/ochaco/ochaco_rapid/beta.webp",
+        "gamma": "assets/ochaco/ochaco_rapid/gamma.webp",
+        "special": "assets/ochaco/ochaco_rapid/special.webp",
+        "gamma_hold": "assets/ochaco/ochaco_rapid/gamma_hold.webp"
       }
     },
     "ochaco_assault": {
@@ -29616,14 +29625,14 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/ochaco_assault/portrait.webp",
-        "tuning": "assets/mhur_database/characters/ochaco_assault/tuning.webp",
-        "alpha": "assets/mhur_database/characters/ochaco_assault/alpha.webp",
-        "beta": "assets/mhur_database/characters/ochaco_assault/beta.webp",
-        "gamma": "assets/mhur_database/characters/ochaco_assault/gamma.webp",
-        "special": "assets/mhur_database/characters/ochaco_assault/special.webp",
-        "gamma_hold": "assets/mhur_database/characters/ochaco_assault/gamma_hold.webp",
-        "alpha_hold": "assets/mhur_database/characters/ochaco_assault/alpha_hold.webp"
+        "portrait": "assets/ochaco/ochaco_assault/portrait.png",
+        "tuning": "assets/ochaco/ochaco_assault/tuning.webp",
+        "alpha": "assets/ochaco/ochaco_assault/alpha.webp",
+        "beta": "assets/ochaco/ochaco_assault/beta.webp",
+        "gamma": "assets/ochaco/ochaco_assault/gamma.webp",
+        "alpha_hold": "assets/ochaco/ochaco_assault/alpha_hold.webp",
+        "gamma_hold": "assets/ochaco/ochaco_assault/gamma_hold.webp",
+        "special": "assets/ochaco/ochaco_assault/special.webp"
       }
     },
     "tenya_rapid": {
@@ -29905,12 +29914,12 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/tenya_rapid/portrait.webp",
-        "tuning": "assets/mhur_database/characters/tenya_rapid/tuning.webp",
-        "alpha": "assets/mhur_database/characters/tenya_rapid/alpha.webp",
-        "beta": "assets/mhur_database/characters/tenya_rapid/beta.webp",
-        "gamma": "assets/mhur_database/characters/tenya_rapid/gamma.webp",
-        "special": "assets/mhur_database/characters/tenya_rapid/special.webp"
+        "portrait": "assets/tenya/tenya_rapid/portrait.png",
+        "tuning": "assets/tenya/tenya_rapid/tuning.webp",
+        "alpha": "assets/tenya/tenya_rapid/alpha.webp",
+        "beta": "assets/tenya/tenya_rapid/beta.webp",
+        "gamma": "assets/tenya/tenya_rapid/gamma.webp",
+        "special": "assets/tenya/tenya_rapid/special.webp"
       }
     },
     "shoto_attack": {
@@ -30249,13 +30258,13 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/shoto_attack/portrait.webp",
-        "tuning": "assets/mhur_database/characters/shoto_attack/tuning.webp",
-        "alpha": "assets/mhur_database/characters/shoto_attack/alpha.webp",
-        "beta": "assets/mhur_database/characters/shoto_attack/beta.webp",
-        "gamma": "assets/mhur_database/characters/shoto_attack/gamma.webp",
-        "special": "assets/mhur_database/characters/shoto_attack/special.webp",
-        "gamma_hold": "assets/mhur_database/characters/shoto_attack/gamma_hold.webp"
+        "portrait": "assets/shoto/shoto_attack/portrait.png",
+        "tuning": "assets/shoto/shoto_attack/tuning.webp",
+        "alpha": "assets/shoto/shoto_attack/alpha.webp",
+        "beta": "assets/shoto/shoto_attack/beta.webp",
+        "gamma": "assets/shoto/shoto_attack/gamma.webp",
+        "special": "assets/shoto/shoto_attack/special.webp",
+        "gamma_hold": "assets/shoto/shoto_attack/gamma_hold.webp"
       }
     },
     "shoto_technical": {
@@ -30664,13 +30673,13 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/shoto_technical/portrait.webp",
-        "tuning": "assets/mhur_database/characters/shoto_technical/tuning.webp",
-        "alpha": "assets/mhur_database/characters/shoto_technical/alpha.webp",
-        "beta": "assets/mhur_database/characters/shoto_technical/beta.webp",
-        "gamma": "assets/mhur_database/characters/shoto_technical/gamma.webp",
-        "special": "assets/mhur_database/characters/shoto_technical/special.webp",
-        "alpha_aim": "assets/mhur_database/characters/shoto_technical/alpha_aim.webp"
+        "portrait": "assets/shoto/shoto_technical/portrait.png",
+        "tuning": "assets/shoto/shoto_technical/tuning.webp",
+        "alpha": "assets/shoto/shoto_technical/alpha.webp",
+        "beta": "assets/shoto/shoto_technical/beta.webp",
+        "gamma": "assets/shoto/shoto_technical/gamma.webp",
+        "alpha_aim": "assets/shoto/shoto_technical/alpha_aim.webp",
+        "special": "assets/shoto/shoto_technical/special.webp"
       }
     },
     "tsuyu_rapid": {
@@ -31012,12 +31021,12 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/tsuyu_rapid/portrait.webp",
-        "tuning": "assets/mhur_database/characters/tsuyu_rapid/tuning.webp",
-        "alpha": "assets/mhur_database/characters/tsuyu_rapid/alpha.webp",
-        "beta": "assets/mhur_database/characters/tsuyu_rapid/beta.webp",
-        "gamma": "assets/mhur_database/characters/tsuyu_rapid/gamma.webp",
-        "special": "assets/mhur_database/characters/tsuyu_rapid/special.webp"
+        "portrait": "assets/tsuyu/tsuyu_rapid/portrait.png",
+        "tuning": "assets/tsuyu/tsuyu_rapid/tuning.webp",
+        "alpha": "assets/tsuyu/tsuyu_rapid/alpha.webp",
+        "beta": "assets/tsuyu/tsuyu_rapid/beta.webp",
+        "gamma": "assets/tsuyu/tsuyu_rapid/gamma.webp",
+        "special": "assets/tsuyu/tsuyu_rapid/special.webp"
       }
     },
     "kirishima_assault": {
@@ -31439,12 +31448,12 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/kirishima_assault/portrait.webp",
-        "tuning": "assets/mhur_database/characters/kirishima_assault/tuning.webp",
-        "alpha": "assets/mhur_database/characters/kirishima_assault/alpha.webp",
-        "beta": "assets/mhur_database/characters/kirishima_assault/beta.webp",
-        "gamma": "assets/mhur_database/characters/kirishima_assault/gamma.webp",
-        "special": "assets/mhur_database/characters/kirishima_assault/special.webp"
+        "portrait": "assets/kirishima/kirishima_assault/portrait.png",
+        "tuning": "assets/kirishima/kirishima_assault/tuning.webp",
+        "alpha": "assets/kirishima/kirishima_assault/alpha.webp",
+        "beta": "assets/kirishima/kirishima_assault/beta.webp",
+        "gamma": "assets/kirishima/kirishima_assault/gamma.webp",
+        "special": "assets/kirishima/kirishima_assault/special.webp"
       }
     },
     "kirishima_strike": {
@@ -32098,12 +32107,12 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/kirishima_strike/portrait.webp",
-        "tuning": "assets/mhur_database/characters/kirishima_strike/tuning.webp",
-        "alpha": "assets/mhur_database/characters/kirishima_strike/alpha.webp",
-        "beta": "assets/mhur_database/characters/kirishima_strike/beta.webp",
-        "gamma": "assets/mhur_database/characters/kirishima_strike/gamma.webp",
-        "special": "assets/mhur_database/characters/kirishima_strike/special.webp"
+        "portrait": "assets/kirishima/kirishima_strike/portrait.png",
+        "tuning": "assets/kirishima/kirishima_strike/tuning.webp",
+        "alpha": "assets/kirishima/kirishima_strike/alpha.webp",
+        "beta": "assets/kirishima/kirishima_strike/beta.webp",
+        "gamma": "assets/kirishima/kirishima_strike/gamma.webp",
+        "special": "assets/kirishima/kirishima_strike/special.webp"
       }
     },
     "momo_support": {
@@ -32525,12 +32534,12 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/momo_support/portrait.webp",
-        "tuning": "assets/mhur_database/characters/momo_support/tuning.webp",
-        "alpha": "assets/mhur_database/characters/momo_support/alpha.webp",
-        "beta": "assets/mhur_database/characters/momo_support/beta.webp",
-        "gamma": "assets/mhur_database/characters/momo_support/gamma.webp",
-        "special": "assets/mhur_database/characters/momo_support/special.webp"
+        "portrait": "assets/momo/momo_support/portrait.png",
+        "tuning": "assets/momo/momo_support/tuning.webp",
+        "alpha": "assets/momo/momo_support/alpha.webp",
+        "beta": "assets/momo/momo_support/beta.webp",
+        "gamma": "assets/momo/momo_support/gamma.webp",
+        "special": "assets/momo/momo_support/special.webp"
       }
     },
     "tokoyami_assault": {
@@ -32827,12 +32836,12 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/tokoyami_assault/portrait.webp",
-        "tuning": "assets/mhur_database/characters/tokoyami_assault/tuning.webp",
-        "alpha": "assets/mhur_database/characters/tokoyami_assault/alpha.webp",
-        "beta": "assets/mhur_database/characters/tokoyami_assault/beta.webp",
-        "gamma": "assets/mhur_database/characters/tokoyami_assault/gamma.webp",
-        "special": "assets/mhur_database/characters/tokoyami_assault/special.webp"
+        "portrait": "assets/tokoyami/tokoyami_assault/portrait.png",
+        "tuning": "assets/tokoyami/tokoyami_assault/tuning.webp",
+        "alpha": "assets/tokoyami/tokoyami_assault/alpha.webp",
+        "beta": "assets/tokoyami/tokoyami_assault/beta.webp",
+        "gamma": "assets/tokoyami/tokoyami_assault/gamma.webp",
+        "special": "assets/tokoyami/tokoyami_assault/special.webp"
       }
     },
     "kaminari_strike": {
@@ -33374,12 +33383,12 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/kaminari_strike/portrait.webp",
-        "tuning": "assets/mhur_database/characters/kaminari_strike/tuning.webp",
-        "alpha": "assets/mhur_database/characters/kaminari_strike/alpha.webp",
-        "beta": "assets/mhur_database/characters/kaminari_strike/beta.webp",
-        "gamma": "assets/mhur_database/characters/kaminari_strike/gamma.webp",
-        "special": "assets/mhur_database/characters/kaminari_strike/special.webp"
+        "portrait": "assets/kaminari/kaminari_strike/portrait.png",
+        "tuning": "assets/kaminari/kaminari_strike/tuning.webp",
+        "alpha": "assets/kaminari/kaminari_strike/alpha.webp",
+        "beta": "assets/kaminari/kaminari_strike/beta.webp",
+        "gamma": "assets/kaminari/kaminari_strike/gamma.webp",
+        "special": "assets/kaminari/kaminari_strike/special.webp"
       }
     },
     "monoma_technical": {
@@ -33651,12 +33660,12 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/monoma_technical/portrait.webp",
-        "tuning": "assets/mhur_database/characters/monoma_technical/tuning.webp",
-        "alpha": "assets/mhur_database/characters/monoma_technical/alpha.webp",
-        "beta": "assets/mhur_database/characters/monoma_technical/beta.webp",
-        "gamma": "assets/mhur_database/characters/monoma_technical/gamma.webp",
-        "special": "assets/mhur_database/characters/monoma_technical/special.webp"
+        "portrait": "assets/monoma/monoma_technical/portrait.png",
+        "tuning": "assets/monoma/monoma_technical/tuning.webp",
+        "alpha": "assets/monoma/monoma_technical/alpha.webp",
+        "beta": "assets/monoma/monoma_technical/beta.webp",
+        "gamma": "assets/monoma/monoma_technical/gamma.webp",
+        "special": "assets/monoma/monoma_technical/special.webp"
       }
     },
     "kendo_assault": {
@@ -34024,12 +34033,12 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/kendo_assault/portrait.webp",
-        "tuning": "assets/mhur_database/characters/kendo_assault/tuning.webp",
-        "alpha": "assets/mhur_database/characters/kendo_assault/alpha.webp",
-        "beta": "assets/mhur_database/characters/kendo_assault/beta.webp",
-        "gamma": "assets/mhur_database/characters/kendo_assault/gamma.webp",
-        "special": "assets/mhur_database/characters/kendo_assault/special.webp"
+        "portrait": "assets/kendo/kendo_assault/portrait.png",
+        "tuning": "assets/kendo/kendo_assault/tuning.webp",
+        "alpha": "assets/kendo/kendo_assault/alpha.webp",
+        "beta": "assets/kendo/kendo_assault/beta.webp",
+        "gamma": "assets/kendo/kendo_assault/gamma.webp",
+        "special": "assets/kendo/kendo_assault/special.webp"
       }
     },
     "kendo_strike": {
@@ -34387,12 +34396,12 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/kendo_strike/portrait.webp",
-        "tuning": "assets/mhur_database/characters/kendo_strike/tuning.webp",
-        "alpha": "assets/mhur_database/characters/kendo_strike/alpha.webp",
-        "beta": "assets/mhur_database/characters/kendo_strike/beta.webp",
-        "gamma": "assets/mhur_database/characters/kendo_strike/gamma.webp",
-        "special": "assets/mhur_database/characters/kendo_strike/special.webp"
+        "portrait": "assets/kendo/kendo_strike/portrait.png",
+        "tuning": "assets/kendo/kendo_strike/tuning.webp",
+        "alpha": "assets/kendo/kendo_strike/alpha.webp",
+        "beta": "assets/kendo/kendo_strike/beta.webp",
+        "gamma": "assets/kendo/kendo_strike/gamma.webp",
+        "special": "assets/kendo/kendo_strike/special.webp"
       }
     },
     "ibara_support": {
@@ -34908,12 +34917,12 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/ibara_support/portrait.webp",
-        "tuning": "assets/mhur_database/characters/ibara_support/tuning.webp",
-        "alpha": "assets/mhur_database/characters/ibara_support/alpha.webp",
-        "beta": "assets/mhur_database/characters/ibara_support/beta.webp",
-        "gamma": "assets/mhur_database/characters/ibara_support/gamma.webp",
-        "special": "assets/mhur_database/characters/ibara_support/special.webp"
+        "portrait": "assets/ibara/ibara_support/portrait.png",
+        "tuning": "assets/ibara/ibara_support/tuning.webp",
+        "alpha": "assets/ibara/ibara_support/alpha.webp",
+        "beta": "assets/ibara/ibara_support/beta.webp",
+        "gamma": "assets/ibara/ibara_support/gamma.webp",
+        "special": "assets/ibara/ibara_support/special.webp"
       }
     },
     "mirio_rapid": {
@@ -35202,13 +35211,13 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/mirio_rapid/portrait.webp",
-        "tuning": "assets/mhur_database/characters/mirio_rapid/tuning.webp",
-        "alpha": "assets/mhur_database/characters/mirio_rapid/alpha.webp",
-        "beta": "assets/mhur_database/characters/mirio_rapid/beta.webp",
-        "gamma": "assets/mhur_database/characters/mirio_rapid/gamma.webp",
-        "special": "assets/mhur_database/characters/mirio_rapid/special.webp",
-        "alpha_hold": "assets/mhur_database/characters/mirio_rapid/alpha_hold.webp"
+        "portrait": "assets/mirio/mirio_rapid/portrait.png",
+        "tuning": "assets/mirio/mirio_rapid/tuning.webp",
+        "alpha": "assets/mirio/mirio_rapid/alpha.webp",
+        "beta": "assets/mirio/mirio_rapid/beta.webp",
+        "gamma": "assets/mirio/mirio_rapid/gamma.webp",
+        "special": "assets/mirio/mirio_rapid/special.webp",
+        "alpha_hold": "assets/mirio/mirio_rapid/alpha_hold.webp"
       }
     },
     "mirio_technical": {
@@ -35683,12 +35692,12 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/mirio_technical/portrait.webp",
-        "tuning": "assets/mhur_database/characters/mirio_technical/tuning.webp",
-        "alpha": "assets/mhur_database/characters/mirio_technical/alpha.webp",
-        "beta": "assets/mhur_database/characters/mirio_technical/beta.webp",
-        "gamma": "assets/mhur_database/characters/mirio_technical/gamma.webp",
-        "special": "assets/mhur_database/characters/mirio_technical/special.webp"
+        "portrait": "assets/mirio/mirio_technical/portrait.png",
+        "tuning": "assets/mirio/mirio_technical/tuning.webp",
+        "alpha": "assets/mirio/mirio_technical/alpha.webp",
+        "beta": "assets/mirio/mirio_technical/beta.webp",
+        "gamma": "assets/mirio/mirio_technical/gamma.webp",
+        "special": "assets/mirio/mirio_technical/special.webp"
       }
     },
     "tamaki_strike": {
@@ -36037,13 +36046,13 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/tamaki_strike/portrait.webp",
-        "tuning": "assets/mhur_database/characters/tamaki_strike/tuning.webp",
-        "alpha": "assets/mhur_database/characters/tamaki_strike/alpha.webp",
-        "beta": "assets/mhur_database/characters/tamaki_strike/beta.webp",
-        "gamma": "assets/mhur_database/characters/tamaki_strike/gamma.webp",
-        "special": "assets/mhur_database/characters/tamaki_strike/special.webp",
-        "alpha_hold": "assets/mhur_database/characters/tamaki_strike/alpha_hold.webp"
+        "portrait": "assets/tamaki/tamaki_strike/portrait.png",
+        "tuning": "assets/tamaki/tamaki_strike/tuning.webp",
+        "alpha": "assets/tamaki/tamaki_strike/alpha.webp",
+        "beta": "assets/tamaki/tamaki_strike/beta.webp",
+        "gamma": "assets/tamaki/tamaki_strike/gamma.webp",
+        "special": "assets/tamaki/tamaki_strike/special.webp",
+        "alpha_hold": "assets/tamaki/tamaki_strike/alpha_hold.webp"
       }
     },
     "nejire_technical": {
@@ -36415,12 +36424,12 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/nejire_technical/portrait.webp",
-        "tuning": "assets/mhur_database/characters/nejire_technical/tuning.webp",
-        "alpha": "assets/mhur_database/characters/nejire_technical/alpha.webp",
-        "beta": "assets/mhur_database/characters/nejire_technical/beta.webp",
-        "gamma": "assets/mhur_database/characters/nejire_technical/gamma.webp",
-        "special": "assets/mhur_database/characters/nejire_technical/special.webp"
+        "portrait": "assets/nejire/nejire_technical/portrait.png",
+        "tuning": "assets/nejire/nejire_technical/tuning.webp",
+        "alpha": "assets/nejire/nejire_technical/alpha.webp",
+        "beta": "assets/nejire/nejire_technical/beta.webp",
+        "gamma": "assets/nejire/nejire_technical/gamma.webp",
+        "special": "assets/nejire/nejire_technical/special.webp"
       }
     },
     "nejire_support": {
@@ -36806,12 +36815,12 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/nejire_support/portrait.webp",
-        "tuning": "assets/mhur_database/characters/nejire_support/tuning.webp",
-        "alpha": "assets/mhur_database/characters/nejire_support/alpha.webp",
-        "beta": "assets/mhur_database/characters/nejire_support/beta.webp",
-        "gamma": "assets/mhur_database/characters/nejire_support/gamma.webp",
-        "special": "assets/mhur_database/characters/nejire_support/special.webp"
+        "portrait": "assets/nejire/nejire_support/portrait.png",
+        "tuning": "assets/nejire/nejire_support/tuning.webp",
+        "alpha": "assets/nejire/nejire_support/alpha.webp",
+        "beta": "assets/nejire/nejire_support/beta.webp",
+        "gamma": "assets/nejire/nejire_support/gamma.webp",
+        "special": "assets/nejire/nejire_support/special.webp"
       }
     },
     "shinso_strike": {
@@ -37214,13 +37223,13 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/shinso_strike/portrait.webp",
-        "tuning": "assets/mhur_database/characters/shinso_strike/tuning.webp",
-        "alpha": "assets/mhur_database/characters/shinso_strike/alpha.webp",
-        "beta": "assets/mhur_database/characters/shinso_strike/beta.webp",
-        "gamma": "assets/mhur_database/characters/shinso_strike/gamma.webp",
-        "special": "assets/mhur_database/characters/shinso_strike/special.webp",
-        "beta_hold": "assets/mhur_database/characters/shinso_strike/beta_hold.webp"
+        "portrait": "assets/shinso/shinso_strike/portrait.png",
+        "tuning": "assets/shinso/shinso_strike/tuning.webp",
+        "alpha": "assets/shinso/shinso_strike/alpha.webp",
+        "beta": "assets/shinso/shinso_strike/beta.webp",
+        "gamma": "assets/shinso/shinso_strike/gamma.webp",
+        "special": "assets/shinso/shinso_strike/special.webp",
+        "beta_hold": "assets/shinso/shinso_strike/beta_hold.webp"
       }
     },
     "all_might_assault": {
@@ -37702,12 +37711,12 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/all_might_assault/portrait.webp",
-        "tuning": "assets/mhur_database/characters/all_might_assault/tuning.webp",
-        "alpha": "assets/mhur_database/characters/all_might_assault/alpha.webp",
-        "beta": "assets/mhur_database/characters/all_might_assault/beta.webp",
-        "gamma": "assets/mhur_database/characters/all_might_assault/gamma.webp",
-        "special": "assets/mhur_database/characters/all_might_assault/special.webp"
+        "portrait": "assets/all_might/all_might_assault/portrait.png",
+        "tuning": "assets/all_might/all_might_assault/tuning.webp",
+        "alpha": "assets/all_might/all_might_assault/alpha.webp",
+        "beta": "assets/all_might/all_might_assault/beta.webp",
+        "gamma": "assets/all_might/all_might_assault/gamma.webp",
+        "special": "assets/all_might/all_might_assault/special.webp"
       }
     },
     "all_might_rapid": {
@@ -38147,12 +38156,12 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/all_might_rapid/portrait.webp",
-        "tuning": "assets/mhur_database/characters/all_might_rapid/tuning.webp",
-        "alpha": "assets/mhur_database/characters/all_might_rapid/alpha.webp",
-        "beta": "assets/mhur_database/characters/all_might_rapid/beta.webp",
-        "gamma": "assets/mhur_database/characters/all_might_rapid/gamma.webp",
-        "special": "assets/mhur_database/characters/all_might_rapid/special.webp"
+        "portrait": "assets/all_might/all_might_rapid/portrait.png",
+        "tuning": "assets/all_might/all_might_rapid/tuning.webp",
+        "alpha": "assets/all_might/all_might_rapid/alpha.webp",
+        "beta": "assets/all_might/all_might_rapid/beta.webp",
+        "gamma": "assets/all_might/all_might_rapid/gamma.webp",
+        "special": "assets/all_might/all_might_rapid/special.webp"
       }
     },
     "aizawa_technical": {
@@ -38634,12 +38643,12 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/aizawa_technical/portrait.webp",
-        "tuning": "assets/mhur_database/characters/aizawa_technical/tuning.webp",
-        "alpha": "assets/mhur_database/characters/aizawa_technical/alpha.webp",
-        "beta": "assets/mhur_database/characters/aizawa_technical/beta.webp",
-        "gamma": "assets/mhur_database/characters/aizawa_technical/gamma.webp",
-        "special": "assets/mhur_database/characters/aizawa_technical/special.webp"
+        "portrait": "assets/aizawa/aizawa_technical/portrait.png",
+        "tuning": "assets/aizawa/aizawa_technical/tuning.webp",
+        "alpha": "assets/aizawa/aizawa_technical/alpha.webp",
+        "beta": "assets/aizawa/aizawa_technical/beta.webp",
+        "gamma": "assets/aizawa/aizawa_technical/gamma.webp",
+        "special": "assets/aizawa/aizawa_technical/special.webp"
       }
     },
     "aizawa_strike": {
@@ -39050,13 +39059,13 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/aizawa_strike/portrait.webp",
-        "tuning": "assets/mhur_database/characters/aizawa_strike/tuning.webp",
-        "alpha": "assets/mhur_database/characters/aizawa_strike/alpha.webp",
-        "beta": "assets/mhur_database/characters/aizawa_strike/beta.webp",
-        "gamma": "assets/mhur_database/characters/aizawa_strike/gamma.webp",
-        "special": "assets/mhur_database/characters/aizawa_strike/special.webp",
-        "beta_hold": "assets/mhur_database/characters/aizawa_strike/beta_hold.webp"
+        "portrait": "assets/aizawa/aizawa_strike/portrait.png",
+        "tuning": "assets/aizawa/aizawa_strike/tuning.webp",
+        "alpha": "assets/aizawa/aizawa_strike/alpha.webp",
+        "beta": "assets/aizawa/aizawa_strike/beta.webp",
+        "gamma": "assets/aizawa/aizawa_strike/gamma.webp",
+        "beta_hold": "assets/aizawa/aizawa_strike/beta_hold.webp",
+        "special": "assets/aizawa/aizawa_strike/special.webp"
       }
     },
     "present_mic_strike": {
@@ -39405,13 +39414,13 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/present_mic_strike/portrait.webp",
-        "tuning": "assets/mhur_database/characters/present_mic_strike/tuning.webp",
-        "alpha": "assets/mhur_database/characters/present_mic_strike/alpha.webp",
-        "beta": "assets/mhur_database/characters/present_mic_strike/beta.webp",
-        "gamma": "assets/mhur_database/characters/present_mic_strike/gamma.webp",
-        "special": "assets/mhur_database/characters/present_mic_strike/special.webp",
-        "beta_hold": "assets/mhur_database/characters/present_mic_strike/beta_hold.webp"
+        "portrait": "assets/present_mic/present_mic_strike/portrait.png",
+        "tuning": "assets/present_mic/present_mic_strike/tuning.webp",
+        "alpha": "assets/present_mic/present_mic_strike/alpha.webp",
+        "beta": "assets/present_mic/present_mic_strike/beta.webp",
+        "gamma": "assets/present_mic/present_mic_strike/gamma.webp",
+        "special": "assets/present_mic/present_mic_strike/special.webp",
+        "beta_hold": "assets/present_mic/present_mic_strike/beta_hold.webp"
       }
     },
     "present_mic_technical": {
@@ -39678,14 +39687,14 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/present_mic_technical/portrait.webp",
-        "tuning": "assets/mhur_database/characters/present_mic_technical/tuning.webp",
-        "alpha": "assets/mhur_database/characters/present_mic_technical/alpha.webp",
-        "beta": "assets/mhur_database/characters/present_mic_technical/beta.webp",
-        "gamma": "assets/mhur_database/characters/present_mic_technical/gamma.webp",
-        "special": "assets/mhur_database/characters/present_mic_technical/special.webp",
-        "beta_hold": "assets/mhur_database/characters/present_mic_technical/beta_hold.webp",
-        "alpha_hold": "assets/mhur_database/characters/present_mic_technical/alpha_hold.webp"
+        "portrait": "assets/present_mic/present_mic_technical/portrait.png",
+        "tuning": "assets/present_mic/present_mic_technical/tuning.webp",
+        "alpha": "assets/present_mic/present_mic_technical/alpha.webp",
+        "beta": "assets/present_mic/present_mic_technical/beta.webp",
+        "gamma": "assets/present_mic/present_mic_technical/gamma.webp",
+        "alpha_hold": "assets/present_mic/present_mic_technical/alpha_hold.webp",
+        "beta_hold": "assets/present_mic/present_mic_technical/beta_hold.webp",
+        "special": "assets/present_mic/present_mic_technical/special.webp"
       }
     },
     "endeavor_strike": {
@@ -40052,12 +40061,12 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/endeavor_strike/portrait.webp",
-        "tuning": "assets/mhur_database/characters/endeavor_strike/tuning.webp",
-        "alpha": "assets/mhur_database/characters/endeavor_strike/alpha.webp",
-        "beta": "assets/mhur_database/characters/endeavor_strike/beta.webp",
-        "gamma": "assets/mhur_database/characters/endeavor_strike/gamma.webp",
-        "special": "assets/mhur_database/characters/endeavor_strike/special.webp"
+        "portrait": "assets/endeavor/endeavor_strike/portrait.png",
+        "tuning": "assets/endeavor/endeavor_strike/tuning.webp",
+        "alpha": "assets/endeavor/endeavor_strike/alpha.webp",
+        "beta": "assets/endeavor/endeavor_strike/beta.webp",
+        "gamma": "assets/endeavor/endeavor_strike/gamma.webp",
+        "special": "assets/endeavor/endeavor_strike/special.webp"
       }
     },
     "endeavor_assault": {
@@ -40440,13 +40449,13 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/endeavor_assault/portrait.webp",
-        "tuning": "assets/mhur_database/characters/endeavor_assault/tuning.webp",
-        "alpha": "assets/mhur_database/characters/endeavor_assault/alpha.webp",
-        "beta": "assets/mhur_database/characters/endeavor_assault/beta.webp",
-        "gamma": "assets/mhur_database/characters/endeavor_assault/gamma.webp",
-        "special": "assets/mhur_database/characters/endeavor_assault/special.webp",
-        "beta_hold": "assets/mhur_database/characters/endeavor_assault/beta_hold.webp"
+        "portrait": "assets/endeavor/endeavor_assault/portrait.png",
+        "tuning": "assets/endeavor/endeavor_assault/tuning.webp",
+        "alpha": "assets/endeavor/endeavor_assault/alpha.webp",
+        "beta": "assets/endeavor/endeavor_assault/beta.webp",
+        "gamma": "assets/endeavor/endeavor_assault/gamma.webp",
+        "beta_hold": "assets/endeavor/endeavor_assault/beta_hold.webp",
+        "special": "assets/endeavor/endeavor_assault/special.webp"
       }
     },
     "hawks_rapid": {
@@ -40920,12 +40929,13 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/hawks_rapid/portrait.webp",
-        "tuning": "assets/mhur_database/characters/hawks_rapid/tuning.webp",
-        "alpha": "assets/mhur_database/characters/hawks_rapid/alpha.webp",
-        "beta": "assets/mhur_database/characters/hawks_rapid/beta.webp",
-        "gamma": "assets/mhur_database/characters/hawks_rapid/gamma.webp",
-        "special": "assets/mhur_database/characters/hawks_rapid/special.webp"
+        "portrait": "assets/hawks/hawks_rapid/hawks_rapid.png",
+        "tuning": "assets/hawks/hawks_rapid/tuning.webp",
+        "alpha": "assets/hawks/hawks_rapid/alpha.webp",
+        "beta": "assets/hawks/hawks_rapid/beta.webp",
+        "gamma": "assets/hawks/hawks_rapid/gamma.webp",
+        "special": "assets/hawks/hawks_rapid/special.webp",
+        "hawks_rapid": "assets/hawks/hawks_rapid/hawks_rapid.png"
       }
     },
     "hawks_strike": {
@@ -41453,12 +41463,12 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/hawks_strike/portrait.webp",
-        "tuning": "assets/mhur_database/characters/hawks_strike/tuning.webp",
-        "alpha": "assets/mhur_database/characters/hawks_strike/alpha.webp",
-        "beta": "assets/mhur_database/characters/hawks_strike/beta.webp",
-        "gamma": "assets/mhur_database/characters/hawks_strike/gamma.webp",
-        "special": "assets/mhur_database/characters/hawks_strike/special.webp"
+        "portrait": "assets/hawks/hawks_strike/portrait.png",
+        "tuning": "assets/hawks/hawks_strike/tuning.webp",
+        "alpha": "assets/hawks/hawks_strike/alpha.webp",
+        "beta": "assets/hawks/hawks_strike/beta.webp",
+        "gamma": "assets/hawks/hawks_strike/gamma.webp",
+        "special": "assets/hawks/hawks_strike/special.webp"
       }
     },
     "mirko_rapid": {
@@ -41904,12 +41914,12 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/mirko_rapid/portrait.webp",
-        "tuning": "assets/mhur_database/characters/mirko_rapid/tuning.webp",
-        "alpha": "assets/mhur_database/characters/mirko_rapid/alpha.webp",
-        "beta": "assets/mhur_database/characters/mirko_rapid/beta.webp",
-        "gamma": "assets/mhur_database/characters/mirko_rapid/gamma.webp",
-        "special": "assets/mhur_database/characters/mirko_rapid/special.webp"
+        "portrait": "assets/mirko/mirko_rapid/portrait.png",
+        "tuning": "assets/mirko/mirko_rapid/tuning.webp",
+        "alpha": "assets/mirko/mirko_rapid/alpha.webp",
+        "beta": "assets/mirko/mirko_rapid/beta.webp",
+        "gamma": "assets/mirko/mirko_rapid/gamma.webp",
+        "special": "assets/mirko/mirko_rapid/special.webp"
       }
     },
     "star_and_stripe_strike": {
@@ -42380,12 +42390,12 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/star_and_stripe_strike/portrait.webp",
-        "tuning": "assets/mhur_database/characters/star_and_stripe_strike/tuning.webp",
-        "alpha": "assets/mhur_database/characters/star_and_stripe_strike/alpha.webp",
-        "beta": "assets/mhur_database/characters/star_and_stripe_strike/beta.webp",
-        "gamma": "assets/mhur_database/characters/star_and_stripe_strike/gamma.webp",
-        "special": "assets/mhur_database/characters/star_and_stripe_strike/special.webp"
+        "portrait": "assets/star_and_stripe/star_and_stripe_strike/portrait.png",
+        "tuning": "assets/star_and_stripe/star_and_stripe_strike/tuning.webp",
+        "alpha": "assets/star_and_stripe/star_and_stripe_strike/alpha.webp",
+        "beta": "assets/star_and_stripe/star_and_stripe_strike/beta.webp",
+        "gamma": "assets/star_and_stripe/star_and_stripe_strike/gamma.webp",
+        "special": "assets/star_and_stripe/star_and_stripe_strike/special.webp"
       }
     },
     "mt_lady_assault": {
@@ -43035,12 +43045,12 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/mt_lady_assault/portrait.webp",
-        "tuning": "assets/mhur_database/characters/mt_lady_assault/tuning.webp",
-        "alpha": "assets/mhur_database/characters/mt_lady_assault/alpha.webp",
-        "beta": "assets/mhur_database/characters/mt_lady_assault/beta.webp",
-        "gamma": "assets/mhur_database/characters/mt_lady_assault/gamma.webp",
-        "special": "assets/mhur_database/characters/mt_lady_assault/special.webp"
+        "portrait": "assets/mt_lady/mt_lady_assault/portrait.png",
+        "tuning": "assets/mt_lady/mt_lady_assault/tuning.webp",
+        "alpha": "assets/mt_lady/mt_lady_assault/alpha.webp",
+        "beta": "assets/mt_lady/mt_lady_assault/beta.webp",
+        "gamma": "assets/mt_lady/mt_lady_assault/gamma.webp",
+        "special": "assets/mt_lady/mt_lady_assault/special.webp"
       }
     },
     "cementoss_support": {
@@ -43522,12 +43532,12 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/cementoss_support/portrait.webp",
-        "tuning": "assets/mhur_database/characters/cementoss_support/tuning.webp",
-        "alpha": "assets/mhur_database/characters/cementoss_support/alpha.webp",
-        "beta": "assets/mhur_database/characters/cementoss_support/beta.webp",
-        "gamma": "assets/mhur_database/characters/cementoss_support/gamma.webp",
-        "special": "assets/mhur_database/characters/cementoss_support/special.webp"
+        "portrait": "assets/cementoss/cementoss_support/portrait.png",
+        "tuning": "assets/cementoss/cementoss_support/tuning.webp",
+        "alpha": "assets/cementoss/cementoss_support/alpha.webp",
+        "beta": "assets/cementoss/cementoss_support/beta.webp",
+        "gamma": "assets/cementoss/cementoss_support/gamma.webp",
+        "special": "assets/cementoss/cementoss_support/special.webp"
       }
     },
     "shigaraki_strike": {
@@ -43983,12 +43993,12 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/shigaraki_strike/portrait.webp",
-        "tuning": "assets/mhur_database/characters/shigaraki_strike/tuning.webp",
-        "alpha": "assets/mhur_database/characters/shigaraki_strike/alpha.webp",
-        "beta": "assets/mhur_database/characters/shigaraki_strike/beta.webp",
-        "gamma": "assets/mhur_database/characters/shigaraki_strike/gamma.webp",
-        "special": "assets/mhur_database/characters/shigaraki_strike/special.webp"
+        "portrait": "assets/shigaraki/shigaraki_strike/portrait.png",
+        "tuning": "assets/shigaraki/shigaraki_strike/tuning.webp",
+        "alpha": "assets/shigaraki/shigaraki_strike/alpha.webp",
+        "beta": "assets/shigaraki/shigaraki_strike/beta.webp",
+        "gamma": "assets/shigaraki/shigaraki_strike/gamma.webp",
+        "special": "assets/shigaraki/shigaraki_strike/special.webp"
       }
     },
     "shigaraki_assault": {
@@ -44540,12 +44550,12 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/shigaraki_assault/portrait.webp",
-        "tuning": "assets/mhur_database/characters/shigaraki_assault/tuning.webp",
-        "alpha": "assets/mhur_database/characters/shigaraki_assault/alpha.webp",
-        "beta": "assets/mhur_database/characters/shigaraki_assault/beta.webp",
-        "gamma": "assets/mhur_database/characters/shigaraki_assault/gamma.webp",
-        "special": "assets/mhur_database/characters/shigaraki_assault/special.webp"
+        "portrait": "assets/shigaraki/shigaraki_assault/portrait.png",
+        "tuning": "assets/shigaraki/shigaraki_assault/tuning.webp",
+        "alpha": "assets/shigaraki/shigaraki_assault/alpha.webp",
+        "beta": "assets/shigaraki/shigaraki_assault/beta.webp",
+        "gamma": "assets/shigaraki/shigaraki_assault/gamma.webp",
+        "special": "assets/shigaraki/shigaraki_assault/special.webp"
       }
     },
     "shigaraki_technical": {
@@ -44903,13 +44913,13 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/shigaraki_technical/portrait.webp",
-        "tuning": "assets/mhur_database/characters/shigaraki_technical/tuning.webp",
-        "alpha": "assets/mhur_database/characters/shigaraki_technical/alpha.webp",
-        "beta": "assets/mhur_database/characters/shigaraki_technical/beta.webp",
-        "gamma": "assets/mhur_database/characters/shigaraki_technical/gamma.webp",
-        "special": "assets/mhur_database/characters/shigaraki_technical/special.webp",
-        "alpha_hold": "assets/mhur_database/characters/shigaraki_technical/alpha_hold.webp"
+        "portrait": "assets/shigaraki/shigaraki_technical/portrait.png",
+        "tuning": "assets/shigaraki/shigaraki_technical/tuning.webp",
+        "alpha": "assets/shigaraki/shigaraki_technical/alpha.webp",
+        "beta": "assets/shigaraki/shigaraki_technical/beta.webp",
+        "gamma": "assets/shigaraki/shigaraki_technical/gamma.webp",
+        "alpha_hold": "assets/shigaraki/shigaraki_technical/alpha_hold.webp",
+        "special": "assets/shigaraki/shigaraki_technical/special.webp"
       }
     },
     "all_for_one_technical": {
@@ -45266,12 +45276,12 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/all_for_one_technical/portrait.webp",
-        "tuning": "assets/mhur_database/characters/all_for_one_technical/tuning.webp",
-        "alpha": "assets/mhur_database/characters/all_for_one_technical/alpha.webp",
-        "beta": "assets/mhur_database/characters/all_for_one_technical/beta.webp",
-        "gamma": "assets/mhur_database/characters/all_for_one_technical/gamma.webp",
-        "special": "assets/mhur_database/characters/all_for_one_technical/special.webp"
+        "portrait": "assets/all_for_one/all_for_one_technical/portrait.png",
+        "tuning": "assets/all_for_one/all_for_one_technical/tuning.webp",
+        "alpha": "assets/all_for_one/all_for_one_technical/alpha.webp",
+        "beta": "assets/all_for_one/all_for_one_technical/beta.webp",
+        "gamma": "assets/all_for_one/all_for_one_technical/gamma.webp",
+        "special": "assets/all_for_one/all_for_one_technical/special.webp"
       }
     },
     "all_for_one_strike": {
@@ -45799,12 +45809,12 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/all_for_one_strike/portrait.webp",
-        "tuning": "assets/mhur_database/characters/all_for_one_strike/tuning.webp",
-        "alpha": "assets/mhur_database/characters/all_for_one_strike/alpha.webp",
-        "beta": "assets/mhur_database/characters/all_for_one_strike/beta.webp",
-        "gamma": "assets/mhur_database/characters/all_for_one_strike/gamma.webp",
-        "special": "assets/mhur_database/characters/all_for_one_strike/special.webp"
+        "portrait": "assets/all_for_one/all_for_one_strike/portrait.png",
+        "tuning": "assets/all_for_one/all_for_one_strike/tuning.webp",
+        "alpha": "assets/all_for_one/all_for_one_strike/alpha.webp",
+        "beta": "assets/all_for_one/all_for_one_strike/beta.webp",
+        "gamma": "assets/all_for_one/all_for_one_strike/gamma.webp",
+        "special": "assets/all_for_one/all_for_one_strike/special.webp"
       }
     },
     "dabi_technical": {
@@ -46126,12 +46136,12 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/dabi_technical/portrait.webp",
-        "tuning": "assets/mhur_database/characters/dabi_technical/tuning.webp",
-        "alpha": "assets/mhur_database/characters/dabi_technical/alpha.webp",
-        "beta": "assets/mhur_database/characters/dabi_technical/beta.webp",
-        "gamma": "assets/mhur_database/characters/dabi_technical/gamma.webp",
-        "special": "assets/mhur_database/characters/dabi_technical/special.webp"
+        "portrait": "assets/dabi/dabi_technical/portrait.png",
+        "tuning": "assets/dabi/dabi_technical/tuning.webp",
+        "alpha": "assets/dabi/dabi_technical/alpha.webp",
+        "beta": "assets/dabi/dabi_technical/beta.webp",
+        "gamma": "assets/dabi/dabi_technical/gamma.webp",
+        "special": "assets/dabi/dabi_technical/special.webp"
       }
     },
     "dabi_strike": {
@@ -46468,12 +46478,12 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/dabi_strike/portrait.webp",
-        "tuning": "assets/mhur_database/characters/dabi_strike/tuning.webp",
-        "alpha": "assets/mhur_database/characters/dabi_strike/alpha.webp",
-        "beta": "assets/mhur_database/characters/dabi_strike/beta.webp",
-        "gamma": "assets/mhur_database/characters/dabi_strike/gamma.webp",
-        "special": "assets/mhur_database/characters/dabi_strike/special.webp"
+        "portrait": "assets/dabi/dabi_strike/portrait.png",
+        "tuning": "assets/dabi/dabi_strike/tuning.webp",
+        "alpha": "assets/dabi/dabi_strike/alpha.webp",
+        "beta": "assets/dabi/dabi_strike/beta.webp",
+        "gamma": "assets/dabi/dabi_strike/gamma.webp",
+        "special": "assets/dabi/dabi_strike/special.webp"
       }
     },
     "toga_technical": {
@@ -46895,12 +46905,12 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/toga_technical/portrait.webp",
-        "tuning": "assets/mhur_database/characters/toga_technical/tuning.webp",
-        "alpha": "assets/mhur_database/characters/toga_technical/alpha.webp",
-        "beta": "assets/mhur_database/characters/toga_technical/beta.webp",
-        "gamma": "assets/mhur_database/characters/toga_technical/gamma.webp",
-        "special": "assets/mhur_database/characters/toga_technical/special.webp"
+        "portrait": "assets/toga/toga_technical/portrait.png",
+        "tuning": "assets/toga/toga_technical/tuning.webp",
+        "alpha": "assets/toga/toga_technical/alpha.webp",
+        "beta": "assets/toga/toga_technical/beta.webp",
+        "gamma": "assets/toga/toga_technical/gamma.webp",
+        "special": "assets/toga/toga_technical/special.webp"
       }
     },
     "toga_rapid": {
@@ -47392,12 +47402,12 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/toga_rapid/portrait.webp",
-        "tuning": "assets/mhur_database/characters/toga_rapid/tuning.webp",
-        "alpha": "assets/mhur_database/characters/toga_rapid/alpha.webp",
-        "beta": "assets/mhur_database/characters/toga_rapid/beta.webp",
-        "gamma": "assets/mhur_database/characters/toga_rapid/gamma.webp",
-        "special": "assets/mhur_database/characters/toga_rapid/special.webp"
+        "portrait": "assets/toga/toga_rapid/portrait.png",
+        "tuning": "assets/toga/toga_rapid/tuning.webp",
+        "alpha": "assets/toga/toga_rapid/alpha.webp",
+        "beta": "assets/toga/toga_rapid/beta.webp",
+        "gamma": "assets/toga/toga_rapid/gamma.webp",
+        "special": "assets/toga/toga_rapid/special.webp"
       }
     },
     "twice_rapid": {
@@ -47694,12 +47704,12 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/twice_rapid/portrait.webp",
-        "tuning": "assets/mhur_database/characters/twice_rapid/tuning.webp",
-        "alpha": "assets/mhur_database/characters/twice_rapid/alpha.webp",
-        "beta": "assets/mhur_database/characters/twice_rapid/beta.webp",
-        "gamma": "assets/mhur_database/characters/twice_rapid/gamma.webp",
-        "special": "assets/mhur_database/characters/twice_rapid/special.webp"
+        "portrait": "assets/twice/twice_rapid/portrait.png",
+        "tuning": "assets/twice/twice_rapid/tuning.webp",
+        "alpha": "assets/twice/twice_rapid/alpha.webp",
+        "beta": "assets/twice/twice_rapid/beta.webp",
+        "gamma": "assets/twice/twice_rapid/gamma.webp",
+        "special": "assets/twice/twice_rapid/special.webp"
       }
     },
     "mr_compress_support": {
@@ -48066,8 +48076,18 @@
       },
       "special_action": {
         "values": {
-          "columns": [],
-          "rows": []
+          "columns": [
+            "Ammo",
+            "Use Ammo",
+            "Reload"
+          ],
+          "rows": [
+            [
+              "x1",
+              "x1",
+              "1s"
+            ]
+          ]
         }
       },
       "normal_tuning": [
@@ -48101,12 +48121,12 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/mr_compress_support/portrait.webp",
-        "tuning": "assets/mhur_database/characters/mr_compress_support/tuning.webp",
-        "alpha": "assets/mhur_database/characters/mr_compress_support/alpha.webp",
-        "beta": "assets/mhur_database/characters/mr_compress_support/beta.webp",
-        "gamma": "assets/mhur_database/characters/mr_compress_support/gamma.webp",
-        "special": "assets/mhur_database/characters/mr_compress_support/special.webp"
+        "portrait": "assets/mr_compress/mr_compress_support/portrait.png",
+        "tuning": "assets/mr_compress/mr_compress_support/tuning.webp",
+        "alpha": "assets/mr_compress/mr_compress_support/alpha.webp",
+        "beta": "assets/mr_compress/mr_compress_support/beta.webp",
+        "gamma": "assets/mr_compress/mr_compress_support/gamma.webp",
+        "special": "assets/mr_compress/mr_compress_support/special.webp"
       }
     },
     "lady_nagant_strike": {
@@ -48526,12 +48546,12 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/lady_nagant_strike/portrait.webp",
-        "tuning": "assets/mhur_database/characters/lady_nagant_strike/tuning.webp",
-        "alpha": "assets/mhur_database/characters/lady_nagant_strike/alpha.webp",
-        "beta": "assets/mhur_database/characters/lady_nagant_strike/beta.webp",
-        "gamma": "assets/mhur_database/characters/lady_nagant_strike/gamma.webp",
-        "special": "assets/mhur_database/characters/lady_nagant_strike/special.webp"
+        "portrait": "assets/lady_nagant/lady_nagant_strike/portrait.png",
+        "tuning": "assets/lady_nagant/lady_nagant_strike/tuning.webp",
+        "alpha": "assets/lady_nagant/lady_nagant_strike/alpha.webp",
+        "beta": "assets/lady_nagant/lady_nagant_strike/beta.webp",
+        "gamma": "assets/lady_nagant/lady_nagant_strike/gamma.webp",
+        "special": "assets/lady_nagant/lady_nagant_strike/special.webp"
       }
     },
     "overhaul_support": {
@@ -48963,12 +48983,12 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/overhaul_support/portrait.webp",
-        "tuning": "assets/mhur_database/characters/overhaul_support/tuning.webp",
-        "alpha": "assets/mhur_database/characters/overhaul_support/alpha.webp",
-        "beta": "assets/mhur_database/characters/overhaul_support/beta.webp",
-        "gamma": "assets/mhur_database/characters/overhaul_support/gamma.webp",
-        "special": "assets/mhur_database/characters/overhaul_support/special.webp"
+        "portrait": "assets/overhaul/overhaul_support/portrait.png",
+        "tuning": "assets/overhaul/overhaul_support/tuning.webp",
+        "alpha": "assets/overhaul/overhaul_support/alpha.webp",
+        "beta": "assets/overhaul/overhaul_support/beta.webp",
+        "gamma": "assets/overhaul/overhaul_support/gamma.webp",
+        "special": "assets/overhaul/overhaul_support/special.webp"
       }
     },
     "overhaul_assault": {
@@ -49379,13 +49399,13 @@
         ]
       },
       "assets": {
-        "portrait": "assets/mhur_database/characters/overhaul_assault/portrait.webp",
-        "tuning": "assets/mhur_database/characters/overhaul_assault/tuning.webp",
-        "alpha": "assets/mhur_database/characters/overhaul_assault/alpha.webp",
-        "beta": "assets/mhur_database/characters/overhaul_assault/beta.webp",
-        "gamma": "assets/mhur_database/characters/overhaul_assault/gamma.webp",
-        "special": "assets/mhur_database/characters/overhaul_assault/special.webp",
-        "alpha_hold": "assets/mhur_database/characters/overhaul_assault/alpha_hold.webp"
+        "portrait": "assets/overhaul/overhaul_assault/portrait.png",
+        "tuning": "assets/overhaul/overhaul_assault/tuning.webp",
+        "alpha": "assets/overhaul/overhaul_assault/alpha.webp",
+        "beta": "assets/overhaul/overhaul_assault/beta.webp",
+        "gamma": "assets/overhaul/overhaul_assault/gamma.webp",
+        "alpha_hold": "assets/overhaul/overhaul_assault/alpha_hold.webp",
+        "special": "assets/overhaul/overhaul_assault/special.webp"
       }
     }
   },

@@ -1,0 +1,15 @@
+MHUR NEXUS — V31 LÉGER (SANS LE DOSSIER ASSETS)
+================================================
+
+Ce ZIP est volontairement petit : il ne contient pas les 187 Mo de assets.zip.
+
+Installation :
+1. Copie le contenu de ce ZIP par-dessus ton dossier mhur-france.
+2. Place TON fichier assets.zip dans le dossier mhur-france.
+3. Lance INSTALLER_MES_ASSETS.bat.
+4. Redéploie le dossier public.
+
+Résultat :
+- tes nouveaux assets sont installés dans public/assets ;
+- la mise à jour ne télécharge plus et ne remplace plus les portraits des personnages ;
+- l'interface des Alters conserve le texte blanc sur les fonds de rôle.

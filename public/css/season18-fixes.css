@@ -1902,3 +1902,43 @@ article[data-planned="tsuyu"] .s18PlannedTsuyuV14 img,
     height:100%!important;
   }
 }
+
+/* ========================================================================== */
+/* MHUR Nexus — Saison 18 v31 : texte lisible + portraits verrouillés        */
+/* ========================================================================== */
+.charPanel.s18CharacterDetailV10 .charTop .meta,
+.charPanel.s18CharacterDetailV9 .charTop .meta,
+.charPanel.s18V14CharacterDetail .charTop .meta,
+.charPanel.s18V13CharacterDetail .charTop .meta,
+.charPanel.s18V12CharacterDetail .charTop .meta,
+.charPanel.s18CharacterDetailV10 .charTop .meta h2,
+.charPanel.s18CharacterDetailV9 .charTop .meta h2,
+.charPanel.s18V14CharacterDetail .charTop .meta h2,
+.charPanel.s18V13CharacterDetail .charTop .meta h2,
+.charPanel.s18V12CharacterDetail .charTop .meta h2,
+.charPanel.s18CharacterDetailV10 .charTop .meta p,
+.charPanel.s18CharacterDetailV9 .charTop .meta p,
+.charPanel.s18V14CharacterDetail .charTop .meta p,
+.charPanel.s18V13CharacterDetail .charTop .meta p,
+.charPanel.s18V12CharacterDetail .charTop .meta p,
+.charPanel.s18CharacterDetailV10 .charTop .meta b,
+.charPanel.s18CharacterDetailV9 .charTop .meta b,
+.charPanel.s18V14CharacterDetail .charTop .meta b,
+.charPanel.s18V13CharacterDetail .charTop .meta b,
+.charPanel.s18V12CharacterDetail .charTop .meta b,
+.charPanel[class*="role-"] .skillBox,
+.charPanel[class*="role-"] .skillBox h2,
+.charPanel[class*="role-"] .skillBox h3,
+.charPanel[class*="role-"] .skillBox h4,
+.charPanel[class*="role-"] .skillBox h5,
+.charPanel[class*="role-"] .skillBox p,
+.charPanel[class*="role-"] .skillDesc,
+.charPanel[class*="role-"] .s18QuirkTitleV9{
+  color:#fff!important;
+  text-shadow:0 2px 0 rgba(0,0,0,.9)!important;
+}
+.charPanel[class*="role-"] .badge,
+.charPanel[class*="role-"] .roleBadge,
+.charPanel[class*="role-"] .s18HpBadgeV9{
+  text-shadow:none!important;
+}

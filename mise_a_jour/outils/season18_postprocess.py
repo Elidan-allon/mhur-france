@@ -1018,26 +1018,30 @@ def official_portrait_candidates(row: dict[str, Any]) -> list[str]:
 
 
 def download_official_portraits(session: requests.Session, root: Path, exact: dict[str, Any]) -> dict[str, str]:
+    """Utilise uniquement les portraits déjà présents dans le dossier assets.
+
+    Les mises à jour ne téléchargent plus et ne remplacent plus les photos de
+    profil des personnages. Le paramètre session est conservé pour compatibilité.
+    """
+    aliases = {
+        "assault": root / "assets/midoriya/midoriya_assault",
+        "fullbullet": root / "assets/midoriya/midoriya_attack",
+        "ofa": root / "assets/midoriya_ofa",
+    }
     result: dict[str, str] = {}
-    for style_key, row in exact.items():
-        for url in official_portrait_candidates(row or {}):
-            try:
-                response = session.get(url, headers={**HEADERS, "Accept": "image/avif,image/webp,image/*,*/*;q=0.8"}, timeout=30)
-                response.raise_for_status()
-                if len(response.content) < 500:
-                    continue
-                ext = Path(urlparse(url).path).suffix.lower()
-                if ext not in {".png", ".jpg", ".jpeg", ".webp", ".avif"}:
-                    ext = ".png"
-                rel = Path("assets/characters/official_portraits") / f"{style_key}{ext}"
-                dst = root / rel
-                dst.parent.mkdir(parents=True, exist_ok=True)
-                dst.write_bytes(response.content)
-                result[str(style_key)] = rel.as_posix()
+    for style_key in exact:
+        folders: list[Path] = []
+        if str(style_key) in aliases:
+            folders.append(aliases[str(style_key)])
+        folders.extend(p for p in root.glob(f"assets/*/{style_key}") if p.is_dir())
+        folders.extend(p for p in root.glob(f"assets/**/{style_key}") if p.is_dir() and "costume_photos" not in p.parts and "mhur_database" not in p.parts)
+        for folder in folders:
+            candidates = [folder / "portrait.png", folder / "portrait.webp", folder / "portrait.jpg", folder / "portrait.jpeg", folder / f"{style_key}.png"]
+            found = next((candidate for candidate in candidates if candidate.exists() and candidate.stat().st_size > 500), None)
+            if found:
+                result[str(style_key)] = found.relative_to(root).as_posix()
                 break
-            except requests.RequestException:
-                continue
-    print(f"[S18 PORTRAITS] officiels={len(result)}/{len(exact)}", flush=True)
+    print(f"[S18 PORTRAITS] locaux verrouillés={len(result)}/{len(exact)}", flush=True)
     return result
 
 

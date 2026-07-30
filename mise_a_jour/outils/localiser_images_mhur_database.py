@@ -154,7 +154,10 @@ def existing_style_source(root: Path, style_key: str, key: str) -> Path | None:
             if valid_image(candidate):
                 return candidate
         if key == "portrait":
-            for name in ("character.webp", "character.png", "profile.webp", "profile.png"):
+            for name in (
+                "character.webp", "character.png", "profile.webp", "profile.png",
+                f"{style_key}.png", f"{style_key}.webp",
+            ):
                 candidate = folder / name
                 if valid_image(candidate):
                     return candidate
@@ -173,15 +176,12 @@ def seed_existing_assets(root: Path, manifest: dict[str, Any], exact: dict[str, 
         assets = row.get("assets") or {}
         out = manifest["styles"].setdefault(str(style_key), {})
         for key in assets:
-            dst_dir = root / "assets/mhur_database/characters" / str(style_key)
             src = existing_style_source(root, str(style_key), str(key))
             if not src:
                 continue
-            dst = dst_dir / f"{key}{src.suffix.lower()}"
-            if not valid_image(dst):
-                dst.parent.mkdir(parents=True, exist_ok=True)
-                shutil.copy2(src, dst)
-            out[str(key)] = dst.relative_to(root).as_posix()
+            # Les assets fournis par le propriétaire restent la source directe.
+            # Aucun portrait de personnage n'est recopié ou remplacé.
+            out[str(key)] = src.relative_to(root).as_posix()
 
     for _cid, rows in (costume_data.get("costumes") or {}).items():
         for costume in rows:
@@ -253,9 +253,12 @@ def main() -> int:
     manifest: dict[str, Any] = {
         "meta": {
             "source": "https://ultrarumble.com",
-            "description": "Images officielles MHUR Database conservées localement.",
+            "description": "Assets locaux. Les portraits de personnages sont verrouillés sur le dossier assets fourni.",
         },
-        "styles": dict(previous.get("styles") or {}),
+        "styles": {
+            str(style_key): {str(k): str(v) for k, v in (row or {}).items() if str(k) != "portrait"}
+            for style_key, row in (previous.get("styles") or {}).items()
+        },
         "costumes": dict(previous.get("costumes") or {}),
     }
 
@@ -265,6 +268,8 @@ def main() -> int:
     # tuple(kind, destination, url, referer, manifest key encoded)
     for style_key, row in exact.items():
         for asset_key, url in (row.get("assets") or {}).items():
+            if str(asset_key) == "portrait":
+                continue
             if not isinstance(url, str) or not url.startswith("http"):
                 continue
             cached_rel = str((manifest.get("styles", {}).get(str(style_key), {}) or {}).get(str(asset_key)) or "")

@@ -18,7 +18,7 @@ function plannedCards(){
   return [
     `<button type="button" class="s18PlannedCardV12 s18PlannedCardV13 s18PlannedCardV14 is-clickable role-technical" data-planned="gentle" onclick="MHUR_S18_OPEN_PLANNED('gentle')" title="Gentle Criminal"><span class="s18PlannedArtV12 s18PlannedArtV13 s18PlannedArtV14"><img src="${root('assets/home/season18/gentle_s18_banner.webp')}" alt="Gentle Criminal" loading="eager" decoding="async" fetchpriority="high"></span><span class="s18PlannedShadeV12"></span><span class="s18PlannedTypeV12 character"><img src="${root('assets/home/icons/release_character.png')}" alt=""></span><span class="s18PlannedNewV12"></span><span class="s18PlannedTextV12"><b>Gentle Criminal</b><small>${tx('Nouveau personnage · Technique','New character · Technical')}</small><em>${tx('Disponible depuis le 29 juillet','Available since July 29')}</em></span></button>`,
     `<article class="s18PlannedCardV12 s18PlannedCardV13 s18PlannedCardV14 is-disabled role-support" data-planned="twice" aria-disabled="true" title="Twice — Sad Man's Parade"><span class="s18PlannedArtV12 s18PlannedArtV13 s18PlannedArtV14"><img src="${root('assets/home/season18/twice_s18_banner.webp')}" alt="Twice — Sad Man's Parade" loading="eager" decoding="async" fetchpriority="high"></span><span class="s18PlannedShadeV12"></span><span class="s18PlannedTypeV12 style"><img src="${root('assets/home/icons/release_style.png')}" alt=""></span><span class="s18PlannedNewV12"></span><span class="s18PlannedTextV12"><b>Twice</b><small>Sad Man's Parade · ${tx('Soutien','Support')}</small><em>${tx('Sortie le 19 août','Releases August 19')}</em></span></article>`,
-    `<article class="s18PlannedCardV12 s18PlannedCardV13 s18PlannedCardV14 is-disabled role-attack tsuyu wide" data-planned="tsuyu" aria-disabled="true" title="Tsuyu Asui"><span class="s18PlannedTsuyuV12 s18PlannedTsuyuV14"><img src="${root('assets/mhur_database/characters/tsuyu_rapid/portrait.webp')}" alt="Tsuyu Asui" loading="eager" decoding="async" fetchpriority="high"></span><span class="s18PlannedShadeV12"></span><span class="s18PlannedTypeV12 style"><img src="${root('assets/home/icons/release_style.png')}" alt=""></span><span class="s18PlannedNewV12"></span><span class="s18PlannedTextV12"><b>Tsuyu Asui</b><small>${tx('Nouveau style · nom à venir','New style · name to be announced')}</small><em>${tx('Prévu pendant la Saison 18','Planned during Season 18')}</em></span></article>`
+    `<article class="s18PlannedCardV12 s18PlannedCardV13 s18PlannedCardV14 is-disabled role-attack tsuyu wide" data-planned="tsuyu" aria-disabled="true" title="Tsuyu Asui"><span class="s18PlannedTsuyuV12 s18PlannedTsuyuV14"><img src="${root('assets/tsuyu/tsuyu_rapid/portrait.png')}" alt="Tsuyu Asui" loading="eager" decoding="async" fetchpriority="high"></span><span class="s18PlannedShadeV12"></span><span class="s18PlannedTypeV12 style"><img src="${root('assets/home/icons/release_style.png')}" alt=""></span><span class="s18PlannedNewV12"></span><span class="s18PlannedTextV12"><b>Tsuyu Asui</b><small>${tx('Nouveau style · nom à venir','New style · name to be announced')}</small><em>${tx('Prévu pendant la Saison 18','Planned during Season 18')}</em></span></article>`
   ].join('');
 }
 
@@ -44,7 +44,7 @@ function installOfficialPortraits(){
   Object.keys(styles).forEach(id=>{
     const row=database[id]||(/gentle[_-]?criminal/i.test(id)?database.gentle_criminal_technical:null)||{};
     if(row.portrait) styles[id].portrait=String(row.portrait);
-    else if(synced[id]) styles[id].portrait=String(synced[id]);
+    else if(synced[id]&&!/^https?:/i.test(String(synced[id]))) styles[id].portrait=String(synced[id]);
     if(row.special&&styles[id].special)styles[id].special.img=String(row.special);
     const byLetter={alpha:'α',beta:'β',gamma:'γ'};
     Object.entries(byLetter).forEach(([key,letter])=>{
@@ -96,7 +96,7 @@ function repairHeader(){
 function preloadPortraits(){
   const map=window.MHUR_DATABASE_ASSETS?.styles||{};
   const urls=[...Object.values(map).flatMap(row=>Object.values(row||{})).filter(Boolean),
-    'assets/mhur_database/characters/tsuyu_rapid/portrait.webp',
+    'assets/tsuyu/tsuyu_rapid/portrait.png',
     'assets/present_mic/present_mic_technical/portrait.webp',
     'assets/aizawa/aizawa_strike/portrait.webp',
     'assets/mirko/mirko_rapid/portrait.webp',
