@@ -1,0 +1,88 @@
+MHUR FRANCE — CORRECTIF V525
+================================
+
+POURQUOI LES ANCIENS CORRECTIFS NE CHANGEAIENT RIEN
+===================================================
+
+Dans l'état actuel du dépôt, public/index.html charge encore :
+
+css/v520-character-styles.css
+js/v520-character-styles.js
+
+Mais ces deux fichiers n'existent plus dans le dépôt.
+
+Les fichiers V524 sont bien présents dans public/css et public/js,
+mais public/index.html ne les charge pas. Le navigateur ne pouvait donc
+pas exécuter leurs corrections.
+
+V525 ne dépend plus d'un fichier CSS ou JavaScript externe :
+il ajoute directement le CSS et le JavaScript à la fin de index.html.
+Le vérificateur confirme ensuite que le code est réellement chargé.
+
+
+CE QUE V525 CORRIGE
+===================
+
+1. CARTES DE LA LISTE DES PERSONNAGES
+   - Toutes les cartes ont exactement la même taille.
+   - La partie haute est carrée et identique pour tous.
+   - La partie basse possède une hauteur fixe identique.
+   - Les portraits sont entiers, centrés et posés en bas.
+   - Les anciens décalages et zooms de Midoriya sont annulés.
+
+2. CARTES D'ALTERS
+   - Toutes mesurent exactement 330 x 450 px sur ordinateur.
+   - La zone photo intérieure mesure 322 x 322 px.
+   - La partie basse mesure 120 px.
+   - Gentle Criminal possède exactement les mêmes dimensions.
+   - Les images sont entières, centrées et posées en bas.
+
+3. GENTLE CRIMINAL
+   - Le bon portrait est physiquement inclus dans ce correctif.
+   - Il est copié sous un nouveau nom :
+     public/assets/gentle_criminal/gentle_criminal_technical/portrait_v525.png
+   - Le nouveau nom empêche l'ancien cache de réapparaître.
+   - La fiche locale, la fiche générée, les réductions et les cartes
+     visibles sont toutes forcées vers ce même portrait.
+   - L'ancien identifiant gentle_criminal_support est également corrigé.
+
+4. VÉRIFICATION
+   - Le programme vérifie que le CSS est vraiment dans index.html.
+   - Il vérifie que le JavaScript est vraiment dans index.html.
+   - Il vérifie que l'ancien V520 absent est retiré.
+   - Il vérifie que l'image Gentle existe.
+   - Il vérifie que home_data.js utilise la nouvelle image.
+
+
+INSTALLATION
+============
+
+1. Décompresse ce ZIP.
+2. Copie tout son contenu dans le dossier principal "mhur-france".
+   Tu dois voir les dossiers "public", "configuration", etc. au même niveau.
+3. Lance APPLIQUER_CORRECTIF_V525.bat.
+4. À la fin, la fenêtre doit écrire :
+   "Toutes les vérifications V525 sont bonnes."
+5. Si cette phrase n'apparaît pas, ne fais pas le Push.
+6. Dans GitHub Desktop :
+   - Commit to main
+   - Push origin
+7. Après le déploiement, recharge le site avec Ctrl + F5.
+
+
+FICHIERS QUI DOIVENT APPARAÎTRE DANS GITHUB DESKTOP
+====================================================
+
+public/index.html
+public/data/home_data.js
+public/assets/gentle_criminal/gentle_criminal_technical/portrait_v525.png
+
+
+SAUVEGARDES
+===========
+
+public/index.html.avant-v525.bak
+public/data/home_data.js.avant-v525.bak
+public/data/home_data.json.avant-v525.bak
+
+RETIRER_CORRECTIF_V525.bat restaure ces sauvegardes.
