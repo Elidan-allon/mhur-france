@@ -1,0 +1,13 @@
+CORRECTIF SAISON 18 V34
+
+Contenu :
+- Cartes personnages plus compactes
+- Cartes styles plus compactes
+- Cartes costumes un peu plus compactes
+- Alignement des portraits conservé en bas pour un rendu plus clean
+
+Installation :
+1. Ouvre le dossier du ZIP.
+2. Copie le dossier "mhur-france" sur ton projet.
+3. Accepte le remplacement du fichier :
+   public/css/season18-fixes.css

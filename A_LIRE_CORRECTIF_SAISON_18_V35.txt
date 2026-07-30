@@ -1,0 +1,15 @@
+CORRECTIF SAISON 18 V35
+
+Contenu :
+- Répare les portraits des réductions de points personnage
+- Utilise les portraits locaux MHUR Database pour les réductions
+- Ajoute un fond de rôle derrière les petites photos dans la zone build communauté / mini portraits
+
+Fichiers à remplacer :
+- public/js/season18-fixes.js
+- public/css/season18-fixes.css
+
+Installation :
+1. Ouvre le ZIP
+2. Copie le dossier mhur-france sur ton projet
+3. Accepte le remplacement des fichiers

@@ -121,26 +121,23 @@ function originalRemotePortrait(row){
   const original=list.find(x=>norm(x?.base_name||x?.name||'')===base&&Number(x?.variant_index||0)===0&&x?.assets?.portrait);
   return original?.assets?.portrait||'';
 }
-function localStyleAssetsV32(styleId){
-  const local=window.MHUR_LOCAL_ASSETS||{};
-  const map=local.styles||{};
-  const aliases=local.aliases||{};
-  const id=String(styleId||'');
-  const key=aliases[id]||id;
-  return map[id]||map[key]||(/gentle[_-]?criminal/i.test(id)?map.gentle_criminal_technical:null)||{};
-}
 function databaseStyleAssets(styleId){
-  const database=window.MHUR_DATABASE_ASSETS?.styles||{};
+  const map=window.MHUR_DATABASE_ASSETS?.styles||{};
   const id=String(styleId||'');
-  const old=database[id]||(/gentle[_-]?criminal/i.test(id)?database.gentle_criminal_technical||database.gentle_criminal:null)||{};
-  return {...old,...localStyleAssetsV32(id)};
+  if(map[id]) return map[id];
+  if(/gentle[_-]?criminal/i.test(id)) return map.gentle_criminal_technical||map.gentle_criminal||{};
+  return {};
 }
 function manualPortrait(styleId){
-  return localStyleAssetsV32(styleId).portrait||'';
+  return databaseStyleAssets(styleId).portrait||'';
 }
 function portraitCandidates(styleId,fallback){
-  const portrait=localStyleAssetsV32(styleId).portrait||'';
-  return portrait?[String(portrait)]:[];
+  const sync=window.MHUR_SEASON18_DATA?.official_portraits||{};
+  const row=remoteRowForStyle(styleId)||null;
+  const database=databaseStyleAssets(styleId);
+  const official=[database.portrait,sync[styleId],row?.assets?.portrait,...inferredRemotePortraits(row),originalRemotePortrait(row)].filter(Boolean).map(String);
+  if(official.length) return Array.from(new Set(official));
+  return Array.from(new Set([fallback].filter(Boolean).map(String)));
 }
 window.MHUR_S18_NEXT_IMAGE=function(image){
   try{
@@ -413,7 +410,7 @@ function seasonReleases(){
   return [
     {key:'gentle',kind:'character',charId:gentle?.id||'gentle_criminal',styleId:gentleStyle,title:'Gentle Criminal',subtitle:TX('Nouveau personnage · Technique','New character · Technical'),date:TX('Disponible depuis le 29 juillet','Available since July 29'),role:'technical',art:'assets/home/season18/gentle_s18_portrait.webp'},
     {key:'twice',kind:'style',charId:twice?.id||'twice',styleId:twiceStyle,title:'Twice',subtitle:"Sad Man's Parade · "+TX('Soutien','Support'),date:TX('Sortie le 19 août','Releases August 19'),role:'support',art:'assets/home/season18/twice_s18_portrait.webp'},
-    {key:'tsuyu',kind:'style',charId:tsuyu?.id||'tsuyu',styleId:tsuyuStyle,title:tsuyu?.name||'Tsuyu Asui',subtitle:TX('Nouveau style · nom à venir','New style · name to be announced'),date:TX('Prévu pendant la Saison 18','Planned during Season 18'),role:'attack',art:'assets/tsuyu/tsuyu_rapid/portrait.png',black:true}
+    {key:'tsuyu',kind:'style',charId:tsuyu?.id||'tsuyu',styleId:tsuyuStyle,title:tsuyu?.name||'Tsuyu Asui',subtitle:TX('Nouveau style · nom à venir','New style · name to be announced'),date:TX('Prévu pendant la Saison 18','Planned during Season 18'),role:'attack',art:'assets/mhur_database/characters/tsuyu_rapid/portrait.webp',black:true}
   ];
 }
 function seasonCard(item){
@@ -1255,3 +1252,145 @@ window.addEventListener('mhur:languagechange',patchDatabaseObjectsV29);
 window.MHUR_DATABASE_PATCH_V29={apply:patchDatabaseObjectsV29};
 })();
 
+
+/* ========================================================================== */
+/* MHUR Nexus — Saison 18 v35 : réductions + mini portraits communauté       */
+/* ========================================================================== */
+(function(){
+'use strict';
+
+const NORM=v=>String(v??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'_').replace(/^_|_$/g,'');
+const ESC=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const absAsset=v=>{
+  const raw=String(v||'').trim();
+  if(!raw) return '';
+  if(/^https?:\/\//i.test(raw)||raw.startsWith('data:')) return raw;
+  const clean=raw.replace(/^\/+/, '');
+  return typeof rootAsset==='function' ? rootAsset(clean) : `/${clean}`;
+};
+const ROLE_KEYS={
+  assault:['assaut','assault'],
+  attack:['attaque','attack','strike'],
+  rapid:['vitesse','rapid'],
+  technical:['technique','technical'],
+  support:['soutien','support']
+};
+const MINI_ROLE_CLASS={assault:'assault',attack:'attack',rapid:'rapid',technical:'technical',support:'support'};
+const DISCOUNT_STYLE_KEYS={
+  dj_board:'present_mic_technical',
+  d_j_board:'present_mic_technical',
+  flow_runner:'aizawa_strike',
+  gentle_criminal:'gentle_criminal',
+  factor_fusion:'overhaul_assault',
+  cluster:'bakugo_technical',
+  mirko:'mirko_rapid',
+  star_and_stripe:'star_and_stripe_strike',
+  star_stripe:'star_and_stripe_strike'
+};
+const DISCOUNT_FALLBACK={
+  gentle_criminal:'assets/home/season18/gentle_s18_portrait.webp'
+};
+const L=()=>typeof lang!=='undefined'&&lang==='en'?'en':'fr';
+
+function detectRole(text){
+  const t=NORM(text).replace(/_/g,' ');
+  for(const [role,terms] of Object.entries(ROLE_KEYS)){
+    if(terms.some(term=>t.includes(term))) return role;
+  }
+  return '';
+}
+function discountPortraitV35(name,image){
+  const key=NORM(name);
+  const styleKey=DISCOUNT_STYLE_KEYS[key]||'';
+  const dbPath=styleKey ? window.MHUR_DATABASE_ASSETS?.styles?.[styleKey]?.portrait : '';
+  const fallback=DISCOUNT_FALLBACK[key]||image||'';
+  return {
+    src: absAsset(dbPath||fallback),
+    fallback: absAsset(fallback)
+  };
+}
+function renderDiscountCardV35(item){
+  const art=discountPortraitV35(item?.name,item?.image);
+  const pts=String(item?.points??'');
+  const key=NORM(item?.name||'');
+  const onerr = `if(this.dataset.fallback&&this.src!==this.dataset.fallback){this.src=this.dataset.fallback;}else{this.onerror=null;this.style.opacity='0';}`;
+  return `<article class="discountCardV296 s18DiscountCardV19" data-discount="${ESC(key)}"><div class="s18DiscountArtV19"><img src="${ESC(art.src)}" data-fallback="${ESC(art.fallback)}" alt="${ESC(item?.name||'Discount')}" loading="lazy" decoding="async" onerror="${onerr}"></div><b>${ESC(item?.name||'')}</b><span>${ESC(pts)} Pts.</span></article>`;
+}
+function patchDiscountGridV35(){
+  const discounts=Array.isArray(window.MHUR_HOME_DATA?.discounts)?window.MHUR_HOME_DATA.discounts:[];
+  const empty=L()==='en'?'No discount.':'Aucune réduction.';
+  const html=discounts.length?discounts.map(renderDiscountCardV35).join(''):`<div class="emptyV296">${empty}</div>`;
+  const sig=String(discounts.length)+'|'+discounts.map(x=>`${NORM(x?.name)}:${x?.points??''}`).join('|')+'|'+L();
+  document.querySelectorAll('.discountGridV296').forEach(grid=>{
+    if(grid.dataset.s18DiscountSigV35===sig && grid.dataset.s18DiscountHtmlV35==='1') return;
+    grid.innerHTML=html;
+    grid.dataset.s18DiscountSigV35=sig;
+    grid.dataset.s18DiscountHtmlV35='1';
+  });
+}
+function wrapHomeDashboardV35(){
+  if(typeof window.renderHomeDashboard!=='function'||window.renderHomeDashboard.__s18v35) return;
+  const original=window.renderHomeDashboard;
+  const wrapped=function(){
+    const html=original.apply(this,arguments);
+    try{
+      const template=document.createElement('template');
+      template.innerHTML=String(html||'').trim();
+      const grid=template.content.querySelector('.discountGridV296');
+      if(grid){
+        const discounts=Array.isArray(window.MHUR_HOME_DATA?.discounts)?window.MHUR_HOME_DATA.discounts:[];
+        const empty=L()==='en'?'No discount.':'Aucune réduction.';
+        grid.innerHTML=discounts.length?discounts.map(renderDiscountCardV35).join(''):`<div class="emptyV296">${empty}</div>`;
+        return template.innerHTML;
+      }
+    }catch(_e){}
+    return html;
+  };
+  wrapped.__s18v35=true;
+  window.renderHomeDashboard=wrapped;
+  try{ renderHomeDashboard=wrapped; }catch(_e){}
+}
+
+function decorateMiniPortraitsV35(root=document){
+  const imgs=root.querySelectorAll('img');
+  imgs.forEach(img=>{
+    if(img.dataset.s18MiniBgV35) return;
+    const src=String(img.getAttribute('src')||'');
+    if(!/(portrait|mhur_database\/characters|fullbullet|ofa|bakugo|ochaco|midoriya|aizawa|present_mic|overhaul|mirko|tsuyu|kirishima|todoroki|cementoss|all_might|hawks)/i.test(src)) return;
+    const w=img.clientWidth||parseFloat(getComputedStyle(img).width)||0;
+    const h=img.clientHeight||parseFloat(getComputedStyle(img).height)||0;
+    if(w<24||h<24||w>90||h>90) return;
+    const owner=img.closest('button,a,article,li,div') || img.parentElement;
+    const text=[owner?.textContent,img.parentElement?.textContent,owner?.parentElement?.textContent].filter(Boolean).join(' ');
+    const role=detectRole(text);
+    if(!role) return;
+    const wrapper=document.createElement('span');
+    wrapper.className=`s18MiniPortraitRoleBgV35 role-${MINI_ROLE_CLASS[role]||role}`;
+    wrapper.style.width=`${Math.round(w)}px`;
+    wrapper.style.height=`${Math.round(h)}px`;
+    img.parentNode.insertBefore(wrapper,img);
+    wrapper.appendChild(img);
+    img.classList.add('s18MiniPortraitImgV35');
+    img.dataset.s18MiniBgV35='1';
+  });
+}
+
+function runV35(){
+  wrapHomeDashboardV35();
+  patchDiscountGridV35();
+  decorateMiniPortraitsV35(document);
+}
+
+if(document.readyState==='loading'){
+  document.addEventListener('DOMContentLoaded',()=>setTimeout(runV35,60),{once:true});
+}else{
+  setTimeout(runV35,60);
+}
+window.addEventListener('load',()=>setTimeout(runV35,120));
+window.addEventListener('mhur:languagechange',()=>setTimeout(runV35,50));
+window.addEventListener('mhur-auth-change',()=>setTimeout(runV35,50));
+window.addEventListener('mhur-role-change',()=>setTimeout(runV35,50));
+const obs=new MutationObserver(()=>setTimeout(runV35,10));
+obs.observe(document.documentElement,{childList:true,subtree:true});
+
+})();

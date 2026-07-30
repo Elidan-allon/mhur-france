@@ -1903,42 +1903,190 @@ article[data-planned="tsuyu"] .s18PlannedTsuyuV14 img,
   }
 }
 
-/* ========================================================================== */
-/* MHUR Nexus — Saison 18 v31 : texte lisible + portraits verrouillés        */
-/* ========================================================================== */
-.charPanel.s18CharacterDetailV10 .charTop .meta,
-.charPanel.s18CharacterDetailV9 .charTop .meta,
-.charPanel.s18V14CharacterDetail .charTop .meta,
-.charPanel.s18V13CharacterDetail .charTop .meta,
-.charPanel.s18V12CharacterDetail .charTop .meta,
-.charPanel.s18CharacterDetailV10 .charTop .meta h2,
-.charPanel.s18CharacterDetailV9 .charTop .meta h2,
-.charPanel.s18V14CharacterDetail .charTop .meta h2,
-.charPanel.s18V13CharacterDetail .charTop .meta h2,
-.charPanel.s18V12CharacterDetail .charTop .meta h2,
-.charPanel.s18CharacterDetailV10 .charTop .meta p,
-.charPanel.s18CharacterDetailV9 .charTop .meta p,
-.charPanel.s18V14CharacterDetail .charTop .meta p,
-.charPanel.s18V13CharacterDetail .charTop .meta p,
-.charPanel.s18V12CharacterDetail .charTop .meta p,
-.charPanel.s18CharacterDetailV10 .charTop .meta b,
-.charPanel.s18CharacterDetailV9 .charTop .meta b,
-.charPanel.s18V14CharacterDetail .charTop .meta b,
-.charPanel.s18V13CharacterDetail .charTop .meta b,
-.charPanel.s18V12CharacterDetail .charTop .meta b,
-.charPanel[class*="role-"] .skillBox,
-.charPanel[class*="role-"] .skillBox h2,
-.charPanel[class*="role-"] .skillBox h3,
-.charPanel[class*="role-"] .skillBox h4,
-.charPanel[class*="role-"] .skillBox h5,
-.charPanel[class*="role-"] .skillBox p,
-.charPanel[class*="role-"] .skillDesc,
-.charPanel[class*="role-"] .s18QuirkTitleV9{
-  color:#fff!important;
-  text-shadow:0 2px 0 rgba(0,0,0,.9)!important;
+/* ======================================================================= */
+/* MHUR Nexus — Saison 18 v34 : cartes plus compactes (personnages/styles) */
+/* ======================================================================= */
+
+/* Vue personnages / tuning / builds / costumes : réduire la hauteur des */
+/* cadres portraits pour un rendu plus propre, tout en gardant l'image en bas. */
+.card[data-char].s18CharacterCardV9 .thumb,
+.card[data-char].s18CharacterCardV10 .thumb,
+.card[data-char].s18V13CharacterCard .thumb,
+.card[data-char].s18V12CharacterCard .thumb{
+  height:clamp(280px,26vw,340px)!important;
+  min-height:clamp(280px,26vw,340px)!important;
+  align-items:flex-end!important;
 }
-.charPanel[class*="role-"] .badge,
-.charPanel[class*="role-"] .roleBadge,
-.charPanel[class*="role-"] .s18HpBadgeV9{
-  text-shadow:none!important;
+.card[data-char].s18CharacterCardV9 .thumb img,
+.card[data-char].s18CharacterCardV10 .thumb img,
+.card[data-char].s18V13CharacterCard .thumb img,
+.card[data-char].s18V12CharacterCard .thumb img,
+.s18PortraitImgV10,
+.s18PortraitImgV9{
+  left:50%!important;
+  bottom:0!important;
+  width:108%!important;
+  height:108%!important;
+  max-width:none!important;
+  max-height:none!important;
+  object-fit:contain!important;
+  object-position:center bottom!important;
+  transform:translateX(-50%) translateY(0)!important;
+  transform-origin:center bottom!important;
+}
+
+/* Choix des styles : bannières moins hautes mais même logique visuelle. */
+.styleCard[data-style].s18StyleCardV10 .styleBanner,
+.styleCard[data-style].s18StyleCardV9 .styleBanner,
+.styleCard[data-style].s18V14StyleCard .styleBanner,
+.styleCard[data-style].s18V13StyleCard .styleBanner,
+.styleCard[data-style].s18V12StyleCard .styleBanner{
+  height:clamp(340px,30vw,430px)!important;
+  min-height:clamp(340px,30vw,430px)!important;
+  align-items:flex-end!important;
+  justify-content:center!important;
+}
+.styleCard[data-style].s18StyleCardV10 .styleBanner img,
+.styleCard[data-style].s18StyleCardV9 .styleBanner img,
+.styleCard[data-style].s18V14StyleCard .styleBanner img,
+.styleCard[data-style].s18V13StyleCard .styleBanner img,
+.styleCard[data-style].s18V12StyleCard .styleBanner img,
+.s18StylePortraitV10,
+.s18StylePortraitV9{
+  left:50%!important;
+  bottom:0!important;
+  width:110%!important;
+  height:110%!important;
+  max-width:none!important;
+  max-height:none!important;
+  object-fit:contain!important;
+  object-position:center bottom!important;
+  transform:translateX(-50%) translateY(0)!important;
+  transform-origin:center bottom!important;
+}
+
+/* Full Bullet gardé un peu plus contenu pour éviter la découpe visuelle. */
+.styleCard[data-style="fullbullet"] .styleBanner img,
+.styleCard[data-style*="midoriya_attack"] .styleBanner img,
+.s18StyleCardV10[data-style="fullbullet"] .styleBanner img,
+.s18StyleCardV10[data-style*="midoriya_attack"] .styleBanner img,
+.s18StyleCardV9[data-style="fullbullet"] .styleBanner img,
+.s18StyleCardV9[data-style*="midoriya_attack"] .styleBanner img,
+.s18V14StyleCard[data-style="fullbullet"] .styleBanner img,
+.s18V14StyleCard[data-style*="midoriya_attack"] .styleBanner img,
+.s18V13StyleCard[data-style="fullbullet"] .styleBanner img,
+.s18V13StyleCard[data-style*="midoriya_attack"] .styleBanner img,
+.s18V12StyleCard[data-style="fullbullet"] .styleBanner img,
+.s18V12StyleCard[data-style*="midoriya_attack"] .styleBanner img{
+  width:102%!important;
+  height:102%!important;
+}
+
+/* Costumes : cadres un peu plus compacts, visuels toujours alignés en bas. */
+.costumeTile,
+.costumeCard{
+  min-height:320px!important;
+}
+.costumeTile img,
+.costumeCard img{
+  height:228px!important;
+  object-position:center bottom!important;
+}
+
+@media (min-width: 1440px){
+  .card[data-char].s18CharacterCardV9 .thumb,
+  .card[data-char].s18CharacterCardV10 .thumb,
+  .card[data-char].s18V13CharacterCard .thumb,
+  .card[data-char].s18V12CharacterCard .thumb{
+    height:320px!important;
+    min-height:320px!important;
+  }
+  .styleCard[data-style].s18StyleCardV10 .styleBanner,
+  .styleCard[data-style].s18StyleCardV9 .styleBanner,
+  .styleCard[data-style].s18V14StyleCard .styleBanner,
+  .styleCard[data-style].s18V13StyleCard .styleBanner,
+  .styleCard[data-style].s18V12StyleCard .styleBanner{
+    height:400px!important;
+    min-height:400px!important;
+  }
+}
+
+@media (max-width: 900px){
+  .card[data-char].s18CharacterCardV9 .thumb,
+  .card[data-char].s18CharacterCardV10 .thumb,
+  .card[data-char].s18V13CharacterCard .thumb,
+  .card[data-char].s18V12CharacterCard .thumb{
+    height:280px!important;
+    min-height:280px!important;
+  }
+  .styleCard[data-style].s18StyleCardV10 .styleBanner,
+  .styleCard[data-style].s18StyleCardV9 .styleBanner,
+  .styleCard[data-style].s18V14StyleCard .styleBanner,
+  .styleCard[data-style].s18V13StyleCard .styleBanner,
+  .styleCard[data-style].s18V12StyleCard .styleBanner{
+    height:360px!important;
+    min-height:360px!important;
+  }
+  .costumeTile img,
+  .costumeCard img{
+    height:210px!important;
+  }
+}
+
+/* ======================================================================= */
+/* MHUR Nexus — Saison 18 v35 : réductions + mini portraits communauté     */
+/* ======================================================================= */
+
+/* Réductions : reprendre les nouvelles photos locales MHUR Database et */
+/* bien les afficher en bas/au centre comme le reste du site. */
+.s18DiscountArtV19{
+  align-items:flex-end!important;
+  justify-content:center!important;
+}
+.s18DiscountArtV19 img{
+  width:112%!important;
+  height:112%!important;
+  object-fit:contain!important;
+  object-position:center bottom!important;
+  transform:none!important;
+}
+.discountCardV296.s18DiscountCardV19[data-discount="gentle_criminal"] .s18DiscountArtV19 img{
+  width:102%!important;
+  height:102%!important;
+}
+
+/* Petite photo en build communauté / listes avec mini portraits : */
+/* on remet un vrai fond de rôle derrière l'image. */
+.s18MiniPortraitRoleBgV35{
+  display:inline-flex!important;
+  align-items:flex-end!important;
+  justify-content:center!important;
+  overflow:hidden!important;
+  border-radius:12px!important;
+  border:2px solid rgba(255,255,255,.18)!important;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.08)!important;
+  flex:0 0 auto!important;
+}
+.s18MiniPortraitRoleBgV35.role-assault{
+  background:radial-gradient(circle at 50% 28%,#fff29f 0%,#f5de28 38%,#ba9800 100%)!important;
+}
+.s18MiniPortraitRoleBgV35.role-attack{
+  background:radial-gradient(circle at 50% 28%,#ff99a4 0%,#ff3e59 38%,#b0132a 100%)!important;
+}
+.s18MiniPortraitRoleBgV35.role-rapid{
+  background:radial-gradient(circle at 50% 28%,#abf1ff 0%,#35d6ef 38%,#0d86b4 100%)!important;
+}
+.s18MiniPortraitRoleBgV35.role-technical{
+  background:radial-gradient(circle at 50% 28%,#efb8ff 0%,#d33cff 38%,#7a169f 100%)!important;
+}
+.s18MiniPortraitRoleBgV35.role-support{
+  background:radial-gradient(circle at 50% 28%,#9effb2 0%,#34dd57 38%,#17792d 100%)!important;
+}
+.s18MiniPortraitImgV35{
+  width:100%!important;
+  height:100%!important;
+  object-fit:contain!important;
+  object-position:center bottom!important;
+  display:block!important;
+  background:none!important;
 }
