@@ -311,6 +311,11 @@ def synchronize(root: Path, log_path: Path) -> Path:
             [str(TOOLS_DIR / "localiser_images_mhur_database.py"), "--site-root", "."],
             log_path,
         )
+        run_tool(
+            root,
+            [str(TOOLS_DIR / "indexer_portraits_assets.py"), "--site-root", "."],
+            log_path,
+        )
         log("Étape 4/4 : vérification finale des costumes...", log_path)
         run_tool(
             root,

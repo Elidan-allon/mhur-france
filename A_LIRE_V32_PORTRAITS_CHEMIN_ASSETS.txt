@@ -1,0 +1,28 @@
+MHUR NEXUS — V32 PORTRAITS VIA LE CHEMIN ASSETS
+================================================
+
+Ce correctif ne contient pas le gros dossier assets.
+Il utilise le dossier assets que tu as déjà installé.
+
+Chemin utilisé pour chaque personnage et chaque style :
+public/assets/<personnage>/<style>/portrait.png
+ou portrait.webp / portrait.jpg si c'est l'extension présente.
+
+Exemple :
+public/assets/aizawa/aizawa_strike/portrait.png
+
+Ce qui change :
+- les anciennes photos inscrites dans les données du site ne sont plus utilisées ;
+- les URL de portraits distantes ne sont plus utilisées ;
+- tous les portraits sont lus depuis ton dossier public/assets ;
+- un numéro de version est ajouté aux images pour empêcher le navigateur de garder l'ancienne photo en cache ;
+- après chaque mise à jour, l'index des portraits locaux est recréé automatiquement.
+
+INSTALLATION
+1. Copie le dossier mhur-france du ZIP par-dessus ton projet.
+2. Lance APPLIQUER_CORRECTIF_V32.bat.
+3. Redéploie le dossier public.
+4. Recharge le site une fois.
+
+Pour réinstaller assets.zip plus tard, utilise INSTALLER_MES_ASSETS.bat :
+il copiera les fichiers puis reconstruira automatiquement l'index des portraits.

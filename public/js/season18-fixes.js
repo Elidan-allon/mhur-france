@@ -121,24 +121,26 @@ function originalRemotePortrait(row){
   const original=list.find(x=>norm(x?.base_name||x?.name||'')===base&&Number(x?.variant_index||0)===0&&x?.assets?.portrait);
   return original?.assets?.portrait||'';
 }
-function databaseStyleAssets(styleId){
-  const map=window.MHUR_DATABASE_ASSETS?.styles||{};
+function localStyleAssetsV32(styleId){
+  const local=window.MHUR_LOCAL_ASSETS||{};
+  const map=local.styles||{};
+  const aliases=local.aliases||{};
   const id=String(styleId||'');
-  if(map[id]) return map[id];
-  if(/gentle[_-]?criminal/i.test(id)) return map.gentle_criminal_technical||map.gentle_criminal||{};
-  return {};
+  const key=aliases[id]||id;
+  return map[id]||map[key]||(/gentle[_-]?criminal/i.test(id)?map.gentle_criminal_technical:null)||{};
+}
+function databaseStyleAssets(styleId){
+  const database=window.MHUR_DATABASE_ASSETS?.styles||{};
+  const id=String(styleId||'');
+  const old=database[id]||(/gentle[_-]?criminal/i.test(id)?database.gentle_criminal_technical||database.gentle_criminal:null)||{};
+  return {...old,...localStyleAssetsV32(id)};
 }
 function manualPortrait(styleId){
-  return databaseStyleAssets(styleId).portrait||'';
+  return localStyleAssetsV32(styleId).portrait||'';
 }
 function portraitCandidates(styleId,fallback){
-  const sync=window.MHUR_SEASON18_DATA?.official_portraits||{};
-  const database=databaseStyleAssets(styleId);
-  const localOnly=[database.portrait,sync[styleId],fallback]
-    .filter(Boolean)
-    .map(String)
-    .filter(value=>!/^https?:/i.test(value));
-  return Array.from(new Set(localOnly));
+  const portrait=localStyleAssetsV32(styleId).portrait||'';
+  return portrait?[String(portrait)]:[];
 }
 window.MHUR_S18_NEXT_IMAGE=function(image){
   try{

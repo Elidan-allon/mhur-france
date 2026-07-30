@@ -39,17 +39,16 @@ function exactRow(styleId){
     ||candidates[0]
     ||null;
 }
-function portraitCandidates(styleId,fallback=''){
-  const sync=window.MHUR_SEASON18_DATA?.official_portraits||{};
-  const row=exactRow(styleId);
+function localStyleAssetsV32(styleId){
+  const map=window.MHUR_LOCAL_ASSETS?.styles||{};
+  const aliases=window.MHUR_LOCAL_ASSETS?.aliases||{};
   const id=String(styleId||'');
-  const database=window.MHUR_DATABASE_ASSETS?.styles||{};
-  const local=(database[id]||(/gentle[_-]?criminal/i.test(id)?database.gentle_criminal_technical:null)||{}).portrait||'';
-  const official=[local,sync[id],fallback]
-    .filter(Boolean)
-    .map(String)
-    .filter(value=>!/^https?:/i.test(value));
-  return Array.from(new Set(official));
+  const key=aliases[id]||id;
+  return map[id]||map[key]||(/gentle[_-]?criminal/i.test(id)?map.gentle_criminal_technical:null)||{};
+}
+function portraitCandidates(styleId,fallback=''){
+  const local=localStyleAssetsV32(styleId).portrait||'';
+  return local?[String(local)]:[];
 }
 function applyImage(img,candidates){
   if(!img||!candidates.length) return;

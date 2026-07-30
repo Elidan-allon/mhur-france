@@ -1,7 +1,10 @@
 /* Charge le cache officiel MHUR Database avant le premier rendu, même si
    l'index n'a pas encore été retraité par le programme de mise à jour. */
+if(!window.MHUR_LOCAL_ASSETS&&document.readyState==='loading'){
+  document.write('<script src="data/local_assets_index.js?v=32000"><\/script>');
+}
 if(!window.MHUR_DATABASE_ASSETS&&document.readyState==='loading'){
-  document.write('<script src="data/mhur_database_assets.js?v=29000"><\/script>');
+  document.write('<script src="data/mhur_database_assets.js?v=31000"><\/script>');
 }
 
 /* MHUR Nexus — Saison 18 v14 : premier affichage stable et idempotent. */
@@ -37,14 +40,22 @@ function patchHomeMarkup(html){
   return template.innerHTML;
 }
 
+function localStyleAssetsV32(styleId){
+  const local=window.MHUR_LOCAL_ASSETS||{};
+  const map=local.styles||{};
+  const aliases=local.aliases||{};
+  const id=String(styleId||'');
+  const key=aliases[id]||id;
+  return map[id]||map[key]||(/gentle[_-]?criminal/i.test(id)?map.gentle_criminal_technical:null)||{};
+}
 function installOfficialPortraits(){
   if(typeof styles==='undefined') return;
   const database=window.MHUR_DATABASE_ASSETS?.styles||{};
-  const synced=window.MHUR_SEASON18_DATA?.official_portraits||{};
   Object.keys(styles).forEach(id=>{
-    const row=database[id]||(/gentle[_-]?criminal/i.test(id)?database.gentle_criminal_technical:null)||{};
-    if(row.portrait) styles[id].portrait=String(row.portrait);
-    else if(synced[id]&&!/^https?:/i.test(String(synced[id]))) styles[id].portrait=String(synced[id]);
+    const localRow=localStyleAssetsV32(id);
+    const databaseRow=database[id]||(/gentle[_-]?criminal/i.test(id)?database.gentle_criminal_technical:null)||{};
+    if(localRow.portrait) styles[id].portrait=String(localRow.portrait);
+    const row={...databaseRow,...localRow};
     if(row.special&&styles[id].special)styles[id].special.img=String(row.special);
     const byLetter={alpha:'α',beta:'β',gamma:'γ'};
     Object.entries(byLetter).forEach(([key,letter])=>{
@@ -61,7 +72,7 @@ function installOfficialPortraits(){
     (characters||[]).forEach(ch=>{
       const ids=Array.from(new Set((ch.styles||[]).map(String))).filter(id=>styles[id]);
       const original=ids.find(id=>norm(typeof styles[id].name==='object'?(styles[id].name.fr||styles[id].name.en):styles[id].name)==='original')||ids[0];
-      if(original&&styles[original]?.portrait) ch.portrait=styles[original].portrait;
+      if(original&&localStyleAssetsV32(original).portrait) ch.portrait=localStyleAssetsV32(original).portrait;
     });
   }
 }
@@ -94,16 +105,8 @@ function repairHeader(){
 }
 
 function preloadPortraits(){
-  const map=window.MHUR_DATABASE_ASSETS?.styles||{};
-  const urls=[...Object.values(map).flatMap(row=>Object.values(row||{})).filter(Boolean),
-    'assets/tsuyu/tsuyu_rapid/portrait.png',
-    'assets/present_mic/present_mic_technical/portrait.webp',
-    'assets/aizawa/aizawa_strike/portrait.webp',
-    'assets/mirko/mirko_rapid/portrait.webp',
-    'assets/overhaul/overhaul_assault/portrait.webp',
-    'assets/bakugo/bakugo_technical/portrait.webp',
-    'assets/star_and_stripe/star_and_stripe_strike/portrait.webp'
-  ].filter(Boolean).slice(0,90);
+  const map=window.MHUR_LOCAL_ASSETS?.styles||{};
+  const urls=Array.from(new Set(Object.values(map).map(row=>row?.portrait).filter(Boolean))).slice(0,100);
   const run=()=>urls.forEach(url=>{ const image=new Image(); image.decoding='async'; image.src=root(url); });
   if('requestIdleCallback' in window) requestIdleCallback(run,{timeout:1800}); else setTimeout(run,500);
 }

@@ -36,8 +36,19 @@ if exist "%TMP%\assets" (
 
 rmdir /s /q "%TMP%" >nul 2>&1
 
+echo Indexation des portraits depuis public\assets\personnage\style\portrait...
+set "PYTHON_EXE=python"
+where py >nul 2>&1 && set "PYTHON_EXE=py -3"
+%PYTHON_EXE% "%~dp0mise_a_jour\outils\indexer_portraits_assets.py" --site-root "%~dp0"
+if errorlevel 1 (
+  echo [ERREUR] Les assets ont ete copies, mais l'index des portraits n'a pas pu etre genere.
+  pause
+  exit /b 1
+)
+
 echo.
 echo [OK] Tes assets sont installes dans public\assets.
-echo Les mises a jour ne remplaceront plus les portraits des personnages.
+echo Tous les portraits sont lus via public\assets\personnage\style\portrait.*
+echo Les anciennes images et les portraits distants ne sont plus utilises.
 echo.
 pause

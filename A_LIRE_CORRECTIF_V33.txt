@@ -1,0 +1,15 @@
+MHUR NEXUS — Correctif V33 du chemin des portraits
+
+Le précédent fichier BAT utilisait son propre emplacement comme racine du site.
+S'il était placé dans public\assets, il cherchait donc à tort :
+public\assets\mise_a_jour\outils\indexer_portraits_assets.py
+
+Cette version remonte automatiquement les dossiers jusqu'à trouver la vraie racine de MHUR-France.
+Elle fonctionne même si le BAT est lancé depuis :
+- mhur-france
+- mhur-france\public
+- mhur-france\public\assets
+
+Installation :
+1. Copiez le dossier mhur-france de cette archive par-dessus votre projet.
+2. Lancez APPLIQUER_CORRECTIF_V33.bat.
