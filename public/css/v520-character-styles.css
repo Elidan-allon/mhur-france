@@ -1,0 +1,210 @@
+/*
+  MHUR France — V520
+  Correctif strictement limité à l'interface des styles et à la fiche personnage.
+  Aucune règle ne cible le header.
+*/
+
+#app .styleGrid {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  justify-content: flex-start !important;
+  align-items: flex-start !important;
+  gap: 12px !important;
+}
+
+#app .styleGrid > .styleCard[data-style] {
+  --v520-role-bg: #17263b;
+  --v520-role-text: #ffffff;
+
+  display: grid !important;
+  grid-template-columns: 66px minmax(0, 1fr) !important;
+  width: 238px !important;
+  min-width: 0 !important;
+  height: 74px !important;
+  min-height: 74px !important;
+  max-height: 74px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+
+  border: 3px solid #000 !important;
+  border-radius: 13px !important;
+  background: var(--v520-role-bg) !important;
+  color: var(--v520-role-text) !important;
+  box-shadow: 0 3px 0 #000 !important;
+  text-align: left !important;
+}
+
+#app .styleGrid > .styleCard[data-style] .styleBanner {
+  display: block !important;
+  width: 66px !important;
+  height: 74px !important;
+  min-height: 74px !important;
+  max-height: 74px !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  border: 0 !important;
+  border-right: 3px solid #000 !important;
+  border-radius: 0 !important;
+  background: rgba(0, 0, 0, .12) !important;
+}
+
+#app .styleGrid > .styleCard[data-style] .styleBanner img {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: none !important;
+  max-height: none !important;
+  object-fit: cover !important;
+  object-position: center !important;
+  transform: none !important;
+}
+
+#app .styleGrid > .styleCard[data-style] .styleInfo {
+  box-sizing: border-box !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  align-items: flex-start !important;
+  min-width: 0 !important;
+  height: 74px !important;
+  padding: 7px 10px !important;
+  overflow: hidden !important;
+  background: transparent !important;
+  color: var(--v520-role-text) !important;
+}
+
+#app .styleGrid > .styleCard[data-style] .styleInfo h2 {
+  display: block !important;
+  max-width: 100% !important;
+  margin: 0 0 5px !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  color: var(--v520-role-text) !important;
+  font-size: 17px !important;
+  font-weight: 950 !important;
+  line-height: 1.02 !important;
+  text-align: left !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  text-shadow: 1px 2px 0 rgba(0, 0, 0, .45) !important;
+}
+
+/* Les anciens gros badges sont remplacés par un petit libellé de rôle. */
+#app .styleGrid > .styleCard[data-style] .styleInfo > .badges {
+  display: none !important;
+}
+
+#app .v520-style-role {
+  display: flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  max-width: 100% !important;
+  overflow: hidden !important;
+  color: var(--v520-role-text) !important;
+  font-size: 12px !important;
+  font-weight: 900 !important;
+  line-height: 1 !important;
+  text-transform: uppercase !important;
+  white-space: nowrap !important;
+  text-shadow: 1px 1px 0 rgba(0, 0, 0, .35) !important;
+}
+
+#app .v520-style-role img {
+  width: 18px !important;
+  height: 18px !important;
+  flex: 0 0 18px !important;
+  object-fit: contain !important;
+  transform: none !important;
+  filter: none !important;
+}
+
+#app .styleGrid > .styleCard.v520-role-assault {
+  --v520-role-bg: var(--assault, #fff000);
+  --v520-role-text: #050505;
+}
+
+#app .styleGrid > .styleCard.v520-role-strike {
+  --v520-role-bg: var(--attack, #ff1119);
+  --v520-role-text: #ffffff;
+}
+
+#app .styleGrid > .styleCard.v520-role-speed {
+  --v520-role-bg: var(--rapid, #19c9de);
+  --v520-role-text: #050b12;
+}
+
+#app .styleGrid > .styleCard.v520-role-technical {
+  --v520-role-bg: var(--technical, #c61bf4);
+  --v520-role-text: #ffffff;
+}
+
+#app .styleGrid > .styleCard.v520-role-support {
+  --v520-role-bg: var(--support, #11ef22);
+  --v520-role-text: #050b12;
+}
+
+/* Explication générale du personnage en blanc. */
+#app .charPanel .meta,
+#app .charPanel .meta h1,
+#app .charPanel .meta h2,
+#app .charPanel .meta h3,
+#app .charPanel .meta p,
+#app .charPanel .meta b,
+#app .charPanel .meta strong,
+#app .charPanel .meta span:not(.badge) {
+  color: #ffffff !important;
+  text-shadow: 0 2px 3px rgba(0, 0, 0, .82) !important;
+}
+
+/* Le titre "Alter" avait une couleur noire directement dans le HTML. */
+#app .charPanel > h2 {
+  color: #ffffff !important;
+  text-shadow: 0 2px 3px rgba(0, 0, 0, .82) !important;
+}
+
+/* Les badges gardent leurs couleurs et leur lisibilité propres. */
+#app .charPanel .meta .badge,
+#app .charPanel .meta .badge * {
+  text-shadow: none !important;
+}
+
+@media (max-width: 760px) {
+  #app .styleGrid {
+    gap: 10px !important;
+  }
+
+  #app .styleGrid > .styleCard[data-style] {
+    grid-template-columns: 61px minmax(0, 1fr) !important;
+    width: min(100%, 224px) !important;
+    height: 70px !important;
+    min-height: 70px !important;
+    max-height: 70px !important;
+  }
+
+  #app .styleGrid > .styleCard[data-style] .styleBanner {
+    width: 61px !important;
+    height: 70px !important;
+    min-height: 70px !important;
+    max-height: 70px !important;
+  }
+
+  #app .styleGrid > .styleCard[data-style] .styleInfo {
+    height: 70px !important;
+    padding: 6px 9px !important;
+  }
+
+  #app .styleGrid > .styleCard[data-style] .styleInfo h2 {
+    font-size: 16px !important;
+  }
+
+  #app .v520-style-role {
+    font-size: 11px !important;
+  }
+
+  #app .v520-style-role img {
+    width: 17px !important;
+    height: 17px !important;
+    flex-basis: 17px !important;
+  }
+}

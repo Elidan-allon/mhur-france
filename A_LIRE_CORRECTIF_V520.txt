@@ -1,0 +1,48 @@
+﻿MHUR FRANCE — CORRECTIF V520
+==============================
+
+Ce paquet remplace le mauvais V519.
+
+Il corrige exactement :
+- la mise en page cassée par les balises V519 mal formées ;
+- la photo de Gentle Criminal avec :
+  assets/gentle_criminal/gentle_criminal_technical/portrait.png
+- les petites cartes des styles, plus petites ;
+- la couleur propre au rôle de CHAQUE style :
+  Assaut jaune, Attaque rouge, Vitesse cyan, Technique violet, Soutien vert ;
+- l'affichage du rôle sous le nom du style ;
+- le texte explicatif de la fiche personnage en blanc.
+
+Exemple :
+- Midoriya Original = Assaut = jaune ;
+- Midoriya Full Bullet = Attaque = rouge.
+
+Le CSS V520 est limité à #app.
+Il ne cible jamais le header, ses boutons ou ses panneaux.
+
+INSTALLATION
+============
+
+1. Décompresse ce ZIP.
+2. Copie tout son contenu dans le dossier principal local "mhur-france".
+   Le fichier APPLIQUER_CORRECTIF_V520.bat doit être au même niveau que "public".
+3. Accepte la fusion du dossier public.
+4. Double-clique sur APPLIQUER_CORRECTIF_V520.bat.
+5. Ouvre GitHub Desktop.
+6. Vérifie les changements.
+7. Message conseillé : Correctif V520 personnages et styles
+8. Clique sur Commit to main puis Push origin.
+9. Après le déploiement, recharge mhurfrance.com avec Ctrl + F5.
+
+SÉCURITÉ
+========
+
+Avant toute modification, le programme crée :
+public/index.html.avant-v520.bak
+
+Le programme vérifie les deux balises ajoutées avant d'écrire index.html.
+Il retire aussi les anciennes balises/fichiers V519.
+
+Pour revenir en arrière :
+double-clique sur ANNULER_CORRECTIF_V520.bat,
+puis commit et push dans GitHub Desktop.
