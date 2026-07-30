@@ -1,6 +1,6 @@
 {
   "meta": {
-    "updated_at": "2026-07-30T06:43:32.692898+00:00",
+    "updated_at": "2026-07-30T08:31:58.739121+00:00",
     "updater_version": "v354_afo_young_mapped",
     "source": "https://ultrarumble.com",
     "new_styles_added": 0,
@@ -9,7 +9,7 @@
       "special_cards": 60,
       "styles_enriched": 60
     },
-    "season18_postprocess": "2026-07-30T06:44:08.172139+00:00"
+    "season18_postprocess": "2026-07-30T08:32:32.771823+00:00"
   },
   "characters": [
     {
@@ -238,12 +238,13 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch001/GUI/FaceIcon/T_ui_Ch001_CharaImage.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch001_00.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch001/GUI/Skill/T_ui_Skill_Ch001_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch001/GUI/Skill/T_ui_Skill_Ch001_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch001/GUI/Skill/T_ui_Skill_Ch001_Unique3.png",
-        "special": "https://ultrarumble.com/assets/Character/Ch001/GUI/Skill/T_ui_SpecialSkill_Ch001.png"
+        "portrait": "assets/mhur_database/characters/assault/portrait.webp",
+        "tuning": "assets/mhur_database/characters/assault/tuning.png",
+        "alpha": "assets/mhur_database/characters/assault/alpha.webp",
+        "beta": "assets/mhur_database/characters/assault/beta.webp",
+        "gamma": "assets/mhur_database/characters/assault/gamma.webp",
+        "special": "assets/mhur_database/characters/assault/special.png",
+        "alpha_fullburst": "assets/mhur_database/characters/assault/alpha_fullburst.webp"
       }
     },
     {
@@ -753,11 +754,12 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch001/GUI/Variation/T_ui_Thumb_13_101_L.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch001_01.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch001/Variation/Var01/GUI/Skill/T_ui_Skill_Ch001_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch001/Variation/Var01/GUI/Skill/T_ui_Skill_Ch001_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch001/Variation/Var01/GUI/Skill/T_ui_Skill_Ch001_Unique3.png"
+        "portrait": "assets/mhur_database/characters/fullbullet/portrait.webp",
+        "tuning": "assets/mhur_database/characters/fullbullet/tuning.webp",
+        "alpha": "assets/mhur_database/characters/fullbullet/alpha.webp",
+        "beta": "assets/mhur_database/characters/fullbullet/beta.webp",
+        "gamma": "assets/mhur_database/characters/fullbullet/gamma.webp",
+        "special": "assets/mhur_database/characters/fullbullet/special.png"
       }
     },
     {
@@ -1184,12 +1186,12 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch002/GUI/FaceIcon/T_ui_Ch002_CharaImage.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch002_00.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch002/GUI/Skill/T_ui_Skill_Ch002_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch002/GUI/Skill/T_ui_Skill_Ch002_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch002/GUI/Skill/T_ui_Skill_Ch002_Unique3.png",
-        "special": "https://ultrarumble.com/assets/Character/Ch002/GUI/Skill/T_ui_SpecialSkill_Ch002.png"
+        "portrait": "assets/mhur_database/characters/bakugo_attack/portrait.webp",
+        "tuning": "assets/mhur_database/characters/bakugo_attack/tuning.webp",
+        "alpha": "assets/mhur_database/characters/bakugo_attack/alpha.webp",
+        "beta": "assets/mhur_database/characters/bakugo_attack/beta.webp",
+        "gamma": "assets/mhur_database/characters/bakugo_attack/gamma.webp",
+        "special": "assets/mhur_database/characters/bakugo_attack/special.webp"
       }
     },
     {
@@ -1561,11 +1563,12 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch002/GUI/Variation/T_ui_Thumb_13_201_L.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch002_01.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch002/Variation/Var01/GUI/Skill/T_ui_Skill_Ch002_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch002/Variation/Var01/GUI/Skill/T_ui_Skill_Ch002_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch002/Variation/Var01/GUI/Skill/T_ui_Skill_Ch002_Unique3.png"
+        "portrait": "assets/mhur_database/characters/bakugo_rapid/portrait.webp",
+        "tuning": "assets/mhur_database/characters/bakugo_rapid/tuning.webp",
+        "alpha": "assets/mhur_database/characters/bakugo_rapid/alpha.webp",
+        "beta": "assets/mhur_database/characters/bakugo_rapid/beta.webp",
+        "gamma": "assets/mhur_database/characters/bakugo_rapid/gamma.webp",
+        "special": "assets/mhur_database/characters/bakugo_rapid/special.webp"
       }
     },
     {
@@ -2399,11 +2402,12 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch002/GUI/Variation/T_ui_Thumb_13_202_L.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch002_02.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch002/Variation/Var02/GUI/Skill/T_ui_Skill_Ch002_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch002/Variation/Var02/GUI/Skill/T_ui_Skill_Ch002_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch002/Variation/Var02/GUI/Skill/T_ui_Skill_Ch002_Unique3.png"
+        "portrait": "assets/mhur_database/characters/bakugo_technical/portrait.webp",
+        "tuning": "assets/mhur_database/characters/bakugo_technical/tuning.webp",
+        "alpha": "assets/mhur_database/characters/bakugo_technical/alpha.webp",
+        "beta": "assets/mhur_database/characters/bakugo_technical/beta.webp",
+        "gamma": "assets/mhur_database/characters/bakugo_technical/gamma.webp",
+        "special": "assets/mhur_database/characters/bakugo_technical/special.webp"
       }
     },
     {
@@ -2742,12 +2746,13 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch003/GUI/FaceIcon/T_ui_Ch003_CharaImage.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch003_00.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch003/GUI/Skill/T_ui_Skill_Ch003_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch003/GUI/Skill/T_ui_Skill_Ch003_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch003/GUI/Skill/T_ui_Skill_Ch003_Unique3.png",
-        "special": "https://ultrarumble.com/assets/Character/Ch003/GUI/Skill/T_ui_SpecialSkill_Ch003.png"
+        "portrait": "assets/mhur_database/characters/ochaco_rapid/portrait.webp",
+        "tuning": "assets/mhur_database/characters/ochaco_rapid/tuning.webp",
+        "alpha": "assets/mhur_database/characters/ochaco_rapid/alpha.webp",
+        "beta": "assets/mhur_database/characters/ochaco_rapid/beta.webp",
+        "gamma": "assets/mhur_database/characters/ochaco_rapid/gamma.webp",
+        "special": "assets/mhur_database/characters/ochaco_rapid/special.webp",
+        "gamma_hold": "assets/mhur_database/characters/ochaco_rapid/gamma_hold.webp"
       }
     },
     {
@@ -2954,11 +2959,14 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch003/GUI/Variation/T_ui_Thumb_13_301_L.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch003_01.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch003/Variation/Var01/GUI/Skill/T_ui_Skill_Ch003_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch003/Variation/Var01/GUI/Skill/T_ui_Skill_Ch003_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch003/Variation/Var01/GUI/Skill/T_ui_Skill_Ch003_Unique3.png"
+        "portrait": "assets/mhur_database/characters/ochaco_assault/portrait.webp",
+        "tuning": "assets/mhur_database/characters/ochaco_assault/tuning.webp",
+        "alpha": "assets/mhur_database/characters/ochaco_assault/alpha.webp",
+        "beta": "assets/mhur_database/characters/ochaco_assault/beta.webp",
+        "gamma": "assets/mhur_database/characters/ochaco_assault/gamma.webp",
+        "special": "assets/mhur_database/characters/ochaco_assault/special.webp",
+        "gamma_hold": "assets/mhur_database/characters/ochaco_assault/gamma_hold.webp",
+        "alpha_hold": "assets/mhur_database/characters/ochaco_assault/alpha_hold.webp"
       }
     },
     {
@@ -3297,12 +3305,13 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch004/GUI/FaceIcon/T_ui_Ch004_CharaImage.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch004_00.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch004/GUI/Skill/T_ui_Skill_Ch004_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch004/GUI/Skill/T_ui_Skill_Ch004_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch004/GUI/Skill/T_ui_Skill_Ch004_Unique3.png",
-        "special": "https://ultrarumble.com/assets/Character/Ch004/GUI/Skill/T_ui_SpecialSkill_Ch004.png"
+        "portrait": "assets/mhur_database/characters/shoto_attack/portrait.webp",
+        "tuning": "assets/mhur_database/characters/shoto_attack/tuning.webp",
+        "alpha": "assets/mhur_database/characters/shoto_attack/alpha.webp",
+        "beta": "assets/mhur_database/characters/shoto_attack/beta.webp",
+        "gamma": "assets/mhur_database/characters/shoto_attack/gamma.webp",
+        "special": "assets/mhur_database/characters/shoto_attack/special.webp",
+        "gamma_hold": "assets/mhur_database/characters/shoto_attack/gamma_hold.webp"
       }
     },
     {
@@ -3711,11 +3720,13 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch004/GUI/Variation/T_ui_Thumb_13_401_L.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch004_01.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch004/Variation/Var01/GUI/Skill/T_ui_Skill_Ch004_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch004/Variation/Var01/GUI/Skill/T_ui_Skill_Ch004_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch004/Variation/Var01/GUI/Skill/T_ui_Skill_Ch004_Unique3.png"
+        "portrait": "assets/mhur_database/characters/shoto_technical/portrait.webp",
+        "tuning": "assets/mhur_database/characters/shoto_technical/tuning.webp",
+        "alpha": "assets/mhur_database/characters/shoto_technical/alpha.webp",
+        "beta": "assets/mhur_database/characters/shoto_technical/beta.webp",
+        "gamma": "assets/mhur_database/characters/shoto_technical/gamma.webp",
+        "special": "assets/mhur_database/characters/shoto_technical/special.webp",
+        "alpha_aim": "assets/mhur_database/characters/shoto_technical/alpha_aim.webp"
       }
     },
     {
@@ -3997,12 +4008,12 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch005/GUI/FaceIcon/T_ui_Ch005_CharaImage.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch005_00.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch005/GUI/Skill/T_ui_Skill_Ch005_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch005/GUI/Skill/T_ui_Skill_Ch005_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch005/GUI/Skill/T_ui_Skill_Ch005_Unique3.png",
-        "special": "https://ultrarumble.com/assets/Character/Ch005/GUI/Skill/T_ui_SpecialSkill_Ch005.png"
+        "portrait": "assets/mhur_database/characters/tenya_rapid/portrait.webp",
+        "tuning": "assets/mhur_database/characters/tenya_rapid/tuning.webp",
+        "alpha": "assets/mhur_database/characters/tenya_rapid/alpha.webp",
+        "beta": "assets/mhur_database/characters/tenya_rapid/beta.webp",
+        "gamma": "assets/mhur_database/characters/tenya_rapid/gamma.webp",
+        "special": "assets/mhur_database/characters/tenya_rapid/special.webp"
       }
     },
     {
@@ -4344,12 +4355,12 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch006/GUI/FaceIcon/T_ui_Ch006_CharaImage.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch006_00.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch006/GUI/Skill/T_ui_Skill_Ch006_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch006/GUI/Skill/T_ui_Skill_Ch006_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch006/GUI/Skill/T_ui_Skill_Ch006_Unique3.png",
-        "special": "https://ultrarumble.com/assets/Character/Ch006/GUI/Skill/T_ui_SpecialSkill_Ch006.png"
+        "portrait": "assets/mhur_database/characters/tsuyu_rapid/portrait.webp",
+        "tuning": "assets/mhur_database/characters/tsuyu_rapid/tuning.webp",
+        "alpha": "assets/mhur_database/characters/tsuyu_rapid/alpha.webp",
+        "beta": "assets/mhur_database/characters/tsuyu_rapid/beta.webp",
+        "gamma": "assets/mhur_database/characters/tsuyu_rapid/gamma.webp",
+        "special": "assets/mhur_database/characters/tsuyu_rapid/special.webp"
       }
     },
     {
@@ -4891,12 +4902,12 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch007/GUI/FaceIcon/T_ui_Ch007_CharaImage.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch007_00.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch007/GUI/Skill/T_ui_Skill_Ch007_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch007/GUI/Skill/T_ui_Skill_Ch007_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch007/GUI/Skill/T_ui_Skill_Ch007_Unique3.png",
-        "special": "https://ultrarumble.com/assets/Character/Ch007/GUI/Skill/T_ui_SpecialSkill_Ch007.png"
+        "portrait": "assets/mhur_database/characters/kaminari_strike/portrait.webp",
+        "tuning": "assets/mhur_database/characters/kaminari_strike/tuning.webp",
+        "alpha": "assets/mhur_database/characters/kaminari_strike/alpha.webp",
+        "beta": "assets/mhur_database/characters/kaminari_strike/beta.webp",
+        "gamma": "assets/mhur_database/characters/kaminari_strike/gamma.webp",
+        "special": "assets/mhur_database/characters/kaminari_strike/special.webp"
       }
     },
     {
@@ -5333,11 +5344,13 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch007/GUI/Variation/T_ui_Thumb_13_701_L.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch007_01.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch007/Variation/Var01/GUI/Skill/T_ui_Skill_Ch007_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch007/Variation/Var01/GUI/Skill/T_ui_Skill_Ch007_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch007/Variation/Var01/GUI/Skill/T_ui_Skill_Ch007_Unique3.png"
+        "portrait": "assets/mhur_database/characters/kaminari_technical/portrait.webp",
+        "tuning": "assets/mhur_database/characters/kaminari_technical/tuning.webp",
+        "alpha": "assets/mhur_database/characters/kaminari_technical/alpha.webp",
+        "beta": "assets/mhur_database/characters/kaminari_technical/beta.webp",
+        "gamma": "assets/mhur_database/characters/kaminari_technical/gamma.webp",
+        "special": "assets/mhur_database/characters/kaminari_technical/special.webp",
+        "alpha_hold": "assets/mhur_database/characters/kaminari_technical/alpha_hold.webp"
       }
     },
     {
@@ -5759,12 +5772,12 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch008/GUI/FaceIcon/T_ui_Ch008_CharaImage.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch008_00.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch008/GUI/Skill/T_ui_Skill_Ch008_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch008/GUI/Skill/T_ui_Skill_Ch008_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch008/GUI/Skill/T_ui_Skill_Ch008_Unique3.png",
-        "special": "https://ultrarumble.com/assets/Character/Ch008/GUI/Skill/T_ui_SpecialSkill_Ch008.png"
+        "portrait": "assets/mhur_database/characters/kirishima_assault/portrait.webp",
+        "tuning": "assets/mhur_database/characters/kirishima_assault/tuning.webp",
+        "alpha": "assets/mhur_database/characters/kirishima_assault/alpha.webp",
+        "beta": "assets/mhur_database/characters/kirishima_assault/beta.webp",
+        "gamma": "assets/mhur_database/characters/kirishima_assault/gamma.webp",
+        "special": "assets/mhur_database/characters/kirishima_assault/special.webp"
       }
     },
     {
@@ -6418,11 +6431,12 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch008/GUI/Variation/T_ui_Thumb_13_801_L.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch008_01.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch008/Variation/Var01/GUI/Skill/T_ui_Skill_Ch008_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch008/Variation/Var01/GUI/Skill/T_ui_Skill_Ch008_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch008/Variation/Var01/GUI/Skill/T_ui_Skill_Ch008_Unique3.png"
+        "portrait": "assets/mhur_database/characters/kirishima_strike/portrait.webp",
+        "tuning": "assets/mhur_database/characters/kirishima_strike/tuning.webp",
+        "alpha": "assets/mhur_database/characters/kirishima_strike/alpha.webp",
+        "beta": "assets/mhur_database/characters/kirishima_strike/beta.webp",
+        "gamma": "assets/mhur_database/characters/kirishima_strike/gamma.webp",
+        "special": "assets/mhur_database/characters/kirishima_strike/special.webp"
       }
     },
     {
@@ -6844,12 +6858,12 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch010/GUI/FaceIcon/T_ui_Ch010_CharaImage.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch010_00.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch010/GUI/Skill/T_ui_Skill_Ch010_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch010/GUI/Skill/T_ui_Skill_Ch010_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch010/GUI/Skill/T_ui_Skill_Ch010_Unique3.png",
-        "special": "https://ultrarumble.com/assets/Character/Ch010/GUI/Skill/T_ui_SpecialSkill_Ch010.png"
+        "portrait": "assets/mhur_database/characters/momo_support/portrait.webp",
+        "tuning": "assets/mhur_database/characters/momo_support/tuning.webp",
+        "alpha": "assets/mhur_database/characters/momo_support/alpha.webp",
+        "beta": "assets/mhur_database/characters/momo_support/beta.webp",
+        "gamma": "assets/mhur_database/characters/momo_support/gamma.webp",
+        "special": "assets/mhur_database/characters/momo_support/special.webp"
       }
     },
     {
@@ -7146,12 +7160,12 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch011/GUI/FaceIcon/T_ui_Ch011_CharaImage.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch011_00.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch011/GUI/Skill/T_ui_Skill_Ch011_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch011/GUI/Skill/T_ui_Skill_Ch011_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch011/GUI/Skill/T_ui_Skill_Ch011_Unique3.png",
-        "special": "https://ultrarumble.com/assets/Character/Ch011/GUI/Skill/T_ui_SpecialSkill_Ch011.png"
+        "portrait": "assets/mhur_database/characters/tokoyami_assault/portrait.webp",
+        "tuning": "assets/mhur_database/characters/tokoyami_assault/tuning.webp",
+        "alpha": "assets/mhur_database/characters/tokoyami_assault/alpha.webp",
+        "beta": "assets/mhur_database/characters/tokoyami_assault/beta.webp",
+        "gamma": "assets/mhur_database/characters/tokoyami_assault/gamma.webp",
+        "special": "assets/mhur_database/characters/tokoyami_assault/special.webp"
       }
     },
     {
@@ -7633,12 +7647,12 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch012/GUI/FaceIcon/T_ui_Ch012_CharaImage.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch012_00.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch012/GUI/Skill/T_ui_Skill_Ch012_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch012/GUI/Skill/T_ui_Skill_Ch012_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch012/GUI/Skill/T_ui_Skill_Ch012_Unique3.png",
-        "special": "https://ultrarumble.com/assets/Character/Ch012/GUI/Skill/T_ui_SpecialSkill_Ch012.png"
+        "portrait": "assets/mhur_database/characters/all_might_assault/portrait.webp",
+        "tuning": "assets/mhur_database/characters/all_might_assault/tuning.webp",
+        "alpha": "assets/mhur_database/characters/all_might_assault/alpha.webp",
+        "beta": "assets/mhur_database/characters/all_might_assault/beta.webp",
+        "gamma": "assets/mhur_database/characters/all_might_assault/gamma.webp",
+        "special": "assets/mhur_database/characters/all_might_assault/special.webp"
       }
     },
     {
@@ -8078,11 +8092,12 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch012/GUI/Variation/T_ui_Thumb_13_1201_L.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch012_01.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch012/Variation/Var01/GUI/Skill/T_ui_Skill_Ch012_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch012/Variation/Var01/GUI/Skill/T_ui_Skill_Ch012_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch012/Variation/Var01/GUI/Skill/T_ui_Skill_Ch012_Unique3.png"
+        "portrait": "assets/mhur_database/characters/all_might_rapid/portrait.webp",
+        "tuning": "assets/mhur_database/characters/all_might_rapid/tuning.webp",
+        "alpha": "assets/mhur_database/characters/all_might_rapid/alpha.webp",
+        "beta": "assets/mhur_database/characters/all_might_rapid/beta.webp",
+        "gamma": "assets/mhur_database/characters/all_might_rapid/gamma.webp",
+        "special": "assets/mhur_database/characters/all_might_rapid/special.webp"
       }
     },
     {
@@ -8564,12 +8579,12 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch013/GUI/FaceIcon/T_ui_Ch013_CharaImage.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch013_00.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch013/GUI/Skill/T_ui_Skill_Ch013_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch013/GUI/Skill/T_ui_Skill_Ch013_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch013/GUI/Skill/T_ui_Skill_Ch013_Unique3.png",
-        "special": "https://ultrarumble.com/assets/Character/Ch013/GUI/Skill/T_ui_SpecialSkill_Ch013.png"
+        "portrait": "assets/mhur_database/characters/aizawa_technical/portrait.webp",
+        "tuning": "assets/mhur_database/characters/aizawa_technical/tuning.webp",
+        "alpha": "assets/mhur_database/characters/aizawa_technical/alpha.webp",
+        "beta": "assets/mhur_database/characters/aizawa_technical/beta.webp",
+        "gamma": "assets/mhur_database/characters/aizawa_technical/gamma.webp",
+        "special": "assets/mhur_database/characters/aizawa_technical/special.webp"
       }
     },
     {
@@ -8980,11 +8995,13 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch013/GUI/Variation/T_ui_Thumb_13_1301_L.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch013_01.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch013/Variation/Var01/GUI/Skill/T_ui_Skill_Ch013_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch013/Variation/Var01/GUI/Skill/T_ui_Skill_Ch013_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch013/Variation/Var01/GUI/Skill/T_ui_Skill_Ch013_Unique3.png"
+        "portrait": "assets/mhur_database/characters/aizawa_strike/portrait.webp",
+        "tuning": "assets/mhur_database/characters/aizawa_strike/tuning.webp",
+        "alpha": "assets/mhur_database/characters/aizawa_strike/alpha.webp",
+        "beta": "assets/mhur_database/characters/aizawa_strike/beta.webp",
+        "gamma": "assets/mhur_database/characters/aizawa_strike/gamma.webp",
+        "special": "assets/mhur_database/characters/aizawa_strike/special.webp",
+        "beta_hold": "assets/mhur_database/characters/aizawa_strike/beta_hold.webp"
       }
     },
     {
@@ -9440,12 +9457,12 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch015/GUI/FaceIcon/T_ui_Ch015_CharaImage.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch015_00.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch015/GUI/Skill/T_ui_Skill_Ch015_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch015/GUI/Skill/T_ui_Skill_Ch015_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch015/GUI/Skill/T_ui_Skill_Ch015_Unique3.png",
-        "special": "https://ultrarumble.com/assets/Character/Ch015/GUI/Skill/T_ui_SpecialSkill_Ch015.png"
+        "portrait": "assets/mhur_database/characters/shigaraki_strike/portrait.webp",
+        "tuning": "assets/mhur_database/characters/shigaraki_strike/tuning.webp",
+        "alpha": "assets/mhur_database/characters/shigaraki_strike/alpha.webp",
+        "beta": "assets/mhur_database/characters/shigaraki_strike/beta.webp",
+        "gamma": "assets/mhur_database/characters/shigaraki_strike/gamma.webp",
+        "special": "assets/mhur_database/characters/shigaraki_strike/special.webp"
       }
     },
     {
@@ -9997,11 +10014,12 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch015/GUI/Variation/T_ui_Thumb_13_1501_L.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch015_01.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch015/Variation/Var01/GUI/Skill/T_ui_Skill_Ch015_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch015/Variation/Var01/GUI/Skill/T_ui_Skill_Ch015_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch015/Variation/Var01/GUI/Skill/T_ui_Skill_Ch015_Unique3.png"
+        "portrait": "assets/mhur_database/characters/shigaraki_assault/portrait.webp",
+        "tuning": "assets/mhur_database/characters/shigaraki_assault/tuning.webp",
+        "alpha": "assets/mhur_database/characters/shigaraki_assault/alpha.webp",
+        "beta": "assets/mhur_database/characters/shigaraki_assault/beta.webp",
+        "gamma": "assets/mhur_database/characters/shigaraki_assault/gamma.webp",
+        "special": "assets/mhur_database/characters/shigaraki_assault/special.webp"
       }
     },
     {
@@ -10359,11 +10377,13 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch015/GUI/Variation/T_ui_Thumb_13_1502_L.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch015_02.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch015/Variation/Var02/GUI/Skill/T_ui_Skill_Ch015_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch015/Variation/Var02/GUI/Skill/T_ui_Skill_Ch015_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch015/Variation/Var02/GUI/Skill/T_ui_Skill_Ch015_Unique3.png"
+        "portrait": "assets/mhur_database/characters/shigaraki_technical/portrait.webp",
+        "tuning": "assets/mhur_database/characters/shigaraki_technical/tuning.webp",
+        "alpha": "assets/mhur_database/characters/shigaraki_technical/alpha.webp",
+        "beta": "assets/mhur_database/characters/shigaraki_technical/beta.webp",
+        "gamma": "assets/mhur_database/characters/shigaraki_technical/gamma.webp",
+        "special": "assets/mhur_database/characters/shigaraki_technical/special.webp",
+        "alpha_hold": "assets/mhur_database/characters/shigaraki_technical/alpha_hold.webp"
       }
     },
     {
@@ -10720,12 +10740,12 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch016/GUI/FaceIcon/T_ui_Ch016_CharaImage.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch016_00.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch016/GUI/Skill/T_ui_Skill_Ch016_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch016/GUI/Skill/T_ui_Skill_Ch016_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch016/GUI/Skill/T_ui_Skill_Ch016_Unique3.png",
-        "special": "https://ultrarumble.com/assets/Character/Ch016/GUI/Skill/T_ui_SpecialSkill_Ch016.png"
+        "portrait": "assets/mhur_database/characters/all_for_one_technical/portrait.webp",
+        "tuning": "assets/mhur_database/characters/all_for_one_technical/tuning.webp",
+        "alpha": "assets/mhur_database/characters/all_for_one_technical/alpha.webp",
+        "beta": "assets/mhur_database/characters/all_for_one_technical/beta.webp",
+        "gamma": "assets/mhur_database/characters/all_for_one_technical/gamma.webp",
+        "special": "assets/mhur_database/characters/all_for_one_technical/special.webp"
       }
     },
     {
@@ -11253,11 +11273,12 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch016/GUI/Variation/T_ui_Thumb_13_1601_L.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch016_01.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch016/Variation/Var01/GUI/Skill/T_ui_Skill_Ch016_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch016/Variation/Var01/GUI/Skill/T_ui_Skill_Ch016_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch016/Variation/Var01/GUI/Skill/T_ui_Skill_Ch016_Unique3.png"
+        "portrait": "assets/mhur_database/characters/all_for_one_strike/portrait.webp",
+        "tuning": "assets/mhur_database/characters/all_for_one_strike/tuning.webp",
+        "alpha": "assets/mhur_database/characters/all_for_one_strike/alpha.webp",
+        "beta": "assets/mhur_database/characters/all_for_one_strike/beta.webp",
+        "gamma": "assets/mhur_database/characters/all_for_one_strike/gamma.webp",
+        "special": "assets/mhur_database/characters/all_for_one_strike/special.webp"
       }
     },
     {
@@ -11579,12 +11600,12 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch017/GUI/FaceIcon/T_ui_Ch017_CharaImage.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch017_00.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch017/GUI/Skill/T_ui_Skill_Ch017_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch017/GUI/Skill/T_ui_Skill_Ch017_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch017/GUI/Skill/T_ui_Skill_Ch017_Unique3.png",
-        "special": "https://ultrarumble.com/assets/Character/Ch017/GUI/Skill/T_ui_SpecialSkill_Ch017.png"
+        "portrait": "assets/mhur_database/characters/dabi_technical/portrait.webp",
+        "tuning": "assets/mhur_database/characters/dabi_technical/tuning.webp",
+        "alpha": "assets/mhur_database/characters/dabi_technical/alpha.webp",
+        "beta": "assets/mhur_database/characters/dabi_technical/beta.webp",
+        "gamma": "assets/mhur_database/characters/dabi_technical/gamma.webp",
+        "special": "assets/mhur_database/characters/dabi_technical/special.webp"
       }
     },
     {
@@ -11921,11 +11942,12 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch017/GUI/Variation/T_ui_Thumb_13_1701_L.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch017_01.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch017/Variation/Var01/GUI/Skill/T_ui_Skill_Ch017_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch017/Variation/Var01/GUI/Skill/T_ui_Skill_Ch017_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch017/Variation/Var01/GUI/Skill/T_ui_Skill_Ch017_Unique3.png"
+        "portrait": "assets/mhur_database/characters/dabi_strike/portrait.webp",
+        "tuning": "assets/mhur_database/characters/dabi_strike/tuning.webp",
+        "alpha": "assets/mhur_database/characters/dabi_strike/alpha.webp",
+        "beta": "assets/mhur_database/characters/dabi_strike/beta.webp",
+        "gamma": "assets/mhur_database/characters/dabi_strike/gamma.webp",
+        "special": "assets/mhur_database/characters/dabi_strike/special.webp"
       }
     },
     {
@@ -12347,12 +12369,12 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch018/GUI/FaceIcon/T_ui_Ch018_CharaImage.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch018_00.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch018/GUI/Skill/T_ui_Skill_Ch018_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch018/GUI/Skill/T_ui_Skill_Ch018_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch018/GUI/Skill/T_ui_Skill_Ch018_Unique3.png",
-        "special": "https://ultrarumble.com/assets/Character/Ch018/GUI/Skill/T_ui_SpecialSkill_Ch018.png"
+        "portrait": "assets/mhur_database/characters/toga_technical/portrait.webp",
+        "tuning": "assets/mhur_database/characters/toga_technical/tuning.webp",
+        "alpha": "assets/mhur_database/characters/toga_technical/alpha.webp",
+        "beta": "assets/mhur_database/characters/toga_technical/beta.webp",
+        "gamma": "assets/mhur_database/characters/toga_technical/gamma.webp",
+        "special": "assets/mhur_database/characters/toga_technical/special.webp"
       }
     },
     {
@@ -12844,11 +12866,12 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch018/GUI/Variation/T_ui_Thumb_13_1801_L.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch018_01.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch018/Variation/Var01/GUI/Skill/T_ui_Skill_Ch018_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch018/Variation/Var01/GUI/Skill/T_ui_Skill_Ch018_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch018/Variation/Var01/GUI/Skill/T_ui_Skill_Ch018_Unique3.png"
+        "portrait": "assets/mhur_database/characters/toga_rapid/portrait.webp",
+        "tuning": "assets/mhur_database/characters/toga_rapid/tuning.webp",
+        "alpha": "assets/mhur_database/characters/toga_rapid/alpha.webp",
+        "beta": "assets/mhur_database/characters/toga_rapid/beta.webp",
+        "gamma": "assets/mhur_database/characters/toga_rapid/gamma.webp",
+        "special": "assets/mhur_database/characters/toga_rapid/special.webp"
       }
     },
     {
@@ -13215,12 +13238,12 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch023/GUI/FaceIcon/T_ui_Ch023_CharaImage.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch023_00.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch023/GUI/Skill/T_ui_Skill_Ch023_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch023/GUI/Skill/T_ui_Skill_Ch023_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch023/GUI/Skill/T_ui_Skill_Ch023_Unique3.png",
-        "special": "https://ultrarumble.com/assets/Character/Ch023/GUI/Skill/T_ui_SpecialSkill_Ch023.png"
+        "portrait": "assets/mhur_database/characters/endeavor_strike/portrait.webp",
+        "tuning": "assets/mhur_database/characters/endeavor_strike/tuning.webp",
+        "alpha": "assets/mhur_database/characters/endeavor_strike/alpha.webp",
+        "beta": "assets/mhur_database/characters/endeavor_strike/beta.webp",
+        "gamma": "assets/mhur_database/characters/endeavor_strike/gamma.webp",
+        "special": "assets/mhur_database/characters/endeavor_strike/special.webp"
       }
     },
     {
@@ -13603,11 +13626,13 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch023/GUI/Variation/T_ui_Thumb_13_2301_L.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch023_01.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch023/Variation/Var01/GUI/Skill/T_ui_Skill_Ch023_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch023/Variation/Var01/GUI/Skill/T_ui_Skill_Ch023_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch023/Variation/Var01/GUI/Skill/T_ui_Skill_Ch023_Unique3.png"
+        "portrait": "assets/mhur_database/characters/endeavor_assault/portrait.webp",
+        "tuning": "assets/mhur_database/characters/endeavor_assault/tuning.webp",
+        "alpha": "assets/mhur_database/characters/endeavor_assault/alpha.webp",
+        "beta": "assets/mhur_database/characters/endeavor_assault/beta.webp",
+        "gamma": "assets/mhur_database/characters/endeavor_assault/gamma.webp",
+        "special": "assets/mhur_database/characters/endeavor_assault/special.webp",
+        "beta_hold": "assets/mhur_database/characters/endeavor_assault/beta_hold.webp"
       }
     },
     {
@@ -13896,12 +13921,13 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch024/GUI/FaceIcon/T_ui_Ch024_CharaImage.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch024_00.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch024/GUI/Skill/T_ui_Skill_Ch024_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch024/GUI/Skill/T_ui_Skill_Ch024_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch024/GUI/Skill/T_ui_Skill_Ch024_Unique3.png",
-        "special": "https://ultrarumble.com/assets/Character/Ch024/GUI/Skill/T_ui_SpecialSkill_Ch024.png"
+        "portrait": "assets/mhur_database/characters/mirio_rapid/portrait.webp",
+        "tuning": "assets/mhur_database/characters/mirio_rapid/tuning.webp",
+        "alpha": "assets/mhur_database/characters/mirio_rapid/alpha.webp",
+        "beta": "assets/mhur_database/characters/mirio_rapid/beta.webp",
+        "gamma": "assets/mhur_database/characters/mirio_rapid/gamma.webp",
+        "special": "assets/mhur_database/characters/mirio_rapid/special.webp",
+        "alpha_hold": "assets/mhur_database/characters/mirio_rapid/alpha_hold.webp"
       }
     },
     {
@@ -14376,11 +14402,12 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch024/GUI/Variation/T_ui_Thumb_13_2401_L.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch024_01.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch024/Variation/Var01/GUI/Skill/T_ui_Skill_Ch024_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch024/Variation/Var01/GUI/Skill/T_ui_Skill_Ch024_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch024/Variation/Var01/GUI/Skill/T_ui_Skill_Ch024_Unique3.png"
+        "portrait": "assets/mhur_database/characters/mirio_technical/portrait.webp",
+        "tuning": "assets/mhur_database/characters/mirio_technical/tuning.webp",
+        "alpha": "assets/mhur_database/characters/mirio_technical/alpha.webp",
+        "beta": "assets/mhur_database/characters/mirio_technical/beta.webp",
+        "gamma": "assets/mhur_database/characters/mirio_technical/gamma.webp",
+        "special": "assets/mhur_database/characters/mirio_technical/special.webp"
       }
     },
     {
@@ -14752,12 +14779,12 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch025/GUI/FaceIcon/T_ui_Ch025_CharaImage.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch025_00.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch025/GUI/Skill/T_ui_Skill_Ch025_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch025/GUI/Skill/T_ui_Skill_Ch025_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch025/GUI/Skill/T_ui_Skill_Ch025_Unique3.png",
-        "special": "https://ultrarumble.com/assets/Character/Ch025/GUI/Skill/T_ui_SpecialSkill_Ch025.png"
+        "portrait": "assets/mhur_database/characters/nejire_technical/portrait.webp",
+        "tuning": "assets/mhur_database/characters/nejire_technical/tuning.webp",
+        "alpha": "assets/mhur_database/characters/nejire_technical/alpha.webp",
+        "beta": "assets/mhur_database/characters/nejire_technical/beta.webp",
+        "gamma": "assets/mhur_database/characters/nejire_technical/gamma.webp",
+        "special": "assets/mhur_database/characters/nejire_technical/special.webp"
       }
     },
     {
@@ -15143,11 +15170,12 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch025/GUI/Variation/T_ui_Thumb_13_2501_L.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch025_01.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch025/Variation/Var01/GUI/Skill/T_ui_Skill_Ch025_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch025/Variation/Var01/GUI/Skill/T_ui_Skill_Ch025_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch025/Variation/Var01/GUI/Skill/T_ui_Skill_Ch025_Unique3.png"
+        "portrait": "assets/mhur_database/characters/nejire_support/portrait.webp",
+        "tuning": "assets/mhur_database/characters/nejire_support/tuning.webp",
+        "alpha": "assets/mhur_database/characters/nejire_support/alpha.webp",
+        "beta": "assets/mhur_database/characters/nejire_support/beta.webp",
+        "gamma": "assets/mhur_database/characters/nejire_support/gamma.webp",
+        "special": "assets/mhur_database/characters/nejire_support/special.webp"
       }
     },
     {
@@ -15496,12 +15524,13 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch026/GUI/FaceIcon/T_ui_Ch026_CharaImage.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch026_00.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch026/GUI/Skill/T_ui_Skill_Ch026_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch026/GUI/Skill/T_ui_Skill_Ch026_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch026/GUI/Skill/T_ui_Skill_Ch026_Unique3.png",
-        "special": "https://ultrarumble.com/assets/Character/Ch026/GUI/Skill/T_ui_SpecialSkill_Ch026.png"
+        "portrait": "assets/mhur_database/characters/tamaki_strike/portrait.webp",
+        "tuning": "assets/mhur_database/characters/tamaki_strike/tuning.webp",
+        "alpha": "assets/mhur_database/characters/tamaki_strike/alpha.webp",
+        "beta": "assets/mhur_database/characters/tamaki_strike/beta.webp",
+        "gamma": "assets/mhur_database/characters/tamaki_strike/gamma.webp",
+        "special": "assets/mhur_database/characters/tamaki_strike/special.webp",
+        "alpha_hold": "assets/mhur_database/characters/tamaki_strike/alpha_hold.webp"
       }
     },
     {
@@ -15933,12 +15962,12 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch034/GUI/FaceIcon/T_ui_Ch034_CharaImage.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch034_00.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch034/GUI/Skill/T_ui_Skill_Ch034_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch034/GUI/Skill/T_ui_Skill_Ch034_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch034/GUI/Skill/T_ui_Skill_Ch034_Unique3.png",
-        "special": "https://ultrarumble.com/assets/Character/Ch034/GUI/Skill/T_ui_SpecialSkill_Ch034.png"
+        "portrait": "assets/mhur_database/characters/overhaul_support/portrait.webp",
+        "tuning": "assets/mhur_database/characters/overhaul_support/tuning.webp",
+        "alpha": "assets/mhur_database/characters/overhaul_support/alpha.webp",
+        "beta": "assets/mhur_database/characters/overhaul_support/beta.webp",
+        "gamma": "assets/mhur_database/characters/overhaul_support/gamma.webp",
+        "special": "assets/mhur_database/characters/overhaul_support/special.webp"
       }
     },
     {
@@ -16349,11 +16378,13 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch034/GUI/Variation/T_ui_Thumb_13_3401_L.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch034_01.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch034/Variation/Var01/GUI/Skill/T_ui_Skill_Ch034_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch034/Variation/Var01/GUI/Skill/T_ui_Skill_Ch034_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch034/Variation/Var01/GUI/Skill/T_ui_Skill_Ch034_Unique3.png"
+        "portrait": "assets/mhur_database/characters/overhaul_assault/portrait.webp",
+        "tuning": "assets/mhur_database/characters/overhaul_assault/tuning.webp",
+        "alpha": "assets/mhur_database/characters/overhaul_assault/alpha.webp",
+        "beta": "assets/mhur_database/characters/overhaul_assault/beta.webp",
+        "gamma": "assets/mhur_database/characters/overhaul_assault/gamma.webp",
+        "special": "assets/mhur_database/characters/overhaul_assault/special.webp",
+        "alpha_hold": "assets/mhur_database/characters/overhaul_assault/alpha_hold.webp"
       }
     },
     {
@@ -16650,12 +16681,12 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch037/GUI/FaceIcon/T_ui_Ch037_CharaImage.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch037_00.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch037/GUI/Skill/T_ui_Skill_Ch037_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch037/GUI/Skill/T_ui_Skill_Ch037_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch037/GUI/Skill/T_ui_Skill_Ch037_Unique3.png",
-        "special": "https://ultrarumble.com/assets/Character/Ch037/GUI/Skill/T_ui_SpecialSkill_Ch037.png"
+        "portrait": "assets/mhur_database/characters/twice_rapid/portrait.webp",
+        "tuning": "assets/mhur_database/characters/twice_rapid/tuning.webp",
+        "alpha": "assets/mhur_database/characters/twice_rapid/alpha.webp",
+        "beta": "assets/mhur_database/characters/twice_rapid/beta.webp",
+        "gamma": "assets/mhur_database/characters/twice_rapid/gamma.webp",
+        "special": "assets/mhur_database/characters/twice_rapid/special.webp"
       }
     },
     {
@@ -17022,8 +17053,18 @@
       },
       "special_action": {
         "values": {
-          "columns": [],
-          "rows": []
+          "columns": [
+            "Ammo",
+            "Use Ammo",
+            "Reload"
+          ],
+          "rows": [
+            [
+              "x1",
+              "x1",
+              "1s"
+            ]
+          ]
         }
       },
       "normal_tuning": [
@@ -17057,12 +17098,12 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch038/GUI/FaceIcon/T_ui_Ch038_CharaImage.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch038_00.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch038/GUI/Skill/T_ui_Skill_Ch038_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch038/GUI/Skill/T_ui_Skill_Ch038_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch038/GUI/Skill/T_ui_Skill_Ch038_Unique3.png",
-        "special": "https://ultrarumble.com/assets/Character/Ch038/GUI/Skill/T_ui_SpecialSkill_Ch038.png"
+        "portrait": "assets/mhur_database/characters/mr_compress_support/portrait.webp",
+        "tuning": "assets/mhur_database/characters/mr_compress_support/tuning.webp",
+        "alpha": "assets/mhur_database/characters/mr_compress_support/alpha.webp",
+        "beta": "assets/mhur_database/characters/mr_compress_support/beta.webp",
+        "gamma": "assets/mhur_database/characters/mr_compress_support/gamma.webp",
+        "special": "assets/mhur_database/characters/mr_compress_support/special.webp"
       }
     },
     {
@@ -17536,12 +17577,12 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch043/GUI/FaceIcon/T_ui_Ch043_CharaImage.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch043_00.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch043/GUI/Skill/T_ui_Skill_Ch043_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch043/GUI/Skill/T_ui_Skill_Ch043_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch043/GUI/Skill/T_ui_Skill_Ch043_Unique3.png",
-        "special": "https://ultrarumble.com/assets/Character/Ch043/GUI/Skill/T_ui_SpecialSkill_Ch043.png"
+        "portrait": "assets/mhur_database/characters/hawks_rapid/portrait.webp",
+        "tuning": "assets/mhur_database/characters/hawks_rapid/tuning.webp",
+        "alpha": "assets/mhur_database/characters/hawks_rapid/alpha.webp",
+        "beta": "assets/mhur_database/characters/hawks_rapid/beta.webp",
+        "gamma": "assets/mhur_database/characters/hawks_rapid/gamma.webp",
+        "special": "assets/mhur_database/characters/hawks_rapid/special.webp"
       }
     },
     {
@@ -18069,11 +18110,12 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch043/GUI/Variation/T_ui_Thumb_13_4301_L.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch043_01.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch043/Variation/Var01/GUI/Skill/T_ui_Skill_Ch043_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch043/Variation/Var01/GUI/Skill/T_ui_Skill_Ch043_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch043/Variation/Var01/GUI/Skill/T_ui_Skill_Ch043_Unique3.png"
+        "portrait": "assets/mhur_database/characters/hawks_strike/portrait.webp",
+        "tuning": "assets/mhur_database/characters/hawks_strike/tuning.webp",
+        "alpha": "assets/mhur_database/characters/hawks_strike/alpha.webp",
+        "beta": "assets/mhur_database/characters/hawks_strike/beta.webp",
+        "gamma": "assets/mhur_database/characters/hawks_strike/gamma.webp",
+        "special": "assets/mhur_database/characters/hawks_strike/special.webp"
       }
     },
     {
@@ -18441,12 +18483,12 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch046/GUI/FaceIcon/T_ui_Ch046_CharaImage.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch046_00.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch046/GUI/Skill/T_ui_Skill_Ch046_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch046/GUI/Skill/T_ui_Skill_Ch046_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch046/GUI/Skill/T_ui_Skill_Ch046_Unique3.png",
-        "special": "https://ultrarumble.com/assets/Character/Ch046/GUI/Skill/T_ui_SpecialSkill_Ch046.png"
+        "portrait": "assets/mhur_database/characters/kendo_assault/portrait.webp",
+        "tuning": "assets/mhur_database/characters/kendo_assault/tuning.webp",
+        "alpha": "assets/mhur_database/characters/kendo_assault/alpha.webp",
+        "beta": "assets/mhur_database/characters/kendo_assault/beta.webp",
+        "gamma": "assets/mhur_database/characters/kendo_assault/gamma.webp",
+        "special": "assets/mhur_database/characters/kendo_assault/special.webp"
       }
     },
     {
@@ -18804,11 +18846,12 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch046/GUI/Variation/T_ui_Thumb_13_4601_L.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch046_01.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch046/Variation/Var01/GUI/Skill/T_ui_Skill_Ch046_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch046/Variation/Var01/GUI/Skill/T_ui_Skill_Ch046_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch046/Variation/Var01/GUI/Skill/T_ui_Skill_Ch046_Unique3.png"
+        "portrait": "assets/mhur_database/characters/kendo_strike/portrait.webp",
+        "tuning": "assets/mhur_database/characters/kendo_strike/tuning.webp",
+        "alpha": "assets/mhur_database/characters/kendo_strike/alpha.webp",
+        "beta": "assets/mhur_database/characters/kendo_strike/beta.webp",
+        "gamma": "assets/mhur_database/characters/kendo_strike/gamma.webp",
+        "special": "assets/mhur_database/characters/kendo_strike/special.webp"
       }
     },
     {
@@ -19458,12 +19501,12 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch100/GUI/FaceIcon/T_ui_Ch100_CharaImage.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch100_00.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch100/GUI/Skill/T_ui_Skill_Ch100_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch100/GUI/Skill/T_ui_Skill_Ch100_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch100/GUI/Skill/T_ui_Skill_Ch100_Unique3.png",
-        "special": "https://ultrarumble.com/assets/Character/Ch100/GUI/Skill/T_ui_SpecialSkill_Ch100.png"
+        "portrait": "assets/mhur_database/characters/mt_lady_assault/portrait.webp",
+        "tuning": "assets/mhur_database/characters/mt_lady_assault/tuning.webp",
+        "alpha": "assets/mhur_database/characters/mt_lady_assault/alpha.webp",
+        "beta": "assets/mhur_database/characters/mt_lady_assault/beta.webp",
+        "gamma": "assets/mhur_database/characters/mt_lady_assault/gamma.webp",
+        "special": "assets/mhur_database/characters/mt_lady_assault/special.webp"
       }
     },
     {
@@ -19945,12 +19988,12 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch101/GUI/FaceIcon/T_ui_Ch101_CharaImage.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch101_00.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch101/GUI/Skill/T_ui_Skill_Ch101_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch101/GUI/Skill/T_ui_Skill_Ch101_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch101/GUI/Skill/T_ui_Skill_Ch101_Unique3.png",
-        "special": "https://ultrarumble.com/assets/Character/Ch101/GUI/Skill/T_ui_SpecialSkill_Ch101.png"
+        "portrait": "assets/mhur_database/characters/cementoss_support/portrait.webp",
+        "tuning": "assets/mhur_database/characters/cementoss_support/tuning.webp",
+        "alpha": "assets/mhur_database/characters/cementoss_support/alpha.webp",
+        "beta": "assets/mhur_database/characters/cementoss_support/beta.webp",
+        "gamma": "assets/mhur_database/characters/cementoss_support/gamma.webp",
+        "special": "assets/mhur_database/characters/cementoss_support/special.webp"
       }
     },
     {
@@ -20466,12 +20509,12 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch102/GUI/FaceIcon/T_ui_Ch102_CharaImage.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch102_00.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch102/GUI/Skill/T_ui_Skill_Ch102_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch102/GUI/Skill/T_ui_Skill_Ch102_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch102/GUI/Skill/T_ui_Skill_Ch102_Unique3.png",
-        "special": "https://ultrarumble.com/assets/Character/Ch102/GUI/Skill/T_ui_SpecialSkill_Ch102.png"
+        "portrait": "assets/mhur_database/characters/ibara_support/portrait.webp",
+        "tuning": "assets/mhur_database/characters/ibara_support/tuning.webp",
+        "alpha": "assets/mhur_database/characters/ibara_support/alpha.webp",
+        "beta": "assets/mhur_database/characters/ibara_support/beta.webp",
+        "gamma": "assets/mhur_database/characters/ibara_support/gamma.webp",
+        "special": "assets/mhur_database/characters/ibara_support/special.webp"
       }
     },
     {
@@ -20775,12 +20818,13 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch103/GUI/FaceIcon/T_ui_Ch103_CharaImage.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch103_00.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch103/GUI/Skill/T_ui_Skill_Ch103_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch103/GUI/Skill/T_ui_Skill_Ch103_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch103/GUI/Skill/T_ui_Skill_Ch103_Unique3.png",
-        "special": "https://ultrarumble.com/assets/Character/Ch103/GUI/Skill/T_ui_SpecialSkill_Ch103.png"
+        "portrait": "assets/mhur_database/characters/kurogiri_support/portrait.webp",
+        "tuning": "assets/mhur_database/characters/kurogiri_support/tuning.webp",
+        "alpha": "assets/mhur_database/characters/kurogiri_support/alpha.webp",
+        "beta": "assets/mhur_database/characters/kurogiri_support/beta.webp",
+        "gamma": "assets/mhur_database/characters/kurogiri_support/gamma.webp",
+        "special": "assets/mhur_database/characters/kurogiri_support/special.webp",
+        "gamma_hold": "assets/mhur_database/characters/kurogiri_support/gamma_hold.webp"
       }
     },
     {
@@ -21052,12 +21096,12 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch104/GUI/FaceIcon/T_ui_Ch104_CharaImage.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch104_00.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch104/GUI/Skill/T_ui_Skill_Ch104_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch104/GUI/Skill/T_ui_Skill_Ch104_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch104/GUI/Skill/T_ui_Skill_Ch104_Unique3.png",
-        "special": "https://ultrarumble.com/assets/Character/Ch104/GUI/Skill/T_ui_SpecialSkill_Ch104.png"
+        "portrait": "assets/mhur_database/characters/monoma_technical/portrait.webp",
+        "tuning": "assets/mhur_database/characters/monoma_technical/tuning.webp",
+        "alpha": "assets/mhur_database/characters/monoma_technical/alpha.webp",
+        "beta": "assets/mhur_database/characters/monoma_technical/beta.webp",
+        "gamma": "assets/mhur_database/characters/monoma_technical/gamma.webp",
+        "special": "assets/mhur_database/characters/monoma_technical/special.webp"
       }
     },
     {
@@ -21460,12 +21504,13 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch105/GUI/FaceIcon/T_ui_Ch105_CharaImage.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch105_00.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch105/GUI/Skill/T_ui_Skill_Ch105_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch105/GUI/Skill/T_ui_Skill_Ch105_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch105/GUI/Skill/T_ui_Skill_Ch105_Unique3.png",
-        "special": "https://ultrarumble.com/assets/Character/Ch105/GUI/Skill/T_ui_SpecialSkill_Ch105.png"
+        "portrait": "assets/mhur_database/characters/shinso_strike/portrait.webp",
+        "tuning": "assets/mhur_database/characters/shinso_strike/tuning.webp",
+        "alpha": "assets/mhur_database/characters/shinso_strike/alpha.webp",
+        "beta": "assets/mhur_database/characters/shinso_strike/beta.webp",
+        "gamma": "assets/mhur_database/characters/shinso_strike/gamma.webp",
+        "special": "assets/mhur_database/characters/shinso_strike/special.webp",
+        "beta_hold": "assets/mhur_database/characters/shinso_strike/beta_hold.webp"
       }
     },
     {
@@ -21960,12 +22005,12 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch108/GUI/FaceIcon/T_ui_Ch108_CharaImage.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch108_00.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch108/GUI/Skill/T_ui_Skill_Ch108_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch108/GUI/Skill/T_ui_Skill_Ch108_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch108/GUI/Skill/T_ui_Skill_Ch108_Unique3.png",
-        "special": "https://ultrarumble.com/assets/Character/Ch108/GUI/Skill/T_ui_SpecialSkill_Ch108.png"
+        "portrait": "assets/mhur_database/characters/gentle_criminal_technical/portrait.png",
+        "tuning": "assets/mhur_database/characters/gentle_criminal_technical/tuning.png",
+        "alpha": "assets/mhur_database/characters/gentle_criminal_technical/alpha.png",
+        "beta": "assets/mhur_database/characters/gentle_criminal_technical/beta.png",
+        "gamma": "assets/mhur_database/characters/gentle_criminal_technical/gamma.png",
+        "special": "assets/mhur_database/characters/gentle_criminal_technical/special.png"
       }
     },
     {
@@ -22314,12 +22359,13 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch109/GUI/FaceIcon/T_ui_Ch109_CharaImage.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch109_00.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch109/GUI/Skill/T_ui_Skill_Ch109_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch109/GUI/Skill/T_ui_Skill_Ch109_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch109/GUI/Skill/T_ui_Skill_Ch109_Unique3.png",
-        "special": "https://ultrarumble.com/assets/Character/Ch109/GUI/Skill/T_ui_SpecialSkill_Ch109.png"
+        "portrait": "assets/mhur_database/characters/present_mic_strike/portrait.webp",
+        "tuning": "assets/mhur_database/characters/present_mic_strike/tuning.webp",
+        "alpha": "assets/mhur_database/characters/present_mic_strike/alpha.webp",
+        "beta": "assets/mhur_database/characters/present_mic_strike/beta.webp",
+        "gamma": "assets/mhur_database/characters/present_mic_strike/gamma.webp",
+        "special": "assets/mhur_database/characters/present_mic_strike/special.webp",
+        "beta_hold": "assets/mhur_database/characters/present_mic_strike/beta_hold.webp"
       }
     },
     {
@@ -22586,11 +22632,14 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch109/GUI/Variation/T_ui_Thumb_13_10901_L.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch109_01.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch109/Variation/Var01/GUI/Skill/T_ui_Skill_Ch109_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch109/Variation/Var01/GUI/Skill/T_ui_Skill_Ch109_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch109/Variation/Var01/GUI/Skill/T_ui_Skill_Ch109_Unique3.png"
+        "portrait": "assets/mhur_database/characters/present_mic_technical/portrait.webp",
+        "tuning": "assets/mhur_database/characters/present_mic_technical/tuning.webp",
+        "alpha": "assets/mhur_database/characters/present_mic_technical/alpha.webp",
+        "beta": "assets/mhur_database/characters/present_mic_technical/beta.webp",
+        "gamma": "assets/mhur_database/characters/present_mic_technical/gamma.webp",
+        "special": "assets/mhur_database/characters/present_mic_technical/special.webp",
+        "beta_hold": "assets/mhur_database/characters/present_mic_technical/beta_hold.webp",
+        "alpha_hold": "assets/mhur_database/characters/present_mic_technical/alpha_hold.webp"
       }
     },
     {
@@ -23036,12 +23085,12 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch111/GUI/FaceIcon/T_ui_Ch111_CharaImage.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch111_00.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch111/GUI/Skill/T_ui_Skill_Ch111_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch111/GUI/Skill/T_ui_Skill_Ch111_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch111/GUI/Skill/T_ui_Skill_Ch111_Unique3.png",
-        "special": "https://ultrarumble.com/assets/Character/Ch111/GUI/Skill/T_ui_SpecialSkill_Ch111.png"
+        "portrait": "assets/mhur_database/characters/mirko_rapid/portrait.webp",
+        "tuning": "assets/mhur_database/characters/mirko_rapid/tuning.webp",
+        "alpha": "assets/mhur_database/characters/mirko_rapid/alpha.webp",
+        "beta": "assets/mhur_database/characters/mirko_rapid/beta.webp",
+        "gamma": "assets/mhur_database/characters/mirko_rapid/gamma.webp",
+        "special": "assets/mhur_database/characters/mirko_rapid/special.webp"
       }
     },
     {
@@ -23512,12 +23561,12 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch114/GUI/FaceIcon/T_ui_Ch114_CharaImage.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch114_00.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch114/GUI/Skill/T_ui_Skill_Ch114_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch114/GUI/Skill/T_ui_Skill_Ch114_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch114/GUI/Skill/T_ui_Skill_Ch114_Unique3.png",
-        "special": "https://ultrarumble.com/assets/Character/Ch114/GUI/Skill/T_ui_SpecialSkill_Ch114.png"
+        "portrait": "assets/mhur_database/characters/star_and_stripe_strike/portrait.webp",
+        "tuning": "assets/mhur_database/characters/star_and_stripe_strike/tuning.webp",
+        "alpha": "assets/mhur_database/characters/star_and_stripe_strike/alpha.webp",
+        "beta": "assets/mhur_database/characters/star_and_stripe_strike/beta.webp",
+        "gamma": "assets/mhur_database/characters/star_and_stripe_strike/gamma.webp",
+        "special": "assets/mhur_database/characters/star_and_stripe_strike/special.webp"
       }
     },
     {
@@ -23937,12 +23986,12 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch115/GUI/FaceIcon/T_ui_Ch115_CharaImage.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch115_00.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch115/GUI/Skill/T_ui_Skill_Ch115_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch115/GUI/Skill/T_ui_Skill_Ch115_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch115/GUI/Skill/T_ui_Skill_Ch115_Unique3.png",
-        "special": "https://ultrarumble.com/assets/Character/Ch115/GUI/Skill/T_ui_SpecialSkill_Ch115.png"
+        "portrait": "assets/mhur_database/characters/lady_nagant_strike/portrait.webp",
+        "tuning": "assets/mhur_database/characters/lady_nagant_strike/tuning.webp",
+        "alpha": "assets/mhur_database/characters/lady_nagant_strike/alpha.webp",
+        "beta": "assets/mhur_database/characters/lady_nagant_strike/beta.webp",
+        "gamma": "assets/mhur_database/characters/lady_nagant_strike/gamma.webp",
+        "special": "assets/mhur_database/characters/lady_nagant_strike/special.webp"
       }
     },
     {
@@ -24127,12 +24176,14 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch200/GUI/FaceIcon/T_ui_Ch200_CharaImage.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch200_00.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch200/GUI/Skill/T_ui_Skill_Ch200_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch200/GUI/Skill/T_ui_Skill_Ch200_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch200/GUI/Skill/T_ui_Skill_Ch200_Unique3.png",
-        "special": "https://ultrarumble.com/assets/Character/Ch200/GUI/Skill/T_ui_SpecialSkill_Ch200.png"
+        "portrait": "assets/mhur_database/characters/armored_all_might_technical/portrait.webp",
+        "tuning": "assets/mhur_database/characters/armored_all_might_technical/tuning.webp",
+        "alpha": "assets/mhur_database/characters/armored_all_might_technical/alpha.webp",
+        "beta": "assets/mhur_database/characters/armored_all_might_technical/beta.webp",
+        "gamma": "assets/mhur_database/characters/armored_all_might_technical/gamma.webp",
+        "special": "assets/mhur_database/characters/armored_all_might_technical/special.webp",
+        "beta_hold": "assets/mhur_database/characters/armored_all_might_technical/beta_hold.webp",
+        "alpha_hold": "assets/mhur_database/characters/armored_all_might_technical/alpha_hold.webp"
       }
     },
     {
@@ -24399,12 +24450,14 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch201/GUI/FaceIcon/T_ui_Ch201_CharaImage.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch201_00.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch201/GUI/Skill/T_ui_Skill_Ch201_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch201/GUI/Skill/T_ui_Skill_Ch201_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch201/GUI/Skill/T_ui_Skill_Ch201_Unique3.png",
-        "special": "https://ultrarumble.com/assets/Character/Ch201/GUI/Skill/T_ui_SpecialSkill_Ch201.png"
+        "portrait": "assets/mhur_database/characters/all_for_one_young_assault/portrait.webp",
+        "tuning": "assets/mhur_database/characters/all_for_one_young_assault/tuning.webp",
+        "alpha": "assets/mhur_database/characters/all_for_one_young_assault/alpha.webp",
+        "beta": "assets/mhur_database/characters/all_for_one_young_assault/beta.webp",
+        "gamma": "assets/mhur_database/characters/all_for_one_young_assault/gamma.webp",
+        "special": "assets/mhur_database/characters/all_for_one_young_assault/special.webp",
+        "gamma_hold": "assets/mhur_database/characters/all_for_one_young_assault/gamma_hold.webp",
+        "beta_hold": "assets/mhur_database/characters/all_for_one_young_assault/beta_hold.webp"
       }
     },
     {
@@ -24645,12 +24698,15 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch202/GUI/FaceIcon/T_ui_Ch202_CharaImage.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch202_00.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch202/GUI/Skill/T_ui_Skill_Ch202_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch202/GUI/Skill/T_ui_Skill_Ch202_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch202/GUI/Skill/T_ui_Skill_Ch202_Unique3.png",
-        "special": "https://ultrarumble.com/assets/Character/Ch202/GUI/Skill/T_ui_SpecialSkill_Ch202.png"
+        "portrait": "assets/mhur_database/characters/ofa/portrait.webp",
+        "tuning": "assets/mhur_database/characters/ofa/tuning.webp",
+        "alpha": "assets/mhur_database/characters/ofa/alpha.webp",
+        "beta": "assets/mhur_database/characters/ofa/beta.webp",
+        "gamma": "assets/mhur_database/characters/ofa/gamma.webp",
+        "special": "assets/mhur_database/characters/ofa/special.webp",
+        "gamma_hold": "assets/mhur_database/characters/ofa/gamma_hold.webp",
+        "beta_hold": "assets/mhur_database/characters/ofa/beta_hold.webp",
+        "character": "assets/mhur_database/characters/ofa/character.webp"
       }
     }
   ],
@@ -24919,12 +24975,14 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch201/GUI/FaceIcon/T_ui_Ch201_CharaImage.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch201_00.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch201/GUI/Skill/T_ui_Skill_Ch201_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch201/GUI/Skill/T_ui_Skill_Ch201_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch201/GUI/Skill/T_ui_Skill_Ch201_Unique3.png",
-        "special": "https://ultrarumble.com/assets/Character/Ch201/GUI/Skill/T_ui_SpecialSkill_Ch201.png"
+        "portrait": "assets/mhur_database/characters/all_for_one_young_assault/portrait.webp",
+        "tuning": "assets/mhur_database/characters/all_for_one_young_assault/tuning.webp",
+        "alpha": "assets/mhur_database/characters/all_for_one_young_assault/alpha.webp",
+        "beta": "assets/mhur_database/characters/all_for_one_young_assault/beta.webp",
+        "gamma": "assets/mhur_database/characters/all_for_one_young_assault/gamma.webp",
+        "special": "assets/mhur_database/characters/all_for_one_young_assault/special.webp",
+        "gamma_hold": "assets/mhur_database/characters/all_for_one_young_assault/gamma_hold.webp",
+        "beta_hold": "assets/mhur_database/characters/all_for_one_young_assault/beta_hold.webp"
       }
     },
     "gentle_criminal_technical": {
@@ -25419,12 +25477,12 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch108/GUI/FaceIcon/T_ui_Ch108_CharaImage.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch108_00.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch108/GUI/Skill/T_ui_Skill_Ch108_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch108/GUI/Skill/T_ui_Skill_Ch108_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch108/GUI/Skill/T_ui_Skill_Ch108_Unique3.png",
-        "special": "https://ultrarumble.com/assets/Character/Ch108/GUI/Skill/T_ui_SpecialSkill_Ch108.png"
+        "portrait": "assets/mhur_database/characters/gentle_criminal_technical/portrait.png",
+        "tuning": "assets/mhur_database/characters/gentle_criminal_technical/tuning.png",
+        "alpha": "assets/mhur_database/characters/gentle_criminal_technical/alpha.png",
+        "beta": "assets/mhur_database/characters/gentle_criminal_technical/beta.png",
+        "gamma": "assets/mhur_database/characters/gentle_criminal_technical/gamma.png",
+        "special": "assets/mhur_database/characters/gentle_criminal_technical/special.png"
       }
     },
     "kaminari_technical": {
@@ -25861,11 +25919,13 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch007/GUI/Variation/T_ui_Thumb_13_701_L.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch007_01.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch007/Variation/Var01/GUI/Skill/T_ui_Skill_Ch007_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch007/Variation/Var01/GUI/Skill/T_ui_Skill_Ch007_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch007/Variation/Var01/GUI/Skill/T_ui_Skill_Ch007_Unique3.png"
+        "portrait": "assets/mhur_database/characters/kaminari_technical/portrait.webp",
+        "tuning": "assets/mhur_database/characters/kaminari_technical/tuning.webp",
+        "alpha": "assets/mhur_database/characters/kaminari_technical/alpha.webp",
+        "beta": "assets/mhur_database/characters/kaminari_technical/beta.webp",
+        "gamma": "assets/mhur_database/characters/kaminari_technical/gamma.webp",
+        "special": "assets/mhur_database/characters/kaminari_technical/special.webp",
+        "alpha_hold": "assets/mhur_database/characters/kaminari_technical/alpha_hold.webp"
       }
     },
     "armored_all_might_technical": {
@@ -26050,12 +26110,14 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch200/GUI/FaceIcon/T_ui_Ch200_CharaImage.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch200_00.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch200/GUI/Skill/T_ui_Skill_Ch200_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch200/GUI/Skill/T_ui_Skill_Ch200_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch200/GUI/Skill/T_ui_Skill_Ch200_Unique3.png",
-        "special": "https://ultrarumble.com/assets/Character/Ch200/GUI/Skill/T_ui_SpecialSkill_Ch200.png"
+        "portrait": "assets/mhur_database/characters/armored_all_might_technical/portrait.webp",
+        "tuning": "assets/mhur_database/characters/armored_all_might_technical/tuning.webp",
+        "alpha": "assets/mhur_database/characters/armored_all_might_technical/alpha.webp",
+        "beta": "assets/mhur_database/characters/armored_all_might_technical/beta.webp",
+        "gamma": "assets/mhur_database/characters/armored_all_might_technical/gamma.webp",
+        "special": "assets/mhur_database/characters/armored_all_might_technical/special.webp",
+        "beta_hold": "assets/mhur_database/characters/armored_all_might_technical/beta_hold.webp",
+        "alpha_hold": "assets/mhur_database/characters/armored_all_might_technical/alpha_hold.webp"
       }
     },
     "kurogiri_support": {
@@ -26359,12 +26421,13 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch103/GUI/FaceIcon/T_ui_Ch103_CharaImage.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch103_00.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch103/GUI/Skill/T_ui_Skill_Ch103_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch103/GUI/Skill/T_ui_Skill_Ch103_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch103/GUI/Skill/T_ui_Skill_Ch103_Unique3.png",
-        "special": "https://ultrarumble.com/assets/Character/Ch103/GUI/Skill/T_ui_SpecialSkill_Ch103.png"
+        "portrait": "assets/mhur_database/characters/kurogiri_support/portrait.webp",
+        "tuning": "assets/mhur_database/characters/kurogiri_support/tuning.webp",
+        "alpha": "assets/mhur_database/characters/kurogiri_support/alpha.webp",
+        "beta": "assets/mhur_database/characters/kurogiri_support/beta.webp",
+        "gamma": "assets/mhur_database/characters/kurogiri_support/gamma.webp",
+        "special": "assets/mhur_database/characters/kurogiri_support/special.webp",
+        "gamma_hold": "assets/mhur_database/characters/kurogiri_support/gamma_hold.webp"
       }
     },
     "assault": {
@@ -26593,12 +26656,13 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch001/GUI/FaceIcon/T_ui_Ch001_CharaImage.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch001_00.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch001/GUI/Skill/T_ui_Skill_Ch001_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch001/GUI/Skill/T_ui_Skill_Ch001_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch001/GUI/Skill/T_ui_Skill_Ch001_Unique3.png",
-        "special": "https://ultrarumble.com/assets/Character/Ch001/GUI/Skill/T_ui_SpecialSkill_Ch001.png"
+        "portrait": "assets/mhur_database/characters/assault/portrait.webp",
+        "tuning": "assets/mhur_database/characters/assault/tuning.png",
+        "alpha": "assets/mhur_database/characters/assault/alpha.webp",
+        "beta": "assets/mhur_database/characters/assault/beta.webp",
+        "gamma": "assets/mhur_database/characters/assault/gamma.webp",
+        "special": "assets/mhur_database/characters/assault/special.png",
+        "alpha_fullburst": "assets/mhur_database/characters/assault/alpha_fullburst.webp"
       }
     },
     "fullbullet": {
@@ -27108,11 +27172,12 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch001/GUI/Variation/T_ui_Thumb_13_101_L.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch001_01.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch001/Variation/Var01/GUI/Skill/T_ui_Skill_Ch001_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch001/Variation/Var01/GUI/Skill/T_ui_Skill_Ch001_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch001/Variation/Var01/GUI/Skill/T_ui_Skill_Ch001_Unique3.png"
+        "portrait": "assets/mhur_database/characters/fullbullet/portrait.webp",
+        "tuning": "assets/mhur_database/characters/fullbullet/tuning.webp",
+        "alpha": "assets/mhur_database/characters/fullbullet/alpha.webp",
+        "beta": "assets/mhur_database/characters/fullbullet/beta.webp",
+        "gamma": "assets/mhur_database/characters/fullbullet/gamma.webp",
+        "special": "assets/mhur_database/characters/fullbullet/special.png"
       }
     },
     "ofa": {
@@ -27353,12 +27418,15 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch202/GUI/FaceIcon/T_ui_Ch202_CharaImage.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch202_00.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch202/GUI/Skill/T_ui_Skill_Ch202_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch202/GUI/Skill/T_ui_Skill_Ch202_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch202/GUI/Skill/T_ui_Skill_Ch202_Unique3.png",
-        "special": "https://ultrarumble.com/assets/Character/Ch202/GUI/Skill/T_ui_SpecialSkill_Ch202.png"
+        "portrait": "assets/mhur_database/characters/ofa/portrait.webp",
+        "tuning": "assets/mhur_database/characters/ofa/tuning.webp",
+        "alpha": "assets/mhur_database/characters/ofa/alpha.webp",
+        "beta": "assets/mhur_database/characters/ofa/beta.webp",
+        "gamma": "assets/mhur_database/characters/ofa/gamma.webp",
+        "special": "assets/mhur_database/characters/ofa/special.webp",
+        "gamma_hold": "assets/mhur_database/characters/ofa/gamma_hold.webp",
+        "beta_hold": "assets/mhur_database/characters/ofa/beta_hold.webp",
+        "character": "assets/mhur_database/characters/ofa/character.webp"
       }
     },
     "bakugo_attack": {
@@ -27785,12 +27853,12 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch002/GUI/FaceIcon/T_ui_Ch002_CharaImage.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch002_00.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch002/GUI/Skill/T_ui_Skill_Ch002_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch002/GUI/Skill/T_ui_Skill_Ch002_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch002/GUI/Skill/T_ui_Skill_Ch002_Unique3.png",
-        "special": "https://ultrarumble.com/assets/Character/Ch002/GUI/Skill/T_ui_SpecialSkill_Ch002.png"
+        "portrait": "assets/mhur_database/characters/bakugo_attack/portrait.webp",
+        "tuning": "assets/mhur_database/characters/bakugo_attack/tuning.webp",
+        "alpha": "assets/mhur_database/characters/bakugo_attack/alpha.webp",
+        "beta": "assets/mhur_database/characters/bakugo_attack/beta.webp",
+        "gamma": "assets/mhur_database/characters/bakugo_attack/gamma.webp",
+        "special": "assets/mhur_database/characters/bakugo_attack/special.webp"
       }
     },
     "bakugo_rapid": {
@@ -28162,11 +28230,12 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch002/GUI/Variation/T_ui_Thumb_13_201_L.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch002_01.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch002/Variation/Var01/GUI/Skill/T_ui_Skill_Ch002_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch002/Variation/Var01/GUI/Skill/T_ui_Skill_Ch002_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch002/Variation/Var01/GUI/Skill/T_ui_Skill_Ch002_Unique3.png"
+        "portrait": "assets/mhur_database/characters/bakugo_rapid/portrait.webp",
+        "tuning": "assets/mhur_database/characters/bakugo_rapid/tuning.webp",
+        "alpha": "assets/mhur_database/characters/bakugo_rapid/alpha.webp",
+        "beta": "assets/mhur_database/characters/bakugo_rapid/beta.webp",
+        "gamma": "assets/mhur_database/characters/bakugo_rapid/gamma.webp",
+        "special": "assets/mhur_database/characters/bakugo_rapid/special.webp"
       }
     },
     "bakugo_technical": {
@@ -29000,11 +29069,12 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch002/GUI/Variation/T_ui_Thumb_13_202_L.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch002_02.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch002/Variation/Var02/GUI/Skill/T_ui_Skill_Ch002_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch002/Variation/Var02/GUI/Skill/T_ui_Skill_Ch002_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch002/Variation/Var02/GUI/Skill/T_ui_Skill_Ch002_Unique3.png"
+        "portrait": "assets/mhur_database/characters/bakugo_technical/portrait.webp",
+        "tuning": "assets/mhur_database/characters/bakugo_technical/tuning.webp",
+        "alpha": "assets/mhur_database/characters/bakugo_technical/alpha.webp",
+        "beta": "assets/mhur_database/characters/bakugo_technical/beta.webp",
+        "gamma": "assets/mhur_database/characters/bakugo_technical/gamma.webp",
+        "special": "assets/mhur_database/characters/bakugo_technical/special.webp"
       }
     },
     "ochaco_rapid": {
@@ -29343,12 +29413,13 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch003/GUI/FaceIcon/T_ui_Ch003_CharaImage.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch003_00.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch003/GUI/Skill/T_ui_Skill_Ch003_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch003/GUI/Skill/T_ui_Skill_Ch003_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch003/GUI/Skill/T_ui_Skill_Ch003_Unique3.png",
-        "special": "https://ultrarumble.com/assets/Character/Ch003/GUI/Skill/T_ui_SpecialSkill_Ch003.png"
+        "portrait": "assets/mhur_database/characters/ochaco_rapid/portrait.webp",
+        "tuning": "assets/mhur_database/characters/ochaco_rapid/tuning.webp",
+        "alpha": "assets/mhur_database/characters/ochaco_rapid/alpha.webp",
+        "beta": "assets/mhur_database/characters/ochaco_rapid/beta.webp",
+        "gamma": "assets/mhur_database/characters/ochaco_rapid/gamma.webp",
+        "special": "assets/mhur_database/characters/ochaco_rapid/special.webp",
+        "gamma_hold": "assets/mhur_database/characters/ochaco_rapid/gamma_hold.webp"
       }
     },
     "ochaco_assault": {
@@ -29555,11 +29626,14 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch003/GUI/Variation/T_ui_Thumb_13_301_L.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch003_01.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch003/Variation/Var01/GUI/Skill/T_ui_Skill_Ch003_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch003/Variation/Var01/GUI/Skill/T_ui_Skill_Ch003_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch003/Variation/Var01/GUI/Skill/T_ui_Skill_Ch003_Unique3.png"
+        "portrait": "assets/mhur_database/characters/ochaco_assault/portrait.webp",
+        "tuning": "assets/mhur_database/characters/ochaco_assault/tuning.webp",
+        "alpha": "assets/mhur_database/characters/ochaco_assault/alpha.webp",
+        "beta": "assets/mhur_database/characters/ochaco_assault/beta.webp",
+        "gamma": "assets/mhur_database/characters/ochaco_assault/gamma.webp",
+        "special": "assets/mhur_database/characters/ochaco_assault/special.webp",
+        "gamma_hold": "assets/mhur_database/characters/ochaco_assault/gamma_hold.webp",
+        "alpha_hold": "assets/mhur_database/characters/ochaco_assault/alpha_hold.webp"
       }
     },
     "tenya_rapid": {
@@ -29841,12 +29915,12 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch005/GUI/FaceIcon/T_ui_Ch005_CharaImage.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch005_00.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch005/GUI/Skill/T_ui_Skill_Ch005_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch005/GUI/Skill/T_ui_Skill_Ch005_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch005/GUI/Skill/T_ui_Skill_Ch005_Unique3.png",
-        "special": "https://ultrarumble.com/assets/Character/Ch005/GUI/Skill/T_ui_SpecialSkill_Ch005.png"
+        "portrait": "assets/mhur_database/characters/tenya_rapid/portrait.webp",
+        "tuning": "assets/mhur_database/characters/tenya_rapid/tuning.webp",
+        "alpha": "assets/mhur_database/characters/tenya_rapid/alpha.webp",
+        "beta": "assets/mhur_database/characters/tenya_rapid/beta.webp",
+        "gamma": "assets/mhur_database/characters/tenya_rapid/gamma.webp",
+        "special": "assets/mhur_database/characters/tenya_rapid/special.webp"
       }
     },
     "shoto_attack": {
@@ -30185,12 +30259,13 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch004/GUI/FaceIcon/T_ui_Ch004_CharaImage.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch004_00.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch004/GUI/Skill/T_ui_Skill_Ch004_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch004/GUI/Skill/T_ui_Skill_Ch004_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch004/GUI/Skill/T_ui_Skill_Ch004_Unique3.png",
-        "special": "https://ultrarumble.com/assets/Character/Ch004/GUI/Skill/T_ui_SpecialSkill_Ch004.png"
+        "portrait": "assets/mhur_database/characters/shoto_attack/portrait.webp",
+        "tuning": "assets/mhur_database/characters/shoto_attack/tuning.webp",
+        "alpha": "assets/mhur_database/characters/shoto_attack/alpha.webp",
+        "beta": "assets/mhur_database/characters/shoto_attack/beta.webp",
+        "gamma": "assets/mhur_database/characters/shoto_attack/gamma.webp",
+        "special": "assets/mhur_database/characters/shoto_attack/special.webp",
+        "gamma_hold": "assets/mhur_database/characters/shoto_attack/gamma_hold.webp"
       }
     },
     "shoto_technical": {
@@ -30599,11 +30674,13 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch004/GUI/Variation/T_ui_Thumb_13_401_L.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch004_01.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch004/Variation/Var01/GUI/Skill/T_ui_Skill_Ch004_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch004/Variation/Var01/GUI/Skill/T_ui_Skill_Ch004_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch004/Variation/Var01/GUI/Skill/T_ui_Skill_Ch004_Unique3.png"
+        "portrait": "assets/mhur_database/characters/shoto_technical/portrait.webp",
+        "tuning": "assets/mhur_database/characters/shoto_technical/tuning.webp",
+        "alpha": "assets/mhur_database/characters/shoto_technical/alpha.webp",
+        "beta": "assets/mhur_database/characters/shoto_technical/beta.webp",
+        "gamma": "assets/mhur_database/characters/shoto_technical/gamma.webp",
+        "special": "assets/mhur_database/characters/shoto_technical/special.webp",
+        "alpha_aim": "assets/mhur_database/characters/shoto_technical/alpha_aim.webp"
       }
     },
     "tsuyu_rapid": {
@@ -30945,12 +31022,12 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch006/GUI/FaceIcon/T_ui_Ch006_CharaImage.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch006_00.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch006/GUI/Skill/T_ui_Skill_Ch006_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch006/GUI/Skill/T_ui_Skill_Ch006_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch006/GUI/Skill/T_ui_Skill_Ch006_Unique3.png",
-        "special": "https://ultrarumble.com/assets/Character/Ch006/GUI/Skill/T_ui_SpecialSkill_Ch006.png"
+        "portrait": "assets/mhur_database/characters/tsuyu_rapid/portrait.webp",
+        "tuning": "assets/mhur_database/characters/tsuyu_rapid/tuning.webp",
+        "alpha": "assets/mhur_database/characters/tsuyu_rapid/alpha.webp",
+        "beta": "assets/mhur_database/characters/tsuyu_rapid/beta.webp",
+        "gamma": "assets/mhur_database/characters/tsuyu_rapid/gamma.webp",
+        "special": "assets/mhur_database/characters/tsuyu_rapid/special.webp"
       }
     },
     "kirishima_assault": {
@@ -31372,12 +31449,12 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch008/GUI/FaceIcon/T_ui_Ch008_CharaImage.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch008_00.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch008/GUI/Skill/T_ui_Skill_Ch008_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch008/GUI/Skill/T_ui_Skill_Ch008_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch008/GUI/Skill/T_ui_Skill_Ch008_Unique3.png",
-        "special": "https://ultrarumble.com/assets/Character/Ch008/GUI/Skill/T_ui_SpecialSkill_Ch008.png"
+        "portrait": "assets/mhur_database/characters/kirishima_assault/portrait.webp",
+        "tuning": "assets/mhur_database/characters/kirishima_assault/tuning.webp",
+        "alpha": "assets/mhur_database/characters/kirishima_assault/alpha.webp",
+        "beta": "assets/mhur_database/characters/kirishima_assault/beta.webp",
+        "gamma": "assets/mhur_database/characters/kirishima_assault/gamma.webp",
+        "special": "assets/mhur_database/characters/kirishima_assault/special.webp"
       }
     },
     "kirishima_strike": {
@@ -32031,11 +32108,12 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch008/GUI/Variation/T_ui_Thumb_13_801_L.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch008_01.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch008/Variation/Var01/GUI/Skill/T_ui_Skill_Ch008_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch008/Variation/Var01/GUI/Skill/T_ui_Skill_Ch008_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch008/Variation/Var01/GUI/Skill/T_ui_Skill_Ch008_Unique3.png"
+        "portrait": "assets/mhur_database/characters/kirishima_strike/portrait.webp",
+        "tuning": "assets/mhur_database/characters/kirishima_strike/tuning.webp",
+        "alpha": "assets/mhur_database/characters/kirishima_strike/alpha.webp",
+        "beta": "assets/mhur_database/characters/kirishima_strike/beta.webp",
+        "gamma": "assets/mhur_database/characters/kirishima_strike/gamma.webp",
+        "special": "assets/mhur_database/characters/kirishima_strike/special.webp"
       }
     },
     "momo_support": {
@@ -32457,12 +32535,12 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch010/GUI/FaceIcon/T_ui_Ch010_CharaImage.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch010_00.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch010/GUI/Skill/T_ui_Skill_Ch010_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch010/GUI/Skill/T_ui_Skill_Ch010_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch010/GUI/Skill/T_ui_Skill_Ch010_Unique3.png",
-        "special": "https://ultrarumble.com/assets/Character/Ch010/GUI/Skill/T_ui_SpecialSkill_Ch010.png"
+        "portrait": "assets/mhur_database/characters/momo_support/portrait.webp",
+        "tuning": "assets/mhur_database/characters/momo_support/tuning.webp",
+        "alpha": "assets/mhur_database/characters/momo_support/alpha.webp",
+        "beta": "assets/mhur_database/characters/momo_support/beta.webp",
+        "gamma": "assets/mhur_database/characters/momo_support/gamma.webp",
+        "special": "assets/mhur_database/characters/momo_support/special.webp"
       }
     },
     "tokoyami_assault": {
@@ -32759,12 +32837,12 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch011/GUI/FaceIcon/T_ui_Ch011_CharaImage.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch011_00.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch011/GUI/Skill/T_ui_Skill_Ch011_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch011/GUI/Skill/T_ui_Skill_Ch011_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch011/GUI/Skill/T_ui_Skill_Ch011_Unique3.png",
-        "special": "https://ultrarumble.com/assets/Character/Ch011/GUI/Skill/T_ui_SpecialSkill_Ch011.png"
+        "portrait": "assets/mhur_database/characters/tokoyami_assault/portrait.webp",
+        "tuning": "assets/mhur_database/characters/tokoyami_assault/tuning.webp",
+        "alpha": "assets/mhur_database/characters/tokoyami_assault/alpha.webp",
+        "beta": "assets/mhur_database/characters/tokoyami_assault/beta.webp",
+        "gamma": "assets/mhur_database/characters/tokoyami_assault/gamma.webp",
+        "special": "assets/mhur_database/characters/tokoyami_assault/special.webp"
       }
     },
     "kaminari_strike": {
@@ -33306,12 +33384,12 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch007/GUI/FaceIcon/T_ui_Ch007_CharaImage.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch007_00.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch007/GUI/Skill/T_ui_Skill_Ch007_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch007/GUI/Skill/T_ui_Skill_Ch007_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch007/GUI/Skill/T_ui_Skill_Ch007_Unique3.png",
-        "special": "https://ultrarumble.com/assets/Character/Ch007/GUI/Skill/T_ui_SpecialSkill_Ch007.png"
+        "portrait": "assets/mhur_database/characters/kaminari_strike/portrait.webp",
+        "tuning": "assets/mhur_database/characters/kaminari_strike/tuning.webp",
+        "alpha": "assets/mhur_database/characters/kaminari_strike/alpha.webp",
+        "beta": "assets/mhur_database/characters/kaminari_strike/beta.webp",
+        "gamma": "assets/mhur_database/characters/kaminari_strike/gamma.webp",
+        "special": "assets/mhur_database/characters/kaminari_strike/special.webp"
       }
     },
     "monoma_technical": {
@@ -33583,12 +33661,12 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch104/GUI/FaceIcon/T_ui_Ch104_CharaImage.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch104_00.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch104/GUI/Skill/T_ui_Skill_Ch104_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch104/GUI/Skill/T_ui_Skill_Ch104_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch104/GUI/Skill/T_ui_Skill_Ch104_Unique3.png",
-        "special": "https://ultrarumble.com/assets/Character/Ch104/GUI/Skill/T_ui_SpecialSkill_Ch104.png"
+        "portrait": "assets/mhur_database/characters/monoma_technical/portrait.webp",
+        "tuning": "assets/mhur_database/characters/monoma_technical/tuning.webp",
+        "alpha": "assets/mhur_database/characters/monoma_technical/alpha.webp",
+        "beta": "assets/mhur_database/characters/monoma_technical/beta.webp",
+        "gamma": "assets/mhur_database/characters/monoma_technical/gamma.webp",
+        "special": "assets/mhur_database/characters/monoma_technical/special.webp"
       }
     },
     "kendo_assault": {
@@ -33956,12 +34034,12 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch046/GUI/FaceIcon/T_ui_Ch046_CharaImage.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch046_00.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch046/GUI/Skill/T_ui_Skill_Ch046_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch046/GUI/Skill/T_ui_Skill_Ch046_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch046/GUI/Skill/T_ui_Skill_Ch046_Unique3.png",
-        "special": "https://ultrarumble.com/assets/Character/Ch046/GUI/Skill/T_ui_SpecialSkill_Ch046.png"
+        "portrait": "assets/mhur_database/characters/kendo_assault/portrait.webp",
+        "tuning": "assets/mhur_database/characters/kendo_assault/tuning.webp",
+        "alpha": "assets/mhur_database/characters/kendo_assault/alpha.webp",
+        "beta": "assets/mhur_database/characters/kendo_assault/beta.webp",
+        "gamma": "assets/mhur_database/characters/kendo_assault/gamma.webp",
+        "special": "assets/mhur_database/characters/kendo_assault/special.webp"
       }
     },
     "kendo_strike": {
@@ -34319,11 +34397,12 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch046/GUI/Variation/T_ui_Thumb_13_4601_L.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch046_01.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch046/Variation/Var01/GUI/Skill/T_ui_Skill_Ch046_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch046/Variation/Var01/GUI/Skill/T_ui_Skill_Ch046_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch046/Variation/Var01/GUI/Skill/T_ui_Skill_Ch046_Unique3.png"
+        "portrait": "assets/mhur_database/characters/kendo_strike/portrait.webp",
+        "tuning": "assets/mhur_database/characters/kendo_strike/tuning.webp",
+        "alpha": "assets/mhur_database/characters/kendo_strike/alpha.webp",
+        "beta": "assets/mhur_database/characters/kendo_strike/beta.webp",
+        "gamma": "assets/mhur_database/characters/kendo_strike/gamma.webp",
+        "special": "assets/mhur_database/characters/kendo_strike/special.webp"
       }
     },
     "ibara_support": {
@@ -34839,12 +34918,12 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch102/GUI/FaceIcon/T_ui_Ch102_CharaImage.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch102_00.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch102/GUI/Skill/T_ui_Skill_Ch102_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch102/GUI/Skill/T_ui_Skill_Ch102_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch102/GUI/Skill/T_ui_Skill_Ch102_Unique3.png",
-        "special": "https://ultrarumble.com/assets/Character/Ch102/GUI/Skill/T_ui_SpecialSkill_Ch102.png"
+        "portrait": "assets/mhur_database/characters/ibara_support/portrait.webp",
+        "tuning": "assets/mhur_database/characters/ibara_support/tuning.webp",
+        "alpha": "assets/mhur_database/characters/ibara_support/alpha.webp",
+        "beta": "assets/mhur_database/characters/ibara_support/beta.webp",
+        "gamma": "assets/mhur_database/characters/ibara_support/gamma.webp",
+        "special": "assets/mhur_database/characters/ibara_support/special.webp"
       }
     },
     "mirio_rapid": {
@@ -35133,12 +35212,13 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch024/GUI/FaceIcon/T_ui_Ch024_CharaImage.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch024_00.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch024/GUI/Skill/T_ui_Skill_Ch024_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch024/GUI/Skill/T_ui_Skill_Ch024_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch024/GUI/Skill/T_ui_Skill_Ch024_Unique3.png",
-        "special": "https://ultrarumble.com/assets/Character/Ch024/GUI/Skill/T_ui_SpecialSkill_Ch024.png"
+        "portrait": "assets/mhur_database/characters/mirio_rapid/portrait.webp",
+        "tuning": "assets/mhur_database/characters/mirio_rapid/tuning.webp",
+        "alpha": "assets/mhur_database/characters/mirio_rapid/alpha.webp",
+        "beta": "assets/mhur_database/characters/mirio_rapid/beta.webp",
+        "gamma": "assets/mhur_database/characters/mirio_rapid/gamma.webp",
+        "special": "assets/mhur_database/characters/mirio_rapid/special.webp",
+        "alpha_hold": "assets/mhur_database/characters/mirio_rapid/alpha_hold.webp"
       }
     },
     "mirio_technical": {
@@ -35613,11 +35693,12 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch024/GUI/Variation/T_ui_Thumb_13_2401_L.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch024_01.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch024/Variation/Var01/GUI/Skill/T_ui_Skill_Ch024_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch024/Variation/Var01/GUI/Skill/T_ui_Skill_Ch024_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch024/Variation/Var01/GUI/Skill/T_ui_Skill_Ch024_Unique3.png"
+        "portrait": "assets/mhur_database/characters/mirio_technical/portrait.webp",
+        "tuning": "assets/mhur_database/characters/mirio_technical/tuning.webp",
+        "alpha": "assets/mhur_database/characters/mirio_technical/alpha.webp",
+        "beta": "assets/mhur_database/characters/mirio_technical/beta.webp",
+        "gamma": "assets/mhur_database/characters/mirio_technical/gamma.webp",
+        "special": "assets/mhur_database/characters/mirio_technical/special.webp"
       }
     },
     "tamaki_strike": {
@@ -35966,12 +36047,13 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch026/GUI/FaceIcon/T_ui_Ch026_CharaImage.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch026_00.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch026/GUI/Skill/T_ui_Skill_Ch026_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch026/GUI/Skill/T_ui_Skill_Ch026_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch026/GUI/Skill/T_ui_Skill_Ch026_Unique3.png",
-        "special": "https://ultrarumble.com/assets/Character/Ch026/GUI/Skill/T_ui_SpecialSkill_Ch026.png"
+        "portrait": "assets/mhur_database/characters/tamaki_strike/portrait.webp",
+        "tuning": "assets/mhur_database/characters/tamaki_strike/tuning.webp",
+        "alpha": "assets/mhur_database/characters/tamaki_strike/alpha.webp",
+        "beta": "assets/mhur_database/characters/tamaki_strike/beta.webp",
+        "gamma": "assets/mhur_database/characters/tamaki_strike/gamma.webp",
+        "special": "assets/mhur_database/characters/tamaki_strike/special.webp",
+        "alpha_hold": "assets/mhur_database/characters/tamaki_strike/alpha_hold.webp"
       }
     },
     "nejire_technical": {
@@ -36343,12 +36425,12 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch025/GUI/FaceIcon/T_ui_Ch025_CharaImage.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch025_00.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch025/GUI/Skill/T_ui_Skill_Ch025_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch025/GUI/Skill/T_ui_Skill_Ch025_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch025/GUI/Skill/T_ui_Skill_Ch025_Unique3.png",
-        "special": "https://ultrarumble.com/assets/Character/Ch025/GUI/Skill/T_ui_SpecialSkill_Ch025.png"
+        "portrait": "assets/mhur_database/characters/nejire_technical/portrait.webp",
+        "tuning": "assets/mhur_database/characters/nejire_technical/tuning.webp",
+        "alpha": "assets/mhur_database/characters/nejire_technical/alpha.webp",
+        "beta": "assets/mhur_database/characters/nejire_technical/beta.webp",
+        "gamma": "assets/mhur_database/characters/nejire_technical/gamma.webp",
+        "special": "assets/mhur_database/characters/nejire_technical/special.webp"
       }
     },
     "nejire_support": {
@@ -36734,11 +36816,12 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch025/GUI/Variation/T_ui_Thumb_13_2501_L.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch025_01.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch025/Variation/Var01/GUI/Skill/T_ui_Skill_Ch025_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch025/Variation/Var01/GUI/Skill/T_ui_Skill_Ch025_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch025/Variation/Var01/GUI/Skill/T_ui_Skill_Ch025_Unique3.png"
+        "portrait": "assets/mhur_database/characters/nejire_support/portrait.webp",
+        "tuning": "assets/mhur_database/characters/nejire_support/tuning.webp",
+        "alpha": "assets/mhur_database/characters/nejire_support/alpha.webp",
+        "beta": "assets/mhur_database/characters/nejire_support/beta.webp",
+        "gamma": "assets/mhur_database/characters/nejire_support/gamma.webp",
+        "special": "assets/mhur_database/characters/nejire_support/special.webp"
       }
     },
     "shinso_strike": {
@@ -37141,12 +37224,13 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch105/GUI/FaceIcon/T_ui_Ch105_CharaImage.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch105_00.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch105/GUI/Skill/T_ui_Skill_Ch105_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch105/GUI/Skill/T_ui_Skill_Ch105_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch105/GUI/Skill/T_ui_Skill_Ch105_Unique3.png",
-        "special": "https://ultrarumble.com/assets/Character/Ch105/GUI/Skill/T_ui_SpecialSkill_Ch105.png"
+        "portrait": "assets/mhur_database/characters/shinso_strike/portrait.webp",
+        "tuning": "assets/mhur_database/characters/shinso_strike/tuning.webp",
+        "alpha": "assets/mhur_database/characters/shinso_strike/alpha.webp",
+        "beta": "assets/mhur_database/characters/shinso_strike/beta.webp",
+        "gamma": "assets/mhur_database/characters/shinso_strike/gamma.webp",
+        "special": "assets/mhur_database/characters/shinso_strike/special.webp",
+        "beta_hold": "assets/mhur_database/characters/shinso_strike/beta_hold.webp"
       }
     },
     "all_might_assault": {
@@ -37628,12 +37712,12 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch012/GUI/FaceIcon/T_ui_Ch012_CharaImage.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch012_00.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch012/GUI/Skill/T_ui_Skill_Ch012_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch012/GUI/Skill/T_ui_Skill_Ch012_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch012/GUI/Skill/T_ui_Skill_Ch012_Unique3.png",
-        "special": "https://ultrarumble.com/assets/Character/Ch012/GUI/Skill/T_ui_SpecialSkill_Ch012.png"
+        "portrait": "assets/mhur_database/characters/all_might_assault/portrait.webp",
+        "tuning": "assets/mhur_database/characters/all_might_assault/tuning.webp",
+        "alpha": "assets/mhur_database/characters/all_might_assault/alpha.webp",
+        "beta": "assets/mhur_database/characters/all_might_assault/beta.webp",
+        "gamma": "assets/mhur_database/characters/all_might_assault/gamma.webp",
+        "special": "assets/mhur_database/characters/all_might_assault/special.webp"
       }
     },
     "all_might_rapid": {
@@ -38073,11 +38157,12 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch012/GUI/Variation/T_ui_Thumb_13_1201_L.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch012_01.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch012/Variation/Var01/GUI/Skill/T_ui_Skill_Ch012_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch012/Variation/Var01/GUI/Skill/T_ui_Skill_Ch012_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch012/Variation/Var01/GUI/Skill/T_ui_Skill_Ch012_Unique3.png"
+        "portrait": "assets/mhur_database/characters/all_might_rapid/portrait.webp",
+        "tuning": "assets/mhur_database/characters/all_might_rapid/tuning.webp",
+        "alpha": "assets/mhur_database/characters/all_might_rapid/alpha.webp",
+        "beta": "assets/mhur_database/characters/all_might_rapid/beta.webp",
+        "gamma": "assets/mhur_database/characters/all_might_rapid/gamma.webp",
+        "special": "assets/mhur_database/characters/all_might_rapid/special.webp"
       }
     },
     "aizawa_technical": {
@@ -38559,12 +38644,12 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch013/GUI/FaceIcon/T_ui_Ch013_CharaImage.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch013_00.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch013/GUI/Skill/T_ui_Skill_Ch013_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch013/GUI/Skill/T_ui_Skill_Ch013_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch013/GUI/Skill/T_ui_Skill_Ch013_Unique3.png",
-        "special": "https://ultrarumble.com/assets/Character/Ch013/GUI/Skill/T_ui_SpecialSkill_Ch013.png"
+        "portrait": "assets/mhur_database/characters/aizawa_technical/portrait.webp",
+        "tuning": "assets/mhur_database/characters/aizawa_technical/tuning.webp",
+        "alpha": "assets/mhur_database/characters/aizawa_technical/alpha.webp",
+        "beta": "assets/mhur_database/characters/aizawa_technical/beta.webp",
+        "gamma": "assets/mhur_database/characters/aizawa_technical/gamma.webp",
+        "special": "assets/mhur_database/characters/aizawa_technical/special.webp"
       }
     },
     "aizawa_strike": {
@@ -38975,11 +39060,13 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch013/GUI/Variation/T_ui_Thumb_13_1301_L.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch013_01.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch013/Variation/Var01/GUI/Skill/T_ui_Skill_Ch013_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch013/Variation/Var01/GUI/Skill/T_ui_Skill_Ch013_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch013/Variation/Var01/GUI/Skill/T_ui_Skill_Ch013_Unique3.png"
+        "portrait": "assets/mhur_database/characters/aizawa_strike/portrait.webp",
+        "tuning": "assets/mhur_database/characters/aizawa_strike/tuning.webp",
+        "alpha": "assets/mhur_database/characters/aizawa_strike/alpha.webp",
+        "beta": "assets/mhur_database/characters/aizawa_strike/beta.webp",
+        "gamma": "assets/mhur_database/characters/aizawa_strike/gamma.webp",
+        "special": "assets/mhur_database/characters/aizawa_strike/special.webp",
+        "beta_hold": "assets/mhur_database/characters/aizawa_strike/beta_hold.webp"
       }
     },
     "present_mic_strike": {
@@ -39328,12 +39415,13 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch109/GUI/FaceIcon/T_ui_Ch109_CharaImage.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch109_00.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch109/GUI/Skill/T_ui_Skill_Ch109_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch109/GUI/Skill/T_ui_Skill_Ch109_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch109/GUI/Skill/T_ui_Skill_Ch109_Unique3.png",
-        "special": "https://ultrarumble.com/assets/Character/Ch109/GUI/Skill/T_ui_SpecialSkill_Ch109.png"
+        "portrait": "assets/mhur_database/characters/present_mic_strike/portrait.webp",
+        "tuning": "assets/mhur_database/characters/present_mic_strike/tuning.webp",
+        "alpha": "assets/mhur_database/characters/present_mic_strike/alpha.webp",
+        "beta": "assets/mhur_database/characters/present_mic_strike/beta.webp",
+        "gamma": "assets/mhur_database/characters/present_mic_strike/gamma.webp",
+        "special": "assets/mhur_database/characters/present_mic_strike/special.webp",
+        "beta_hold": "assets/mhur_database/characters/present_mic_strike/beta_hold.webp"
       }
     },
     "present_mic_technical": {
@@ -39600,11 +39688,14 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch109/GUI/Variation/T_ui_Thumb_13_10901_L.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch109_01.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch109/Variation/Var01/GUI/Skill/T_ui_Skill_Ch109_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch109/Variation/Var01/GUI/Skill/T_ui_Skill_Ch109_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch109/Variation/Var01/GUI/Skill/T_ui_Skill_Ch109_Unique3.png"
+        "portrait": "assets/mhur_database/characters/present_mic_technical/portrait.webp",
+        "tuning": "assets/mhur_database/characters/present_mic_technical/tuning.webp",
+        "alpha": "assets/mhur_database/characters/present_mic_technical/alpha.webp",
+        "beta": "assets/mhur_database/characters/present_mic_technical/beta.webp",
+        "gamma": "assets/mhur_database/characters/present_mic_technical/gamma.webp",
+        "special": "assets/mhur_database/characters/present_mic_technical/special.webp",
+        "beta_hold": "assets/mhur_database/characters/present_mic_technical/beta_hold.webp",
+        "alpha_hold": "assets/mhur_database/characters/present_mic_technical/alpha_hold.webp"
       }
     },
     "endeavor_strike": {
@@ -39971,12 +40062,12 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch023/GUI/FaceIcon/T_ui_Ch023_CharaImage.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch023_00.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch023/GUI/Skill/T_ui_Skill_Ch023_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch023/GUI/Skill/T_ui_Skill_Ch023_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch023/GUI/Skill/T_ui_Skill_Ch023_Unique3.png",
-        "special": "https://ultrarumble.com/assets/Character/Ch023/GUI/Skill/T_ui_SpecialSkill_Ch023.png"
+        "portrait": "assets/mhur_database/characters/endeavor_strike/portrait.webp",
+        "tuning": "assets/mhur_database/characters/endeavor_strike/tuning.webp",
+        "alpha": "assets/mhur_database/characters/endeavor_strike/alpha.webp",
+        "beta": "assets/mhur_database/characters/endeavor_strike/beta.webp",
+        "gamma": "assets/mhur_database/characters/endeavor_strike/gamma.webp",
+        "special": "assets/mhur_database/characters/endeavor_strike/special.webp"
       }
     },
     "endeavor_assault": {
@@ -40359,11 +40450,13 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch023/GUI/Variation/T_ui_Thumb_13_2301_L.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch023_01.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch023/Variation/Var01/GUI/Skill/T_ui_Skill_Ch023_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch023/Variation/Var01/GUI/Skill/T_ui_Skill_Ch023_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch023/Variation/Var01/GUI/Skill/T_ui_Skill_Ch023_Unique3.png"
+        "portrait": "assets/mhur_database/characters/endeavor_assault/portrait.webp",
+        "tuning": "assets/mhur_database/characters/endeavor_assault/tuning.webp",
+        "alpha": "assets/mhur_database/characters/endeavor_assault/alpha.webp",
+        "beta": "assets/mhur_database/characters/endeavor_assault/beta.webp",
+        "gamma": "assets/mhur_database/characters/endeavor_assault/gamma.webp",
+        "special": "assets/mhur_database/characters/endeavor_assault/special.webp",
+        "beta_hold": "assets/mhur_database/characters/endeavor_assault/beta_hold.webp"
       }
     },
     "hawks_rapid": {
@@ -40837,12 +40930,12 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch043/GUI/FaceIcon/T_ui_Ch043_CharaImage.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch043_00.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch043/GUI/Skill/T_ui_Skill_Ch043_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch043/GUI/Skill/T_ui_Skill_Ch043_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch043/GUI/Skill/T_ui_Skill_Ch043_Unique3.png",
-        "special": "https://ultrarumble.com/assets/Character/Ch043/GUI/Skill/T_ui_SpecialSkill_Ch043.png"
+        "portrait": "assets/mhur_database/characters/hawks_rapid/portrait.webp",
+        "tuning": "assets/mhur_database/characters/hawks_rapid/tuning.webp",
+        "alpha": "assets/mhur_database/characters/hawks_rapid/alpha.webp",
+        "beta": "assets/mhur_database/characters/hawks_rapid/beta.webp",
+        "gamma": "assets/mhur_database/characters/hawks_rapid/gamma.webp",
+        "special": "assets/mhur_database/characters/hawks_rapid/special.webp"
       }
     },
     "hawks_strike": {
@@ -41370,11 +41463,12 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch043/GUI/Variation/T_ui_Thumb_13_4301_L.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch043_01.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch043/Variation/Var01/GUI/Skill/T_ui_Skill_Ch043_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch043/Variation/Var01/GUI/Skill/T_ui_Skill_Ch043_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch043/Variation/Var01/GUI/Skill/T_ui_Skill_Ch043_Unique3.png"
+        "portrait": "assets/mhur_database/characters/hawks_strike/portrait.webp",
+        "tuning": "assets/mhur_database/characters/hawks_strike/tuning.webp",
+        "alpha": "assets/mhur_database/characters/hawks_strike/alpha.webp",
+        "beta": "assets/mhur_database/characters/hawks_strike/beta.webp",
+        "gamma": "assets/mhur_database/characters/hawks_strike/gamma.webp",
+        "special": "assets/mhur_database/characters/hawks_strike/special.webp"
       }
     },
     "mirko_rapid": {
@@ -41820,12 +41914,12 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch111/GUI/FaceIcon/T_ui_Ch111_CharaImage.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch111_00.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch111/GUI/Skill/T_ui_Skill_Ch111_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch111/GUI/Skill/T_ui_Skill_Ch111_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch111/GUI/Skill/T_ui_Skill_Ch111_Unique3.png",
-        "special": "https://ultrarumble.com/assets/Character/Ch111/GUI/Skill/T_ui_SpecialSkill_Ch111.png"
+        "portrait": "assets/mhur_database/characters/mirko_rapid/portrait.webp",
+        "tuning": "assets/mhur_database/characters/mirko_rapid/tuning.webp",
+        "alpha": "assets/mhur_database/characters/mirko_rapid/alpha.webp",
+        "beta": "assets/mhur_database/characters/mirko_rapid/beta.webp",
+        "gamma": "assets/mhur_database/characters/mirko_rapid/gamma.webp",
+        "special": "assets/mhur_database/characters/mirko_rapid/special.webp"
       }
     },
     "star_and_stripe_strike": {
@@ -42296,12 +42390,12 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch114/GUI/FaceIcon/T_ui_Ch114_CharaImage.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch114_00.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch114/GUI/Skill/T_ui_Skill_Ch114_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch114/GUI/Skill/T_ui_Skill_Ch114_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch114/GUI/Skill/T_ui_Skill_Ch114_Unique3.png",
-        "special": "https://ultrarumble.com/assets/Character/Ch114/GUI/Skill/T_ui_SpecialSkill_Ch114.png"
+        "portrait": "assets/mhur_database/characters/star_and_stripe_strike/portrait.webp",
+        "tuning": "assets/mhur_database/characters/star_and_stripe_strike/tuning.webp",
+        "alpha": "assets/mhur_database/characters/star_and_stripe_strike/alpha.webp",
+        "beta": "assets/mhur_database/characters/star_and_stripe_strike/beta.webp",
+        "gamma": "assets/mhur_database/characters/star_and_stripe_strike/gamma.webp",
+        "special": "assets/mhur_database/characters/star_and_stripe_strike/special.webp"
       }
     },
     "mt_lady_assault": {
@@ -42951,12 +43045,12 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch100/GUI/FaceIcon/T_ui_Ch100_CharaImage.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch100_00.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch100/GUI/Skill/T_ui_Skill_Ch100_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch100/GUI/Skill/T_ui_Skill_Ch100_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch100/GUI/Skill/T_ui_Skill_Ch100_Unique3.png",
-        "special": "https://ultrarumble.com/assets/Character/Ch100/GUI/Skill/T_ui_SpecialSkill_Ch100.png"
+        "portrait": "assets/mhur_database/characters/mt_lady_assault/portrait.webp",
+        "tuning": "assets/mhur_database/characters/mt_lady_assault/tuning.webp",
+        "alpha": "assets/mhur_database/characters/mt_lady_assault/alpha.webp",
+        "beta": "assets/mhur_database/characters/mt_lady_assault/beta.webp",
+        "gamma": "assets/mhur_database/characters/mt_lady_assault/gamma.webp",
+        "special": "assets/mhur_database/characters/mt_lady_assault/special.webp"
       }
     },
     "cementoss_support": {
@@ -43438,12 +43532,12 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch101/GUI/FaceIcon/T_ui_Ch101_CharaImage.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch101_00.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch101/GUI/Skill/T_ui_Skill_Ch101_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch101/GUI/Skill/T_ui_Skill_Ch101_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch101/GUI/Skill/T_ui_Skill_Ch101_Unique3.png",
-        "special": "https://ultrarumble.com/assets/Character/Ch101/GUI/Skill/T_ui_SpecialSkill_Ch101.png"
+        "portrait": "assets/mhur_database/characters/cementoss_support/portrait.webp",
+        "tuning": "assets/mhur_database/characters/cementoss_support/tuning.webp",
+        "alpha": "assets/mhur_database/characters/cementoss_support/alpha.webp",
+        "beta": "assets/mhur_database/characters/cementoss_support/beta.webp",
+        "gamma": "assets/mhur_database/characters/cementoss_support/gamma.webp",
+        "special": "assets/mhur_database/characters/cementoss_support/special.webp"
       }
     },
     "shigaraki_strike": {
@@ -43899,12 +43993,12 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch015/GUI/FaceIcon/T_ui_Ch015_CharaImage.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch015_00.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch015/GUI/Skill/T_ui_Skill_Ch015_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch015/GUI/Skill/T_ui_Skill_Ch015_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch015/GUI/Skill/T_ui_Skill_Ch015_Unique3.png",
-        "special": "https://ultrarumble.com/assets/Character/Ch015/GUI/Skill/T_ui_SpecialSkill_Ch015.png"
+        "portrait": "assets/mhur_database/characters/shigaraki_strike/portrait.webp",
+        "tuning": "assets/mhur_database/characters/shigaraki_strike/tuning.webp",
+        "alpha": "assets/mhur_database/characters/shigaraki_strike/alpha.webp",
+        "beta": "assets/mhur_database/characters/shigaraki_strike/beta.webp",
+        "gamma": "assets/mhur_database/characters/shigaraki_strike/gamma.webp",
+        "special": "assets/mhur_database/characters/shigaraki_strike/special.webp"
       }
     },
     "shigaraki_assault": {
@@ -44456,11 +44550,12 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch015/GUI/Variation/T_ui_Thumb_13_1501_L.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch015_01.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch015/Variation/Var01/GUI/Skill/T_ui_Skill_Ch015_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch015/Variation/Var01/GUI/Skill/T_ui_Skill_Ch015_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch015/Variation/Var01/GUI/Skill/T_ui_Skill_Ch015_Unique3.png"
+        "portrait": "assets/mhur_database/characters/shigaraki_assault/portrait.webp",
+        "tuning": "assets/mhur_database/characters/shigaraki_assault/tuning.webp",
+        "alpha": "assets/mhur_database/characters/shigaraki_assault/alpha.webp",
+        "beta": "assets/mhur_database/characters/shigaraki_assault/beta.webp",
+        "gamma": "assets/mhur_database/characters/shigaraki_assault/gamma.webp",
+        "special": "assets/mhur_database/characters/shigaraki_assault/special.webp"
       }
     },
     "shigaraki_technical": {
@@ -44818,11 +44913,13 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch015/GUI/Variation/T_ui_Thumb_13_1502_L.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch015_02.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch015/Variation/Var02/GUI/Skill/T_ui_Skill_Ch015_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch015/Variation/Var02/GUI/Skill/T_ui_Skill_Ch015_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch015/Variation/Var02/GUI/Skill/T_ui_Skill_Ch015_Unique3.png"
+        "portrait": "assets/mhur_database/characters/shigaraki_technical/portrait.webp",
+        "tuning": "assets/mhur_database/characters/shigaraki_technical/tuning.webp",
+        "alpha": "assets/mhur_database/characters/shigaraki_technical/alpha.webp",
+        "beta": "assets/mhur_database/characters/shigaraki_technical/beta.webp",
+        "gamma": "assets/mhur_database/characters/shigaraki_technical/gamma.webp",
+        "special": "assets/mhur_database/characters/shigaraki_technical/special.webp",
+        "alpha_hold": "assets/mhur_database/characters/shigaraki_technical/alpha_hold.webp"
       }
     },
     "all_for_one_technical": {
@@ -45179,12 +45276,12 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch016/GUI/FaceIcon/T_ui_Ch016_CharaImage.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch016_00.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch016/GUI/Skill/T_ui_Skill_Ch016_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch016/GUI/Skill/T_ui_Skill_Ch016_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch016/GUI/Skill/T_ui_Skill_Ch016_Unique3.png",
-        "special": "https://ultrarumble.com/assets/Character/Ch016/GUI/Skill/T_ui_SpecialSkill_Ch016.png"
+        "portrait": "assets/mhur_database/characters/all_for_one_technical/portrait.webp",
+        "tuning": "assets/mhur_database/characters/all_for_one_technical/tuning.webp",
+        "alpha": "assets/mhur_database/characters/all_for_one_technical/alpha.webp",
+        "beta": "assets/mhur_database/characters/all_for_one_technical/beta.webp",
+        "gamma": "assets/mhur_database/characters/all_for_one_technical/gamma.webp",
+        "special": "assets/mhur_database/characters/all_for_one_technical/special.webp"
       }
     },
     "all_for_one_strike": {
@@ -45712,11 +45809,12 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch016/GUI/Variation/T_ui_Thumb_13_1601_L.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch016_01.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch016/Variation/Var01/GUI/Skill/T_ui_Skill_Ch016_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch016/Variation/Var01/GUI/Skill/T_ui_Skill_Ch016_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch016/Variation/Var01/GUI/Skill/T_ui_Skill_Ch016_Unique3.png"
+        "portrait": "assets/mhur_database/characters/all_for_one_strike/portrait.webp",
+        "tuning": "assets/mhur_database/characters/all_for_one_strike/tuning.webp",
+        "alpha": "assets/mhur_database/characters/all_for_one_strike/alpha.webp",
+        "beta": "assets/mhur_database/characters/all_for_one_strike/beta.webp",
+        "gamma": "assets/mhur_database/characters/all_for_one_strike/gamma.webp",
+        "special": "assets/mhur_database/characters/all_for_one_strike/special.webp"
       }
     },
     "dabi_technical": {
@@ -46038,12 +46136,12 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch017/GUI/FaceIcon/T_ui_Ch017_CharaImage.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch017_00.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch017/GUI/Skill/T_ui_Skill_Ch017_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch017/GUI/Skill/T_ui_Skill_Ch017_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch017/GUI/Skill/T_ui_Skill_Ch017_Unique3.png",
-        "special": "https://ultrarumble.com/assets/Character/Ch017/GUI/Skill/T_ui_SpecialSkill_Ch017.png"
+        "portrait": "assets/mhur_database/characters/dabi_technical/portrait.webp",
+        "tuning": "assets/mhur_database/characters/dabi_technical/tuning.webp",
+        "alpha": "assets/mhur_database/characters/dabi_technical/alpha.webp",
+        "beta": "assets/mhur_database/characters/dabi_technical/beta.webp",
+        "gamma": "assets/mhur_database/characters/dabi_technical/gamma.webp",
+        "special": "assets/mhur_database/characters/dabi_technical/special.webp"
       }
     },
     "dabi_strike": {
@@ -46380,11 +46478,12 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch017/GUI/Variation/T_ui_Thumb_13_1701_L.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch017_01.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch017/Variation/Var01/GUI/Skill/T_ui_Skill_Ch017_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch017/Variation/Var01/GUI/Skill/T_ui_Skill_Ch017_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch017/Variation/Var01/GUI/Skill/T_ui_Skill_Ch017_Unique3.png"
+        "portrait": "assets/mhur_database/characters/dabi_strike/portrait.webp",
+        "tuning": "assets/mhur_database/characters/dabi_strike/tuning.webp",
+        "alpha": "assets/mhur_database/characters/dabi_strike/alpha.webp",
+        "beta": "assets/mhur_database/characters/dabi_strike/beta.webp",
+        "gamma": "assets/mhur_database/characters/dabi_strike/gamma.webp",
+        "special": "assets/mhur_database/characters/dabi_strike/special.webp"
       }
     },
     "toga_technical": {
@@ -46806,12 +46905,12 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch018/GUI/FaceIcon/T_ui_Ch018_CharaImage.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch018_00.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch018/GUI/Skill/T_ui_Skill_Ch018_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch018/GUI/Skill/T_ui_Skill_Ch018_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch018/GUI/Skill/T_ui_Skill_Ch018_Unique3.png",
-        "special": "https://ultrarumble.com/assets/Character/Ch018/GUI/Skill/T_ui_SpecialSkill_Ch018.png"
+        "portrait": "assets/mhur_database/characters/toga_technical/portrait.webp",
+        "tuning": "assets/mhur_database/characters/toga_technical/tuning.webp",
+        "alpha": "assets/mhur_database/characters/toga_technical/alpha.webp",
+        "beta": "assets/mhur_database/characters/toga_technical/beta.webp",
+        "gamma": "assets/mhur_database/characters/toga_technical/gamma.webp",
+        "special": "assets/mhur_database/characters/toga_technical/special.webp"
       }
     },
     "toga_rapid": {
@@ -47303,11 +47402,12 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch018/GUI/Variation/T_ui_Thumb_13_1801_L.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch018_01.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch018/Variation/Var01/GUI/Skill/T_ui_Skill_Ch018_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch018/Variation/Var01/GUI/Skill/T_ui_Skill_Ch018_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch018/Variation/Var01/GUI/Skill/T_ui_Skill_Ch018_Unique3.png"
+        "portrait": "assets/mhur_database/characters/toga_rapid/portrait.webp",
+        "tuning": "assets/mhur_database/characters/toga_rapid/tuning.webp",
+        "alpha": "assets/mhur_database/characters/toga_rapid/alpha.webp",
+        "beta": "assets/mhur_database/characters/toga_rapid/beta.webp",
+        "gamma": "assets/mhur_database/characters/toga_rapid/gamma.webp",
+        "special": "assets/mhur_database/characters/toga_rapid/special.webp"
       }
     },
     "twice_rapid": {
@@ -47604,12 +47704,12 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch037/GUI/FaceIcon/T_ui_Ch037_CharaImage.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch037_00.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch037/GUI/Skill/T_ui_Skill_Ch037_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch037/GUI/Skill/T_ui_Skill_Ch037_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch037/GUI/Skill/T_ui_Skill_Ch037_Unique3.png",
-        "special": "https://ultrarumble.com/assets/Character/Ch037/GUI/Skill/T_ui_SpecialSkill_Ch037.png"
+        "portrait": "assets/mhur_database/characters/twice_rapid/portrait.webp",
+        "tuning": "assets/mhur_database/characters/twice_rapid/tuning.webp",
+        "alpha": "assets/mhur_database/characters/twice_rapid/alpha.webp",
+        "beta": "assets/mhur_database/characters/twice_rapid/beta.webp",
+        "gamma": "assets/mhur_database/characters/twice_rapid/gamma.webp",
+        "special": "assets/mhur_database/characters/twice_rapid/special.webp"
       }
     },
     "mr_compress_support": {
@@ -47976,8 +48076,18 @@
       },
       "special_action": {
         "values": {
-          "columns": [],
-          "rows": []
+          "columns": [
+            "Ammo",
+            "Use Ammo",
+            "Reload"
+          ],
+          "rows": [
+            [
+              "x1",
+              "x1",
+              "1s"
+            ]
+          ]
         }
       },
       "normal_tuning": [
@@ -48011,12 +48121,12 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch038/GUI/FaceIcon/T_ui_Ch038_CharaImage.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch038_00.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch038/GUI/Skill/T_ui_Skill_Ch038_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch038/GUI/Skill/T_ui_Skill_Ch038_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch038/GUI/Skill/T_ui_Skill_Ch038_Unique3.png",
-        "special": "https://ultrarumble.com/assets/Character/Ch038/GUI/Skill/T_ui_SpecialSkill_Ch038.png"
+        "portrait": "assets/mhur_database/characters/mr_compress_support/portrait.webp",
+        "tuning": "assets/mhur_database/characters/mr_compress_support/tuning.webp",
+        "alpha": "assets/mhur_database/characters/mr_compress_support/alpha.webp",
+        "beta": "assets/mhur_database/characters/mr_compress_support/beta.webp",
+        "gamma": "assets/mhur_database/characters/mr_compress_support/gamma.webp",
+        "special": "assets/mhur_database/characters/mr_compress_support/special.webp"
       }
     },
     "lady_nagant_strike": {
@@ -48436,12 +48546,12 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch115/GUI/FaceIcon/T_ui_Ch115_CharaImage.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch115_00.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch115/GUI/Skill/T_ui_Skill_Ch115_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch115/GUI/Skill/T_ui_Skill_Ch115_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch115/GUI/Skill/T_ui_Skill_Ch115_Unique3.png",
-        "special": "https://ultrarumble.com/assets/Character/Ch115/GUI/Skill/T_ui_SpecialSkill_Ch115.png"
+        "portrait": "assets/mhur_database/characters/lady_nagant_strike/portrait.webp",
+        "tuning": "assets/mhur_database/characters/lady_nagant_strike/tuning.webp",
+        "alpha": "assets/mhur_database/characters/lady_nagant_strike/alpha.webp",
+        "beta": "assets/mhur_database/characters/lady_nagant_strike/beta.webp",
+        "gamma": "assets/mhur_database/characters/lady_nagant_strike/gamma.webp",
+        "special": "assets/mhur_database/characters/lady_nagant_strike/special.webp"
       }
     },
     "overhaul_support": {
@@ -48873,12 +48983,12 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch034/GUI/FaceIcon/T_ui_Ch034_CharaImage.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch034_00.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch034/GUI/Skill/T_ui_Skill_Ch034_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch034/GUI/Skill/T_ui_Skill_Ch034_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch034/GUI/Skill/T_ui_Skill_Ch034_Unique3.png",
-        "special": "https://ultrarumble.com/assets/Character/Ch034/GUI/Skill/T_ui_SpecialSkill_Ch034.png"
+        "portrait": "assets/mhur_database/characters/overhaul_support/portrait.webp",
+        "tuning": "assets/mhur_database/characters/overhaul_support/tuning.webp",
+        "alpha": "assets/mhur_database/characters/overhaul_support/alpha.webp",
+        "beta": "assets/mhur_database/characters/overhaul_support/beta.webp",
+        "gamma": "assets/mhur_database/characters/overhaul_support/gamma.webp",
+        "special": "assets/mhur_database/characters/overhaul_support/special.webp"
       }
     },
     "overhaul_assault": {
@@ -49289,11 +49399,13 @@
         ]
       },
       "assets": {
-        "portrait": "https://ultrarumble.com/assets/Character/Ch034/GUI/Variation/T_ui_Thumb_13_3401_L.png",
-        "tuning": "https://ultrarumble.com/assets/roleslots/T_ui_UniqueSkill_ch034_01.png",
-        "alpha": "https://ultrarumble.com/assets/Character/Ch034/Variation/Var01/GUI/Skill/T_ui_Skill_Ch034_Unique1.png",
-        "beta": "https://ultrarumble.com/assets/Character/Ch034/Variation/Var01/GUI/Skill/T_ui_Skill_Ch034_Unique2.png",
-        "gamma": "https://ultrarumble.com/assets/Character/Ch034/Variation/Var01/GUI/Skill/T_ui_Skill_Ch034_Unique3.png"
+        "portrait": "assets/mhur_database/characters/overhaul_assault/portrait.webp",
+        "tuning": "assets/mhur_database/characters/overhaul_assault/tuning.webp",
+        "alpha": "assets/mhur_database/characters/overhaul_assault/alpha.webp",
+        "beta": "assets/mhur_database/characters/overhaul_assault/beta.webp",
+        "gamma": "assets/mhur_database/characters/overhaul_assault/gamma.webp",
+        "special": "assets/mhur_database/characters/overhaul_assault/special.webp",
+        "alpha_hold": "assets/mhur_database/characters/overhaul_assault/alpha_hold.webp"
       }
     }
   },

@@ -1,0 +1,13 @@
+MHUR NEXUS — CORRECTIF SAISON 18 V25
+====================================
+
+Corrections :
+- date de sortie affichée sur chaque costume à venir ;
+- badge À VENIR / UPCOMING pour différencier clairement ces costumes de ceux déjà disponibles ;
+- seuls les costumes réellement futurs restent dans la section à venir ;
+- suppression du fallback qui pouvait déplacer un costume déjà sorti dans les costumes à venir ;
+- familles de costumes réparties sur toute la largeur des grands écrans ;
+- lorsqu’une famille à venir ne contient qu’un costume, la grande zone dorée vide est remplacée par une zone sombre compacte ;
+- fonctionnement français et anglais.
+
+Les dates sont lues automatiquement dans public/data/season18_sync.js, généré par la mise à jour UltraRumble Database.

@@ -281,7 +281,7 @@ def synchronize(root: Path, log_path: Path) -> Path:
     # L'accueil et les événements sont rapides à récupérer. On les applique avant
     # le long scan des personnages/costumes afin que la nouveauté soit visible
     # immédiatement, même si la synchronisation complète prend plusieurs minutes.
-    log("Étape 1/3 : mise à jour rapide de l'accueil et des événements...", log_path)
+    log("Étape 1/4 : mise à jour rapide de l'accueil et des événements...", log_path)
     run_tool(root, [str(TOOLS_DIR / "update_home_data.py"), "--site-root", "."], log_path)
     # Le site source a changé de structure avec la Saison 18. Cette passe
     # répare les bonus, conserve l'historique des patchs et leurs données UI.
@@ -291,7 +291,7 @@ def synchronize(root: Path, log_path: Path) -> Path:
     # restauration conserve tout de même les nouveaux événements déjà récupérés.
     backup = create_backup(root, log_path)
     try:
-        log("Étape 2/3 : synchronisation des personnages, statistiques et costumes...", log_path)
+        log("Étape 2/4 : synchronisation des personnages, statistiques et costumes...", log_path)
         run_tool(
             root,
             [
@@ -305,7 +305,13 @@ def synchronize(root: Path, log_path: Path) -> Path:
         # Conversion bilingue des nouvelles fiches, séparation des costumes
         # à venir et drapeaux NEW avant la vérification finale.
         run_tool(root, [str(TOOLS_DIR / "season18_postprocess.py"), "--site-root", ".", "--phase", "full"], log_path)
-        log("Étape 3/3 : vérification finale des costumes...", log_path)
+        log("Étape 3/4 : copie locale des images officielles MHUR Database...", log_path)
+        run_tool(
+            root,
+            [str(TOOLS_DIR / "localiser_images_mhur_database.py"), "--site-root", "."],
+            log_path,
+        )
+        log("Étape 4/4 : vérification finale des costumes...", log_path)
         run_tool(
             root,
             [str(TOOLS_DIR / "check_costume_data.py"), "--site-root", "."],

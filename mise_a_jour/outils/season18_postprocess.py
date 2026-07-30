@@ -914,14 +914,15 @@ def ensure_assets_in_index(root: Path) -> None:
     """
     idx = root / "index.html"
     text = idx.read_text(encoding="utf-8", errors="ignore")
-    version = "24000"
+    version = "29000"
     css = f'<link rel="stylesheet" href="css/season18-fixes.css?v={version}">'
-    early = f'<script src="data/season18_sync.js?v={version}"></script>\n<script src="js/season18-early.js?v={version}"></script>'
+    early = f'<script src="data/mhur_database_assets.js?v={version}"></script>\n<script src="data/season18_sync.js?v={version}"></script>\n<script src="js/season18-early.js?v={version}"></script>'
     late = f'<script src="js/season18-fixes.js?v={version}"></script>\n<script src="js/season18-v12.js?v={version}"></script>'
 
     # Remove every previous injection so repeated updates stay idempotent.
     patterns = (
         r'\s*<link rel="stylesheet" href="css/season18-fixes\.css[^>]*>\s*',
+        r'\s*<script src="data/mhur_database_assets\.js[^>]*></script>\s*',
         r'\s*<script src="data/season18_sync\.js[^>]*></script>\s*',
         r'\s*<script src="js/season18-early\.js[^>]*></script>\s*',
         r'\s*<script src="js/season18-fixes\.js[^>]*></script>\s*',

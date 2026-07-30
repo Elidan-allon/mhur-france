@@ -1,0 +1,12 @@
+MHUR NEXUS — Correctif Saison 18 V28
+
+Contenu :
+- les portraits des cartes personnages remplissent mieux le cadre ;
+- les portraits sont ancrés en bas sur PC et mobile ;
+- les portraits des cartes de styles suivent le même comportement ;
+- priorité donnée aux fichiers locaux du site pour les portraits (assets/... et official_portraits/...) avant les URL distantes ;
+- préchargement local pour un affichage plus rapide.
+
+Installation :
+1. Copiez le contenu du dossier "mhur-france" dans votre projet.
+2. Redéployez le site.

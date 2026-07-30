@@ -1,0 +1,13 @@
+MHUR NEXUS — Correctif Saison 18 V27
+
+Contenu :
+- correction des images dans la section "Réductions de points personnage" ;
+- visuels recentrés ;
+- rendu rapproché du style MHUR Database ;
+- Gentle Criminal utilise maintenant le bon visuel ;
+- moins de zoom / moins de coupe dans les cartes.
+
+Installation :
+1. Copiez le contenu du dossier "mhur-france" dans votre projet.
+2. Lancez "METTRE_A_JOUR_MHUR_FRANCE.bat" si besoin.
+3. Redéployez le dossier public.

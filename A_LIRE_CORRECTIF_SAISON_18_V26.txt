@@ -1,0 +1,12 @@
+MHUR NEXUS — Correctif Saison 18 V26
+
+Contenu :
+- correction de la carte Tsuyu Asui dans la section "Sorties prévues — Saison 18" ;
+- image recentrée ;
+- taille ajustée pour éviter qu'elle soit coupée ;
+- meilleur rendu sur grand écran et sur mobile.
+
+Installation :
+1. Copiez le contenu du dossier "mhur-france" dans votre projet.
+2. Lancez "METTRE_A_JOUR_MHUR_FRANCE.bat" si besoin.
+3. Redéployez le dossier public.

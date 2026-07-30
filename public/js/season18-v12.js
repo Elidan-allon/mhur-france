@@ -42,17 +42,19 @@ function exactRow(styleId){
 function portraitCandidates(styleId,fallback=''){
   const sync=window.MHUR_SEASON18_DATA?.official_portraits||{};
   const row=exactRow(styleId);
-  const current=typeof styles!=='undefined'?styles?.[styleId]?.portrait||'':'';
   const id=String(styleId||'');
-  const manual=/^fullbullet$/i.test(id)?'assets/home/season18/midoriya_fullbullet_profile.png':(/gentle[_-]?criminal/i.test(id)?'assets/home/season18/gentle_s18_profile_hd.webp':'');
-  return Array.from(new Set([sync[id],row?.assets?.portrait,current,manual,fallback].filter(Boolean).map(String)));
+  const database=window.MHUR_DATABASE_ASSETS?.styles||{};
+  const local=(database[id]||(/gentle[_-]?criminal/i.test(id)?database.gentle_criminal_technical:null)||{}).portrait||'';
+  const official=[local,sync[id],row?.assets?.portrait].filter(Boolean).map(String);
+  if(official.length)return Array.from(new Set(official));
+  return Array.from(new Set([fallback].filter(Boolean).map(String)));
 }
 function applyImage(img,candidates){
   if(!img||!candidates.length) return;
   img.loading='eager';
   img.decoding='async';
   try{img.fetchPriority='high'}catch(_e){}
-  if(img.dataset.s18v14Applied==='1') return;
+  if(img.dataset.s18v14Applied==='1'&&img.getAttribute('src')===String(candidates[0]||'')) return;
   const queue=Array.from(new Set(candidates.filter(Boolean)));
   const first=queue.shift();
   img.dataset.s18v14Applied='1';

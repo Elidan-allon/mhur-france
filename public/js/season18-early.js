@@ -1,3 +1,9 @@
+/* Charge le cache officiel MHUR Database avant le premier rendu, même si
+   l'index n'a pas encore été retraité par le programme de mise à jour. */
+if(!window.MHUR_DATABASE_ASSETS&&document.readyState==='loading'){
+  document.write('<script src="data/mhur_database_assets.js?v=29000"><\/script>');
+}
+
 /* MHUR Nexus — Saison 18 v14 : premier affichage stable et idempotent. */
 (function(){
 'use strict';
@@ -33,11 +39,24 @@ function patchHomeMarkup(html){
 
 function installOfficialPortraits(){
   if(typeof styles==='undefined') return;
-  const official=window.MHUR_SEASON18_DATA?.official_portraits||{};
-  Object.entries(official).forEach(([id,url])=>{ if(styles[id]&&url) styles[id].portrait=String(url); });
-  if(styles.fullbullet) styles.fullbullet.portrait='assets/home/season18/midoriya_fullbullet_profile.png';
-  const gentleId=Object.keys(styles).find(id=>/gentle[_-]?criminal/i.test(id));
-  if(gentleId&&styles[gentleId]) styles[gentleId].portrait=official[gentleId]||'assets/home/season18/gentle_s18_profile_hd.webp';
+  const database=window.MHUR_DATABASE_ASSETS?.styles||{};
+  const synced=window.MHUR_SEASON18_DATA?.official_portraits||{};
+  Object.keys(styles).forEach(id=>{
+    const row=database[id]||(/gentle[_-]?criminal/i.test(id)?database.gentle_criminal_technical:null)||{};
+    if(row.portrait) styles[id].portrait=String(row.portrait);
+    else if(synced[id]) styles[id].portrait=String(synced[id]);
+    if(row.special&&styles[id].special)styles[id].special.img=String(row.special);
+    const byLetter={alpha:'α',beta:'β',gamma:'γ'};
+    Object.entries(byLetter).forEach(([key,letter])=>{
+      if(!row[key]||!Array.isArray(styles[id].skills))return;
+      const skill=styles[id].skills.find(item=>String(item?.letter||'').toLowerCase()===letter||String(item?.letter||'').toLowerCase()===key);
+      if(skill)skill.img=String(row[key]);
+    });
+    if(typeof tunings!=='undefined'&&Array.isArray(tunings?.[id])&&row.tuning){
+      const item=tunings[id].find(x=>String(x?.type||'').toUpperCase()==='SP')||tunings[id][0];
+      if(item)item.img=String(row.tuning);
+    }
+  });
   if(typeof characters!=='undefined'){
     (characters||[]).forEach(ch=>{
       const ids=Array.from(new Set((ch.styles||[]).map(String))).filter(id=>styles[id]);
@@ -75,9 +94,8 @@ function repairHeader(){
 }
 
 function preloadPortraits(){
-  const map=window.MHUR_SEASON18_DATA?.official_portraits||{};
-  const urls=[...Object.values(map).filter(Boolean),
-    'assets/home/season18/midoriya_fullbullet_profile.png',
+  const map=window.MHUR_DATABASE_ASSETS?.styles||{};
+  const urls=[...Object.values(map).flatMap(row=>Object.values(row||{})).filter(Boolean),
     'assets/home/season18/tsuyu_profile_nobg.png',
     'assets/present_mic/present_mic_technical/portrait.webp',
     'assets/aizawa/aizawa_strike/portrait.webp',
