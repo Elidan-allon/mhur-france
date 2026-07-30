@@ -1,0 +1,16 @@
+/* MHUR France — Gentle Criminal uniquement, V530 */
+.homeV296 .discountGridV296 .discountCardV296.v530-gentle-card > img {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  max-height: none !important;
+  object-fit: contain !important;
+  object-position: center bottom !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  transform: none !important;
+  filter: none !important;
+  background:
+    radial-gradient(circle at 50% 42%, #7b3ca0 0%, #391b50 58%, #11131a 100%)
+    !important;
+}

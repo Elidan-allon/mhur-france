@@ -826,7 +826,6 @@
 <link rel="stylesheet" href="css/season18-fixes.css?v=1785403460136436800">
 <link rel="stylesheet" href="css/v526-ui-final.css?v=526">
 <link rel="stylesheet" href="css/v527-compact-costume-tuning-detail.css?v=527">
-<link rel="stylesheet" href="css/v530-gentle-only.css?v=530">
 </head>
 <body>
 
@@ -7582,6 +7581,5 @@ body .costumeTile > img,
 </script>
 <!-- MHUR_V525_END -->
 <script src="js/v526-ui-final.js?v=529"></script>
-<script src="js/v530-gentle-only.js?v=530"></script>
 </body>
 </html>

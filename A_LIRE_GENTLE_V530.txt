@@ -1,0 +1,55 @@
+﻿GENTLE CRIMINAL — CORRECTIF V530
+=================================
+
+Ce correctif ne modifie que la carte Gentle Criminal de la rubrique
+"Reductions de points personnage".
+
+CAUSE TROUVEE
+=============
+
+Le fichier public/js/v526-ui-final.js a bien ete modifie, mais le fichier
+public/index.html actuel ne le charge pas.
+
+A la fin de index.html, le site charge encore :
+js/v520-character-styles.js
+
+Ce fichier n'existe plus. Les corrections V526 et V529 ne pouvaient donc
+pas agir sur la carte affichee.
+
+V530
+====
+
+- ajoute un nouveau portrait physique :
+  public/assets/home/discounts/gentle_criminal_v530.png
+
+- ajoute un petit JavaScript charge reellement tout en bas de index.html
+
+- remet l'image apres chaque nouveau rendu de l'accueil
+
+- utilise object-fit: contain pour afficher le portrait entier au lieu
+  de le recadrer comme une autre photo
+
+INSTALLATION
+============
+
+1. Decompresse le ZIP dans le dossier principal mhur-france.
+2. Lance APPLIQUER_GENTLE_V530.bat.
+3. La fenetre doit afficher :
+   TOUTES LES VERIFICATIONS V530 SONT BONNES
+4. Dans GitHub Desktop :
+   Commit to main
+   Push origin
+5. Apres le deploiement :
+   Ctrl + F5
+
+FICHIERS AJOUTES
+================
+
+public/css/v530-gentle-only.css
+public/js/v530-gentle-only.js
+public/assets/home/discounts/gentle_criminal_v530.png
+
+FICHIER MODIFIE
+===============
+
+public/index.html
