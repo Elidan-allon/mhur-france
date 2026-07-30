@@ -1,0 +1,297 @@
+/*
+  MHUR FRANCE — CORRECTIF V526
+  Corrige les rôles, Gentle Criminal et les éléments créés dynamiquement.
+*/
+(() => {
+  "use strict";
+
+  const GENTLE_IMAGE =
+    "/assets/home/discounts/gentle_criminal_correct_v526.png?v=526";
+
+  const ROLE_KEYS = ["assault", "strike", "speed", "technical", "support"];
+  const ROLE_CLASSES = ROLE_KEYS.map(role => `v526-role-${role}`);
+
+  const ROLE_META = {
+    assault: {
+      fr: "Assaut",
+      en: "Assault",
+      icon: "/assets/roles/role_assault_clean.webp"
+    },
+    strike: {
+      fr: "Attaque",
+      en: "Strike",
+      icon: "/assets/roles/role_attack_clean.webp"
+    },
+    speed: {
+      fr: "Vitesse",
+      en: "Rapid",
+      icon: "/assets/roles/role_rapid.webp"
+    },
+    technical: {
+      fr: "Technique",
+      en: "Technical",
+      icon: "/assets/roles/role_technical.webp"
+    },
+    support: {
+      fr: "Soutien",
+      en: "Support",
+      icon: "/assets/roles/role_support.webp"
+    }
+  };
+
+  const DISCOUNT_ROLES = {
+    "d j board": "technical",
+    "flow runner": "strike",
+    "gentle criminal": "technical",
+    "factor fusion": "strike",
+    "cluster": "technical",
+    "mirko": "speed"
+  };
+
+  function normalize(value) {
+    return String(value || "")
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, " ")
+      .trim();
+  }
+
+  function isEnglish() {
+    try {
+      if (typeof lang !== "undefined") {
+        return String(lang).toLowerCase() === "en";
+      }
+    } catch (_) {}
+
+    return String(document.documentElement.lang || "fr")
+      .toLowerCase()
+      .startsWith("en");
+  }
+
+  function getStyles() {
+    try {
+      if (typeof styles !== "undefined" && styles) return styles;
+    } catch (_) {}
+    return {};
+  }
+
+  function getCharacters() {
+    try {
+      if (typeof characters !== "undefined" && Array.isArray(characters)) {
+        return characters;
+      }
+    } catch (_) {}
+    return [];
+  }
+
+  function roleForStyle(styleId) {
+    const role = getStyles()?.[styleId]?.role;
+    return ROLE_KEYS.includes(String(role)) ? String(role) : "";
+  }
+
+  function applyRoleClass(element, role) {
+    if (!(element instanceof HTMLElement)) return;
+    element.classList.remove(...ROLE_CLASSES);
+    if (ROLE_KEYS.includes(role)) {
+      element.classList.add(`v526-role-${role}`);
+      element.dataset.v526Role = role;
+    }
+  }
+
+  function decorateRosterCards() {
+    document
+      .querySelectorAll(
+        "#app .pageFrame.charactersFrame .cardsGrid > .card[data-char]," +
+        "#app .pageFrame.costumesFrame .cardsGrid > .card[data-char]," +
+        "#app .pageFrame.tuningsFrame .cardsGrid > .card[data-char]," +
+        "#app .pageFrame.buildsFrame .cardsGrid > .card[data-char]"
+      )
+      .forEach(card => {
+        const characterId = card.dataset.char;
+        const character = getCharacters().find(item => item?.id === characterId);
+        const firstStyle = character?.styles?.[0];
+        applyRoleClass(card, roleForStyle(firstStyle));
+      });
+  }
+
+  function decorateStyleCards() {
+    document
+      .querySelectorAll("#app .styleGrid > .styleCard[data-style]")
+      .forEach(card => {
+        applyRoleClass(card, roleForStyle(card.dataset.style));
+      });
+  }
+
+  function patchGentleData() {
+    const discounts = window.MHUR_HOME_DATA?.discounts;
+    if (Array.isArray(discounts)) {
+      const gentle = discounts.find(
+        item => normalize(item?.name) === "gentle criminal"
+      );
+      if (gentle) gentle.image = GENTLE_IMAGE;
+    }
+  }
+
+  function decorateDiscountCards() {
+    document
+      .querySelectorAll(".discountGridV296 .discountCardV296")
+      .forEach(card => {
+        if (!(card instanceof HTMLElement)) return;
+
+        const name = normalize(card.querySelector(":scope > b")?.textContent);
+        const role = DISCOUNT_ROLES[name] || "";
+        const meta = ROLE_META[role];
+
+        applyRoleClass(card, role);
+
+        card
+          .querySelectorAll(
+            ":scope > .v519-discount-role," +
+            ":scope > .v520-discount-role," +
+            ":scope > .v521-discount-role," +
+            ":scope > .v522-discount-role," +
+            ":scope > .v523-discount-role," +
+            ":scope > .v524-discount-role," +
+            ":scope > .v525-discount-role"
+          )
+          .forEach(node => node.remove());
+
+        if (name === "gentle criminal") {
+          card.classList.add("v526-gentle-card");
+
+          const image = card.querySelector(":scope > img");
+          if (image instanceof HTMLImageElement) {
+            image.removeAttribute("srcset");
+            image.removeAttribute("sizes");
+            image.src = GENTLE_IMAGE;
+            image.alt = "Gentle Criminal";
+          }
+        }
+
+        if (!meta) return;
+
+        let roleLine = card.querySelector(":scope > .v526-discount-role");
+        if (!roleLine) {
+          roleLine = document.createElement("div");
+          roleLine.className = "v526-discount-role";
+
+          const points = card.querySelector(":scope > span");
+          card.insertBefore(roleLine, points || null);
+        }
+
+        roleLine.innerHTML = "";
+
+        const icon = document.createElement("img");
+        icon.src = meta.icon;
+        icon.alt = "";
+        icon.setAttribute("aria-hidden", "true");
+
+        const text = document.createElement("span");
+        text.textContent = isEnglish() ? meta.en : meta.fr;
+
+        roleLine.append(icon, text);
+      });
+  }
+
+  function tierStyleId(item) {
+    const handler = item.getAttribute("ondragstart") || "";
+    const match = handler.match(/dragStart\s*\(\s*event\s*,\s*['"]([^'"]+)['"]/i);
+    return match?.[1] || "";
+  }
+
+  function decorateTierList() {
+    document.querySelectorAll(".mhurTierItem").forEach(item => {
+      const styleId = tierStyleId(item);
+      applyRoleClass(item, roleForStyle(styleId));
+    });
+
+    /*
+      Les cartes publiées n'exposent pas toujours leur identifiant dans le DOM.
+      Lorsque le portrait permet de retrouver le style, on applique aussi la couleur.
+    */
+    document.querySelectorAll(".mhurPublishedMini").forEach(item => {
+      const src = item.querySelector("img")?.getAttribute("src") || "";
+      if (!src) return;
+
+      const entry = Object.entries(getStyles()).find(
+        ([, style]) => String(style?.portrait || "") === src ||
+          String(style?.portrait || "").endsWith(src.replace(/^\//, ""))
+      );
+
+      if (entry) applyRoleClass(item, roleForStyle(entry[0]));
+    });
+  }
+
+  function decorateBuildStyleTabs() {
+    document.querySelectorAll("#app .cbStyleTabs").forEach(container => {
+      const buttons = [...container.querySelectorAll(":scope > button")];
+
+      let character = null;
+      try {
+        if (typeof selectedChar !== "undefined") {
+          character = getCharacters().find(item => item?.id === selectedChar);
+        }
+      } catch (_) {}
+
+      buttons.forEach((button, index) => {
+        let styleId = character?.styles?.[index] || "";
+
+        if (!styleId) {
+          const handler = button.getAttribute("onclick") || "";
+          const match = handler.match(/selectedStyle\s*=\s*['"]([^'"]+)['"]/i);
+          styleId = match?.[1] || "";
+        }
+
+        applyRoleClass(button, roleForStyle(styleId));
+      });
+    });
+  }
+
+  function applyEverything() {
+    patchGentleData();
+    decorateRosterCards();
+    decorateStyleCards();
+    decorateDiscountCards();
+    decorateTierList();
+    decorateBuildStyleTabs();
+  }
+
+  let scheduled = false;
+
+  function scheduleApply() {
+    if (scheduled) return;
+    scheduled = true;
+
+    requestAnimationFrame(() => {
+      scheduled = false;
+      applyEverything();
+    });
+  }
+
+  function install() {
+    applyEverything();
+
+    if (!document.documentElement.dataset.v526ObserverInstalled) {
+      document.documentElement.dataset.v526ObserverInstalled = "1";
+
+      const observer = new MutationObserver(scheduleApply);
+      observer.observe(document.body || document.documentElement, {
+        childList: true,
+        subtree: true
+      });
+    }
+
+    console.info("[MHUR] Correctif V526 actif.");
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", install, { once: true });
+  } else {
+    install();
+  }
+
+  setTimeout(install, 150);
+  setTimeout(install, 800);
+  setTimeout(install, 1800);
+})();

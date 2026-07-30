@@ -1,0 +1,432 @@
+/* ============================================================
+   MHUR FRANCE — CORRECTIF V526
+   Chargé en dernier pour neutraliser proprement V519 à V525.
+   ============================================================ */
+
+:root {
+  --v526-card-width: 280px;
+  --v526-card-height: 680px;
+  --v526-card-image-height: 330px;
+  --v526-style-width: 330px;
+  --v526-style-height: 450px;
+  --v526-style-image-height: 330px;
+}
+
+/* ---------- Couleurs des rôles ---------- */
+.v526-role-assault {
+  --v526-role-bg: var(--assault, #fff000);
+  --v526-role-fg: #050505;
+}
+.v526-role-strike {
+  --v526-role-bg: var(--attack, #ff1119);
+  --v526-role-fg: #ffffff;
+}
+.v526-role-speed {
+  --v526-role-bg: var(--rapid, #19c9de);
+  --v526-role-fg: #050b12;
+}
+.v526-role-technical {
+  --v526-role-bg: var(--technical, #c61bf4);
+  --v526-role-fg: #ffffff;
+}
+.v526-role-support {
+  --v526-role-bg: var(--support, #11ef22);
+  --v526-role-fg: #050b12;
+}
+
+/* ============================================================
+   1. PERSONNAGES / COSTUMES / T.U.N.I.N.G / BUILDS
+   Toutes les cartes de sélection ont exactement la même taille.
+   ============================================================ */
+#app .pageFrame.charactersFrame .cardsGrid,
+#app .pageFrame.costumesFrame .cardsGrid,
+#app .pageFrame.tuningsFrame .cardsGrid,
+#app .pageFrame.buildsFrame .cardsGrid {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(var(--v526-card-width), var(--v526-card-width))) !important;
+  justify-content: center !important;
+  align-items: stretch !important;
+  gap: 24px !important;
+}
+
+#app .pageFrame.charactersFrame .cardsGrid > .card,
+#app .pageFrame.costumesFrame .cardsGrid > .card,
+#app .pageFrame.tuningsFrame .cardsGrid > .card,
+#app .pageFrame.buildsFrame .cardsGrid > .card {
+  box-sizing: border-box !important;
+  display: flex !important;
+  flex-direction: column !important;
+  width: var(--v526-card-width) !important;
+  min-width: var(--v526-card-width) !important;
+  max-width: var(--v526-card-width) !important;
+  height: var(--v526-card-height) !important;
+  min-height: var(--v526-card-height) !important;
+  max-height: var(--v526-card-height) !important;
+  align-self: stretch !important;
+  justify-self: center !important;
+  overflow: hidden !important;
+}
+
+#app .pageFrame.charactersFrame .cardsGrid > .card > .thumb,
+#app .pageFrame.costumesFrame .cardsGrid > .card > .thumb,
+#app .pageFrame.tuningsFrame .cardsGrid > .card > .thumb,
+#app .pageFrame.buildsFrame .cardsGrid > .card > .thumb {
+  box-sizing: border-box !important;
+  flex: 0 0 var(--v526-card-image-height) !important;
+  width: 100% !important;
+  height: var(--v526-card-image-height) !important;
+  min-height: var(--v526-card-image-height) !important;
+  max-height: var(--v526-card-image-height) !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  background: var(--v526-role-bg, #101a29) !important;
+}
+
+#app .pageFrame.charactersFrame .cardsGrid > .card > .thumb img,
+#app .pageFrame.costumesFrame .cardsGrid > .card > .thumb img,
+#app .pageFrame.tuningsFrame .cardsGrid > .card > .thumb img,
+#app .pageFrame.buildsFrame .cardsGrid > .card > .thumb img {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain !important;
+  object-position: center bottom !important;
+  transform: none !important;
+  transform-origin: center !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+}
+
+#app .pageFrame.charactersFrame .cardsGrid > .card > .cardBody,
+#app .pageFrame.costumesFrame .cardsGrid > .card > .cardBody,
+#app .pageFrame.tuningsFrame .cardsGrid > .card > .cardBody,
+#app .pageFrame.buildsFrame .cardsGrid > .card > .cardBody {
+  box-sizing: border-box !important;
+  display: flex !important;
+  flex: 1 1 auto !important;
+  flex-direction: column !important;
+  width: 100% !important;
+  height: calc(var(--v526-card-height) - var(--v526-card-image-height)) !important;
+  min-height: 0 !important;
+  max-height: calc(var(--v526-card-height) - var(--v526-card-image-height)) !important;
+  padding: 16px !important;
+  overflow: hidden !important;
+}
+
+#app .pageFrame.charactersFrame .cardsGrid > .card h3,
+#app .pageFrame.costumesFrame .cardsGrid > .card h3,
+#app .pageFrame.tuningsFrame .cardsGrid > .card h3,
+#app .pageFrame.buildsFrame .cardsGrid > .card h3 {
+  display: block !important;
+  flex: 0 0 56px !important;
+  height: 56px !important;
+  min-height: 56px !important;
+  max-height: 56px !important;
+  margin: 0 0 12px !important;
+  overflow: hidden !important;
+  font-size: 22px !important;
+  line-height: 1.08 !important;
+}
+
+#app .pageFrame.charactersFrame .cardsGrid > .card .badges,
+#app .pageFrame.costumesFrame .cardsGrid > .card .badges,
+#app .pageFrame.tuningsFrame .cardsGrid > .card .badges,
+#app .pageFrame.buildsFrame .cardsGrid > .card .badges {
+  display: flex !important;
+  flex: 0 0 auto !important;
+  align-content: flex-start !important;
+  align-items: center !important;
+  gap: 8px !important;
+  flex-wrap: wrap !important;
+}
+
+#app .pageFrame.charactersFrame .cardsGrid > .card .badge,
+#app .pageFrame.costumesFrame .cardsGrid > .card .badge,
+#app .pageFrame.tuningsFrame .cardsGrid > .card .badge,
+#app .pageFrame.buildsFrame .cardsGrid > .card .badge {
+  min-height: 50px !important;
+  padding: 7px 11px !important;
+  gap: 7px !important;
+  border-radius: 16px !important;
+}
+
+#app .pageFrame.charactersFrame .cardsGrid > .card .roleIcon,
+#app .pageFrame.costumesFrame .cardsGrid > .card .roleIcon,
+#app .pageFrame.tuningsFrame .cardsGrid > .card .roleIcon,
+#app .pageFrame.buildsFrame .cardsGrid > .card .roleIcon {
+  width: 36px !important;
+  height: 36px !important;
+  flex: 0 0 36px !important;
+}
+
+#app .pageFrame.charactersFrame .cardsGrid > .card .cardBody > p,
+#app .pageFrame.costumesFrame .cardsGrid > .card .cardBody > p,
+#app .pageFrame.tuningsFrame .cardsGrid > .card .cardBody > p,
+#app .pageFrame.buildsFrame .cardsGrid > .card .cardBody > p {
+  display: block !important;
+  margin: auto 0 0 !important;
+  min-height: 42px !important;
+  max-height: 48px !important;
+  overflow: hidden !important;
+  color: #ffffff !important;
+  font-size: 16px !important;
+  line-height: 1.15 !important;
+}
+
+/* ============================================================
+   2. CARTES D'ALTERS
+   Même largeur, même hauteur, même haut, même bas.
+   ============================================================ */
+#app .styleGrid {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  justify-content: flex-start !important;
+  align-items: flex-start !important;
+  gap: 22px !important;
+}
+
+#app .styleGrid > .styleCard[data-style] {
+  box-sizing: border-box !important;
+  display: grid !important;
+  grid-template-rows: var(--v526-style-image-height) calc(var(--v526-style-height) - var(--v526-style-image-height)) !important;
+  width: var(--v526-style-width) !important;
+  min-width: var(--v526-style-width) !important;
+  max-width: var(--v526-style-width) !important;
+  height: var(--v526-style-height) !important;
+  min-height: var(--v526-style-height) !important;
+  max-height: var(--v526-style-height) !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  overflow: hidden !important;
+  background: #0f1928 !important;
+}
+
+#app .styleGrid > .styleCard[data-style] > .styleBanner {
+  box-sizing: border-box !important;
+  display: flex !important;
+  align-items: flex-end !important;
+  justify-content: center !important;
+  width: 100% !important;
+  height: var(--v526-style-image-height) !important;
+  min-height: var(--v526-style-image-height) !important;
+  max-height: var(--v526-style-image-height) !important;
+  padding: 0 !important;
+  border: 0 !important;
+  overflow: hidden !important;
+  background: var(--v526-role-bg, #101a29) !important;
+}
+
+#app .styleGrid > .styleCard[data-style] > .styleBanner img {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: none !important;
+  max-height: none !important;
+  object-fit: contain !important;
+  object-position: center bottom !important;
+  transform: none !important;
+  transform-origin: center !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+}
+
+#app .styleGrid > .styleCard[data-style] > .styleInfo {
+  box-sizing: border-box !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  width: 100% !important;
+  height: calc(var(--v526-style-height) - var(--v526-style-image-height)) !important;
+  min-height: calc(var(--v526-style-height) - var(--v526-style-image-height)) !important;
+  max-height: calc(var(--v526-style-height) - var(--v526-style-image-height)) !important;
+  padding: 9px 11px 11px !important;
+  overflow: hidden !important;
+  background: #0f1928 !important;
+}
+
+#app .styleGrid > .styleCard[data-style] > .styleInfo h2 {
+  display: block !important;
+  flex: 0 0 auto !important;
+  margin: 0 0 8px !important;
+  overflow: hidden !important;
+  color: #ffffff !important;
+  font-size: 24px !important;
+  line-height: 1.05 !important;
+  text-align: center !important;
+  white-space: nowrap !important;
+  text-overflow: ellipsis !important;
+}
+
+#app .styleGrid > .styleCard[data-style] > .styleInfo .badges {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  gap: 7px !important;
+  flex-wrap: nowrap !important;
+}
+
+#app .styleGrid > .styleCard[data-style] > .styleInfo .badge {
+  min-height: 40px !important;
+  padding: 5px 9px !important;
+  gap: 6px !important;
+  border-radius: 14px !important;
+  font-size: 15px !important;
+}
+
+#app .styleGrid > .styleCard[data-style] > .styleInfo .roleIcon {
+  width: 29px !important;
+  height: 29px !important;
+  flex: 0 0 29px !important;
+}
+
+/* ============================================================
+   3. FICHE DU PERSONNAGE : TEXTE BLANC
+   ============================================================ */
+#app .charPanel .meta,
+#app .charPanel .meta h1,
+#app .charPanel .meta h2,
+#app .charPanel .meta h3,
+#app .charPanel .meta p,
+#app .charPanel .meta b,
+#app .charPanel .meta strong,
+#app .charPanel .meta em,
+#app .charPanel .meta span:not(.badge),
+#app .charPanel > h1,
+#app .charPanel > h2,
+#app .charPanel > h2[style],
+#app .charPanel .charTop + h2,
+#app .character-description,
+#app .character-role-description {
+  color: #ffffff !important;
+  text-shadow: 0 2px 3px rgba(0, 0, 0, .88) !important;
+}
+
+#app .charPanel .meta .badge,
+#app .charPanel .meta .badge *,
+#app .charPanel .skillBox,
+#app .charPanel .skillBox * {
+  text-shadow: none !important;
+}
+
+#app .charPanel .charTop,
+#app .charPanel .charTop > .meta {
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+}
+
+/* ============================================================
+   4. TIER LIST : FOND SELON LE RÔLE
+   ============================================================ */
+.mhurTierItem.v526-role-assault,
+.mhurTierItem.v526-role-strike,
+.mhurTierItem.v526-role-speed,
+.mhurTierItem.v526-role-technical,
+.mhurTierItem.v526-role-support,
+.mhurPublishedMini.v526-role-assault,
+.mhurPublishedMini.v526-role-strike,
+.mhurPublishedMini.v526-role-speed,
+.mhurPublishedMini.v526-role-technical,
+.mhurPublishedMini.v526-role-support {
+  background: var(--v526-role-bg) !important;
+  color: var(--v526-role-fg) !important;
+  border: 3px solid #000000 !important;
+  box-shadow: 0 4px 0 #000000 !important;
+}
+
+.mhurTierItem[class*="v526-role-"] small,
+.mhurTierItem[class*="v526-role-"] .mhurTierStyleName,
+.mhurPublishedMini[class*="v526-role-"] small {
+  color: inherit !important;
+  text-shadow: none !important;
+}
+
+/* ============================================================
+   5. BUILDS COMMUNAUTÉ : conserver la couleur de chaque style
+   ============================================================ */
+#app .cbStyleTabs > button.v526-role-assault,
+#app .cbStyleTabs > button.v526-role-strike,
+#app .cbStyleTabs > button.v526-role-speed,
+#app .cbStyleTabs > button.v526-role-technical,
+#app .cbStyleTabs > button.v526-role-support {
+  background: var(--v526-role-bg) !important;
+  color: var(--v526-role-fg) !important;
+  border: 3px solid #000000 !important;
+}
+
+#app .cbStyleTabs > button[class*="v526-role-"] * {
+  color: inherit !important;
+}
+
+/* ============================================================
+   6. RÉDUCTIONS DE POINTS : vrai Gentle + rôle
+   ============================================================ */
+.homeV296 .discountCardV296 {
+  --v526-role-bg: #253650;
+  --v526-role-fg: #ffffff;
+}
+
+.homeV296 .discountCardV296 > .v526-discount-role {
+  box-sizing: border-box !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 5px !important;
+  width: 100% !important;
+  min-height: 27px !important;
+  padding: 3px 6px !important;
+  border-top: 2px solid #000 !important;
+  border-bottom: 2px solid #000 !important;
+  background: var(--v526-role-bg) !important;
+  color: var(--v526-role-fg) !important;
+  font-size: 11px !important;
+  font-weight: 1000 !important;
+  line-height: 1 !important;
+  text-transform: uppercase !important;
+}
+
+.homeV296 .discountCardV296 > .v526-discount-role img {
+  display: block !important;
+  width: 20px !important;
+  height: 20px !important;
+  object-fit: contain !important;
+  background: transparent !important;
+}
+
+.homeV296 .discountCardV296.v526-gentle-card > img {
+  object-fit: contain !important;
+  object-position: center bottom !important;
+  background: radial-gradient(circle at 50% 42%, #8540a7 0%, #3b1b55 58%, #111218 100%) !important;
+  padding: 2px 4px 0 !important;
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 700px) {
+  :root {
+    --v526-card-width: min(100%, 300px);
+    --v526-card-height: 650px;
+    --v526-card-image-height: 310px;
+    --v526-style-width: min(100%, 310px);
+    --v526-style-height: 430px;
+    --v526-style-image-height: 310px;
+  }
+
+  #app .pageFrame.charactersFrame .cardsGrid,
+  #app .pageFrame.costumesFrame .cardsGrid,
+  #app .pageFrame.tuningsFrame .cardsGrid,
+  #app .pageFrame.buildsFrame .cardsGrid {
+    grid-template-columns: minmax(0, 300px) !important;
+  }
+
+  #app .styleGrid {
+    justify-content: center !important;
+  }
+
+  #app .styleGrid > .styleCard[data-style] {
+    min-width: 0 !important;
+  }
+}
