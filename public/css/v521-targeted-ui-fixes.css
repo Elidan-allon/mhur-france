@@ -1,0 +1,414 @@
+/*
+  MHUR France — Correctif V521
+  Correctif ciblé : aucune règle ne vise le header.
+*/
+
+/* =========================================================
+   1. SÉLECTEUR DE STYLES / ALTERS
+   Retour au format portrait d'origine, seulement moins haut.
+   ========================================================= */
+#app .styleGrid {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  align-items: flex-start !important;
+  justify-content: flex-start !important;
+  gap: 20px !important;
+}
+
+#app .styleGrid > .styleCard[data-style] {
+  display: block !important;
+  width: 330px !important;
+  min-width: 330px !important;
+  max-width: 330px !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  border: 4px solid #000 !important;
+  border-radius: 17px !important;
+  background: #0f1928 !important;
+  color: #fff !important;
+  box-shadow: 0 5px 0 #000 !important;
+  text-align: center !important;
+}
+
+#app .styleGrid > .styleCard[data-style] .styleBanner {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  height: 390px !important;
+  min-height: 390px !important;
+  max-height: 390px !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  border: 0 !important;
+  border-right: 0 !important;
+  border-radius: 0 !important;
+  background: #101a29 !important;
+}
+
+#app .styleGrid > .styleCard[data-style] .styleBanner img {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: none !important;
+  max-height: none !important;
+  object-fit: cover !important;
+  object-position: center center !important;
+}
+
+#app .styleGrid > .styleCard[data-style] .styleInfo {
+  box-sizing: border-box !important;
+  display: block !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  height: auto !important;
+  min-height: 86px !important;
+  max-height: none !important;
+  padding: 10px 12px 12px !important;
+  overflow: visible !important;
+  background: #0f1928 !important;
+  color: #fff !important;
+  text-align: center !important;
+}
+
+#app .styleGrid > .styleCard[data-style] .styleInfo h2 {
+  display: block !important;
+  max-width: 100% !important;
+  margin: 0 0 8px !important;
+  padding: 0 !important;
+  overflow: visible !important;
+  color: #fff !important;
+  font-size: 24px !important;
+  font-weight: 950 !important;
+  line-height: 1.06 !important;
+  text-align: center !important;
+  text-overflow: clip !important;
+  white-space: normal !important;
+}
+
+#app .styleGrid > .styleCard[data-style] .styleInfo > .badges {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  gap: 7px !important;
+  flex-wrap: wrap !important;
+}
+
+#app .styleGrid > .styleCard[data-style] .styleInfo .badge {
+  min-height: 42px !important;
+  padding: 5px 10px !important;
+  border-radius: 14px !important;
+  font-size: 15px !important;
+}
+
+#app .styleGrid > .styleCard[data-style] .styleInfo .roleIcon {
+  width: 30px !important;
+  height: 30px !important;
+  flex: 0 0 30px !important;
+}
+
+/* Nettoie les éléments compacts laissés par V519/V520. */
+#app .v519-style-role,
+#app .v520-style-role {
+  display: none !important;
+}
+
+/* =========================================================
+   2. FICHE PERSONNAGE
+   Le haut de la fiche suit la hauteur du portrait, sans vide géant.
+   ========================================================= */
+#app .charPanel {
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+}
+
+#app .charPanel .charTop {
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  align-items: start !important;
+  padding: 18px !important;
+}
+
+#app .charPanel .charTop > .portrait {
+  height: 390px !important;
+  min-height: 390px !important;
+  max-height: 390px !important;
+  align-self: start !important;
+}
+
+#app .charPanel .charTop > .meta {
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  align-self: start !important;
+}
+
+#app .charPanel .meta,
+#app .charPanel .meta h1,
+#app .charPanel .meta h2,
+#app .charPanel .meta h3,
+#app .charPanel .meta p,
+#app .charPanel .meta b,
+#app .charPanel .meta strong,
+#app .charPanel .meta span:not(.badge) {
+  color: #fff !important;
+  text-shadow: 0 2px 3px rgba(0, 0, 0, .85) !important;
+}
+
+#app .charPanel > h2 {
+  color: #fff !important;
+  text-shadow: 0 2px 3px rgba(0, 0, 0, .85) !important;
+}
+
+#app .charPanel .meta .badge,
+#app .charPanel .meta .badge * {
+  text-shadow: none !important;
+}
+
+/* =========================================================
+   3. RÉDUCTIONS DE POINTS PERSONNAGE
+   Cartes moins hautes + logo et nom du rôle.
+   ========================================================= */
+.homeV296 .discountGridV296 {
+  gap: 10px !important;
+}
+
+.homeV296 .discountCardV296 {
+  --v521-role-bg: #253650;
+  --v521-role-fg: #fff;
+  position: relative !important;
+  display: grid !important;
+  grid-template-rows: 132px auto 28px auto !important;
+  align-content: start !important;
+  min-height: 0 !important;
+  height: auto !important;
+  max-height: none !important;
+  overflow: hidden !important;
+}
+
+.homeV296 .discountCardV296 > img,
+.homeV296 .discountCardV296 > img.v521-discount-portrait {
+  display: block !important;
+  width: 100% !important;
+  height: 132px !important;
+  min-height: 132px !important;
+  max-height: 132px !important;
+  object-fit: contain !important;
+  object-position: center bottom !important;
+  background: radial-gradient(circle, color-mix(in srgb, var(--v521-role-bg) 42%, #354052), #101218 74%) !important;
+}
+
+.homeV296 .discountCardV296 > b {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-height: 34px !important;
+  padding: 5px 5px 2px !important;
+  font-size: 13px !important;
+  line-height: 1.05 !important;
+}
+
+.homeV296 .discountCardV296 > .v521-discount-role {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 5px !important;
+  min-width: 0 !important;
+  height: 28px !important;
+  padding: 2px 6px !important;
+  border-top: 2px solid #000 !important;
+  border-bottom: 2px solid #000 !important;
+  background: var(--v521-role-bg) !important;
+  color: var(--v521-role-fg) !important;
+  font-size: 11px !important;
+  font-weight: 1000 !important;
+  line-height: 1 !important;
+  text-transform: uppercase !important;
+}
+
+.homeV296 .discountCardV296 > .v521-discount-role img {
+  display: block !important;
+  width: 21px !important;
+  height: 21px !important;
+  min-width: 21px !important;
+  min-height: 21px !important;
+  max-width: 21px !important;
+  max-height: 21px !important;
+  object-fit: contain !important;
+  background: transparent !important;
+}
+
+.homeV296 .discountCardV296 > span:not(.v521-discount-role) {
+  margin: 4px 3px 7px !important;
+  padding: 4px 7px !important;
+  min-height: 31px !important;
+  font-size: 16px !important;
+  line-height: 1.05 !important;
+}
+
+.v521-role-assault { --v521-role-bg: var(--assault, #fff000); --v521-role-fg: #050505; }
+.v521-role-strike { --v521-role-bg: var(--attack, #ff1119); --v521-role-fg: #fff; }
+.v521-role-speed { --v521-role-bg: var(--rapid, #19c9de); --v521-role-fg: #050b12; }
+.v521-role-technical { --v521-role-bg: var(--technical, #c61bf4); --v521-role-fg: #fff; }
+.v521-role-support { --v521-role-bg: var(--support, #11ef22); --v521-role-fg: #050b12; }
+
+/* =========================================================
+   4. BUILDS COMMUNAUTÉ
+   Chaque onglet garde la couleur de son propre rôle.
+   ========================================================= */
+#app .cbStyleTabs button.v521-role-assault,
+#app .cbStyleTabs button.v521-role-strike,
+#app .cbStyleTabs button.v521-role-speed,
+#app .cbStyleTabs button.v521-role-technical,
+#app .cbStyleTabs button.v521-role-support {
+  background: var(--v521-role-bg) !important;
+  color: var(--v521-role-fg) !important;
+  border: 3px solid #000 !important;
+  box-shadow: 0 4px 0 #000 !important;
+}
+
+#app .cbStyleTabs button.v521-role-assault *,
+#app .cbStyleTabs button.v521-role-strike *,
+#app .cbStyleTabs button.v521-role-speed *,
+#app .cbStyleTabs button.v521-role-technical *,
+#app .cbStyleTabs button.v521-role-support * {
+  color: inherit !important;
+}
+
+#app .cbStyleTabs button .cbStylePortrait {
+  background: rgba(255, 255, 255, .26) !important;
+}
+
+#app .cbStyleTabs button.active {
+  outline: 4px solid #fff !important;
+  outline-offset: 2px !important;
+  filter: saturate(1.08) brightness(1.03) !important;
+}
+
+/* =========================================================
+   5. TUTORIEL DES MODS
+   Invitation claire à cliquer + chevron propre.
+   ========================================================= */
+.modsTutorial > summary.v521-mods-summary {
+  list-style: none !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto !important;
+  grid-template-areas: "main arrow" "hint arrow" !important;
+  align-items: center !important;
+  column-gap: 18px !important;
+  row-gap: 5px !important;
+  min-height: 86px !important;
+  padding: 14px 18px 14px 21px !important;
+  user-select: none !important;
+}
+
+.modsTutorial > summary.v521-mods-summary::-webkit-details-marker {
+  display: none !important;
+}
+
+.v521-mods-main {
+  grid-area: main !important;
+  display: block !important;
+  font-size: 22px !important;
+  font-weight: 1000 !important;
+  line-height: 1.08 !important;
+}
+
+.v521-mods-hint {
+  grid-area: hint !important;
+  display: inline-flex !important;
+  justify-self: start !important;
+  padding: 4px 9px !important;
+  border: 2px solid #000 !important;
+  border-radius: 999px !important;
+  background: rgba(255, 255, 255, .76) !important;
+  color: #000 !important;
+  font-size: 12px !important;
+  font-weight: 900 !important;
+  line-height: 1 !important;
+}
+
+.v521-mods-chevron {
+  grid-area: arrow !important;
+  position: relative !important;
+  display: grid !important;
+  place-items: center !important;
+  width: 46px !important;
+  height: 46px !important;
+  border: 3px solid #000 !important;
+  border-radius: 50% !important;
+  background: #101a29 !important;
+  box-shadow: 0 4px 0 #000 !important;
+}
+
+.v521-mods-chevron::before {
+  content: "" !important;
+  width: 13px !important;
+  height: 13px !important;
+  border-right: 4px solid #ffe100 !important;
+  border-bottom: 4px solid #ffe100 !important;
+  transform: translateY(-3px) rotate(45deg) !important;
+  transition: transform .18s ease !important;
+}
+
+.modsTutorial[open] .v521-mods-chevron::before {
+  transform: translateY(3px) rotate(225deg) !important;
+}
+
+.modsTutorial[open] > summary.v521-mods-summary {
+  box-shadow: inset 0 -4px 0 #000 !important;
+}
+
+@media (max-width: 760px) {
+  #app .styleGrid {
+    justify-content: center !important;
+    gap: 14px !important;
+  }
+
+  #app .styleGrid > .styleCard[data-style] {
+    width: min(100%, 310px) !important;
+    min-width: 0 !important;
+    max-width: 310px !important;
+  }
+
+  #app .styleGrid > .styleCard[data-style] .styleBanner {
+    height: 360px !important;
+    min-height: 360px !important;
+    max-height: 360px !important;
+  }
+
+  #app .charPanel .charTop > .portrait {
+    height: 360px !important;
+    min-height: 360px !important;
+    max-height: 360px !important;
+  }
+
+  .homeV296 .discountCardV296 {
+    grid-template-rows: 118px auto 27px auto !important;
+  }
+
+  .homeV296 .discountCardV296 > img,
+  .homeV296 .discountCardV296 > img.v521-discount-portrait {
+    height: 118px !important;
+    min-height: 118px !important;
+    max-height: 118px !important;
+  }
+
+  .modsTutorial > summary.v521-mods-summary {
+    min-height: 78px !important;
+    padding: 12px 13px !important;
+    column-gap: 10px !important;
+  }
+
+  .v521-mods-main { font-size: 18px !important; }
+  .v521-mods-hint { font-size: 10px !important; }
+  .v521-mods-chevron { width: 40px !important; height: 40px !important; }
+}

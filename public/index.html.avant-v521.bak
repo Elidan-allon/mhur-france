@@ -824,7 +824,7 @@
 <link rel="preload" as="image" href="assets/home/season18/tsuyu_profile.webp">
 <link rel="preload" as="image" href="assets/home/icons/new_badge_custom.png">
 <link rel="stylesheet" href="css/season18-fixes.css?v=1785403460136436800">
-<link rel="stylesheet" href="css/v521-targeted-ui-fixes.css?v=521">
+<link rel="stylesheet" href="css/v520-character-styles.css?v=520">
 </head>
 <body>
 
@@ -6985,6 +6985,6 @@ body .costumeTile > img,
 <!-- Season 18 v14 compatibility layer. -->
 <script src="js/season18-fixes.js?v=1785403460136436800"></script>
 <script src="js/season18-v12.js?v=1785403460136436800"></script>
-<script src="js/v521-targeted-ui-fixes.js?v=521"></script>
+<script src="js/v520-character-styles.js?v=520"></script>
 </body>
 </html>
