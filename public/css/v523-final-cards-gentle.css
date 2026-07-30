@@ -1,12 +1,97 @@
 /*
-  MHUR France — Correctif V521
-  Correctif ciblé : aucune règle ne vise le header.
+  MHUR France — V523
+  - Le bas des cartes personnages est remis au format normal.
+  - Seule la photo du haut est raccourcie, en format carré.
+  - Même correction pour les cartes d'alters.
+  - Gentle Criminal utilise un fichier neuf pour éviter tout ancien cache.
+  - Une seule flèche dans le tutoriel des mods.
 */
 
-/* =========================================================
-   1. SÉLECTEUR DE STYLES / ALTERS
-   Retour au format portrait d'origine, seulement moins haut.
-   ========================================================= */
+/* ==========================================================
+   1. LISTE DES PERSONNAGES
+   Le bas retrouve sa taille normale. Seule la photo est réduite.
+   ========================================================== */
+#app .pageFrame.charactersFrame .cardsGrid {
+  align-items: start !important;
+}
+
+#app .pageFrame.charactersFrame .cardsGrid > .card.characterMode {
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  align-self: start !important;
+}
+
+#app .pageFrame.charactersFrame .cardsGrid > .card.characterMode .thumb {
+  width: 100% !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  aspect-ratio: 1 / 1 !important;
+  overflow: hidden !important;
+}
+
+#app .pageFrame.charactersFrame .cardsGrid > .card.characterMode .thumb img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  object-position: center top !important;
+  transform: none !important;
+}
+
+/* Restauration de tout le bas de la carte. */
+#app .pageFrame.charactersFrame .cardsGrid > .card.characterMode .cardBody {
+  display: flex !important;
+  flex-direction: column !important;
+  flex: 0 0 auto !important;
+  width: 100% !important;
+  height: auto !important;
+  min-height: 190px !important;
+  padding: 18px !important;
+}
+
+#app .pageFrame.charactersFrame .cardsGrid > .card.characterMode h3 {
+  display: flex !important;
+  align-items: flex-start !important;
+  min-height: 54px !important;
+  margin: 0 0 16px !important;
+  font-size: 24px !important;
+  line-height: 1.08 !important;
+}
+
+#app .pageFrame.charactersFrame .cardsGrid > .card.characterMode .badges {
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  flex-wrap: wrap !important;
+}
+
+#app .pageFrame.charactersFrame .cardsGrid > .card.characterMode .badge {
+  min-height: 54px !important;
+  padding: 8px 14px !important;
+  gap: 10px !important;
+  border-radius: 18px !important;
+  font-size: inherit !important;
+}
+
+#app .pageFrame.charactersFrame .cardsGrid > .card.characterMode .roleIcon {
+  width: 42px !important;
+  height: 42px !important;
+  flex: 0 0 42px !important;
+}
+
+#app .pageFrame.charactersFrame .cardsGrid > .card.characterMode .cardBody > p {
+  display: block !important;
+  min-height: 42px !important;
+  margin-top: 14px !important;
+  margin-bottom: 0 !important;
+  color: #c9d7ee !important;
+}
+
+/* ==========================================================
+   2. INTERFACE DES ALTERS
+   Le bas reste comme dans V521, seule la grande photo devient carrée.
+   ========================================================== */
 #app .styleGrid {
   display: flex !important;
   flex-wrap: wrap !important;
@@ -39,15 +124,13 @@
   align-items: center !important;
   justify-content: center !important;
   width: 100% !important;
-  min-width: 0 !important;
-  max-width: none !important;
-  height: 390px !important;
-  min-height: 390px !important;
-  max-height: 390px !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  aspect-ratio: 1 / 1 !important;
   padding: 0 !important;
   overflow: hidden !important;
   border: 0 !important;
-  border-right: 0 !important;
   border-radius: 0 !important;
   background: #101a29 !important;
 }
@@ -59,17 +142,15 @@
   max-width: none !important;
   max-height: none !important;
   object-fit: cover !important;
-  object-position: center center !important;
+  object-position: center top !important;
+  transform: none !important;
 }
 
 #app .styleGrid > .styleCard[data-style] .styleInfo {
-  box-sizing: border-box !important;
   display: block !important;
   width: 100% !important;
-  min-width: 0 !important;
   height: auto !important;
-  min-height: 86px !important;
-  max-height: none !important;
+  min-height: 104px !important;
   padding: 10px 12px 12px !important;
   overflow: visible !important;
   background: #0f1928 !important;
@@ -79,16 +160,13 @@
 
 #app .styleGrid > .styleCard[data-style] .styleInfo h2 {
   display: block !important;
-  max-width: 100% !important;
+  min-height: 0 !important;
   margin: 0 0 8px !important;
-  padding: 0 !important;
-  overflow: visible !important;
   color: #fff !important;
   font-size: 24px !important;
   font-weight: 950 !important;
   line-height: 1.06 !important;
   text-align: center !important;
-  text-overflow: clip !important;
   white-space: normal !important;
 }
 
@@ -113,42 +191,19 @@
   flex: 0 0 30px !important;
 }
 
-/* Nettoie les éléments compacts laissés par V519/V520. */
-#app .v519-style-role,
-#app .v520-style-role {
-  display: none !important;
-}
-
-/* =========================================================
-   2. FICHE PERSONNAGE
-   Le haut de la fiche suit la hauteur du portrait, sans vide géant.
-   ========================================================= */
-#app .charPanel {
+/* ==========================================================
+   3. FICHE PERSONNAGE
+   ========================================================== */
+#app .charPanel,
+#app .charPanel .charTop,
+#app .charPanel .charTop > .meta {
   height: auto !important;
   min-height: 0 !important;
   max-height: none !important;
 }
 
 #app .charPanel .charTop {
-  height: auto !important;
-  min-height: 0 !important;
-  max-height: none !important;
   align-items: start !important;
-  padding: 18px !important;
-}
-
-#app .charPanel .charTop > .portrait {
-  height: 390px !important;
-  min-height: 390px !important;
-  max-height: 390px !important;
-  align-self: start !important;
-}
-
-#app .charPanel .charTop > .meta {
-  height: auto !important;
-  min-height: 0 !important;
-  max-height: none !important;
-  align-self: start !important;
 }
 
 #app .charPanel .meta,
@@ -158,11 +213,7 @@
 #app .charPanel .meta p,
 #app .charPanel .meta b,
 #app .charPanel .meta strong,
-#app .charPanel .meta span:not(.badge) {
-  color: #fff !important;
-  text-shadow: 0 2px 3px rgba(0, 0, 0, .85) !important;
-}
-
+#app .charPanel .meta span:not(.badge),
 #app .charPanel > h2 {
   color: #fff !important;
   text-shadow: 0 2px 3px rgba(0, 0, 0, .85) !important;
@@ -173,29 +224,27 @@
   text-shadow: none !important;
 }
 
-/* =========================================================
-   3. RÉDUCTIONS DE POINTS PERSONNAGE
-   Cartes moins hautes + logo et nom du rôle.
-   ========================================================= */
+/* ==========================================================
+   4. RÉDUCTIONS DE POINTS + RÔLES
+   ========================================================== */
 .homeV296 .discountGridV296 {
   gap: 10px !important;
 }
 
 .homeV296 .discountCardV296 {
-  --v521-role-bg: #253650;
-  --v521-role-fg: #fff;
+  --v523-role-bg: #253650;
+  --v523-role-fg: #fff;
   position: relative !important;
   display: grid !important;
   grid-template-rows: 132px auto 28px auto !important;
   align-content: start !important;
-  min-height: 0 !important;
   height: auto !important;
+  min-height: 0 !important;
   max-height: none !important;
   overflow: hidden !important;
 }
 
-.homeV296 .discountCardV296 > img,
-.homeV296 .discountCardV296 > img.v521-discount-portrait {
+.homeV296 .discountCardV296 > img {
   display: block !important;
   width: 100% !important;
   height: 132px !important;
@@ -203,7 +252,18 @@
   max-height: 132px !important;
   object-fit: contain !important;
   object-position: center bottom !important;
-  background: radial-gradient(circle, color-mix(in srgb, var(--v521-role-bg) 42%, #354052), #101218 74%) !important;
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--v523-role-bg) 44%, #354052),
+    #101218 74%
+  ) !important;
+}
+
+.homeV296 .discountCardV296.v523-gentle-card > img {
+  object-fit: contain !important;
+  object-position: center bottom !important;
+  padding: 2px 5px 0 !important;
+  background: radial-gradient(circle at 50% 42%, #7a399a 0%, #351b51 55%, #111218 100%) !important;
 }
 
 .homeV296 .discountCardV296 > b {
@@ -216,25 +276,24 @@
   line-height: 1.05 !important;
 }
 
-.homeV296 .discountCardV296 > .v521-discount-role {
+.homeV296 .discountCardV296 > .v523-discount-role {
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
   gap: 5px !important;
-  min-width: 0 !important;
   height: 28px !important;
   padding: 2px 6px !important;
   border-top: 2px solid #000 !important;
   border-bottom: 2px solid #000 !important;
-  background: var(--v521-role-bg) !important;
-  color: var(--v521-role-fg) !important;
+  background: var(--v523-role-bg) !important;
+  color: var(--v523-role-fg) !important;
   font-size: 11px !important;
   font-weight: 1000 !important;
   line-height: 1 !important;
   text-transform: uppercase !important;
 }
 
-.homeV296 .discountCardV296 > .v521-discount-role img {
+.homeV296 .discountCardV296 > .v523-discount-role img {
   display: block !important;
   width: 21px !important;
   height: 21px !important;
@@ -246,7 +305,7 @@
   background: transparent !important;
 }
 
-.homeV296 .discountCardV296 > span:not(.v521-discount-role) {
+.homeV296 .discountCardV296 > span:not(.v523-discount-role) {
   margin: 4px 3px 7px !important;
   padding: 4px 7px !important;
   min-height: 31px !important;
@@ -254,54 +313,64 @@
   line-height: 1.05 !important;
 }
 
-.v521-role-assault { --v521-role-bg: var(--assault, #fff000); --v521-role-fg: #050505; }
-.v521-role-strike { --v521-role-bg: var(--attack, #ff1119); --v521-role-fg: #fff; }
-.v521-role-speed { --v521-role-bg: var(--rapid, #19c9de); --v521-role-fg: #050b12; }
-.v521-role-technical { --v521-role-bg: var(--technical, #c61bf4); --v521-role-fg: #fff; }
-.v521-role-support { --v521-role-bg: var(--support, #11ef22); --v521-role-fg: #050b12; }
+.v523-role-assault {
+  --v523-role-bg: var(--assault, #fff000);
+  --v523-role-fg: #050505;
+}
+.v523-role-strike {
+  --v523-role-bg: var(--attack, #ff1119);
+  --v523-role-fg: #fff;
+}
+.v523-role-speed {
+  --v523-role-bg: var(--rapid, #19c9de);
+  --v523-role-fg: #050b12;
+}
+.v523-role-technical {
+  --v523-role-bg: var(--technical, #c61bf4);
+  --v523-role-fg: #fff;
+}
+.v523-role-support {
+  --v523-role-bg: var(--support, #11ef22);
+  --v523-role-fg: #050b12;
+}
 
-/* =========================================================
-   4. BUILDS COMMUNAUTÉ
-   Chaque onglet garde la couleur de son propre rôle.
-   ========================================================= */
-#app .cbStyleTabs button.v521-role-assault,
-#app .cbStyleTabs button.v521-role-strike,
-#app .cbStyleTabs button.v521-role-speed,
-#app .cbStyleTabs button.v521-role-technical,
-#app .cbStyleTabs button.v521-role-support {
-  background: var(--v521-role-bg) !important;
-  color: var(--v521-role-fg) !important;
+/* ==========================================================
+   5. BUILDS COMMUNAUTÉ
+   ========================================================== */
+#app .cbStyleTabs button.v523-role-assault,
+#app .cbStyleTabs button.v523-role-strike,
+#app .cbStyleTabs button.v523-role-speed,
+#app .cbStyleTabs button.v523-role-technical,
+#app .cbStyleTabs button.v523-role-support {
+  background: var(--v523-role-bg) !important;
+  color: var(--v523-role-fg) !important;
   border: 3px solid #000 !important;
   box-shadow: 0 4px 0 #000 !important;
 }
 
-#app .cbStyleTabs button.v521-role-assault *,
-#app .cbStyleTabs button.v521-role-strike *,
-#app .cbStyleTabs button.v521-role-speed *,
-#app .cbStyleTabs button.v521-role-technical *,
-#app .cbStyleTabs button.v521-role-support * {
+#app .cbStyleTabs button.v523-role-assault *,
+#app .cbStyleTabs button.v523-role-strike *,
+#app .cbStyleTabs button.v523-role-speed *,
+#app .cbStyleTabs button.v523-role-technical *,
+#app .cbStyleTabs button.v523-role-support * {
   color: inherit !important;
-}
-
-#app .cbStyleTabs button .cbStylePortrait {
-  background: rgba(255, 255, 255, .26) !important;
 }
 
 #app .cbStyleTabs button.active {
   outline: 4px solid #fff !important;
   outline-offset: 2px !important;
-  filter: saturate(1.08) brightness(1.03) !important;
 }
 
-/* =========================================================
-   5. TUTORIEL DES MODS
-   Invitation claire à cliquer + chevron propre.
-   ========================================================= */
-.modsTutorial > summary.v521-mods-summary {
+/* ==========================================================
+   6. TUTORIEL MODS : UNE SEULE FLÈCHE
+   ========================================================== */
+.modsTutorial > summary.v523-mods-summary {
   list-style: none !important;
   display: grid !important;
   grid-template-columns: minmax(0, 1fr) auto !important;
-  grid-template-areas: "main arrow" "hint arrow" !important;
+  grid-template-areas:
+    "main arrow"
+    "hint arrow" !important;
   align-items: center !important;
   column-gap: 18px !important;
   row-gap: 5px !important;
@@ -310,33 +379,43 @@
   user-select: none !important;
 }
 
-.modsTutorial > summary.v521-mods-summary::-webkit-details-marker {
+.modsTutorial > summary.v523-mods-summary::marker {
+  content: "" !important;
+  font-size: 0 !important;
+}
+
+.modsTutorial > summary.v523-mods-summary::-webkit-details-marker {
   display: none !important;
 }
 
-.v521-mods-main {
+.modsTutorial > summary.v523-mods-summary::before,
+.modsTutorial > summary.v523-mods-summary::after {
+  content: none !important;
+  display: none !important;
+}
+
+.v523-mods-main {
   grid-area: main !important;
-  display: block !important;
   font-size: 22px !important;
   font-weight: 1000 !important;
   line-height: 1.08 !important;
 }
 
-.v521-mods-hint {
+.v523-mods-hint {
   grid-area: hint !important;
   display: inline-flex !important;
   justify-self: start !important;
   padding: 4px 9px !important;
   border: 2px solid #000 !important;
   border-radius: 999px !important;
-  background: rgba(255, 255, 255, .76) !important;
+  background: rgba(255, 255, 255, .78) !important;
   color: #000 !important;
   font-size: 12px !important;
   font-weight: 900 !important;
   line-height: 1 !important;
 }
 
-.v521-mods-chevron {
+.v523-mods-chevron {
   grid-area: arrow !important;
   position: relative !important;
   display: grid !important;
@@ -349,7 +428,7 @@
   box-shadow: 0 4px 0 #000 !important;
 }
 
-.v521-mods-chevron::before {
+.v523-mods-chevron::before {
   content: "" !important;
   width: 13px !important;
   height: 13px !important;
@@ -359,12 +438,8 @@
   transition: transform .18s ease !important;
 }
 
-.modsTutorial[open] .v521-mods-chevron::before {
+.modsTutorial[open] .v523-mods-chevron::before {
   transform: translateY(3px) rotate(225deg) !important;
-}
-
-.modsTutorial[open] > summary.v521-mods-summary {
-  box-shadow: inset 0 -4px 0 #000 !important;
 }
 
 @media (max-width: 760px) {
@@ -379,36 +454,27 @@
     max-width: 310px !important;
   }
 
-  #app .styleGrid > .styleCard[data-style] .styleBanner {
-    height: 360px !important;
-    min-height: 360px !important;
-    max-height: 360px !important;
-  }
-
-  #app .charPanel .charTop > .portrait {
-    height: 360px !important;
-    min-height: 360px !important;
-    max-height: 360px !important;
+  #app .pageFrame.charactersFrame .cardsGrid > .card.characterMode .cardBody {
+    min-height: 180px !important;
   }
 
   .homeV296 .discountCardV296 {
     grid-template-rows: 118px auto 27px auto !important;
   }
 
-  .homeV296 .discountCardV296 > img,
-  .homeV296 .discountCardV296 > img.v521-discount-portrait {
+  .homeV296 .discountCardV296 > img {
     height: 118px !important;
     min-height: 118px !important;
     max-height: 118px !important;
   }
 
-  .modsTutorial > summary.v521-mods-summary {
+  .modsTutorial > summary.v523-mods-summary {
     min-height: 78px !important;
     padding: 12px 13px !important;
     column-gap: 10px !important;
   }
 
-  .v521-mods-main { font-size: 18px !important; }
-  .v521-mods-hint { font-size: 10px !important; }
-  .v521-mods-chevron { width: 40px !important; height: 40px !important; }
+  .v523-mods-main { font-size: 18px !important; }
+  .v523-mods-hint { font-size: 10px !important; }
+  .v523-mods-chevron { width: 40px !important; height: 40px !important; }
 }
