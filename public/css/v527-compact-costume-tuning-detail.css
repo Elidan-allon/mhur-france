@@ -1,0 +1,198 @@
+/* ============================================================
+   MHUR FRANCE — V527
+   Correctif ciblé :
+   - cartes de choix Costumes/T.U.N.I.N.G plus compactes ;
+   - portrait de la fiche personnage plus petit.
+   Ne modifie pas les cartes d'alters, Personnages, Builds,
+   Réductions, Tier List ou Gentle Criminal.
+   ============================================================ */
+
+/* ============================================================
+   1. CHOIX DU PERSONNAGE DANS COSTUMES ET T.U.N.I.N.G
+   ============================================================ */
+html body #app .pageFrame.costumesFrame .cardsGrid,
+html body #app .pageFrame.tuningsFrame .cardsGrid {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, 230px) !important;
+  justify-content: center !important;
+  align-items: stretch !important;
+  gap: 18px !important;
+}
+
+html body #app .pageFrame.costumesFrame .cardsGrid > .card,
+html body #app .pageFrame.tuningsFrame .cardsGrid > .card,
+html body #app .pageFrame.costumesFrame .cardsGrid > .card.costumeMode,
+html body #app .pageFrame.tuningsFrame .cardsGrid > .card.tuningMode {
+  box-sizing: border-box !important;
+  width: 230px !important;
+  min-width: 230px !important;
+  max-width: 230px !important;
+  height: 550px !important;
+  min-height: 550px !important;
+  max-height: 550px !important;
+  justify-self: center !important;
+  align-self: stretch !important;
+  overflow: hidden !important;
+}
+
+html body #app .pageFrame.costumesFrame .cardsGrid > .card > .thumb,
+html body #app .pageFrame.tuningsFrame .cardsGrid > .card > .thumb {
+  box-sizing: border-box !important;
+  flex: 0 0 270px !important;
+  width: 100% !important;
+  height: 270px !important;
+  min-height: 270px !important;
+  max-height: 270px !important;
+  overflow: hidden !important;
+}
+
+html body #app .pageFrame.costumesFrame .cardsGrid > .card > .thumb img,
+html body #app .pageFrame.tuningsFrame .cardsGrid > .card > .thumb img {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain !important;
+  object-position: center bottom !important;
+  transform: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+html body #app .pageFrame.costumesFrame .cardsGrid > .card > .cardBody,
+html body #app .pageFrame.tuningsFrame .cardsGrid > .card > .cardBody {
+  box-sizing: border-box !important;
+  display: flex !important;
+  flex: 1 1 auto !important;
+  flex-direction: column !important;
+  width: 100% !important;
+  height: 280px !important;
+  min-height: 280px !important;
+  max-height: 280px !important;
+  padding: 12px !important;
+  overflow: hidden !important;
+}
+
+html body #app .pageFrame.costumesFrame .cardsGrid > .card h3,
+html body #app .pageFrame.tuningsFrame .cardsGrid > .card h3 {
+  flex: 0 0 46px !important;
+  height: 46px !important;
+  min-height: 46px !important;
+  max-height: 46px !important;
+  margin: 0 0 9px !important;
+  overflow: hidden !important;
+  font-size: 19px !important;
+  line-height: 1.05 !important;
+}
+
+html body #app .pageFrame.costumesFrame .cardsGrid > .card .badges,
+html body #app .pageFrame.tuningsFrame .cardsGrid > .card .badges {
+  gap: 7px !important;
+}
+
+html body #app .pageFrame.costumesFrame .cardsGrid > .card .badge,
+html body #app .pageFrame.tuningsFrame .cardsGrid > .card .badge {
+  min-height: 43px !important;
+  padding: 5px 9px !important;
+  gap: 6px !important;
+  border-radius: 14px !important;
+  font-size: 14px !important;
+}
+
+html body #app .pageFrame.costumesFrame .cardsGrid > .card .roleIcon,
+html body #app .pageFrame.tuningsFrame .cardsGrid > .card .roleIcon {
+  width: 31px !important;
+  height: 31px !important;
+  flex: 0 0 31px !important;
+}
+
+html body #app .pageFrame.costumesFrame .cardsGrid > .card .cardBody > p,
+html body #app .pageFrame.tuningsFrame .cardsGrid > .card .cardBody > p {
+  display: block !important;
+  min-height: 36px !important;
+  max-height: 40px !important;
+  margin: auto 0 0 !important;
+  overflow: hidden !important;
+  color: #ffffff !important;
+  font-size: 14px !important;
+  line-height: 1.12 !important;
+}
+
+/* ============================================================
+   2. FICHE DU PERSONNAGE : PORTRAIT PLUS PETIT
+   ============================================================ */
+html body #app .charPanel .charTop {
+  display: grid !important;
+  grid-template-columns: 220px minmax(0, 1fr) !important;
+  align-items: start !important;
+  gap: 16px !important;
+  padding: 14px !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+}
+
+html body #app .charPanel .charTop > .portrait {
+  box-sizing: border-box !important;
+  width: 220px !important;
+  min-width: 220px !important;
+  max-width: 220px !important;
+  height: 300px !important;
+  min-height: 300px !important;
+  max-height: 300px !important;
+  align-self: start !important;
+  overflow: hidden !important;
+}
+
+html body #app .charPanel .charTop > .portrait img {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain !important;
+  object-position: center bottom !important;
+  transform: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+html body #app .charPanel .charTop > .meta {
+  min-width: 0 !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+}
+
+/* Le texte de la fiche reste blanc. */
+html body #app .charPanel .meta,
+html body #app .charPanel .meta h1,
+html body #app .charPanel .meta h2,
+html body #app .charPanel .meta h3,
+html body #app .charPanel .meta p,
+html body #app .charPanel .meta b,
+html body #app .charPanel .meta strong,
+html body #app .charPanel .meta span:not(.badge),
+html body #app .charPanel > h2,
+html body #app .charPanel > h2[style] {
+  color: #ffffff !important;
+}
+
+/* ============================================================
+   MOBILE
+   ============================================================ */
+@media (max-width: 700px) {
+  html body #app .pageFrame.costumesFrame .cardsGrid,
+  html body #app .pageFrame.tuningsFrame .cardsGrid {
+    grid-template-columns: minmax(0, 230px) !important;
+  }
+
+  html body #app .charPanel .charTop {
+    grid-template-columns: 1fr !important;
+  }
+
+  html body #app .charPanel .charTop > .portrait {
+    width: min(100%, 220px) !important;
+    min-width: 0 !important;
+    max-width: 220px !important;
+    height: 300px !important;
+    margin: 0 auto !important;
+  }
+}

@@ -1,0 +1,42 @@
+﻿MHUR FRANCE — CORRECTIF V527
+================================
+
+CE CORRECTIF NE TOUCHE QU'À DEUX ENDROITS.
+
+1. CHOIX DU PERSONNAGE DANS COSTUMES ET T.U.N.I.N.G
+   Les cartes passent à :
+   - largeur : 230 px
+   - hauteur : 550 px
+   - zone de la photo : 270 px
+
+   Elles sont plus petites et davantage de cartes tiennent sur une ligne.
+
+2. FICHE DU PERSONNAGE
+   Le portrait passe à :
+   - largeur : 220 px
+   - hauteur : 300 px
+
+   Le bloc de présentation devient donc beaucoup moins haut.
+
+V527 NE MODIFIE PAS :
+- les cartes d'alters ;
+- la liste normale des personnages ;
+- les Builds communauté ;
+- la Tier List ;
+- les réductions de points ;
+- Gentle Criminal.
+
+INSTALLATION
+============
+
+1. Décompresse le ZIP.
+2. Copie son contenu dans le dossier principal "mhur-france".
+3. Accepte la fusion du dossier public.
+4. Lance APPLIQUER_CORRECTIF_V527.bat.
+5. Dans GitHub Desktop :
+   - Commit to main
+   - Push origin
+6. Après le déploiement, recharge avec Ctrl + F5.
+
+Pour annuler :
+RETIRER_CORRECTIF_V527.bat
