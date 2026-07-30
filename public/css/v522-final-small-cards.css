@@ -1,0 +1,195 @@
+/*
+  MHUR France — Correctif V522
+  1) Cartes de la liste des personnages moins hautes.
+  2) Une seule flèche dans le tutoriel des mods.
+  3) Gentle Criminal : affichage du portrait local officiel.
+  Les cartes d'alters V521 ne sont pas modifiées.
+*/
+
+/* =========================================================
+   LISTE DES PERSONNAGES
+   On garde la largeur actuelle et on retire la hauteur vide.
+   ========================================================= */
+#app .pageFrame.charactersFrame .cardsGrid {
+  align-items: start !important;
+}
+
+#app .pageFrame.charactersFrame .cardsGrid > .card.characterMode {
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  align-self: start !important;
+}
+
+#app .pageFrame.charactersFrame .cardsGrid > .card.characterMode .thumb {
+  height: 300px !important;
+  min-height: 300px !important;
+  max-height: 300px !important;
+}
+
+#app .pageFrame.charactersFrame .cardsGrid > .card.characterMode .cardBody {
+  display: flex !important;
+  flex: 0 0 auto !important;
+  min-height: 0 !important;
+  height: auto !important;
+  padding: 12px !important;
+}
+
+#app .pageFrame.charactersFrame .cardsGrid > .card.characterMode h3 {
+  min-height: 0 !important;
+  margin: 0 0 10px !important;
+  font-size: 20px !important;
+  line-height: 1.05 !important;
+}
+
+#app .pageFrame.charactersFrame .cardsGrid > .card.characterMode .badges {
+  gap: 7px !important;
+  align-items: center !important;
+}
+
+#app .pageFrame.charactersFrame .cardsGrid > .card.characterMode .badge {
+  min-height: 42px !important;
+  padding: 5px 9px !important;
+  gap: 6px !important;
+  border-radius: 14px !important;
+  font-size: 14px !important;
+}
+
+#app .pageFrame.charactersFrame .cardsGrid > .card.characterMode .roleIcon {
+  width: 30px !important;
+  height: 30px !important;
+  flex: 0 0 30px !important;
+}
+
+/* Le texte d'aide créait le grand vide sous les rôles. */
+#app .pageFrame.charactersFrame .cardsGrid > .card.characterMode .cardBody > p {
+  display: none !important;
+}
+
+/* =========================================================
+   GENTLE CRIMINAL — RÉDUCTION DE POINTS
+   ========================================================= */
+.homeV296 .discountCardV296.v522-gentle-card > img {
+  object-fit: contain !important;
+  object-position: center bottom !important;
+  background-color: #30204b !important;
+}
+
+/* =========================================================
+   TUTORIEL DES MODS — UNE SEULE FLÈCHE
+   ========================================================= */
+.modsTutorial > summary.v522-mods-summary {
+  list-style: none !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto !important;
+  grid-template-areas:
+    "main arrow"
+    "hint arrow" !important;
+  align-items: center !important;
+  column-gap: 18px !important;
+  row-gap: 5px !important;
+  min-height: 86px !important;
+  padding: 14px 18px 14px 21px !important;
+  user-select: none !important;
+}
+
+.modsTutorial > summary.v522-mods-summary::marker {
+  content: "" !important;
+  font-size: 0 !important;
+}
+
+.modsTutorial > summary.v522-mods-summary::-webkit-details-marker {
+  display: none !important;
+}
+
+.modsTutorial > summary.v522-mods-summary::before,
+.modsTutorial > summary.v522-mods-summary::after {
+  content: none !important;
+  display: none !important;
+}
+
+.v522-mods-main {
+  grid-area: main !important;
+  display: block !important;
+  font-size: 22px !important;
+  font-weight: 1000 !important;
+  line-height: 1.08 !important;
+}
+
+.v522-mods-hint {
+  grid-area: hint !important;
+  display: inline-flex !important;
+  justify-self: start !important;
+  padding: 4px 9px !important;
+  border: 2px solid #000 !important;
+  border-radius: 999px !important;
+  background: rgba(255, 255, 255, .78) !important;
+  color: #000 !important;
+  font-size: 12px !important;
+  font-weight: 900 !important;
+  line-height: 1 !important;
+}
+
+.v522-mods-chevron {
+  grid-area: arrow !important;
+  position: relative !important;
+  display: grid !important;
+  place-items: center !important;
+  width: 46px !important;
+  height: 46px !important;
+  border: 3px solid #000 !important;
+  border-radius: 50% !important;
+  background: #101a29 !important;
+  box-shadow: 0 4px 0 #000 !important;
+  font-size: 0 !important;
+  color: transparent !important;
+}
+
+.v522-mods-chevron::before {
+  content: "" !important;
+  display: block !important;
+  width: 13px !important;
+  height: 13px !important;
+  border-right: 4px solid #ffe100 !important;
+  border-bottom: 4px solid #ffe100 !important;
+  transform: translateY(-3px) rotate(45deg) !important;
+  transition: transform .18s ease !important;
+}
+
+.modsTutorial[open] .v522-mods-chevron::before {
+  transform: translateY(3px) rotate(225deg) !important;
+}
+
+/* Sécurité : toute ancienne flèche laissée dans le résumé est masquée. */
+.modsTutorial > summary.v522-mods-summary > .v519-mods-chevron,
+.modsTutorial > summary.v522-mods-summary > .v520-mods-chevron,
+.modsTutorial > summary.v522-mods-summary > .v521-mods-chevron {
+  display: none !important;
+}
+
+@media (max-width: 760px) {
+  #app .pageFrame.charactersFrame .cardsGrid > .card.characterMode .thumb {
+    height: 285px !important;
+    min-height: 285px !important;
+    max-height: 285px !important;
+  }
+
+  .modsTutorial > summary.v522-mods-summary {
+    min-height: 78px !important;
+    padding: 12px 13px !important;
+    column-gap: 10px !important;
+  }
+
+  .v522-mods-main {
+    font-size: 18px !important;
+  }
+
+  .v522-mods-hint {
+    font-size: 10px !important;
+  }
+
+  .v522-mods-chevron {
+    width: 40px !important;
+    height: 40px !important;
+  }
+}

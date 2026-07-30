@@ -1,0 +1,50 @@
+﻿MHUR FRANCE — CORRECTIF V522
+================================
+
+CE CORRECTIF NE TOUCHE PAS AUX CARTES D'ALTERS V521.
+ELLES RESTENT EXACTEMENT COMME SUR TA CAPTURE.
+
+V522 FAIT UNIQUEMENT 3 CHOSES :
+
+1. LISTE DES PERSONNAGES
+   - Les grands rectangles sont moins hauts.
+   - La photo passe à 300 px de hauteur.
+   - Le grand espace vide et le texte inutile du bas sont retirés.
+   - Les badges et les logos de rôle restent visibles.
+
+2. TUTORIEL DES MODS
+   - L'ancienne flèche du bas est supprimée.
+   - Il reste une seule flèche ronde à droite.
+   - La flèche pivote quand le tutoriel est ouvert.
+
+3. GENTLE CRIMINAL
+   - Le fichier public/data/home_data.js est corrigé directement.
+   - Le chemin utilisé devient :
+     assets/gentle_criminal/gentle_criminal_technical/portrait.png?v=522
+   - Le JavaScript V522 vérifie aussi l'image après chaque affichage.
+   - Le cache du fichier home_data.js est renouvelé avec ?v=522.
+
+INSTALLATION
+============
+
+1. Décompresse le ZIP.
+2. Copie tout son contenu dans le dossier principal "mhur-france".
+3. Accepte la fusion du dossier public.
+4. Lance APPLIQUER_CORRECTIF_V522.bat.
+5. Ouvre GitHub Desktop.
+6. Message conseillé :
+   Correctif V522 cartes personnages Gentle et fleche mods
+7. Clique sur Commit to main.
+8. Clique sur Push origin.
+9. Après le déploiement, recharge le site avec Ctrl + F5.
+
+SAUVEGARDES
+===========
+
+Le programme crée automatiquement :
+
+public/index.html.avant-v522.bak
+public/data/home_data.js.avant-v522.bak
+public/data/home_data.json.avant-v522.bak
+
+RETIRER_CORRECTIF_V522.bat permet de restaurer ces sauvegardes.
