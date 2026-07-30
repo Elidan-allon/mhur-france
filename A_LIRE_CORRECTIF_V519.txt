@@ -1,0 +1,62 @@
+MHUR FRANCE — CORRECTIF V519
+================================
+
+CE CORRECTIF FAIT 5 CHOSES :
+
+1. Gentle Criminal utilise le portrait :
+   public/assets/gentle_criminal/gentle_criminal_technical/portrait.png
+
+2. Chaque style affiche clairement son rôle :
+   Assaut / Attaque / Vitesse / Technique / Soutien.
+
+3. Les cartes de styles/alters deviennent beaucoup plus petites
+   et prennent une forme horizontale compacte.
+
+4. Les textes explicatifs de la fiche personnage deviennent blancs.
+
+5. Chaque carte utilise la couleur de SON PROPRE RÔLE :
+   - Assaut     = jaune
+   - Attaque    = rouge
+   - Vitesse    = bleu cyan
+   - Technique  = violet
+   - Soutien    = vert
+
+   Exemple : Midoriya Full Bullet est rouge car son rôle est Attaque.
+
+
+INSTALLATION
+============
+
+1. Ferme le site dans ton navigateur.
+2. Décompresse le ZIP.
+3. Copie tout le contenu du dossier décompressé dans le dossier principal
+   de ton dépôt "mhur-france".
+4. Accepte la fusion des dossiers "public", "public/css" et "public/js".
+5. Double-clique sur :
+   APPLIQUER_CORRECTIF_V519.bat
+6. Ouvre GitHub Desktop.
+7. Vérifie les changements, écris par exemple :
+   "Correctif V519 personnages et rôles"
+8. Clique sur "Commit to main", puis "Push origin".
+9. Attends le déploiement Cloudflare.
+10. Recharge le site avec Ctrl + F5.
+
+
+FICHIERS AJOUTÉS
+================
+
+public/css/v519-character-style-fix.css
+public/js/v519-character-style-fix.js
+
+Le fichier public/index.html est modifié automatiquement par le .bat.
+Une sauvegarde est créée avant modification :
+public/index.html.avant-v519.bak
+
+
+IMPORTANT
+=========
+
+Lance le .bat depuis le dossier principal du dépôt, au même niveau que
+les dossiers "public", "configuration" et "mise_a_jour".
+
+Le correctif peut être relancé sans ajouter les balises deux fois.
