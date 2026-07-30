@@ -6,7 +6,7 @@
   "use strict";
 
   const GENTLE_IMAGE =
-    "/assets/gentle_criminal/gentle_criminal_technical/portrait.png?v=529";
+    "/assets/home/discounts/gentle_criminal_correct_v526.png?v=526";
 
   const ROLE_KEYS = ["assault", "strike", "speed", "technical", "support"];
   const ROLE_CLASSES = ROLE_KEYS.map(role => `v526-role-${role}`);

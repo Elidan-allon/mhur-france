@@ -3190,7 +3190,7 @@ function gameSlotBand(ct,color,kind,side,index){
 function render(){const app=document.getElementById('app');if(page==='home')app.innerHTML=home();if(page==='characters')app.innerHTML=charactersPage();if(page==='tunings')app.innerHTML=tuningsPage();if(page==='costumes')app.innerHTML=costumesPage();if(page==='builds')app.innerHTML=buildsPage();if(!window.__keepScroll){window.scrollTo({top:0,left:0,behavior:'auto'})}window.__keepScroll=false;queueMicrotask(()=>{window.MHUR_ROUTER?.syncFromState?.('replace');window.MHUR_SEO?.sync?.()})}
 </script>
 <!-- V312 : les données et le véritable accueil sont chargés avant le tout premier rendu. -->
-<script src="data/home_data.js?v=529"></script>
+<script src="data/home_data.js?v=526"></script>
 <script src="js/home.js?v=520"></script>
 <script src="data/local_assets_index.js?v=1785403460136436800"></script>
 <script src="data/mhur_database_assets.js?v=29000"></script>
@@ -7302,7 +7302,7 @@ body .costumeTile > img,
   const GENTLE_STYLE = "gentle_criminal_technical";
   const GENTLE_OLD_STYLE = "gentle_criminal_support";
   const GENTLE_IMAGE =
-    "/assets/gentle_criminal/gentle_criminal_technical/portrait.png?v=529";
+    "/assets/gentle_criminal/gentle_criminal_technical/portrait_v525.png?v=525";
 
   const ROLE_KEYS = ["assault", "strike", "speed", "technical", "support"];
   const ROLE_CLASSES = ROLE_KEYS.map(role => `v525-role-${role}`);
@@ -7580,6 +7580,6 @@ body .costumeTile > img,
 
 </script>
 <!-- MHUR_V525_END -->
-<script src="js/v526-ui-final.js?v=529"></script>
+<script src="js/v526-ui-final.js?v=526"></script>
 </body>
 </html>

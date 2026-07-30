@@ -1,0 +1,48 @@
+﻿GENTLE CRIMINAL — CORRECTIF V528
+=================================
+
+PROBLÈME TROUVÉ
+===============
+
+Le site utilise encore exactement ce chemin :
+
+public/assets/home/discounts/gentle_criminal.webp
+
+Les anciens correctifs ajoutaient d'autres fichiers, mais la donnée publiée
+continuait à charger gentle_criminal.webp. C'est pour cela que la mauvaise
+image restait visible.
+
+CE CORRECTIF
+============
+
+1. Remplace directement :
+   public/assets/home/discounts/gentle_criminal.webp
+
+2. Utilise le portrait officiel provenant de :
+   public/assets/gentle_criminal/gentle_criminal_technical/portrait.png
+
+3. Modifie home_data.js pour charger :
+   assets/home/discounts/gentle_criminal.webp?v=528
+
+4. Modifie index.html pour charger :
+   data/home_data.js?v=528
+
+Les deux versions servent uniquement à empêcher le navigateur et Cloudflare
+de reprendre l'ancienne image depuis le cache.
+
+INSTALLATION
+============
+
+1. Décompresse ce ZIP.
+2. Copie tout dans le dossier principal mhur-france.
+3. Lance APPLIQUER_GENTLE_V528.bat.
+4. La fenêtre doit afficher quatre lignes [OK].
+5. Dans GitHub Desktop, vérifie les changements suivants :
+   - public/assets/home/discounts/gentle_criminal.webp
+   - public/data/home_data.js
+   - public/index.html
+6. Fais Commit to main puis Push origin.
+7. Après le déploiement, recharge avec Ctrl + F5.
+
+Pour revenir en arrière :
+ANNULER_GENTLE_V528.bat
