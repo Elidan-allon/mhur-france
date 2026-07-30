@@ -1,6 +1,6 @@
 {
   "meta": {
-    "updated_at": "2026-07-29T23:47:47.576048+00:00",
+    "updated_at": "2026-07-30T06:40:52.963375+00:00",
     "source": "UltraRumble.com",
     "version": "v520-maintenance-sync"
   },
@@ -19,6 +19,7 @@
       "style_id": "gentle_criminal_technical",
       "source_url": "https://ultrarumble.com/character/108",
       "release_kind": "character",
+      "releaseDate": "2026-07-29T13:00:00+09:00",
       "art": "assets/home/releases/s18_108_0.png",
       "word": "NEW!"
     },
@@ -31,6 +32,7 @@
       "style_id": "",
       "source_url": "https://ultrarumble.com/character/13#Variant-1",
       "release_kind": "style",
+      "releaseDate": "2023-10-25T13:00:00+09:00",
       "art": "assets/home/releases/s18_13_1.png",
       "word": "NEW!"
     },
@@ -43,6 +45,7 @@
       "style_id": "",
       "source_url": "https://ultrarumble.com/character/109#Variant-1",
       "release_kind": "style",
+      "releaseDate": "2024-10-23T13:00:00+09:00",
       "art": "assets/home/releases/s18_109_1.png",
       "word": "NEW!"
     },
@@ -55,6 +58,7 @@
       "style_id": "",
       "source_url": "https://ultrarumble.com/character/111",
       "release_kind": "character",
+      "releaseDate": "2026-05-27T13:00:00+09:00",
       "art": "assets/home/releases/s18_111_0.png",
       "word": "NEW!"
     }

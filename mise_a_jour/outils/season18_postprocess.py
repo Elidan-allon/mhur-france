@@ -783,6 +783,70 @@ def character_source_map(root: Path, payload: dict[str, Any]) -> dict[str, tuple
     return out
 
 
+def character_release_date(session: requests.Session, url: str, cache: dict[str, str | None]) -> str | None:
+    base_url = str(url or "").split("#", 1)[0]
+    if not base_url:
+        return None
+    if base_url in cache:
+        return cache[base_url]
+    release: str | None = None
+    try:
+        soup = BeautifulSoup(get(session, base_url), "lxml")
+        text = clean(soup.get_text(" "))
+        match = re.search(r"(?:Season\s+\d+\s+)?Release\s+(20\d{2}-\d{2}-\d{2}\s+\d{2}:\d{2}:\d{2}\s*(?:\(JST\))?)", text, re.I)
+        if not match:
+            match = DATE_RE.search(text)
+        if match:
+            release = iso_jst(match.group(1) if hasattr(match, "group") and match.lastindex == 1 else match.group(0))
+    except Exception as exc:
+        print(f"[S18 RELEASE DATE WARNING] {base_url}: {exc}", flush=True)
+    cache[base_url] = release
+    return release
+
+
+def latest_release_ids(rows: list[dict[str, Any]], kind: str, id_key: str, now: datetime) -> list[str]:
+    dated: list[tuple[datetime, str]] = []
+    fallback: list[str] = []
+    for row in rows:
+        if str(row.get("release_kind") or "").lower() != kind:
+            continue
+        item_id = str(row.get(id_key) or "")
+        if not item_id:
+            continue
+        fallback.append(item_id)
+        raw = row.get("releaseDate")
+        if not raw:
+            continue
+        try:
+            when = datetime.fromisoformat(str(raw)).astimezone(timezone.utc)
+        except ValueError:
+            continue
+        if when <= now:
+            dated.append((when, item_id))
+    if dated:
+        latest = max(when for when, _ in dated)
+        return list(dict.fromkeys(item_id for when, item_id in dated if when == latest))
+    return list(dict.fromkeys(fallback[:1]))
+
+
+def latest_released_costume_ids(costumes: dict[str, dict[str, Any]], now: datetime) -> list[str]:
+    dated: list[tuple[datetime, str]] = []
+    for rid, row in costumes.items():
+        raw = row.get("releaseDate")
+        if not raw or row.get("upcoming"):
+            continue
+        try:
+            when = datetime.fromisoformat(str(raw)).astimezone(timezone.utc)
+        except ValueError:
+            continue
+        if when <= now:
+            dated.append((when, str(rid)))
+    if not dated:
+        return []
+    latest = max(when for when, _ in dated)
+    return sorted({rid for when, rid in dated if when == latest}, key=lambda x: int(x))
+
+
 def parse_latest_releases(session: requests.Session, root: Path, payload: dict[str, Any]) -> list[dict[str, Any]]:
     soup = BeautifulSoup(get(session, BASE), "lxml")
     source_map = character_source_map(root, payload)
@@ -795,6 +859,7 @@ def parse_latest_releases(session: requests.Session, root: Path, payload: dict[s
             by_character_number.setdefault(m.group(1), []).append((url, cid, style))
     rows: list[dict[str, Any]] = []
     seen: set[str] = set()
+    release_date_cache: dict[str, str | None] = {}
     for node in section_nodes(soup, "Latest Releases"):
         if node.name != "a" or not node.get("href"):
             continue
@@ -826,13 +891,15 @@ def parse_latest_releases(session: requests.Session, root: Path, payload: dict[s
         img = node.find("img")
         src = urljoin(BASE, (img.get("src") or img.get("data-src") or "")) if img else ""
         art = download_image(session, root, src, f"assets/home/releases/s18_{m.group(1)}_{variant}") if src else ""
+        release_date = character_release_date(session, href, release_date_cache)
         rows.append({
             "title": title or f"Character {m.group(1)}",
             "subtitle": subtitle or ("Personnage jouable" if variant == 0 else "Nouveau style"),
             "subtitle_fr": subtitle or ("Personnage jouable" if variant == 0 else "Nouveau style"),
             "subtitle_en": ("Playable character" if variant == 0 else (subtitle or "New battle style")),
             "character_id": cid, "style_id": style_id, "source_url": href,
-            "release_kind": "character" if variant == 0 else "style", "art": art or src, "word": "NEW!",
+            "release_kind": "character" if variant == 0 else "style", "releaseDate": release_date,
+            "art": art or src, "word": "NEW!",
         })
     return rows[:8]
 
@@ -847,7 +914,7 @@ def ensure_assets_in_index(root: Path) -> None:
     """
     idx = root / "index.html"
     text = idx.read_text(encoding="utf-8", errors="ignore")
-    version = "14000"
+    version = "24000"
     css = f'<link rel="stylesheet" href="css/season18-fixes.css?v={version}">'
     early = f'<script src="data/season18_sync.js?v={version}"></script>\n<script src="js/season18-early.js?v={version}"></script>'
     late = f'<script src="js/season18-fixes.js?v={version}"></script>\n<script src="js/season18-v12.js?v={version}"></script>'
@@ -1071,31 +1138,29 @@ def patch_full(root: Path, session: requests.Session) -> None:
         home_path.write_text(json.dumps(home, ensure_ascii=False, indent=2), encoding="utf-8")
         (root / "data/home_data.js").write_text("window.MHUR_HOME_DATA = " + json.dumps(home, ensure_ascii=False, separators=(",", ":")) + ";\n", encoding="utf-8")
 
-    release_style_keys = {
-        str(x.get("style_id") or "") for x in releases
-        if str(x.get("release_kind") or "").lower() == "style" and str(x.get("style_id") or "")
-    }
-    release_character_ids = {
-        str(x.get("character_id") or "") for x in releases
-        if str(x.get("release_kind") or "").lower() == "character" and str(x.get("character_id") or "")
-    }
-    # The homepage is the safest source for the current season's newly released
-    # characters/styles. Keep these flags until the next synchronization, even
-    # when the historical known-content file was already written by a prior run.
-    new_style_keys = sorted(set(new_style_keys) | release_style_keys)
-    generated_new_characters = {
-        str(x.get("character_id")) for x in generated_records
-        if str(x.get("style_key")) in set(new_style_keys) and str(x.get("character_id") or "")
+    active_character_ids = latest_release_ids(releases, "character", "character_id", now)
+    active_style_ids = latest_release_ids(releases, "style", "style_id", now)
+    active_costume_ids = latest_released_costume_ids(costume_meta, now)
+    if not active_costume_ids:
+        active_costume_ids = sorted(
+            {rid for rid in added_costumes if rid not in set(future_costumes)},
+            key=lambda x: int(x),
+        )
+
+    # NEW is intentionally exclusive to the most recent released batch. When a
+    # later character, style, or costume batch appears, the previous IDs leave
+    # this object automatically and the frontend removes their badges.
+    active_new_content = {
+        "styles": active_style_ids,
+        "characters": active_character_ids,
+        "costumes": active_costume_ids,
     }
     sync_data = {
         "updated_at": datetime.now(timezone.utc).isoformat(),
         "costumes": costume_meta,
         "official_portraits": official_portraits,
-        "new_content": {
-            "styles": new_style_keys,
-            "characters": sorted(generated_new_characters | release_character_ids),
-            "costumes": added_costumes,
-        },
+        "active_new_content": active_new_content,
+        "new_content": active_new_content,
         "upcoming_costumes": future_costumes,
     }
     (root / "data/season18_sync.js").write_text("window.MHUR_SEASON18_DATA = " + json.dumps(sync_data, ensure_ascii=False, separators=(",", ":")) + ";\n", encoding="utf-8")
