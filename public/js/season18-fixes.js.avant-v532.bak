@@ -1380,21 +1380,10 @@ function runV35(){
   wrapHomeDashboardV35();
   decorateMiniPortraitsV35(document);
 }
-let v35Queued=false;
-function scheduleV35(){
-  if(v35Queued)return;
-  v35Queued=true;
-  requestAnimationFrame(()=>{
-    v35Queued=false;
-    runV35();
-  });
-}
 if(document.readyState==='loading'){
-  document.addEventListener('DOMContentLoaded',scheduleV35,{once:true});
+  document.addEventListener('DOMContentLoaded',()=>requestAnimationFrame(runV35),{once:true});
 }else{
-  scheduleV35();
+  requestAnimationFrame(runV35);
 }
-window.addEventListener('mhur:languagechange',scheduleV35);
-window.addEventListener('mhur-auth-change',scheduleV35);
-window.addEventListener('mhur-role-change',scheduleV35);
+window.addEventListener('mhur:languagechange',()=>requestAnimationFrame(runV35));
 })();

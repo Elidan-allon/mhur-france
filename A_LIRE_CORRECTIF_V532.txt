@@ -1,0 +1,61 @@
+﻿MHUR FRANCE — CORRECTIF V532
+================================
+
+V532 NE TOUCHE PAS À GENTLE CRIMINAL.
+
+CORRECTIONS
+===========
+
+1. CHARGEMENT / DOUBLE RAFRAÎCHISSEMENT
+   Le module Saison 18 lançait la même correction :
+   - après DOMContentLoaded ;
+   - après window.load ;
+   - après chaque mutation du DOM.
+
+   V532 remplace cela par une seule file requestAnimationFrame.
+   Les événements de langue, connexion et rôle sont toujours pris
+   en charge, mais sans boucle permanente.
+
+   V532 conserve également la position de défilement lorsqu'un rendu
+   tardif concerne la même rubrique.
+
+2. QUATRE PERSONNAGES PAR LIGNE
+   Sur ordinateur :
+   - 4 cartes par ligne ;
+   - 3 sur écran moyen ;
+   - 2 sur petite tablette ;
+   - 1 sur téléphone.
+
+3. PHOTOS
+   Dans Personnages, Costumes et T.U.N.I.N.G :
+   - carte de 230 px de large ;
+   - carré photo de 230 × 230 px ;
+   - aucun zoom ;
+   - aucune translation ;
+   - portrait entier avec object-fit: contain.
+
+   Dans l'interface des alters :
+   - carte de 310 px ;
+   - carré photo de 310 × 310 px ;
+   - aucun ancien zoom Midoriya/Full Bullet.
+
+   Dans la fiche détaillée :
+   - portrait carré de 230 × 230 px.
+
+INSTALLATION
+============
+
+1. Décompresse le ZIP.
+2. Copie son contenu dans le dossier principal mhur-france.
+3. Accepte la fusion du dossier public.
+4. Lance APPLIQUER_CORRECTIF_V532.bat.
+5. La fenêtre doit afficher :
+   TOUTES LES VERIFICATIONS V532 SONT BONNES
+6. Dans GitHub Desktop :
+   Commit to main
+   Push origin
+7. Après le déploiement :
+   Ctrl + F5
+
+Pour annuler :
+ANNULER_CORRECTIF_V532.bat

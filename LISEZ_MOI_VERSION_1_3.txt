@@ -1,9 +1,0 @@
-MHUR NEXUS v1.3
-
-Corrections :
-- Nouveau logo MHUR Nexus utilisé pour le favicon, les icônes PWA et le Discord Nexus.
-- Les autres serveurs Discord n’affichent plus de photo.
-- Avatars des créateurs chargés depuis leur chaîne YouTube.
-- Icônes X et TikTok recentrées.
-- Images mieux cadrées.
-- Zoom forcé à 86 % supprimé : ouverture du site à 100 %.

@@ -1,9 +1,0 @@
-MHUR NEXUS — Correctif Saison 18 V30
-
-Changements effectués uniquement :
-- date des costumes à venir déplacée pour ne plus être cachée ;
-- Tsuyu utilise le portrait local téléchargé depuis MHUR Database ;
-- Tsuyu est affichée entière et centrée dans la bannière ;
-- fonds colorés selon le rôle restaurés dans l’interface des Alters.
-
-Aucun autre affichage n’a été volontairement modifié.

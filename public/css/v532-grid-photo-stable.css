@@ -1,0 +1,316 @@
+/* ============================================================
+   MHUR FRANCE — V532
+   - 4 cartes par ligne sur ordinateur.
+   - Zones de portrait carrées.
+   - Aucun zoom/décalage des portraits.
+   - Fiche personnage avec portrait carré compact.
+   ============================================================ */
+
+:root {
+  --v532-card-width: 230px;
+  --v532-photo-size: 230px;
+  --v532-card-height: 550px;
+}
+
+/* ============================================================
+   1. PERSONNAGES / COSTUMES / T.U.N.I.N.G
+   ============================================================ */
+html body #app .pageFrame.charactersFrame .cardsGrid,
+html body #app .pageFrame.costumesFrame .cardsGrid,
+html body #app .pageFrame.tuningsFrame .cardsGrid {
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, var(--v532-card-width))) !important;
+  justify-content: center !important;
+  align-items: stretch !important;
+  gap: 18px !important;
+  width: 100% !important;
+}
+
+html body #app .pageFrame.charactersFrame .cardsGrid > .card,
+html body #app .pageFrame.costumesFrame .cardsGrid > .card,
+html body #app .pageFrame.tuningsFrame .cardsGrid > .card {
+  box-sizing: border-box !important;
+  display: flex !important;
+  flex-direction: column !important;
+  width: var(--v532-card-width) !important;
+  min-width: var(--v532-card-width) !important;
+  max-width: var(--v532-card-width) !important;
+  height: var(--v532-card-height) !important;
+  min-height: var(--v532-card-height) !important;
+  max-height: var(--v532-card-height) !important;
+  align-self: stretch !important;
+  justify-self: center !important;
+  overflow: hidden !important;
+}
+
+/* Le carré de la photo a exactement la même largeur que la carte. */
+html body #app .pageFrame.charactersFrame .cardsGrid > .card > .thumb,
+html body #app .pageFrame.costumesFrame .cardsGrid > .card > .thumb,
+html body #app .pageFrame.tuningsFrame .cardsGrid > .card > .thumb {
+  box-sizing: border-box !important;
+  display: flex !important;
+  flex: 0 0 var(--v532-photo-size) !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: var(--v532-photo-size) !important;
+  height: var(--v532-photo-size) !important;
+  min-width: var(--v532-photo-size) !important;
+  min-height: var(--v532-photo-size) !important;
+  max-width: var(--v532-photo-size) !important;
+  max-height: var(--v532-photo-size) !important;
+  aspect-ratio: 1 / 1 !important;
+  overflow: hidden !important;
+  padding: 0 !important;
+}
+
+/* Annule tous les anciens zooms et translations. */
+html body #app .pageFrame.charactersFrame .cardsGrid > .card > .thumb img,
+html body #app .pageFrame.costumesFrame .cardsGrid > .card > .thumb img,
+html body #app .pageFrame.tuningsFrame .cardsGrid > .card > .thumb img,
+html body #app .card[data-char="midoriya"] .thumb img {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+  object-fit: contain !important;
+  object-position: center bottom !important;
+  transform: none !important;
+  transform-origin: center !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  filter: none !important;
+}
+
+html body #app .pageFrame.charactersFrame .cardsGrid > .card > .cardBody,
+html body #app .pageFrame.costumesFrame .cardsGrid > .card > .cardBody,
+html body #app .pageFrame.tuningsFrame .cardsGrid > .card > .cardBody {
+  box-sizing: border-box !important;
+  display: flex !important;
+  flex: 1 1 auto !important;
+  flex-direction: column !important;
+  width: 100% !important;
+  height: calc(var(--v532-card-height) - var(--v532-photo-size)) !important;
+  min-height: 0 !important;
+  max-height: calc(var(--v532-card-height) - var(--v532-photo-size)) !important;
+  padding: 12px !important;
+  overflow: hidden !important;
+}
+
+html body #app .pageFrame.charactersFrame .cardsGrid > .card h3,
+html body #app .pageFrame.costumesFrame .cardsGrid > .card h3,
+html body #app .pageFrame.tuningsFrame .cardsGrid > .card h3 {
+  display: block !important;
+  flex: 0 0 46px !important;
+  height: 46px !important;
+  min-height: 46px !important;
+  max-height: 46px !important;
+  margin: 0 0 9px !important;
+  overflow: hidden !important;
+  font-size: 19px !important;
+  line-height: 1.08 !important;
+}
+
+html body #app .pageFrame.charactersFrame .cardsGrid > .card .badges,
+html body #app .pageFrame.costumesFrame .cardsGrid > .card .badges,
+html body #app .pageFrame.tuningsFrame .cardsGrid > .card .badges {
+  display: flex !important;
+  align-items: center !important;
+  align-content: flex-start !important;
+  gap: 7px !important;
+  flex-wrap: wrap !important;
+}
+
+html body #app .pageFrame.charactersFrame .cardsGrid > .card .badge,
+html body #app .pageFrame.costumesFrame .cardsGrid > .card .badge,
+html body #app .pageFrame.tuningsFrame .cardsGrid > .card .badge {
+  min-height: 43px !important;
+  padding: 5px 9px !important;
+  gap: 6px !important;
+  border-radius: 14px !important;
+  font-size: 14px !important;
+}
+
+html body #app .pageFrame.charactersFrame .cardsGrid > .card .roleIcon,
+html body #app .pageFrame.costumesFrame .cardsGrid > .card .roleIcon,
+html body #app .pageFrame.tuningsFrame .cardsGrid > .card .roleIcon {
+  width: 31px !important;
+  height: 31px !important;
+  flex: 0 0 31px !important;
+}
+
+html body #app .pageFrame.charactersFrame .cardsGrid > .card .cardBody > p,
+html body #app .pageFrame.costumesFrame .cardsGrid > .card .cardBody > p,
+html body #app .pageFrame.tuningsFrame .cardsGrid > .card .cardBody > p {
+  display: block !important;
+  min-height: 36px !important;
+  max-height: 40px !important;
+  margin: auto 0 0 !important;
+  overflow: hidden !important;
+  color: #ffffff !important;
+  font-size: 14px !important;
+  line-height: 1.12 !important;
+}
+
+/* ============================================================
+   2. CARTES D'ALTERS
+   Le cadre de la photo reste carré et l'image n'est plus zoomée.
+   ============================================================ */
+html body #app .styleGrid {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  align-items: flex-start !important;
+  gap: 20px !important;
+}
+
+html body #app .styleGrid > .styleCard[data-style] {
+  box-sizing: border-box !important;
+  display: flex !important;
+  flex-direction: column !important;
+  width: 310px !important;
+  min-width: 310px !important;
+  max-width: 310px !important;
+  height: 420px !important;
+  min-height: 420px !important;
+  max-height: 420px !important;
+  overflow: hidden !important;
+}
+
+html body #app .styleGrid > .styleCard[data-style] > .styleBanner {
+  box-sizing: border-box !important;
+  display: flex !important;
+  flex: 0 0 310px !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 310px !important;
+  height: 310px !important;
+  min-width: 310px !important;
+  min-height: 310px !important;
+  max-width: 310px !important;
+  max-height: 310px !important;
+  aspect-ratio: 1 / 1 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+}
+
+html body #app .styleGrid > .styleCard[data-style] > .styleBanner img,
+html body #app .styleCard[data-style="assault"] .styleBanner img,
+html body #app .styleCard[data-style="fullbullet"] .styleBanner img {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+  object-fit: contain !important;
+  object-position: center bottom !important;
+  transform: none !important;
+  transform-origin: center !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+html body #app .styleGrid > .styleCard[data-style] > .styleInfo {
+  box-sizing: border-box !important;
+  display: flex !important;
+  flex: 1 1 auto !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  width: 100% !important;
+  height: 110px !important;
+  min-height: 110px !important;
+  max-height: 110px !important;
+  padding: 8px 10px 10px !important;
+  overflow: hidden !important;
+}
+
+/* ============================================================
+   3. FICHE DU PERSONNAGE
+   Portrait carré et compact.
+   ============================================================ */
+html body #app .charPanel .charTop {
+  display: grid !important;
+  grid-template-columns: 230px minmax(0, 1fr) !important;
+  align-items: start !important;
+  gap: 16px !important;
+  padding: 14px !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+}
+
+html body #app .charPanel .charTop > .portrait {
+  box-sizing: border-box !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 230px !important;
+  min-width: 230px !important;
+  max-width: 230px !important;
+  height: 230px !important;
+  min-height: 230px !important;
+  max-height: 230px !important;
+  aspect-ratio: 1 / 1 !important;
+  overflow: hidden !important;
+}
+
+html body #app .charPanel .charTop > .portrait img {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+  object-fit: contain !important;
+  object-position: center bottom !important;
+  transform: none !important;
+  transform-origin: center !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 1050px) {
+  html body #app .pageFrame.charactersFrame .cardsGrid,
+  html body #app .pageFrame.costumesFrame .cardsGrid,
+  html body #app .pageFrame.tuningsFrame .cardsGrid {
+    grid-template-columns: repeat(3, minmax(0, var(--v532-card-width))) !important;
+  }
+}
+
+@media (max-width: 790px) {
+  html body #app .pageFrame.charactersFrame .cardsGrid,
+  html body #app .pageFrame.costumesFrame .cardsGrid,
+  html body #app .pageFrame.tuningsFrame .cardsGrid {
+    grid-template-columns: repeat(2, minmax(0, var(--v532-card-width))) !important;
+  }
+
+  html body #app .charPanel .charTop {
+    grid-template-columns: 1fr !important;
+  }
+
+  html body #app .charPanel .charTop > .portrait {
+    margin: 0 auto !important;
+  }
+}
+
+@media (max-width: 530px) {
+  html body #app .pageFrame.charactersFrame .cardsGrid,
+  html body #app .pageFrame.costumesFrame .cardsGrid,
+  html body #app .pageFrame.tuningsFrame .cardsGrid {
+    grid-template-columns: minmax(0, var(--v532-card-width)) !important;
+  }
+
+  html body #app .styleGrid {
+    justify-content: center !important;
+  }
+
+  html body #app .styleGrid > .styleCard[data-style] {
+    width: min(100%, 310px) !important;
+    min-width: 0 !important;
+  }
+
+  html body #app .styleGrid > .styleCard[data-style] > .styleBanner {
+    width: 100% !important;
+  }
+}

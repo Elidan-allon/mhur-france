@@ -827,7 +827,6 @@
 <link rel="stylesheet" href="css/v526-ui-final.css?v=526">
 <link rel="stylesheet" href="css/v527-compact-costume-tuning-detail.css?v=527">
 <link rel="stylesheet" href="css/v531-gentle-stable.css?v=531">
-<link rel="stylesheet" href="css/v532-grid-photo-stable.css?v=532">
 </head>
 <body>
 
@@ -6986,10 +6985,9 @@ body .costumeTile > img,
 <!-- Season 18 v14 compatibility layer. -->
 
 <!-- Season 18 v14 compatibility layer. -->
-<script src="js/season18-fixes.js?v=532"></script>
+<script src="js/season18-fixes.js?v=531"></script>
 <script src="js/season18-v12.js?v=1785403460136436800"></script>
 
 <script src="js/v526-ui-final.js?v=531"></script>
-<script src="js/v532-render-stable.js?v=532"></script>
 </body>
 </html>
