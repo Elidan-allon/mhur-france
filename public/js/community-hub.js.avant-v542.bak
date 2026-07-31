@@ -15,7 +15,7 @@ function injectHub(){const target=document.querySelector('.cbPageHead,.builderHe
 new MutationObserver(injectHub).observe(document.documentElement,{childList:true,subtree:true});setTimeout(injectHub,0);
 
 // Search
-const search={open(){document.getElementById('drawer')?.classList.remove('open');const m=overlay('mhurSearchModal',t('Recherche globale','Global search'),t('Personnages, styles, costumes et builds','Characters, styles, costumes and builds'));m.querySelector('.mhurHubBody').innerHTML=`<input id="mhurGlobalSearch" class="mhurHubInput" placeholder="${t('Ex : Toga, Assaut, Shoot Style…','E.g. Toga, Assault, Shoot Style…')}"><div id="mhurSearchResults" class="mhurSearchResults"></div>`;m.querySelector('input').oninput=e=>this.run(e.target.value);open(m.id)},async run(q){const out=document.getElementById('mhurSearchResults');if(!out)return;q=String(q||'').trim().toLowerCase();if(q.length<2){out.innerHTML='';return}const rows=[];((typeof characters!=='undefined'?characters:[])).filter(c=>Boolean(c)).forEach(c=>{if(`${c.name} ${c.id}`.toLowerCase().includes(q))rows.push({type:t('Personnage','Character'),title:c.name,sub:(c.styles||[]).length+' styles',go:`page='characters';selectedChar='${c.id}';selectedStyle=null;render();MHUR_HUB.close('mhurSearchModal')`})});if(typeof styles!=='undefined')Object.entries(styles).forEach(([id,s])=>{const name=typeof label==='function'?label(s.name):id;if(`${name} ${id} ${s.role}`.toLowerCase().includes(q)){const c=((typeof characters!=='undefined'?characters:[])).find(x=>(x.styles||[]).includes(id));rows.push({type:t('Style','Style'),title:`${c?.name||''} — ${name}`,sub:s.role||'',go:`page='characters';selectedChar='${c?.id||''}';selectedStyle='${id}';render();MHUR_HUB.close('mhurSearchModal')`})}});if(typeof allCostumesForCharId==='function')((typeof characters!=='undefined'?characters:[])).filter(c=>Boolean(c)).forEach(c=>(allCostumesForCharId(c.id)||[]).forEach(ct=>{if(`${ct.group||ct.name} ${ct.variant} ${c.name}`.toLowerCase().includes(q))rows.push({type:t('Costume','Costume'),title:`${c.name} — ${ct.group||ct.name}`,sub:ct.variant||'',go:`page='costumes';selectedChar='${c.id}';selectedCostume='${ct.id}';render();MHUR_HUB.close('mhurSearchModal')`})}));if(remote){try{const builds=await req(`/rest/v1/community_builds?or=(title.ilike.*${encodeURIComponent(q)}*,author.ilike.*${encodeURIComponent(q)}*,costume_name.ilike.*${encodeURIComponent(q)}*)&is_hidden=eq.false&select=id,title,author,character_id,style_id&limit=12`);for(const b of builds||[])rows.push({type:'Build',title:b.title,sub:b.author,go:`MHUR_HUB.close('mhurSearchModal');openCommunityBuildsPage('${b.character_id}','${b.style_id}');setTimeout(()=>openCommunityBuildDetail('${b.id}','${b.character_id}','${b.style_id}'),300)`})}catch(_){}}out.innerHTML=rows.slice(0,60).map(r=>`<button class="mhurSearchCard" onclick="${r.go}"><small>${esc(r.type)}</small><b>${esc(r.title)}</b><small>${esc(r.sub)}</small></button>`).join('')||`<div>${t('Aucun résultat','No results')}</div>`}}
+const search={open(){document.getElementById('drawer')?.classList.remove('open');const m=overlay('mhurSearchModal',t('Recherche globale','Global search'),t('Personnages, styles, costumes et builds','Characters, styles, costumes and builds'));m.querySelector('.mhurHubBody').innerHTML=`<input id="mhurGlobalSearch" class="mhurHubInput" placeholder="${t('Ex : Toga, Assaut, Shoot Style…','E.g. Toga, Assault, Shoot Style…')}"><div id="mhurSearchResults" class="mhurSearchResults"></div>`;m.querySelector('input').oninput=e=>this.run(e.target.value);open(m.id)},async run(q){const out=document.getElementById('mhurSearchResults');if(!out)return;q=String(q||'').trim().toLowerCase();if(q.length<2){out.innerHTML='';return}const rows=[];((typeof characters!=='undefined'?characters:[])).filter(c=>String(c.name||'').toLowerCase()!=='all for one (youth age)').forEach(c=>{if(`${c.name} ${c.id}`.toLowerCase().includes(q))rows.push({type:t('Personnage','Character'),title:c.name,sub:(c.styles||[]).length+' styles',go:`page='characters';selectedChar='${c.id}';selectedStyle=null;render();MHUR_HUB.close('mhurSearchModal')`})});if(typeof styles!=='undefined')Object.entries(styles).forEach(([id,s])=>{const name=typeof label==='function'?label(s.name):id;if(`${name} ${id} ${s.role}`.toLowerCase().includes(q)){const c=((typeof characters!=='undefined'?characters:[])).find(x=>(x.styles||[]).includes(id));rows.push({type:t('Style','Style'),title:`${c?.name||''} — ${name}`,sub:s.role||'',go:`page='characters';selectedChar='${c?.id||''}';selectedStyle='${id}';render();MHUR_HUB.close('mhurSearchModal')`})}});if(typeof allCostumesForCharId==='function')((typeof characters!=='undefined'?characters:[])).filter(c=>String(c.name||'').toLowerCase()!=='all for one (youth age)').forEach(c=>(allCostumesForCharId(c.id)||[]).forEach(ct=>{if(`${ct.group||ct.name} ${ct.variant} ${c.name}`.toLowerCase().includes(q))rows.push({type:t('Costume','Costume'),title:`${c.name} — ${ct.group||ct.name}`,sub:ct.variant||'',go:`page='costumes';selectedChar='${c.id}';selectedCostume='${ct.id}';render();MHUR_HUB.close('mhurSearchModal')`})}));if(remote){try{const builds=await req(`/rest/v1/community_builds?or=(title.ilike.*${encodeURIComponent(q)}*,author.ilike.*${encodeURIComponent(q)}*,costume_name.ilike.*${encodeURIComponent(q)}*)&is_hidden=eq.false&select=id,title,author,character_id,style_id&limit=12`);for(const b of builds||[])rows.push({type:'Build',title:b.title,sub:b.author,go:`MHUR_HUB.close('mhurSearchModal');openCommunityBuildsPage('${b.character_id}','${b.style_id}');setTimeout(()=>openCommunityBuildDetail('${b.id}','${b.character_id}','${b.style_id}'),300)`})}catch(_){}}out.innerHTML=rows.slice(0,60).map(r=>`<button class="mhurSearchCard" onclick="${r.go}"><small>${esc(r.type)}</small><b>${esc(r.title)}</b><small>${esc(r.sub)}</small></button>`).join('')||`<div>${t('Aucun résultat','No results')}</div>`}}
 
 // Comments — texte, photo ou vidéo + date et heure, collage, modification et suppression
 const COMMENT_IMAGE_MAX=8*1024*1024,COMMENT_VIDEO_MAX=50*1024*1024;
@@ -154,41 +154,10 @@ const tier={
   },
   render(){
     const out=document.getElementById('mhurTierList');if(!out)return;
-    const role=document.getElementById('mhurTierRole')?.value||'';
-    const sourceCharacters=(typeof characters!=='undefined'&&Array.isArray(characters))?characters:[];
-    const sourceStyles=(typeof styles!=='undefined'&&styles)?styles:{};
-    const items=[];
-    const seen=new Set();
-
-    const addItem=(id,c)=>{
-      const s=sourceStyles[id];
-      if(!s||seen.has(id)||role&&s.role!==role)return;
-      seen.add(id);
-      items.push({id,c,s,tier:this.ownVotes[id]||'U'});
-    };
-
-    sourceCharacters.forEach(c=>{
-      (Array.isArray(c.styles)?c.styles:[]).forEach(id=>addItem(id,c));
-    });
-
-    const owners=[...sourceCharacters].sort((a,b)=>String(b.id||'').length-String(a.id||'').length);
-
-    Object.keys(sourceStyles).forEach(id=>{
-      if(seen.has(id))return;
-      const s=sourceStyles[id];
-      const owner=owners.find(c=>id===c.id||id.startsWith(String(c.id||'')+'_'));
-      const fallback=owner||{
-        id:'style-'+id,
-        name:typeof label==='function'?label(s?.name||id):id,
-        portrait:s?.portrait||'',
-        styles:[id]
-      };
-      addItem(id,fallback);
-    });
-
-    const row=letter=>`<div class="mhurTierRow ${letter==='U'?'unranked':''}"><div class="mhurTierLabel ${letter}">${letter==='U'?t('Non classֳ©s','Unranked'):letter}</div><div class="mhurTierItems" ondragover="MHUR_HUB.tier.dragOver(event)" ondragleave="MHUR_HUB.tier.dragLeave(event)" ondrop="MHUR_HUB.tier.drop(event,'${letter}')">${items.filter(x=>x.tier===letter).map(x=>`<div class="mhurTierItem mhurTierRole-${esc(x.s.role||'unknown')}" draggable="true" ondragstart="MHUR_HUB.tier.dragStart(event,'${x.id}')" ondragend="MHUR_HUB.tier.dragEnd(event)"><img src="${esc(x.s.portrait||x.c.portrait||'')}" alt="${esc(x.c.name)}"><small>${esc(x.c.name)}</small><span class="mhurTierStyleName">${esc(typeof label==='function'?label(x.s.name||''):x.id)}</span></div>`).join('')}<div class="mhurTierDropHint">${t('Dֳ©pose ici','Drop here')}</div></div></div>`;
-
-    out.innerHTML=`<div class="mhurTierDragHelp">${t('Les dֳ©placements sont enregistrֳ©s uniquement dans ton navigateur. Publie ta Tier List lorsque tu veux la partager.','Changes are saved only in your browser. Publish your Tier List when you want to share it.')}</div>`+['S','A','B','C','D','U'].map(row).join('');
+    const role=document.getElementById('mhurTierRole')?.value||'';const items=[];
+    ((typeof characters!=='undefined'?characters:[])).filter(c=>String(c.name||'').toLowerCase()!=='all for one (youth age)').forEach(c=>(c.styles||[]).forEach(id=>{const s=(typeof styles!=='undefined'?styles[id]:null);if(!s||role&&s.role!==role)return;items.push({id,c,s,tier:this.ownVotes[id]||'U'})}));
+    const row=letter=>`<div class="mhurTierRow ${letter==='U'?'unranked':''}"><div class="mhurTierLabel ${letter}">${letter==='U'?t('Non classés','Unranked'):letter}</div><div class="mhurTierItems" ondragover="MHUR_HUB.tier.dragOver(event)" ondragleave="MHUR_HUB.tier.dragLeave(event)" ondrop="MHUR_HUB.tier.drop(event,'${letter}')">${items.filter(x=>x.tier===letter).map(x=>`<div class="mhurTierItem" draggable="true" ondragstart="MHUR_HUB.tier.dragStart(event,'${x.id}')" ondragend="MHUR_HUB.tier.dragEnd(event)"><img src="${esc(x.s.portrait||x.c.portrait||'')}" alt="${esc(x.c.name)}"><small>${esc(x.c.name)}</small><span class="mhurTierStyleName">${esc(typeof label==='function'?label(x.s.name||''):x.id)}</span></div>`).join('')}<div class="mhurTierDropHint">${t('Dépose ici','Drop here')}</div></div></div>`;
+    out.innerHTML=`<div class="mhurTierDragHelp">${t('Les déplacements sont enregistrés uniquement dans ton navigateur. Publie ta Tier List lorsque tu veux la partager.','Changes are saved only in your browser. Publish your Tier List when you want to share it.')}</div>`+['S','A','B','C','D','U'].map(row).join('');
   }
 };
 

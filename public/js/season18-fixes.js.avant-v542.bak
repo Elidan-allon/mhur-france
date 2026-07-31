@@ -972,6 +972,10 @@ function scrollModsTopV23(){
     try{window.scrollTo({top:0,left:0,behavior:'auto'})}catch(_e){window.scrollTo(0,0)}
   };
   run();
+  requestAnimationFrame(run);
+  setTimeout(run,35);
+  setTimeout(run,110);
+  setTimeout(run,240);
 }
 
 let lastPageV23='';

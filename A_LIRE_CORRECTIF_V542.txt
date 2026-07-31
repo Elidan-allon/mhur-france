@@ -1,0 +1,62 @@
+﻿MHUR FRANCE — CORRECTIF V542
+================================
+
+CORRECTIONS
+===========
+
+1. TIER LIST
+   L'ancien code retirait volontairement :
+   All For One (Youth Age)
+
+   V542 supprime cette exclusion et ajoute également tous les styles
+   qui existent dans la base, même lorsqu'ils ne sont pas encore reliés
+   correctement à un personnage dans l'ancienne liste.
+
+   Les fonds de rôle restent actifs :
+   - jaune : Assaut ;
+   - rouge : Attaque ;
+   - cyan : Vitesse ;
+   - violet : Technique ;
+   - vert : Soutien.
+
+2. PATCH NOTES
+   Les anciens scripts donnaient plusieurs gestionnaires différents au
+   même bouton. V542 utilise un seul gestionnaire prioritaire, sur PC et
+   téléphone.
+
+3. HEADER MOBILE
+   V541 mesurait la hauteur du header, puis ajoutait 14 pixels à cette
+   mesure. Cette nouvelle valeur modifiait le header, qui était ensuite
+   mesuré à nouveau : il grandissait sans fin.
+
+   V542 retire le chargement de V541 et revient aux hauteurs fixes :
+   - 108 px + zone sûre ;
+   - 100 px + zone sûre sur les très petits téléphones.
+
+4. PAGE MODS
+   Le render général V540 utilisait une chaîne vide pour la page Mods.
+   Chaque événement de compte pouvait donc effacer la page entière avant
+   que community-mods.js ne la reconstruise.
+
+   V542 :
+   - donne une vraie branche Mods au render général ;
+   - retire le setTimeout du wrapper layout ;
+   - conserve la page pendant le chargement des données ;
+   - regroupe les événements compte/rôle en un seul rendu ;
+   - évite les reconstructions identiques.
+
+INSTALLATION
+============
+
+1. Décompresse le ZIP.
+2. Copie son contenu dans le dossier principal mhur-france.
+3. Lance APPLIQUER_CORRECTIF_V542.bat.
+4. Attends :
+   TOUTES LES VERIFICATIONS V542 SONT BONNES
+5. Dans GitHub Desktop :
+   Commit to main
+   Push origin
+6. Sur téléphone :
+   ferme l'onglet, rouvre le site et actualise une fois.
+
+Ne relance pas V541 après V542.

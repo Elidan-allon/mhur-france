@@ -1,0 +1,156 @@
+/* ============================================================
+   MHUR NEXUS — V542
+   - Header mobile verrouillé sans mesure récursive.
+   - Patch Notes sous le header, images entières.
+   - Fonds de rôle natifs dans la Tier List.
+   ============================================================ */
+
+.mhurTierItem.mhurTierRole-assault {
+  background: linear-gradient(180deg, #f5df00 0%, #8e7400 100%) !important;
+  border-color: #ffe900 !important;
+}
+.mhurTierItem.mhurTierRole-strike {
+  background: linear-gradient(180deg, #ef3f59 0%, #8d0a25 100%) !important;
+  border-color: #ff5068 !important;
+}
+.mhurTierItem.mhurTierRole-speed {
+  background: linear-gradient(180deg, #26d1e5 0%, #08778a 100%) !important;
+  border-color: #32e6f7 !important;
+}
+.mhurTierItem.mhurTierRole-technical {
+  background: linear-gradient(180deg, #bb33e6 0%, #650786 100%) !important;
+  border-color: #d45cff !important;
+}
+.mhurTierItem.mhurTierRole-support {
+  background: linear-gradient(180deg, #29db68 0%, #087832 100%) !important;
+  border-color: #45f080 !important;
+}
+.mhurTierItem[class*="mhurTierRole-"] img {
+  object-fit: contain !important;
+  object-position: center bottom !important;
+}
+
+/* Le bouton Patch Notes reste cliquable sur ordinateur et téléphone. */
+#mhurPatchDevButtonV14,
+.mhurPatchDevButtonV14,
+[data-s18-notes-button] {
+  pointer-events: auto !important;
+  touch-action: manipulation !important;
+  position: relative !important;
+  z-index: 2147483608 !important;
+}
+
+@media (max-width: 760px) {
+  :root {
+    --mhur-mobile-safe-top: max(7px, env(safe-area-inset-top, 0px));
+    --mhur-mobile-header-height:
+      calc(108px + var(--mhur-mobile-safe-top)) !important;
+    --mhur-v541-header-space:
+      var(--mhur-mobile-header-height) !important;
+    --mhur-v539-header-space:
+      var(--mhur-mobile-header-height) !important;
+    --mhur-top-height:
+      var(--mhur-mobile-header-height) !important;
+    --mhur-header-bottom:
+      var(--mhur-mobile-header-height) !important;
+    --mhur-header-visual-bottom:
+      var(--mhur-mobile-header-height) !important;
+    --s18-header-offset:
+      var(--mhur-mobile-header-height) !important;
+  }
+
+  html {
+    scroll-padding-top:
+      calc(var(--mhur-mobile-header-height) + 10px) !important;
+  }
+
+  html body {
+    padding-top:
+      var(--mhur-mobile-header-height) !important;
+  }
+
+  html body > header.top[data-mhur-header-version="513"],
+  html body header.top[data-mhur-header-version="513"] {
+    height:
+      var(--mhur-mobile-header-height) !important;
+    min-height:
+      var(--mhur-mobile-header-height) !important;
+    max-height:
+      var(--mhur-mobile-header-height) !important;
+    overflow: visible !important;
+  }
+
+  html body .drawer,
+  html body #drawer.drawer {
+    top:
+      calc(var(--mhur-mobile-header-height) + 2px) !important;
+    max-height:
+      calc(100dvh - var(--mhur-mobile-header-height) - 2px) !important;
+  }
+
+  html body .s18NotesOverlayV10 {
+    inset:
+      var(--mhur-mobile-header-height) 0 0 0 !important;
+    padding: 4px !important;
+  }
+
+  html body .s18NotesPanelV10 {
+    width: 100% !important;
+    height: 100% !important;
+    max-height: 100% !important;
+    border-radius: 12px !important;
+  }
+
+  html body .s18NotesBodyV10 {
+    min-height: 0 !important;
+    flex: 1 1 auto !important;
+    overflow: hidden !important;
+  }
+
+  html body .s18NotesBodyV10 > main {
+    min-width: 0 !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+  }
+
+  html body .s18PatchPortraitV10 img,
+  html body .s18PatchSkillV10 img,
+  html body .s18PatchSkillV10 > div img {
+    width: 100% !important;
+    height: 100% !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
+    object-fit: contain !important;
+    object-position: center center !important;
+    transform: none !important;
+    margin: 0 !important;
+  }
+
+  html body .s18PatchCharacterV10 > header {
+    grid-template-columns: 92px minmax(0, 1fr) !important;
+    overflow: visible !important;
+  }
+
+  html body .s18PatchPortraitV10 {
+    width: 92px !important;
+    height: 92px !important;
+    min-width: 92px !important;
+  }
+
+  html body .s18PatchSkillV10 {
+    grid-template-columns: 76px minmax(0, 1fr) !important;
+  }
+
+  html body .s18PatchSkillV10 > div {
+    width: 76px !important;
+    height: 76px !important;
+    min-width: 76px !important;
+  }
+}
+
+@media (max-width: 390px) {
+  :root {
+    --mhur-mobile-header-height:
+      calc(100px + var(--mhur-mobile-safe-top)) !important;
+  }
+}

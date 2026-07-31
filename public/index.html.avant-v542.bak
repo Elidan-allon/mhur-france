@@ -831,7 +831,7 @@
 <link rel="stylesheet" href="css/v539-mobile-admin.css?v=539">
 <script id="mhur-v540-boot">document.documentElement.classList.add("mhurV540Boot");setTimeout(function(){document.documentElement.classList.remove("mhurV540Boot")},2500);</script>
 <link rel="stylesheet" href="css/v540-final-ui.css?v=540">
-<link rel="stylesheet" href="css/v542-tier-notes-mobile.css?v=542">
+<link rel="stylesheet" href="css/v541-targeted-fixes.css?v=541">
 </head>
 <body>
 
@@ -846,7 +846,7 @@
       <button type="button" class="nexusHeaderBtn" data-nexus-menu="youtube" aria-expanded="false"><span class="nexusHeaderIcon">🎬</span><span class="nexusHeaderBtnLabel">Créateurs de contenu</span><span class="nexusHeaderChevron">▼</span></button>
     </div>
     <div class="mhurTopActionsV31" aria-label="Actions du compte">
-      <button id="mhurPatchDevButtonV14" data-s18-notes-button="1" class="nexusHeaderBtn mhurPatchDevButtonV10 mhurPatchDevButtonV14" type="button" onclick="return window.MHUR_V542_OPEN_NOTES ? window.MHUR_V542_OPEN_NOTES(event) : (window.MHUR_S18_V14?.openNotes?.(), false)"><span class="mhurPatchDevIconV12">📝</span><span>Notes de patch / Notes des développeurs</span></button>
+      <button id="mhurPatchDevButtonV14" data-s18-notes-button="1" class="nexusHeaderBtn mhurPatchDevButtonV10 mhurPatchDevButtonV14" type="button" onclick="window.MHUR_S18_V14?.openNotes?.() || window.MHUR_S18_OPEN_NOTES_EARLY?.()"><span class="mhurPatchDevIconV12">📝</span><span>Notes de patch / Notes des développeurs</span></button>
 <button id="mhurAccountButton" class="mhurAccountButton" type="button" onclick="MHUR_AUTH.open()"><span class="mhurAccountAvatar">👤</span><span class="mhurAccountButtonText"><b id="signinTitle">Se connecter</b><small id="signinSub">Google ou Discord</small></span></button>
       <button class="lang" onclick="toggleLang()" aria-label="Changer la langue"><span class="langPart" data-lang-code="fr">FR</span><span class="langSep">/</span><span class="langPart" data-lang-code="en">EN</span></button>
     </div>
@@ -3235,19 +3235,6 @@ function gameSlotBand(ct,color,kind,side,index){
 function render(){
   const app=document.getElementById('app');
   if(!app)return;
-
-  if(page==='mods'){
-    if(!app.querySelector('.modsPage')){
-      window.MHUR_MODS?.renderPage?.(true);
-    }
-    window.__keepScroll=false;
-    queueMicrotask(()=>{
-      window.MHUR_ROUTER?.syncFromState?.('replace');
-      window.MHUR_SEO?.sync?.();
-    });
-    return;
-  }
-
   let html='';
   if(page==='home'){
     html=typeof home==='function'?home():'';
@@ -3259,7 +3246,6 @@ function render(){
   if(page==='tunings')html=tuningsPage();
   if(page==='costumes')html=costumesPage();
   if(page==='builds')html=buildsPage();
-
   if(page==='home'){
     const finalHome=typeof html==='string'&&html.includes('homeV296')&&html.includes('seasonV296');
     if(!finalHome){
@@ -3273,29 +3259,25 @@ function render(){
       return;
     }
   }
-
   if(typeof html==='string'&&app.innerHTML!==html){
     app.innerHTML=html;
   }
-
   if(page==='home'){
     app.dataset.mhurHomeLang=String(typeof lang!=='undefined'?lang:'fr');
     window.MHUR_HOME_REFRESH?.();
   }else{
     delete app.dataset.mhurHomeLang;
   }
-
   if(!window.__keepScroll){
     window.scrollTo({top:0,left:0,behavior:'auto'});
   }
   window.__keepScroll=false;
-
   queueMicrotask(()=>{
     window.MHUR_ROUTER?.syncFromState?.('replace');
     window.MHUR_SEO?.sync?.();
   });
 }
-window.__MHUR_V542_STABLE_RENDER__=true;
+window.__MHUR_V540_STABLE_RENDER__=true;
 </script>
 <!-- V312 : les données et le véritable accueil sont chargés avant le tout premier rendu. -->
 <script src="data/home_data.js?v=531"></script>
@@ -3304,7 +3286,7 @@ window.__MHUR_V542_STABLE_RENDER__=true;
 <script src="data/mhur_database_assets.js?v=29000"></script>
 <script src="data/season18_sync.js?v=29000"></script>
 <script src="js/season18-early.js?v=1785403460136436800"></script>
-<script src="js/season18-fixes.js?v=542"></script>
+<script src="js/season18-fixes.js?v=537r"></script>
 <script src="js/season18-v12.js?v=537r"></script>
 <script>
 window.MHUR_CLEAN_ROUTES?.apply?.();if(!['home','characters','tunings','costumes','builds','mods'].includes(page))page='home';updateLanguageIndicator();window.__MHUR_FINAL_LAYOUT_PENDING__=true;
@@ -6815,7 +6797,7 @@ body .costumeTile > img,
 <link rel="stylesheet" href="css/community-moderation.css?v=380">
 <script src="js/community-moderation.js?v=30"></script>
 <script src="js/community-builds.js?v=29"></script>
-<script src="js/community-hub.js?v=542"></script>
+<script src="js/community-hub.js?v=29"></script>
 
 <script src="js/enhancements.js?v=380"></script>
 
@@ -6859,7 +6841,7 @@ body .costumeTile > img,
 <!-- V387 Community Mods — loaded after menu organisation. -->
 <link rel="stylesheet" href="css/community-mods.css?v=433">
 <script src="js/vendor/tus.min.js?v=415"></script>
-<script src="js/community-mods.js?v=542"></script>
+<script src="js/community-mods.js?v=540"></script>
 <script src="js/v29-user-moderation.js?v=51"></script>
 <!-- V391 JS disabled by V395 -->
 <script src="js/v395-stable-menu.js?v=399"></script>
@@ -7098,6 +7080,6 @@ body .costumeTile > img,
 <script src="js/v520-character-styles.js?v=537r"></script>
 <script src="js/v539-mobile-admin.js?v=539"></script>
 <script src="js/v540-final-stability.js?v=540"></script>
-<script src="js/v542-tier-notes-mobile.js?v=542"></script>
+<script src="js/v541-targeted-fixes.js?v=541"></script>
 </body>
 </html>
