@@ -1,11 +1,11 @@
 /* ============================================================
-   MHUR FRANCE — V536
+   MHUR FRANCE — V537
    Navigation intelligente, sans observateur et sans rendu retardé.
    ============================================================ */
 (() => {
   "use strict";
 
-  const STORAGE_KEY = "mhur_v536_scroll_positions";
+  const STORAGE_KEY = "mhur_v537_scroll_positions";
 
   function value(name, fallback = "") {
     try {
@@ -91,7 +91,7 @@
   function installRenderNavigation() {
     if (
       typeof window.render !== "function" ||
-      window.render.__mhurV536Navigation
+      window.render.__mhurV537Navigation
     ) {
       return;
     }
@@ -140,7 +140,7 @@
       return result;
     };
 
-    wrapped.__mhurV536Navigation = true;
+    wrapped.__mhurV537Navigation = true;
     window.render = wrapped;
 
     try {
@@ -151,7 +151,7 @@
   function installGoNavigation() {
     if (
       typeof window.go !== "function" ||
-      window.go.__mhurV536Navigation
+      window.go.__mhurV537Navigation
     ) {
       return;
     }
@@ -170,7 +170,7 @@
       return result;
     };
 
-    wrapped.__mhurV536Navigation = true;
+    wrapped.__mhurV537Navigation = true;
     window.go = wrapped;
 
     try {
@@ -182,7 +182,8 @@
     installRenderNavigation();
     installGoNavigation();
     window.MHUR_HOME_REFRESH?.();
-    console.info("[MHUR] V536 chargé sans rendu retardé.");
+    document.documentElement.classList.remove("mhurV537Boot");
+    console.info("[MHUR] V537 prêt dès le premier affichage.");
   }
 
   if (document.readyState === "loading") {

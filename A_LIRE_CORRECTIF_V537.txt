@@ -1,0 +1,56 @@
+﻿MHUR FRANCE — CORRECTIF V537
+================================
+
+CORRECTIONS
+===========
+
+1. TOUS LES STYLES
+   Toutes les images des cartes data-style sont agrandies de 5,5 %.
+   Le changement est léger : il remplit mieux le carré sans appliquer
+   de position différente à Full Bullet, Original ou un autre style.
+
+2. PREMIER AFFICHAGE SANS RESET VISIBLE
+   Les scripts Saison 18 étaient chargés après le premier layout.
+   Le navigateur affichait donc :
+   - l'ancien accueil ;
+   - des cartes provisoires ;
+   - les compteurs avec -- ;
+   - puis l'accueil corrigé.
+
+   V537 charge les correctifs Saison 18 avant le premier layout,
+   applique leurs décorations dans le même rendu, initialise le timer,
+   puis affiche #app uniquement lorsque le contenu final est prêt.
+
+   Le setTimeout de home.js qui relançait render() est également retiré.
+
+3. NOTES DE PATCH EN BAS DE L'ACCUEIL
+   La section "Dernière note de mise à jour" est supprimée.
+   Le bouton Notes de patch / Notes des développeurs du header reste
+   disponible.
+
+4. TUTORIEL MODS
+   La barre affiche clairement :
+   "Clique ici pour ouvrir le tutoriel"
+
+   Une seule flèche ronde reste à droite. Elle tourne lorsque le
+   tutoriel est ouvert.
+
+INSTALLATION
+============
+
+1. Décompresse le ZIP.
+2. Copie son contenu dans le dossier principal mhur-france.
+3. Accepte la fusion du dossier public.
+4. Lance APPLIQUER_CORRECTIF_V537.bat.
+5. La fenêtre doit afficher :
+   TOUTES LES VERIFICATIONS V537 SONT BONNES
+6. Dans GitHub Desktop :
+   Commit to main
+   Push origin
+7. Après le déploiement :
+   Ctrl + F5
+
+Gentle Criminal V531 reste intact.
+
+Pour annuler :
+ANNULER_CORRECTIF_V537.bat

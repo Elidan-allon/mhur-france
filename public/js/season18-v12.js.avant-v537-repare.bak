@@ -138,7 +138,9 @@ function wrapRender(){
   if(typeof window.render!=='function'||window.render.__s18v13Decorated) return;
   const original=window.render;
   const wrapped=function(){
-    const result=original.apply(this,arguments);afterRender();return result;
+    const result=original.apply(this,arguments);
+    requestAnimationFrame(afterRender);
+    return result;
   };
   wrapped.__s18v13Decorated=true;
   window.render=wrapped;
@@ -146,7 +148,8 @@ function wrapRender(){
 }
 
 wrapRender();
-if(document.readyState!=='loading') afterRender();
+if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',()=>requestAnimationFrame(afterRender),{once:true});
+else requestAnimationFrame(afterRender);
 window.addEventListener('mhur:languagechange',()=>requestAnimationFrame(afterRender));
 window.MHUR_S18_V13_DECORATE=afterRender;
 })();

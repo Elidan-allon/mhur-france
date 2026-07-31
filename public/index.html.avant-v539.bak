@@ -827,9 +827,7 @@
 <link rel="stylesheet" href="css/v526-ui-final.css?v=526">
 <link rel="stylesheet" href="css/v527-compact-costume-tuning-detail.css?v=527">
 <link rel="stylesheet" href="css/v531-gentle-stable.css?v=531">
-<script id="mhur-v537-boot">document.documentElement.classList.add("mhurV537Boot");setTimeout(function(){document.documentElement.classList.remove("mhurV537Boot")},1500);</script>
-<link rel="stylesheet" href="css/v520-character-styles.css?v=537r">
-<link rel="stylesheet" href="css/v539-mobile-admin.css?v=539">
+<link rel="stylesheet" href="css/v520-character-styles.css?v=536">
 </head>
 <body>
 
@@ -3195,13 +3193,12 @@ function render(){const app=document.getElementById('app');if(page==='home')app.
 </script>
 <!-- V312 : les données et le véritable accueil sont chargés avant le tout premier rendu. -->
 <script src="data/home_data.js?v=531"></script>
-<script src="js/home.js?v=537r"></script>
+<script src="js/home.js?v=520"></script>
 <script src="data/local_assets_index.js?v=1785403460136436800"></script>
 <script src="data/mhur_database_assets.js?v=29000"></script>
 <script src="data/season18_sync.js?v=29000"></script>
 <script src="js/season18-early.js?v=1785403460136436800"></script>
-<script src="js/season18-fixes.js?v=537r"></script>
-<script src="js/season18-v12.js?v=537r"></script>
+<script src="js/v538-level-up-effects-first.js?v=538"></script>
 <script>
 window.MHUR_CLEAN_ROUTES?.apply?.();if(!['home','characters','tunings','costumes','builds','mods'].includes(page))page='home';updateLanguageIndicator();layout();window.MHUR_HOME_REFRESH?.();window.MHUR_SEO?.sync?.();
 </script>
@@ -6755,7 +6752,7 @@ body .costumeTile > img,
 <!-- V387 Community Mods — loaded after menu organisation. -->
 <link rel="stylesheet" href="css/community-mods.css?v=433">
 <script src="js/vendor/tus.min.js?v=415"></script>
-<script src="js/community-mods.js?v=537r"></script>
+<script src="js/community-mods.js?v=519"></script>
 <script src="js/v29-user-moderation.js?v=51"></script>
 <!-- V391 JS disabled by V395 -->
 <script src="js/v395-stable-menu.js?v=399"></script>
@@ -6990,8 +6987,10 @@ body .costumeTile > img,
 <!-- Season 18 v14 compatibility layer. -->
 
 <!-- Season 18 v14 compatibility layer. -->
+<script src="js/season18-fixes.js?v=532"></script>
+<script src="js/season18-v12.js?v=1785403460136436800"></script>
+
 <script src="js/v526-ui-final.js?v=531"></script>
-<script src="js/v520-character-styles.js?v=537r"></script>
-<script src="js/v539-mobile-admin.js?v=539"></script>
+<script src="js/v520-character-styles.js?v=536"></script>
 </body>
 </html>

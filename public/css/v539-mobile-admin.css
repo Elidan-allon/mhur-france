@@ -1,0 +1,280 @@
+/* ========================================================================== */
+/* MHUR NEXUS — V539 : mobile header, Patch Notes et centre de modération    */
+/* ========================================================================== */
+
+:root{
+  --mhur-v539-header-space:calc(112px + max(7px, env(safe-area-inset-top, 0px)));
+}
+
+/* Boutons ajoutés dans le profil. */
+.mhurV539ProfileAction{
+  width:100%!important;
+  margin-top:10px!important;
+  padding:13px 14px!important;
+  border:3px solid #000!important;
+  border-radius:13px!important;
+  font-weight:1000!important;
+  box-shadow:0 4px 0 #000!important;
+}
+.mhurV539AdminProfileButton{background:linear-gradient(135deg,#28db79,#0d9b50)!important;color:#031109!important}
+.mhurV539FeedbackProfileButton{background:linear-gradient(135deg,#ffe100,#ff9a00)!important;color:#111!important}
+
+/* Centre de modération et formulaire de suggestion. */
+.mhurV539Overlay{
+  position:fixed;
+  inset:0;
+  z-index:2147483600;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:18px;
+  background:rgba(0,0,0,.88);
+  backdrop-filter:blur(6px);
+}
+.mhurV539Overlay.open{display:flex}
+.mhurV539Panel{
+  width:min(1040px,96vw);
+  max-height:92dvh;
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+  border:4px solid #426893;
+  border-radius:20px;
+  background:#081423;
+  color:#fff;
+  box-shadow:0 22px 80px #000;
+}
+.mhurV539Panel>header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  padding:16px 18px;
+  border-bottom:3px solid #000;
+  background:linear-gradient(100deg,#153a65,#1e6596);
+}
+.mhurV539Panel>header span{display:block;color:#ffe000;font-size:12px;font-weight:1000;letter-spacing:.8px}
+.mhurV539Panel>header h2{margin:3px 0 0;font-size:clamp(24px,4vw,36px)}
+.mhurV539Close{
+  flex:0 0 46px;
+  width:46px;
+  height:46px;
+  border:4px solid #000!important;
+  border-radius:50%!important;
+  background:#ed525d!important;
+  color:#fff!important;
+  font-size:26px!important;
+  font-weight:1000!important;
+}
+.mhurV539Tabs{display:flex;gap:8px;padding:10px 12px;overflow-x:auto;border-bottom:2px solid #314f76;background:#0c1a2c}
+.mhurV539Tabs button{flex:0 0 auto;padding:9px 12px;border:2px solid #3a5b83;border-radius:10px;background:#14253c;color:#fff;font-weight:1000}
+.mhurV539Tabs button.active{background:#ffe000;color:#000;border-color:#000}
+.mhurV539Body{min-height:0;overflow:auto;padding:16px;-webkit-overflow-scrolling:touch}
+.mhurV539Intro{margin:0 0 14px;color:#bfd0e7;line-height:1.45}
+.mhurV539Dashboard{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px}
+.mhurV539InboxCard{
+  min-height:148px;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  padding:15px;
+  border:3px solid #34577e;
+  border-radius:15px;
+  background:#101f33;
+  color:#fff;
+  text-align:left;
+}
+.mhurV539InboxCard strong{font-size:19px}.mhurV539InboxCard small{margin-top:7px;color:#aac0dc;line-height:1.35}
+.mhurV539Count{margin-top:auto;align-self:flex-end;min-width:48px;padding:7px 11px;border:3px solid #000;border-radius:999px;background:#ffe000;color:#000;font-size:20px;font-weight:1000;text-align:center}
+.mhurV539Count.error{background:#ed525d;color:#fff}
+.mhurV539List{display:grid;gap:11px}
+.mhurV539Item{padding:14px;border:2px solid #35577e;border-radius:14px;background:#0d1b2d}
+.mhurV539Item header{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:9px}
+.mhurV539Item h3{margin:0;font-size:19px}.mhurV539Item small{color:#9fb5d1}.mhurV539Item p{white-space:pre-wrap;line-height:1.45;color:#e5eef9}
+.mhurV539Item textarea,.mhurV539Form textarea,.mhurV539Form input,.mhurV539Form select{
+  width:100%;
+  margin-top:6px;
+  padding:11px 12px;
+  border:2px solid #3d5f88;
+  border-radius:10px;
+  background:#06101d;
+  color:#fff;
+}
+.mhurV539Item textarea,.mhurV539Form textarea{min-height:110px;resize:vertical}
+.mhurV539Actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.mhurV539Actions button,.mhurV539Primary{
+  padding:10px 13px!important;
+  border:3px solid #000!important;
+  border-radius:10px!important;
+  background:#19c9de!important;
+  color:#00151a!important;
+  font-weight:1000!important;
+}
+.mhurV539Actions button.success,.mhurV539Primary{background:#25d876!important;color:#00140a!important}
+.mhurV539Actions button.danger{background:#ed525d!important;color:#fff!important}
+.mhurV539Empty,.mhurV539Error,.mhurV539Loading{padding:28px;text-align:center;border:2px dashed #45688f;border-radius:14px;color:#c7d7eb}
+.mhurV539Error{border-color:#d95360;color:#ff929a}
+.mhurV539Form{display:grid;gap:12px}.mhurV539Form label{font-weight:1000;color:#eaf3ff}
+.mhurV539SqlNotice{margin-top:12px;padding:12px;border:2px solid #9c7b00;border-radius:12px;background:#332900;color:#ffe46b;line-height:1.4}
+body.mhurV539ModalOpen{overflow:hidden!important}
+
+/* Le bouton Patch Notes doit toujours recevoir le toucher. */
+#mhurPatchDevButtonV14,[data-s18-notes-button]{
+  pointer-events:auto!important;
+  touch-action:manipulation!important;
+  -webkit-tap-highlight-color:transparent!important;
+}
+
+@media(max-width:760px){
+  :root{
+    --mhur-v539-header-space:calc(112px + max(7px, env(safe-area-inset-top, 0px)));
+    --mhur-mobile-header-height:var(--mhur-v539-header-space)!important;
+    --mhur-top-height:var(--mhur-v539-header-space)!important;
+    --mhur-header-bottom:var(--mhur-v539-header-space)!important;
+    --mhur-header-visual-bottom:var(--mhur-v539-header-space)!important;
+  }
+  html{scroll-padding-top:calc(var(--mhur-v539-header-space) + 10px)!important}
+  html body{padding-top:var(--mhur-v539-header-space)!important}
+  html body>header.top[data-mhur-header-version="513"],
+  html body header.top[data-mhur-header-version="513"]{
+    position:fixed!important;
+    inset:0 0 auto 0!important;
+    height:auto!important;
+    min-height:var(--mhur-v539-header-space)!important;
+    max-height:none!important;
+  }
+  html body .wrap{margin-top:0!important;padding-top:14px!important}
+  html body .homeV296,
+  html body .homeV296.s18HomeMobileOffsetV20{
+    margin-top:0!important;
+    padding-top:0!important;
+    transform:none!important;
+  }
+  html body .drawer{top:var(--mhur-v539-header-space)!important}
+
+  /* Fenêtre Patch Notes : une seule zone de défilement, sous les deux lignes. */
+  html body .s18NotesOverlayV10{
+    inset:var(--mhur-v539-header-space) 0 0 0!important;
+    width:auto!important;
+    height:auto!important;
+    padding:5px!important;
+    align-items:stretch!important;
+    overflow:hidden!important;
+  }
+  html body .s18NotesPanelV10{
+    width:100%!important;
+    height:100%!important;
+    max-height:none!important;
+    margin:0!important;
+    display:flex!important;
+    flex-direction:column!important;
+    border-radius:13px!important;
+  }
+  html body .s18NotesPanelV10>header{flex:0 0 auto!important;padding:12px 14px!important}
+  html body .s18NotesPanelV10>header h2{font-size:26px!important;line-height:1.05!important}
+  html body .s18NotesPanelV10>nav{flex:0 0 auto!important;padding:8px 10px!important}
+  html body .s18NotesBodyV10{
+    flex:1 1 auto!important;
+    min-height:0!important;
+    height:auto!important;
+    display:grid!important;
+    grid-template-columns:1fr!important;
+    grid-template-rows:auto minmax(0,1fr)!important;
+    overflow:hidden!important;
+  }
+  html body .s18NotesBodyV10>aside{
+    display:flex!important;
+    gap:8px!important;
+    max-height:126px!important;
+    padding:9px!important;
+    overflow-x:auto!important;
+    overflow-y:hidden!important;
+    border-right:0!important;
+    border-bottom:2px solid #2d496e!important;
+    -webkit-overflow-scrolling:touch!important;
+  }
+  html body .s18NotesBodyV10>aside>button{
+    flex:0 0 min(72vw,270px)!important;
+    width:auto!important;
+    min-width:0!important;
+    margin:0!important;
+  }
+  html body .s18NotesBodyV10>main{
+    min-height:0!important;
+    padding:12px!important;
+    overflow-x:hidden!important;
+    overflow-y:auto!important;
+    -webkit-overflow-scrolling:touch!important;
+    overscroll-behavior:contain!important;
+  }
+  html body .s18PatchDetailHeadV10{display:grid!important;gap:10px!important}
+  html body .s18PatchCharacterV10>header{
+    display:grid!important;
+    grid-template-columns:82px minmax(0,1fr)!important;
+    align-items:center!important;
+    gap:11px!important;
+    padding:10px!important;
+  }
+  html body .s18PatchPortraitV10{
+    width:82px!important;
+    height:82px!important;
+    min-width:82px!important;
+  }
+  html body .s18PatchPortraitV10 img{
+    width:100%!important;
+    height:100%!important;
+    max-width:100%!important;
+    max-height:100%!important;
+    object-fit:contain!important;
+    object-position:center center!important;
+    transform:none!important;
+    margin:0!important;
+  }
+  html body .s18PatchCharacterV10 h4{font-size:20px!important;line-height:1.08!important;overflow-wrap:anywhere!important}
+  html body .s18PatchChangesV10{padding:10px!important;gap:10px!important}
+  html body .s18PatchChangeV10{padding:40px 10px 11px!important;overflow:hidden!important}
+  html body .s18PatchSkillV10{
+    display:grid!important;
+    grid-template-columns:72px minmax(0,1fr)!important;
+    gap:10px!important;
+    align-items:start!important;
+  }
+  html body .s18PatchSkillV10>div{
+    width:72px!important;
+    height:72px!important;
+    min-width:72px!important;
+    display:flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+  }
+  html body .s18PatchSkillV10>div img{
+    width:100%!important;
+    height:100%!important;
+    max-width:100%!important;
+    max-height:100%!important;
+    object-fit:contain!important;
+    object-position:center center!important;
+    transform:none!important;
+    margin:0!important;
+  }
+  html body .s18PatchSkillV10 h5{font-size:17px!important;line-height:1.15!important;overflow-wrap:anywhere!important}
+  html body .s18PatchTableWrapV10{max-width:100%!important;overflow-x:auto!important;overflow-y:hidden!important}
+  html body .s18PatchTableV10{min-width:560px!important}
+
+  /* Centre de modération sous le header. */
+  .mhurV539Overlay{
+    inset:var(--mhur-v539-header-space) 0 0 0;
+    padding:5px;
+    align-items:stretch;
+  }
+  .mhurV539Panel{width:100%;height:100%;max-height:none;border-radius:13px}
+  .mhurV539Panel>header{padding:11px 12px}.mhurV539Panel>header h2{font-size:25px}
+  .mhurV539Body{padding:11px}.mhurV539Dashboard{grid-template-columns:1fr 1fr;gap:9px}
+  .mhurV539InboxCard{min-height:132px;padding:12px}.mhurV539InboxCard strong{font-size:16px}
+}
+
+@media(max-width:430px){
+  .mhurV539Dashboard{grid-template-columns:1fr}
+  html body .s18PatchSkillV10{grid-template-columns:64px minmax(0,1fr)!important}
+  html body .s18PatchSkillV10>div{width:64px!important;height:64px!important;min-width:64px!important}
+}

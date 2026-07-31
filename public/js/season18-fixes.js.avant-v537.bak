@@ -653,7 +653,7 @@ function afterDom(){ensureHeaderButton();watchHeaderButton();injectAdminProfileB
 function wrapDomRender(){
   if(typeof window.render!=='function'||window.render.__s18v13Dom)return;
   const original=window.render;
-  const wrapped=function(){const result=original.apply(this,arguments);afterDom();return result;};
+  const wrapped=function(){const result=original.apply(this,arguments);requestAnimationFrame(afterDom);return result;};
   wrapped.__s18v13Dom=true;window.render=wrapped;try{render=wrapped}catch(_e){}
 }
 function init(){
@@ -990,7 +990,9 @@ function wrapRenderV23(){
   if(typeof window.render!=='function'||window.render.__s18v23)return;
   const original=window.render;
   const wrapped=function(){
-    const result=original.apply(this,arguments);afterNavigationV23();return result;
+    const result=original.apply(this,arguments);
+    requestAnimationFrame(afterNavigationV23);
+    return result;
   };
   wrapped.__s18v23=true;
   window.render=wrapped;
@@ -1201,7 +1203,7 @@ function syncNewBadges(){
 function wrapRender(){
   if(typeof window.render!=='function'||window.render.__s18v24new)return;
   const original=window.render;
-  const wrapped=function(){const result=original.apply(this,arguments);syncNewBadges();return result};
+  const wrapped=function(){const result=original.apply(this,arguments);requestAnimationFrame(syncNewBadges);return result};
   wrapped.__s18v24new=true;
   window.render=wrapped;
   try{render=wrapped}catch(_e){}
@@ -1374,8 +1376,8 @@ function decorateMiniPortraitsV35(root=document){
   });
 }
 
-wrapHomeDashboardV35();
 function runV35(){
+  wrapHomeDashboardV35();
   decorateMiniPortraitsV35(document);
 }
 let v35Queued=false;

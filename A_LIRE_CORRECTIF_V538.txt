@@ -1,0 +1,43 @@
+﻿MHUR FRANCE — CORRECTIF V538
+================================
+
+CHANGEMENT UNIQUE
+=================
+
+Dans chaque Alter alpha, beta et gamma, le tableau :
+
+Effets de montée
+
+est désormais toujours placé tout en haut de la liste.
+
+Le correctif reconnaît aussi les titres anglais :
+Level Up Effects
+
+L'ordre d'origine de tous les autres tableaux reste inchangé.
+
+V538 ne modifie pas :
+- les portraits ;
+- les tailles des cartes ;
+- Gentle Criminal ;
+- l'accueil ;
+- les Mods ;
+- les T.U.N.I.N.G ;
+- la navigation.
+
+INSTALLATION
+============
+
+1. Décompresse le ZIP.
+2. Copie son contenu dans le dossier principal mhur-france.
+3. Accepte la fusion du dossier public.
+4. Lance APPLIQUER_CORRECTIF_V538.bat.
+5. La fenêtre doit afficher :
+   TOUTES LES VERIFICATIONS V538 SONT BONNES
+6. Dans GitHub Desktop :
+   Commit to main
+   Push origin
+7. Après le déploiement :
+   Ctrl + F5
+
+Pour annuler :
+ANNULER_CORRECTIF_V538.bat

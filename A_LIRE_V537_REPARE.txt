@@ -1,0 +1,27 @@
+﻿MHUR FRANCE — V537 RÉPARÉ
+==========================
+
+L'ancien V537 s'arrêtait avec :
+"La section des sorties de l'accueil est introuvable."
+
+Ce n'était pas un problème de ton site.
+L'installateur cherchait une ancienne ligne exacte de home.js.
+
+Cette version :
+- accepte la section Sorties actuelle ou déjà modifiée ;
+- ne bloque plus si son format est différent ;
+- retire le rendu retardé du timer ;
+- supprime la note de patch en bas de l'accueil ;
+- remet le tutoriel Mods clairement cliquable ;
+- conserve les corrections de taille et de styles du V537.
+
+INSTALLATION
+============
+1. Ferme l'ancienne fenêtre V537 en appuyant sur une touche.
+2. Ne fais aucun Commit/Push de l'ancien essai.
+3. Décompresse ce ZIP dans le dossier principal mhur-france.
+4. Lance APPLIQUER_CORRECTIF_V537_REPARE.bat.
+5. Attends :
+   TOUTES LES VERIFICATIONS V537 REPARE SONT BONNES
+6. Ensuite seulement, applique le correctif mobile V539.
+7. Fais Commit to main puis Push origin.

@@ -1,0 +1,50 @@
+﻿MHUR FRANCE — CORRECTIF MOBILE V539
+====================================
+
+CE CORRECTIF CIBLE D'ABORD LE MOBILE.
+
+1. HEADER MOBILE
+- La hauteur réelle des deux lignes est mesurée.
+- La page commence sous la deuxième ligne.
+- Le bloc Saison 18 ne passe plus derrière le header.
+
+2. PATCH NOTES / DEV NOTES
+- Le toucher est capturé directement, même si un ancien script recrée le bouton.
+- La fenêtre reste entièrement sous le header.
+- Une seule zone principale défile.
+- Les portraits et les images de compétences utilisent object-fit: contain.
+- Les images ne sont plus coupées sur téléphone.
+
+3. MODÉRATION DANS LE PROFIL
+Le profil admin reçoit le bouton :
+🛡️ Centre de modération
+
+Le centre regroupe :
+- demandes de suppression de compte ;
+- signalements de builds ;
+- signalements de mods ;
+- recours après sanction ;
+- suggestions, bugs et demandes d'aide ;
+- accès à la liste des joueurs.
+
+4. SUGGESTIONS
+Tous les membres connectés reçoivent dans leur profil :
+💡 Suggestion / problème
+
+IMPORTANT : la table Suggestions est nouvelle.
+Après avoir appliqué V539, ouvre Supabase > SQL Editor et exécute :
+configuration/A_EXECUTER_DANS_SUPABASE_V539.sql
+
+Les demandes de suppression et les signalements déjà existants fonctionnent
+sans ce SQL. Seule la nouvelle boîte Suggestions en a besoin.
+
+INSTALLATION
+============
+1. Décompresse le ZIP dans le dossier principal mhur-france.
+2. Lance APPLIQUER_CORRECTIF_V539.bat.
+3. Vérifie : TOUTES LES VERIFICATIONS V539 SONT BONNES
+4. Exécute le SQL V539 dans Supabase.
+5. Dans GitHub Desktop : Commit to main, puis Push origin.
+6. Sur l'iPhone : ferme l'onglet, rouvre le site, puis actualise une fois.
+
+Pour annuler : ANNULER_CORRECTIF_V539.bat

@@ -1,14 +1,24 @@
 /* ============================================================
-   MHUR FRANCE — V536
-   Ce fichier remplace le v520 manquant déjà référencé par index.html.
+   MHUR FRANCE — V537
+   - Tous les styles légèrement agrandis dans leur carré.
+   - Premier affichage masqué jusqu'au rendu final prêt.
+   - Tutoriel Mods clairement cliquable.
    ============================================================ */
 
 :root {
-  --v536-list-width: 230px;
-  --v536-list-height: 550px;
-  --v536-style-width: 310px;
-  --v536-style-height: 420px;
-  --v536-style-photo: 310px;
+  --v537-list-width: 230px;
+  --v537-list-height: 550px;
+  --v537-style-width: 310px;
+  --v537-style-height: 420px;
+  --v537-style-photo: 310px;
+}
+
+/*
+  L'application reste invisible uniquement pendant le tout premier
+  rendu synchrone. Elle apparaît ensuite directement dans son état final.
+*/
+html.mhurV537Boot #app {
+  visibility: hidden !important;
 }
 
 /* ============================================================
@@ -19,7 +29,7 @@ html body #app .pageFrame.costumesFrame .cardsGrid,
 html body #app .pageFrame.tuningsFrame .cardsGrid,
 html body #app .pageFrame.buildsFrame .cardsGrid {
   display: grid !important;
-  grid-template-columns: repeat(4, var(--v536-list-width)) !important;
+  grid-template-columns: repeat(4, var(--v537-list-width)) !important;
   justify-content: center !important;
   align-items: stretch !important;
   gap: 18px !important;
@@ -33,12 +43,12 @@ html body #app .pageFrame.buildsFrame .cardsGrid > .card {
   box-sizing: border-box !important;
   display: flex !important;
   flex-direction: column !important;
-  width: var(--v536-list-width) !important;
-  min-width: var(--v536-list-width) !important;
-  max-width: var(--v536-list-width) !important;
-  height: var(--v536-list-height) !important;
-  min-height: var(--v536-list-height) !important;
-  max-height: var(--v536-list-height) !important;
+  width: var(--v537-list-width) !important;
+  min-width: var(--v537-list-width) !important;
+  max-width: var(--v537-list-width) !important;
+  height: var(--v537-list-height) !important;
+  min-height: var(--v537-list-height) !important;
+  max-height: var(--v537-list-height) !important;
   align-self: stretch !important;
   justify-self: center !important;
   overflow: hidden !important;
@@ -46,7 +56,6 @@ html body #app .pageFrame.buildsFrame .cardsGrid > .card {
 
 /* ============================================================
    2. PHOTOS DES LISTES
-   Le cadre est carré et la photo complète reste visible.
    ============================================================ */
 html body #app .pageFrame.charactersFrame .cardsGrid > .card > .thumb,
 html body #app .pageFrame.costumesFrame .cardsGrid > .card > .thumb,
@@ -54,15 +63,15 @@ html body #app .pageFrame.tuningsFrame .cardsGrid > .card > .thumb,
 html body #app .pageFrame.buildsFrame .cardsGrid > .card > .thumb {
   box-sizing: border-box !important;
   display: flex !important;
-  flex: 0 0 var(--v536-list-width) !important;
+  flex: 0 0 var(--v537-list-width) !important;
   align-items: center !important;
   justify-content: center !important;
-  width: var(--v536-list-width) !important;
-  min-width: var(--v536-list-width) !important;
-  max-width: var(--v536-list-width) !important;
-  height: var(--v536-list-width) !important;
-  min-height: var(--v536-list-width) !important;
-  max-height: var(--v536-list-width) !important;
+  width: var(--v537-list-width) !important;
+  min-width: var(--v537-list-width) !important;
+  max-width: var(--v537-list-width) !important;
+  height: var(--v537-list-width) !important;
+  min-height: var(--v537-list-width) !important;
+  max-height: var(--v537-list-width) !important;
   aspect-ratio: 1 / 1 !important;
   padding: 0 !important;
   overflow: hidden !important;
@@ -74,8 +83,8 @@ html body #app .pageFrame .cardsGrid > .card > .thumb > img.v534-portrait-image 
   position: static !important;
   inset: auto !important;
   display: block !important;
-  width: auto !important;
-  height: auto !important;
+  width: 100% !important;
+  height: 100% !important;
   min-width: 0 !important;
   min-height: 0 !important;
   max-width: 100% !important;
@@ -93,8 +102,7 @@ html body #app .pageFrame .cardsGrid > .card > .thumb > img.v534-portrait-image 
 }
 
 /* ============================================================
-   3. TOUS LES STYLES
-   Aucun style particulier n'est ciblé.
+   3. TOUS LES STYLES / ALTERS
    ============================================================ */
 html body #app .styleGrid {
   display: flex !important;
@@ -107,35 +115,35 @@ html body #app .styleGrid > .styleCard[data-style] {
   box-sizing: border-box !important;
   display: flex !important;
   flex-direction: column !important;
-  width: var(--v536-style-width) !important;
-  min-width: var(--v536-style-width) !important;
-  max-width: var(--v536-style-width) !important;
-  height: var(--v536-style-height) !important;
-  min-height: var(--v536-style-height) !important;
-  max-height: var(--v536-style-height) !important;
+  width: var(--v537-style-width) !important;
+  min-width: var(--v537-style-width) !important;
+  max-width: var(--v537-style-width) !important;
+  height: var(--v537-style-height) !important;
+  min-height: var(--v537-style-height) !important;
+  max-height: var(--v537-style-height) !important;
   overflow: hidden !important;
 }
 
 html body #app .styleGrid > .styleCard[data-style] > .styleBanner {
   box-sizing: border-box !important;
   display: flex !important;
-  flex: 0 0 var(--v536-style-photo) !important;
+  flex: 0 0 var(--v537-style-photo) !important;
   align-items: center !important;
   justify-content: center !important;
-  width: var(--v536-style-photo) !important;
-  min-width: var(--v536-style-photo) !important;
-  max-width: var(--v536-style-photo) !important;
-  height: var(--v536-style-photo) !important;
-  min-height: var(--v536-style-photo) !important;
-  max-height: var(--v536-style-photo) !important;
+  width: var(--v537-style-photo) !important;
+  min-width: var(--v537-style-photo) !important;
+  max-width: var(--v537-style-photo) !important;
+  height: var(--v537-style-photo) !important;
+  min-height: var(--v537-style-photo) !important;
+  max-height: var(--v537-style-photo) !important;
   aspect-ratio: 1 / 1 !important;
   padding: 0 !important;
   overflow: hidden !important;
 }
 
 /*
-  Règle générale : chaque portrait de style est affiché entièrement.
-  Les anciennes translations et les anciens zooms sont neutralisés.
+  Tous les styles actuels et futurs sont agrandis de seulement 5,5 %.
+  Cela remplit mieux le carré sans appliquer de position spéciale.
 */
 html body #app
   .styleGrid
@@ -155,8 +163,8 @@ html body #app
   position: static !important;
   inset: auto !important;
   display: block !important;
-  width: auto !important;
-  height: auto !important;
+  width: 100% !important;
+  height: 100% !important;
   min-width: 0 !important;
   min-height: 0 !important;
   max-width: 100% !important;
@@ -165,9 +173,9 @@ html body #app
   object-position: center center !important;
   margin: 0 !important;
   padding: 0 !important;
-  transform: none !important;
+  transform: scale(1.055) !important;
+  transform-origin: center center !important;
   translate: none !important;
-  scale: none !important;
   rotate: none !important;
   filter: none !important;
   transition: none !important;
@@ -218,8 +226,8 @@ html body #app .charPanel .charTop > .portrait > img {
   position: static !important;
   inset: auto !important;
   display: block !important;
-  width: auto !important;
-  height: auto !important;
+  width: 100% !important;
+  height: 100% !important;
   min-width: 0 !important;
   min-height: 0 !important;
   max-width: 100% !important;
@@ -232,6 +240,98 @@ html body #app .charPanel .charTop > .portrait > img {
 }
 
 /* ============================================================
+   5. TUTORIEL MODS
+   ============================================================ */
+html body .modsTutorial > summary.modsTutorialSummaryV537 {
+  list-style: none !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) 52px !important;
+  grid-template-areas:
+    "title arrow"
+    "hint arrow" !important;
+  align-items: center !important;
+  column-gap: 16px !important;
+  row-gap: 7px !important;
+  min-height: 92px !important;
+  padding: 14px 18px 14px 22px !important;
+  cursor: pointer !important;
+  user-select: none !important;
+}
+
+html body .modsTutorial > summary.modsTutorialSummaryV537::marker {
+  content: "" !important;
+  font-size: 0 !important;
+}
+
+html body
+  .modsTutorial
+  > summary.modsTutorialSummaryV537::-webkit-details-marker {
+  display: none !important;
+}
+
+html body .modsTutorialTitleV537 {
+  grid-area: title !important;
+  display: block !important;
+  color: #000 !important;
+  font-size: clamp(19px, 2vw, 24px) !important;
+  font-weight: 1000 !important;
+  line-height: 1.1 !important;
+}
+
+html body .modsTutorialHintV537,
+html body .modsTutorial .s18ModsHintV10.modsTutorialHintV537 {
+  grid-area: hint !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-self: start !important;
+  width: auto !important;
+  margin: 0 !important;
+  padding: 5px 10px !important;
+  border: 2px solid #000 !important;
+  border-radius: 999px !important;
+  background: rgba(255, 255, 255, 0.86) !important;
+  color: #000 !important;
+  font-size: 12px !important;
+  font-weight: 1000 !important;
+  line-height: 1 !important;
+  white-space: nowrap !important;
+}
+
+html body .modsTutorialChevronV537 {
+  grid-area: arrow !important;
+  position: relative !important;
+  display: grid !important;
+  place-items: center !important;
+  width: 48px !important;
+  height: 48px !important;
+  border: 3px solid #000 !important;
+  border-radius: 50% !important;
+  background: #101a29 !important;
+  box-shadow: 0 4px 0 #000 !important;
+}
+
+html body .modsTutorialChevronV537::before {
+  content: "" !important;
+  width: 14px !important;
+  height: 14px !important;
+  border-right: 4px solid #ffe000 !important;
+  border-bottom: 4px solid #ffe000 !important;
+  transform: translateY(-3px) rotate(45deg) !important;
+  transition: transform 0.18s ease !important;
+}
+
+html body .modsTutorial[open] .modsTutorialChevronV537::before {
+  transform: translateY(3px) rotate(225deg) !important;
+}
+
+html body
+  .modsTutorial
+  > summary.modsTutorialSummaryV537:hover
+  .modsTutorialChevronV537 {
+  transform: translateY(-1px) !important;
+}
+
+/* ============================================================
    RESPONSIVE
    ============================================================ */
 @media (max-width: 1010px) {
@@ -239,7 +339,7 @@ html body #app .charPanel .charTop > .portrait > img {
   html body #app .pageFrame.costumesFrame .cardsGrid,
   html body #app .pageFrame.tuningsFrame .cardsGrid,
   html body #app .pageFrame.buildsFrame .cardsGrid {
-    grid-template-columns: repeat(3, var(--v536-list-width)) !important;
+    grid-template-columns: repeat(3, var(--v537-list-width)) !important;
   }
 }
 
@@ -248,7 +348,7 @@ html body #app .charPanel .charTop > .portrait > img {
   html body #app .pageFrame.costumesFrame .cardsGrid,
   html body #app .pageFrame.tuningsFrame .cardsGrid,
   html body #app .pageFrame.buildsFrame .cardsGrid {
-    grid-template-columns: repeat(2, var(--v536-list-width)) !important;
+    grid-template-columns: repeat(2, var(--v537-list-width)) !important;
   }
 
   html body #app .charPanel .charTop {
@@ -265,10 +365,27 @@ html body #app .charPanel .charTop > .portrait > img {
   html body #app .pageFrame.costumesFrame .cardsGrid,
   html body #app .pageFrame.tuningsFrame .cardsGrid,
   html body #app .pageFrame.buildsFrame .cardsGrid {
-    grid-template-columns: var(--v536-list-width) !important;
+    grid-template-columns: var(--v537-list-width) !important;
   }
 
   html body #app .styleGrid {
     justify-content: center !important;
+  }
+
+  html body #app .modsTutorial > summary.modsTutorialSummaryV537 {
+    grid-template-columns: minmax(0, 1fr) 44px !important;
+    min-height: 84px !important;
+    padding: 12px 13px !important;
+    column-gap: 10px !important;
+  }
+
+  html body .modsTutorialChevronV537 {
+    width: 42px !important;
+    height: 42px !important;
+  }
+
+  html body .modsTutorialHintV537 {
+    white-space: normal !important;
+    line-height: 1.1 !important;
   }
 }
