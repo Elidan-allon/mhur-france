@@ -1,0 +1,59 @@
+﻿MHUR FRANCE — CORRECTIF V536
+================================
+
+CAUSES TROUVÉES
+===============
+
+1. index.html charge déjà :
+
+   css/v520-character-styles.css
+   js/v520-character-styles.js
+
+   Mais ces deux fichiers n'existent pas dans le dépôt actuel.
+   Les correctifs d'images V532 à V535 ne pouvaient donc pas être
+   appliqués de manière fiable.
+
+2. home.js exécute render() une deuxième fois juste après le premier
+   affichage.
+
+3. Deux scripts de données de costumes exécutent encore render() après
+   le premier affichage, même lorsque l'utilisateur se trouve sur
+   l'accueil.
+
+Cela explique les changements visibles dans la vidéo :
+- accueil final ;
+- ancienne rubrique ;
+- cases provisoires ;
+- retour à l'accueil final.
+
+V536
+====
+
+- crée réellement les deux fichiers v520 que index.html charge ;
+- affiche tous les portraits de style entièrement ;
+- supprime tous les zooms et translations ;
+- garde quatre personnages par ligne sur ordinateur ;
+- supprime le deuxième render() de home.js ;
+- limite les deux autres render() aux pages Costumes ;
+- initialise le timer pendant le premier layout ;
+- conserve la navigation intelligente :
+  nouvelle catégorie en haut, retour depuis une fiche au même endroit ;
+- ne modifie pas Gentle Criminal V531.
+
+INSTALLATION
+============
+
+1. Décompresse le ZIP.
+2. Copie son contenu dans le dossier principal mhur-france.
+3. Accepte la fusion du dossier public.
+4. Lance APPLIQUER_CORRECTIF_V536.bat.
+5. La fenêtre doit afficher :
+   TOUTES LES VERIFICATIONS V536 SONT BONNES
+6. Dans GitHub Desktop :
+   Commit to main
+   Push origin
+7. Après le déploiement :
+   Ctrl + F5
+
+Pour annuler :
+ANNULER_CORRECTIF_V536.bat

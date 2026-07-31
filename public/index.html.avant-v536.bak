@@ -827,7 +827,7 @@
 <link rel="stylesheet" href="css/v526-ui-final.css?v=526">
 <link rel="stylesheet" href="css/v527-compact-costume-tuning-detail.css?v=527">
 <link rel="stylesheet" href="css/v531-gentle-stable.css?v=531">
-<link rel="stylesheet" href="css/v520-character-styles.css?v=536">
+<link rel="stylesheet" href="css/v535-complete-images.css?v=535">
 </head>
 <body>
 
@@ -3199,7 +3199,7 @@ function render(){const app=document.getElementById('app');if(page==='home')app.
 <script src="data/season18_sync.js?v=29000"></script>
 <script src="js/season18-early.js?v=1785403460136436800"></script>
 <script>
-window.MHUR_CLEAN_ROUTES?.apply?.();if(!['home','characters','tunings','costumes','builds','mods'].includes(page))page='home';updateLanguageIndicator();layout();window.MHUR_HOME_REFRESH?.();window.MHUR_SEO?.sync?.();
+window.MHUR_CLEAN_ROUTES?.apply?.();if(!['home','characters','tunings','costumes','builds','mods'].includes(page))page='home';updateLanguageIndicator();layout();window.MHUR_SEO?.sync?.();
 </script>
 <button id="backToTop" title="Retour en haut" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
 <script>window.addEventListener('scroll',()=>{const b=document.getElementById('backToTop'); if(b) b.classList.toggle('show', window.scrollY>180);},{passive:true});</script>
@@ -3360,7 +3360,7 @@ if(typeof page !== 'undefined' && page === 'costumes' && typeof render === 'func
   function titleFromSlug(s){return String(s||'').split('_').filter(Boolean).map((p,i)=>{const small=['de','du','des','d','la','le','les','a','et','en','l'];return i>0&&small.includes(p)?p:p.charAt(0).toUpperCase()+p.slice(1);}).join(' ');}
   function addMissingGroups(char,groups,used){const cd=DATA[norm(char)]; if(!cd||!Array.isArray(groups))return; for(const [gkey,ug] of Object.entries(cd)){if(used.has(gkey))continue; const group={group:ug.label||titleFromSlug(gkey),rarity:'PUR',variants:[]}; applyUploadedGroup(char,group,{key:gkey,data:ug}); groups.push(group); used.add(gkey);}}
   function applyChar(char,groups){if(!Array.isArray(groups))return 0; const used=new Set(); let n=0; groups.forEach(g=>{const ug=findUploadGroup(char,g); if(ug){if(applyUploadedGroup(char,g,ug)){used.add(ug.key); n++;}}}); addMissingGroups(char,groups,used); return n;}
-  let changed=0; for(const [char,globalName] of Object.entries(ARRAY_BY_CHAR)){if(Array.isArray(window[globalName]))changed+=applyChar(char,window[globalName]);} if(window.V153_COSTUMES){for(const [char,groups] of Object.entries(window.V153_COSTUMES))changed+=applyChar(char,groups);} window.__ASSETS_V194_APPLIED_GROUPS=changed; if(typeof render==='function'&&typeof page!=='undefined'&&page==='costumes'){window.__keepScroll=true;render();}
+  let changed=0; for(const [char,globalName] of Object.entries(ARRAY_BY_CHAR)){if(Array.isArray(window[globalName]))changed+=applyChar(char,window[globalName]);} if(window.V153_COSTUMES){for(const [char,groups] of Object.entries(window.V153_COSTUMES))changed+=applyChar(char,groups);} window.__ASSETS_V194_APPLIED_GROUPS=changed; if(typeof render==='function'){window.__keepScroll=true;render();}
 })();
 </script>
 
@@ -3417,7 +3417,7 @@ if(typeof page !== 'undefined' && page === 'costumes' && typeof render === 'func
 
   function finalPass(char){ const gs=groupsFor(char); if(!Array.isArray(gs)) return; gs.forEach(ensureVariantLabels); dedupeGroups(gs); }
   ['midoriya','midoriya_ofa','bakugo','ochaco','tenya','shoto','tsuyu','kirishima','momo','tokoyami','kaminari','monoma','kendo','ibara','mirio','tamaki','nejire','shinso','all_might','armored_all_might','aizawa','present_mic','cementoss','endeavor','hawks','mirko','star_stripe','mt_lady','shigaraki','all_for_one','all_for_one_young','dabi','toga','twice','mr_compress','kurogiri','lady_nagant','overhaul'].forEach(finalPass);
-  if(typeof render==='function'&&typeof page!=='undefined'&&page==='costumes'){ window.__keepScroll=true; render(); }
+  if(typeof render==='function'){ window.__keepScroll=true; render(); }
 })();
 </script>
 
@@ -6990,6 +6990,6 @@ body .costumeTile > img,
 <script src="js/season18-v12.js?v=1785403460136436800"></script>
 
 <script src="js/v526-ui-final.js?v=531"></script>
-<script src="js/v520-character-styles.js?v=536"></script>
+<script src="js/v535-navigation-only.js?v=535"></script>
 </body>
 </html>

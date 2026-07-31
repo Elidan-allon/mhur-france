@@ -317,6 +317,6 @@ window.openPatchNoteV296=function(i){
 };
 
 window.home=function(){return window.renderHomeDashboard()};
-window.MHUR_HOME_REFRESH=refresh;setInterval(refresh,1000);
+setInterval(refresh,1000);setTimeout(()=>{if(typeof page!=='undefined'&&page==='home'&&typeof render==='function')render();refresh()},0);
 document.addEventListener('keydown',e=>{if(e.key==='Escape')document.querySelectorAll('.modalV296.open').forEach(m=>closeHomeModalV296(m.id))});
 })();

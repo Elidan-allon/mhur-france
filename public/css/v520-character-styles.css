@@ -1,0 +1,274 @@
+/* ============================================================
+   MHUR FRANCE — V536
+   Ce fichier remplace le v520 manquant déjà référencé par index.html.
+   ============================================================ */
+
+:root {
+  --v536-list-width: 230px;
+  --v536-list-height: 550px;
+  --v536-style-width: 310px;
+  --v536-style-height: 420px;
+  --v536-style-photo: 310px;
+}
+
+/* ============================================================
+   1. QUATRE CARTES PAR LIGNE
+   ============================================================ */
+html body #app .pageFrame.charactersFrame .cardsGrid,
+html body #app .pageFrame.costumesFrame .cardsGrid,
+html body #app .pageFrame.tuningsFrame .cardsGrid,
+html body #app .pageFrame.buildsFrame .cardsGrid {
+  display: grid !important;
+  grid-template-columns: repeat(4, var(--v536-list-width)) !important;
+  justify-content: center !important;
+  align-items: stretch !important;
+  gap: 18px !important;
+  width: 100% !important;
+}
+
+html body #app .pageFrame.charactersFrame .cardsGrid > .card,
+html body #app .pageFrame.costumesFrame .cardsGrid > .card,
+html body #app .pageFrame.tuningsFrame .cardsGrid > .card,
+html body #app .pageFrame.buildsFrame .cardsGrid > .card {
+  box-sizing: border-box !important;
+  display: flex !important;
+  flex-direction: column !important;
+  width: var(--v536-list-width) !important;
+  min-width: var(--v536-list-width) !important;
+  max-width: var(--v536-list-width) !important;
+  height: var(--v536-list-height) !important;
+  min-height: var(--v536-list-height) !important;
+  max-height: var(--v536-list-height) !important;
+  align-self: stretch !important;
+  justify-self: center !important;
+  overflow: hidden !important;
+}
+
+/* ============================================================
+   2. PHOTOS DES LISTES
+   Le cadre est carré et la photo complète reste visible.
+   ============================================================ */
+html body #app .pageFrame.charactersFrame .cardsGrid > .card > .thumb,
+html body #app .pageFrame.costumesFrame .cardsGrid > .card > .thumb,
+html body #app .pageFrame.tuningsFrame .cardsGrid > .card > .thumb,
+html body #app .pageFrame.buildsFrame .cardsGrid > .card > .thumb {
+  box-sizing: border-box !important;
+  display: flex !important;
+  flex: 0 0 var(--v536-list-width) !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: var(--v536-list-width) !important;
+  min-width: var(--v536-list-width) !important;
+  max-width: var(--v536-list-width) !important;
+  height: var(--v536-list-width) !important;
+  min-height: var(--v536-list-width) !important;
+  max-height: var(--v536-list-width) !important;
+  aspect-ratio: 1 / 1 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+}
+
+html body #app .pageFrame .cardsGrid > .card > .thumb > img,
+html body #app .pageFrame .cardsGrid > .card > .thumb > img.v533-portrait-image,
+html body #app .pageFrame .cardsGrid > .card > .thumb > img.v534-portrait-image {
+  position: static !important;
+  inset: auto !important;
+  display: block !important;
+  width: auto !important;
+  height: auto !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+  object-fit: contain !important;
+  object-position: center center !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  transform: none !important;
+  translate: none !important;
+  scale: none !important;
+  rotate: none !important;
+  filter: none !important;
+  transition: none !important;
+}
+
+/* ============================================================
+   3. TOUS LES STYLES
+   Aucun style particulier n'est ciblé.
+   ============================================================ */
+html body #app .styleGrid {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  align-items: flex-start !important;
+  gap: 20px !important;
+}
+
+html body #app .styleGrid > .styleCard[data-style] {
+  box-sizing: border-box !important;
+  display: flex !important;
+  flex-direction: column !important;
+  width: var(--v536-style-width) !important;
+  min-width: var(--v536-style-width) !important;
+  max-width: var(--v536-style-width) !important;
+  height: var(--v536-style-height) !important;
+  min-height: var(--v536-style-height) !important;
+  max-height: var(--v536-style-height) !important;
+  overflow: hidden !important;
+}
+
+html body #app .styleGrid > .styleCard[data-style] > .styleBanner {
+  box-sizing: border-box !important;
+  display: flex !important;
+  flex: 0 0 var(--v536-style-photo) !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: var(--v536-style-photo) !important;
+  min-width: var(--v536-style-photo) !important;
+  max-width: var(--v536-style-photo) !important;
+  height: var(--v536-style-photo) !important;
+  min-height: var(--v536-style-photo) !important;
+  max-height: var(--v536-style-photo) !important;
+  aspect-ratio: 1 / 1 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+}
+
+/*
+  Règle générale : chaque portrait de style est affiché entièrement.
+  Les anciennes translations et les anciens zooms sont neutralisés.
+*/
+html body #app
+  .styleGrid
+  > .styleCard[data-style]
+  > .styleBanner
+  > img,
+html body #app
+  .styleGrid
+  > .styleCard[data-style]
+  > .styleBanner
+  > img.v533-portrait-image,
+html body #app
+  .styleGrid
+  > .styleCard[data-style]
+  > .styleBanner
+  > img.v534-portrait-image {
+  position: static !important;
+  inset: auto !important;
+  display: block !important;
+  width: auto !important;
+  height: auto !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+  object-fit: contain !important;
+  object-position: center center !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  transform: none !important;
+  translate: none !important;
+  scale: none !important;
+  rotate: none !important;
+  filter: none !important;
+  transition: none !important;
+}
+
+html body #app .styleGrid > .styleCard[data-style] > .styleInfo {
+  box-sizing: border-box !important;
+  display: flex !important;
+  flex: 1 1 auto !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  width: 100% !important;
+  min-height: 0 !important;
+  padding: 8px 10px 10px !important;
+  overflow: hidden !important;
+}
+
+/* ============================================================
+   4. FICHE DÉTAILLÉE
+   ============================================================ */
+html body #app .charPanel .charTop {
+  display: grid !important;
+  grid-template-columns: 230px minmax(0, 1fr) !important;
+  align-items: start !important;
+  gap: 16px !important;
+  padding: 14px !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+}
+
+html body #app .charPanel .charTop > .portrait {
+  box-sizing: border-box !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 230px !important;
+  min-width: 230px !important;
+  max-width: 230px !important;
+  height: 230px !important;
+  min-height: 230px !important;
+  max-height: 230px !important;
+  aspect-ratio: 1 / 1 !important;
+  overflow: hidden !important;
+}
+
+html body #app .charPanel .charTop > .portrait > img {
+  position: static !important;
+  inset: auto !important;
+  display: block !important;
+  width: auto !important;
+  height: auto !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+  object-fit: contain !important;
+  object-position: center center !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  transform: none !important;
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 1010px) {
+  html body #app .pageFrame.charactersFrame .cardsGrid,
+  html body #app .pageFrame.costumesFrame .cardsGrid,
+  html body #app .pageFrame.tuningsFrame .cardsGrid,
+  html body #app .pageFrame.buildsFrame .cardsGrid {
+    grid-template-columns: repeat(3, var(--v536-list-width)) !important;
+  }
+}
+
+@media (max-width: 760px) {
+  html body #app .pageFrame.charactersFrame .cardsGrid,
+  html body #app .pageFrame.costumesFrame .cardsGrid,
+  html body #app .pageFrame.tuningsFrame .cardsGrid,
+  html body #app .pageFrame.buildsFrame .cardsGrid {
+    grid-template-columns: repeat(2, var(--v536-list-width)) !important;
+  }
+
+  html body #app .charPanel .charTop {
+    grid-template-columns: 1fr !important;
+  }
+
+  html body #app .charPanel .charTop > .portrait {
+    margin: 0 auto !important;
+  }
+}
+
+@media (max-width: 510px) {
+  html body #app .pageFrame.charactersFrame .cardsGrid,
+  html body #app .pageFrame.costumesFrame .cardsGrid,
+  html body #app .pageFrame.tuningsFrame .cardsGrid,
+  html body #app .pageFrame.buildsFrame .cardsGrid {
+    grid-template-columns: var(--v536-list-width) !important;
+  }
+
+  html body #app .styleGrid {
+    justify-content: center !important;
+  }
+}
