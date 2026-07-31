@@ -1,0 +1,216 @@
+/* ============================================================
+   MHUR NEXUS — V541 : correctifs ciblés
+   ============================================================ */
+
+/* Le choix des styles reste inchangé. Seul le portrait de la fiche
+   détaillée (page contenant les Alters) est légèrement agrandi. */
+html body #app .charPanel .charTop > .portrait {
+  overflow: hidden !important;
+}
+html body #app .charPanel .charTop > .portrait > img,
+html body #app .s18CharacterDetailV9 .portrait img,
+html body #app .s18CharacterDetailV10 .portrait img {
+  object-fit: contain !important;
+  object-position: center bottom !important;
+  transform: scale(1.07) !important;
+  transform-origin: center bottom !important;
+}
+
+/* Tutoriel Mods : le chevron V540 est le seul affiché. */
+html body .modsTutorial > summary.modsTutorialSummaryV540::after,
+html body .modsTutorial > summary.modsTutorialSummaryV537::after,
+html body .modsTutorial > summary::after {
+  content: none !important;
+  display: none !important;
+}
+html body .modsTutorial > summary .s18ModsHintV10,
+html body .modsTutorial > summary .modsTutorialChevronV537,
+html body .modsTutorial > summary .modsTutorialHintV537 {
+  display: none !important;
+}
+html body .modsTutorial > summary .modsTutorialChevronV540 {
+  display: grid !important;
+}
+
+/* Tier List : fonds par rôle. */
+.v541TierRole-assault  { background: radial-gradient(circle at 50% 32%, #fff36d 0%, #d6ba00 54%, #786500 100%) !important; }
+.v541TierRole-attack   { background: radial-gradient(circle at 50% 32%, #ff7180 0%, #d31835 54%, #700918 100%) !important; }
+.v541TierRole-rapid    { background: radial-gradient(circle at 50% 32%, #72efff 0%, #16bcd8 54%, #075b70 100%) !important; }
+.v541TierRole-technical{ background: radial-gradient(circle at 50% 32%, #d36cff 0%, #9719c7 54%, #470767 100%) !important; }
+.v541TierRole-support  { background: radial-gradient(circle at 50% 32%, #84ff9b 0%, #18c94a 54%, #086127 100%) !important; }
+
+[class*="v541TierRole-"] > img,
+[class*="v541TierRole-"] img {
+  object-fit: contain !important;
+  object-position: center bottom !important;
+}
+
+/* Recours enrichis. */
+.v541AppealIdentity {
+  display: grid;
+  gap: 6px;
+  margin: 9px 0 12px;
+  padding: 11px 12px;
+  border: 2px solid #42658e;
+  border-radius: 11px;
+  background: #14253a;
+}
+.v541AppealIdentity strong { color: #ffe000; font-size: 16px; }
+.v541AppealIdentity span,
+.v541AppealIdentity small { color: #c4d5ea; overflow-wrap: anywhere; }
+.v541AppealSanction {
+  display: inline-flex;
+  width: fit-content;
+  padding: 5px 9px;
+  border: 2px solid #000;
+  border-radius: 999px;
+  background: #ed525d;
+  color: #fff !important;
+  font-weight: 1000;
+}
+
+/* Retour vers le centre de modération. */
+.v541ModerationBack {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 7px !important;
+  margin: 10px 12px !important;
+  padding: 9px 13px !important;
+  border: 3px solid #000 !important;
+  border-radius: 10px !important;
+  background: #ffe000 !important;
+  color: #000 !important;
+  font-weight: 1000 !important;
+  z-index: 10 !important;
+}
+
+/* ============================================================
+   MOBILE UNIQUEMENT
+   ============================================================ */
+@media (max-width: 760px) {
+  :root {
+    --mhur-v541-header-space: calc(126px + max(7px, env(safe-area-inset-top, 0px)));
+    --mhur-mobile-header-height: var(--mhur-v541-header-space) !important;
+    --mhur-v539-header-space: var(--mhur-v541-header-space) !important;
+    --mhur-top-height: var(--mhur-v541-header-space) !important;
+    --mhur-header-bottom: var(--mhur-v541-header-space) !important;
+    --mhur-header-visual-bottom: var(--mhur-v541-header-space) !important;
+  }
+
+  html {
+    scroll-padding-top: calc(var(--mhur-v541-header-space) + 12px) !important;
+  }
+  html body {
+    padding-top: var(--mhur-v541-header-space) !important;
+  }
+  html body .wrap {
+    margin-top: 0 !important;
+    padding-top: 18px !important;
+  }
+  html body .homeV296,
+  html body .homeV296.s18HomeMobileOffsetV20 {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+    transform: none !important;
+  }
+
+  html body .drawer,
+  html body #drawer.drawer {
+    top: var(--mhur-v541-header-space) !important;
+    max-height: calc(100dvh - var(--mhur-v541-header-space)) !important;
+  }
+
+  /* Le bouton Retour reste visible sous le header pendant le défilement. */
+  html body #app > .back,
+  html body .wrap > .back,
+  html body .back {
+    position: sticky !important;
+    top: calc(var(--mhur-v541-header-space) + 7px) !important;
+    z-index: 2147482500 !important;
+    width: fit-content !important;
+    margin-top: 6px !important;
+    margin-bottom: 12px !important;
+    box-shadow: 0 4px 0 #000 !important;
+  }
+
+  /* Patch Notes sous le header complet. */
+  html body .s18NotesOverlayV10 {
+    inset: var(--mhur-v541-header-space) 0 0 0 !important;
+    padding: 4px !important;
+    align-items: stretch !important;
+  }
+  html body .s18NotesPanelV10 {
+    width: 100% !important;
+    height: 100% !important;
+    max-height: none !important;
+    border-radius: 12px !important;
+  }
+  html body .s18NotesBodyV10 {
+    min-height: 0 !important;
+    height: auto !important;
+    flex: 1 1 auto !important;
+    overflow: hidden !important;
+  }
+  html body .s18NotesBodyV10 > main {
+    min-width: 0 !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+  }
+
+  /* Les portraits de personnages dans les notes ne sont plus coupés. */
+  html body .s18PatchCharacterV10 {
+    overflow: visible !important;
+  }
+  html body .s18PatchCharacterV10 > header {
+    display: grid !important;
+    grid-template-columns: 92px minmax(0, 1fr) !important;
+    align-items: center !important;
+    gap: 11px !important;
+    overflow: visible !important;
+  }
+  html body .s18PatchCharacterV10 > header > * {
+    min-width: 0 !important;
+  }
+  html body .s18PatchPortraitV10 {
+    width: 92px !important;
+    height: 92px !important;
+    min-width: 92px !important;
+    overflow: hidden !important;
+  }
+  html body .s18PatchPortraitV10 img,
+  html body .s18PatchSkillV10 > div img {
+    width: 100% !important;
+    height: 100% !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
+    object-fit: contain !important;
+    object-position: center center !important;
+    transform: none !important;
+    margin: 0 !important;
+  }
+  html body .s18PatchSkillV10 {
+    grid-template-columns: 76px minmax(0, 1fr) !important;
+  }
+  html body .s18PatchSkillV10 > div {
+    width: 76px !important;
+    height: 76px !important;
+    min-width: 76px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+  html body .s18PatchCharacterV10 h4,
+  html body .s18PatchSkillV10 h5 {
+    overflow-wrap: anywhere !important;
+    word-break: normal !important;
+  }
+
+  /* Les fenêtres de modération commencent aussi sous le header. */
+  html body .mhurV539Overlay {
+    inset: var(--mhur-v541-header-space) 0 0 0 !important;
+  }
+  .v541ModerationBack {
+    position: sticky !important;
+    top: 4px !important;
+  }
+}

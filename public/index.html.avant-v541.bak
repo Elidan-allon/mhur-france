@@ -831,7 +831,6 @@
 <link rel="stylesheet" href="css/v539-mobile-admin.css?v=539">
 <script id="mhur-v540-boot">document.documentElement.classList.add("mhurV540Boot");setTimeout(function(){document.documentElement.classList.remove("mhurV540Boot")},2500);</script>
 <link rel="stylesheet" href="css/v540-final-ui.css?v=540">
-<link rel="stylesheet" href="css/v541-targeted-fixes.css?v=541">
 </head>
 <body>
 
@@ -1203,46 +1202,7 @@ function selectChar(id){selectedChar=id;const c=characters.find(x=>x.id===id);se
 function stylePicker(){const c=characters.find(x=>x.id===selectedChar);return `<button class="back" onclick="selectedChar=null;render()">← ${tr('back')}</button><h1 class="title">${c.name}</h1><div class="styleGrid">${c.styles.map(s=>{const st=styles[s];return `<button class="styleCard" data-style="${s}" onclick="selectStyle('${s}')"><div class="styleBanner">${asset(st.portrait,c.name+' '+label(st.name))}</div><div class="styleInfo"><h2>${label(st.name)}</h2><div class="badges">${sideBadge(c.side)}${roleBadge(st.role)}</div></div></button>`}).join('')}</div>`}
 function characterDetail(s){const st=styles[s];const ch=characters.find(x=>x.styles.includes(s))||{name:'Izuku Midoriya'};return `<button class="back" onclick="selectedStyle=null;if((characters.find(x=>x.id===selectedChar)||{}).styles?.length===1)selectedChar=null;render()">← ${tr('back')}</button><div class="charPanel role-${st.role}"><div class="charTop"><div class="portrait">${asset(st.portrait,'portrait')}</div><div class="meta"><h2>${ch.name}</h2><div class="badges">${roleBadge(st.role)}<span class="badge">PV : ${st.pv}</span></div><p><b>Style :</b> ${label(st.name)}</p><p>${label(st.description)}</p><p><b>Rôle :</b> ${label(st.roleDesc)}</p></div></div>${skillSection({letter:'SP',...st.special},true)}<h2 style="padding:0 16px;color:#000">Alter</h2>${st.skills.map(k=>skillSection(k,false)).join('')}</div>`}
 function skillSection(k,isSpecial){const head=isSpecial?label(k.name):`${k.letter} — ${label(k.name)}`;return `<div class="skill"><div class="skillImgBox">${asset(k.img,label(k.name))}</div><div class="skillText"><div class="skillBox"><div class="skillHead">${head}</div><div class="skillDesc">${label(k.desc)}</div></div>${k.tables?tables(k.tables):''}</div></div>${k.sub?skillSection(k.sub,false):''}`}
-function mhurTableLangValue(value){
-  if(Array.isArray(value))return value;
-  if(value&&typeof value==='object'){
-    const current=(typeof lang!=='undefined'&&lang==='en')?'en':'fr';
-    const selected=value[current]??value.fr??value.en;
-    if(Array.isArray(selected))return selected;
-    if(selected==null)return [];
-    return [selected];
-  }
-  return value==null?[]:[value];
-}
-function mhurTableTitle(value){
-  if(value&&typeof value==='object'&&!Array.isArray(value)){
-    const current=(typeof lang!=='undefined'&&lang==='en')?'en':'fr';
-    return String(value[current]??value.fr??value.en??'');
-  }
-  return String(value??'');
-}
-function mhurTableCell(value){
-  if(value&&typeof value==='object'&&!Array.isArray(value)){
-    const current=(typeof lang!=='undefined'&&lang==='en')?'en':'fr';
-    return value[current]??value.fr??value.en??'';
-  }
-  return value??'';
-}
-function tables(ts){
-  const source=Array.isArray(ts)?ts:[];
-  const ordered=source.map((table,index)=>({table,index,title:mhurTableTitle(table?.title)}))
-    .sort((a,b)=>{
-      const ae=/effets? de montee|level[- ]?up effects?/i.test(a.title.normalize('NFD').replace(/[\u0300-\u036f]/g,''))?0:1;
-      const be=/effets? de montee|level[- ]?up effects?/i.test(b.title.normalize('NFD').replace(/[\u0300-\u036f]/g,''))?0:1;
-      return ae-be||a.index-b.index;
-    });
-  return `<div class="tables">${ordered.map(entry=>{
-    const table=entry.table||{};
-    const cols=mhurTableLangValue(table.cols);
-    const rows=mhurTableLangValue(table.rows);
-    return `<button class="toggle" onclick="this.nextElementSibling.classList.toggle('hidden')">${entry.title} ג–¾</button><div class="simpleTable hidden"><table class="dataTable"><thead><tr>${cols.map(c=>`<th>${mhurTableCell(c)}</th>`).join('')}</tr></thead><tbody>${rows.map(row=>{const cells=Array.isArray(row)?row:mhurTableLangValue(row);return `<tr>${cells.map(cell=>`<td>${mhurTableCell(cell)}</td>`).join('')}</tr>`}).join('')}</tbody></table></div>`;
-  }).join('')}</div>`;
-}
+function tables(ts){const ordered=[...ts].sort((a,b)=>(b.title.includes('Effets')?1:0)-(a.title.includes('Effets')?1:0));return `<div class="tables">${ordered.map(tb=>`<button class="toggle" onclick="this.nextElementSibling.classList.toggle('hidden')">${tb.title} ▾</button><div class="simpleTable hidden"><table class="dataTable"><thead><tr>${tb.cols.map(c=>`<th>${c}</th>`).join('')}</tr></thead><tbody>${tb.rows.map(r=>`<tr>${r.map(x=>`<td>${x}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`).join('')}</div>`}
 function tuningsPage(){if(selectedChar&&selectedStyle)return tuningDetail(selectedStyle); if(selectedChar)return stylePicker(); return `<h1 class="title">${tr('tunings')}</h1>${rosterSections(false,'tunings')}`}
 function tuningDetail(s){const ch=characters.find(x=>x.styles.includes(s))||{name:'Personnage'};const list=tunings[s]||[];return `<button class="back" onclick="selectedStyle=null;if((characters.find(x=>x.id===selectedChar)||{}).styles?.length===1)selectedChar=null;render()">← ${tr('back')}</button><h1 class="title">T.U.N.I.N.G — ${ch.name}</h1>${list.length?list.map(tu=>{const title=tu.type==='SP'?'Compétence T.U.N.I.N.G SP':'Compétence T.U.N.I.N.G';const levelHtml=tu.levels?`<div class="chips tuningLevels">${tu.levels.map(l=>`<span class="chip ${l.startsWith('Sub Effect')?'subChip':''}">${l}</span>`).join('')}</div>`:'';const normalHtml=tu.effects?`<div class="tuningText">${tu.effects.map(e=>`<div class="tuningEffect"><div class="tuningEffectName">${e.name}</div><div class="tuningEffectDesc">${e.desc}</div><div class="chips">${(e.levels||[]).map(l=>`<span class="chip">${l}</span>`).join('')}</div></div>`).join('')}</div>`:`<div class="tuningText">${tu.desc}</div>`;return `<div class="gamePanel tuningCard ${tu.type==='SP'?'spTuning':'normalTuning'}"><div class="gameHeader"><div class="gameIcon">${tu.img?asset(tu.img,tu.name):roleOnly(tu.role)}</div><div class="gameName">Éclat de souvenir de ${ch.name}</div></div><div class="tuningBlock"><div class="tuningTitle ${roles[tu.role].cls}Bg"><span>${title}</span><br>${tu.name}</div>${normalHtml}${levelHtml}</div></div>`}).join(''):`<div class="homeBox">Aucun T.U.N.I.N.G renseigné pour ce style.</div>`}`}
 
@@ -7080,6 +7040,5 @@ body .costumeTile > img,
 <script src="js/v520-character-styles.js?v=537r"></script>
 <script src="js/v539-mobile-admin.js?v=539"></script>
 <script src="js/v540-final-stability.js?v=540"></script>
-<script src="js/v541-targeted-fixes.js?v=541"></script>
 </body>
 </html>

@@ -1,0 +1,68 @@
+﻿MHUR FRANCE — CORRECTIF V541
+================================
+
+CORRECTIONS
+===========
+
+1. ERREUR D'AFFICHAGE DE GENTLE / ALTER
+   L'ancien V538 supposait que table.cols était toujours un tableau.
+   Certaines données utilisent une valeur localisée. Cela provoquait :
+   (table.cols || []).map is not a function
+
+   V541 remplace le rendu des tableaux par une version compatible avec :
+   - tableaux simples ;
+   - valeurs françaises / anglaises ;
+   - lignes localisées ;
+   - Effets de montée toujours placés en premier.
+
+2. PORTRAITS
+   Le choix des styles n'est pas modifié.
+   Seul le portrait de la fiche détaillée où apparaissent les Alters
+   est agrandi légèrement.
+
+3. TUTORIEL MODS
+   Le pseudo-chevron ajouté par Saison 18 est masqué.
+   Il ne reste qu'une seule flèche propre à droite.
+
+4. MOBILE
+   - espace calculé avec la hauteur réelle des deux lignes du header ;
+   - contenu descendu sous le header ;
+   - images des Patch Notes en object-fit contain ;
+   - bouton Retour sticky sous le header ;
+   - fenêtres de modération également sous le header.
+
+5. CENTRE DE MODÉRATION
+   Dans les recours, V541 affiche :
+   - le nom du joueur ;
+   - son identifiant ;
+   - le type de sanction ;
+   - le motif ;
+   - la date de fin si nécessaire ;
+   - l'identifiant de sanction.
+
+   Un bouton Retour au centre de modération est ajouté dans les
+   signalements de builds, de mods, les suppressions et les profils.
+
+6. TIER LIST
+   - fond jaune : Assaut ;
+   - fond rouge : Attaque ;
+   - fond cyan : Vitesse ;
+   - fond violet : Technique ;
+   - fond vert : Support ;
+   - Gentle Criminal utilise le portrait corrigé V531.
+
+INSTALLATION
+============
+
+1. Décompresse le ZIP.
+2. Copie son contenu dans le dossier principal mhur-france.
+3. Lance APPLIQUER_CORRECTIF_V541.bat.
+4. Attends :
+   TOUTES LES VERIFICATIONS V541 SONT BONNES
+5. Dans GitHub Desktop :
+   Commit to main
+   Push origin
+6. Sur téléphone :
+   ferme l'onglet, rouvre le site et actualise une fois.
+
+Ne relance pas V538 après V541.
