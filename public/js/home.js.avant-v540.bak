@@ -235,7 +235,9 @@ window.renderHomeDashboard=function(){
     ${divider()}
     ${heading(ht('Réductions de points personnage','Character point discounts'),'green')}
     <div class="discountGridV296">${(d.discounts||[]).map(discountCard).join('')||('<div class="emptyV296">'+ht('Aucune réduction.','No discount.')+'</div>')}</div>
-    
+    ${divider()}
+    ${heading(ht('Dernière note de mise à jour','Latest patch note'),'orange')}
+    ${latestPatchCard(latest)}
     <footer class="homeFootV296">${ht('Mise à jour automatique chaque mardi · Anciens costumes verrouillés.','Automatic update every Tuesday · Older costumes remain locked.')}</footer>
   </main>`;
 };

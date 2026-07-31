@@ -827,10 +827,9 @@
 <link rel="stylesheet" href="css/v526-ui-final.css?v=526">
 <link rel="stylesheet" href="css/v527-compact-costume-tuning-detail.css?v=527">
 <link rel="stylesheet" href="css/v531-gentle-stable.css?v=531">
+<script id="mhur-v537-boot">document.documentElement.classList.add("mhurV537Boot");setTimeout(function(){document.documentElement.classList.remove("mhurV537Boot")},1500);</script>
 <link rel="stylesheet" href="css/v520-character-styles.css?v=537r">
 <link rel="stylesheet" href="css/v539-mobile-admin.css?v=539">
-<script id="mhur-v540-boot">document.documentElement.classList.add("mhurV540Boot");setTimeout(function(){document.documentElement.classList.remove("mhurV540Boot")},2500);</script>
-<link rel="stylesheet" href="css/v540-final-ui.css?v=540">
 </head>
 <body>
 
@@ -3192,56 +3191,11 @@ function gameSlotBand(ct,color,kind,side,index){
 })();
 
 
-function render(){
-  const app=document.getElementById('app');
-  if(!app)return;
-  let html='';
-  if(page==='home'){
-    html=typeof home==='function'?home():'';
-    if((!html||!String(html).includes('homeV296'))&&typeof window.renderHomeDashboard==='function'){
-      html=window.renderHomeDashboard();
-    }
-  }
-  if(page==='characters')html=charactersPage();
-  if(page==='tunings')html=tuningsPage();
-  if(page==='costumes')html=costumesPage();
-  if(page==='builds')html=buildsPage();
-  if(page==='home'){
-    const finalHome=typeof html==='string'&&html.includes('homeV296')&&html.includes('seasonV296');
-    if(!finalHome){
-      window.MHUR_HOME_REFRESH?.();
-      return;
-    }
-    const currentLang=String(typeof lang!=='undefined'?lang:'fr');
-    const sameHome=Boolean(app.querySelector('.homeV296'))&&app.dataset.mhurHomeLang===currentLang;
-    if(sameHome&&!window.__MHUR_FORCE_HOME_RENDER__){
-      window.MHUR_HOME_REFRESH?.();
-      return;
-    }
-  }
-  if(typeof html==='string'&&app.innerHTML!==html){
-    app.innerHTML=html;
-  }
-  if(page==='home'){
-    app.dataset.mhurHomeLang=String(typeof lang!=='undefined'?lang:'fr');
-    window.MHUR_HOME_REFRESH?.();
-  }else{
-    delete app.dataset.mhurHomeLang;
-  }
-  if(!window.__keepScroll){
-    window.scrollTo({top:0,left:0,behavior:'auto'});
-  }
-  window.__keepScroll=false;
-  queueMicrotask(()=>{
-    window.MHUR_ROUTER?.syncFromState?.('replace');
-    window.MHUR_SEO?.sync?.();
-  });
-}
-window.__MHUR_V540_STABLE_RENDER__=true;
+function render(){const app=document.getElementById('app');if(page==='home')app.innerHTML=home();if(page==='characters')app.innerHTML=charactersPage();if(page==='tunings')app.innerHTML=tuningsPage();if(page==='costumes')app.innerHTML=costumesPage();if(page==='builds')app.innerHTML=buildsPage();if(!window.__keepScroll){window.scrollTo({top:0,left:0,behavior:'auto'})}window.__keepScroll=false;queueMicrotask(()=>{window.MHUR_ROUTER?.syncFromState?.('replace');window.MHUR_SEO?.sync?.()})}
 </script>
 <!-- V312 : les données et le véritable accueil sont chargés avant le tout premier rendu. -->
 <script src="data/home_data.js?v=531"></script>
-<script src="js/home.js?v=540"></script>
+<script src="js/home.js?v=537r"></script>
 <script src="data/local_assets_index.js?v=1785403460136436800"></script>
 <script src="data/mhur_database_assets.js?v=29000"></script>
 <script src="data/season18_sync.js?v=29000"></script>
@@ -3249,7 +3203,7 @@ window.__MHUR_V540_STABLE_RENDER__=true;
 <script src="js/season18-fixes.js?v=537r"></script>
 <script src="js/season18-v12.js?v=537r"></script>
 <script>
-window.MHUR_CLEAN_ROUTES?.apply?.();if(!['home','characters','tunings','costumes','builds','mods'].includes(page))page='home';updateLanguageIndicator();window.__MHUR_FINAL_LAYOUT_PENDING__=true;
+window.MHUR_CLEAN_ROUTES?.apply?.();if(!['home','characters','tunings','costumes','builds','mods'].includes(page))page='home';updateLanguageIndicator();layout();window.MHUR_HOME_REFRESH?.();window.MHUR_SEO?.sync?.();
 </script>
 <button id="backToTop" title="Retour en haut" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
 <script>window.addEventListener('scroll',()=>{const b=document.getElementById('backToTop'); if(b) b.classList.toggle('show', window.scrollY>180);},{passive:true});</script>
@@ -6801,7 +6755,7 @@ body .costumeTile > img,
 <!-- V387 Community Mods — loaded after menu organisation. -->
 <link rel="stylesheet" href="css/community-mods.css?v=433">
 <script src="js/vendor/tus.min.js?v=415"></script>
-<script src="js/community-mods.js?v=540"></script>
+<script src="js/community-mods.js?v=537r"></script>
 <script src="js/v29-user-moderation.js?v=51"></script>
 <!-- V391 JS disabled by V395 -->
 <script src="js/v395-stable-menu.js?v=399"></script>
@@ -7039,6 +6993,5 @@ body .costumeTile > img,
 <script src="js/v526-ui-final.js?v=531"></script>
 <script src="js/v520-character-styles.js?v=537r"></script>
 <script src="js/v539-mobile-admin.js?v=539"></script>
-<script src="js/v540-final-stability.js?v=540"></script>
 </body>
 </html>

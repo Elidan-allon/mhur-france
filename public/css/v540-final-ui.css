@@ -1,0 +1,184 @@
+/* ============================================================
+   MHUR FRANCE — V540
+   - Premier affichage final, sans reconstruction visible.
+   - Portraits de tous les styles legerement plus grands.
+   - Tutoriel Mods propre avec une seule fleche.
+   ============================================================ */
+
+html.mhurV540Boot #app {
+  visibility: hidden !important;
+}
+
+/* Tous les styles actuels et futurs : agrandissement leger. */
+html body #app
+  .styleGrid
+  > .styleCard[data-style]
+  > .styleBanner {
+  position: relative !important;
+  overflow: hidden !important;
+}
+
+html body #app
+  .styleGrid
+  > .styleCard[data-style]
+  > .styleBanner
+  > img,
+html body #app
+  .styleGrid
+  > .styleCard[data-style]
+  > .styleBanner
+  > img.v533-portrait-image,
+html body #app
+  .styleGrid
+  > .styleCard[data-style]
+  > .styleBanner
+  > img.v534-portrait-image {
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+  object-fit: contain !important;
+  object-position: center center !important;
+  transform: scale(1.08) !important;
+  transform-origin: center center !important;
+  translate: none !important;
+  rotate: none !important;
+  filter: none !important;
+  transition: none !important;
+}
+
+/* ============================================================
+   TUTORIEL MODS
+   ============================================================ */
+
+html body .modsTutorial > summary.modsTutorialSummaryV540 {
+  list-style: none !important;
+  display: grid !important;
+  grid-template-columns: 34px minmax(0, 1fr) 52px !important;
+  grid-template-areas:
+    "book title arrow"
+    "book hint arrow" !important;
+  align-items: center !important;
+  column-gap: 12px !important;
+  row-gap: 7px !important;
+  min-height: 92px !important;
+  padding: 13px 17px !important;
+  cursor: pointer !important;
+  user-select: none !important;
+}
+
+html body .modsTutorial > summary.modsTutorialSummaryV540::marker {
+  content: "" !important;
+  font-size: 0 !important;
+}
+
+html body
+  .modsTutorial
+  > summary.modsTutorialSummaryV540::-webkit-details-marker {
+  display: none !important;
+}
+
+html body .modsTutorialBookV540 {
+  grid-area: book !important;
+  position: relative !important;
+  display: block !important;
+  width: 28px !important;
+  height: 34px !important;
+  border: 3px solid #000 !important;
+  border-radius: 4px 8px 8px 4px !important;
+  background: linear-gradient(135deg, #25bde7, #157eb8) !important;
+  box-shadow: 3px 3px 0 #000 !important;
+}
+
+html body .modsTutorialBookV540::before {
+  content: "" !important;
+  position: absolute !important;
+  left: 5px !important;
+  top: 0 !important;
+  bottom: 0 !important;
+  width: 3px !important;
+  background: rgba(255, 255, 255, 0.8) !important;
+}
+
+html body .modsTutorialTitleV540 {
+  grid-area: title !important;
+  color: #000 !important;
+  font-size: clamp(19px, 2vw, 24px) !important;
+  font-weight: 1000 !important;
+  line-height: 1.08 !important;
+}
+
+html body .modsTutorialHintV540 {
+  grid-area: hint !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-self: start !important;
+  width: auto !important;
+  margin: 0 !important;
+  padding: 5px 10px !important;
+  border: 2px solid #000 !important;
+  border-radius: 999px !important;
+  background: rgba(255, 255, 255, 0.9) !important;
+  color: #000 !important;
+  font-size: 12px !important;
+  font-weight: 1000 !important;
+  line-height: 1 !important;
+}
+
+html body .modsTutorialChevronV540 {
+  grid-area: arrow !important;
+  position: relative !important;
+  display: grid !important;
+  place-items: center !important;
+  width: 48px !important;
+  height: 48px !important;
+  border: 3px solid #000 !important;
+  border-radius: 50% !important;
+  background: #101a29 !important;
+  box-shadow: 0 4px 0 #000 !important;
+}
+
+html body .modsTutorialChevronV540::before {
+  content: "" !important;
+  width: 14px !important;
+  height: 14px !important;
+  border-right: 4px solid #ffe000 !important;
+  border-bottom: 4px solid #ffe000 !important;
+  transform: translateY(-3px) rotate(45deg) !important;
+  transition: transform 0.18s ease !important;
+}
+
+html body .modsTutorial[open] .modsTutorialChevronV540::before {
+  transform: translateY(3px) rotate(225deg) !important;
+}
+
+/* Anciennes fleches ou aides ajoutees par de vieux correctifs. */
+html body .modsTutorialSummaryV540 > .s18ModsHintV10,
+html body .modsTutorialSummaryV540 > .modsTutorialChevronV537,
+html body .modsTutorialSummaryV540 > .modsTutorialHintV537 {
+  display: none !important;
+}
+
+@media (max-width: 520px) {
+  html body .modsTutorial > summary.modsTutorialSummaryV540 {
+    grid-template-columns: 28px minmax(0, 1fr) 44px !important;
+    min-height: 84px !important;
+    padding: 11px 12px !important;
+    column-gap: 9px !important;
+  }
+
+  html body .modsTutorialBookV540 {
+    width: 24px !important;
+    height: 30px !important;
+  }
+
+  html body .modsTutorialChevronV540 {
+    width: 42px !important;
+    height: 42px !important;
+  }
+
+  html body .modsTutorialHintV540 {
+    white-space: normal !important;
+    line-height: 1.1 !important;
+  }
+}

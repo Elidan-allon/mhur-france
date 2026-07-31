@@ -1,0 +1,47 @@
+﻿MHUR FRANCE — CORRECTIF V540
+================================
+
+V540 CORRIGE UNIQUEMENT LES POINTS SUIVANTS.
+
+1. TUTORIEL MODS
+   - suppression des caractères cassés ;
+   - titre propre ;
+   - message "Clique ici pour ouvrir le tutoriel" ;
+   - une seule flèche ronde à droite ;
+   - plus de deuxième flèche en bas.
+
+2. PORTRAITS DES STYLES
+   Tous les portraits de cartes data-style sont agrandis de 8 %.
+   Aucun style particulier n'est traité séparément.
+
+3. PREMIER AFFICHAGE STABLE
+   Le premier layout n'est plus exécuté au milieu de index.html.
+   Il est exécuté une seule fois, tout à la fin, quand tous les scripts
+   sont chargés.
+
+   Les appels render tardifs sur un accueil déjà finalisé mettent
+   uniquement à jour le compteur et ne reconstruisent plus toute la page.
+
+4. BAS DE L'ACCUEIL
+   La section "Dernière note de mise à jour" est réellement retirée
+   de home.js. Le bouton Patch Notes / Dev Notes du header reste présent.
+
+INSTALLATION
+============
+
+1. Décompresse le ZIP.
+2. Copie son contenu dans le dossier principal mhur-france.
+3. Accepte la fusion du dossier public.
+4. Lance APPLIQUER_CORRECTIF_V540.bat.
+5. La fenêtre doit afficher :
+   TOUTES LES VERIFICATIONS V540 SONT BONNES
+6. Dans GitHub Desktop :
+   Commit to main
+   Push origin
+7. Après le déploiement :
+   Ctrl + F5
+
+Gentle Criminal et le reste du site ne sont pas modifiés.
+
+Pour annuler :
+ANNULER_CORRECTIF_V540.bat
