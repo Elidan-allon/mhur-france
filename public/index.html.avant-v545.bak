@@ -833,7 +833,7 @@
 <link rel="stylesheet" href="css/v540-final-ui.css?v=540">
 <link rel="stylesheet" href="css/v542-tier-notes-mobile.css?v=542">
 <link rel="stylesheet" href="css/v543-moderation-evidence.css?v=543">
-<link rel="stylesheet" href="css/v545-final-interface.css?v=545">
+<link rel="stylesheet" href="css/v544-gentle-mobile-final.css?v=544">
 </head>
 <body>
 
@@ -1250,36 +1250,19 @@ function mhurV544Cell(value){
 function mhurV544Escape(value){
   return String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 }
-function mhurV545Localized(value){
-  if(value&&typeof value==='object'&&!Array.isArray(value)){
-    const current=(typeof lang!=='undefined'&&lang==='en')?'en':'fr';
-    return value[current]??value.fr??value.en??'';
-  }
-  return value??'';
-}
-function mhurV545Array(value){
-  if(Array.isArray(value))return value;
-  const selected=mhurV545Localized(value);
-  if(Array.isArray(selected))return selected;
-  return selected==null||selected===''?[]:[selected];
-}
-function mhurV545Cell(value){
-  const selected=mhurV545Localized(value);
-  return Array.isArray(selected)?selected.join(' / '):String(selected??'');
-}
 function tables(ts){
-  const source=mhurV545Array(ts);
+  const source=mhurV544Array(ts);
   const ordered=source.map((table,index)=>{
     const safe=table&&typeof table==='object'?table:{};
-    const title=mhurV545Cell(safe.title);
+    const title=String(mhurV544Localized(safe.title)||'');
     const normalized=title.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
     const priority=/effets? de montee|level[- ]?up effects?/.test(normalized)?0:1;
-    return {table:safe,index,title,priority};
+    return {table:safe,index,priority,title};
   }).sort((a,b)=>a.priority-b.priority||a.index-b.index);
   return `<div class="tables">${ordered.map(entry=>{
-    const cols=mhurV545Array(entry.table.cols);
-    const rows=mhurV545Array(entry.table.rows);
-    return `<button class="toggle" onclick="this.nextElementSibling.classList.toggle('hidden')">${entry.title} ג–¾</button><div class="simpleTable hidden"><table class="dataTable"><thead><tr>${cols.map(col=>`<th>${mhurV545Cell(col)}</th>`).join('')}</tr></thead><tbody>${rows.map(row=>{const cells=mhurV545Array(row);return `<tr>${cells.map(cell=>`<td>${mhurV545Cell(cell)}</td>`).join('')}</tr>`}).join('')}</tbody></table></div>`;
+    const cols=mhurV544Array(entry.table.cols);
+    const rows=mhurV544Array(entry.table.rows);
+    return `<button class="toggle" onclick="this.nextElementSibling.classList.toggle('hidden')">${mhurV544Escape(entry.title)} ג–¾</button><div class="simpleTable hidden"><table class="dataTable"><thead><tr>${cols.map(col=>`<th>${mhurV544Escape(mhurV544Cell(col))}</th>`).join('')}</tr></thead><tbody>${rows.map(row=>{const cells=mhurV544Array(row);return `<tr>${cells.map(cell=>`<td>${mhurV544Escape(mhurV544Cell(cell))}</td>`).join('')}</tr>`}).join('')}</tbody></table></div>`;
   }).join('')}</div>`;
 }
 function tuningsPage(){if(selectedChar&&selectedStyle)return tuningDetail(selectedStyle); if(selectedChar)return stylePicker(); return `<h1 class="title">${tr('tunings')}</h1>${rosterSections(false,'tunings')}`}
@@ -7139,6 +7122,6 @@ body .costumeTile > img,
 <script src="js/v540-final-stability.js?v=540"></script>
 <script src="js/v542-tier-notes-mobile.js?v=542"></script>
 <script src="js/v543-moderation-evidence.js?v=543"></script>
-<script src="js/v545-final-interface.js?v=545"></script>
+<script src="js/v544-gentle-mobile-final.js?v=544"></script>
 </body>
 </html>

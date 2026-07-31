@@ -1,0 +1,433 @@
+/* ==========================================================================
+   MHUR NEXUS — V545
+   Barre de défilement, profil, tutoriel, Tier List et mobile.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. BARRES DE DÉFILEMENT — STYLE MHUR NEXUS
+   -------------------------------------------------------------------------- */
+html,
+body,
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #ffe000 #0a1728;
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar,
+*::-webkit-scrollbar {
+  width: 14px;
+  height: 14px;
+}
+
+html::-webkit-scrollbar-track,
+body::-webkit-scrollbar-track,
+*::-webkit-scrollbar-track {
+  background:
+    linear-gradient(180deg, #07101d 0%, #10233a 50%, #07101d 100%);
+  border-left: 2px solid #000;
+  border-right: 2px solid #000;
+}
+
+html::-webkit-scrollbar-thumb,
+body::-webkit-scrollbar-thumb,
+*::-webkit-scrollbar-thumb {
+  min-height: 46px;
+  border: 3px solid #05080d;
+  border-radius: 999px;
+  background:
+    linear-gradient(180deg, #ffe900 0%, #19c9de 52%, #ffe900 100%);
+  box-shadow:
+    inset 0 0 0 2px rgba(255, 255, 255, .22),
+    0 0 9px rgba(25, 201, 222, .32);
+}
+
+html::-webkit-scrollbar-thumb:hover,
+body::-webkit-scrollbar-thumb:hover,
+*::-webkit-scrollbar-thumb:hover {
+  background:
+    linear-gradient(180deg, #fff36d 0%, #42e4f3 52%, #fff36d 100%);
+}
+
+html::-webkit-scrollbar-corner,
+body::-webkit-scrollbar-corner,
+*::-webkit-scrollbar-corner {
+  background: #07101d;
+}
+
+html::-webkit-scrollbar-button,
+body::-webkit-scrollbar-button,
+*::-webkit-scrollbar-button {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+/* --------------------------------------------------------------------------
+   2. PROFIL — UNE SEULE SUGGESTION ET UNE SEULE MODÉRATION
+   -------------------------------------------------------------------------- */
+#mhurAuthOverlay .mhurProfileCard .mhurV545ProfileAction {
+  position: relative !important;
+  display: flex !important;
+  width: 100% !important;
+  min-height: 48px !important;
+  margin: 9px 0 0 !important;
+  padding: 10px 16px 10px 50px !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border: 3px solid #000 !important;
+  border-radius: 12px !important;
+  color: #06101c !important;
+  font-size: 15px !important;
+  font-weight: 1000 !important;
+  line-height: 1.08 !important;
+  text-align: center !important;
+  box-shadow:
+    0 4px 0 #000,
+    inset 0 0 0 2px rgba(255, 255, 255, .22) !important;
+  cursor: pointer !important;
+}
+
+#mhurAuthOverlay .mhurProfileCard .mhurV545ProfileAction::before {
+  position: absolute !important;
+  left: 14px !important;
+  top: 50% !important;
+  display: grid !important;
+  width: 27px !important;
+  height: 27px !important;
+  place-items: center !important;
+  border: 2px solid #000 !important;
+  border-radius: 50% !important;
+  background: #07101d !important;
+  color: #ffe000 !important;
+  transform: translateY(-50%) !important;
+}
+
+#mhurAuthOverlay .mhurProfileCard .mhurV545FeedbackButton {
+  background:
+    linear-gradient(100deg, #ff9c00 0%, #ffe000 100%) !important;
+}
+
+#mhurAuthOverlay .mhurProfileCard .mhurV545FeedbackButton::before {
+  content: "💡" !important;
+}
+
+#mhurAuthOverlay .mhurProfileCard .mhurV545ModerationButton {
+  background:
+    linear-gradient(100deg, #18d96b 0%, #19c9de 100%) !important;
+}
+
+#mhurAuthOverlay .mhurProfileCard .mhurV545ModerationButton::before {
+  content: "🛡️" !important;
+}
+
+/* --------------------------------------------------------------------------
+   3. TUTORIEL MODS — UNE SEULE FLÈCHE
+   -------------------------------------------------------------------------- */
+html body .modsTutorial > summary::before,
+html body .modsTutorial > summary::after,
+html body .modsTutorial::before,
+html body .modsTutorial::after {
+  content: none !important;
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+}
+
+html body .modsTutorial > summary::-webkit-details-marker {
+  display: none !important;
+}
+
+html body .modsTutorial > summary.modsTutorialSummaryV545 {
+  list-style: none !important;
+  display: grid !important;
+  grid-template-columns: 33px minmax(0, 1fr) 50px !important;
+  grid-template-areas:
+    "book title arrow"
+    "book hint arrow" !important;
+  min-height: 88px !important;
+  padding: 12px 16px !important;
+  align-items: center !important;
+  column-gap: 12px !important;
+  row-gap: 7px !important;
+  cursor: pointer !important;
+}
+
+html body .modsTutorialBookV545 {
+  grid-area: book !important;
+  display: block !important;
+  width: 28px !important;
+  height: 35px !important;
+  border: 3px solid #000 !important;
+  border-radius: 4px 8px 8px 4px !important;
+  background:
+    linear-gradient(135deg, #39dcf1 0%, #1577b1 100%) !important;
+  box-shadow: 3px 3px 0 #000 !important;
+}
+
+html body .modsTutorialTitleV545 {
+  grid-area: title !important;
+  color: #000 !important;
+  font-size: clamp(19px, 2vw, 24px) !important;
+  font-weight: 1000 !important;
+  line-height: 1.08 !important;
+}
+
+html body .modsTutorialHintV545 {
+  grid-area: hint !important;
+  justify-self: start !important;
+  display: inline-flex !important;
+  padding: 5px 10px !important;
+  border: 2px solid #000 !important;
+  border-radius: 999px !important;
+  background: rgba(255, 255, 255, .94) !important;
+  color: #000 !important;
+  font-size: 12px !important;
+  font-weight: 1000 !important;
+  line-height: 1 !important;
+}
+
+html body .modsTutorialChevronV545 {
+  grid-area: arrow !important;
+  position: relative !important;
+  display: grid !important;
+  width: 47px !important;
+  height: 47px !important;
+  place-items: center !important;
+  border: 3px solid #000 !important;
+  border-radius: 50% !important;
+  background: #07111f !important;
+  box-shadow: 0 4px 0 #000 !important;
+}
+
+html body .modsTutorialChevronV545::after {
+  content: "" !important;
+  display: block !important;
+  width: 14px !important;
+  height: 14px !important;
+  border-right: 4px solid #ffe000 !important;
+  border-bottom: 4px solid #ffe000 !important;
+  transform: translateY(-3px) rotate(45deg) !important;
+  transition: transform .18s ease !important;
+}
+
+html body .modsTutorial[open] .modsTutorialChevronV545::after {
+  transform: translateY(3px) rotate(225deg) !important;
+}
+
+html body .modsTutorial .modsTutorialChevronV537,
+html body .modsTutorial .modsTutorialChevronV540,
+html body .modsTutorial .modsTutorialChevronV544,
+html body .modsTutorial .modsTutorialHintV537,
+html body .modsTutorial .s18ModsHintV10 {
+  display: none !important;
+}
+
+/* --------------------------------------------------------------------------
+   4. GENTLE CRIMINAL — TIER LIST
+   -------------------------------------------------------------------------- */
+html body .mhurTierItem[data-v545-gentle="1"] img {
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+  object-fit: contain !important;
+  object-position: center bottom !important;
+  transform: none !important;
+  filter: none !important;
+}
+
+/* --------------------------------------------------------------------------
+   5. MOBILE — POSITION RÉELLE SOUS LE HEADER
+   La variable est mesurée par JavaScript mais ne modifie jamais le header.
+   Elle ne peut donc pas le faire grandir en boucle.
+   -------------------------------------------------------------------------- */
+@media (max-width: 760px) {
+  :root {
+    --mhur-v545-header-space:
+      calc(118px + max(7px, env(safe-area-inset-top, 0px)));
+  }
+
+  html {
+    scroll-padding-top:
+      calc(var(--mhur-v545-header-space) + 10px) !important;
+  }
+
+  html body {
+    padding-top:
+      var(--mhur-v545-header-space) !important;
+  }
+
+  html body .wrap {
+    margin-top: 0 !important;
+    padding-top: 15px !important;
+  }
+
+  html body .drawer,
+  html body #drawer.drawer {
+    top:
+      var(--mhur-v545-header-space) !important;
+    max-height:
+      calc(100dvh - var(--mhur-v545-header-space)) !important;
+  }
+
+  html body .mhurDrawerBackdropV511,
+  html body .nexusLinksOverlay {
+    inset:
+      var(--mhur-v545-header-space) 0 0 !important;
+  }
+
+  /* Patch Notes sous le header complet. */
+  html body .s18NotesOverlayV10 {
+    position: fixed !important;
+    inset:
+      var(--mhur-v545-header-space) 0 0 !important;
+    padding: 4px !important;
+    align-items: stretch !important;
+    overflow: hidden !important;
+  }
+
+  html body .s18NotesPanelV10 {
+    width: 100% !important;
+    height: 100% !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
+    margin: 0 !important;
+    border-radius: 12px !important;
+  }
+
+  html body .s18NotesBodyV10 {
+    min-height: 0 !important;
+    height: auto !important;
+    max-height: none !important;
+    flex: 1 1 auto !important;
+    overflow: hidden !important;
+  }
+
+  html body .s18NotesBodyV10 > main {
+    min-width: 0 !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+  }
+
+  /*
+    Grand carré pour les portraits de profils/personnages.
+    Les anciens position:absolute, zooms et translations sont neutralisés.
+  */
+  html body .s18PatchCharacterV10 {
+    overflow: visible !important;
+  }
+
+  html body .s18PatchCharacterV10 > header {
+    display: grid !important;
+    grid-template-columns: 142px minmax(0, 1fr) !important;
+    gap: 13px !important;
+    align-items: center !important;
+    padding: 13px !important;
+    overflow: visible !important;
+  }
+
+  html body .s18PatchPortraitV10 {
+    position: relative !important;
+    width: 142px !important;
+    height: 142px !important;
+    min-width: 142px !important;
+    min-height: 142px !important;
+    max-width: 142px !important;
+    max-height: 142px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    overflow: hidden !important;
+    padding: 0 !important;
+  }
+
+  html body .s18PatchPortraitV10 img {
+    position: static !important;
+    inset: auto !important;
+    width: 100% !important;
+    height: 100% !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    object-fit: contain !important;
+    object-position: center bottom !important;
+    transform: none !important;
+    translate: none !important;
+    scale: none !important;
+    filter: none !important;
+  }
+
+  /* Images des compétences également complètes. */
+  html body .s18PatchSkillV10 {
+    grid-template-columns: 96px minmax(0, 1fr) !important;
+    gap: 12px !important;
+  }
+
+  html body .s18PatchSkillV10 > div {
+    width: 96px !important;
+    height: 96px !important;
+    min-width: 96px !important;
+    min-height: 96px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    overflow: hidden !important;
+  }
+
+  html body .s18PatchSkillV10 > div img {
+    position: static !important;
+    width: 100% !important;
+    height: 100% !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
+    margin: 0 !important;
+    object-fit: contain !important;
+    object-position: center center !important;
+    transform: none !important;
+    filter: none !important;
+  }
+
+  /* Boutons Retour sous le header et visibles au défilement. */
+  html body #app > .back,
+  html body .wrap > .back,
+  html body .back {
+    position: sticky !important;
+    top: calc(var(--mhur-v545-header-space) + 6px) !important;
+    z-index: 2147482500 !important;
+  }
+
+  html::-webkit-scrollbar,
+  body::-webkit-scrollbar,
+  *::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+}
+
+@media (max-width: 420px) {
+  html body .s18PatchCharacterV10 > header {
+    grid-template-columns: 122px minmax(0, 1fr) !important;
+    gap: 9px !important;
+  }
+
+  html body .s18PatchPortraitV10 {
+    width: 122px !important;
+    height: 122px !important;
+    min-width: 122px !important;
+    min-height: 122px !important;
+    max-width: 122px !important;
+    max-height: 122px !important;
+  }
+
+  html body .s18PatchCharacterV10 h4 {
+    font-size: 21px !important;
+    overflow-wrap: anywhere !important;
+  }
+}

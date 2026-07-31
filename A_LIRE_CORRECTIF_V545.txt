@@ -1,0 +1,90 @@
+﻿MHUR FRANCE — CORRECTIF V545
+================================
+
+V545 REMPLACE V544
+==================
+
+Le V544 n'est plus chargé après l'installation.
+Cela évite que deux correctifs différents se disputent :
+- la hauteur mobile ;
+- la photo de Gentle ;
+- le tutoriel Mods ;
+- les tableaux d'Alters.
+
+CORRECTIONS
+===========
+
+1. BARRE DE DÉFILEMENT
+   - piste bleu nuit ;
+   - curseur jaune et cyan ;
+   - bordure noire ;
+   - plus de flèches Windows blanches en haut et en bas ;
+   - format plus fin sur téléphone.
+
+2. PROFIL
+   Il reste exactement :
+   - un bouton Suggestion / problème ;
+   - un bouton Centre de modération pour les modérateurs.
+
+   Les boutons portent toutes les anciennes classes nécessaires.
+   Les anciens scripts comprennent donc qu'ils existent déjà et
+   n'en créent plus d'autres.
+
+3. GENTLE CRIMINAL DANS LA TIER LIST
+   Le vrai fichier présent dans tes assets est :
+   assets/gentle_criminal/gentle_criminal_technical/portrait.png
+
+   Le V544 cherchait portrait.webp, qui n'existe pas.
+   V545 utilise maintenant portrait.png et possède un secours
+   avec l'image V531 si le navigateur échoue encore.
+
+4. TUTORIEL MODS
+   - reconstruction du titre ;
+   - une seule flèche à droite ;
+   - suppression physique des anciens boutons qui contiennent
+     uniquement une flèche ;
+   - neutralisation de summary::after.
+
+5. MOBILE
+   Le script mesure le bas réel du header et ajoute 12 pixels.
+   Cette valeur sert uniquement au contenu et aux fenêtres.
+
+   Elle ne sert jamais à changer la hauteur du header :
+   aucune croissance en boucle n'est donc possible.
+
+6. PATCH NOTES MOBILE
+   - portrait : 142 x 142 px ;
+   - 122 x 122 px sur les petits téléphones ;
+   - image entièrement visible ;
+   - aucun zoom ou déplacement ancien ;
+   - images des compétences également entièrement visibles.
+
+7. GENTLE / TABLEAUX D'ALTERS
+   Le rendu accepte toujours :
+   - les tableaux normaux ;
+   - les valeurs françaises / anglaises ;
+   - les colonnes et lignes localisées.
+
+   Les Effets de montée restent en premier.
+
+INSTALLATION
+============
+
+1. Décompresse le ZIP.
+2. Copie son contenu dans le dossier principal mhur-france.
+3. Lance :
+   APPLIQUER_CORRECTIF_V545.bat
+4. Attends :
+   TOUTES LES VERIFICATIONS V545 SONT BONNES
+5. Dans GitHub Desktop :
+   Commit to main
+   Push origin
+6. Sur ordinateur :
+   Ctrl + F5
+7. Sur téléphone :
+   ferme complètement l'onglet,
+   rouvre le site,
+   actualise une fois.
+
+Aucun SQL Supabase n'est nécessaire.
+Ne relance pas V544 après V545.
