@@ -1,0 +1,60 @@
+﻿MHUR FRANCE — CORRECTIF V533
+================================
+
+V533 NE TOUCHE PAS À GENTLE CRIMINAL.
+LE CORRECTIF GENTLE V531 RESTE EN PLACE.
+
+CORRECTIONS
+===========
+
+1. PHOTOS DES PERSONNAGES
+   Les fichiers officiels placent souvent le personnage sur la droite
+   du portrait. Un simple "object-fit: contain" conserve ce décalage.
+
+   V533 analyse les contours de chaque portrait dans le navigateur et
+   calcule automatiquement son centre visuel. Le personnage est ensuite
+   déplacé juste assez pour être centré dans son carré.
+
+   Cette correction s'applique à :
+   - Personnages ;
+   - Costumes ;
+   - T.U.N.I.N.G ;
+   - choix des alters ;
+   - portrait de la fiche détaillée.
+
+2. TAILLES
+   - 4 personnages par ligne sur ordinateur ;
+   - cartes de 230 px de large ;
+   - carré portrait de 230 × 230 px ;
+   - alters : carré de 310 × 310 px ;
+   - fiche détaillée : carré de 230 × 230 px.
+
+3. NAVIGATION ET DÉFILEMENT
+   - Mods vers Personnages : arrivée tout en haut ;
+   - toute nouvelle catégorie : arrivée tout en haut ;
+   - liste Personnages vers une fiche : fiche en haut ;
+   - retour depuis une fiche : retour au même endroit dans la liste ;
+   - retour depuis un alter vers les styles : ancienne position restaurée ;
+   - nouveau rendu de la même vue : position conservée.
+
+4. RAFRAÎCHISSEMENT
+   V533 retire le JavaScript de navigation V532 pour éviter que deux
+   systèmes différents essaient de restaurer le défilement en même temps.
+
+INSTALLATION
+============
+
+1. Décompresse le ZIP.
+2. Copie son contenu dans le dossier principal mhur-france.
+3. Accepte la fusion du dossier public.
+4. Lance APPLIQUER_CORRECTIF_V533.bat.
+5. La fenêtre doit afficher :
+   TOUTES LES VERIFICATIONS V533 SONT BONNES
+6. Dans GitHub Desktop :
+   Commit to main
+   Push origin
+7. Après le déploiement :
+   Ctrl + F5
+
+Pour annuler :
+ANNULER_CORRECTIF_V533.bat

@@ -1,0 +1,48 @@
+﻿MHUR FRANCE — CORRECTIF V534
+================================
+
+V534 APPLIQUE LE RECENTRAGE À TOUS LES STYLES.
+
+AUCUN STYLE PARTICULIER
+=======================
+
+Le correctif ne contient aucune règle réservée à :
+- Full Bullet ;
+- Original ;
+- Assault ;
+- Machine-Gun ;
+- Cluster ;
+- ou un autre nom précis.
+
+Il cible directement :
+
+.styleGrid > .styleCard[data-style] > .styleBanner > img
+
+Toutes les cartes de style créées par le site possèdent data-style.
+Les styles actuels et ceux ajoutés plus tard seront donc traités.
+
+V534 conserve également :
+- 4 personnages par ligne sur ordinateur ;
+- les carrés de portrait ;
+- la navigation intelligente ;
+- le retour au même endroit depuis une fiche ;
+- le haut de page lors d'un changement de catégorie ;
+- le correctif Gentle V531.
+
+INSTALLATION
+============
+
+1. Décompresse le ZIP.
+2. Copie son contenu dans le dossier principal mhur-france.
+3. Accepte la fusion du dossier public.
+4. Lance APPLIQUER_CORRECTIF_V534.bat.
+5. La fenêtre doit afficher :
+   TOUTES LES VERIFICATIONS V534 SONT BONNES
+6. Dans GitHub Desktop :
+   Commit to main
+   Push origin
+7. Après le déploiement :
+   Ctrl + F5
+
+Pour annuler :
+ANNULER_CORRECTIF_V534.bat
