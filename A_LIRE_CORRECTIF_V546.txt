@@ -1,0 +1,108 @@
+﻿MHUR FRANCE — CORRECTIF V546
+================================
+
+V546 REMPLACE V545
+==================
+
+Le V545 est retiré de index.html, car son observateur de profil
+pouvait déplacer les mêmes boutons en boucle et faire planter la page
+au moment de l'ouverture du compte.
+
+CORRECTIONS
+===========
+
+1. TIER LIST / GENTLE CRIMINAL
+   Le rendu est corrigé directement dans :
+   public/js/community-hub.js
+
+   - tous les personnages restent disponibles ;
+   - les styles orphelins peuvent toujours être ajoutés ;
+   - une identité spéciale unique est utilisée pour Gentle :
+     gentle-criminal-technical ;
+   - les anciens identifiants Gentle sont dédoublonnés ;
+   - un seul portrait est affiché ;
+   - chemin utilisé :
+     assets/gentle_criminal/
+     gentle_criminal_technical/portrait.png
+
+2. PROFIL
+   - suppression du script V545 responsable du plantage ;
+   - nettoyage uniquement pendant environ 1,4 seconde après le clic ;
+   - aucune observation permanente du document ;
+   - un seul bouton Suggestion ;
+   - un seul bouton Centre de modération.
+
+3. PATCH NOTES SUR ORDINATEUR
+   La fenêtre devient un vrai panneau Flex :
+   - header et onglets fixes ;
+   - corps qui prend tout l'espace restant ;
+   - liste et contenu possèdent leur propre défilement ;
+   - plus de grande zone vide en bas ;
+   - plus de contenu coupé.
+
+4. MOBILE
+   Le script mesure le bas réel :
+   - du header ;
+   - de la ligne du logo ;
+   - de la ligne des boutons.
+
+   La mesure sert uniquement à placer le contenu et les panneaux.
+   Elle ne change jamais la hauteur du header.
+
+5. PORTRAITS PATCH NOTES
+   - 104 x 104 px sur ordinateur ;
+   - 138 x 138 px sur téléphone ;
+   - 120 x 120 px sur les petits téléphones ;
+   - object-fit contain ;
+   - anciens zooms neutralisés.
+
+6. PORTRAIT DE LA FICHE PERSONNAGE
+   Le portrait montré à côté du nom, du rôle et des PV est agrandi
+   relativement de 5 %, sans modifier les cartes de choix des styles.
+
+7. TUTORIEL MODS
+   - un seul chevron ;
+   - retrait des anciennes pastilles ;
+   - neutralisation de summary::after.
+
+8. TABLEAUX D'ALTERS
+   La protection contre :
+   table.cols.map is not a function
+
+   reste installée. Les Effets de montée restent en premier.
+
+INSTALLATION
+============
+
+1. Décompresse le ZIP.
+2. Copie son contenu dans le dossier principal mhur-france.
+3. Lance :
+   APPLIQUER_CORRECTIF_V546.bat
+4. Attends :
+   TOUTES LES VERIFICATIONS V546 SONT BONNES
+5. Dans GitHub Desktop :
+   Commit to main
+   Push origin
+6. Sur ordinateur :
+   Ctrl + F5
+7. Sur téléphone :
+   ferme complètement l'onglet,
+   rouvre le site,
+   puis actualise une fois.
+
+Aucun SQL Supabase n'est nécessaire.
+Ne relance pas V545 après V546.
+
+
+CORRECTION WINDOWS
+==================
+
+Cette édition corrige l'erreur :
+
+Object doesn't support property or method 'forEach'
+
+Le programme d'installation utilise maintenant une boucle classique
+compatible avec Windows Script Host.
+
+Tu peux relancer directement APPLIQUER_CORRECTIF_V546.bat, même si la
+première tentative s'est arrêtée avec l'erreur forEach.

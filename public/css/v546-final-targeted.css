@@ -1,0 +1,460 @@
+/* ==========================================================================
+   MHUR NEXUS — V546
+   Correctif ciblé :
+   - Patch Notes pleine hauteur sans zone coupée.
+   - Mobile réellement placé sous les deux lignes du header.
+   - Portrait de fiche personnage agrandi de 5 %.
+   - Profil sans boucle ni doublons.
+   - Scrollbars MHUR Nexus.
+   ========================================================================== */
+
+:root {
+  --mhur-v546-header-bottom: 76px;
+}
+
+/* --------------------------------------------------------------------------
+   BARRES DE DÉFILEMENT MHUR NEXUS
+   -------------------------------------------------------------------------- */
+html,
+body,
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #ffe000 #091729;
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar,
+*::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+html::-webkit-scrollbar-track,
+body::-webkit-scrollbar-track,
+*::-webkit-scrollbar-track {
+  background: linear-gradient(180deg, #06101d, #122640, #06101d);
+  border: 2px solid #000;
+}
+
+html::-webkit-scrollbar-thumb,
+body::-webkit-scrollbar-thumb,
+*::-webkit-scrollbar-thumb {
+  min-height: 44px;
+  border: 3px solid #03070d;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #ffe000, #1cc7de, #ffe000);
+}
+
+html::-webkit-scrollbar-thumb:hover,
+body::-webkit-scrollbar-thumb:hover,
+*::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #fff373, #4be7f4, #fff373);
+}
+
+html::-webkit-scrollbar-button,
+body::-webkit-scrollbar-button,
+*::-webkit-scrollbar-button {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+html::-webkit-scrollbar-corner,
+body::-webkit-scrollbar-corner,
+*::-webkit-scrollbar-corner {
+  background: #06101d;
+}
+
+/* --------------------------------------------------------------------------
+   PATCH NOTES — ORDINATEUR ET MOBILE
+   Le JS Saison 18 écrit encore des hauteurs en style inline.
+   Les règles importantes ci-dessous les remplacent.
+   -------------------------------------------------------------------------- */
+html body .s18NotesOverlayV10 {
+  box-sizing: border-box !important;
+  inset: 0 !important;
+  align-items: flex-start !important;
+  justify-content: center !important;
+  padding:
+    calc(var(--mhur-v546-header-bottom) + 8px)
+    12px
+    12px !important;
+  overflow: hidden !important;
+}
+
+html body .s18NotesPanelV10 {
+  box-sizing: border-box !important;
+  display: flex !important;
+  flex-direction: column !important;
+  width: min(1220px, calc(100vw - 24px)) !important;
+  height:
+    calc(100dvh - var(--mhur-v546-header-bottom) - 20px) !important;
+  min-height: 320px !important;
+  max-height:
+    calc(100dvh - var(--mhur-v546-header-bottom) - 20px) !important;
+  margin: 0 auto !important;
+  overflow: hidden !important;
+}
+
+html body .s18NotesPanelV10 > header,
+html body .s18NotesPanelV10 > nav {
+  flex: 0 0 auto !important;
+}
+
+html body .s18NotesBodyV10 {
+  display: grid !important;
+  grid-template-columns: 300px minmax(0, 1fr) !important;
+  flex: 1 1 auto !important;
+  width: 100% !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  overflow: hidden !important;
+}
+
+html body .s18NotesBodyV10 > aside,
+html body .s18NotesBodyV10 > main {
+  min-width: 0 !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  overflow-y: auto !important;
+  overscroll-behavior: contain !important;
+}
+
+html body .s18NotesBodyV10 > main {
+  overflow-x: hidden !important;
+}
+
+/* Portraits et compétences des Patch Notes : carrés plus grands et images entières. */
+html body .s18PatchCharacterV10 > header {
+  display: grid !important;
+  grid-template-columns: 104px minmax(0, 1fr) !important;
+  align-items: center !important;
+  gap: 14px !important;
+  overflow: visible !important;
+}
+
+html body .s18PatchPortraitV10 {
+  position: relative !important;
+  width: 104px !important;
+  height: 104px !important;
+  min-width: 104px !important;
+  min-height: 104px !important;
+  max-width: 104px !important;
+  max-height: 104px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+}
+
+html body .s18PatchPortraitV10 img {
+  position: static !important;
+  inset: auto !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  object-fit: contain !important;
+  object-position: center bottom !important;
+  transform: none !important;
+  translate: none !important;
+  scale: none !important;
+  filter: none !important;
+}
+
+html body .s18PatchSkillV10 > div img {
+  object-fit: contain !important;
+  object-position: center center !important;
+}
+
+/* --------------------------------------------------------------------------
+   FICHE PERSONNAGE / ALTER
+   Ajout relatif de 5 % sans remplacer les anciens translate/transform.
+   -------------------------------------------------------------------------- */
+html body #app .charPanel .charTop > .portrait > img,
+html body #app .charPanel .charTop > .portrait img,
+html body #app .s18CharacterDetailV10 .charTop > .portrait img,
+html body #app .s18CharacterDetailV9 .charTop > .portrait img {
+  scale: 1.05 !important;
+  transform-origin: center center !important;
+}
+
+/* --------------------------------------------------------------------------
+   TIER LIST
+   -------------------------------------------------------------------------- */
+html body .mhurTierItem.mhurTierRole-assault {
+  background: linear-gradient(180deg, #f5df00, #8e7400) !important;
+  border-color: #ffe900 !important;
+}
+
+html body .mhurTierItem.mhurTierRole-strike {
+  background: linear-gradient(180deg, #ef3f59, #8d0a25) !important;
+  border-color: #ff5068 !important;
+}
+
+html body .mhurTierItem.mhurTierRole-speed {
+  background: linear-gradient(180deg, #26d1e5, #08778a) !important;
+  border-color: #32e6f7 !important;
+}
+
+html body .mhurTierItem.mhurTierRole-technical {
+  background: linear-gradient(180deg, #bb33e6, #650786) !important;
+  border-color: #d45cff !important;
+}
+
+html body .mhurTierItem.mhurTierRole-support {
+  background: linear-gradient(180deg, #29db68, #087832) !important;
+  border-color: #45f080 !important;
+}
+
+html body .mhurTierItem[data-v546-gentle="1"] img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain !important;
+  object-position: center bottom !important;
+  transform: none !important;
+}
+
+/* --------------------------------------------------------------------------
+   PROFIL : style de l'unique paire de boutons conservée.
+   -------------------------------------------------------------------------- */
+#mhurAuthOverlay .mhurProfileCard .mhurV546ProfileAction {
+  display: flex !important;
+  width: 100% !important;
+  min-height: 48px !important;
+  margin: 9px 0 0 !important;
+  padding: 10px 15px !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 9px !important;
+  border: 3px solid #000 !important;
+  border-radius: 12px !important;
+  color: #06101c !important;
+  font-weight: 1000 !important;
+  box-shadow: 0 4px 0 #000 !important;
+}
+
+#mhurAuthOverlay .mhurProfileCard .mhurV546FeedbackButton {
+  background: linear-gradient(100deg, #ff9c00, #ffe000) !important;
+}
+
+#mhurAuthOverlay .mhurProfileCard .mhurV546ModerationButton {
+  background: linear-gradient(100deg, #18d96b, #19c9de) !important;
+}
+
+/* --------------------------------------------------------------------------
+   TUTORIEL MODS : une seule flèche.
+   -------------------------------------------------------------------------- */
+html body .modsTutorial > summary::before,
+html body .modsTutorial > summary::after,
+html body .modsTutorial::before,
+html body .modsTutorial::after {
+  content: none !important;
+  display: none !important;
+}
+
+html body .modsTutorial > summary::-webkit-details-marker {
+  display: none !important;
+}
+
+html body .modsTutorial > summary.modsTutorialSummaryV546 {
+  list-style: none !important;
+  display: grid !important;
+  grid-template-columns: 34px minmax(0, 1fr) 50px !important;
+  grid-template-areas:
+    "book title arrow"
+    "book hint arrow" !important;
+  min-height: 88px !important;
+  padding: 12px 16px !important;
+  align-items: center !important;
+  gap: 7px 12px !important;
+  cursor: pointer !important;
+}
+
+html body .modsTutorialBookV546 {
+  grid-area: book !important;
+  width: 28px !important;
+  height: 35px !important;
+  border: 3px solid #000 !important;
+  border-radius: 4px 8px 8px 4px !important;
+  background: linear-gradient(135deg, #39dcf1, #1577b1) !important;
+  box-shadow: 3px 3px 0 #000 !important;
+}
+
+html body .modsTutorialTitleV546 {
+  grid-area: title !important;
+  color: #000 !important;
+  font-size: clamp(19px, 2vw, 24px) !important;
+  font-weight: 1000 !important;
+}
+
+html body .modsTutorialHintV546 {
+  grid-area: hint !important;
+  justify-self: start !important;
+  padding: 5px 10px !important;
+  border: 2px solid #000 !important;
+  border-radius: 999px !important;
+  background: rgba(255, 255, 255, .94) !important;
+  color: #000 !important;
+  font-size: 12px !important;
+  font-weight: 1000 !important;
+}
+
+html body .modsTutorialChevronV546 {
+  grid-area: arrow !important;
+  position: relative !important;
+  display: grid !important;
+  width: 47px !important;
+  height: 47px !important;
+  place-items: center !important;
+  border: 3px solid #000 !important;
+  border-radius: 50% !important;
+  background: #07111f !important;
+  box-shadow: 0 4px 0 #000 !important;
+}
+
+html body .modsTutorialChevronV546::after {
+  content: "" !important;
+  display: block !important;
+  width: 14px !important;
+  height: 14px !important;
+  border-right: 4px solid #ffe000 !important;
+  border-bottom: 4px solid #ffe000 !important;
+  transform: translateY(-3px) rotate(45deg) !important;
+}
+
+html body .modsTutorial[open] .modsTutorialChevronV546::after {
+  transform: translateY(3px) rotate(225deg) !important;
+}
+
+html body .modsTutorial .modsTutorialChevronV537,
+html body .modsTutorial .modsTutorialChevronV540,
+html body .modsTutorial .modsTutorialChevronV544,
+html body .modsTutorial .modsTutorialChevronV545,
+html body .modsTutorial .modsTutorialHintV537,
+html body .modsTutorial .s18ModsHintV10 {
+  display: none !important;
+}
+
+/* --------------------------------------------------------------------------
+   MOBILE
+   -------------------------------------------------------------------------- */
+@media (max-width: 900px) {
+  html body .s18NotesBodyV10 {
+    grid-template-columns: 1fr !important;
+  }
+
+  html body .s18NotesBodyV10 > aside {
+    display: flex !important;
+    flex: 0 0 auto !important;
+    max-height: 118px !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    border-right: 0 !important;
+    border-bottom: 2px solid #2d496e !important;
+  }
+
+  html body .s18NotesBodyV10 > aside > button {
+    min-width: 225px !important;
+    margin: 0 7px 0 0 !important;
+  }
+}
+
+@media (max-width: 760px) {
+  html {
+    scroll-padding-top:
+      calc(var(--mhur-v546-header-bottom) + 10px) !important;
+  }
+
+  html body {
+    padding-top:
+      var(--mhur-v546-header-bottom) !important;
+  }
+
+  html body .wrap {
+    margin-top: 0 !important;
+    padding-top: 15px !important;
+  }
+
+  html body .drawer,
+  html body #drawer.drawer {
+    top:
+      var(--mhur-v546-header-bottom) !important;
+    max-height:
+      calc(100dvh - var(--mhur-v546-header-bottom)) !important;
+  }
+
+  html body .mhurDrawerBackdropV511,
+  html body .nexusLinksOverlay {
+    inset:
+      var(--mhur-v546-header-bottom) 0 0 !important;
+  }
+
+  html body .s18NotesOverlayV10 {
+    padding:
+      calc(var(--mhur-v546-header-bottom) + 4px)
+      4px
+      4px !important;
+  }
+
+  html body .s18NotesPanelV10 {
+    width: calc(100vw - 8px) !important;
+    height:
+      calc(100dvh - var(--mhur-v546-header-bottom) - 8px) !important;
+    max-height:
+      calc(100dvh - var(--mhur-v546-header-bottom) - 8px) !important;
+    border-radius: 11px !important;
+  }
+
+  html body .s18PatchCharacterV10 > header {
+    grid-template-columns: 138px minmax(0, 1fr) !important;
+    gap: 11px !important;
+  }
+
+  html body .s18PatchPortraitV10 {
+    width: 138px !important;
+    height: 138px !important;
+    min-width: 138px !important;
+    min-height: 138px !important;
+    max-width: 138px !important;
+    max-height: 138px !important;
+  }
+
+  html body .s18PatchSkillV10 {
+    grid-template-columns: 92px minmax(0, 1fr) !important;
+  }
+
+  html body .s18PatchSkillV10 > div {
+    width: 92px !important;
+    height: 92px !important;
+  }
+
+  html body #app > .back,
+  html body .wrap > .back,
+  html body .back {
+    position: sticky !important;
+    top: calc(var(--mhur-v546-header-bottom) + 6px) !important;
+    z-index: 2147482500 !important;
+  }
+}
+
+@media (max-width: 420px) {
+  html body .s18PatchCharacterV10 > header {
+    grid-template-columns: 120px minmax(0, 1fr) !important;
+  }
+
+  html body .s18PatchPortraitV10 {
+    width: 120px !important;
+    height: 120px !important;
+    min-width: 120px !important;
+    min-height: 120px !important;
+    max-width: 120px !important;
+    max-height: 120px !important;
+  }
+}
