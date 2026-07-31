@@ -1,0 +1,44 @@
+/* MHUR France — V531 : Gentle Criminal + chargement stable uniquement */
+
+/* Carte originale de home.js. */
+.homeV296 .discountCardV296.v526-gentle-card > img,
+.homeV296 .discountCardV296[data-discount="gentle_criminal"] > img {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain !important;
+  object-position: center bottom !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  transform: none !important;
+  filter: none !important;
+  background:
+    radial-gradient(circle at 50% 42%, #7b3ca0 0%, #391b50 58%, #11131a 100%)
+    !important;
+}
+
+/* Carte éventuellement produite par l'ancien module Saison 18. */
+.homeV296
+  .discountCardV296[data-discount="gentle_criminal"]
+  .s18DiscountArtV19 {
+  overflow: hidden !important;
+  background:
+    radial-gradient(circle at 50% 42%, #7b3ca0 0%, #391b50 58%, #11131a 100%)
+    !important;
+}
+
+.homeV296
+  .discountCardV296[data-discount="gentle_criminal"]
+  .s18DiscountArtV19
+  > img {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain !important;
+  object-position: center bottom !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  transform: none !important;
+  filter: none !important;
+  background: transparent !important;
+}

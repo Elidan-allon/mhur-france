@@ -1,0 +1,54 @@
+﻿MHUR FRANCE — CORRECTIF V531
+================================
+
+CE CORRECTIF REGLE UNIQUEMENT :
+
+1. GENTLE CRIMINAL
+   La vraie cause était dans public/js/season18-fixes.js :
+   le module Saison 18 reconstruisait la grille des réductions et
+   choisissait l'ancien portrait gentle_s18_portrait.webp.
+
+   V531 force partout :
+   assets/home/discounts/gentle_criminal_v531.png?v=531
+
+   Par sécurité, les deux anciens fichiers suivants sont également
+   remplacés par le bon portrait :
+   - assets/home/discounts/gentle_criminal.webp
+   - assets/home/season18/gentle_s18_portrait.webp
+
+2. LES 4 RECHARGEMENTS VISUELS
+   Le bloc V525 intégré dans index.html appelait layout/render après
+   le premier affichage, puis lançait encore plusieurs installations.
+
+   V526 et V530 utilisaient aussi plusieurs setTimeout et
+   MutationObserver.
+
+   V531 retire le bloc V525 et remplace ces systèmes par un seul
+   passage après le vrai render, sans recharger la page.
+
+INSTALLATION
+============
+
+1. Décompresse le ZIP.
+2. Copie son contenu dans le dossier principal mhur-france.
+3. Accepte la fusion du dossier public.
+4. Lance APPLIQUER_CORRECTIF_V531.bat.
+5. La fenêtre doit afficher :
+   TOUTES LES VERIFICATIONS V531 SONT BONNES
+6. Dans GitHub Desktop :
+   Commit to main
+   Push origin
+7. Après le déploiement :
+   Ctrl + F5
+
+Le programme utilise cscript, inclus dans Windows. Il ne dépend pas
+de Python et n'utilise pas le fichier PowerShell qui avait échoué.
+
+SAUVEGARDES
+===========
+
+Les fichiers modifiés reçoivent une sauvegarde :
+.nom-du-fichier.avant-v531.bak
+
+Pour annuler :
+ANNULER_CORRECTIF_V531.bat

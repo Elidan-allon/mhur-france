@@ -5,7 +5,8 @@
 (() => {
   "use strict";
 
-  const GENTLE_IMAGE = "/assets/home/discounts/gentle_criminal_v531.png?v=531";
+  const GENTLE_IMAGE =
+    "/assets/gentle_criminal/gentle_criminal_technical/portrait.png?v=529";
 
   const ROLE_KEYS = ["assault", "strike", "speed", "technical", "support"];
   const ROLE_CLASSES = ROLE_KEYS.map(role => `v526-role-${role}`);
@@ -159,7 +160,7 @@
         if (name === "gentle criminal") {
           card.classList.add("v526-gentle-card");
 
-          const image = card.querySelector(":scope > img, .s18DiscountArtV19 > img");
+          const image = card.querySelector(":scope > img");
           if (image instanceof HTMLImageElement) {
             image.removeAttribute("srcset");
             image.removeAttribute("sizes");
@@ -256,25 +257,41 @@
     decorateBuildStyleTabs();
   }
 
-  function installStableV531() {
+  let scheduled = false;
+
+  function scheduleApply() {
+    if (scheduled) return;
+    scheduled = true;
+
+    requestAnimationFrame(() => {
+      scheduled = false;
+      applyEverything();
+    });
+  }
+
+  function install() {
     applyEverything();
-    if (typeof window.render === "function" && !window.render.__v531Decorated) {
-      const originalRender = window.render;
-      const wrappedRender = function() {
-        const result = originalRender.apply(this, arguments);
-        requestAnimationFrame(applyEverything);
-        return result;
-      };
-      wrappedRender.__v531Decorated = true;
-      window.render = wrappedRender;
-      try { render = wrappedRender; } catch (_) {}
+
+    if (!document.documentElement.dataset.v526ObserverInstalled) {
+      document.documentElement.dataset.v526ObserverInstalled = "1";
+
+      const observer = new MutationObserver(scheduleApply);
+      observer.observe(document.body || document.documentElement, {
+        childList: true,
+        subtree: true
+      });
     }
-    console.info("[MHUR] Correctif stable V531 actif.");
+
+    console.info("[MHUR] Correctif V526 actif.");
   }
+
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", installStableV531, { once: true });
+    document.addEventListener("DOMContentLoaded", install, { once: true });
   } else {
-    installStableV531();
+    install();
   }
-  window.addEventListener("mhur:languagechange", () => requestAnimationFrame(applyEverything));
+
+  setTimeout(install, 150);
+  setTimeout(install, 800);
+  setTimeout(install, 1800);
 })();

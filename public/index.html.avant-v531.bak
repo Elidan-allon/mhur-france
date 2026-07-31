@@ -826,7 +826,7 @@
 <link rel="stylesheet" href="css/season18-fixes.css?v=1785403460136436800">
 <link rel="stylesheet" href="css/v526-ui-final.css?v=526">
 <link rel="stylesheet" href="css/v527-compact-costume-tuning-detail.css?v=527">
-<link rel="stylesheet" href="css/v531-gentle-stable.css?v=531">
+<link rel="stylesheet" href="css/v530-gentle-only.css?v=530">
 </head>
 <body>
 
@@ -3191,7 +3191,7 @@ function gameSlotBand(ct,color,kind,side,index){
 function render(){const app=document.getElementById('app');if(page==='home')app.innerHTML=home();if(page==='characters')app.innerHTML=charactersPage();if(page==='tunings')app.innerHTML=tuningsPage();if(page==='costumes')app.innerHTML=costumesPage();if(page==='builds')app.innerHTML=buildsPage();if(!window.__keepScroll){window.scrollTo({top:0,left:0,behavior:'auto'})}window.__keepScroll=false;queueMicrotask(()=>{window.MHUR_ROUTER?.syncFromState?.('replace');window.MHUR_SEO?.sync?.()})}
 </script>
 <!-- V312 : les données et le véritable accueil sont chargés avant le tout premier rendu. -->
-<script src="data/home_data.js?v=531"></script>
+<script src="data/home_data.js?v=529"></script>
 <script src="js/home.js?v=520"></script>
 <script src="data/local_assets_index.js?v=1785403460136436800"></script>
 <script src="data/mhur_database_assets.js?v=29000"></script>
@@ -6985,9 +6985,603 @@ body .costumeTile > img,
 <!-- Season 18 v14 compatibility layer. -->
 
 <!-- Season 18 v14 compatibility layer. -->
-<script src="js/season18-fixes.js?v=531"></script>
+<script src="js/season18-fixes.js?v=1785403460136436800"></script>
 <script src="js/season18-v12.js?v=1785403460136436800"></script>
 
-<script src="js/v526-ui-final.js?v=531"></script>
+<!-- MHUR_V525_START -->
+<style id="mhur-v525-final">
+/*
+  MHUR France — V525
+  Correctif final ciblé :
+  - mêmes dimensions pour toutes les cartes personnages ;
+  - même hauteur en haut et en bas ;
+  - portraits entiers, centrés et posés en bas ;
+  - mêmes dimensions pour toutes les cartes d'alters ;
+  - Gentle Criminal utilise le portrait V525 intégré.
+*/
+
+:root {
+  --v525-assault: var(--assault, #fff000);
+  --v525-strike: var(--attack, #ff1119);
+  --v525-speed: var(--rapid, #19c9de);
+  --v525-technical: var(--technical, #c61bf4);
+  --v525-support: var(--support, #11ef22);
+}
+
+.v525-role-assault { --v525-role-bg: var(--v525-assault); }
+.v525-role-strike { --v525-role-bg: var(--v525-strike); }
+.v525-role-speed { --v525-role-bg: var(--v525-speed); }
+.v525-role-technical { --v525-role-bg: var(--v525-technical); }
+.v525-role-support { --v525-role-bg: var(--v525-support); }
+
+/* =========================================================
+   LISTE DES PERSONNAGES
+   La partie haute est carrée. La partie basse a une hauteur fixe.
+   Toutes les cartes finissent donc exactement au même niveau.
+   ========================================================= */
+#app .pageFrame.charactersFrame .cardsGrid {
+  align-items: start !important;
+}
+
+#app .pageFrame.charactersFrame .cardsGrid > .card.characterMode {
+  display: grid !important;
+  grid-template-rows: auto 370px !important;
+  align-self: start !important;
+  width: 100% !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  overflow: hidden !important;
+}
+
+#app .pageFrame.charactersFrame .cardsGrid > .card.characterMode > .thumb {
+  position: relative !important;
+  display: flex !important;
+  align-items: flex-end !important;
+  justify-content: center !important;
+  width: 100% !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  aspect-ratio: 1 / 1 !important;
+  overflow: hidden !important;
+  background:
+    radial-gradient(
+      circle at 50% 45%,
+      color-mix(in srgb, var(--v525-role-bg, #344c70) 72%, white 28%) 0%,
+      var(--v525-role-bg, #344c70) 64%,
+      color-mix(in srgb, var(--v525-role-bg, #344c70) 68%, #07101f 32%) 100%
+    ) !important;
+}
+
+#app .pageFrame.charactersFrame .cardsGrid > .card.characterMode > .thumb > img {
+  position: static !important;
+  inset: auto !important;
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  max-width: none !important;
+  max-height: none !important;
+  margin: 0 auto !important;
+  padding: 0 !important;
+  object-fit: contain !important;
+  object-position: 50% 100% !important;
+  transform: none !important;
+  transform-origin: center bottom !important;
+  scale: 1 !important;
+  translate: none !important;
+  filter: none !important;
+}
+
+#app .pageFrame.charactersFrame .cardsGrid > .card.characterMode > .cardBody {
+  display: flex !important;
+  flex-direction: column !important;
+  width: 100% !important;
+  height: 370px !important;
+  min-height: 370px !important;
+  max-height: 370px !important;
+  padding: 18px !important;
+  overflow: hidden !important;
+  background: #0f1928 !important;
+}
+
+#app .pageFrame.charactersFrame .cardsGrid > .card.characterMode > .cardBody > h3 {
+  display: flex !important;
+  align-items: flex-start !important;
+  flex: 0 0 54px !important;
+  min-height: 54px !important;
+  max-height: 54px !important;
+  margin: 0 0 16px !important;
+  overflow: hidden !important;
+  font-size: 24px !important;
+  line-height: 1.08 !important;
+}
+
+#app .pageFrame.charactersFrame .cardsGrid > .card.characterMode > .cardBody > .badges {
+  display: flex !important;
+  align-items: flex-start !important;
+  align-content: flex-start !important;
+  flex: 0 0 auto !important;
+  gap: 10px !important;
+  flex-wrap: wrap !important;
+  overflow: hidden !important;
+}
+
+#app .pageFrame.charactersFrame .cardsGrid > .card.characterMode > .cardBody > p {
+  display: block !important;
+  flex: 0 0 42px !important;
+  min-height: 42px !important;
+  max-height: 42px !important;
+  margin: auto 0 0 !important;
+  overflow: hidden !important;
+  color: #c9d7ee !important;
+}
+
+/* Annule explicitement les anciens décalages particuliers. */
+#app .pageFrame.charactersFrame .card[data-char="midoriya"] .thumb img,
+#app .pageFrame.charactersFrame .card[data-char="midoriya_ofa"] .thumb img,
+#app .pageFrame.charactersFrame .card[data-char="bakugo"] .thumb img,
+#app .pageFrame.charactersFrame .card[data-char="ochaco"] .thumb img,
+#app .pageFrame.charactersFrame .card[data-char="gentle_criminal"] .thumb img {
+  object-position: 50% 100% !important;
+  transform: none !important;
+}
+
+/* =========================================================
+   INTERFACE DES ALTERS
+   Même largeur, même hauteur d'image, même hauteur du bas.
+   ========================================================= */
+#app .styleGrid {
+  display: flex !important;
+  align-items: flex-start !important;
+  justify-content: flex-start !important;
+  flex-wrap: wrap !important;
+  gap: 20px !important;
+}
+
+#app .styleGrid > .styleCard[data-style] {
+  display: grid !important;
+  grid-template-rows: 322px 120px !important;
+  align-self: flex-start !important;
+  width: 330px !important;
+  min-width: 330px !important;
+  max-width: 330px !important;
+  height: 450px !important;
+  min-height: 450px !important;
+  max-height: 450px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  border: 4px solid #000 !important;
+  border-radius: 18px !important;
+  background: #0f1928 !important;
+  color: #fff !important;
+  box-shadow: 0 5px 0 #000 !important;
+}
+
+#app .styleGrid > .styleCard[data-style] > .styleBanner {
+  position: relative !important;
+  display: flex !important;
+  align-items: flex-end !important;
+  justify-content: center !important;
+  width: 100% !important;
+  height: 322px !important;
+  min-width: 0 !important;
+  min-height: 322px !important;
+  max-width: none !important;
+  max-height: 322px !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  background:
+    radial-gradient(
+      circle at 50% 45%,
+      color-mix(in srgb, var(--v525-role-bg, #344c70) 72%, white 28%) 0%,
+      var(--v525-role-bg, #344c70) 64%,
+      color-mix(in srgb, var(--v525-role-bg, #344c70) 68%, #07101f 32%) 100%
+    ) !important;
+}
+
+#app .styleGrid > .styleCard[data-style] > .styleBanner > img {
+  position: static !important;
+  inset: auto !important;
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  max-width: none !important;
+  max-height: none !important;
+  margin: 0 auto !important;
+  padding: 0 !important;
+  object-fit: contain !important;
+  object-position: 50% 100% !important;
+  transform: none !important;
+  transform-origin: center bottom !important;
+  scale: 1 !important;
+  translate: none !important;
+  filter: none !important;
+}
+
+#app .styleGrid > .styleCard[data-style] > .styleInfo {
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  width: 100% !important;
+  height: 120px !important;
+  min-height: 120px !important;
+  max-height: 120px !important;
+  padding: 10px 12px 12px !important;
+  overflow: hidden !important;
+  background: #0f1928 !important;
+  color: #fff !important;
+  text-align: center !important;
+}
+
+#app .styleGrid > .styleCard[data-style] > .styleInfo > h2 {
+  display: block !important;
+  flex: 0 0 auto !important;
+  min-height: 0 !important;
+  margin: 0 0 8px !important;
+  overflow: hidden !important;
+  color: #fff !important;
+  font-size: 24px !important;
+  font-weight: 950 !important;
+  line-height: 1.06 !important;
+  text-align: center !important;
+}
+
+#app .styleGrid > .styleCard[data-style] > .styleInfo > .badges {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex-wrap: nowrap !important;
+  gap: 7px !important;
+  overflow: hidden !important;
+}
+
+#app .styleGrid > .styleCard[data-style] > .styleInfo .badge {
+  min-height: 42px !important;
+  padding: 5px 10px !important;
+  gap: 7px !important;
+  border-radius: 14px !important;
+  font-size: 15px !important;
+}
+
+#app .styleGrid > .styleCard[data-style] > .styleInfo .roleIcon {
+  width: 30px !important;
+  height: 30px !important;
+  flex: 0 0 30px !important;
+}
+
+/* =========================================================
+   GENTLE CRIMINAL — ACCUEIL / RÉDUCTIONS
+   ========================================================= */
+.homeV296 .discountCardV296.v525-gentle-discount > img {
+  object-fit: contain !important;
+  object-position: 50% 100% !important;
+  transform: none !important;
+  padding: 2px 5px 0 !important;
+  background: radial-gradient(circle at 50% 42%, #7a399a 0%, #351b51 58%, #111218 100%) !important;
+}
+
+@media (max-width: 760px) {
+  #app .styleGrid {
+    justify-content: center !important;
+    gap: 14px !important;
+  }
+
+  #app .styleGrid > .styleCard[data-style] {
+    grid-template-rows: auto 120px !important;
+    width: calc(100vw - 44px) !important;
+    min-width: 0 !important;
+    max-width: 330px !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+  }
+
+  #app .styleGrid > .styleCard[data-style] > .styleBanner {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    aspect-ratio: 1 / 1 !important;
+  }
+}
+
+</style>
+<script id="mhur-v525-final-js">
+(() => {
+  "use strict";
+
+  const VERSION = "525";
+  const GENTLE_ID = "gentle_criminal";
+  const GENTLE_STYLE = "gentle_criminal_technical";
+  const GENTLE_OLD_STYLE = "gentle_criminal_support";
+  const GENTLE_IMAGE =
+    "/assets/gentle_criminal/gentle_criminal_technical/portrait.png?v=529";
+
+  const ROLE_KEYS = ["assault", "strike", "speed", "technical", "support"];
+  const ROLE_CLASSES = ROLE_KEYS.map(role => `v525-role-${role}`);
+
+  function getStyles() {
+    try {
+      return typeof styles !== "undefined" && styles ? styles : null;
+    } catch (_) {
+      return null;
+    }
+  }
+
+  function getCharacters() {
+    try {
+      return typeof characters !== "undefined" && Array.isArray(characters)
+        ? characters
+        : null;
+    } catch (_) {
+      return null;
+    }
+  }
+
+  function getExactData() {
+    const element = document.getElementById("ultrarumble-exact-data");
+    if (!element) return null;
+
+    try {
+      return JSON.parse(element.textContent || "{}");
+    } catch (_) {
+      return null;
+    }
+  }
+
+  function normalize(value) {
+    return String(value || "")
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, " ")
+      .trim();
+  }
+
+  function styleRole(styleKey) {
+    const role = getStyles()?.[styleKey]?.role;
+    return ROLE_KEYS.includes(String(role)) ? String(role) : "";
+  }
+
+  function applyRoleClass(element, role) {
+    if (!(element instanceof HTMLElement)) return;
+
+    for (const className of ROLE_CLASSES) {
+      element.classList.remove(className);
+    }
+
+    if (ROLE_KEYS.includes(role)) {
+      element.classList.add(`v525-role-${role}`);
+    }
+  }
+
+  function patchGentleData() {
+    const allStyles = getStyles();
+    const allCharacters = getCharacters();
+    const exactData = getExactData();
+
+    const generated =
+      exactData?.generated_styles?.[GENTLE_STYLE] ||
+      allStyles?.[GENTLE_STYLE] ||
+      allStyles?.[GENTLE_OLD_STYLE] ||
+      {};
+
+    const correctedStyle = {
+      ...generated,
+      name: generated.name || { fr: "Original", en: "Original" },
+      role: "technical",
+      portrait: GENTLE_IMAGE
+    };
+
+    if (allStyles) {
+      allStyles[GENTLE_STYLE] = correctedStyle;
+
+      /*
+        L'ancien identifiant peut encore être appelé par un vieux lien.
+        Il pointe lui aussi vers la fiche correcte, sans rester en Soutien.
+      */
+      allStyles[GENTLE_OLD_STYLE] = correctedStyle;
+    }
+
+    if (allCharacters) {
+      let gentle = allCharacters.find(character => character?.id === GENTLE_ID);
+
+      if (!gentle) {
+        gentle = {
+          id: GENTLE_ID,
+          name: "Gentle Criminal",
+          side: "villain",
+          portrait: GENTLE_IMAGE,
+          styles: [GENTLE_STYLE]
+        };
+        allCharacters.push(gentle);
+      } else {
+        gentle.name = "Gentle Criminal";
+        gentle.side = "villain";
+        gentle.portrait = GENTLE_IMAGE;
+        gentle.styles = [GENTLE_STYLE];
+      }
+    }
+
+    const discounts = window.MHUR_HOME_DATA?.discounts;
+    if (Array.isArray(discounts)) {
+      const gentleDiscount = discounts.find(
+        item => normalize(item?.name) === "gentle criminal"
+      );
+
+      if (gentleDiscount) {
+        gentleDiscount.image = GENTLE_IMAGE;
+      }
+    }
+  }
+
+  function forceImage(image, source) {
+    if (!(image instanceof HTMLImageElement)) return;
+
+    image.removeAttribute("srcset");
+    image.removeAttribute("sizes");
+
+    if (image.getAttribute("src") !== source) {
+      image.setAttribute("src", source);
+    }
+  }
+
+  function decorateCharacterCards() {
+    const allCharacters = getCharacters() || [];
+
+    document
+      .querySelectorAll(
+        "#app .pageFrame.charactersFrame .card.characterMode[data-char]"
+      )
+      .forEach(card => {
+        const character = allCharacters.find(
+          entry => entry?.id === card.dataset.char
+        );
+        const firstStyle = character?.styles?.[0];
+
+        applyRoleClass(card, styleRole(firstStyle));
+
+        if (card.dataset.char === GENTLE_ID) {
+          forceImage(card.querySelector(".thumb img"), GENTLE_IMAGE);
+        }
+      });
+  }
+
+  function decorateStyleCards() {
+    document
+      .querySelectorAll("#app .styleGrid > .styleCard[data-style]")
+      .forEach(card => {
+        const styleKey = card.dataset.style || "";
+        const isGentle =
+          styleKey === GENTLE_STYLE ||
+          styleKey === GENTLE_OLD_STYLE ||
+          normalize(card.textContent).includes("gentle criminal");
+
+        applyRoleClass(
+          card,
+          isGentle ? "technical" : styleRole(styleKey)
+        );
+
+        if (isGentle) {
+          card.dataset.style = GENTLE_STYLE;
+          forceImage(card.querySelector(".styleBanner img"), GENTLE_IMAGE);
+        }
+      });
+  }
+
+  function decorateGentleDiscount() {
+    document
+      .querySelectorAll(".discountGridV296 .discountCardV296")
+      .forEach(card => {
+        const name = normalize(
+          card.querySelector(":scope > b")?.textContent || card.textContent
+        );
+
+        if (name !== "gentle criminal") return;
+
+        card.classList.add("v525-gentle-discount");
+        forceImage(card.querySelector(":scope > img"), GENTLE_IMAGE);
+      });
+  }
+
+  function forceAllGentleImages() {
+    document.querySelectorAll("img").forEach(image => {
+      const source = String(image.getAttribute("src") || "").toLowerCase();
+      const isOldGentle =
+        source.includes("gentle_criminal_support") ||
+        source.includes("gentle_criminal_v52") ||
+        source.includes("home/discounts/gentle_criminal");
+
+      if (isOldGentle) {
+        forceImage(image, GENTLE_IMAGE);
+      }
+    });
+  }
+
+  function applyDomFixes() {
+    decorateCharacterCards();
+    decorateStyleCards();
+    decorateGentleDiscount();
+    forceAllGentleImages();
+  }
+
+  function rerenderOnce() {
+    if (window.__MHUR_V525_RERENDERED__) return;
+    window.__MHUR_V525_RERENDERED__ = true;
+
+    try {
+      if (typeof layout === "function") {
+        layout();
+        return;
+      }
+
+      if (typeof render === "function") {
+        render();
+      }
+    } catch (error) {
+      console.warn("[MHUR V525] Nouveau rendu impossible :", error);
+    }
+  }
+
+  let scheduled = false;
+
+  function scheduleDomFixes() {
+    if (scheduled) return;
+    scheduled = true;
+
+    requestAnimationFrame(() => {
+      scheduled = false;
+      applyDomFixes();
+    });
+  }
+
+  function install() {
+    patchGentleData();
+    applyDomFixes();
+
+    if (!document.documentElement.dataset.mhurV525Observer) {
+      document.documentElement.dataset.mhurV525Observer = "1";
+
+      const observer = new MutationObserver(scheduleDomFixes);
+      observer.observe(document.body || document.documentElement, {
+        childList: true,
+        subtree: true
+      });
+    }
+
+    console.info("[MHUR] Correctif V525 actif.");
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener(
+      "DOMContentLoaded",
+      () => {
+        install();
+        setTimeout(rerenderOnce, 60);
+      },
+      { once: true }
+    );
+  } else {
+    install();
+    setTimeout(rerenderOnce, 60);
+  }
+
+  setTimeout(install, 250);
+  setTimeout(install, 900);
+  setTimeout(install, 1800);
+})();
+
+</script>
+<!-- MHUR_V525_END -->
+<script src="js/v526-ui-final.js?v=529"></script>
+<script src="js/v530-gentle-only.js?v=530"></script>
 </body>
 </html>

@@ -1301,14 +1301,13 @@ function detectRole(text){
 }
 function discountPortraitV35(name,image){
   const key=NORM(name);
-  if(key==='gentle_criminal'){
-    const fixed=absAsset('assets/home/discounts/gentle_criminal_v531.png?v=531');
-    return {src:fixed,fallback:fixed};
-  }
   const styleKey=DISCOUNT_STYLE_KEYS[key]||'';
   const dbPath=styleKey ? window.MHUR_DATABASE_ASSETS?.styles?.[styleKey]?.portrait : '';
   const fallback=DISCOUNT_FALLBACK[key]||image||'';
-  return {src:absAsset(dbPath||fallback),fallback:absAsset(fallback)};
+  return {
+    src: absAsset(dbPath||fallback),
+    fallback: absAsset(fallback)
+  };
 }
 function renderDiscountCardV35(item){
   const art=discountPortraitV35(item?.name,item?.image);
@@ -1378,12 +1377,20 @@ function decorateMiniPortraitsV35(root=document){
 
 function runV35(){
   wrapHomeDashboardV35();
+  patchDiscountGridV35();
   decorateMiniPortraitsV35(document);
 }
+
 if(document.readyState==='loading'){
-  document.addEventListener('DOMContentLoaded',()=>requestAnimationFrame(runV35),{once:true});
+  document.addEventListener('DOMContentLoaded',()=>setTimeout(runV35,60),{once:true});
 }else{
-  requestAnimationFrame(runV35);
+  setTimeout(runV35,60);
 }
-window.addEventListener('mhur:languagechange',()=>requestAnimationFrame(runV35));
+window.addEventListener('load',()=>setTimeout(runV35,120));
+window.addEventListener('mhur:languagechange',()=>setTimeout(runV35,50));
+window.addEventListener('mhur-auth-change',()=>setTimeout(runV35,50));
+window.addEventListener('mhur-role-change',()=>setTimeout(runV35,50));
+const obs=new MutationObserver(()=>setTimeout(runV35,10));
+obs.observe(document.documentElement,{childList:true,subtree:true});
+
 })();
