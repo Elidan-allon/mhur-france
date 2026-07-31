@@ -832,7 +832,6 @@
 <script id="mhur-v540-boot">document.documentElement.classList.add("mhurV540Boot");setTimeout(function(){document.documentElement.classList.remove("mhurV540Boot")},2500);</script>
 <link rel="stylesheet" href="css/v540-final-ui.css?v=540">
 <link rel="stylesheet" href="css/v542-tier-notes-mobile.css?v=542">
-<link rel="stylesheet" href="css/v543-moderation-evidence.css?v=543">
 </head>
 <body>
 
@@ -7100,6 +7099,5 @@ body .costumeTile > img,
 <script src="js/v539-mobile-admin.js?v=539"></script>
 <script src="js/v540-final-stability.js?v=540"></script>
 <script src="js/v542-tier-notes-mobile.js?v=542"></script>
-<script src="js/v543-moderation-evidence.js?v=543"></script>
 </body>
 </html>

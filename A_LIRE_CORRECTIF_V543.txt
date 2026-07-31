@@ -1,0 +1,73 @@
+﻿MHUR FRANCE — CORRECTIF V543
+================================
+
+CE QUI CHANGE
+=============
+
+SIGNALER UN MOD
+- nom et profil de la personne ayant signalé ;
+- raison et message complet ;
+- mod concerné avec son image et son titre ;
+- jusqu'à trois photos de preuve ;
+- Voir le mod ;
+- Supprimer définitivement le mod ;
+- Ne rien faire et supprimer seulement le signalement ;
+- bouton Retour au centre de modération.
+
+SIGNALER UN BUILD
+- mêmes informations et mêmes possibilités ;
+- Voir le build ;
+- Supprimer définitivement le build ;
+- supprimer seulement le signalement.
+
+SUGGESTIONS / PROBLÈMES
+- jusqu'à trois photos ;
+- le modérateur peut écrire une réponse ;
+- la personne retrouve la réponse dans
+  Profil > Suggestion / problème > Mes messages.
+
+SUPPRESSIONS DE COMPTE
+- la réponse de Supabase est normalisée avant affichage ;
+- l'erreur "rows.map is not a function" ne bloque plus la page ;
+- accepter, refuser et copier l'identifiant.
+
+MISE EN PAGE
+- le centre s'ouvre sous le header ;
+- chaque sous-rubrique possède un bouton Retour fixe.
+
+INSTALLATION
+============
+
+1. Décompresse le ZIP.
+2. Copie son contenu dans le dossier principal mhur-france.
+3. Lance APPLIQUER_CORRECTIF_V543.bat.
+4. Attends :
+   TOUTES LES VERIFICATIONS V543 SONT BONNES
+
+5. Ouvre Supabase > SQL Editor.
+6. Exécute entièrement :
+   configuration/A_EXECUTER_DANS_SUPABASE_V543.sql
+
+   Cette étape est obligatoire. Elle ajoute :
+   - les colonnes des photos ;
+   - le stockage privé ;
+   - les réponses de modération ;
+   - les actions sécurisées de suppression.
+
+7. Dans GitHub Desktop :
+   Commit to main
+   Push origin
+
+8. Recharge avec Ctrl + F5.
+   Sur téléphone, ferme l'onglet puis rouvre le site.
+
+LIMITES
+=======
+
+- trois images maximum ;
+- JPEG, PNG, WEBP ou GIF ;
+- 5 Mo maximum par image ;
+- les preuves sont stockées dans un bucket privé ;
+- seuls leur auteur et la modération peuvent les lire.
+
+Ne relance pas un ancien correctif de modération après V543.
