@@ -1,0 +1,309 @@
+/* ==========================================================================
+   MHUR NEXUS — V544
+   Gentle, Tier List, tutoriel Mods et mobile.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Tutoriel Mods : un seul chevron.
+   Le vieux CSS Saison 18 créait déjà summary::after.
+   -------------------------------------------------------------------------- */
+html body .modsTutorial > summary::before,
+html body .modsTutorial > summary::after,
+html body .modsTutorial::before,
+html body .modsTutorial::after {
+  content: none !important;
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  border: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+html body .modsTutorial > summary::-webkit-details-marker {
+  display: none !important;
+}
+
+html body .modsTutorial > summary.modsTutorialSummaryV544 {
+  list-style: none !important;
+  display: grid !important;
+  grid-template-columns: 32px minmax(0, 1fr) 50px !important;
+  grid-template-areas:
+    "book title arrow"
+    "book hint arrow" !important;
+  align-items: center !important;
+  column-gap: 12px !important;
+  row-gap: 7px !important;
+  min-height: 88px !important;
+  padding: 12px 16px !important;
+  cursor: pointer !important;
+}
+
+html body .modsTutorialBookV544 {
+  grid-area: book !important;
+  display: block !important;
+  width: 27px !important;
+  height: 34px !important;
+  border: 3px solid #000 !important;
+  border-radius: 4px 8px 8px 4px !important;
+  background: linear-gradient(135deg, #28c8f1, #1579af) !important;
+  box-shadow: 3px 3px 0 #000 !important;
+}
+
+html body .modsTutorialTitleV544 {
+  grid-area: title !important;
+  color: #000 !important;
+  font-size: clamp(18px, 2vw, 23px) !important;
+  font-weight: 1000 !important;
+  line-height: 1.08 !important;
+}
+
+html body .modsTutorialHintV544 {
+  grid-area: hint !important;
+  justify-self: start !important;
+  display: inline-flex !important;
+  padding: 5px 10px !important;
+  border: 2px solid #000 !important;
+  border-radius: 999px !important;
+  background: rgba(255, 255, 255, .92) !important;
+  color: #000 !important;
+  font-size: 12px !important;
+  font-weight: 1000 !important;
+  line-height: 1 !important;
+}
+
+html body .modsTutorialChevronV544 {
+  grid-area: arrow !important;
+  position: relative !important;
+  display: grid !important;
+  place-items: center !important;
+  width: 46px !important;
+  height: 46px !important;
+  border: 3px solid #000 !important;
+  border-radius: 50% !important;
+  background: #07111f !important;
+  box-shadow: 0 4px 0 #000 !important;
+}
+
+html body .modsTutorialChevronV544::after {
+  content: "" !important;
+  display: block !important;
+  width: 13px !important;
+  height: 13px !important;
+  border-right: 4px solid #ffe000 !important;
+  border-bottom: 4px solid #ffe000 !important;
+  transform: translateY(-3px) rotate(45deg) !important;
+  transition: transform .18s ease !important;
+}
+
+html body .modsTutorial[open] .modsTutorialChevronV544::after {
+  transform: translateY(3px) rotate(225deg) !important;
+}
+
+/* Cache tous les anciens éléments de flèche injectés par V537/V540/Saison 18. */
+html body .modsTutorial > summary .modsTutorialChevronV537,
+html body .modsTutorial > summary .modsTutorialChevronV540,
+html body .modsTutorial > summary .modsTutorialHintV537,
+html body .modsTutorial > summary .s18ModsHintV10,
+html body .modsTutorial > .modsTutorialChevronV537,
+html body .modsTutorial > .modsTutorialChevronV540,
+html body .modsTutorial > .s18ModsHintV10 {
+  display: none !important;
+}
+
+/* --------------------------------------------------------------------------
+   2. Tier List : portrait Gentle officiel et cartes propres.
+   -------------------------------------------------------------------------- */
+html body .mhurTierItem[data-v544-gentle="1"] img {
+  object-fit: contain !important;
+  object-position: center bottom !important;
+  transform: none !important;
+}
+
+/* --------------------------------------------------------------------------
+   3. MOBILE UNIQUEMENT
+   Le header possède deux lignes. On garde volontairement plus de marge que
+   l'ancien fallback de 100/108 px pour que le contenu ne passe plus dessous.
+   -------------------------------------------------------------------------- */
+@media (max-width: 760px) {
+  :root {
+    --mhur-mobile-safe-top: max(7px, env(safe-area-inset-top, 0px));
+    --mhur-mobile-header-height:
+      calc(128px + var(--mhur-mobile-safe-top)) !important;
+    --mhur-v517-header-fallback:
+      var(--mhur-mobile-header-height) !important;
+    --mhur-v517-panel-top:
+      var(--mhur-mobile-header-height) !important;
+    --mhur-v539-header-space:
+      var(--mhur-mobile-header-height) !important;
+    --mhur-v541-header-space:
+      var(--mhur-mobile-header-height) !important;
+    --mhur-top-height:
+      var(--mhur-mobile-header-height) !important;
+    --mhur-header-bottom:
+      var(--mhur-mobile-header-height) !important;
+    --mhur-header-visual-bottom:
+      var(--mhur-mobile-header-height) !important;
+    --s18-header-offset:
+      var(--mhur-mobile-header-height) !important;
+  }
+
+  html {
+    scroll-padding-top:
+      calc(var(--mhur-mobile-header-height) + 10px) !important;
+  }
+
+  html body {
+    padding-top:
+      var(--mhur-mobile-header-height) !important;
+  }
+
+  html body > header.top[data-mhur-header-version="513"],
+  html body header.top[data-mhur-header-version="513"] {
+    min-height:
+      var(--mhur-mobile-header-height) !important;
+    height:
+      var(--mhur-mobile-header-height) !important;
+    max-height:
+      var(--mhur-mobile-header-height) !important;
+  }
+
+  html body .wrap {
+    margin-top: 0 !important;
+  }
+
+  html body .drawer,
+  html body #drawer.drawer {
+    top:
+      calc(var(--mhur-mobile-header-height) + 2px) !important;
+    max-height:
+      calc(100dvh - var(--mhur-mobile-header-height) - 2px) !important;
+  }
+
+  html body .nexusLinksOverlay,
+  html body .mhurDrawerBackdropV511 {
+    inset:
+      calc(var(--mhur-mobile-header-height) + 2px) 0 0 !important;
+  }
+
+  /* Patch Notes entièrement sous les deux lignes du header. */
+  html body .s18NotesOverlayV10 {
+    inset:
+      var(--mhur-mobile-header-height) 0 0 0 !important;
+    padding: 4px !important;
+    align-items: stretch !important;
+  }
+
+  html body .s18NotesPanelV10 {
+    width: 100% !important;
+    height: 100% !important;
+    max-height: 100% !important;
+    border-radius: 12px !important;
+  }
+
+  html body .s18NotesBodyV10 {
+    min-height: 0 !important;
+    height: auto !important;
+    flex: 1 1 auto !important;
+    overflow: hidden !important;
+  }
+
+  html body .s18NotesBodyV10 > main {
+    min-width: 0 !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+  }
+
+  /*
+    Le carré du portrait passe de 92 px à 124 px.
+    L'image complète reste visible et aucun ancien zoom n'est conservé.
+  */
+  html body .s18PatchCharacterV10 > header {
+    display: grid !important;
+    grid-template-columns: 124px minmax(0, 1fr) !important;
+    align-items: center !important;
+    gap: 12px !important;
+    overflow: visible !important;
+  }
+
+  html body .s18PatchPortraitV10 {
+    width: 124px !important;
+    height: 124px !important;
+    min-width: 124px !important;
+    min-height: 124px !important;
+    max-width: 124px !important;
+    max-height: 124px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    overflow: hidden !important;
+  }
+
+  html body .s18PatchPortraitV10 img {
+    position: static !important;
+    inset: auto !important;
+    width: 100% !important;
+    height: 100% !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
+    object-fit: contain !important;
+    object-position: center bottom !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    transform: none !important;
+    translate: none !important;
+    scale: none !important;
+  }
+
+  /* Les images de compétences ne sont pas coupées non plus. */
+  html body .s18PatchSkillV10 {
+    grid-template-columns: 88px minmax(0, 1fr) !important;
+  }
+
+  html body .s18PatchSkillV10 > div {
+    width: 88px !important;
+    height: 88px !important;
+    min-width: 88px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    overflow: hidden !important;
+  }
+
+  html body .s18PatchSkillV10 > div img {
+    position: static !important;
+    width: 100% !important;
+    height: 100% !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
+    object-fit: contain !important;
+    object-position: center center !important;
+    margin: 0 !important;
+    transform: none !important;
+  }
+}
+
+@media (max-width: 390px) {
+  :root {
+    /* Neutralise l'ancien retour à 100 px sur les petits iPhone. */
+    --mhur-mobile-header-height:
+      calc(128px + var(--mhur-mobile-safe-top)) !important;
+    --mhur-v517-header-fallback:
+      var(--mhur-mobile-header-height) !important;
+  }
+
+  html body .s18PatchCharacterV10 > header {
+    grid-template-columns: 112px minmax(0, 1fr) !important;
+  }
+
+  html body .s18PatchPortraitV10 {
+    width: 112px !important;
+    height: 112px !important;
+    min-width: 112px !important;
+    min-height: 112px !important;
+    max-width: 112px !important;
+    max-height: 112px !important;
+  }
+}

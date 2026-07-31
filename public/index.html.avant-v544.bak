@@ -833,7 +833,6 @@
 <link rel="stylesheet" href="css/v540-final-ui.css?v=540">
 <link rel="stylesheet" href="css/v542-tier-notes-mobile.css?v=542">
 <link rel="stylesheet" href="css/v543-moderation-evidence.css?v=543">
-<link rel="stylesheet" href="css/v544-gentle-mobile-final.css?v=544">
 </head>
 <body>
 
@@ -1230,39 +1229,19 @@ function mhurTableCell(value){
   }
   return value??'';
 }
-function mhurV544Localized(value){
-  if(value&&typeof value==='object'&&!Array.isArray(value)){
-    const current=(typeof lang!=='undefined'&&lang==='en')?'en':'fr';
-    return value[current]??value.fr??value.en??'';
-  }
-  return value??'';
-}
-function mhurV544Array(value){
-  if(Array.isArray(value))return value;
-  const selected=mhurV544Localized(value);
-  if(Array.isArray(selected))return selected;
-  return selected==null||selected===''?[]:[selected];
-}
-function mhurV544Cell(value){
-  const selected=mhurV544Localized(value);
-  return Array.isArray(selected)?selected.join(' / '):(selected??'');
-}
-function mhurV544Escape(value){
-  return String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-}
 function tables(ts){
-  const source=mhurV544Array(ts);
-  const ordered=source.map((table,index)=>{
-    const safe=table&&typeof table==='object'?table:{};
-    const title=String(mhurV544Localized(safe.title)||'');
-    const normalized=title.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
-    const priority=/effets? de montee|level[- ]?up effects?/.test(normalized)?0:1;
-    return {table:safe,index,priority,title};
-  }).sort((a,b)=>a.priority-b.priority||a.index-b.index);
+  const source=Array.isArray(ts)?ts:[];
+  const ordered=source.map((table,index)=>({table,index,title:mhurTableTitle(table?.title)}))
+    .sort((a,b)=>{
+      const ae=/effets? de montee|level[- ]?up effects?/i.test(a.title.normalize('NFD').replace(/[\u0300-\u036f]/g,''))?0:1;
+      const be=/effets? de montee|level[- ]?up effects?/i.test(b.title.normalize('NFD').replace(/[\u0300-\u036f]/g,''))?0:1;
+      return ae-be||a.index-b.index;
+    });
   return `<div class="tables">${ordered.map(entry=>{
-    const cols=mhurV544Array(entry.table.cols);
-    const rows=mhurV544Array(entry.table.rows);
-    return `<button class="toggle" onclick="this.nextElementSibling.classList.toggle('hidden')">${mhurV544Escape(entry.title)} ג–¾</button><div class="simpleTable hidden"><table class="dataTable"><thead><tr>${cols.map(col=>`<th>${mhurV544Escape(mhurV544Cell(col))}</th>`).join('')}</tr></thead><tbody>${rows.map(row=>{const cells=mhurV544Array(row);return `<tr>${cells.map(cell=>`<td>${mhurV544Escape(mhurV544Cell(cell))}</td>`).join('')}</tr>`}).join('')}</tbody></table></div>`;
+    const table=entry.table||{};
+    const cols=mhurTableLangValue(table.cols);
+    const rows=mhurTableLangValue(table.rows);
+    return `<button class="toggle" onclick="this.nextElementSibling.classList.toggle('hidden')">${entry.title} ג–¾</button><div class="simpleTable hidden"><table class="dataTable"><thead><tr>${cols.map(c=>`<th>${mhurTableCell(c)}</th>`).join('')}</tr></thead><tbody>${rows.map(row=>{const cells=Array.isArray(row)?row:mhurTableLangValue(row);return `<tr>${cells.map(cell=>`<td>${mhurTableCell(cell)}</td>`).join('')}</tr>`}).join('')}</tbody></table></div>`;
   }).join('')}</div>`;
 }
 function tuningsPage(){if(selectedChar&&selectedStyle)return tuningDetail(selectedStyle); if(selectedChar)return stylePicker(); return `<h1 class="title">${tr('tunings')}</h1>${rosterSections(false,'tunings')}`}
@@ -7122,6 +7101,5 @@ body .costumeTile > img,
 <script src="js/v540-final-stability.js?v=540"></script>
 <script src="js/v542-tier-notes-mobile.js?v=542"></script>
 <script src="js/v543-moderation-evidence.js?v=543"></script>
-<script src="js/v544-gentle-mobile-final.js?v=544"></script>
 </body>
 </html>

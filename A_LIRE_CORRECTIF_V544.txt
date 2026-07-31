@@ -1,0 +1,69 @@
+﻿MHUR FRANCE — CORRECTIF V544
+================================
+
+CORRECTIONS
+===========
+
+1. GENTLE CRIMINAL / ALTERS
+   L'erreur :
+   (table.cols || []).map is not a function
+
+   est corrigée à deux niveaux :
+   - remplacement direct de tables(ts) dans index.html ;
+   - dernier remplacement de sécurité au chargement de la page.
+
+   Les colonnes, lignes, titres et cellules peuvent maintenant être :
+   - des tableaux normaux ;
+   - des objets français / anglais ;
+   - des valeurs absentes.
+
+   Les Effets de montée restent placés en premier.
+
+2. TIER LIST
+   Les styles sont dédoublonnés par personnage, nom, rôle et portrait.
+   Gentle Criminal utilise une identité canonique unique :
+   gentle-criminal-technical
+
+   Il ne doit donc plus apparaître deux fois, même si deux anciens
+   identifiants existent encore dans les données.
+
+3. TUTORIEL MODS
+   Le vieux CSS Saison 18 créait déjà une flèche avec summary::after.
+   Les correctifs récents ajoutaient une seconde vraie flèche.
+
+   V544 :
+   - désactive tous les anciens pseudo-chevrons ;
+   - reconstruit le summary avec un seul chevron ;
+   - retire les pastilles de flèche orphelines.
+
+4. MOBILE
+   L'ancien petit format remettait le header à environ 100 px.
+   V544 réserve 128 px + la zone sûre pour les deux lignes complètes.
+
+5. PATCH NOTES MOBILE
+   - carré de portrait : 124 × 124 px ;
+   - 112 × 112 px sur les très petits écrans ;
+   - image complète avec object-fit: contain ;
+   - aucun ancien zoom ou déplacement ;
+   - images de compétences également en contain.
+
+INSTALLATION
+============
+
+1. Décompresse le ZIP.
+2. Copie son contenu dans le dossier principal mhur-france.
+3. Lance APPLIQUER_CORRECTIF_V544.bat.
+4. Attends :
+   TOUTES LES VERIFICATIONS V544 SONT BONNES
+5. Dans GitHub Desktop :
+   Commit to main
+   Push origin
+6. Sur ordinateur :
+   Ctrl + F5
+7. Sur téléphone :
+   ferme complètement l'onglet,
+   rouvre le site,
+   puis actualise une fois.
+
+Ne relance pas V538 ou V541 après V544.
+Aucun nouveau SQL Supabase n'est nécessaire.
