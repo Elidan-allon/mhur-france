@@ -827,7 +827,7 @@
 <link rel="stylesheet" href="css/v526-ui-final.css?v=526">
 <link rel="stylesheet" href="css/v527-compact-costume-tuning-detail.css?v=527">
 <link rel="stylesheet" href="css/v531-gentle-stable.css?v=531">
-<link rel="stylesheet" href="css/v535-complete-images.css?v=535">
+<link rel="stylesheet" href="css/v534-all-styles.css?v=534">
 </head>
 <body>
 
@@ -6990,6 +6990,6 @@ body .costumeTile > img,
 <script src="js/season18-v12.js?v=1785403460136436800"></script>
 
 <script src="js/v526-ui-final.js?v=531"></script>
-<script src="js/v535-navigation-only.js?v=535"></script>
+<script src="js/v534-all-styles.js?v=534"></script>
 </body>
 </html>

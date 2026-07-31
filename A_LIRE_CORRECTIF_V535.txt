@@ -1,0 +1,54 @@
+﻿MHUR FRANCE — CORRECTIF V535
+================================
+
+V535 CORRIGE DEUX POINTS UNIQUEMENT :
+
+1. TOUS LES STYLES
+   Les portraits sont maintenant affichés entièrement dans leur carré.
+
+   Le recentrage automatique V534 est supprimé, car il déplaçait l'image
+   et pouvait couper une partie du personnage.
+
+   Tous les styles utilisent maintenant :
+   - object-fit: contain ;
+   - object-position: center bottom ;
+   - transform: none.
+
+   Aucun style particulier n'est nommé dans le correctif.
+
+2. BUILDS COMMUNAUTÉ
+   Les cartes Builds communauté utilisent désormais exactement le même
+   système que Personnages, Costumes et T.U.N.I.N.G :
+   - cadre photo carré ;
+   - portrait entier ;
+   - aucune translation ;
+   - aucune partie coupée ;
+   - 4 cartes par ligne sur ordinateur.
+
+CONSERVÉ
+========
+
+- Gentle Criminal V531 ;
+- navigation intelligente ;
+- changement de catégorie en haut ;
+- retour depuis une fiche au même endroit ;
+- texte blanc ;
+- couleurs des rôles.
+
+INSTALLATION
+============
+
+1. Décompresse le ZIP.
+2. Copie son contenu dans le dossier principal mhur-france.
+3. Accepte la fusion du dossier public.
+4. Lance APPLIQUER_CORRECTIF_V535.bat.
+5. La fenêtre doit afficher :
+   TOUTES LES VERIFICATIONS V535 SONT BONNES
+6. Dans GitHub Desktop :
+   Commit to main
+   Push origin
+7. Après le déploiement :
+   Ctrl + F5
+
+Pour annuler :
+ANNULER_CORRECTIF_V535.bat
