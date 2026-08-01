@@ -818,7 +818,6 @@
 <link rel="stylesheet" href="css/v553-patch-notifications-back.css?v=553">
 <!-- V559: scripts conflictuels désactivés (auto-reload v36, boucles v556/v557 et ancien v558). -->
   <link rel="stylesheet" href="css/v559-stable-ui-fixes.css?v=559">
-  <link rel="stylesheet" href="css/v560-requested-fixes.css?v=560">
 </head>
 <body>
 
@@ -7066,6 +7065,5 @@ body .costumeTile > img,
 <script src="js/v551-bars-notes-persistent.js?v=551"></script>
 <script src="js/v553-patch-notifications-back.js?v=553"></script>
   <script src="js/v559-stable-ui-fixes.js?v=559"></script>
-  <script src="js/v560-requested-fixes.js?v=560"></script>
 </body>
 </html>
