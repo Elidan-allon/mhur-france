@@ -1,0 +1,206 @@
+/* MHUR France — Correctif V558 */
+
+/* 1) Accordéons des statistiques */
+.skillText .tables > .toggle {
+  cursor: pointer !important;
+  user-select: none;
+}
+.skillText .tables > .toggle + .simpleTable[hidden],
+.skillText .tables > .toggle + .simpleTable.hidden {
+  display: none !important;
+}
+.skillText .tables > .toggle[aria-expanded="true"] + .simpleTable,
+.skillText .tables > .toggle.is-open-v558 + .simpleTable {
+  display: block !important;
+}
+.skillText .tables > .toggle .statsToggleArrow,
+.skillText .tables > .toggle::after {
+  transition: transform .2s ease !important;
+}
+.skillText .tables > .toggle[aria-expanded="true"] .statsToggleArrow {
+  transform: rotate(180deg) !important;
+}
+
+/* 2) Tous les NEW font le même aller-retour */
+@keyframes mhurV558NewPingPong {
+  0%, 100% { transform: translate3d(-4px, 0, 0) rotate(-2deg); }
+  50% { transform: translate3d(6px, 0, 0) rotate(2deg); }
+}
+.s18NewBadge,
+.s18NewBadgeV9,
+.s18NewBadgeV24,
+.s18PlannedNewV12,
+.mhurCharacterNewV554,
+.mhurCharacterNewV555,
+.mhurCostumeNewV554,
+.mhurCostumeNewV555,
+.mhurNewV556,
+.mhurNewV558 {
+  animation: mhurV558NewPingPong .82s ease-in-out infinite !important;
+  transform-origin: 50% 50%;
+  will-change: transform;
+}
+.mhurNewV558 {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 12;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 54px;
+  min-height: 27px;
+  padding: 3px 9px;
+  border: 2px solid #fff;
+  border-radius: 8px;
+  background: #f72585;
+  color: #fff;
+  font: 900 italic 15px/1 system-ui, sans-serif;
+  text-shadow: 0 2px 0 rgba(0,0,0,.4);
+  box-shadow: 0 3px 0 rgba(0,0,0,.45);
+  pointer-events: none;
+}
+.card.has-new-v558,
+.characterCard.has-new-v558,
+.styleCard.has-new-v558,
+.costumeTile.has-new-v558,
+.costumeCard.has-new-v558,
+[data-character-card].has-new-v558,
+[data-style-card].has-new-v558,
+[data-costume-card].has-new-v558 {
+  position: relative;
+}
+
+/* 3) Réductions de points : grille stable et responsive */
+.discountGridV296 {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(145px, 1fr)) !important;
+  gap: 12px !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  overflow: visible !important;
+}
+.mhurDiscountCardV558 {
+  min-width: 0 !important;
+  width: auto !important;
+  box-sizing: border-box !important;
+}
+.mhurDiscountCardV558 img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.mhurDiscountCardV558 strong,
+.mhurDiscountCardV558 span,
+.mhurDiscountCardV558 b {
+  overflow-wrap: anywhere;
+}
+
+/* 4) Une seule flèche propre dans le tutoriel des mods */
+.modsTutorial > summary,
+details[data-mods-tutorial] > summary,
+.modsTutorialV2 > summary,
+.mhurModsSummaryV558 {
+  position: relative !important;
+  min-height: 72px !important;
+  padding-right: 68px !important;
+  box-sizing: border-box !important;
+  cursor: pointer !important;
+  list-style: none !important;
+}
+.modsTutorial > summary::-webkit-details-marker,
+details[data-mods-tutorial] > summary::-webkit-details-marker,
+.modsTutorialV2 > summary::-webkit-details-marker {
+  display: none !important;
+}
+.modsTutorial > summary::marker,
+details[data-mods-tutorial] > summary::marker,
+.modsTutorialV2 > summary::marker {
+  content: '' !important;
+}
+.mhurModsArrowV556,
+.modsTutorial > summary > .modsArrow,
+.modsTutorial > summary > .tutorialArrow,
+.modsTutorial > summary > .detailsArrow,
+.modsTutorial > summary > .summaryArrow,
+.modsTutorial > summary > .arrow,
+.modsTutorial > summary > [class*="oldArrow"] {
+  display: none !important;
+}
+.mhurModsArrowV558 {
+  position: absolute !important;
+  top: 50% !important;
+  right: 14px !important;
+  width: 38px !important;
+  height: 38px !important;
+  margin: 0 !important;
+  border: 3px solid #ffe300 !important;
+  border-radius: 50% !important;
+  background: #071324 !important;
+  box-shadow: 0 3px 0 rgba(0,0,0,.55) !important;
+  transform: translateY(-50%) !important;
+  pointer-events: none !important;
+  z-index: 5 !important;
+}
+.mhurModsArrowV558::before,
+.mhurModsArrowV558::after {
+  content: '' !important;
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  width: 11px !important;
+  height: 11px !important;
+  border-right: 4px solid #ffe300 !important;
+  border-bottom: 4px solid #ffe300 !important;
+  transform: translate(-50%, -68%) rotate(45deg) !important;
+  transition: transform .2s ease !important;
+}
+.mhurModsArrowV558::after {
+  display: none !important;
+}
+.modsTutorial[open] > summary .mhurModsArrowV558::before,
+details[data-mods-tutorial][open] > summary .mhurModsArrowV558::before,
+.modsTutorialV2[open] > summary .mhurModsArrowV558::before {
+  transform: translate(-50%, -32%) rotate(225deg) !important;
+}
+
+/* Patch notes : évite qu'une image déborde de la carte */
+.s18PatchChangeV10 img,
+[data-patch-change] img {
+  object-fit: contain !important;
+}
+
+@media (max-width: 680px) {
+  .discountGridV296 {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 9px !important;
+  }
+  .modsTutorial > summary,
+  details[data-mods-tutorial] > summary,
+  .modsTutorialV2 > summary,
+  .mhurModsSummaryV558 {
+    min-height: 64px !important;
+    padding-right: 58px !important;
+  }
+  .mhurModsArrowV558 {
+    right: 10px !important;
+    width: 34px !important;
+    height: 34px !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .s18NewBadge,
+  .s18NewBadgeV9,
+  .s18NewBadgeV24,
+  .s18PlannedNewV12,
+  .mhurCharacterNewV554,
+  .mhurCharacterNewV555,
+  .mhurCostumeNewV554,
+  .mhurCostumeNewV555,
+  .mhurNewV556,
+  .mhurNewV558 {
+    animation: none !important;
+  }
+}
