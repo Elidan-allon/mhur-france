@@ -334,9 +334,9 @@
       fallback: 'assets/gentle_criminal/gentle_criminal_technical/portrait.png'
     },
     factor_fusion: {
-      style: 'all_for_one_strike',
-      role: 'strike',
-      fallback: 'assets/all_for_one/all_for_one_strike/portrait.png'
+      style: 'overhaul_assault',
+      role: 'assault',
+      fallback: 'assets/overhaul/overhaul_assault/portrait.png'
     },
     cluster: {
       style: 'bakugo_technical',
@@ -576,7 +576,12 @@
     root.querySelectorAll('.costumeTile,.costumeCard,[data-costume-card],.s18CostumeTileV19').forEach(function (card) {
       var id = costumeId(card);
       var active = Boolean(id && sets.costumes.has(id));
-setNewBadge(card, active);
+
+      /* La galerie « Loisirs d'été » montrée comme ancienne ne doit plus garder NEW. */
+      var groupText = normalize((card.closest('.costumeGalleryGroup,.costumeGroup,.s18CostumeGroupV19') || card.parentElement || card).textContent || '');
+      if (groupText.indexOf('loisirs d ete') >= 0 || groupText.indexOf('summer leisure') >= 0) active = false;
+
+      setNewBadge(card, active);
     });
 
     animateEveryNew(root);
@@ -604,7 +609,7 @@ setNewBadge(card, active);
     { character: /bakugo|katsuki/, style: /cluster/, key: 'bakugo_technical' },
     { character: /aizawa|shota/, style: /flow runner|strike/, key: 'aizawa_strike' },
     { character: /present mic|hizashi/, style: /d j board|technical/, key: 'present_mic_technical' },
-    { character: /all for one|all_for_one|afo/, style: /factor fusion|strike/, key: 'all_for_one_strike' },
+    { character: /overhaul|kai chisaki/, style: /factor fusion|assault/, key: 'overhaul_assault' },
     { character: /mirko|rumi/, style: /.*/, key: 'mirko_rapid' }
   ];
 

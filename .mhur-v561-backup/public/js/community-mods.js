@@ -11,7 +11,7 @@ const MB=1024*1024;
 const PREVIEW_IMAGE_MAX=20*MB;
 const PREVIEW_VIDEO_MAX=100*MB;
 const RESUMABLE_THRESHOLD=6*MB;
-const tx=(fr,en)=>{try{const saved=localStorage.getItem('mhur_lang');const html=String(document.documentElement.lang||'').toLowerCase();const english=saved==='en'||html.startsWith('en')||(typeof lang!=='undefined'&&lang==='en');return english?en:fr}catch(_){return (typeof lang!=='undefined'&&lang==='en')?en:fr}};
+const tx=(fr,en)=>{try{return typeof lang!=='undefined'&&lang==='en'?en:fr}catch(_){return fr}};
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
 const user=()=>window.MHUR_AUTH?.getUser?.()||null;
 const token=()=>window.MHUR_AUTH?.getAccessToken?.()||KEY;

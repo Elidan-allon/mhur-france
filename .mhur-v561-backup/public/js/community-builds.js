@@ -32,7 +32,7 @@ function cbEsc(value){
 function cbPlain(value, max=500){
   return String(value ?? '').replace(/\s+/g,' ').trim().slice(0,max);
 }
-function cbIsEnglish(){try{const saved=localStorage.getItem('mhur_lang');const html=String(document.documentElement.lang||'').toLowerCase();return saved==='en'||html.startsWith('en')||(typeof lang!=='undefined'&&lang==='en')}catch(_){return typeof lang!=='undefined'&&lang==='en'}}
+function cbIsEnglish(){return typeof lang!=='undefined'&&lang==='en'}
 function cbCurrentGameVersion(){
   const title=String(window.MHUR_HOME_DATA?.patch_notes?.[0]?.title||'');
   const match=title.match(/v?([0-9]+(?:\.[0-9]+){1,3}(?:[-_. ]?RC\d+)?)/i);
@@ -327,13 +327,13 @@ function cbBuildCard(build,index=0,compact=false){
       </div>
       ${compact
         ?cbBuildTuningColumnsV306(build,'micro')
-        :`<p>${cbEsc(build.description||(cbIsEnglish()?'No description.':'Aucune description.'))}</p>${cbMiniSlots(build)}`}
+        :`<p>${cbEsc(build.description||'Aucune description.')}</p>${cbMiniSlots(build)}`}
     </div>
   </article>`;
 }
 function cbConnectionNotice(){
   if(CB_REMOTE){
-    return `<div class="cbConnection online"><b>● ${cbIsEnglish()?'Community online':'Communauté en ligne'}</b><span>${cbIsEnglish()?'Builds and hearts are shared with every visitor.':'Les builds et les cœurs sont partagés avec tous les visiteurs.'}</span></div>`;
+    return `<div class="cbConnection online"><b>● Communauté en ligne</b><span>Les builds et les cœurs sont partagés avec tous les visiteurs.</span></div>`;
   }
   return `<div class="cbConnection local"><b>Mode local de test</b><span>Les builds fonctionnent, mais restent dans ce navigateur. Lance <code>0_CONFIGURER_COMMUNAUTE.bat</code> pour les partager avec toute la communauté.</span></div>`;
 }
@@ -341,14 +341,14 @@ function cbListHtml(charId,styleId,limit=0,compact=false){
   const key=cbKey(charId,styleId);
   const list=cbBuilds(charId,styleId);
   if(CB_STATE.loading[key]&&!CB_STATE.cache[key]){
-    return `<div class="cbLoading"><span></span>${cbIsEnglish()?'Loading builds…':'Chargement des builds…'}</div>`;
+    return `<div class="cbLoading"><span></span>Chargement des builds…</div>`;
   }
   if(CB_STATE.errors[key]&&!list.length){
     return `<div class="cbEmpty">Impossible de charger la base en ligne. Mode local utilisé.<small>${cbEsc(CB_STATE.errors[key])}</small></div>`;
   }
   const shown=limit?list.slice(0,limit):list;
   if(!shown.length){
-    return `<div class="cbEmpty">${cbIsEnglish()?'No build for this style.':'Aucun build pour ce style.'}<strong>${cbIsEnglish()?'Be the first to publish one.':'Sois le premier à en publier un.'}</strong></div>`;
+    return `<div class="cbEmpty">Aucun build pour ce style.<strong>Sois le premier à en publier un.</strong></div>`;
   }
   return `<div class="${compact?'cbCompactList':'cbBuildList'}">${shown.map((b,i)=>cbBuildCard(b,i,compact)).join('')}</div>`;
 }
@@ -1127,18 +1127,18 @@ function cbRenderBuildDetail(id){
   const outdated=Boolean(build.game_version&&currentVersion&&build.game_version.toLowerCase()!==currentVersion.toLowerCase());
   content.innerHTML=`<div class="cbDetailHero">
       <div>${asset(build.costume_img,build.costume_name)}</div>
-      <div><span>${cbIsEnglish()?'COMMUNITY BUILD':'BUILD COMMUNAUTAIRE'}</span><h2>${cbEsc(build.title)}</h2>
+      <div><span>BUILD COMMUNAUTAIRE</span><h2>${cbEsc(build.title)}</h2>
         <p>${cbEsc(char?.name||build.character_id)} · ${cbEsc(cbStyleName(build.style_id))}</p>
         <p>${cbEsc(build.costume_name)} — ${cbEsc(build.costume_variant)}</p>
         <div class="cbDetailVersion">🎮 ${cbEsc(build.game_version||(cbIsEnglish()?'Version not specified':'Version non précisée'))}</div>
         ${build.share_code?`<button type="button" class="cbShareCode" title="${cbIsEnglish()?'Click to copy the build code':'Cliquer pour copier le code du build'}" aria-label="${cbIsEnglish()?'Copy build code':'Copier le code du build'}" data-share-code="${cbEsc(build.share_code)}" onclick="event.stopPropagation();communityCopyShareCode(this,'${cbEsc(build.share_code)}')">🔗 <span class="cbShareCodeText">${cbEsc(build.share_code)} · ${Number(build.copied_count)||0} ${cbIsEnglish()?'people inspired':'personne(s) inspirée(s)'}</span></button>`:''}
         ${build.source_author?`<div class="cbInspiredBy">🔗 ${cbIsEnglish()?'Inspired by a build from':'Inspiré d’un build de'} <b>${cbEsc(build.source_author)}</b></div>`:''}
         ${outdated?`<div class="cbCompatibilityWarning">⚠️ ${cbIsEnglish()?`This build was created for ${cbEsc(build.game_version)}. Current data: ${cbEsc(currentVersion)}.`:`Ce build a été créé pour ${cbEsc(build.game_version)}. Données actuelles : ${cbEsc(currentVersion)}.`}</div>`:''}
-        <div class="cbDetailAuthor">${cbIsEnglish()?'By':'Par'} ${cbAuthorButton(build)} · ${cbFormatDate(build.created_at)}</div>
+        <div class="cbDetailAuthor">Par ${cbAuthorButton(build)} · ${cbFormatDate(build.created_at)}</div>
         <div class="cbBuildActions">${cbFavoriteHtml(build)}${cbHeartHtml(build)}${cbExtraBuildActions(build)}${cbOwnEditHtml(build)}${cbOwnDeleteHtml(build)}${window.MHUR_MODERATION?.detailActions?.(build)||''}</div>
       </div>
     </div>
-    <div class="cbDetailDescription">${cbEsc(build.description||(cbIsEnglish()?'No description.':'Aucune description.'))}</div>
+    <div class="cbDetailDescription">${cbEsc(build.description||'Aucune description.')}</div>
     <div class="cbCostumeTuningGridV306 detail">${cbDetailColumn(build,'left')}${cbDetailColumn(build,'right')}</div>
     <div id="mhurBuildReactionsMount"></div>`;
   window.MHUR_HUB?.comments?.mount?.(build.id);

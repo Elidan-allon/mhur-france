@@ -1,0 +1,198 @@
+/* MHUR FRANCE — V561 GitHub targeted UI fixes */
+
+/* Character point discounts: role-colored frame + official portrait + official icon. */
+.mhurDiscountCardV561 {
+  background: #14243a !important;
+}
+.mhurDiscountPortraitV561 {
+  min-height: 132px !important;
+  isolation: isolate;
+}
+.mhurDiscountPortraitV561::before {
+  left: 8px !important;
+  right: 8px !important;
+  top: 20px !important;
+  bottom: 8px !important;
+  height: auto !important;
+  border-radius: 13px !important;
+  opacity: 1 !important;
+  box-shadow: inset 0 0 18px rgba(255,255,255,.12), 0 0 12px rgba(0,0,0,.28) !important;
+}
+.mhurDiscountPortraitV561.role-assault::before {
+  background: linear-gradient(135deg, rgba(255,235,0,.92), rgba(111,97,0,.68)) !important;
+  border: 2px solid #fff000 !important;
+}
+.mhurDiscountPortraitV561.role-strike::before {
+  background: linear-gradient(135deg, rgba(255,30,42,.92), rgba(116,0,12,.70)) !important;
+  border: 2px solid #ff1829 !important;
+}
+.mhurDiscountPortraitV561.role-rapid::before {
+  background: linear-gradient(135deg, rgba(35,216,235,.92), rgba(0,78,96,.70)) !important;
+  border: 2px solid #20d4ed !important;
+}
+.mhurDiscountPortraitV561.role-technical::before {
+  background: linear-gradient(135deg, rgba(202,46,245,.92), rgba(82,0,108,.72)) !important;
+  border: 2px solid #d328ff !important;
+}
+.mhurDiscountPortraitV561.role-support::before {
+  background: linear-gradient(135deg, rgba(36,224,91,.92), rgba(0,87,30,.72)) !important;
+  border: 2px solid #20e55d !important;
+}
+.mhurDiscountPortraitV561 > img {
+  height: 138px !important;
+  width: 100% !important;
+  max-width: 158px !important;
+  padding: 0 4px !important;
+  object-fit: contain !important;
+  object-position: center bottom !important;
+  filter: drop-shadow(0 6px 4px rgba(0,0,0,.72)) !important;
+}
+.mhurDiscountRoleV561 {
+  gap: 6px !important;
+}
+.mhurDiscountRoleIconV561 {
+  display: block !important;
+  width: 18px !important;
+  height: 18px !important;
+  object-fit: contain !important;
+  background: transparent !important;
+  padding: 0 !important;
+  filter: drop-shadow(0 1px 1px #000) !important;
+}
+.mhurDiscountRoleDotV559 { display: none !important; }
+
+/* One status badge, always on the left. Costume badges sit under rarity. */
+.mhurHasStatusV561,
+.costumeTile,
+.card[data-char],
+.releaseCardV299,
+[class*="tier" i] {
+  position: relative !important;
+}
+.mhurStatusBadgeV561 {
+  position: absolute !important;
+  z-index: 80 !important;
+  top: 9px !important;
+  left: 9px !important;
+  right: auto !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 66px !important;
+  min-width: 66px !important;
+  height: 24px !important;
+  padding: 0 6px !important;
+  box-sizing: border-box !important;
+  border: 2px solid #fff !important;
+  border-radius: 7px !important;
+  color: #fff !important;
+  font-family: Impact, Haettenschweiler, "Arial Black", sans-serif !important;
+  font-size: 13px !important;
+  font-style: italic !important;
+  font-weight: 900 !important;
+  line-height: 1 !important;
+  letter-spacing: .2px !important;
+  text-shadow: 1px 1px 0 #9d003f, -1px -1px 0 #9d003f, 1px -1px 0 #9d003f, -1px 1px 0 #9d003f !important;
+  box-shadow: 0 2px 0 #000, 0 0 7px rgba(255,255,255,.45) !important;
+  pointer-events: none !important;
+  transform-origin: center !important;
+}
+.mhurStatusNewV561 {
+  background: linear-gradient(180deg,#ff4b9e 0%,#e60065 54%,#a6004a 100%) !important;
+  animation: mhurNewPulseV561 1.05s ease-in-out infinite !important;
+}
+.mhurStatusIncomingV561 {
+  background: linear-gradient(180deg,#ffb534 0%,#f27d00 58%,#ad4300 100%) !important;
+  text-shadow: 1px 1px 0 #6b2600, -1px -1px 0 #6b2600 !important;
+  animation: none !important;
+}
+.mhurCostumeStatusV561 {
+  top: 37px !important;
+  left: 8px !important;
+}
+.releaseCardV299 > .mhurStatusBadgeV561,
+.s18SeasonReleaseV10 > .mhurStatusBadgeV561,
+.s18PlannedCardV14 > .mhurStatusBadgeV561 {
+  top: 46px !important;
+  left: 10px !important;
+}
+@keyframes mhurNewPulseV561 {
+  0%,100% { transform: scale(.92); }
+  50% { transform: scale(1.10); }
+}
+/* Hide the old empty/pseudo season badge; V561 supplies the correct status. */
+.releaseCardV299 > .s18SeasonNewV10,
+.s18SeasonReleaseV10 > .s18SeasonNewV10,
+.s18PlannedCardV14 > .s18SeasonNewV10 { display: none !important; }
+/* Prevent old V559 animation from moving INCOMING. */
+.mhurStatusIncomingV561[data-mhur-new-pulse],
+.mhurStatusIncomingV561.mhurNewPulseV559 { animation: none !important; }
+
+/* Patch stat changes such as HP have no fake skill picture. */
+.mhurPatchNoSkillImageV561 .s18PatchSkillV10 {
+  grid-template-columns: minmax(0,1fr) !important;
+}
+.mhurPatchNoSkillImageV561 .s18PatchSkillV10 > div:first-child:has(img) {
+  display: none !important;
+}
+
+/* Card section tags. */
+.cardModeTag {
+  z-index: 70 !important;
+  pointer-events: none !important;
+}
+
+/* Clean Mods tutorial arrow: one circle, one chevron, no overlap. */
+.mhurModsSummaryV561 {
+  position: relative !important;
+  padding-right: 64px !important;
+}
+.mhurModsSummaryV561 .modsTutorialChevronV537,
+.mhurModsSummaryV561 .modsTutorialChevronV540,
+.mhurModsSummaryV561 .modsTutorialChevron,
+.mhurModsSummaryV561 .mhurModsArrowV558,
+.mhurModsSummaryV561 .mhurModsArrowV559 {
+  display: none !important;
+}
+.mhurModsArrowV561 {
+  position: absolute !important;
+  top: 50% !important;
+  right: 16px !important;
+  width: 34px !important;
+  height: 34px !important;
+  margin: 0 !important;
+  box-sizing: border-box !important;
+  border: 3px solid #07101f !important;
+  border-radius: 50% !important;
+  background: #07101f !important;
+  transform: translateY(-50%) !important;
+  pointer-events: none !important;
+}
+.mhurModsArrowV561::before {
+  content: "" !important;
+  position: absolute !important;
+  left: 9px !important;
+  top: 7px !important;
+  width: 10px !important;
+  height: 10px !important;
+  border-right: 4px solid #ffe500 !important;
+  border-bottom: 4px solid #ffe500 !important;
+  transform: rotate(45deg) !important;
+  transition: transform .18s ease, top .18s ease !important;
+}
+details[open] > .mhurModsSummaryV561 .mhurModsArrowV561::before {
+  top: 11px !important;
+  transform: rotate(225deg) !important;
+}
+
+@media (max-width: 760px) {
+  .mhurStatusBadgeV561 {
+    width: 60px !important;
+    min-width: 60px !important;
+    height: 22px !important;
+    font-size: 12px !important;
+  }
+  .mhurCostumeStatusV561 { top: 34px !important; }
+  .mhurModsSummaryV561 { padding-right: 58px !important; }
+  .mhurModsArrowV561 { right: 11px !important; width: 32px !important; height: 32px !important; }
+}
