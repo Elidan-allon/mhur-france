@@ -1,0 +1,84 @@
+/* ==========================================================================
+   MHUR NEXUS — V554
+   Badge NEW animé uniquement sur les sorties déjà disponibles.
+   ========================================================================== */
+
+/* Les badges des cartes non disponibles restent totalement cachés. */
+html body .releaseGridV296
+.s18PlannedCardV12:not([data-v554-released="1"])
+.s18PlannedNewV12,
+html body .releaseGridV296
+.s18SeasonReleaseV10:not([data-v554-released="1"])
+.s18SeasonNewV10 {
+  display: none !important;
+  visibility: hidden !important;
+  animation: none !important;
+}
+
+/* Badge NEW visible uniquement sur une sortie réellement disponible. */
+html body .releaseGridV296
+.s18PlannedCardV12[data-v554-released="1"]
+.s18PlannedNewV12,
+html body .releaseGridV296
+.s18SeasonReleaseV10[data-v554-released="1"]
+.s18SeasonNewV10 {
+  display: block !important;
+  visibility: visible !important;
+  transform-origin: center center !important;
+  will-change: transform, filter !important;
+  animation:
+    mhurV554NewPulse
+    1.15s
+    ease-in-out
+    infinite !important;
+}
+
+/*
+  Agrandissement / rétrécissement sans modifier la taille de la carte.
+  Le déplacement est uniquement un transform CSS.
+*/
+@keyframes mhurV554NewPulse {
+  0%,
+  100% {
+    transform: scale(.88) rotate(-2deg);
+    filter:
+      drop-shadow(0 2px 0 #000)
+      drop-shadow(0 0 2px rgba(255, 255, 255, .35));
+  }
+
+  50% {
+    transform: scale(1.14) rotate(2deg);
+    filter:
+      drop-shadow(0 3px 0 #000)
+      drop-shadow(0 0 10px rgba(255, 255, 255, .9));
+  }
+}
+
+/* Garde également l'animation si le texte NEW est porté par un pseudo-élément. */
+html body .releaseGridV296
+[data-v554-released="1"]
+.s18PlannedNewV12::before,
+html body .releaseGridV296
+[data-v554-released="1"]
+.s18PlannedNewV12::after,
+html body .releaseGridV296
+[data-v554-released="1"]
+.s18SeasonNewV10::before,
+html body .releaseGridV296
+[data-v554-released="1"]
+.s18SeasonNewV10::after {
+  transform-origin: center center !important;
+}
+
+/* Accessibilité : pas d'animation si l'utilisateur réduit les mouvements. */
+@media (prefers-reduced-motion: reduce) {
+  html body .releaseGridV296
+  [data-v554-released="1"]
+  .s18PlannedNewV12,
+  html body .releaseGridV296
+  [data-v554-released="1"]
+  .s18SeasonNewV10 {
+    animation: none !important;
+    transform: scale(1) !important;
+  }
+}

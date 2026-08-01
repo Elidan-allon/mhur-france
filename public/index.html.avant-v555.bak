@@ -838,7 +838,6 @@
 <link rel="stylesheet" href="css/v552-mods-arrow-only.css?v=552">
 <link rel="stylesheet" href="css/v554-new-released-pulse.css?v=554">
 <link rel="stylesheet" href="css/v553-patch-notifications-back.css?v=553">
-<link rel="stylesheet" href="css/v555-gentle-new-badges.css?v=555">
 </head>
 <body>
 
@@ -7171,6 +7170,5 @@ body .costumeTile > img,
 <script src="js/v552-mods-arrow-only.js?v=552"></script>
 <script src="js/v554-new-released-pulse.js?v=554"></script>
 <script src="js/v553-patch-notifications-back.js?v=553"></script>
-<script src="js/v555-gentle-new-badges.js?v=555"></script>
 </body>
 </html>

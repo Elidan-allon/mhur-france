@@ -835,10 +835,6 @@
 <link rel="preload" as="image" href="assets/home/icons/new_badge_custom.png">
 <link rel="stylesheet" href="css/season18-fixes.css?v=1785451218648514700">
 <link rel="stylesheet" href="css/v551-bars-notes-persistent.css?v=551">
-<link rel="stylesheet" href="css/v552-mods-arrow-only.css?v=552">
-<link rel="stylesheet" href="css/v554-new-released-pulse.css?v=554">
-<link rel="stylesheet" href="css/v553-patch-notifications-back.css?v=553">
-<link rel="stylesheet" href="css/v555-gentle-new-badges.css?v=555">
 </head>
 <body>
 
@@ -7168,9 +7164,5 @@ body .costumeTile > img,
 <script src="js/season18-fixes.js?v=1785451218648514700"></script>
 <script src="js/season18-v12.js?v=1785451218648514700"></script>
 <script src="js/v551-bars-notes-persistent.js?v=551"></script>
-<script src="js/v552-mods-arrow-only.js?v=552"></script>
-<script src="js/v554-new-released-pulse.js?v=554"></script>
-<script src="js/v553-patch-notifications-back.js?v=553"></script>
-<script src="js/v555-gentle-new-badges.js?v=555"></script>
 </body>
 </html>

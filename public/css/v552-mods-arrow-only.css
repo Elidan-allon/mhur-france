@@ -1,0 +1,97 @@
+/* MHUR NEXUS — V552
+   Une seule flèche dans le tutoriel Mods.
+   La barre jaune/orange du V551 reste inchangée.
+*/
+
+/* Neutralise tous les pseudo-éléments pouvant créer une deuxième flèche. */
+html body .modsTutorial > summary::before,
+html body .modsTutorial > summary::after {
+  content: none !important;
+  display: none !important;
+}
+
+/* Cache les anciennes flèches ajoutées par les précédents correctifs. */
+html body .modsTutorial
+.modsTutorialChevronV537,
+html body .modsTutorial
+.modsTutorialChevronV540,
+html body .modsTutorial
+.modsTutorialChevronV544,
+html body .modsTutorial
+.modsTutorialChevronV545,
+html body .modsTutorial
+.modsTutorialChevronV546,
+html body .modsTutorial
+.modsTutorialChevronV549,
+html body .modsTutorial
+.mhurModsArrow,
+html body .modsTutorial
+[data-mods-arrow],
+html body .modsTutorial
+[data-v549-old-arrow="1"] {
+  display: none !important;
+}
+
+/* La vraie flèche unique ajoutée par le V552. */
+html body .modsTutorial > summary {
+  position: relative !important;
+  padding-right: 78px !important;
+}
+
+html body .modsTutorialChevronV552 {
+  position: absolute !important;
+  top: 50% !important;
+  right: 16px !important;
+  display: grid !important;
+  width: 46px !important;
+  height: 46px !important;
+  min-width: 46px !important;
+  place-items: center !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 3px solid #000 !important;
+  border-radius: 50% !important;
+  background: #07111f !important;
+  color: #ffe000 !important;
+  font-size: 0 !important;
+  line-height: 1 !important;
+  box-shadow: 0 4px 0 #000 !important;
+  transform: translateY(-57%) !important;
+  pointer-events: none !important;
+  z-index: 20 !important;
+}
+
+html body .modsTutorialChevronV552::before {
+  content: "" !important;
+  display: block !important;
+  width: 14px !important;
+  height: 14px !important;
+  border-right: 4px solid #ffe000 !important;
+  border-bottom: 4px solid #ffe000 !important;
+  transform: translateY(-3px) rotate(45deg) !important;
+  transition: transform .18s ease !important;
+}
+
+html body .modsTutorial[open]
+.modsTutorialChevronV552::before {
+  transform: translateY(3px) rotate(225deg) !important;
+}
+
+@media (max-width: 760px) {
+  html body .modsTutorial > summary {
+    padding-right: 70px !important;
+  }
+
+  html body .modsTutorialChevronV552 {
+    right: 13px !important;
+    width: 42px !important;
+    height: 42px !important;
+    min-width: 42px !important;
+    transform: translateY(-58%) !important;
+  }
+
+  html body .modsTutorialChevronV552::before {
+    width: 12px !important;
+    height: 12px !important;
+  }
+}

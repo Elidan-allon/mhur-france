@@ -1,0 +1,55 @@
+﻿MHUR FRANCE — CORRECTIF V554
+================================
+
+Ce correctif modifie uniquement les badges NEW des cartes
+« Sorties prévues — Saison 18 ».
+
+CHANGEMENTS
+===========
+
+1. ANIMATION
+   Le badge NEW :
+   - s'agrandit ;
+   - rétrécit ;
+   - recommence en boucle ;
+   - n'agrandit pas la carte elle-même.
+
+2. SORTIES DISPONIBLES UNIQUEMENT
+   NEW apparaît seulement sur une sortie déjà disponible.
+
+   Au moment de ce correctif :
+   - Gentle Criminal : NEW visible ;
+   - Twice — Sad Man's Parade : NEW caché ;
+   - Tsuyu Asui : NEW caché.
+
+3. DATE DE TWICE
+   La vérification est refaite automatiquement.
+   À partir du 19 août 2026, le badge peut apparaître sur Twice
+   lorsque sa date de sortie est atteinte.
+
+4. NON MODIFIÉ
+   - Patch Notes ;
+   - Dev Notes ;
+   - notifications ;
+   - bouton Retour ;
+   - tutoriel Mods ;
+   - autres badges du site.
+
+INSTALLATION
+============
+
+1. Décompresse le ZIP.
+2. Copie son contenu dans le dossier principal mhur-france.
+3. Choisis « Remplacer les fichiers dans la destination » si demandé.
+4. Lance :
+   APPLIQUER_CORRECTIF_V554.bat
+5. Attends :
+   TOUTES LES VERIFICATIONS V554 SONT BONNES
+6. Dans GitHub Desktop :
+   Commit to main
+   Push origin
+7. Recharge le site :
+   Ctrl + F5 sur PC ;
+   fermeture complète de l'onglet puis réouverture sur téléphone.
+
+Aucun SQL Supabase n'est nécessaire.

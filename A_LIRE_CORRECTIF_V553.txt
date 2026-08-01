@@ -1,0 +1,85 @@
+﻿MHUR FRANCE — CORRECTIF V553
+================================
+
+SOURCE DU PATCH
+===============
+
+https://fr.ultrarumble.com/patch/1785298405
+
+La note v1.17.0-14.5 est reconstruite avec les valeurs et les catégories
+BUFF / NERF indiquées par la source.
+
+CORRECTIONS
+===========
+
+1. PATCH NOTES v1.17.0-14.5
+   - PV ;
+   - dégâts ;
+   - brise-garde ;
+   - puissance de mise au sol ;
+   - munitions ;
+   - temps de recharge ;
+   - pénalité de recharge ;
+   - nouveau contenu.
+
+2. COULEURS
+   Chaque changement possède maintenant un ton explicite :
+   - buff = vert ;
+   - nerf = rouge ;
+   - nouveau contenu / neutre = jaune.
+
+   Les changements mixtes sont séparés.
+   Exemple :
+   - Twice, Boost du pied :
+     recharge 5 -> 4 = BUFF ;
+     munitions 3 -> 4 = BUFF ;
+     pénalité 6 -> 8 = NERF.
+
+3. NOMS DES ALTERS
+   Le correctif ne retraduit pas arbitrairement les noms.
+   Il lit directement les personnages, styles, Alters et images déjà présents
+   dans les données du site.
+
+   Ainsi, le γ de Twice utilise « Boost du pied » en français.
+
+4. BOUTON RETOUR MOBILE
+   Le bouton Retour reste fixé sous le header tant qu'il existe.
+   Il ne part plus avec le défilement de la page.
+
+5. NOTIFICATIONS
+   Lors de la première ouverture après V553 :
+   - une notification « Mise à jour 5.53 » est ajoutée ;
+   - elle est non lue ;
+   - la cloche affiche le nombre 1 ;
+   - la notification décrit les nouveautés.
+
+   Une fois marquée comme lue, le compteur disparaît normalement.
+
+6. CONSERVÉ
+   - les anciennes Patch Notes ;
+   - les Dev Notes ;
+   - V547 ;
+   - V548 ;
+   - V551 ;
+   - V552.
+
+INSTALLATION
+============
+
+1. Décompresse le ZIP.
+2. Copie son contenu dans le dossier principal mhur-france.
+3. Choisis « Remplacer les fichiers dans la destination » si demandé.
+4. Lance :
+   APPLIQUER_CORRECTIF_V553.bat
+5. Attends :
+   TOUTES LES VERIFICATIONS V553 SONT BONNES
+6. Dans GitHub Desktop :
+   Commit to main
+   Push origin
+7. Sur PC :
+   Ctrl + F5
+8. Sur téléphone :
+   ferme complètement l'onglet,
+   puis rouvre le site.
+
+Aucun SQL Supabase n'est nécessaire.
