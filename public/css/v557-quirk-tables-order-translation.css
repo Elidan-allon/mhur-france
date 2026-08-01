@@ -1,0 +1,22 @@
+/* ==========================================================================
+   MHUR NEXUS — V557
+   Les Effets de montée sont toujours le premier tableau des Alters.
+   ========================================================================== */
+
+html body .skillText .toggle[data-v557-level-up="1"] {
+  position: relative !important;
+}
+
+/* Repère visuel discret : le premier tableau reste bien collé en haut. */
+html body .skillText .tables > .toggle[data-v557-level-up="1"]:first-child {
+  margin-top: 0 !important;
+}
+
+/* Évite un espace hérité lorsqu'un tableau a été déplacé. */
+html body .skillText .tables > .toggle:first-child {
+  margin-top: 0 !important;
+}
+
+html body .skillText .tables > .simpleTable:last-child {
+  margin-bottom: 0 !important;
+}

@@ -1,0 +1,465 @@
+/* ==========================================================================
+   MHUR NEXUS — V556
+   Correctif global ciblé :
+   - badge NEW officiel de l'accueil partout pour Gentle Criminal ;
+   - costumes : badge sous la rareté ;
+   - réduction de points réparée ;
+   - changement de PV sans image d'Alter ;
+   - une seule flèche au tutoriel Mods ;
+   - pied de page du mardi supprimé ;
+   - traductions visibles de l'interface Mods.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. BADGE NEW UNIQUE : image officielle de l'accueil
+   -------------------------------------------------------------------------- */
+@keyframes mhurV556NewPulse {
+  0%,
+  100% {
+    transform: scale(.94);
+    filter: drop-shadow(0 3px 0 rgba(0, 0, 0, .72));
+  }
+
+  50% {
+    transform: scale(1.10);
+    filter:
+      drop-shadow(0 3px 0 rgba(0, 0, 0, .72))
+      drop-shadow(0 0 9px rgba(255, 255, 255, .88));
+  }
+}
+
+html body .mhurNewV556,
+html body .s18PlannedNewV12[data-v556-new="1"] {
+  position: absolute !important;
+  z-index: 110 !important;
+  display: block !important;
+  width: 92px !important;
+  height: 46px !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background:
+    transparent
+    url("../assets/home/icons/new_badge_custom.png")
+    center / contain
+    no-repeat !important;
+  color: transparent !important;
+  font-size: 0 !important;
+  line-height: 0 !important;
+  text-indent: -9999px !important;
+  overflow: visible !important;
+  box-shadow: none !important;
+  transform-origin: center center !important;
+  animation:
+    mhurV556NewPulse
+    1.15s
+    ease-in-out
+    infinite !important;
+  pointer-events: none !important;
+}
+
+/* Cartes Personnages, Costumes, T.U.N.I.N.G, Builds et styles. */
+html body
+.card[data-v556-gentle-new="1"]
+> .mhurNewV556,
+html body
+.styleCard[data-v556-gentle-new="1"]
+> .mhurNewV556 {
+  top: 8px !important;
+  right: 8px !important;
+  left: auto !important;
+  bottom: auto !important;
+}
+
+/* La règle historique cachait le NEW des cartes Personnages. */
+html body
+.card[data-char][data-v556-gentle-new="1"]
+> .mhurNewV556,
+html body
+.s18CharacterCardV10[data-v556-gentle-new="1"]
+> .mhurNewV556 {
+  display: block !important;
+  visibility: visible !important;
+}
+
+/* Tier List. */
+html body
+.mhurTierItem[data-v556-gentle-new="1"] {
+  position: relative !important;
+  overflow: visible !important;
+}
+
+html body
+.mhurTierItem[data-v556-gentle-new="1"]
+> .mhurNewV556 {
+  top: 3px !important;
+  right: 3px !important;
+  left: auto !important;
+  width: 58px !important;
+  height: 30px !important;
+}
+
+/* Costumes : le NEW est sous la rareté, jamais dessus. */
+html body
+.costumeTile[data-v556-gentle-new="1"],
+html body
+.costumeCard[data-v556-gentle-new="1"] {
+  position: relative !important;
+  overflow: hidden !important;
+}
+
+html body
+.costumeTile[data-v556-gentle-new="1"]
+> .mhurNewV556,
+html body
+.costumeCard[data-v556-gentle-new="1"]
+> .mhurNewV556 {
+  top: 38px !important;
+  left: 7px !important;
+  right: auto !important;
+  bottom: auto !important;
+  width: 68px !important;
+  height: 34px !important;
+  z-index: 70 !important;
+}
+
+/* Rareté et étoiles restent au-dessus de tout. */
+html body
+.costumeTile[data-v556-gentle-new="1"]
+.costumeTileRarity,
+html body
+.costumeTile[data-v556-gentle-new="1"]
+.costumeTileStars,
+html body
+.costumeCard[data-v556-gentle-new="1"]
+.costumeTileRarity,
+html body
+.costumeCard[data-v556-gentle-new="1"]
+.costumeTileStars {
+  z-index: 130 !important;
+}
+
+/* Accueil : NEW uniquement sur la sortie disponible. */
+html body
+.s18PlannedCardV12[data-planned="gentle"]
+.s18PlannedNewV12 {
+  display: block !important;
+  visibility: visible !important;
+  animation:
+    mhurV556NewPulse
+    1.15s
+    ease-in-out
+    infinite !important;
+}
+
+html body
+.s18PlannedCardV12:not([data-planned="gentle"])
+.s18PlannedNewV12,
+html body
+.s18PlannedCardV12.is-disabled
+.s18PlannedNewV12 {
+  display: none !important;
+  visibility: hidden !important;
+  animation: none !important;
+}
+
+/* Les anciens badges ajoutés par V554/V555 ne doivent jamais réapparaître. */
+html body .mhurCharacterNewV555,
+html body .mhurCostumeNewV555,
+html body .mhurCharacterNewV554,
+html body .mhurCostumeNewV554 {
+  display: none !important;
+  visibility: hidden !important;
+}
+
+/* --------------------------------------------------------------------------
+   2. RÉDUCTIONS DE POINTS PERSONNAGE
+   -------------------------------------------------------------------------- */
+html body .discountGridV296 {
+  display: grid !important;
+  grid-template-columns:
+    repeat(6, minmax(150px, 1fr)) !important;
+  gap: 10px !important;
+  align-items: stretch !important;
+}
+
+html body .mhurDiscountCardV556 {
+  position: relative !important;
+  display: grid !important;
+  grid-template-rows:
+    166px
+    minmax(40px, auto)
+    43px
+    46px !important;
+  min-width: 0 !important;
+  min-height: 295px !important;
+  overflow: hidden !important;
+  border: 3px solid #05070b !important;
+  border-radius: 9px !important;
+  background: #111722 !important;
+  color: #fff !important;
+  box-shadow: 0 5px 0 rgba(0, 0, 0, .55) !important;
+}
+
+html body .mhurDiscountArtV556 {
+  width: 100% !important;
+  height: 166px !important;
+  overflow: hidden !important;
+  background: #18263a !important;
+}
+
+html body .mhurDiscountArtV556 img {
+  width: 100% !important;
+  height: 100% !important;
+  display: block !important;
+  object-fit: cover !important;
+  object-position: center center !important;
+  transform: none !important;
+  opacity: 1 !important;
+  background: #18263a !important;
+}
+
+html body .mhurDiscountNameV556 {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-width: 0 !important;
+  padding: 6px 5px !important;
+  color: #fff !important;
+  font-size: 15px !important;
+  font-weight: 1000 !important;
+  line-height: 1.05 !important;
+  text-align: center !important;
+  overflow-wrap: anywhere !important;
+}
+
+html body .mhurDiscountRoleV556 {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 7px !important;
+  min-width: 0 !important;
+  padding: 4px 6px !important;
+  border-top: 1px solid #000 !important;
+  border-bottom: 1px solid #000 !important;
+  background: #273d5d !important;
+}
+
+html body .mhurDiscountRoleV556 .badge {
+  min-height: 29px !important;
+  max-height: 29px !important;
+  padding: 3px 9px !important;
+  border-width: 2px !important;
+  border-radius: 6px !important;
+  gap: 5px !important;
+  font-size: 11px !important;
+  line-height: 1 !important;
+}
+
+html body .mhurDiscountRoleV556 .roleIcon {
+  width: 19px !important;
+  height: 19px !important;
+  flex: 0 0 19px !important;
+}
+
+html body .mhurDiscountPointsV556 {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  margin: 5px !important;
+  border: 2px solid #000 !important;
+  border-radius: 5px !important;
+  background: #fff000 !important;
+  color: #000 !important;
+  font-size: 18px !important;
+  font-weight: 1000 !important;
+}
+
+/* Suppression du texte demandé. */
+html body .homeFootV296 {
+  display: none !important;
+}
+
+/* --------------------------------------------------------------------------
+   3. PATCH NOTES : un changement de PV n'affiche aucun Alter
+   -------------------------------------------------------------------------- */
+html body
+.s18PatchChangeV10.mhurHpOnlyV556
+.s18PatchSkillV10 {
+  display: block !important;
+  grid-template-columns: 1fr !important;
+}
+
+html body
+.s18PatchChangeV10.mhurHpOnlyV556
+.s18PatchSkillV10
+> div:first-child {
+  display: none !important;
+}
+
+html body
+.s18PatchChangeV10.mhurHpOnlyV556
+.s18PatchSkillV10 h5 {
+  margin-top: 0 !important;
+}
+
+/* --------------------------------------------------------------------------
+   4. TUTORIEL MODS : exactement une flèche
+   -------------------------------------------------------------------------- */
+html body .modsTutorial > summary {
+  position: relative !important;
+  display: flex !important;
+  align-items: center !important;
+  min-height: 88px !important;
+  padding-right: 80px !important;
+  list-style: none !important;
+}
+
+html body .modsTutorial > summary::-webkit-details-marker {
+  display: none !important;
+}
+
+html body .modsTutorial > summary::before,
+html body .modsTutorial > summary::after {
+  content: none !important;
+  display: none !important;
+}
+
+/* Toutes les anciennes flèches sont neutralisées. */
+html body .modsTutorialChevronV537,
+html body .modsTutorialChevronV540,
+html body .modsTutorialChevronV544,
+html body .modsTutorialChevronV545,
+html body .modsTutorialChevronV546,
+html body .modsTutorialChevronV549,
+html body .modsTutorialChevronV552,
+html body .mhurModsArrow,
+html body [data-mods-arrow],
+html body [data-v549-old-arrow="1"] {
+  display: none !important;
+  visibility: hidden !important;
+}
+
+html body .mhurModsArrowV556 {
+  position: absolute !important;
+  top: 50% !important;
+  right: 16px !important;
+  z-index: 40 !important;
+  display: grid !important;
+  width: 46px !important;
+  height: 46px !important;
+  min-width: 46px !important;
+  place-items: center !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 3px solid #000 !important;
+  border-radius: 50% !important;
+  background: #07111f !important;
+  box-shadow: 0 4px 0 #000 !important;
+  transform: translateY(-55%) !important;
+  pointer-events: none !important;
+}
+
+html body .mhurModsArrowV556::before {
+  content: "" !important;
+  display: block !important;
+  width: 13px !important;
+  height: 13px !important;
+  border-right: 4px solid #ffe000 !important;
+  border-bottom: 4px solid #ffe000 !important;
+  transform: translateY(-3px) rotate(45deg) !important;
+  transition: transform .18s ease !important;
+}
+
+html body
+.modsTutorial[open]
+.mhurModsArrowV556::before {
+  transform: translateY(3px) rotate(225deg) !important;
+}
+
+/* Le texte d'aide reste à gauche, il ne devient pas une deuxième pastille. */
+html body .modsTutorial .s18ModsHintV10 {
+  position: static !important;
+  inset: auto !important;
+  display: inline-flex !important;
+  width: auto !important;
+  height: auto !important;
+  margin: 5px 0 0 0 !important;
+  padding: 4px 9px !important;
+  border: 2px solid #000 !important;
+  border-radius: 999px !important;
+  background: rgba(255, 255, 255, .94) !important;
+  color: #000 !important;
+  font-size: 11px !important;
+  font-weight: 1000 !important;
+  transform: none !important;
+}
+
+/* --------------------------------------------------------------------------
+   5. RESPONSIVE
+   -------------------------------------------------------------------------- */
+@media (max-width: 1180px) {
+  html body .discountGridV296 {
+    grid-template-columns:
+      repeat(3, minmax(160px, 1fr)) !important;
+  }
+}
+
+@media (max-width: 760px) {
+  html body .mhurNewV556 {
+    width: 76px !important;
+    height: 38px !important;
+  }
+
+  html body
+  .costumeTile[data-v556-gentle-new="1"]
+  > .mhurNewV556,
+  html body
+  .costumeCard[data-v556-gentle-new="1"]
+  > .mhurNewV556 {
+    top: 37px !important;
+    width: 61px !important;
+    height: 31px !important;
+  }
+
+  html body .discountGridV296 {
+    grid-template-columns:
+      repeat(2, minmax(135px, 1fr)) !important;
+    gap: 8px !important;
+  }
+
+  html body .mhurDiscountCardV556 {
+    grid-template-rows:
+      135px
+      minmax(40px, auto)
+      40px
+      43px !important;
+    min-height: 258px !important;
+  }
+
+  html body .mhurDiscountArtV556 {
+    height: 135px !important;
+  }
+
+  html body .modsTutorial > summary {
+    padding-right: 70px !important;
+  }
+
+  html body .mhurModsArrowV556 {
+    right: 12px !important;
+    width: 42px !important;
+    height: 42px !important;
+    min-width: 42px !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html body .mhurNewV556,
+  html body .s18PlannedNewV12[data-v556-new="1"] {
+    animation: none !important;
+    transform: scale(1) !important;
+  }
+}
