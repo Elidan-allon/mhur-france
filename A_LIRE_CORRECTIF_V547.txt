@@ -1,0 +1,67 @@
+﻿MHUR FRANCE — CORRECTIF V547
+================================
+
+V547 REMPLACE LES FICHIERS D'INTERFACE V546
+===========================================
+
+Le correctif retire de index.html les fichiers V544, V545 et V546
+qui pouvaient encore se contredire.
+
+CORRECTIONS
+===========
+
+1. PROFIL
+   Il reste visuellement :
+   - une seule Suggestion / problème ;
+   - un seul Centre de modération.
+
+   Les anciens boutons ne sont pas supprimés du DOM.
+   Ils sont cachés, ce qui empêche leurs anciens scripts de les recréer.
+
+2. CARTES AVEC PLUSIEURS RÔLES
+   Les cartes personnages utilisent maintenant une hauteur automatique.
+   Bakugo peut donc afficher :
+   - Attaque ;
+   - Vitesse ;
+   - Technique ;
+   sans couper le dernier rôle.
+
+   La correction fonctionne sur ordinateur et téléphone.
+
+3. PAGE MOBILE TROP HAUTE
+   Un espace réel est ajouté au début de #app.
+   Le premier bloc ne peut plus remonter sous les deux lignes du header.
+
+4. PATCH NOTES MOBILE
+   Le header de chaque personnage réserve une hauteur au moins égale
+   à celle du portrait.
+
+   Le premier changement commence donc après le portrait, sans chevauchement.
+
+   Taille du portrait :
+   - 138 px sur téléphone ;
+   - 120 px sur les petits téléphones ;
+   - 112 px sur ordinateur.
+
+INSTALLATION
+============
+
+1. Décompresse le ZIP.
+2. Copie son contenu dans le dossier principal mhur-france.
+3. Choisis "Remplacer les fichiers" si Windows le demande.
+4. Lance :
+   APPLIQUER_CORRECTIF_V547.bat
+5. Attends :
+   TOUTES LES VERIFICATIONS V547 SONT BONNES
+6. Dans GitHub Desktop :
+   Commit to main
+   Push origin
+7. Sur ordinateur :
+   Ctrl + F5
+8. Sur téléphone :
+   ferme complètement l'onglet,
+   rouvre le site,
+   puis actualise une fois.
+
+Aucun SQL Supabase n'est nécessaire.
+Ne relance pas V546 après V547.

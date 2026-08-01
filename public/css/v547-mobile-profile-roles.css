@@ -1,0 +1,276 @@
+/* ==========================================================================
+   MHUR NEXUS — V547
+   Mobile, Patch Notes, cartes multi-rôles et profil sans doublons.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. PROFIL : les anciens boutons restent dans le DOM afin que leurs scripts
+      ne les recréent pas, mais un seul exemplaire de chaque action est visible.
+   -------------------------------------------------------------------------- */
+html body #mhurAuthOverlay .mhurProfileCard
+button[data-v547-profile-duplicate="1"],
+html body #mhurAuthOverlay [class*="ProfileCard"]
+button[data-v547-profile-duplicate="1"] {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  position: absolute !important;
+  width: 0 !important;
+  height: 0 !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  overflow: hidden !important;
+}
+
+html body #mhurAuthOverlay .mhurProfileCard
+button[data-v547-profile-keep="feedback"],
+html body #mhurAuthOverlay [class*="ProfileCard"]
+button[data-v547-profile-keep="feedback"] {
+  display: flex !important;
+  width: 100% !important;
+  min-height: 50px !important;
+  margin: 10px 0 0 !important;
+  padding: 11px 16px !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border: 4px solid #000 !important;
+  border-radius: 13px !important;
+  background: linear-gradient(100deg, #ff9c00, #ffe000) !important;
+  color: #07101d !important;
+  font-weight: 1000 !important;
+  box-shadow: 0 5px 0 #000 !important;
+}
+
+html body #mhurAuthOverlay .mhurProfileCard
+button[data-v547-profile-keep="moderation"],
+html body #mhurAuthOverlay [class*="ProfileCard"]
+button[data-v547-profile-keep="moderation"] {
+  display: flex !important;
+  width: 100% !important;
+  min-height: 50px !important;
+  margin: 10px 0 0 !important;
+  padding: 11px 16px !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border: 4px solid #000 !important;
+  border-radius: 13px !important;
+  background: linear-gradient(100deg, #18d96b, #19c9de) !important;
+  color: #07101d !important;
+  font-weight: 1000 !important;
+  box-shadow: 0 5px 0 #000 !important;
+}
+
+/* --------------------------------------------------------------------------
+   2. CARTES PERSONNAGES : aucune hauteur fixe ne peut couper le troisième rôle.
+   -------------------------------------------------------------------------- */
+html body .cardsGrid {
+  grid-auto-rows: auto !important;
+  align-items: stretch !important;
+}
+
+html body .cardsGrid .card,
+html body .card[data-char] {
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  align-self: stretch !important;
+}
+
+html body .cardsGrid .card .cardBody,
+html body .card[data-char] .cardBody {
+  flex: 1 1 auto !important;
+  width: 100% !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  padding-bottom: 24px !important;
+  overflow: visible !important;
+}
+
+html body .card[data-char] .badges {
+  flex: 0 0 auto !important;
+  align-content: flex-start !important;
+  margin-bottom: 0 !important;
+  overflow: visible !important;
+}
+
+html body .card[data-char] .cardBody > p {
+  flex: 0 0 auto !important;
+  min-height: 0 !important;
+  margin: 16px 0 0 !important;
+  padding-bottom: 2px !important;
+}
+
+/* --------------------------------------------------------------------------
+   3. PATCH NOTES : le header de chaque personnage réserve réellement la place
+      du portrait. Les changements commencent uniquement après le portrait.
+   -------------------------------------------------------------------------- */
+html body .s18PatchCharacterV10 {
+  contain: none !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+}
+
+html body .s18PatchCharacterV10 > header {
+  position: relative !important;
+  z-index: 2 !important;
+  box-sizing: border-box !important;
+  display: grid !important;
+  grid-template-columns: 112px minmax(0, 1fr) !important;
+  gap: 14px !important;
+  align-items: center !important;
+  width: 100% !important;
+  height: auto !important;
+  min-height: 140px !important;
+  max-height: none !important;
+  padding: 13px !important;
+  overflow: visible !important;
+}
+
+html body .s18PatchCharacterV10 > header > div:last-child {
+  min-width: 0 !important;
+  align-self: center !important;
+}
+
+html body .s18PatchPortraitV10 {
+  position: relative !important;
+  inset: auto !important;
+  width: 112px !important;
+  height: 112px !important;
+  min-width: 112px !important;
+  min-height: 112px !important;
+  max-width: 112px !important;
+  max-height: 112px !important;
+  flex: 0 0 112px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  overflow: hidden !important;
+}
+
+html body .s18PatchPortraitV10 img {
+  position: static !important;
+  inset: auto !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  object-fit: contain !important;
+  object-position: center bottom !important;
+  transform: none !important;
+  translate: none !important;
+  scale: none !important;
+}
+
+html body .s18PatchChangesV10 {
+  position: relative !important;
+  z-index: 1 !important;
+  clear: both !important;
+  width: 100% !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  margin: 0 !important;
+}
+
+/* --------------------------------------------------------------------------
+   4. MOBILE : espace garanti entre les deux lignes du header et la page.
+      Le pseudo-élément empêche aussi la marge du premier bloc de remonter.
+   -------------------------------------------------------------------------- */
+@media (max-width: 760px) {
+  html body #app::before {
+    content: "" !important;
+    display: block !important;
+    width: 100% !important;
+    height: 24px !important;
+    flex: 0 0 24px !important;
+    pointer-events: none !important;
+  }
+
+  html body #app {
+    padding-top: 0 !important;
+  }
+
+  html body .cardsGrid .card,
+  html body .card[data-char] {
+    width: min(100%, 390px) !important;
+    max-width: 390px !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+  }
+
+  html body .card[data-char] .cardBody {
+    padding-bottom: 28px !important;
+  }
+
+  html body .card[data-char] .badges {
+    gap: 11px !important;
+  }
+
+  html body .card[data-char] .badge {
+    min-height: 58px !important;
+  }
+
+  html body .s18PatchCharacterV10 > header {
+    grid-template-columns: 138px minmax(0, 1fr) !important;
+    gap: 12px !important;
+    min-height: 170px !important;
+    padding: 15px !important;
+  }
+
+  html body .s18PatchPortraitV10 {
+    width: 138px !important;
+    height: 138px !important;
+    min-width: 138px !important;
+    min-height: 138px !important;
+    max-width: 138px !important;
+    max-height: 138px !important;
+    flex-basis: 138px !important;
+  }
+
+  html body .s18PatchCharacterV10 h4 {
+    font-size: clamp(23px, 6vw, 30px) !important;
+    line-height: 1.05 !important;
+    overflow-wrap: anywhere !important;
+  }
+
+  html body .s18PatchChangesV10 {
+    padding-top: 16px !important;
+  }
+
+  html body .s18PatchChangeV10 {
+    margin-top: 0 !important;
+  }
+}
+
+@media (max-width: 420px) {
+  html body #app::before {
+    height: 20px !important;
+    flex-basis: 20px !important;
+  }
+
+  html body .s18PatchCharacterV10 > header {
+    grid-template-columns: 120px minmax(0, 1fr) !important;
+    min-height: 152px !important;
+    gap: 10px !important;
+    padding: 13px !important;
+  }
+
+  html body .s18PatchPortraitV10 {
+    width: 120px !important;
+    height: 120px !important;
+    min-width: 120px !important;
+    min-height: 120px !important;
+    max-width: 120px !important;
+    max-height: 120px !important;
+    flex-basis: 120px !important;
+  }
+}
