@@ -1,3 +1,0 @@
-Le probleme venait des fins de ligne Linux du fichier BAT.
-Cette version utilise des fins de ligne Windows CRLF et uniquement des caracteres ASCII.
-Copie le contenu a la racine du projet puis lance APPLIQUER_CORRECTIF_V559.bat.

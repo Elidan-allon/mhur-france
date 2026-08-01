@@ -462,58 +462,21 @@ function translatePatch(v){
   ];
   replacements.forEach(([a,b])=>{out=out.replace(a,b)});return out;
 }
-/* MHUR V561 PATCHED: patch skills */
-function patchChangeText(change){
-  return [change?.skill_name,change?.label,change?.title,change?.description,change?.text,change?.note,(change?.bullets||[]).join(' ')].map(CLEAN).filter(Boolean).join(' ');
-}
-function patchSkillKind(change){
-  const raw=patchChangeText(change).toLowerCase();
-  if(/α|\balpha\b/i.test(raw))return 'alpha';
-  if(/β|\bbeta\b/i.test(raw))return 'beta';
-  if(/γ|\bgamma\b/i.test(raw))return 'gamma';
-  if(/special action|action sp[ée]ciale|\bspecial\b/i.test(raw))return 'special';
-  return '';
-}
-function patchGeneralStat(change){
-  const raw=patchChangeText(change).toLowerCase();
-  return /(^|[^a-z])(hp|pv|health|max(?:imum)? hp|max(?:imum)? health|max(?:imum)? main health|pv maximum)([^a-z]|$)/i.test(raw);
-}
-function forcedPatchStyleId(change){
-  const ch=NORM(change?.character||'');const st=NORM(change?.style||'');
-  if(/gentle/.test(ch))return 'gentle_criminal_technical';
-  if(/bakugo|katsuki/.test(ch)&&/cluster/.test(st))return 'bakugo_technical';
-  if(/aizawa|shota/.test(ch)&&/flow_runner|strike/.test(st))return 'aizawa_strike';
-  if(/present_mic|hizashi/.test(ch)&&/d_j_board|technical/.test(st))return 'present_mic_technical';
-  if(/all_for_one|afo/.test(ch)&&/factor_fusion|strike/.test(st))return 'all_for_one_strike';
-  if(/midoriya|izuku/.test(ch)&&/ofa|one_for_all/.test(st))return 'ofa';
-  if(/mirko|rumi/.test(ch))return 'mirko_rapid';
-  return '';
-}
 function styleForChange(change){
   const ch=characterBy(change?.character||'');if(!ch)return {ch:null,id:'',st:null};
-  const ids=styleIds(ch);const forced=forcedPatchStyleId(change);const wanted=NORM(change?.style||'Original');
-  let id=forced&&styles?.[forced]?forced:'';
-  if(!id)id=ids.find(x=>NORM(typeof label==='function'?label(styles[x]?.name||'Original'):styles[x]?.name||'Original')===wanted)||'';
+  const ids=styleIds(ch);const wanted=NORM(change?.style||'Original');
+  let id=ids.find(x=>NORM(styles[x]?.name||'Original')===wanted)||'';
   if(!id){
-    const skill=NORM(patchChangeText(change));
-    id=ids.find(x=>[{...(styles[x]?.special||{}),letter:'SP'},...(styles[x]?.skills||[])].some(s=>{const n=NORM(typeof label==='function'?label(s?.name||''):s?.name||''),l=NORM(s?.letter);return (n&&skill.includes(n))||(l&&skill.includes(l))}))||'';
+    const skill=NORM(change?.skill_name||change?.label||'');
+    id=ids.find(x=>[{...(styles[x]?.special||{}),letter:'SP'},...(styles[x]?.skills||[])].some(s=>{const n=NORM(s?.name),l=NORM(s?.letter);return (n&&skill.includes(n))||(l&&skill.startsWith(l))}))||'';
   }
   if(!id)id=ids[0]||'';
   return {ch,id,st:styles[id]||null};
 }
 function skillForChange(st,change){
-  if(!st||patchGeneralStat(change))return null;
-  const raw=patchChangeText(change);const normalized=NORM(raw);const kind=patchSkillKind(change);
+  if(!st)return null;const raw=NORM(change?.skill_name||change?.label||'');
   const all=[{...(st.special||{}),letter:'SP'},...(st.skills||[])];
-  if(kind==='special')return all.find(s=>NORM(s?.letter)==='sp'||/special/.test(NORM(s?.letter)))||st.special||null;
-  const wanted={alpha:['α','alpha'],beta:['β','beta'],gamma:['γ','gamma']}[kind]||[];
-  if(wanted.length){const byLetter=all.find(s=>wanted.includes(String(s?.letter||'').toLowerCase())||wanted.includes(NORM(s?.letter)));if(byLetter)return byLetter;}
-  return all.find(s=>{const n=NORM(typeof label==='function'?label(s?.name||''):s?.name||''),l=NORM(s?.letter);return (n&&normalized.includes(n))||(l&&normalized.includes(l))})||null;
-}
-function patchSkillDisplayName(skill,change){
-  if(!skill)return translatePatch(CLEAN(change?.skill_name||change?.label||TX('Ajustement','Adjustment')));
-  let name='';try{name=typeof label==='function'?label(skill.name||skill.label||''):CLEAN(skill.name||skill.label||'')}catch(_e){name=CLEAN(skill.name||skill.label||'')}
-  return translatePatch(name||CLEAN(change?.skill_name||change?.label||TX('Ajustement','Adjustment')));
+  return all.find(s=>{const n=NORM(s?.name),l=NORM(s?.letter);return (n&&raw.includes(n))||(l&&raw.startsWith(l))})||null;
 }
 function average(values){const n=(Array.isArray(values)?values:[values]).map(v=>parseFloat(String(v).replace(',','.'))).filter(Number.isFinite);return n.length?n.reduce((a,b)=>a+b,0)/n.length:null}
 function toneFor(change,sectionTitle=''){
@@ -541,10 +504,9 @@ function groupsForSection(section){
     map.get(key).changes.push(change);
   });return groups;
 }
-/* MHUR V561 PATCHED: patch renderer */
 function groupHtml(group,sectionTitle){
   const role=ROLE(group.st?.role||'technical');const side=group.ch?.side||'hero';
-  return `<article class="s18PatchCharacterV10 role-${role}"><header><div class="s18PatchPortraitV10">${group.st?.portrait&&typeof asset==='function'?asset(group.st.portrait,group.character):''}</div><div><h4>${ESC(group.character)}</h4><strong>${ESC(typeof label==='function'?label(group.st?.name||group.style):group.style)}</strong><div class="s18PatchBadgesV10"><span class="badge ${side==='villain'?'villain':'hero'}">${ESC(SIDE_TEXT(side))}</span><span class="badge ${role}">${ESC(ROLE_TEXT(role))}</span></div></div></header><div class="s18PatchChangesV10">${group.changes.map(change=>{const tone=toneFor(change,sectionTitle);const skill=skillForChange(group.st,change);const title=patchSkillDisplayName(skill,change);const picture=skill?.img||'';const bullets=(change?.bullets||[]).map(translatePatch).filter(Boolean);return `<section class="s18PatchChangeV10 ${tone} ${skill?'':'mhurPatchNoSkillImageV561'}"><span class="s18ToneV10 ${tone}">${tone==='buff'?'BUFF':tone==='nerf'?'NERF':TX('NEUTRE','NEUTRAL')}</span><div class="s18PatchSkillV10">${picture&&typeof asset==='function'?`<div>${asset(picture,title)}</div>`:''}<main><h5>${ESC(title)}</h5>${change?.label?`<p class="s18PatchLabelV10">${ESC(translatePatch(change.label))}</p>`:''}${valuesHtml(change,tone)}${bullets.length?`<ul>${bullets.map(b=>`<li>${ESC(b)}</li>`).join('')}</ul>`:''}</main></div></section>`}).join('')}</div></article>`;
+  return `<article class="s18PatchCharacterV10 role-${role}"><header><div class="s18PatchPortraitV10">${group.st?.portrait&&typeof asset==='function'?asset(group.st.portrait,group.character):''}</div><div><h4>${ESC(group.character)}</h4><strong>${ESC(group.style)}</strong><div class="s18PatchBadgesV10"><span class="badge ${side==='villain'?'villain':'hero'}">${ESC(SIDE_TEXT(side))}</span><span class="badge ${role}">${ESC(ROLE_TEXT(role))}</span></div></div></header><div class="s18PatchChangesV10">${group.changes.map(change=>{const tone=toneFor(change,sectionTitle);const skill=skillForChange(group.st,change);const title=translatePatch(CLEAN(skill?.name||change?.skill_name||change?.label||TX('Ajustement','Adjustment')));const picture=skill?.img||change?.skill_image||'';const bullets=(change?.bullets||[]).map(translatePatch).filter(Boolean);return `<section class="s18PatchChangeV10 ${tone}"><span class="s18ToneV10 ${tone}">${tone==='buff'?'BUFF':tone==='nerf'?'NERF':TX('NEUTRE','NEUTRAL')}</span><div class="s18PatchSkillV10">${picture&&typeof asset==='function'?`<div>${asset(picture,title)}</div>`:''}<main><h5>${ESC(title)}</h5>${change?.label?`<p class="s18PatchLabelV10">${ESC(translatePatch(change.label))}</p>`:''}${valuesHtml(change,tone)}${bullets.length?`<ul>${bullets.map(b=>`<li>${ESC(b)}</li>`).join('')}</ul>`:''}</main></div></section>`}).join('')}</div></article>`;
 }
 function patchDetailHtml(note){
   const sections=(note?.details||[]).map(sec=>({...sec,changes:(sec.changes||[]).filter(Boolean)})).filter(sec=>sec.changes.length);
@@ -561,8 +523,8 @@ function notesModal(){
     modal=document.createElement('div');modal.id='s18NotesDevModalV10';modal.className='s18NotesOverlayV10';
     modal.innerHTML=`<section class="s18NotesPanelV10" tabindex="-1"><header><div><span>MHUR NEXUS</span><h2 data-notes-title></h2></div><button type="button" data-close>×</button></header><nav><button type="button" data-tab="patch" class="active"></button><button type="button" data-tab="dev"></button></nav><div class="s18NotesBodyV10"><aside></aside><main></main></div></section>`;
     document.body.appendChild(modal);
-    modal.querySelector('[data-close]').onclick=()=>{modal.classList.remove('open');document.body.classList.remove('s18NotesOpenV11');modal.remove()};
-    modal.onclick=e=>{if(e.target===modal){modal.classList.remove('open');document.body.classList.remove('s18NotesOpenV11');modal.remove()}};
+    modal.querySelector('[data-close]').onclick=()=>{modal.classList.remove('open');document.body.classList.remove('s18NotesOpenV11')};
+    modal.onclick=e=>{if(e.target===modal){modal.classList.remove('open');document.body.classList.remove('s18NotesOpenV11')}};
     modal.querySelectorAll('[data-tab]').forEach(btn=>btn.onclick=()=>showNotesTab(btn.dataset.tab));
   }
   modal.querySelector('[data-notes-title]').textContent='Patch Notes / Dev Notes';
@@ -589,9 +551,6 @@ function showNotesTab(tab){
   else showPatch(0);
 }
 function openNotes(){
-  /* MHUR_V551_FRESH_NOTES_EACH_OPEN */
-  const previous=document.getElementById('s18NotesDevModalV10');
-  if(previous){previous.remove();document.body.classList.remove('s18NotesOpenV11');}
   const modal=notesModal();
   modal.classList.add('open');document.body.classList.add('s18NotesOpenV11');
   showNotesTab('patch');
