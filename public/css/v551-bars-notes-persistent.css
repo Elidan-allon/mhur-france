@@ -1,0 +1,422 @@
+/* ==========================================================================
+   MHUR NEXUS — V551
+   - Barre du tutoriel Mods jaune/orange restaurée.
+   - Une seule flèche.
+   - Toutes les barres de défilement au style MHUR Nexus.
+   - Patch Notes / Dev Notes toujours complets à chaque ouverture.
+   - Défilement possible jusqu'au dernier bloc.
+   ========================================================================== */
+
+:root {
+  --mhur-v551-notes-top: 64px;
+}
+
+/* --------------------------------------------------------------------------
+   1. TOUTES LES BARRES DE DÉFILEMENT — STYLE MHUR NEXUS
+   -------------------------------------------------------------------------- */
+html,
+body,
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #ffe000 #07111f;
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar,
+*::-webkit-scrollbar {
+  width: 13px;
+  height: 13px;
+}
+
+html::-webkit-scrollbar-track,
+body::-webkit-scrollbar-track,
+*::-webkit-scrollbar-track {
+  background:
+    linear-gradient(180deg, #07101d 0%, #142844 50%, #07101d 100%);
+  border: 2px solid #000;
+}
+
+html::-webkit-scrollbar-thumb,
+body::-webkit-scrollbar-thumb,
+*::-webkit-scrollbar-thumb {
+  min-height: 45px;
+  border: 3px solid #02060c;
+  border-radius: 999px;
+  background:
+    linear-gradient(180deg, #fff36b 0%, #ffe000 37%, #19c9de 70%, #078ea5 100%);
+  box-shadow:
+    inset 0 0 0 2px rgba(255, 255, 255, .2),
+    0 0 7px rgba(255, 224, 0, .35);
+}
+
+html::-webkit-scrollbar-thumb:hover,
+body::-webkit-scrollbar-thumb:hover,
+*::-webkit-scrollbar-thumb:hover {
+  background:
+    linear-gradient(180deg, #fff9a8 0%, #ffea27 38%, #45e4f3 72%, #0bb5ce 100%);
+}
+
+html::-webkit-scrollbar-button,
+body::-webkit-scrollbar-button,
+*::-webkit-scrollbar-button {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+html::-webkit-scrollbar-corner,
+body::-webkit-scrollbar-corner,
+*::-webkit-scrollbar-corner {
+  background: #07101d;
+}
+
+/* --------------------------------------------------------------------------
+   2. BARRES DE TUTORIEL / GUIDE — JAUNE MHUR NEXUS
+   -------------------------------------------------------------------------- */
+html body .modsTutorial > summary,
+html body details[class*="Tutorial"] > summary,
+html body details[class*="tutorial"] > summary,
+html body details[class*="Guide"] > summary,
+html body details[class*="guide"] > summary,
+html body details[class*="Accordion"] > summary,
+html body details[class*="accordion"] > summary {
+  position: relative !important;
+  box-sizing: border-box !important;
+  display: flex !important;
+  width: 100% !important;
+  min-height: 88px !important;
+  align-items: center !important;
+  gap: 12px !important;
+  padding: 13px 16px !important;
+  list-style: none !important;
+  border: 3px solid #000 !important;
+  border-radius: 15px !important;
+  background:
+    linear-gradient(100deg, #ff9700 0%, #ffb900 44%, #ffe000 100%) !important;
+  color: #050a12 !important;
+  font-weight: 1000 !important;
+  box-shadow:
+    0 5px 0 #000,
+    inset 0 0 0 2px rgba(255, 255, 255, .18) !important;
+  cursor: pointer !important;
+}
+
+html body .modsTutorial > summary::-webkit-details-marker,
+html body details[class*="Tutorial"] > summary::-webkit-details-marker,
+html body details[class*="tutorial"] > summary::-webkit-details-marker,
+html body details[class*="Guide"] > summary::-webkit-details-marker,
+html body details[class*="guide"] > summary::-webkit-details-marker,
+html body details[class*="Accordion"] > summary::-webkit-details-marker,
+html body details[class*="accordion"] > summary::-webkit-details-marker {
+  display: none !important;
+}
+
+html body .modsTutorial > summary::before,
+html body details[class*="Tutorial"] > summary::before,
+html body details[class*="tutorial"] > summary::before,
+html body details[class*="Guide"] > summary::before,
+html body details[class*="guide"] > summary::before,
+html body details[class*="Accordion"] > summary::before,
+html body details[class*="accordion"] > summary::before {
+  content: none !important;
+  display: none !important;
+}
+
+/* Une seule flèche, à droite. */
+html body .modsTutorial > summary::after,
+html body details[class*="Tutorial"] > summary::after,
+html body details[class*="tutorial"] > summary::after,
+html body details[class*="Guide"] > summary::after,
+html body details[class*="guide"] > summary::after,
+html body details[class*="Accordion"] > summary::after,
+html body details[class*="accordion"] > summary::after {
+  content: "⌄" !important;
+  display: grid !important;
+  width: 46px !important;
+  height: 46px !important;
+  min-width: 46px !important;
+  flex: 0 0 46px !important;
+  margin-left: auto !important;
+  place-items: center !important;
+  border: 3px solid #000 !important;
+  border-radius: 50% !important;
+  background: #07111f !important;
+  color: #ffe000 !important;
+  font-size: 30px !important;
+  font-weight: 1000 !important;
+  line-height: 1 !important;
+  box-shadow: 0 4px 0 #000 !important;
+  transform: rotate(0deg) !important;
+  transition: transform .18s ease !important;
+  pointer-events: none !important;
+}
+
+html body .modsTutorial[open] > summary::after,
+html body details[class*="Tutorial"][open] > summary::after,
+html body details[class*="tutorial"][open] > summary::after,
+html body details[class*="Guide"][open] > summary::after,
+html body details[class*="guide"][open] > summary::after,
+html body details[class*="Accordion"][open] > summary::after,
+html body details[class*="accordion"][open] > summary::after {
+  transform: rotate(180deg) !important;
+}
+
+/* Cache uniquement les anciennes vraies flèches. */
+html body .modsTutorial .modsTutorialChevronV537,
+html body .modsTutorial .modsTutorialChevronV540,
+html body .modsTutorial .modsTutorialChevronV544,
+html body .modsTutorial .modsTutorialChevronV545,
+html body .modsTutorial .modsTutorialChevronV546,
+html body .modsTutorial .modsTutorialChevronV549,
+html body .modsTutorial .mhurModsArrow,
+html body .modsTutorial [data-mods-arrow],
+html body .modsTutorial [data-v549-old-arrow="1"] {
+  display: none !important;
+}
+
+html body .modsTutorial .s18ModsHintV10 {
+  display: inline-flex !important;
+  margin-left: auto !important;
+  padding: 5px 10px !important;
+  border: 2px solid #000 !important;
+  border-radius: 999px !important;
+  background: rgba(255, 255, 255, .92) !important;
+  color: #000 !important;
+  font-size: 12px !important;
+  font-weight: 1000 !important;
+}
+
+/* --------------------------------------------------------------------------
+   3. PATCH NOTES / DEV NOTES — FENÊTRE FLEXIBLE ET COMPLÈTE
+   -------------------------------------------------------------------------- */
+html body .s18NotesOverlayV10 {
+  box-sizing: border-box !important;
+  position: fixed !important;
+  inset: 0 !important;
+  align-items: flex-start !important;
+  justify-content: center !important;
+  padding:
+    calc(var(--mhur-v551-notes-top) + 8px)
+    12px
+    10px !important;
+  overflow: hidden !important;
+}
+
+html body .s18NotesOverlayV10.open {
+  display: flex !important;
+}
+
+html body .s18NotesPanelV10 {
+  box-sizing: border-box !important;
+  display: flex !important;
+  flex-direction: column !important;
+  width: min(1220px, calc(100vw - 24px)) !important;
+  height:
+    calc(100dvh - var(--mhur-v551-notes-top) - 18px) !important;
+  min-height: 320px !important;
+  max-height:
+    calc(100dvh - var(--mhur-v551-notes-top) - 18px) !important;
+  margin: 0 auto !important;
+  overflow: hidden !important;
+}
+
+html body .s18NotesPanelV10 > header {
+  flex: 0 0 auto !important;
+}
+
+/* Les deux boutons restent toujours visibles. */
+html body .s18NotesPanelV10 > nav {
+  position: relative !important;
+  z-index: 30 !important;
+  display: flex !important;
+  flex: 0 0 auto !important;
+  width: 100% !important;
+  min-height: 66px !important;
+  align-items: center !important;
+  gap: 10px !important;
+  padding: 10px 13px !important;
+  border-top: 2px solid #000 !important;
+  border-bottom: 2px solid #36577e !important;
+  background: #091629 !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  overflow: visible !important;
+}
+
+html body .s18NotesPanelV10 > nav > button,
+html body .s18NotesPanelV10 > nav button[data-tab] {
+  display: inline-flex !important;
+  min-width: 126px !important;
+  min-height: 46px !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 9px 16px !important;
+  border: 3px solid #365b87 !important;
+  border-radius: 11px !important;
+  background: #101f34 !important;
+  color: #fff !important;
+  font-size: 16px !important;
+  font-weight: 1000 !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  cursor: pointer !important;
+}
+
+html body .s18NotesPanelV10 > nav button[data-tab].active {
+  border-color: #000 !important;
+  background: #ffe000 !important;
+  color: #000 !important;
+  box-shadow: 0 3px 0 #000 !important;
+}
+
+/* Les anciennes hauteurs inline sont dominées par ces règles !important. */
+html body .s18NotesBodyV10 {
+  display: grid !important;
+  grid-template-columns: 300px minmax(0, 1fr) !important;
+  flex: 1 1 auto !important;
+  width: 100% !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  overflow: hidden !important;
+}
+
+html body .s18NotesBodyV10 > aside,
+html body .s18NotesBodyV10 > main {
+  box-sizing: border-box !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  height: auto !important;
+  max-height: none !important;
+  overflow-y: auto !important;
+  overscroll-behavior: contain !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+html body .s18NotesBodyV10 > aside {
+  overflow-x: hidden !important;
+}
+
+html body .s18NotesBodyV10 > main {
+  overflow-x: auto !important;
+  padding-bottom: 100px !important;
+  scroll-padding-bottom: 100px !important;
+}
+
+html body .s18DevArticleV10 {
+  min-height: min-content !important;
+  padding-bottom: 110px !important;
+}
+
+html body .s18DevArticleV10 > :last-child,
+html body .s18NotesBodyV10 > main > :last-child {
+  margin-bottom: 80px !important;
+}
+
+/* --------------------------------------------------------------------------
+   4. MOBILE
+   -------------------------------------------------------------------------- */
+@media (max-width: 900px) {
+  html body .s18NotesBodyV10 {
+    grid-template-columns: 1fr !important;
+    grid-template-rows: auto minmax(0, 1fr) !important;
+  }
+
+  html body .s18NotesBodyV10 > aside {
+    display: flex !important;
+    width: 100% !important;
+    max-height: 126px !important;
+    gap: 8px !important;
+    padding: 10px !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    border-right: 0 !important;
+    border-bottom: 2px solid #2d496e !important;
+  }
+
+  html body .s18NotesBodyV10 > aside > button {
+    min-width: 230px !important;
+    margin: 0 !important;
+  }
+
+  html body .s18NotesBodyV10 > main {
+    overflow-y: auto !important;
+  }
+}
+
+@media (max-width: 760px) {
+  html::-webkit-scrollbar,
+  body::-webkit-scrollbar,
+  *::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  html body .modsTutorial > summary,
+  html body details[class*="Tutorial"] > summary,
+  html body details[class*="tutorial"] > summary,
+  html body details[class*="Guide"] > summary,
+  html body details[class*="guide"] > summary {
+    min-height: 82px !important;
+    padding: 11px 13px !important;
+  }
+
+  html body .modsTutorial > summary::after,
+  html body details[class*="Tutorial"] > summary::after,
+  html body details[class*="tutorial"] > summary::after,
+  html body details[class*="Guide"] > summary::after,
+  html body details[class*="guide"] > summary::after {
+    width: 42px !important;
+    height: 42px !important;
+    min-width: 42px !important;
+    flex-basis: 42px !important;
+  }
+
+  html body .modsTutorial .s18ModsHintV10 {
+    display: none !important;
+  }
+
+  html body .s18NotesOverlayV10 {
+    padding:
+      calc(var(--mhur-v551-notes-top) + 4px)
+      4px
+      4px !important;
+  }
+
+  html body .s18NotesPanelV10 {
+    width: calc(100vw - 8px) !important;
+    height:
+      calc(100dvh - var(--mhur-v551-notes-top) - 8px) !important;
+    max-height:
+      calc(100dvh - var(--mhur-v551-notes-top) - 8px) !important;
+    border-radius: 11px !important;
+  }
+
+  html body .s18NotesPanelV10 > nav {
+    min-height: 64px !important;
+    padding: 8px 10px !important;
+  }
+
+  html body .s18NotesPanelV10 > nav > button,
+  html body .s18NotesPanelV10 > nav button[data-tab] {
+    min-width: 0 !important;
+    flex: 1 1 0 !important;
+    min-height: 48px !important;
+    padding: 8px 10px !important;
+    font-size: 15px !important;
+  }
+
+  html body .s18NotesBodyV10 > aside {
+    max-height: 118px !important;
+  }
+
+  html body .s18NotesBodyV10 > main {
+    padding-bottom: 130px !important;
+    scroll-padding-bottom: 130px !important;
+  }
+
+  html body .s18DevArticleV10 {
+    padding-bottom: 140px !important;
+  }
+}
