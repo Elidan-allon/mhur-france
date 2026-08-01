@@ -1,0 +1,79 @@
+/* MHUR NEXUS — V549
+   Tutoriel Mods : une seule flèche.
+*/
+
+html body .modsTutorial > summary {
+  position: relative !important;
+  list-style: none !important;
+  padding-right: 76px !important;
+}
+
+html body .modsTutorial > summary::-webkit-details-marker {
+  display: none !important;
+}
+
+html body .modsTutorial > summary::before {
+  content: none !important;
+  display: none !important;
+}
+
+/* Une seule flèche, créée ici. */
+html body .modsTutorial > summary::after {
+  content: "" !important;
+  position: absolute !important;
+  top: 50% !important;
+  right: 17px !important;
+  display: block !important;
+  width: 15px !important;
+  height: 15px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-right: 4px solid #ffe000 !important;
+  border-bottom: 4px solid #ffe000 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  transform: translateY(-68%) rotate(45deg) !important;
+  transition: transform .18s ease !important;
+  pointer-events: none !important;
+  z-index: 4 !important;
+}
+
+html body .modsTutorial[open] > summary::after {
+  transform: translateY(-30%) rotate(225deg) !important;
+}
+
+/* Cercle derrière l'unique flèche. */
+html body .modsTutorial > summary {
+  background-image:
+    radial-gradient(
+      circle 25px at calc(100% - 25px) 50%,
+      #07111f 0 85%,
+      #000 87% 100%,
+      transparent 102%
+    ) !important;
+}
+
+/* Cache toutes les flèches ajoutées dans le contenu du summary. */
+html body .modsTutorial > summary
+[class*="Chevron"],
+html body .modsTutorial > summary
+[class*="chevron"],
+html body .modsTutorial > summary
+[class*="Arrow"],
+html body .modsTutorial > summary
+[class*="arrow"],
+html body .modsTutorial > summary
+.s18ModsHintV10,
+html body .modsTutorial > summary
+.mhurModsArrow,
+html body .modsTutorial > summary
+[data-mods-arrow] {
+  display: none !important;
+}
+
+/* Cache les anciennes pastilles de flèche ajoutées sous le summary. */
+html body .modsTutorial >
+[data-v549-old-arrow="1"] {
+  display: none !important;
+}

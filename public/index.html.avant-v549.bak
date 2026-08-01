@@ -835,7 +835,6 @@
 <link rel="stylesheet" href="css/v543-moderation-evidence.css?v=543">
 <link rel="stylesheet" href="css/v547-mobile-profile-roles.css?v=547">
 <link rel="stylesheet" href="css/v548-mobile-season-offset.css?v=548">
-<link rel="stylesheet" href="css/v549-mods-single-arrow.css?v=549">
 </head>
 <body>
 
@@ -7159,6 +7158,5 @@ body .costumeTile > img,
 <script src="js/v542-tier-notes-mobile.js?v=542"></script>
 <script src="js/v543-moderation-evidence.js?v=543"></script>
 <script src="js/v547-mobile-profile-roles.js?v=547"></script>
-<script src="js/v549-mods-single-arrow.js?v=549"></script>
 </body>
 </html>

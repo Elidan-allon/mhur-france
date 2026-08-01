@@ -1,0 +1,17 @@
+﻿MHUR FRANCE — AJUSTEMENT V548
+================================
+
+Ce correctif garde entièrement le V547 et descend seulement le contenu
+mobile de 10 pixels supplémentaires pour laisser plus d'espace au-dessus
+du titre SAISON 18.
+
+INSTALLATION
+
+1. Décompresse le ZIP.
+2. Copie son contenu dans le dossier principal mhur-france.
+3. Lance APPLIQUER_CORRECTIF_V548.bat.
+4. Attends : TOUTES LES VERIFICATIONS V548 SONT BONNES.
+5. Dans GitHub Desktop : Commit to main, puis Push origin.
+6. Sur téléphone : ferme complètement l'onglet puis rouvre le site.
+
+Ne retire pas le V547.
