@@ -1,0 +1,14 @@
+/* MHUR FRANCE — V560 : aucun élément ne doit apparaître après les points. */
+.discountGridV296.v559DiscountGrid > .v559DiscountCard > .v559DiscountPointsRow ~ *{
+  display:none!important;
+}
+
+.discountGridV296.v559DiscountGrid > .v559DiscountCard{
+  grid-template-rows:174px 40px 45px 45px!important;
+}
+
+@media(max-width:700px){
+  .discountGridV296.v559DiscountGrid > .v559DiscountCard{
+    grid-template-rows:150px 39px 43px 43px!important;
+  }
+}
