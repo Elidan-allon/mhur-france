@@ -1,0 +1,80 @@
+MHUR FRANCE — RAPPORT MISE À JOUR COMPLÈTE V585
+
+Date UTC : 2026-08-02T07:21:48.137406+00:00
+Source : UltraRumble.com
+
+CONTENU NOUVEAU DÉTECTÉ
+- Personnages : aucun
+- Alters / Styles : aucun
+- Costumes : aucun
+- Événements : aucun
+
+SECTIONS SYNCHRONISÉES
+- Personnages jouables et personnages à venir
+- Alters, actions spéciales, détails, valeurs et effets de niveau
+- T.U.N.I.N.G. normal et spécial
+- Accueil complet
+- Patch Notes avec double vérification BUFF / NERF
+- Costumes sortis et costumes à venir
+- Événements
+
+POLITIQUE DES IMAGES
+- Conservées uniquement : nouveaux personnages / Alters, leur T.U.N.I.N.G.,
+  nouveaux costumes, illustrations de sorties et événements.
+- Nouvelles images conservées : 0
+- Images inutiles refusées : 0
+- Anciennes images protégées/restaurées : 0
+
+PATCH NOTES
+- Contradictions BUFF / NERF corrigées : 43
+- Katsuki Bakugo — γ - Howitzer Impact Cluster : BUFF → NERF
+- Katsuki Bakugo — γ - Howitzer Impact Cluster : BUFF → NERF
+- Denki Kaminari — - Electrification : NERF → BUFF
+- Twice — γ - Foot Boost : NERF → BUFF
+- Twice — γ - Foot Boost : BUFF → NERF
+- Lady Nagant — γ - Kickback Shot : BUFF → NERF
+- Lady Nagant — γ - Kickback Shot : BUFF → ADJUST
+- Katsuki Bakugo — γ - Howitzer Impact Cluster : NERF → BUFF
+- Katsuki Bakugo — γ - Howitzer Impact Cluster : NERF → BUFF
+- Itsuka Kendo — γ - Big Fist Grip : BUFF → NERF
+- Itsuka Kendo — γ - Big Fist Grip : BUFF → NERF
+- Itsuka Kendo — γ - Whirlwind Fist : NERF → BUFF
+- Itsuka Kendo — γ - Whirlwind Fist : NERF → BUFF
+- Tamaki Amajiki — γ - Plasma Cannon : NERF → BUFF
+- Cementoss — γ - Structural Slab : NERF → BUFF
+- Cementoss — γ - Structural Slab : NERF → BUFF
+- Cementoss — - Defensive Wall : NERF → BUFF
+- Cementoss — - Defensive Wall : NERF → BUFF
+- Endeavor — - Flight : NERF → BUFF
+- Endeavor — - Flight : NERF → BUFF
+- Shota Aizawa — β - Binding Cloth: Flow Runner : NERF → BUFF
+- Shota Aizawa — β - Binding Cloth: Flow Runner : NERF → BUFF
+- Shota Aizawa — γ - Binding Cloth: Instance : NERF → BUFF
+- Shota Aizawa — γ - Binding Cloth: Instance : NERF → BUFF
+- Tamaki Amajiki — - Wing Claw : NERF → BUFF
+- Tamaki Amajiki — - Wing Claw : NERF → BUFF
+- Nejire Hado — α - Spiraling Pike : BUFF → NERF
+- Armored All Might — - Thruster Uravity : BUFF → NERF
+- Armored All Might — - Thruster Uravity : BUFF → NERF
+- Shota Aizawa — β - Powerhouse Kick Barrage : NERF → ADJUST
+- Shota Aizawa — - Erasure : BUFF → NERF
+- Endeavor — β - Searing Arrow : NERF → BUFF
+- Endeavor — β - Searing Arrow : NERF → BUFF
+- Hawks — γ - Storm Wings : NERF → BUFF
+- Hawks — γ - Storm Wings : NERF → BUFF
+- Tomura Shigaraki — γ - Super Regeneration : BUFF → NERF
+- Dabi — γ - Crazy Torch : BUFF → NERF
+- Kurogiri — γ - Shadow Haunt : NERF → BUFF
+- Lady Nagant — α - Hollow Point Shot : BUFF → NERF
+- Lady Nagant — γ - Kickback Shot : BUFF → NERF
+- Lady Nagant — γ - Kickback Shot : NERF → ADJUST
+- Lady Nagant — - Scope Mode : BUFF → NERF
+- Lady Nagant — - Scope Mode : BUFF → NERF
+
+VALIDATION
+- Aucun personnage, Alter ou costume historique supprimé : OK
+- Fichiers JS/CSS chargés présents : OK
+- Données accueil valides : OK
+- Costumes à venir recalculés : OK
+- NEW recalculés sur la dernière date sortie : OK
+- Patch Notes vérifiées niveau par niveau : OK

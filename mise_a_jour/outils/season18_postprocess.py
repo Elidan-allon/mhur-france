@@ -8,6 +8,7 @@ a different form: bilingual generated character sheets, upcoming costumes,
 patch history/UI data, login bonus translations, latest releases, and NEW flags.
 """
 from __future__ import annotations
+import os
 
 import argparse
 import importlib.util
@@ -158,6 +159,17 @@ def bonus_titles(raw: str) -> tuple[str, str]:
 
 
 def download_image(session: requests.Session, root: Path, url: str, rel_base: str) -> str:
+    # MHUR V585 LIMITED IMAGE POLICY
+    if os.environ.get("MHUR_IMAGE_POLICY_V585") == "limited":
+        normalized = str(rel_base or "").replace("\\", "/").lower()
+        blocked = (
+            "assets/home/gachas/",
+            "assets/home/bonuses/",
+            "assets/home/discounts/",
+            "assets/home/patches/",
+        )
+        if normalized.startswith(blocked):
+            return url
     if not url:
         return ""
     ext = Path(urlparse(url).path).suffix.lower()

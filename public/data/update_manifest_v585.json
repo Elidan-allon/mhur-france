@@ -1,0 +1,1007 @@
+{
+  "version": "v585",
+  "updated_at": "2026-08-02T07:21:48.137406+00:00",
+  "source": "UltraRumble.com",
+  "new_content": {
+    "characters": [],
+    "styles": [],
+    "costumes": [],
+    "events": []
+  },
+  "counts_before": {
+    "costumes": 1628,
+    "styles": 60,
+    "active_characters": 1,
+    "active_styles": 1,
+    "events": 2,
+    "latest_releases": 4,
+    "images": 4029
+  },
+  "counts_after": {
+    "costumes": 1628,
+    "styles": 60,
+    "active_characters": 1,
+    "active_styles": 0,
+    "events": 2,
+    "latest_releases": 1,
+    "images": 4029
+  },
+  "patch_note_corrections": [
+    {
+      "patch": "1785298405",
+      "character": "Katsuki Bakugo",
+      "skill": "γ - Howitzer Impact Cluster",
+      "metric": "Reload Time",
+      "before": "7.0",
+      "after": "8.0",
+      "old": "buff",
+      "new": "nerf"
+    },
+    {
+      "patch": "1785298405",
+      "character": "Katsuki Bakugo",
+      "skill": "γ - Howitzer Impact Cluster",
+      "metric": "Penalty Reload",
+      "before": "7.0",
+      "after": "11.0",
+      "old": "buff",
+      "new": "nerf"
+    },
+    {
+      "patch": "1785298405",
+      "character": "Denki Kaminari",
+      "skill": "- Electrification",
+      "metric": "Penalty Reload",
+      "before": "14.0",
+      "after": "9.0",
+      "old": "nerf",
+      "new": "buff"
+    },
+    {
+      "patch": "1785298405",
+      "character": "Twice",
+      "skill": "γ - Foot Boost",
+      "metric": "Reload Time",
+      "before": [
+        "5.0",
+        "5.0",
+        "5.0",
+        "5.0",
+        "5.0",
+        "5.0",
+        "5.0",
+        "5.0",
+        "5.0"
+      ],
+      "after": [
+        "4.0",
+        "4.0",
+        "4.0",
+        "4.0",
+        "4.0",
+        "4.0",
+        "4.0",
+        "4.0",
+        "4.0"
+      ],
+      "old": "nerf",
+      "new": "buff"
+    },
+    {
+      "patch": "1785298405",
+      "character": "Twice",
+      "skill": "γ - Foot Boost",
+      "metric": "Penalty Reload",
+      "before": "6.0",
+      "after": "8.0",
+      "old": "buff",
+      "new": "nerf"
+    },
+    {
+      "patch": "1785298405",
+      "character": "Lady Nagant",
+      "skill": "γ - Kickback Shot",
+      "metric": "Reload Time",
+      "before": [
+        "7.0",
+        "7.0",
+        "7.0",
+        "5.0",
+        "5.0",
+        "5.0",
+        "5.0",
+        "5.0",
+        "5.0"
+      ],
+      "after": [
+        "9.0",
+        "9.0",
+        "9.0",
+        "8.0",
+        "8.0",
+        "8.0",
+        "8.0",
+        "8.0",
+        "7.0"
+      ],
+      "old": "buff",
+      "new": "nerf"
+    },
+    {
+      "patch": "1785298405",
+      "character": "Lady Nagant",
+      "skill": "γ - Kickback Shot",
+      "metric": "Penalty Reload",
+      "before": [
+        "7.0",
+        "7.0",
+        "7.0",
+        "5.0",
+        "5.0",
+        "5.0",
+        "5.0",
+        "5.0",
+        "8.0"
+      ],
+      "after": [
+        "9.0",
+        "9.0",
+        "9.0",
+        "8.0",
+        "8.0",
+        "8.0",
+        "8.0",
+        "8.0",
+        "7.0"
+      ],
+      "old": "buff",
+      "new": "adjust"
+    },
+    {
+      "patch": "1783497169",
+      "character": "Katsuki Bakugo",
+      "skill": "γ - Howitzer Impact Cluster",
+      "metric": "Reload Time",
+      "before": [
+        "11.0",
+        "11.0",
+        "11.0",
+        "10.0",
+        "10.0",
+        "10.0",
+        "10.0",
+        "10.0",
+        "9.0"
+      ],
+      "after": [
+        "9.0",
+        "9.0",
+        "9.0",
+        "8.0",
+        "8.0",
+        "8.0",
+        "8.0",
+        "8.0",
+        "7.0"
+      ],
+      "old": "nerf",
+      "new": "buff"
+    },
+    {
+      "patch": "1783497169",
+      "character": "Katsuki Bakugo",
+      "skill": "γ - Howitzer Impact Cluster",
+      "metric": "Penalty Reload",
+      "before": [
+        "11.0",
+        "11.0",
+        "11.0",
+        "10.0",
+        "10.0",
+        "10.0",
+        "10.0",
+        "10.0",
+        "9.0"
+      ],
+      "after": [
+        "9.0",
+        "9.0",
+        "9.0",
+        "8.0",
+        "8.0",
+        "8.0",
+        "8.0",
+        "8.0",
+        "7.0"
+      ],
+      "old": "nerf",
+      "new": "buff"
+    },
+    {
+      "patch": "1783497169",
+      "character": "Itsuka Kendo",
+      "skill": "γ - Big Fist Grip",
+      "metric": "Reload Time",
+      "before": [
+        "2.0",
+        "2.0",
+        "2.0",
+        "3.0",
+        "3.0",
+        "3.0",
+        "3.0",
+        "3.0",
+        "3.0"
+      ],
+      "after": [
+        "5.0",
+        "5.0",
+        "5.0",
+        "5.0",
+        "5.0",
+        "5.0",
+        "5.0",
+        "5.0",
+        "5.0"
+      ],
+      "old": "buff",
+      "new": "nerf"
+    },
+    {
+      "patch": "1783497169",
+      "character": "Itsuka Kendo",
+      "skill": "γ - Big Fist Grip",
+      "metric": "Penalty Reload",
+      "before": [
+        "2.0",
+        "2.0",
+        "2.0",
+        "3.0",
+        "3.0",
+        "3.0",
+        "3.0",
+        "3.0",
+        "5.0"
+      ],
+      "after": [
+        "5.0",
+        "5.0",
+        "5.0",
+        "7.5",
+        "7.5",
+        "7.5",
+        "7.5",
+        "7.5",
+        "10.0"
+      ],
+      "old": "buff",
+      "new": "nerf"
+    },
+    {
+      "patch": "1783497169",
+      "character": "Itsuka Kendo",
+      "skill": "γ - Whirlwind Fist",
+      "metric": "Reload Time",
+      "before": [
+        "9.0",
+        "9.0",
+        "9.0",
+        "8.5",
+        "8.5",
+        "8.5",
+        "8.5",
+        "8.5",
+        "8.0"
+      ],
+      "after": [
+        "8.0",
+        "8.0",
+        "8.0",
+        "7.5",
+        "7.5",
+        "7.5",
+        "7.5",
+        "7.5",
+        "7.0"
+      ],
+      "old": "nerf",
+      "new": "buff"
+    },
+    {
+      "patch": "1783497169",
+      "character": "Itsuka Kendo",
+      "skill": "γ - Whirlwind Fist",
+      "metric": "Penalty Reload",
+      "before": [
+        "14.0",
+        "14.0",
+        "14.0",
+        "13.0",
+        "13.0",
+        "13.0",
+        "13.0",
+        "13.0",
+        "12.0"
+      ],
+      "after": [
+        "12.0",
+        "12.0",
+        "12.0",
+        "11.0",
+        "11.0",
+        "11.0",
+        "11.0",
+        "11.0",
+        "9.0"
+      ],
+      "old": "nerf",
+      "new": "buff"
+    },
+    {
+      "patch": "1783497169",
+      "character": "Tamaki Amajiki",
+      "skill": "γ - Plasma Cannon",
+      "metric": "Penalty Reload",
+      "before": [
+        "14.0",
+        "14.0",
+        "14.0",
+        "14.0",
+        "14.0",
+        "12.0"
+      ],
+      "after": [
+        "11.0",
+        "11.0",
+        "11.0",
+        "11.0",
+        "11.0",
+        "10.0"
+      ],
+      "old": "nerf",
+      "new": "buff"
+    },
+    {
+      "patch": "1783497169",
+      "character": "Cementoss",
+      "skill": "γ - Structural Slab",
+      "metric": "Reload Time",
+      "before": [
+        "10.0",
+        "10.0",
+        "10.0",
+        "9.0",
+        "9.0",
+        "9.0",
+        "9.0",
+        "9.0",
+        "8.0"
+      ],
+      "after": [
+        "9.0",
+        "9.0",
+        "9.0",
+        "8.0",
+        "8.0",
+        "8.0",
+        "8.0",
+        "8.0",
+        "7.0"
+      ],
+      "old": "nerf",
+      "new": "buff"
+    },
+    {
+      "patch": "1783497169",
+      "character": "Cementoss",
+      "skill": "γ - Structural Slab",
+      "metric": "Penalty Reload",
+      "before": [
+        "15.0",
+        "15.0",
+        "15.0",
+        "13.0",
+        "13.0",
+        "13.0",
+        "13.0",
+        "13.0",
+        "12.0"
+      ],
+      "after": [
+        "12.0",
+        "12.0",
+        "12.0",
+        "10.5",
+        "10.5",
+        "10.5",
+        "10.5",
+        "10.5",
+        "9.0"
+      ],
+      "old": "nerf",
+      "new": "buff"
+    },
+    {
+      "patch": "1783497169",
+      "character": "Cementoss",
+      "skill": "- Defensive Wall",
+      "metric": "Reload Time",
+      "before": "60.0",
+      "after": "50.0",
+      "old": "nerf",
+      "new": "buff"
+    },
+    {
+      "patch": "1783497169",
+      "character": "Cementoss",
+      "skill": "- Defensive Wall",
+      "metric": "Penalty Reload",
+      "before": "60.0",
+      "after": "50.0",
+      "old": "nerf",
+      "new": "buff"
+    },
+    {
+      "patch": "1783497169",
+      "character": "Endeavor",
+      "skill": "- Flight",
+      "metric": "Reload Time",
+      "before": "0.2",
+      "after": "0.18",
+      "old": "nerf",
+      "new": "buff"
+    },
+    {
+      "patch": "1783497169",
+      "character": "Endeavor",
+      "skill": "- Flight",
+      "metric": "Ammo Used",
+      "before": "15",
+      "after": "10",
+      "old": "nerf",
+      "new": "buff"
+    },
+    {
+      "patch": "1782273704",
+      "character": "Shota Aizawa",
+      "skill": "β - Binding Cloth: Flow Runner",
+      "metric": "Reload Time",
+      "before": [
+        "7.0",
+        "7.0",
+        "7.0",
+        "6.0",
+        "6.0",
+        "6.0",
+        "6.0",
+        "6.0",
+        "5.0"
+      ],
+      "after": [
+        "6.0",
+        "6.0",
+        "6.0",
+        "5.0",
+        "5.0",
+        "5.0",
+        "5.0",
+        "5.0",
+        "4.0"
+      ],
+      "old": "nerf",
+      "new": "buff"
+    },
+    {
+      "patch": "1782273704",
+      "character": "Shota Aizawa",
+      "skill": "β - Binding Cloth: Flow Runner",
+      "metric": "Penalty Reload",
+      "before": [
+        "7.0",
+        "7.0",
+        "7.0",
+        "6.0",
+        "6.0",
+        "6.0",
+        "6.0",
+        "6.0",
+        "5.0"
+      ],
+      "after": [
+        "6.0",
+        "6.0",
+        "6.0",
+        "5.0",
+        "5.0",
+        "5.0",
+        "5.0",
+        "5.0",
+        "4.0"
+      ],
+      "old": "nerf",
+      "new": "buff"
+    },
+    {
+      "patch": "1782273704",
+      "character": "Shota Aizawa",
+      "skill": "γ - Binding Cloth: Instance",
+      "metric": "Reload Time",
+      "before": [
+        "10.0",
+        "10.0",
+        "10.0",
+        "9.0",
+        "9.0",
+        "9.0",
+        "9.0",
+        "9.0",
+        "8.0"
+      ],
+      "after": [
+        "8.0",
+        "8.0",
+        "8.0",
+        "7.0",
+        "7.0",
+        "7.0",
+        "7.0",
+        "7.0",
+        "6.0"
+      ],
+      "old": "nerf",
+      "new": "buff"
+    },
+    {
+      "patch": "1782273704",
+      "character": "Shota Aizawa",
+      "skill": "γ - Binding Cloth: Instance",
+      "metric": "Penalty Reload",
+      "before": [
+        "10.0",
+        "10.0",
+        "10.0",
+        "9.0",
+        "9.0",
+        "9.0",
+        "9.0",
+        "9.0",
+        "8.0"
+      ],
+      "after": [
+        "8.0",
+        "8.0",
+        "8.0",
+        "7.0",
+        "7.0",
+        "7.0",
+        "7.0",
+        "7.0",
+        "6.0"
+      ],
+      "old": "nerf",
+      "new": "buff"
+    },
+    {
+      "patch": "1779836241",
+      "character": "Tamaki Amajiki",
+      "skill": "- Wing Claw",
+      "metric": "Reload Time",
+      "before": "8.0",
+      "after": "6.0",
+      "old": "nerf",
+      "new": "buff"
+    },
+    {
+      "patch": "1779836241",
+      "character": "Tamaki Amajiki",
+      "skill": "- Wing Claw",
+      "metric": "Penalty Reload",
+      "before": "8.0",
+      "after": "6.0",
+      "old": "nerf",
+      "new": "buff"
+    },
+    {
+      "patch": "1779836241",
+      "character": "Nejire Hado",
+      "skill": "α - Spiraling Pike",
+      "metric": "Penalty Reload",
+      "before": [
+        "5.0",
+        "5.0",
+        "5.0",
+        "5.0",
+        "5.0",
+        "5.0",
+        "5.0",
+        "5.0",
+        "5.0"
+      ],
+      "after": [
+        "6.0",
+        "6.0",
+        "6.0",
+        "6.0",
+        "6.0",
+        "6.0",
+        "6.0",
+        "6.0",
+        "6.0"
+      ],
+      "old": "buff",
+      "new": "nerf"
+    },
+    {
+      "patch": "1779836241",
+      "character": "Armored All Might",
+      "skill": "- Thruster Uravity",
+      "metric": "Reload Time",
+      "before": "0.5",
+      "after": "0.7",
+      "old": "buff",
+      "new": "nerf"
+    },
+    {
+      "patch": "1779836241",
+      "character": "Armored All Might",
+      "skill": "- Thruster Uravity",
+      "metric": "Penalty Reload",
+      "before": "12.0",
+      "after": "15.0",
+      "old": "buff",
+      "new": "nerf"
+    },
+    {
+      "patch": "1779836241",
+      "character": "Shota Aizawa",
+      "skill": "β - Powerhouse Kick Barrage",
+      "metric": "Reload Time",
+      "before": [
+        "5.0",
+        "5.0",
+        "5.0",
+        "3.0"
+      ],
+      "after": [
+        "4.0",
+        "4.0",
+        "4.0",
+        "3.5"
+      ],
+      "old": "nerf",
+      "new": "adjust"
+    },
+    {
+      "patch": "1779836241",
+      "character": "Shota Aizawa",
+      "skill": "- Erasure",
+      "metric": "Ammo Used",
+      "before": "20",
+      "after": "50",
+      "old": "buff",
+      "new": "nerf"
+    },
+    {
+      "patch": "1779836241",
+      "character": "Endeavor",
+      "skill": "β - Searing Arrow",
+      "metric": "Reload Time",
+      "before": [
+        "5.5",
+        "5.5",
+        "5.5",
+        "5.5",
+        "5.5",
+        "5.5",
+        "5.5",
+        "5.5",
+        "5.5"
+      ],
+      "after": [
+        "4.5",
+        "4.5",
+        "4.5",
+        "4.5",
+        "4.5",
+        "4.5",
+        "4.5",
+        "4.5",
+        "4.5"
+      ],
+      "old": "nerf",
+      "new": "buff"
+    },
+    {
+      "patch": "1779836241",
+      "character": "Endeavor",
+      "skill": "β - Searing Arrow",
+      "metric": "Penalty Reload",
+      "before": [
+        "7.5",
+        "7.5",
+        "7.5",
+        "6.0",
+        "6.0",
+        "6.0",
+        "6.0",
+        "6.0",
+        "9.0"
+      ],
+      "after": [
+        "6.5",
+        "6.5",
+        "6.5",
+        "5.0",
+        "5.0",
+        "5.0",
+        "5.0",
+        "5.0",
+        "8.0"
+      ],
+      "old": "nerf",
+      "new": "buff"
+    },
+    {
+      "patch": "1779836241",
+      "character": "Hawks",
+      "skill": "γ - Storm Wings",
+      "metric": "Reload Time",
+      "before": [
+        "10.0",
+        "10.0",
+        "10.0",
+        "9.0",
+        "9.0",
+        "9.0",
+        "9.0",
+        "9.0",
+        "9.0"
+      ],
+      "after": [
+        "9.0",
+        "9.0",
+        "9.0",
+        "8.0",
+        "8.0",
+        "8.0",
+        "8.0",
+        "8.0",
+        "8.0"
+      ],
+      "old": "nerf",
+      "new": "buff"
+    },
+    {
+      "patch": "1779836241",
+      "character": "Hawks",
+      "skill": "γ - Storm Wings",
+      "metric": "Penalty Reload",
+      "before": [
+        "13.0",
+        "13.0",
+        "13.0",
+        "12.0",
+        "12.0",
+        "12.0",
+        "12.0",
+        "12.0",
+        "14.0"
+      ],
+      "after": [
+        "11.0",
+        "11.0",
+        "11.0",
+        "10.0",
+        "10.0",
+        "10.0",
+        "10.0",
+        "10.0",
+        "12.0"
+      ],
+      "old": "nerf",
+      "new": "buff"
+    },
+    {
+      "patch": "1779836241",
+      "character": "Tomura Shigaraki",
+      "skill": "γ - Super Regeneration",
+      "metric": "Penalty Reload",
+      "before": [
+        "11.0",
+        "11.0",
+        "11.0",
+        "10.0",
+        "10.0",
+        "10.0",
+        "10.0",
+        "10.0",
+        "9.0"
+      ],
+      "after": [
+        "13.0",
+        "13.0",
+        "13.0",
+        "12.0",
+        "12.0",
+        "12.0",
+        "12.0",
+        "12.0",
+        "11.0"
+      ],
+      "old": "buff",
+      "new": "nerf"
+    },
+    {
+      "patch": "1779836241",
+      "character": "Dabi",
+      "skill": "γ - Crazy Torch",
+      "metric": "Ammo Used",
+      "before": [
+        "22",
+        "23",
+        "24",
+        "26",
+        "27",
+        "28",
+        "29",
+        "30",
+        "32"
+      ],
+      "after": [
+        "27",
+        "29",
+        "31",
+        "34",
+        "37",
+        "38",
+        "39",
+        "40",
+        "42"
+      ],
+      "old": "buff",
+      "new": "nerf"
+    },
+    {
+      "patch": "1779836241",
+      "character": "Kurogiri",
+      "skill": "γ - Shadow Haunt",
+      "metric": "Reload Time",
+      "before": [
+        "1.1",
+        "1.05",
+        "1.0",
+        "0.95",
+        "0.9",
+        "0.85",
+        "0.8",
+        "0.75",
+        "0.7"
+      ],
+      "after": [
+        "0.2",
+        "0.2",
+        "0.2",
+        "0.2",
+        "0.2",
+        "0.2",
+        "0.2",
+        "0.2",
+        "0.2"
+      ],
+      "old": "nerf",
+      "new": "buff"
+    },
+    {
+      "patch": "1779836241",
+      "character": "Lady Nagant",
+      "skill": "α - Hollow Point Shot",
+      "metric": "Penalty Reload",
+      "before": [
+        "6.0",
+        "6.0",
+        "6.0",
+        "6.0",
+        "6.0",
+        "6.0",
+        "6.0",
+        "6.0",
+        "6.0"
+      ],
+      "after": [
+        "7.0",
+        "7.0",
+        "7.0",
+        "7.0",
+        "7.0",
+        "7.0",
+        "7.0",
+        "7.0",
+        "7.0"
+      ],
+      "old": "buff",
+      "new": "nerf"
+    },
+    {
+      "patch": "1779836241",
+      "character": "Lady Nagant",
+      "skill": "γ - Kickback Shot",
+      "metric": "Reload Time",
+      "before": [
+        "6.0",
+        "6.0",
+        "6.0",
+        "4.5"
+      ],
+      "after": [
+        "7.0",
+        "7.0",
+        "7.0",
+        "5.0"
+      ],
+      "old": "buff",
+      "new": "nerf"
+    },
+    {
+      "patch": "1779836241",
+      "character": "Lady Nagant",
+      "skill": "γ - Kickback Shot",
+      "metric": "Penalty Reload",
+      "before": [
+        "6.0",
+        "6.0",
+        "6.0",
+        "9.0",
+        "9.0",
+        "9.0",
+        "9.0",
+        "9.0",
+        "7.0"
+      ],
+      "after": [
+        "7.0",
+        "7.0",
+        "7.0",
+        "5.0",
+        "5.0",
+        "5.0",
+        "5.0",
+        "5.0",
+        "8.0"
+      ],
+      "old": "nerf",
+      "new": "adjust"
+    },
+    {
+      "patch": "1779836241",
+      "character": "Lady Nagant",
+      "skill": "- Scope Mode",
+      "metric": "Reload Time",
+      "before": "12.0",
+      "after": "17.0",
+      "old": "buff",
+      "new": "nerf"
+    },
+    {
+      "patch": "1779836241",
+      "character": "Lady Nagant",
+      "skill": "- Scope Mode",
+      "metric": "Penalty Reload",
+      "before": "12.0",
+      "after": "17.0",
+      "old": "buff",
+      "new": "nerf"
+    }
+  ],
+  "images": {
+    "preserved": [],
+    "removed": [],
+    "restored": []
+  },
+  "validation": {
+    "errors": [],
+    "warnings": []
+  },
+  "image_policy_files": [
+    "mise_a_jour/outils/season18_postprocess.py"
+  ]
+}
