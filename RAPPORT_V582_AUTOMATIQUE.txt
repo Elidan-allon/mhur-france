@@ -1,0 +1,55 @@
+MHUR FRANCE — RAPPORT AUTOMATIQUE V582
+
+Dernière journée de costumes détectée : 2026-07-29
+Nombre de costumes de cette journée : 39
+
+Vérifications :
+- V582 chargé après season18-v12.js : OK
+- badge NEW indépendant des anciens scripts : OK
+- animation de tous les NEW : OK
+- data-costume-id reconnu : OK
+- costume Original Gentle ajouté par le script : OK
+- Twice INCOMING vert/noir sans animation : OK
+- Tsuyu INCOMING rouge/noir sans animation : OK
+- syntaxe JavaScript : OK
+
+Identifiants de la dernière journée :
+- 2618100
+- 2618102
+- 2618103
+- 2618104
+- 2618105
+- 2618106
+- 4618100
+- 4618105
+- 11601100
+- 11601102
+- 11601103
+- 11601104
+- 11601105
+- 11601106
+- 15614100
+- 15614101
+- 15614103
+- 15614104
+- 15614105
+- 15614106
+- 23001103
+- 25401103
+- 37615103
+- 38615103
+- 108000001
+- 108000004
+- 108000006
+- 108100100
+- 108100101
+- 108100103
+- 108100104
+- 108100105
+- 108100106
+- 108607100
+- 108607101
+- 108607103
+- 108607104
+- 108607105
+- 108607106

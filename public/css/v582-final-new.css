@@ -1,0 +1,155 @@
+
+/* MHUR Nexus — V582 : couleurs INCOMING + NEW fiables */
+
+/* Les anciens NEW sont masqués uniquement sur les cartes gérées par V582. */
+.card[data-char] > .s18NewBadge,
+.styleCard[data-style] > .s18NewBadge,
+.costumeTile > .s18NewBadge,
+.costumeCard > .s18NewBadge,
+.costumeResult > .s18NewBadge{
+  display:none!important;
+  visibility:hidden!important;
+}
+
+/* Le badge V582 réutilise exactement l'image NEW du site. */
+.mhurNewV582{
+  position:absolute!important;
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+  pointer-events:none!important;
+  min-width:0!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:0!important;
+  background:
+    transparent
+    url('../assets/home/icons/new_badge_custom.png')
+    center/contain no-repeat!important;
+  color:transparent!important;
+  text-indent:-9999px!important;
+  overflow:visible!important;
+  box-shadow:none!important;
+  transform-origin:center!important;
+  z-index:100!important;
+  animation:mhurNewPulseV582 .9s ease-in-out infinite!important;
+  will-change:transform!important;
+}
+
+@keyframes mhurNewPulseV582{
+  0%,100%{transform:scale(.90)}
+  50%{transform:scale(1.14)}
+}
+
+/* Gentle à l'accueil bouge également. */
+.s18PlannedCardV12[data-planned="gentle"] .s18PlannedNewV12{
+  animation:mhurNewPulseV582 .9s ease-in-out infinite!important;
+  transform-origin:center!important;
+}
+
+/* Personnages et T.U.N.I.N.G : haut à droite. */
+.card[data-char] > .mhurNewV582,
+.styleCard[data-style] > .mhurNewV582{
+  top:7px!important;
+  right:7px!important;
+  left:auto!important;
+  width:88px!important;
+  height:44px!important;
+}
+
+/* Costumes : plus petit, sous les étoiles à droite. */
+.costumeTile > .mhurNewV582,
+.costumeCard > .mhurNewV582,
+.costumeResult > .mhurNewV582{
+  top:38px!important;
+  right:8px!important;
+  left:auto!important;
+  width:64px!important;
+  height:34px!important;
+  z-index:90!important;
+}
+
+.costumeTile > .costumeTileStars,
+.costumeCard > .costumeTileStars,
+.costumeResult > .costumeTileStars{
+  position:absolute!important;
+  top:7px!important;
+  right:8px!important;
+  z-index:101!important;
+}
+
+/* INCOMING commun : grand et complètement fixe. */
+.mhurIncomingV582{
+  position:absolute!important;
+  z-index:105!important;
+  top:9px!important;
+  right:10px!important;
+  min-width:172px!important;
+  height:58px!important;
+  padding:0 19px!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  border:4px solid #050505!important;
+  border-radius:10px!important;
+  color:#fff!important;
+  font-family:Impact,Haettenschweiler,'Arial Black',sans-serif!important;
+  font-size:24px!important;
+  font-style:italic!important;
+  line-height:1!important;
+  letter-spacing:.8px!important;
+  white-space:nowrap!important;
+  box-shadow:0 5px 0 #050505!important;
+  text-shadow:2px 2px 0 #000!important;
+  animation:none!important;
+  transform:none!important;
+  filter:none!important;
+}
+
+/* Twice Support : vert et noir. */
+.mhurIncomingTwiceV582{
+  background:
+    linear-gradient(
+      135deg,
+      #21cf55 0%,
+      #21cf55 52%,
+      #050505 52%,
+      #050505 100%
+    )!important;
+}
+
+/* Tsuyu : rouge et noir. */
+.mhurIncomingTsuyuV582{
+  background:
+    linear-gradient(
+      135deg,
+      #e3223e 0%,
+      #e3223e 52%,
+      #050505 52%,
+      #050505 100%
+    )!important;
+}
+
+@media(max-width:700px){
+  .card[data-char] > .mhurNewV582,
+  .styleCard[data-style] > .mhurNewV582{
+    width:76px!important;
+    height:38px!important;
+  }
+
+  .costumeTile > .mhurNewV582,
+  .costumeCard > .mhurNewV582,
+  .costumeResult > .mhurNewV582{
+    top:34px!important;
+    right:7px!important;
+    width:54px!important;
+    height:29px!important;
+  }
+
+  .mhurIncomingV582{
+    min-width:148px!important;
+    height:50px!important;
+    padding:0 14px!important;
+    font-size:20px!important;
+  }
+}
