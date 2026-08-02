@@ -1,13 +1,22 @@
-MHUR FRANCE — CORRECTIF V569
+MHUR FRANCE — CORRECTIF V570
 
-Ce correctif supprime uniquement les badges NEW
-sur les cartes d'accueil de Twice et Tsuyu Asui.
+Ce correctif modifie directement les fichiers qui génèrent l'accueil
+et les badges des costumes. Il ne rajoute pas une nouvelle détection par texte.
+
+CORRECTIONS
+- suppression du NEW de Twice à l'accueil ;
+- suppression du NEW de Tsuyu Asui à l'accueil ;
+- conservation du NEW de Gentle Criminal ;
+- déplacement du NEW des costumes sous les étoiles à droite ;
+- désactivation des anciens correctifs V563 à V569 dans index.html ;
+- changement des numéros de cache vers V570.
 
 INSTALLATION
-1. Décompresse le ZIP à la racine de mhur-france.
-2. Lance APPLIQUER_CORRECTIF_V569.bat.
-3. Fais ton commit et ton push GitHub.
-4. Après le déploiement Cloudflare, recharge avec Ctrl + F5.
+1. Décompresse tout à la racine de mhur-france.
+2. Lance APPLIQUER_CORRECTIF_V570.bat.
+3. Vérifie que la fenêtre affiche les quatre lignes [OK].
+4. Fais ton commit et ton push GitHub.
+5. Après le déploiement Cloudflare, recharge avec Ctrl + F5.
 
 RETOUR EN ARRIÈRE
-Lance ANNULER_CORRECTIF_V569.bat.
+Lance ANNULER_CORRECTIF_V570.bat.

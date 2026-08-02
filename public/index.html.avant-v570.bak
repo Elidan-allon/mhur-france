@@ -836,11 +836,13 @@
 <link rel="preload" as="image" href="assets/home/season18/twice_s18_banner.webp">
 <link rel="preload" as="image" href="assets/home/season18/tsuyu_profile.webp">
 <link rel="preload" as="image" href="assets/home/icons/new_badge_custom.png">
-<link rel="stylesheet" href="css/season18-fixes.css?v=570">
+<link rel="stylesheet" href="css/season18-fixes.css?v=1785451218648514700">
 <link rel="stylesheet" href="css/v559-discounts-stable.css?v=559">
 <link rel="stylesheet" href="css/v560-discount-role-dedupe.css?v=560">
 
-
+<link id="mhur-v567-css" rel="stylesheet" href="css/v567-badges-propres.css?v=567">
+<link rel="stylesheet" href="css/v568-costume-new-lower.css?v=568">
+<link rel="stylesheet" href="css/v569-home-remove-new.css?v=569">
 </head>
 <body>
 
@@ -3366,7 +3368,7 @@ window.__MHUR_V542_STABLE_RENDER__=true;
 <script src="data/local_assets_index.js?v=1785451218648514700"></script>
 <script src="data/mhur_database_assets.js?v=29000"></script>
 <script src="data/season18_sync.js?v=29000"></script>
-<script src="js/season18-early.js?v=570"></script>
+<script src="js/season18-early.js?v=1785451218648514700"></script>
 <script>
 window.MHUR_CLEAN_ROUTES?.apply?.();if(!['home','characters','tunings','costumes','builds','mods'].includes(page))page='home';updateLanguageIndicator();window.__MHUR_FINAL_LAYOUT_PENDING__=true;
 </script>
@@ -7170,13 +7172,15 @@ body .costumeTile > img,
 <!-- Season 18 v14 compatibility layer. -->
 
 <!-- Season 18 v14 compatibility layer. -->
-<script src="js/season18-fixes.js?v=570"></script>
+<script src="js/season18-fixes.js?v=559"></script>
 <script src="js/season18-v12.js?v=1785451218648514700"></script>
 <script src="js/v559-discounts-stable.js?v=559"></script>
 <script src="js/v560-discount-role-dedupe.js?v=560"></script>
   <link id="mhur-v561-css" rel="stylesheet" href="css/v561-discount-full-width.css?v=561">
   <link id="mhur-v562-css" rel="stylesheet" href="css/v562-discount-typography.css?v=562">
 
-
+<script id="mhur-v567-js" src="js/v567-badges-propres.js?v=567"></script>
+<script src="js/v568-costume-new-lower.js?v=568"></script>
+<script src="js/v569-home-remove-new.js?v=569"></script>
 </body>
 </html>
