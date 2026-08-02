@@ -1,24 +1,16 @@
-MHUR FRANCE — CORRECTIF V572 SOURCE
+MHUR FRANCE — CORRECTIF V573
 
-Ce correctif modifie directement les données et le rendu Saison 18.
+Ce correctif ajuste l’emplacement et l’animation des badges NEW.
 
 CORRECTIONS
-- écriture des réductions moins grasse ;
-- NEW animé sur Gentle Criminal dans Personnages et T.U.N.I.N.G ;
-- NEW animé sur le style Technique de Gentle ;
-- NEW sur le costume Original de Gentle (108000000) ;
-- NEW sur tous les costumes de la vague sortie à la date la plus récente ;
-- tous les NEW utilisent la même animation ;
-- NEW des costumes placé à droite sous les étoiles ;
-- suppression des anciens scripts de badges V563 à V571 ;
-- conservation de data-costume dans les cartes pour éviter que le badge disparaisse.
+- NEW à droite sur Personnages et T.U.N.I.N.G ;
+- animation sur tous les NEW ;
+- NEW des tenues plus petit ;
+- NEW ajouté sur les nouvelles tenues détectées automatiquement ;
+- typographie des réductions toujours moins grasse.
 
 INSTALLATION
 1. Décompresse le ZIP à la racine de mhur-france.
-2. Lance APPLIQUER_CORRECTIF_V572.bat.
-3. La fenêtre doit afficher cinq lignes [VÉRIFIÉ].
-4. Fais ton commit et ton push.
-5. Après Cloudflare, recharge avec Ctrl + F5.
-
-RETOUR EN ARRIÈRE
-Lance ANNULER_CORRECTIF_V572.bat.
+2. Lance APPLIQUER_CORRECTIF_V573.bat.
+3. Fais ton commit et ton push.
+4. Après Cloudflare, recharge avec Ctrl + F5.
