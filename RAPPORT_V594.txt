@@ -1,0 +1,28 @@
+MHUR FRANCE — RAPPORT V594
+
+PATCH NOTES
+- Anciennes Patch Notes supprimées.
+- Seule v1.17.0-14.5 est conservée.
+
+TRADUCTION ANGLAISE
+- Événement Bonus de Login traduit.
+- Texte de sélection T.U.N.I.N.G. traduit.
+- Détail des builds communautaires traduit.
+- Boutons Report / Verify / Hide traduits.
+- Description vide et feedback communautaire traduits.
+- Noms et descriptions T.U.N.I.N.G. traduits avant le rendu.
+- Retour au français restauré automatiquement.
+
+TUTORIEL MODS
+- Tous les anciens chevrons supprimés.
+- Deux SVG distincts pour ouvert et fermé.
+- Aucun cercle n'est retourné.
+
+TIER LIST
+- NEW ajouté à Gentle Criminal.
+- Compatible cartes éditables et cartes publiées.
+
+VÉRIFICATIONS
+- un seul Patch Note : OK
+- syntaxe JavaScript : OK
+- cache V594 : OK
