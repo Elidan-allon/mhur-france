@@ -850,6 +850,8 @@
 <link rel="stylesheet" href="css/v594-translations-tier-patch-arrow.css?v=594">
 
 <link rel="stylesheet" href="css/v595-patch-portraits-tables.css?v=595">
+
+<link rel="stylesheet" href="css/v596-tuning-mods.css?v=596">
 </head>
 <body>
 
@@ -1316,7 +1318,264 @@ function tables(ts){
   }).join('')}</div>`;
 }
 function tuningsPage(){if(selectedChar&&selectedStyle)return tuningDetail(selectedStyle); if(selectedChar)return stylePicker(); return `<h1 class="title">${tr('tunings')}</h1>${rosterSections(false,'tunings')}`}
-function tuningDetail(s){const ch=characters.find(x=>x.styles.includes(s))||{name:'Personnage'};const list=tunings[s]||[];return `<button class="back" onclick="selectedStyle=null;if((characters.find(x=>x.id===selectedChar)||{}).styles?.length===1)selectedChar=null;render()">← ${tr('back')}</button><h1 class="title">T.U.N.I.N.G — ${ch.name}</h1>${list.length?list.map(tu=>{const title=tu.type==='SP'?'Compétence T.U.N.I.N.G SP':'Compétence T.U.N.I.N.G';const levelHtml=tu.levels?`<div class="chips tuningLevels">${tu.levels.map(l=>`<span class="chip ${l.startsWith('Sub Effect')?'subChip':''}">${l}</span>`).join('')}</div>`:'';const normalHtml=tu.effects?`<div class="tuningText">${tu.effects.map(e=>`<div class="tuningEffect"><div class="tuningEffectName">${e.name}</div><div class="tuningEffectDesc">${e.desc}</div><div class="chips">${(e.levels||[]).map(l=>`<span class="chip">${l}</span>`).join('')}</div></div>`).join('')}</div>`:`<div class="tuningText">${tu.desc}</div>`;return `<div class="gamePanel tuningCard ${tu.type==='SP'?'spTuning':'normalTuning'}"><div class="gameHeader"><div class="gameIcon">${tu.img?asset(tu.img,tu.name):roleOnly(tu.role)}</div><div class="gameName">Éclat de souvenir de ${ch.name}</div></div><div class="tuningBlock"><div class="tuningTitle ${roles[tu.role].cls}Bg"><span>${title}</span><br>${tu.name}</div>${normalHtml}${levelHtml}</div></div>`}).join(''):`<div class="homeBox">Aucun T.U.N.I.N.G renseigné pour ce style.</div>`}`}
+
+
+/* === V596 : traduction T.U.N.I.N.G. sans mutation des données === */
+const MHUR_TUNING_EXACT_V596={
+  "Analyse du champ de bataille":"Battlefield Analysis",
+  "Analyse du champ de baSize":"Battlefield Analysis",
+  "Analyse du Champ de paSize":"Battlefield Analysis",
+  "Détecteur de Kota":"Kota Detector",
+  "Accélération":"Acceleration",
+  "Charge PU destructeur":"Destructive PU Charge",
+  "PU Turbo":"PU Turbo",
+  "Massacre de masse":"Mass KO",
+  "Récupération rapide de PV":"Fast HP Recovery",
+  "Récupération rapide de PG":"Fast GP Recovery",
+  "Attaque vengeresse":"Vengeful Attack",
+  "Technique vengeresse":"Vengeful Technique",
+  "Fragilisation":"Weakening",
+  "Faculté de régénération extrême":"Extreme Regeneration",
+  "Bonus de rechargement spécial":"Special Reload Bonus",
+  "Annihilation":"Annihilation",
+  "Auto-réanimation rapide":"Fast Self-Revival",
+  "Sangsue à PV":"HP Leech",
+  "Sangsue à PG":"GP Leech",
+  "Puissance de feu PU sup.":"Enhanced PU Firepower",
+  "Combustion totale":"Full Combustion",
+  "Pseudo-perméabilité":"Pseudo-Permeation",
+  "Persévérance":"Perseverance",
+  "Ailes de jais":"Jet-Black Wings",
+  "Symbole de la Paix":"Symbol of Peace",
+  "Apparence malabar":"Muscle Form",
+
+  "Affiche la position de la prochaine zone de sécurité.":"Shows the location of the next safe zone.",
+  "Augmente la durée des effets à chaque niveau gagné.":"Increases effect duration with each level gained.",
+  "Augmente les PG max":"Increases max GP",
+  "Augmente les PV max":"Increases max HP",
+  "Réduit les dégâts subis (PV)":"Reduces HP damage taken",
+  "Réduit les dégâts subis (PG)":"Reduces GP damage taken",
+  "Augmente les PV en état critique":"Increases max HP while in Critical State",
+  "Augmente la hauteur du saut vertical":"Increases vertical jump height",
+  "Augmente la hauteur du saut sur les murs":"Increases wall jump height",
+  "Augmente la vitesse de course":"Increases running speed",
+  "Augmente la vitesse du sprint":"Increases sprint speed",
+  "Augmente les dégâts infligés par les attaques au corps à corps":"Increases melee attack damage",
+  "Réduit les dégâts subis par les attaques au corps à corps":"Reduces damage taken from melee attacks",
+  "Augmente la quantité régénérée à chaque niveau gagné.":"Increases the recovered amount with each level gained.",
+  "Augmente la quantité accumulée à chaque niveau gagné.":"Increases the amount gained with each level.",
+  "Diminue le délai d'activation à chaque niveau gagné.":"Reduces the activation delay with each level gained.",
+  "Le délai nécessaire pour activer à nouveau une compétence diminue à chaque niveau gagné.":"Reduces the time required before the skill can activate again with each level gained."
+};
+
+function mhurTuningRepairFrenchV596(value){
+  return String(value??"")
+    .replace(/Analyse du champ de baSize/gi,"Analyse du champ de bataille")
+    .replace(/Analyse du Champ de paSize/gi,"Analyse du champ de bataille");
+}
+
+function mhurTuningSegmentV596(value){
+  let text=mhurTuningRepairFrenchV596(value).trim();
+
+  if(!text)return text;
+  if(MHUR_TUNING_EXACT_V596[text])return MHUR_TUNING_EXACT_V596[text];
+
+  const replacements=[
+    [/Puissance d['’]attaque de l['’]Alter\s*α/gi,"Quirk Skill α Attack Power"],
+    [/Puissance d['’]attaque de l['’]Alter\s*β/gi,"Quirk Skill β Attack Power"],
+    [/Puissance d['’]attaque de l['’]Alter\s*γ/gi,"Quirk Skill γ Attack Power"],
+    [/Défense de l['’]Alter\s*α/gi,"Quirk Skill α Defense"],
+    [/Défense de l['’]Alter\s*β/gi,"Quirk Skill β Defense"],
+    [/Défense de l['’]Alter\s*γ/gi,"Quirk Skill γ Defense"],
+    [/Rechargement de l['’]Alter\s*α/gi,"Quirk Skill α Reload Speed"],
+    [/Rechargement de l['’]Alter\s*β/gi,"Quirk Skill β Reload Speed"],
+    [/Rechargement de l['’]Alter\s*γ/gi,"Quirk Skill γ Reload Speed"],
+
+    [/Défense\/Attaque corps à corps/gi,"Melee Attack Defense"],
+    [/Défense\/Strike Melee/gi,"Melee Strike Defense"],
+    [/Puissance d['’]attaque au corps à corps/gi,"Melee Attack Power"],
+    [/Défense au corps à corps/gi,"Melee Defense"],
+
+    [/\bPV Max en état critique\b/gi,"Max HP while Critical"],
+    [/\bPV Max\b/gi,"Max HP"],
+    [/\bPG Max\b/gi,"Max GP"],
+    [/\bDéfense PV\b/gi,"HP Defense"],
+    [/\bDéfense PG\b/gi,"GP Defense"],
+    [/\bAttaque PV\b/gi,"HP Attack"],
+    [/\bAttaque PG\b/gi,"GP Attack"],
+
+    [/\bHauteur saut vertical\b/gi,"Vertical Jump Height"],
+    [/\bHauteur saut sur les murs\b/gi,"Wall Jump Height"],
+    [/\bHauteur saut en avant\b/gi,"Forward Jump Height"],
+    [/\bVitesse de course\b/gi,"Running Speed"],
+    [/\bVitesse du sprint\b/gi,"Sprint Speed"],
+    [/\bRapid du sprint\b/gi,"Sprint Speed"],
+    [/\bVitesse de déplacement en état critique\b/gi,"Movement Speed while Critical"],
+
+    [/Augmente les dégâts infligés par l['’]Alter\s*α/gi,"Increases damage dealt by Quirk Skill α"],
+    [/Augmente les dégâts infligés par l['’]Alter\s*β/gi,"Increases damage dealt by Quirk Skill β"],
+    [/Augmente les dégâts infligés par l['’]Alter\s*γ/gi,"Increases damage dealt by Quirk Skill γ"],
+    [/Réduit les dégâts subis par l['’]Alter\s*α/gi,"Reduces damage taken from Quirk Skill α"],
+    [/Réduit les dégâts subis par l['’]Alter\s*β/gi,"Reduces damage taken from Quirk Skill β"],
+    [/Réduit les dégâts subis par l['’]Alter\s*γ/gi,"Reduces damage taken from Quirk Skill γ"],
+    [/Augmente la vitesse de rechargement de l['’]Alter\s*α/gi,"Increases Quirk Skill α reload speed"],
+    [/Augmente la vitesse de rechargement de l['’]Alter\s*β/gi,"Increases Quirk Skill β reload speed"],
+    [/Augmente la vitesse de rechargement de l['’]Alter\s*γ/gi,"Increases Quirk Skill γ reload speed"],
+
+    [/Récupère des PV/gi,"Recovers HP"],
+    [/Récupère des PG/gi,"Recovers GP"],
+    [/Permet de récupérer des PV/gi,"Recovers HP"],
+    [/Permet de récupérer des PG/gi,"Recovers GP"],
+    [/Augmente la jauge de PU\/PC/gi,"Increases the PU/PC gauge"],
+    [/Remplit la jauge de PU\/PC/gi,"Fills the PU/PC gauge"],
+    [/au début de la bataille/gi,"at the start of the battle"],
+    [/lorsqu['’]un ennemi est mis K\.O\./gi,"when an enemy is K.O.'d"],
+    [/lorsqu['’]un ennemi est mis au sol/gi,"when an enemy is downed"],
+    [/pendant une durée limitée/gi,"for a limited time"],
+
+    /*
+      Les remplacements de mots utilisent des limites de mot.
+      "Taille" ne peut donc plus modifier le mot "bataille".
+    */
+    [/\bTaille\b/gi,"Size"],
+    [/\bPortée\b/gi,"Range"],
+    [/\bDurée\b/gi,"Duration"],
+    [/\bVitesse\b/gi,"Speed"],
+    [/\bRecharge\b/gi,"Reload"],
+    [/\bDégâts\b/gi,"Damage"],
+    [/\bDéfense\b/gi,"Defense"],
+    [/\bAttaque\b/gi,"Attack"]
+  ];
+
+  for(const [pattern,replacement] of replacements){
+    text=text.replace(pattern,replacement);
+  }
+
+  return text;
+}
+
+function mhurTuningTextV596(value){
+  let selected=value;
+
+  if(value&&typeof value==="object"&&!Array.isArray(value)){
+    const current=(typeof lang!=="undefined"&&lang==="en")?"en":"fr";
+    selected=value[current]??value.fr??value.en??"";
+  }
+
+  const source=mhurTuningRepairFrenchV596(selected);
+
+  if(typeof lang==="undefined"||lang!=="en"){
+    return source;
+  }
+
+  return source
+    .split(/(<[^>]+>)/g)
+    .map(part=>part.startsWith("<")?part:mhurTuningSegmentV596(part))
+    .join("");
+}
+
+function mhurTuningUiV596(fr,en){
+  return (typeof lang!=="undefined"&&lang==="en")?en:fr;
+}
+/* === FIN V596 TUNING === */
+
+function tuningDetail(s){
+  const ch=characters.find(x=>x.styles.includes(s))||{
+    name:mhurTuningUiV596("Personnage","Character")
+  };
+
+  const list=tunings[s]||[];
+
+  return `<button class="back" onclick="selectedStyle=null;if((characters.find(x=>x.id===selectedChar)||{}).styles?.length===1)selectedChar=null;render()">← ${tr('back')}</button>
+    <h1 class="title">T.U.N.I.N.G — ${ch.name}</h1>
+    ${
+      list.length
+        ?list.map(tu=>{
+          const special=tu.type==='SP';
+
+          const title=special
+            ?mhurTuningUiV596(
+              'Compétence T.U.N.I.N.G SP',
+              'Special T.U.N.I.N.G Skill'
+            )
+            :mhurTuningUiV596(
+              'Compétence T.U.N.I.N.G',
+              'T.U.N.I.N.G Skill'
+            );
+
+          const tuningName=mhurTuningTextV596(tu.name);
+          const crystalTitle=mhurTuningUiV596(
+            `Éclat de souvenir de ${ch.name}`,
+            `${ch.name} Memory Crystal`
+          );
+
+          const levelHtml=tu.levels
+            ?`<div class="chips tuningLevels">${
+              tu.levels.map(level=>
+                `<span class="chip ${
+                  String(level).startsWith('Sub Effect')
+                    ?'subChip'
+                    :''
+                }">${level}</span>`
+              ).join('')
+            }</div>`
+            :'';
+
+          const normalHtml=tu.effects
+            ?`<div class="tuningText">${
+              tu.effects.map(effect=>
+                `<div class="tuningEffect">
+                  <div class="tuningEffectName">${
+                    mhurTuningTextV596(effect.name)
+                  }</div>
+                  <div class="tuningEffectDesc">${
+                    mhurTuningTextV596(effect.desc)
+                  }</div>
+                  <div class="chips">${
+                    (effect.levels||[]).map(level=>
+                      `<span class="chip">${level}</span>`
+                    ).join('')
+                  }</div>
+                </div>`
+              ).join('')
+            }</div>`
+            :`<div class="tuningText">${
+              mhurTuningTextV596(tu.desc)
+            }</div>`;
+
+          return `<div
+            class="gamePanel tuningCard ${
+              special?'spTuning':'normalTuning'
+            }"
+            data-no-v594-translation="1"
+            data-v596-tuning="1"
+          >
+            <div class="gameHeader">
+              <div class="gameIcon">${
+                tu.img
+                  ?asset(tu.img,tuningName)
+                  :roleOnly(tu.role)
+              }</div>
+              <div class="gameName">${crystalTitle}</div>
+            </div>
+
+            <div class="tuningBlock">
+              <div class="tuningTitle ${roles[tu.role].cls}Bg">
+                <span>${title}</span><br>${tuningName}
+              </div>
+              ${normalHtml}
+              ${levelHtml}
+            </div>
+          </div>`;
+        }).join('')
+        :`<div class="homeBox">${
+          mhurTuningUiV596(
+            'Aucun T.U.N.I.N.G renseigné pour ce style.',
+            'No T.U.N.I.N.G. data is available for this style.'
+          )
+        }</div>`
+    }`;
+}
 
 
 /* === v104 : costumes Midoriya + builds recommandés === */
@@ -7269,5 +7528,7 @@ body .costumeTile > img,
 <script src="js/v594-translations-tier-patch-arrow.js?v=594"></script>
 
 <script src="js/v595-patch-portraits-tables.js?v=595"></script>
+
+<script src="js/v596-tuning-mods.js?v=596"></script>
 </body>
 </html>

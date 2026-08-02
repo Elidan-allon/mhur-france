@@ -1,0 +1,24 @@
+MHUR FRANCE — RAPPORT V596
+
+T.U.N.I.N.G.
+- Les objets français ne sont plus modifiés en mémoire.
+- La traduction est calculée uniquement pendant le rendu.
+- Analyse du champ de bataille = Battlefield Analysis.
+- Les remplacements utilisent des limites de mots.
+- Taille ne peut plus modifier le mot bataille.
+- Les cartes sont exclues de l'ancien traducteur DOM V594.
+
+TUTORIEL MODS
+- L'ancien chevron vide est supprimé.
+- La classe de la nouvelle flèche ne contient pas Arrow.
+- La classe de la nouvelle flèche ne contient pas Chevron.
+- Les anciens sélecteurs de masquage ne peuvent plus la cibler.
+- Deux tracés SVG distincts sont utilisés pour ouvert et fermé.
+
+V594
+- Ancien mutateur T.U.N.I.N.G. neutralisé : OUI
+
+VÉRIFICATIONS
+- syntaxe JavaScript : OK
+- cache V596 : OK
+- rendu bilingue à la source : OK

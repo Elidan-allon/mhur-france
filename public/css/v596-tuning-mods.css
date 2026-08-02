@@ -1,0 +1,101 @@
+
+/* MHUR Nexus — V596 : flèche Mods et protection des traductions */
+
+html body .modsTutorial > summary{
+  position:relative!important;
+  list-style:none!important;
+  padding-right:92px!important;
+}
+
+html body .modsTutorial > summary::before,
+html body .modsTutorial > summary::after{
+  content:none!important;
+  display:none!important;
+}
+
+html body .modsTutorial > summary::marker{
+  content:""!important;
+  display:none!important;
+  font-size:0!important;
+}
+
+html body .modsTutorial > summary::-webkit-details-marker{
+  display:none!important;
+}
+
+/*
+  Le nom ne contient ni "Arrow" ni "Chevron".
+  Les anciens sélecteurs [class*="Arrow"] ne peuvent pas le masquer.
+*/
+html body .modsTutorial .mhurModsToggleV596{
+  position:absolute!important;
+  top:50%!important;
+  right:22px!important;
+  display:grid!important;
+  visibility:visible!important;
+  place-items:center!important;
+  width:62px!important;
+  height:62px!important;
+  min-width:62px!important;
+  min-height:62px!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  opacity:1!important;
+  overflow:visible!important;
+  background:transparent!important;
+  transform:translateY(-50%)!important;
+  pointer-events:none!important;
+  z-index:999!important;
+}
+
+html body .modsTutorial .mhurModsToggleV596 svg{
+  display:block!important;
+  visibility:visible!important;
+  width:62px!important;
+  height:62px!important;
+  opacity:1!important;
+  overflow:visible!important;
+  filter:drop-shadow(0 4px 0 #000)!important;
+}
+
+html body .modsTutorial .mhurModsToggleV596 circle{
+  display:block!important;
+  visibility:visible!important;
+  fill:#07111f!important;
+  stroke:#000!important;
+  stroke-width:5!important;
+  opacity:1!important;
+}
+
+html body .modsTutorial .mhurModsToggleV596 path{
+  display:block!important;
+  visibility:visible!important;
+  fill:none!important;
+  stroke:#ffe000!important;
+  stroke-width:7!important;
+  stroke-linecap:round!important;
+  stroke-linejoin:round!important;
+  opacity:1!important;
+}
+
+html body .modsTutorial > summary:hover .mhurModsToggleV596 svg{
+  filter:
+    drop-shadow(0 4px 0 #000)
+    drop-shadow(0 0 7px rgba(255,224,0,.75))!important;
+}
+
+@media(max-width:700px){
+  html body .modsTutorial > summary{
+    padding-right:74px!important;
+  }
+
+  html body .modsTutorial .mhurModsToggleV596,
+  html body .modsTutorial .mhurModsToggleV596 svg{
+    right:11px!important;
+    width:52px!important;
+    height:52px!important;
+    min-width:52px!important;
+    min-height:52px!important;
+  }
+}

@@ -305,15 +305,12 @@
   }
 
   function localizeAllTunings(){
-    const data=getTunings();
-    if(!data)return;
-
-    Object.values(data).forEach(list=>{
-      if(Array.isArray(list)){
-        list.forEach(localizeTuningObject);
-      }
-    });
-  }
+  /*
+    V596 traduit uniquement pendant le rendu.
+    Les données françaises ne doivent plus être modifiées en mémoire.
+  */
+  return;
+}
 
   function cleanModsArrow(tutorial){
     if(!(tutorial instanceof HTMLElement))return;
