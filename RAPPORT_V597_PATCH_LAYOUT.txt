@@ -1,0 +1,8 @@
+MHUR FRANCE — RAPPORT V597
+
+CORRECTIONS PATCH NOTES
+- Les portraits n’empiètent plus sur le nom du personnage.
+- La colonne image des skills est plus compacte.
+- Les tableaux prennent toute la largeur disponible sur desktop.
+- La mini barre de défilement horizontale disparaît sur desktop.
+- Sur mobile, le défilement horizontal reste autorisé pour éviter de casser les tableaux.

@@ -1,0 +1,181 @@
+/* MHUR Nexus — V597 : Patch Notes layout */
+
+#s18NotesDevModalV10 .s18PatchCharacterV10 > header{
+  display:grid!important;
+  grid-template-columns:118px minmax(0,1fr)!important;
+  align-items:center!important;
+  gap:18px!important;
+  width:100%!important;
+  min-width:0!important;
+  box-sizing:border-box!important;
+}
+
+#s18NotesDevModalV10 .s18PatchCharacterV10 > header > div:last-child{
+  min-width:0!important;
+  width:100%!important;
+}
+
+#s18NotesDevModalV10 .s18PatchCharacterV10 > header h4,
+#s18NotesDevModalV10 .s18PatchCharacterV10 > header strong{
+  display:block!important;
+  max-width:100%!important;
+  margin-left:0!important;
+  overflow:visible!important;
+  word-break:break-word!important;
+}
+
+#s18NotesDevModalV10 .s18PatchPortraitV10{
+  width:118px!important;
+  min-width:118px!important;
+  height:118px!important;
+  min-height:118px!important;
+  margin:0!important;
+}
+
+#s18NotesDevModalV10 .s18PatchPortraitV10 img{
+  width:100%!important;
+  height:100%!important;
+  object-fit:contain!important;
+}
+
+#s18NotesDevModalV10 .s18PatchSkillV10{
+  display:grid!important;
+  grid-template-columns:96px minmax(0,1fr)!important;
+  align-items:start!important;
+  gap:14px!important;
+  width:100%!important;
+  min-width:0!important;
+}
+
+#s18NotesDevModalV10 .s18PatchSkillV10 > main{
+  grid-column:2!important;
+  min-width:0!important;
+  width:100%!important;
+}
+
+#s18NotesDevModalV10 .s18PatchSkillImageV595,
+#s18NotesDevModalV10 .s18PatchSkillV10 > div:not(.s18PatchTableWrapV10){
+  grid-column:1!important;
+  width:96px!important;
+  min-width:96px!important;
+  height:96px!important;
+  min-height:96px!important;
+  margin:0!important;
+}
+
+#s18NotesDevModalV10 .s18PatchSkillImageV595 img,
+#s18NotesDevModalV10 .s18PatchSkillV10 > div:not(.s18PatchTableWrapV10) img{
+  width:100%!important;
+  height:100%!important;
+  object-fit:contain!important;
+}
+
+#s18NotesDevModalV10 .s18PatchTableWrapV10{
+  width:100%!important;
+  min-width:0!important;
+  max-width:100%!important;
+  overflow-x:visible!important;
+  overflow-y:hidden!important;
+  padding-bottom:0!important;
+}
+
+#s18NotesDevModalV10 .s18PatchTableV10{
+  width:100%!important;
+  min-width:0!important;
+  max-width:100%!important;
+  table-layout:fixed!important;
+  border-collapse:collapse!important;
+}
+
+#s18NotesDevModalV10 .s18PatchTableV10 th,
+#s18NotesDevModalV10 .s18PatchTableV10 td{
+  min-width:0!important;
+  width:auto!important;
+  padding:10px 6px!important;
+  text-align:center!important;
+  white-space:nowrap!important;
+  font-size:clamp(12px,1.15vw,18px)!important;
+}
+
+#s18NotesDevModalV10 .s18PatchTableV10 th:first-child,
+#s18NotesDevModalV10 .s18PatchTableV10 td:first-child{
+  width:104px!important;
+  min-width:104px!important;
+}
+
+@media (max-width: 980px){
+  #s18NotesDevModalV10 .s18PatchCharacterV10 > header{
+    grid-template-columns:104px minmax(0,1fr)!important;
+    gap:14px!important;
+  }
+
+  #s18NotesDevModalV10 .s18PatchPortraitV10{
+    width:104px!important;
+    min-width:104px!important;
+    height:104px!important;
+    min-height:104px!important;
+  }
+
+  #s18NotesDevModalV10 .s18PatchSkillV10{
+    grid-template-columns:84px minmax(0,1fr)!important;
+    gap:12px!important;
+  }
+
+  #s18NotesDevModalV10 .s18PatchSkillImageV595,
+  #s18NotesDevModalV10 .s18PatchSkillV10 > div:not(.s18PatchTableWrapV10){
+    width:84px!important;
+    min-width:84px!important;
+    height:84px!important;
+    min-height:84px!important;
+  }
+
+  #s18NotesDevModalV10 .s18PatchTableWrapV10{
+    overflow-x:auto!important;
+    padding-bottom:8px!important;
+  }
+
+  #s18NotesDevModalV10 .s18PatchTableV10{
+    min-width:720px!important;
+  }
+
+  #s18NotesDevModalV10 .s18PatchTableV10 th,
+  #s18NotesDevModalV10 .s18PatchTableV10 td{
+    font-size:14px!important;
+    padding:9px 6px!important;
+  }
+
+  #s18NotesDevModalV10 .s18PatchTableV10 th:first-child,
+  #s18NotesDevModalV10 .s18PatchTableV10 td:first-child{
+    width:96px!important;
+    min-width:96px!important;
+  }
+}
+
+@media (max-width: 560px){
+  #s18NotesDevModalV10 .s18PatchCharacterV10 > header,
+  #s18NotesDevModalV10 .s18PatchSkillV10{
+    grid-template-columns:minmax(0,1fr)!important;
+  }
+
+  #s18NotesDevModalV10 .s18PatchSkillV10 > main{
+    grid-column:1!important;
+  }
+
+  #s18NotesDevModalV10 .s18PatchPortraitV10,
+  #s18NotesDevModalV10 .s18PatchSkillImageV595,
+  #s18NotesDevModalV10 .s18PatchSkillV10 > div:not(.s18PatchTableWrapV10){
+    width:96px!important;
+    min-width:96px!important;
+    height:96px!important;
+    min-height:96px!important;
+  }
+
+  #s18NotesDevModalV10 .s18PatchTableWrapV10{
+    overflow-x:auto!important;
+    padding-bottom:8px!important;
+  }
+
+  #s18NotesDevModalV10 .s18PatchTableV10{
+    min-width:680px!important;
+  }
+}
