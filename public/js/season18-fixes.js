@@ -85,12 +85,9 @@ function latestHomeIdsV24(kind,key){
 function newSets(){
   const sync=window.MHUR_SEASON18_DATA||{};
   const hasActive=Boolean(sync.active_new_content&&typeof sync.active_new_content==='object');
-  const data=hasActive?sync.active_new_content:(sync.new_content||{});
-  const characters=hasActive?(data.characters||[]):(latestHomeIdsV24('character','character_id').length?latestHomeIdsV24('character','character_id'):(data.characters||[]));
-  const stylesList=hasActive?(data.styles||[]):(latestHomeIdsV24('style','style_id').length?latestHomeIdsV24('style','style_id'):(data.styles||[]));
+  const data=hasActive?sync.active_new_content:(sync.new_content||{});  const characters=Array.from(new Set([...((data.characters)||[]),'gentle_criminal']));  const stylesList=Array.from(new Set([...((data.styles)||[]),'gentle_criminal_technical']));
   const latestCostumes=latestReleasedCostumeIdsV24(sync);
-  /* V572 merge latest costume wave */
-  const costumes=Array.from(new Set([...(data.costumes||[]),...latestCostumes,'108000000']));
+  /* V572 merge latest costume wave */  const costumes=Array.from(new Set([...((data.costumes)||[]),...latestCostumes,'108000000']));
   return {
     characters:new Set(characters.map(String)),
     styles:new Set(stylesList.map(String)),
@@ -338,6 +335,8 @@ function installRenders(){
       const official=window.MHUR_DATABASE_ASSETS?.costumes?.[id]||'';
       const officialCostume=official?{...ct,img:official}:ct;
       let html=String(baseCostumeCard(officialCostume)||'');
+      /* V578 preserve data-costume */
+      if(id&&!/\bdata-costume\s*=/.test(html)) html=html.replace(/^(<(?:button|div)\b)/i,`$1 data-costume="${esc(id)}"`);
       /* V572 preserve costume id */
       if(id&&!/\bdata-costume\s*=/.test(html)) html=html.replace(/^(<(?:button|div)\b)/i,`$1 data-costume="${esc(id)}"`);
       if(newSets().costumes.has(id)&&!html.includes('s18NewBadge')) html=html.replace(/^(<button\b[^>]*>|<div\b[^>]*>)/i,`$1${NEW_HTML}`);
@@ -1168,11 +1167,8 @@ function activeSets(){
   const source=hasActive?sync.active_new_content:(sync.new_content||{});
   const homeCharacters=latestHome('character','character_id');
   const homeStyles=latestHome('style','style_id');
-  const latestCostumeIds=latestCostumes(sync);
-  const characters=hasActive?(source.characters||[]):(homeCharacters.length?homeCharacters:(source.characters||[]));
-  const stylesList=hasActive?(source.styles||[]):(homeStyles.length?homeStyles:(source.styles||[]));
-  /* V572 merge latest costume wave v24 */
-  const costumes=Array.from(new Set([...(source.costumes||[]),...latestCostumeIds,'108000000']));
+  const latestCostumeIds=latestCostumes(sync);  const characters=Array.from(new Set([...((source.characters)||[]),'gentle_criminal']));  const stylesList=Array.from(new Set([...((source.styles)||[]),'gentle_criminal_technical']));
+  /* V572 merge latest costume wave v24 */  const costumes=Array.from(new Set([...((source.costumes)||[]),...latestCostumeIds,'108000000']));
   return {
     characters:new Set(characters.map(String)),
     styles:new Set(stylesList.map(String)),
@@ -1401,54 +1397,141 @@ window.addEventListener('mhur-auth-change',scheduleV35);
 window.addEventListener('mhur-role-change',scheduleV35);
 })();
 
-/* MHUR V574 — charge V573 sans index.html */
+/* MHUR Nexus — V578 : NEW source propre */
 (function(){
   'use strict';
 
-  function loadV573(){
-    if(document.querySelector('link[data-mhur-v574="css"]') === null){
-      const link=document.createElement('link');
-      link.rel='stylesheet';
-      link.href='css/v573-new-right-animation-costumes.css?v=574';
-      link.dataset.mhurV574='css';
-      document.head.appendChild(link);
-    }
+  const BADGE='<span class="s18NewBadge s18NewBadgeV9 s18NewBadgeV24 s18NewBadgeV578" aria-label="NEW">NEW!</span>';
+  const GENTLE_CHARACTER='gentle_criminal';
+  const GENTLE_STYLE='gentle_criminal_technical';
+  const GENTLE_ORIGINAL='108000000';
 
-    if(
-      !window.MHUR_V573 &&
-      document.querySelector('script[data-mhur-v574="js"]') === null
-    ){
-      const script=document.createElement('script');
-      script.src='js/v573-new-right-animation-costumes.js?v=574';
-      script.dataset.mhurV574='js';
-      script.onload=function(){
-        try{ window.MHUR_V573?.refresh?.(); }catch(_error){}
-      };
-      document.body.appendChild(script);
-    }
+  function time(value){
+    const parsed=Date.parse(String(value||''));
+    return Number.isFinite(parsed)?parsed:null;
   }
 
-  function start(){
-    /* Attendre que season18-v12 et les anciens scripts aient fini. */
-    setTimeout(loadV573,150);
-    setTimeout(loadV573,800);
+  function latestCostumesV578(){
+    const sync=window.MHUR_SEASON18_DATA||{};
+    const now=Date.now();
+    const rows=Object.entries(sync.costumes||{})
+      .map(([id,row])=>({
+        id:String(id),
+        time:time(row?.releaseDate||row?.release_date),
+        upcoming:Boolean(row?.upcoming)
+      }))
+      .filter(row=>row.time!=null&&!row.upcoming&&row.time<=now);
+
+    if(!rows.length)return [];
+    const latest=Math.max(...rows.map(row=>row.time));
+    return rows.filter(row=>row.time===latest).map(row=>row.id);
   }
 
-  if(document.readyState==='complete') start();
-  else window.addEventListener('load',start,{once:true});
+  function setsV578(){
+    const sync=window.MHUR_SEASON18_DATA||{};
+    const active=sync.active_new_content||sync.new_content||{};
 
-  window.addEventListener('hashchange',function(){
-    setTimeout(function(){
-      loadV573();
-      try{ window.MHUR_V573?.refresh?.(); }catch(_error){}
-    },100);
-  });
+    return {
+      characters:new Set([...(active.characters||[]).map(String),GENTLE_CHARACTER]),
+      styles:new Set([...(active.styles||[]).map(String),GENTLE_STYLE]),
+      costumes:new Set([
+        ...(active.costumes||[]).map(String),
+        ...latestCostumesV578(),
+        GENTLE_ORIGINAL
+      ])
+    };
+  }
 
-  window.addEventListener('mhur:languagechange',function(){
-    setTimeout(function(){
-      loadV573();
-      try{ window.MHUR_V573?.refresh?.(); }catch(_error){}
-    },100);
-  });
+  function costumeIdV578(tile){
+    if(!tile)return '';
+    const values=[
+      tile.dataset?.costume,
+      tile.dataset?.id,
+      tile.getAttribute('data-costume'),
+      tile.getAttribute('data-id'),
+      tile.id,
+      tile.getAttribute('onclick'),
+      tile.getAttribute('href'),
+      tile.outerHTML
+    ];
+
+    for(const value of values){
+      const match=String(value||'').match(/(?:ur[_-]?)?(\d{4,})/i);
+      if(match)return match[1];
+    }
+    return '';
+  }
+
+  function directBadges(node){
+    try{return [...node.querySelectorAll(':scope > .s18NewBadge')]}
+    catch(_error){return [...node.children].filter(child=>child.classList?.contains('s18NewBadge'))}
+  }
+
+  function setBadgeV578(node,active){
+    if(!node)return;
+    directBadges(node).forEach(badge=>badge.remove());
+    if(active)node.insertAdjacentHTML('afterbegin',BADGE);
+  }
+
+  function syncV578(){
+    const sets=setsV578();
+
+    document.querySelectorAll('.card[data-char]').forEach(card=>{
+      setBadgeV578(card,sets.characters.has(String(card.dataset.char||'')));
+    });
+
+    document.querySelectorAll('.styleCard[data-style]').forEach(card=>{
+      setBadgeV578(card,sets.styles.has(String(card.dataset.style||'')));
+    });
+
+    document.querySelectorAll('.costumeTile,.costumeCard,.costumeResult').forEach(card=>{
+      const id=costumeIdV578(card);
+      if(id)card.dataset.costume=id;
+      const upcoming=Boolean(card.closest('.s18UpcomingCostumeGroupV19,.s18UpcomingCostumeGroupV23'));
+      setBadgeV578(card,Boolean(id&&sets.costumes.has(id)&&!upcoming));
+    });
+  }
+
+  let queued=false;
+  function scheduleV578(){
+    if(queued)return;
+    queued=true;
+    requestAnimationFrame(()=>{
+      queued=false;
+      syncV578();
+    });
+  }
+
+  function wrapRenderV578(){
+    if(typeof window.render!=='function'||window.render.__mhurV578)return;
+    const original=window.render;
+    const wrapped=function(){
+      const result=original.apply(this,arguments);
+      scheduleV578();
+      return result;
+    };
+    wrapped.__mhurV578=true;
+    window.render=wrapped;
+    try{render=wrapped}catch(_error){}
+  }
+
+  wrapRenderV578();
+
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded',scheduleV578,{once:true});
+  }else{
+    scheduleV578();
+  }
+
+  new MutationObserver(mutations=>{
+    if(mutations.some(mutation=>mutation.addedNodes&&mutation.addedNodes.length)){
+      scheduleV578();
+    }
+  }).observe(document.documentElement,{childList:true,subtree:true});
+
+  window.addEventListener('load',scheduleV578,{once:true});
+  window.addEventListener('hashchange',scheduleV578);
+  window.addEventListener('mhur:languagechange',scheduleV578);
+  window.MHUR_V578_NEW={refresh:syncV578,latestCostumes:latestCostumesV578};
 })();
 

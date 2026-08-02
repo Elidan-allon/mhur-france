@@ -1,0 +1,34 @@
+MHUR FRANCE — CORRECTIF SOURCE V578
+
+V578 remplace V577. Il corrige l'erreur :
+« Impossible de remplacer les badges de Twice/Tsuyu dans season18-early.js ».
+
+DIFFÉRENCE
+- accepte le fichier Saison 18 original ;
+- accepte une ancienne modification V577 partielle ;
+- accepte un badge NEW, INCOMING ou aucun badge ;
+- reconstruit proprement les trois cartes d'accueil ;
+- retire une éventuelle couche V577 partielle avant d'installer V578 ;
+- le fichier BAT est enregistré sans BOM pour éviter « ∩╗┐@echo off ».
+
+RÉSULTAT
+- Personnages et T.U.N.I.N.G : NEW en haut à droite ;
+- tous les NEW sont animés ;
+- costumes : NEW plus petit sous les étoiles ;
+- toutes les tenues de la dernière date sortie sont NEW ;
+- Gentle, son style Technique et son costume Original sont NEW ;
+- accueil : Gentle = NEW, Twice/Tsuyu = INCOMING ;
+- typographie des réductions moins grasse.
+
+INSTALLATION
+1. Décompresse le ZIP à la racine de mhur-france.
+2. Lance APPLIQUER_CORRECTIF_V578.bat.
+3. Vérifie les cinq lignes [VÉRIFIÉ].
+4. Consulte RAPPORT_V578.txt.
+
+FICHIERS À ENVOYER SUR GITHUB
+- public/index.html
+- public/js/season18-fixes.js
+- public/css/season18-fixes.css
+- public/js/season18-early.js
+- public/data/season18_sync.js

@@ -833,7 +833,7 @@
 <link rel="preload" as="image" href="assets/home/season18/twice_s18_banner.webp">
 <link rel="preload" as="image" href="assets/home/season18/tsuyu_profile.webp">
 <link rel="preload" as="image" href="assets/home/icons/new_badge_custom.png">
-<link rel="stylesheet" href="css/season18-fixes.css?v=578">
+<link rel="stylesheet" href="css/season18-fixes.css?v=570">
 <link rel="stylesheet" href="css/v559-discounts-stable.css?v=559">
 <link rel="stylesheet" href="css/v560-discount-role-dedupe.css?v=560">
 
@@ -3361,8 +3361,8 @@ window.__MHUR_V542_STABLE_RENDER__=true;
 <script src="js/home.js?v=559"></script>
 <script src="data/local_assets_index.js?v=1785451218648514700"></script>
 <script src="data/mhur_database_assets.js?v=29000"></script>
-<script src="data/season18_sync.js?v=578"></script>
-<script src="js/season18-early.js?v=578"></script>
+<script src="data/season18_sync.js?v=29000"></script>
+<script src="js/season18-early.js?v=570"></script>
 <script>
 window.MHUR_CLEAN_ROUTES?.apply?.();if(!['home','characters','tunings','costumes','builds','mods'].includes(page))page='home';updateLanguageIndicator();window.__MHUR_FINAL_LAYOUT_PENDING__=true;
 </script>
@@ -7163,11 +7163,14 @@ body .costumeTile > img,
 
 
 
-<script src="js/season18-fixes.js?v=578"></script>
+<script src="js/season18-fixes.js?v=570"></script>
 <script src="js/season18-v12.js?v=1785451218648514700"></script>
 <script src="js/v559-discounts-stable.js?v=559"></script>
 <script src="js/v560-discount-role-dedupe.js?v=560"></script>
   <link id="mhur-v561-css" rel="stylesheet" href="css/v561-discount-full-width.css?v=561">
-
+<link rel="stylesheet" href="css/v572-source-new-gentle-costumes.css?v=572">
+<script src="js/v572-source-new-gentle-costumes.js?v=572"></script>
+<link rel="stylesheet" href="css/v573-new-right-animation-costumes.css?v=573">
+<script src="js/v573-new-right-animation-costumes.js?v=573"></script>
 </body>
 </html>

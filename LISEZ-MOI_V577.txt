@@ -1,0 +1,35 @@
+MHUR FRANCE — CORRECTIF SOURCE V577
+
+Ce correctif travaille directement sur les fichiers sources déjà chargés par le site.
+Il ne crée pas une nouvelle couche CSS/JS séparée.
+
+CORRECTIONS
+- NEW de Personnages et T.U.N.I.N.G en haut à droite ;
+- même animation agrandir/rétrécir sur tous les NEW ;
+- NEW des costumes plus petit, à droite sous les étoiles ;
+- NEW sur tous les costumes de la dernière date déjà sortie ;
+- NEW sur le costume Original de Gentle Criminal (108000000) ;
+- NEW sur Gentle Criminal et son style Technique ;
+- accueil : Gentle garde NEW, Twice et Tsuyu affichent INCOMING sans NEW ;
+- écriture des réductions moins grasse ;
+- retrait des anciens chargements V572/V573 et du chargeur V574 ;
+- cache forcé en V577.
+
+INSTALLATION
+1. Décompresse ce ZIP à la racine du dossier mhur-france nettoyé.
+2. Lance APPLIQUER_CORRECTIF_V577.bat.
+3. La fenêtre doit afficher cinq lignes [VÉRIFIÉ].
+4. Ouvre RAPPORT_V577.txt.
+
+FICHIERS À REMPLACER SUR GITHUB
+- public/index.html
+- public/js/season18-fixes.js
+- public/css/season18-fixes.css
+- public/js/season18-early.js
+- public/data/season18_sync.js
+
+Tu peux envoyer les cinq fichiers en une seule fois dans leurs dossiers respectifs.
+Aucun fichier V577 séparé n'est à envoyer : tout est intégré aux sources principales.
+
+ANNULATION
+Lance ANNULER_CORRECTIF_V577.bat.
