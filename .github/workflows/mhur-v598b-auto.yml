@@ -1,0 +1,213 @@
+name: MHUR V598B - images exactes Patch Notes
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/mhur-v598b-auto.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: mhur-v598b-images-patch-notes
+  cancel-in-progress: false
+
+jobs:
+  appliquer:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Recuperer le depot
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Installer Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: "24"
+          package-manager-cache: false
+
+      - name: Installer V598B
+        shell: bash
+        run: |
+          cat > /tmp/appliquer_v598b.py <<'PY'
+          from pathlib import Path
+          import json
+          import re
+          import subprocess
+
+          ROOT = Path.cwd()
+          INDEX = ROOT / "public/index.html"
+          FINAL = ROOT / "public/js/v598b-patch-images-exactes.js"
+          REPORT = ROOT / "RAPPORT_V598B_IMAGES_EXACTES.txt"
+
+          FINAL_CONTENT = "\n/* MHUR Nexus — V598B : images locales exactes des Patch Notes */\n(function(){\n  'use strict';\n\n  const VERSION='598B';\n\n  const STYLE_RULES=[\n    {\n      test:(name)=>name.includes('izuku_midoriya_ofa'),\n      styleId:'ofa'\n    },\n    {\n      test:(name,style)=>(\n        name.includes('katsuki_bakugo')&&\n        (\n          name.includes('cluster')||\n          style.includes('cluster')\n        )\n      ),\n      styleId:'bakugo_technical'\n    },\n    {\n      test:(name)=>name.includes('katsuki_bakugo'),\n      styleId:'bakugo_attack'\n    },\n    {\n      test:(name)=>name.includes('denki_kaminari'),\n      styleId:'kaminari_strike'\n    },\n    {\n      test:(name,style)=>(\n        name.includes('mirio_togata')&&\n        (\n          name.includes('sheer_counter')||\n          style.includes('sheer_counter')\n        )\n      ),\n      styleId:'mirio_technical'\n    },\n    {\n      test:(name)=>name.includes('armored_all_might'),\n      styleId:'armored_all_might_technical'\n    },\n    {\n      test:(name)=>name==='hawks'||name.startsWith('hawks_'),\n      styleId:'hawks_rapid'\n    },\n    {\n      test:(name)=>name.includes('lady_nagant'),\n      styleId:'lady_nagant_strike'\n    },\n    {\n      test:(name)=>name.includes('itsuka_kendo'),\n      styleId:'kendo_assault'\n    },\n    {\n      test:(name)=>name==='twice'||name.startsWith('twice_'),\n      styleId:'twice_rapid'\n    }\n  ];\n\n  function clean(value){\n    return String(value??'').trim();\n  }\n\n  function normal(value){\n    return clean(value)\n      .normalize('NFD')\n      .replace(/[\\u0300-\\u036f]/g,'')\n      .toLowerCase()\n      .replace(/[^a-z0-9]+/g,'_')\n      .replace(/^_+|_+$/g,'');\n  }\n\n  function language(){\n    try{\n      if(typeof lang!=='undefined'&&lang==='en'){\n        return 'en';\n      }\n    }catch(_error){}\n\n    return String(document.documentElement.lang||'')\n      .toLowerCase()\n      .startsWith('en')\n      ?'en'\n      :'fr';\n  }\n\n  function localized(value){\n    if(value&&typeof value==='object'&&!Array.isArray(value)){\n      return (\n        value[language()]??\n        value.fr??\n        value.en??\n        ''\n      );\n    }\n\n    return value;\n  }\n\n  function stylesMap(){\n    try{\n      if(typeof styles!=='undefined'&&styles){\n        return styles;\n      }\n    }catch(_error){}\n\n    return window.styles||{};\n  }\n\n  function localPath(value){\n    const path=clean(value)\n      .replace(/^\\.?\\//,'')\n      .replace(/^public\\//,'');\n\n    return path.startsWith('assets/')?path:'';\n  }\n\n  function styleIdForCard(card){\n    const name=normal(\n      card.querySelector(':scope > header h4')?.textContent\n    );\n\n    const style=normal(\n      card.querySelector(':scope > header strong')?.textContent\n    );\n\n    const rule=STYLE_RULES.find(\n      item=>item.test(name,style)\n    );\n\n    return rule?.styleId||'';\n  }\n\n  function keyFromText(styleId,text){\n    const value=normal(text);\n\n    if(styleId==='armored_all_might_technical'){\n      return 'alpha';\n    }\n\n    if(styleId==='ofa'){\n      if(value.includes('delaware'))return 'alpha';\n    }\n\n    if(styleId==='bakugo_attack'){\n      if(value.includes('howitzer'))return 'gamma';\n    }\n\n    if(styleId==='bakugo_technical'){\n      if(value.includes('ap_shot'))return 'alpha';\n      if(value.includes('nitro_cluster'))return 'beta';\n      if(value.includes('howitzer'))return 'gamma';\n    }\n\n    if(styleId==='kaminari_strike'){\n      if(\n        value.includes('electro')||\n        value.includes('target')\n      )return 'alpha';\n\n      if(value.includes('electrification')){\n        return 'special';\n      }\n    }\n\n    if(styleId==='mirio_technical'){\n      if(value.includes('phantom_smash'))return 'alpha';\n    }\n\n    if(styleId==='hawks_rapid'){\n      if(value.includes('wingbeat'))return 'alpha';\n      if(value.includes('wind_cross'))return 'beta';\n    }\n\n    if(styleId==='lady_nagant_strike'){\n      if(value.includes('hollow_point'))return 'alpha';\n      if(value.includes('high_angle'))return 'beta';\n      if(value.includes('kickback'))return 'gamma';\n      if(value.includes('scope_mode'))return 'special';\n    }\n\n    if(styleId==='kendo_assault'){\n      if(value.includes('big_fist_grip'))return 'gamma';\n    }\n\n    if(styleId==='twice_rapid'){\n      if(value.includes('foot_boost'))return 'gamma';\n    }\n\n    if(\n      /^(?:alpha|a)(?:_|$)/.test(value)||\n      value.includes('_alpha_')\n    )return 'alpha';\n\n    if(\n      /^(?:beta|b)(?:_|$)/.test(value)||\n      value.includes('_beta_')\n    )return 'beta';\n\n    if(\n      /^(?:gamma|g|y)(?:_|$)/.test(value)||\n      value.includes('_gamma_')\n    )return 'gamma';\n\n    if(\n      value.includes('special_action')||\n      value.startsWith('sp_')\n    )return 'special';\n\n    return '';\n  }\n\n  function letterKey(value){\n    const raw=clean(value);\n\n    if(/^(?:α|a|alpha)(?:\\s|[-—:(]|$)/i.test(raw)){\n      return 'alpha';\n    }\n\n    if(/^(?:β|b|beta)(?:\\s|[-—:(]|$)/i.test(raw)){\n      return 'beta';\n    }\n\n    if(/^(?:γ|y|g|gamma)(?:\\s|[-—:(]|$)/i.test(raw)){\n      return 'gamma';\n    }\n\n    if(/^(?:sp|special)(?:\\s|[-—:(]|$)/i.test(raw)){\n      return 'special';\n    }\n\n    return '';\n  }\n\n  function skillForKey(style,key){\n    if(!style||!key)return null;\n\n    if(key==='special'){\n      return style.special||null;\n    }\n\n    return (style.skills||[]).find(\n      skill=>letterKey(skill?.letter)===key\n    )||null;\n  }\n\n  function exactImage(styleId,style,key){\n    if(\n      styleId==='armored_all_might_technical'&&\n      key==='alpha'\n    ){\n      return (\n        'assets/armored_all_might/'+\n        'armored_all_might_technical/alpha.webp'\n      );\n    }\n\n    const skill=skillForKey(style,key);\n\n    return localPath(skill?.img);\n  }\n\n  function exactPortrait(styleId,style){\n    if(styleId==='armored_all_might_technical'){\n      return (\n        'assets/armored_all_might/'+\n        'armored_all_might_technical/portrait.webp'\n      );\n    }\n\n    return localPath(style?.portrait);\n  }\n\n  function setImage(box,path,alt){\n    if(!box||!path)return;\n\n    let image=box.querySelector('img');\n\n    if(!image){\n      image=document.createElement('img');\n      image.loading='lazy';\n      image.decoding='async';\n      box.replaceChildren(image);\n    }\n\n    image.hidden=false;\n    image.removeAttribute('srcset');\n    image.onerror=null;\n    image.alt=alt||'';\n\n    if(image.getAttribute('src')!==path){\n      image.setAttribute('src',path);\n    }\n  }\n\n  function ensureSkillBox(layout){\n    if(!layout)return null;\n\n    const main=layout.querySelector(':scope > main');\n\n    if(!main)return null;\n\n    let box=[...layout.children].find(\n      child=>child!==main&&child.tagName==='DIV'\n    );\n\n    if(!box){\n      box=document.createElement('div');\n      box.className='s18PatchSkillImageV598B';\n      layout.insertBefore(box,main);\n    }\n\n    return box;\n  }\n\n  function fixChange(change,styleId,style){\n    const heading=change.querySelector('h5');\n    const label=change.querySelector(\n      '.s18PatchLabelV10,.s18PatchVariantV593'\n    );\n\n    const combined=[\n      heading?.textContent,\n      label?.textContent\n    ].filter(Boolean).join(' ');\n\n    const key=keyFromText(styleId,combined);\n    const path=exactImage(styleId,style,key);\n\n    if(!key||!path)return;\n\n    change.dataset.patchStyleId=styleId;\n    change.dataset.patchSkillKey=key;\n    change.dataset.patchSkillImage=path;\n\n    if(\n      styleId==='armored_all_might_technical'&&\n      key==='alpha'&&\n      heading\n    ){\n      heading.textContent=language()==='en'\n        ?'Ice Bullet Shot'\n        :'Tir de balle de glace';\n    }\n\n    const layout=change.querySelector('.s18PatchSkillV10');\n    const box=ensureSkillBox(layout);\n\n    if(layout){\n      layout.classList.remove('s18NoSkillImageV595');\n    }\n\n    setImage(\n      box,\n      path,\n      clean(heading?.textContent)\n    );\n  }\n\n  function fixCard(card){\n    const styleId=styleIdForCard(card);\n    const style=stylesMap()[styleId];\n\n    if(!styleId||!style)return;\n\n    card.dataset.patchStyleId=styleId;\n\n    const characterName=clean(\n      card.querySelector(':scope > header h4')?.textContent\n    );\n\n    setImage(\n      card.querySelector(\n        ':scope > header .s18PatchPortraitV10'\n      ),\n      exactPortrait(styleId,style),\n      characterName\n    );\n\n    card.querySelectorAll('.s18PatchChangeV10')\n      .forEach(\n        change=>fixChange(change,styleId,style)\n      );\n  }\n\n  function refresh(){\n    document.querySelectorAll('.s18PatchCharacterV10')\n      .forEach(fixCard);\n  }\n\n  let queued=false;\n\n  function schedule(){\n    if(queued)return;\n    queued=true;\n\n    requestAnimationFrame(()=>{\n      queued=false;\n      refresh();\n    });\n  }\n\n  new MutationObserver(mutations=>{\n    if(\n      mutations.some(mutation=>\n        mutation.addedNodes?.length||\n        mutation.type==='attributes'\n      )\n    ){\n      schedule();\n    }\n  }).observe(document.documentElement,{\n    childList:true,\n    subtree:true,\n    attributes:true,\n    attributeFilter:['class','src','hidden']\n  });\n\n  document.addEventListener('click',event=>{\n    if(\n      event.target?.closest?.(\n        '[data-patch-index],'+\n        '[data-tab=\"patch\"],'+\n        '#mhurPatchDevButtonV14,'+\n        '[data-s18-notes-button]'\n      )\n    ){\n      setTimeout(refresh,0);\n      setTimeout(refresh,60);\n      setTimeout(refresh,180);\n    }\n  },true);\n\n  window.addEventListener('mhur:languagechange',()=>{\n    setTimeout(refresh,0);\n    setTimeout(refresh,100);\n  });\n\n  if(document.readyState==='loading'){\n    document.addEventListener(\n      'DOMContentLoaded',\n      refresh,\n      {once:true}\n    );\n  }else{\n    refresh();\n  }\n\n  window.addEventListener('load',refresh,{once:true});\n\n  window.MHUR_V598B={\n    version:VERSION,\n    refresh\n  };\n})();\n"
+
+
+          def fail(message):
+              raise RuntimeError(message)
+
+
+          def read(path):
+              if not path.is_file():
+                  fail("Fichier introuvable : " + path.as_posix())
+
+              return path.read_text(encoding="utf-8-sig")
+
+
+          def write(path,content):
+              path.parent.mkdir(parents=True,exist_ok=True)
+              path.write_text(content.rstrip()+"\n",encoding="utf-8")
+
+
+          def patch_index():
+              html=read(INDEX)
+
+              html=re.sub(
+                  r"\s*<script\b[^>]*src=['\"][^'\"]*"
+                  r"v598b-patch-images-exactes\.js"
+                  r"[^'\"]*['\"][^>]*>\s*</script>\s*",
+                  "\n",
+                  html,
+                  flags=re.I,
+              )
+
+              if "</body>" not in html:
+                  fail("Balise </body> introuvable.")
+
+              html=html.replace(
+                  "</body>",
+                  '\n<script '
+                  'src="js/v598b-patch-images-exactes.js?v=598b">'
+                  '</script>\n</body>',
+                  1,
+              )
+
+              write(INDEX,html)
+
+
+          def verify():
+              errors=[]
+              html=read(INDEX)
+              final=read(FINAL)
+
+              required=[
+                  "armored_all_might_technical",
+                  "Ice Bullet Shot",
+                  "assets/armored_all_might/",
+                  "function styleIdForCard",
+                  "function keyFromText",
+                  "function fixChange",
+                  "window.MHUR_V598B",
+              ]
+
+              for value in required:
+                  if value not in final:
+                      errors.append(
+                          "Correctif absent : "+value
+                      )
+
+              if (
+                  "js/v598b-patch-images-exactes.js?v=598b"
+                  not in html
+              ):
+                  errors.append(
+                      "Le JavaScript V598B n'est pas chargé."
+                  )
+
+              syntax=subprocess.run(
+                  ["node","--check",str(FINAL)],
+                  text=True,
+                  capture_output=True,
+              )
+
+              if syntax.returncode:
+                  errors.append(
+                      "Syntaxe JavaScript invalide : "
+                      +syntax.stderr
+                  )
+
+              if errors:
+                  fail(
+                      "Vérification V598B échouée :\n- "
+                      +"\n- ".join(errors)
+                  )
+
+
+          def main():
+              if not INDEX.is_file():
+                  fail("public/index.html est introuvable.")
+
+              write(FINAL,FINAL_CONTENT)
+              patch_index()
+              verify()
+
+              report=[
+                  "MHUR FRANCE — RAPPORT V598B",
+                  "",
+                  "ANCIENNE ERREUR",
+                  "- L'ancien workflow modifiait une ligne précise.",
+                  "- Cette ligne avait changé dans season18-fixes.js.",
+                  "- Le workflow s'arrêtait avant le commit.",
+                  "",
+                  "NOUVELLE MÉTHODE",
+                  "- season18-fixes.js n'est plus modifié.",
+                  "- Le correcteur agit après chaque rendu.",
+                  "- Les anciennes couches ne peuvent pas conserver une mauvaise image.",
+                  "",
+                  "IMAGES EXACTES",
+                  "- Izuku Midoriya OFA : style OFA.",
+                  "- Bakugo Original : style Attaque.",
+                  "- Bakugo Cluster : style Technique.",
+                  "- Denki Kaminari : style Attaque.",
+                  "- Mirio Sheer Counter : style Technique.",
+                  "- Armored All Might : style Technique.",
+                  "- Hawks : style Vitesse.",
+                  "- Lady Nagant : style Attaque.",
+                  "- Itsuka Kendo : style Assaut.",
+                  "- Twice : style Vitesse.",
+                  "",
+                  "ARMORED ALL MIGHT",
+                  "- Nom EN : Ice Bullet Shot.",
+                  "- Nom FR : Tir de balle de glace.",
+                  "- Image : armored_all_might_technical/alpha.webp.",
+                  "- Portrait : armored_all_might_technical/portrait.webp.",
+                  "",
+                  "VÉRIFICATIONS",
+                  "- syntaxe JavaScript : OK",
+                  "- chargement en dernière position : OK",
+              ]
+
+              write(REPORT,"\n".join(report))
+
+              print("[OK] V598B appliqué et vérifié.")
+              print("[OK] season18-fixes.js n'est pas modifié.")
+              print("[OK] Armored All Might utilise Ice Bullet Shot.")
+              print("[OK] Les images locales sont reverrouillées après chaque rendu.")
+
+
+          if __name__=="__main__":
+              main()
+          PY
+          python /tmp/appliquer_v598b.py
+
+      - name: Commit automatique
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add             public/index.html             public/js/v598b-patch-images-exactes.js             RAPPORT_V598B_IMAGES_EXACTES.txt
+
+          if git diff --cached --quiet; then
+            echo "V598B est deja installe."
+            exit 0
+          fi
+
+          git commit -m "Corriger les images des Patch Notes V598B"
+          git push
