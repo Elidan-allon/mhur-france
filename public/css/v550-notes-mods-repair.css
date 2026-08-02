@@ -1,0 +1,328 @@
+/* ==========================================================================
+   MHUR NEXUS — V550
+   - Restaure la barre originale du tutoriel Mods.
+   - Garde un seul chevron.
+   - Restaure les onglets Patch Notes / Dev Notes.
+   - Permet de défiler jusqu'au bas complet des Dev Notes.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. TUTORIEL MODS
+   Le V549 remplaçait tout le fond du summary par un radial-gradient.
+   Ici le summary redevient transparent : le vrai fond orange/jaune du
+   composant reste visible.
+   -------------------------------------------------------------------------- */
+html body .modsTutorial > summary {
+  position: relative !important;
+  display: flex !important;
+  width: 100% !important;
+  min-height: 86px !important;
+  align-items: center !important;
+  gap: 12px !important;
+  padding: 12px 16px !important;
+  list-style: none !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  color: #000 !important;
+  cursor: pointer !important;
+}
+
+html body .modsTutorial > summary::-webkit-details-marker {
+  display: none !important;
+}
+
+/* Neutralise tous les anciens pseudo-chevrons, puis en crée un seul. */
+html body .modsTutorial > summary::before {
+  content: none !important;
+  display: none !important;
+}
+
+html body .modsTutorial > summary::after {
+  content: "⌄" !important;
+  display: grid !important;
+  width: 44px !important;
+  height: 44px !important;
+  min-width: 44px !important;
+  flex: 0 0 44px !important;
+  margin-left: auto !important;
+  place-items: center !important;
+  border: 3px solid #000 !important;
+  border-radius: 50% !important;
+  background: #07111f !important;
+  color: #ffe000 !important;
+  font-size: 29px !important;
+  font-weight: 1000 !important;
+  line-height: 1 !important;
+  box-shadow: 0 4px 0 #000 !important;
+  transform: rotate(0deg) !important;
+  transition: transform .18s ease !important;
+  pointer-events: none !important;
+}
+
+html body .modsTutorial[open] > summary::after {
+  transform: rotate(180deg) !important;
+}
+
+/* Uniquement les anciennes vraies flèches connues. */
+html body .modsTutorial
+.modsTutorialChevronV537,
+html body .modsTutorial
+.modsTutorialChevronV540,
+html body .modsTutorial
+.modsTutorialChevronV544,
+html body .modsTutorial
+.modsTutorialChevronV545,
+html body .modsTutorial
+.modsTutorialChevronV546,
+html body .modsTutorial
+.modsTutorialChevronV549,
+html body .modsTutorial
+.mhurModsArrow,
+html body .modsTutorial
+[data-mods-arrow],
+html body .modsTutorial
+[data-v549-old-arrow="1"] {
+  display: none !important;
+}
+
+/* Le texte "Voir le tutoriel" reste visible et ne crée aucune flèche. */
+html body .modsTutorial .s18ModsHintV10 {
+  display: inline-flex !important;
+  margin-left: auto !important;
+  font-size: 13px !important;
+  font-weight: 1000 !important;
+  opacity: .88 !important;
+}
+
+/* Laisse la place au chevron après le texte. */
+html body .modsTutorial .s18ModsHintV10 + * {
+  margin-left: 0 !important;
+}
+
+/* --------------------------------------------------------------------------
+   2. FENÊTRE PATCH NOTES / DEV NOTES
+   -------------------------------------------------------------------------- */
+html body .s18NotesOverlayV10 {
+  box-sizing: border-box !important;
+  position: fixed !important;
+  inset: 0 !important;
+  display: none;
+  align-items: flex-start !important;
+  justify-content: center !important;
+  padding:
+    calc(var(--mhur-v550-notes-top, 64px) + 8px)
+    12px
+    10px !important;
+  overflow: hidden !important;
+}
+
+html body .s18NotesOverlayV10.open {
+  display: flex !important;
+}
+
+html body .s18NotesPanelV10 {
+  box-sizing: border-box !important;
+  display: flex !important;
+  flex-direction: column !important;
+  width: min(1220px, calc(100vw - 24px)) !important;
+  height:
+    calc(100dvh - var(--mhur-v550-notes-top, 64px) - 18px) !important;
+  min-height: 320px !important;
+  max-height:
+    calc(100dvh - var(--mhur-v550-notes-top, 64px) - 18px) !important;
+  margin: 0 auto !important;
+  overflow: hidden !important;
+}
+
+/* Le titre et les onglets ne rétrécissent jamais. */
+html body .s18NotesPanelV10 > header {
+  flex: 0 0 auto !important;
+}
+
+html body .s18NotesPanelV10 > nav {
+  position: relative !important;
+  z-index: 20 !important;
+  display: flex !important;
+  flex: 0 0 auto !important;
+  width: 100% !important;
+  min-height: 66px !important;
+  align-items: center !important;
+  gap: 10px !important;
+  padding: 10px 12px !important;
+  border-top: 2px solid #000 !important;
+  border-bottom: 2px solid #2d496e !important;
+  background: #091527 !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  overflow: visible !important;
+}
+
+html body .s18NotesPanelV10 > nav > button,
+html body .s18NotesPanelV10 > nav button[data-tab] {
+  position: relative !important;
+  display: inline-flex !important;
+  min-width: 120px !important;
+  min-height: 46px !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 9px 15px !important;
+  border: 3px solid #365b87 !important;
+  border-radius: 11px !important;
+  background: #101f34 !important;
+  color: #fff !important;
+  font-size: 16px !important;
+  font-weight: 1000 !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  cursor: pointer !important;
+}
+
+html body .s18NotesPanelV10 > nav
+button[data-tab].active {
+  border-color: #000 !important;
+  background: #ffe000 !important;
+  color: #000 !important;
+  box-shadow: 0 3px 0 #000 !important;
+}
+
+/*
+  Le corps utilise l'espace restant du panneau.
+  Les anciennes hauteurs fixes et les styles inline ne peuvent plus le couper.
+*/
+html body .s18NotesBodyV10 {
+  display: grid !important;
+  grid-template-columns: 300px minmax(0, 1fr) !important;
+  flex: 1 1 auto !important;
+  width: 100% !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  overflow: hidden !important;
+}
+
+html body .s18NotesBodyV10 > aside,
+html body .s18NotesBodyV10 > main {
+  box-sizing: border-box !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  height: auto !important;
+  max-height: none !important;
+  overflow-y: auto !important;
+  overscroll-behavior: contain !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+html body .s18NotesBodyV10 > aside {
+  overflow-x: hidden !important;
+}
+
+html body .s18NotesBodyV10 > main {
+  overflow-x: auto !important;
+  padding-bottom: 80px !important;
+  scroll-padding-bottom: 80px !important;
+}
+
+html body .s18DevArticleV10 {
+  min-height: min-content !important;
+  padding-bottom: 90px !important;
+}
+
+/* Le dernier bloc reste entièrement accessible. */
+html body .s18DevArticleV10 > :last-child,
+html body .s18NotesBodyV10 > main > :last-child {
+  margin-bottom: 70px !important;
+}
+
+/* --------------------------------------------------------------------------
+   3. TABLETTE / MOBILE
+   -------------------------------------------------------------------------- */
+@media (max-width: 900px) {
+  html body .s18NotesBodyV10 {
+    grid-template-columns: 1fr !important;
+    grid-template-rows: auto minmax(0, 1fr) !important;
+  }
+
+  html body .s18NotesBodyV10 > aside {
+    display: flex !important;
+    width: 100% !important;
+    max-height: 126px !important;
+    gap: 8px !important;
+    padding: 10px !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    border-right: 0 !important;
+    border-bottom: 2px solid #2d496e !important;
+  }
+
+  html body .s18NotesBodyV10 > aside > button {
+    min-width: 230px !important;
+    margin: 0 !important;
+  }
+
+  html body .s18NotesBodyV10 > main {
+    min-height: 0 !important;
+    overflow-y: auto !important;
+  }
+}
+
+@media (max-width: 760px) {
+  html body .modsTutorial > summary {
+    min-height: 82px !important;
+    padding: 11px 13px !important;
+  }
+
+  html body .modsTutorial > summary::after {
+    width: 42px !important;
+    height: 42px !important;
+    min-width: 42px !important;
+    flex-basis: 42px !important;
+  }
+
+  html body .modsTutorial .s18ModsHintV10 {
+    display: none !important;
+  }
+
+  html body .s18NotesOverlayV10 {
+    padding:
+      calc(var(--mhur-v550-notes-top, 118px) + 4px)
+      4px
+      4px !important;
+  }
+
+  html body .s18NotesPanelV10 {
+    width: calc(100vw - 8px) !important;
+    height:
+      calc(100dvh - var(--mhur-v550-notes-top, 118px) - 8px) !important;
+    max-height:
+      calc(100dvh - var(--mhur-v550-notes-top, 118px) - 8px) !important;
+    border-radius: 11px !important;
+  }
+
+  html body .s18NotesPanelV10 > nav {
+    min-height: 64px !important;
+    padding: 8px 10px !important;
+  }
+
+  html body .s18NotesPanelV10 > nav > button,
+  html body .s18NotesPanelV10 > nav button[data-tab] {
+    min-width: 0 !important;
+    flex: 1 1 0 !important;
+    min-height: 48px !important;
+    padding: 8px 10px !important;
+    font-size: 15px !important;
+  }
+
+  html body .s18NotesBodyV10 > aside {
+    max-height: 118px !important;
+  }
+
+  html body .s18NotesBodyV10 > main {
+    padding-bottom: 110px !important;
+    scroll-padding-bottom: 110px !important;
+  }
+
+  html body .s18DevArticleV10 {
+    padding-bottom: 120px !important;
+  }
+}
