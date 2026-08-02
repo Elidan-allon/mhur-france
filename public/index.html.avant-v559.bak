@@ -829,6 +829,7 @@
 <link rel="stylesheet" href="css/v543-moderation-evidence.css?v=543">
 <link rel="stylesheet" href="css/v547-mobile-profile-roles.css?v=547">
 <link rel="stylesheet" href="css/v548-mobile-season-offset.css?v=548">
+<<<<<<< HEAD
 <link rel="stylesheet" href="css/v551-bars-notes-persistent.css?v=551">
 <link rel="stylesheet" href="css/v552-mods-arrow-only.css?v=552">
 
@@ -837,7 +838,9 @@
 <link rel="preload" as="image" href="assets/home/season18/tsuyu_profile.webp">
 <link rel="preload" as="image" href="assets/home/icons/new_badge_custom.png">
 <link rel="stylesheet" href="css/season18-fixes.css?v=1785451218648514700">
-<link rel="stylesheet" href="css/v559-discounts-stable.css?v=559">
+=======
+<link rel="stylesheet" href="css/v550-notes-mods-repair.css?v=550">
+>>>>>>> parent of 0f694ae (﻿MHUR FRANCE — CORRECTIF V549)
 </head>
 <body>
 
@@ -3358,8 +3361,8 @@ function render(){
 window.__MHUR_V542_STABLE_RENDER__=true;
 </script>
 <!-- V312 : les données et le véritable accueil sont chargés avant le tout premier rendu. -->
-<script src="data/home_data.js?v=559"></script>
-<script src="js/home.js?v=559"></script>
+<script src="data/home_data.js?v=558"></script>
+<script src="js/home.js?v=540"></script>
 <script src="data/local_assets_index.js?v=1785451218648514700"></script>
 <script src="data/mhur_database_assets.js?v=29000"></script>
 <script src="data/season18_sync.js?v=29000"></script>
@@ -7159,6 +7162,7 @@ body .costumeTile > img,
 <script src="js/v542-tier-notes-mobile.js?v=542"></script>
 <script src="js/v543-moderation-evidence.js?v=543"></script>
 <script src="js/v547-mobile-profile-roles.js?v=547"></script>
+<<<<<<< HEAD
 <script src="js/v551-bars-notes-persistent.js?v=551"></script>
 <script src="js/v552-mods-arrow-only.js?v=552"></script>
 
@@ -7167,8 +7171,11 @@ body .costumeTile > img,
 <!-- Season 18 v14 compatibility layer. -->
 
 <!-- Season 18 v14 compatibility layer. -->
-<script src="js/season18-fixes.js?v=559"></script>
+<script src="js/season18-fixes.js?v=558"></script>
+<script src="js/v558-discount-lock.js?v=558"></script>
 <script src="js/season18-v12.js?v=1785451218648514700"></script>
-<script src="js/v559-discounts-stable.js?v=559"></script>
+=======
+<script src="js/v550-notes-mods-repair.js?v=550"></script>
+>>>>>>> parent of 0f694ae (﻿MHUR FRANCE — CORRECTIF V549)
 </body>
 </html>

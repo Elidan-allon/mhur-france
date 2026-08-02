@@ -276,7 +276,7 @@
     {
       "name": "D.J. Board",
       "points": 100,
-      "image": "assets/home/discounts/v559/d_j_board_v559.webp?v=559",
+      "image": "assets/present_mic/present_mic_technical/portrait.webp",
       "character": "Present Mic",
       "style": "Technical",
       "style_id": "present_mic_technical",
@@ -285,16 +285,16 @@
     {
       "name": "Flow Runner",
       "points": 100,
-      "image": "assets/home/discounts/v559/flow_runner_v559.webp?v=559",
+      "image": "assets/aizawa/aizawa_strike/portrait.webp",
       "character": "Shota Aizawa",
       "style": "Strike",
       "style_id": "aizawa_strike",
-      "role": "attack"
+      "role": "strike"
     },
     {
       "name": "Gentle Criminal",
       "points": 100,
-      "image": "assets/home/discounts/v559/gentle_criminal_v559.webp?v=559",
+      "image": "assets/home/discounts/gentle_criminal_v531.png?v=531",
       "character": "Gentle Criminal",
       "style": "Technical",
       "style_id": "gentle_criminal",
@@ -303,16 +303,16 @@
     {
       "name": "Factor Fusion",
       "points": 50,
-      "image": "assets/home/discounts/v559/factor_fusion_v559.webp?v=559",
+      "image": "assets/all_for_one/all_for_one_strike/portrait.png",
       "character": "All For One",
       "style": "Strike",
       "style_id": "all_for_one_strike",
-      "role": "attack"
+      "role": "strike"
     },
     {
       "name": "Cluster",
       "points": 50,
-      "image": "assets/home/discounts/v559/cluster_v559.webp?v=559",
+      "image": "assets/bakugo/bakugo_technical/portrait.webp",
       "character": "Katsuki Bakugo",
       "style": "Technical",
       "style_id": "bakugo_technical",
@@ -321,11 +321,11 @@
     {
       "name": "Mirko",
       "points": 50,
-      "image": "assets/home/discounts/v559/mirko_v559.webp?v=559",
+      "image": "assets/mirko/mirko_rapid/portrait.webp",
       "character": "Mirko",
       "style": "Rapid",
       "style_id": "mirko_rapid",
-      "role": "rapid"
+      "role": "speed"
     }
   ],
   "patch_notes": [

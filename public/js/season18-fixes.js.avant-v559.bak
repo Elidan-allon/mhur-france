@@ -757,13 +757,15 @@ const root=v=>typeof rootAsset==='function'?rootAsset(v):String(v||'');
 const NORM=v=>String(v??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'_').replace(/^_|_$/g,'');
 
 const DISCOUNT_PORTRAITS={
-  dj_board:'assets/home/discounts/v559/d_j_board_v559.webp?v=559',
-  d_j_board:'assets/home/discounts/v559/d_j_board_v559.webp?v=559',
-  flow_runner:'assets/home/discounts/v559/flow_runner_v559.webp?v=559',
-  gentle_criminal:'assets/home/discounts/v559/gentle_criminal_v559.webp?v=559',
-  factor_fusion:'assets/home/discounts/v559/factor_fusion_v559.webp?v=559',
-  cluster:'assets/home/discounts/v559/cluster_v559.webp?v=559',
-  mirko:'assets/home/discounts/v559/mirko_v559.webp?v=559'
+  dj_board:'assets/present_mic/present_mic_technical/portrait.webp',
+  d_j_board:'assets/present_mic/present_mic_technical/portrait.webp',
+  flow_runner:'assets/aizawa/aizawa_strike/portrait.webp',
+  gentle_criminal:'assets/home/season18/gentle_s18_portrait.webp',
+  factor_fusion:'assets/all_for_one/all_for_one_strike/portrait.png',
+  cluster:'assets/bakugo/bakugo_technical/portrait.webp',
+  mirko:'assets/mirko/mirko_rapid/portrait.webp',
+  star_and_stripe:'assets/star_and_stripe/star_and_stripe_strike/portrait.webp',
+  star_stripe:'assets/star_and_stripe/star_and_stripe_strike/portrait.webp'
 };
 
 function discountPortrait(name,image){
@@ -1280,13 +1282,8 @@ const DISCOUNT_STYLE_KEYS={
   star_stripe:'star_and_stripe_strike'
 };
 const DISCOUNT_FALLBACK={
-  dj_board:'assets/home/discounts/v559/d_j_board_v559.webp?v=559',
-  d_j_board:'assets/home/discounts/v559/d_j_board_v559.webp?v=559',
-  flow_runner:'assets/home/discounts/v559/flow_runner_v559.webp?v=559',
-  gentle_criminal:'assets/home/discounts/v559/gentle_criminal_v559.webp?v=559',
-  factor_fusion:'assets/home/discounts/v559/factor_fusion_v559.webp?v=559',
-  cluster:'assets/home/discounts/v559/cluster_v559.webp?v=559',
-  mirko:'assets/home/discounts/v559/mirko_v559.webp?v=559'
+  gentle_criminal:'assets/home/season18/gentle_s18_portrait.webp',
+  factor_fusion:'assets/all_for_one/all_for_one_strike/portrait.png'
 };
 const L=()=>typeof lang!=='undefined'&&lang==='en'?'en':'fr';
 
@@ -1300,13 +1297,13 @@ function detectRole(text){
 function discountPortraitV35(name,image){
   const key=NORM(name);
   if(key==='gentle_criminal'){
-    const fixed=absAsset('assets/home/discounts/v559/gentle_criminal_v559.webp?v=559');
+    const fixed=absAsset('assets/home/discounts/gentle_criminal_v531.png?v=531');
     return {src:fixed,fallback:fixed};
   }
   const styleKey=DISCOUNT_STYLE_KEYS[key]||'';
   const dbPath=styleKey ? window.MHUR_DATABASE_ASSETS?.styles?.[styleKey]?.portrait : '';
   const fallback=DISCOUNT_FALLBACK[key]||image||'';
-  return {src:absAsset(fallback||dbPath),fallback:absAsset(fallback||dbPath)};
+  return {src:absAsset(dbPath||fallback),fallback:absAsset(fallback)};
 }
 function renderDiscountCardV35(item){
   const art=discountPortraitV35(item?.name,item?.image);
