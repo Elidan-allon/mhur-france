@@ -1,0 +1,18 @@
+MHUR FRANCE — RAPPORT V600
+
+PATCH NOTES AVANT : 7
+PATCH NOTES APRÈS : 1
+
+NOTE CONSERVÉE
+- ID : 1785298405
+
+PROTECTION
+- home_data.js contient une seule note.
+- home_data.json est synchronisé s'il existe.
+- Le navigateur déduplique encore avant le rendu.
+- Les boutons dupliqués sont retirés de la fenêtre.
+
+VÉRIFICATIONS
+- une seule Patch Note : OK
+- syntaxe JavaScript : OK
+- cache V600 : OK
