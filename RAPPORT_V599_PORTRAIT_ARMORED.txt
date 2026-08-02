@@ -1,0 +1,49 @@
+MHUR FRANCE — RAPPORT V599
+
+PORTRAIT ARMORED ALL MIGHT
+- Source sélectionnée : public/assets/armored_all_might/armored_all_might_technical/portrait.png
+- Fichier final : public/assets/armored_all_might/armored_all_might_technical/portrait.webp
+- Dimensions finales : 640x640
+- Taille finale : 84286 octets
+
+CANDIDATS TROUVÉS
+- public/assets/armored_all_might/armored_all_might_technical/portrait.png | 1024x1024 | score 4254
+- public/assets/home/patches/1779836241/portrait_armored_all_might.webp | 128x128 | score 2301
+- public/assets/home/patches/1785298405/portrait_armored_all_might.webp | 128x128 | score 2301
+- public/assets/costume_photos/armored_all_might/tenue_de_heros_ver_metallique/acier_ambre.webp | 1272x1080 | score 1887
+- public/assets/costume_photos/armored_all_might/tenue_de_heros_ver_metallique/opale_doree.webp | 1272x1080 | score 1887
+- public/assets/costume_photos/armored_all_might/tenue_de_heros_ver_metallique/original.webp | 1272x1080 | score 1887
+- public/assets/costume_photos/armored_all_might/tenue_de_heros_ver_metallique/fer_rubis.webp | 1272x1080 | score 1887
+- public/assets/costume_photos/armored_all_might/tenue_de_heros_ver_metallique/chrome_saphir.webp | 1272x1080 | score 1887
+- public/assets/costume_photos/armored_all_might/tenue_de_heros_ver_metallique/metal_emeraude.webp | 1272x1080 | score 1887
+- public/assets/costume_photos/armored_all_might/tenue_de_cyber_heros/dangereux.webp | 1272x1032 | score 1881
+- public/assets/costume_photos/armored_all_might/tenue_de_cyber_heros/elegant.webp | 1272x1032 | score 1881
+- public/assets/costume_photos/armored_all_might/tenue_de_cyber_heros/enfer.webp | 1272x1032 | score 1881
+- public/assets/costume_photos/armored_all_might/tenue_de_cyber_heros/original.webp | 1272x1032 | score 1881
+- public/assets/costume_photos/armored_all_might/tenue_de_cyber_heros/combat.webp | 1272x1032 | score 1881
+- public/assets/costume_photos/armored_all_might/tenue_de_cyber_heros/super_vilain.webp | 1272x1032 | score 1881
+- public/assets/costume_photos/armored_all_might/tenue_de_heros/elegant.webp | 1020x1024 | score 1854
+- public/assets/costume_photos/armored_all_might/tenue_de_heros/original.webp | 1020x1024 | score 1854
+- public/assets/costume_photos/armored_all_might/tenue_de_heros/combat.webp | 1020x1024 | score 1854
+- public/assets/costume_photos/armored_all_might/tenue_de_heros/super_vilain.webp | 1020x1024 | score 1854
+- public/assets/costume_photos/armored_all_might/tenue_de_heros_ver_camouflage/dangereux.webp | 1028x984 | score 1851
+- public/assets/costume_photos/armored_all_might/tenue_de_heros_ver_camouflage/elegant.webp | 1028x984 | score 1851
+- public/assets/costume_photos/armored_all_might/tenue_de_heros_ver_camouflage/enfer.webp | 1028x984 | score 1851
+- public/assets/costume_photos/armored_all_might/tenue_de_heros_ver_camouflage/original.webp | 1028x984 | score 1851
+- public/assets/costume_photos/armored_all_might/tenue_de_heros_ver_camouflage/combat.webp | 1028x984 | score 1851
+- public/assets/costume_photos/armored_all_might/tenue_de_heros_ver_camouflage/super_vilain.webp | 1028x984 | score 1851
+- public/assets/costume_photos/armored_all_might/tenue_de_heros_ver_endommagee/dangereux.webp | 820x928 | score 1826
+- public/assets/costume_photos/armored_all_might/tenue_de_heros_ver_endommagee/elegant.webp | 820x928 | score 1826
+- public/assets/costume_photos/armored_all_might/tenue_de_heros_ver_endommagee/enfer.webp | 820x928 | score 1826
+- public/assets/costume_photos/armored_all_might/tenue_de_heros_ver_endommagee/original.webp | 820x928 | score 1826
+- public/assets/costume_photos/armored_all_might/tenue_de_heros_ver_endommagee/combat.webp | 820x928 | score 1826
+
+NAVIGATEUR
+- URL forcée avec ?v=599.
+- Ancienne image vide ignorée.
+- Nouvelle tentative automatique en cas d'erreur.
+
+VÉRIFICATIONS
+- fichier WEBP valide : OK
+- dimensions valides : OK
+- syntaxe JavaScript : OK
