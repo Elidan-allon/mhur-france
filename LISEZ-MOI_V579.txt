@@ -1,0 +1,30 @@
+MHUR FRANCE — CORRECTIF V579
+
+PROBLÈME CORRIGÉ
+V578 choisissait seulement les costumes ayant exactement l'heure la plus récente.
+La mise à jour du 29 juillet 2026 peut contenir plusieurs heures le même jour.
+V579 prend toute la journée, sans se limiter à 12:30 ou 13:00.
+
+CORRECTIONS
+- tous les costumes de la dernière journée de mise à jour sont NEW ;
+- costume Original de Gentle toujours NEW ;
+- détection par identifiant, image, lien et texte du costume ;
+- tous les NEW hors accueil commencent à bouger immédiatement ;
+- le NEW de l'accueil conserve son comportement ;
+- INCOMING beaucoup plus grands ;
+- cache forcé en V579.
+
+INSTALLATION
+1. Décompresse le ZIP à la racine de mhur-france.
+2. Lance APPLIQUER_CORRECTIF_V579.bat.
+3. Vérifie les cinq lignes [VÉRIFIÉ].
+4. Ouvre RAPPORT_V579.txt : il donnera la liste complète détectée.
+
+FICHIERS À REMPLACER SUR GITHUB
+- public/index.html
+- public/js/season18-fixes.js
+- public/css/season18-fixes.css
+- public/data/season18_sync.js
+
+ANNULATION
+Lance ANNULER_CORRECTIF_V579.bat.
