@@ -1,0 +1,344 @@
+name: MHUR V600 - un seul Patch Note
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/mhur-v600-auto.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: mhur-v600-single-patch
+  cancel-in-progress: false
+
+jobs:
+  appliquer:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Recuperer le depot
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Installer Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: "24"
+          package-manager-cache: false
+
+      - name: Installer V600
+        shell: bash
+        run: |
+          cat > /tmp/appliquer_v600.py <<'PY'
+          from pathlib import Path
+          import json
+          import re
+          import subprocess
+
+          ROOT=Path.cwd()
+          INDEX=ROOT/"public/index.html"
+          HOME_JS=ROOT/"public/data/home_data.js"
+          HOME_JSON=ROOT/"public/data/home_data.json"
+          RUNTIME=ROOT/"public/js/v600-single-patch.js"
+          REPORT=ROOT/"RAPPORT_V600_UN_SEUL_PATCH.txt"
+
+          RUNTIME_CONTENT="\n/* MHUR Nexus — V600 : une seule copie du dernier Patch Note */\n(function(){\n  'use strict';\n\n  const VERSION='600';\n  const PATCH_ID='v1.17.0-14.5';\n\n  function text(value){\n    if(value&&typeof value==='object'&&!Array.isArray(value)){\n      return String(value.en??value.fr??'');\n    }\n\n    return String(value??'');\n  }\n\n  function richness(note){\n    try{\n      return JSON.stringify(note).length;\n    }catch(_error){\n      return 0;\n    }\n  }\n\n  function isLatest(note){\n    const id=String(note?.id??'').toLowerCase();\n    const title=text(note?.title).toLowerCase();\n\n    return (\n      id===PATCH_ID||\n      title.includes(PATCH_ID)\n    );\n  }\n\n  function keepOnePatch(){\n    const data=window.MHUR_HOME_DATA;\n\n    if(!data||!Array.isArray(data.patch_notes)){\n      return null;\n    }\n\n    const matches=data.patch_notes\n      .filter(isLatest)\n      .sort((a,b)=>richness(b)-richness(a));\n\n    const selected=matches[0]||data.patch_notes[0]||null;\n\n    data.patch_notes=selected?[selected]:[];\n\n    return selected;\n  }\n\n  function cleanRenderedButtons(){\n    const modal=document.getElementById(\n      's18NotesDevModalV10'\n    );\n\n    const aside=modal?.querySelector('aside');\n\n    if(!aside)return;\n\n    const buttons=[\n      ...aside.querySelectorAll('[data-patch-index]')\n    ];\n\n    buttons.slice(1).forEach(button=>button.remove());\n\n    const first=buttons[0];\n\n    if(first){\n      first.dataset.patchIndex='0';\n      first.classList.add('active');\n    }\n  }\n\n  function refresh(){\n    keepOnePatch();\n    cleanRenderedButtons();\n  }\n\n  /*\n    Le script est chargé juste après home_data.js, avant le moteur\n    des Patch Notes. Le moteur ne voit donc qu'une seule note.\n  */\n  keepOnePatch();\n\n  let queued=false;\n\n  function schedule(){\n    if(queued)return;\n    queued=true;\n\n    requestAnimationFrame(()=>{\n      queued=false;\n      refresh();\n    });\n  }\n\n  new MutationObserver(mutations=>{\n    if(mutations.some(mutation=>mutation.addedNodes?.length)){\n      schedule();\n    }\n  }).observe(document.documentElement,{\n    childList:true,\n    subtree:true\n  });\n\n  document.addEventListener('click',event=>{\n    if(\n      event.target?.closest?.(\n        '#mhurPatchDevButtonV14,'+\n        '[data-s18-notes-button],'+\n        '[data-tab=\"patch\"],'+\n        '[data-patch-index]'\n      )\n    ){\n      keepOnePatch();\n      setTimeout(refresh,0);\n      setTimeout(refresh,80);\n    }\n  },true);\n\n  window.addEventListener('load',refresh,{once:true});\n\n  window.MHUR_V600={\n    version:VERSION,\n    refresh,\n    keepOnePatch\n  };\n})();\n"
+          PATCH_ID="v1.17.0-14.5"
+
+
+          def fail(message):
+              raise RuntimeError(message)
+
+
+          def read(path):
+              if not path.is_file():
+                  fail("Fichier introuvable : "+path.as_posix())
+
+              return path.read_text(encoding="utf-8-sig")
+
+
+          def write(path,content):
+              path.parent.mkdir(parents=True,exist_ok=True)
+              path.write_text(content.rstrip()+"\n",encoding="utf-8")
+
+
+          def parse_home():
+              source=read(HOME_JS)
+
+              match=re.fullmatch(
+                  r"\s*window\.MHUR_HOME_DATA\s*=\s*"
+                  r"(\{[\s\S]*\})\s*;?\s*",
+                  source,
+              )
+
+              if not match:
+                  fail("Impossible de lire home_data.js.")
+
+              return json.loads(match.group(1))
+
+
+          def title_text(value):
+              if isinstance(value,dict):
+                  return str(
+                      value.get("en")
+                      or value.get("fr")
+                      or ""
+                  )
+
+              return str(value or "")
+
+
+          def is_latest(note):
+              identifier=str(note.get("id") or "").lower()
+              title=title_text(note.get("title")).lower()
+
+              return (
+                  identifier==PATCH_ID
+                  or PATCH_ID in title
+              )
+
+
+          def richness(note):
+              return len(
+                  json.dumps(
+                      note,
+                      ensure_ascii=False,
+                      separators=(",",":"),
+                  )
+              )
+
+
+          def keep_one_patch():
+              data=parse_home()
+              notes=data.get("patch_notes") or []
+
+              matching=sorted(
+                  [note for note in notes if is_latest(note)],
+                  key=richness,
+                  reverse=True,
+              )
+
+              selected=matching[0] if matching else (
+                  notes[0] if notes else None
+              )
+
+              data["patch_notes"]=[selected] if selected else []
+
+              compact=json.dumps(
+                  data,
+                  ensure_ascii=False,
+                  separators=(",",":"),
+              )
+
+              write(
+                  HOME_JS,
+                  "window.MHUR_HOME_DATA = "+compact+";",
+              )
+
+              if HOME_JSON.is_file():
+                  write(
+                      HOME_JSON,
+                      json.dumps(
+                          data,
+                          ensure_ascii=False,
+                          indent=2,
+                      ),
+                  )
+
+              return len(notes),selected
+
+
+          def patch_index():
+              html=read(INDEX)
+
+              html=re.sub(
+                  r"\s*<script\b[^>]*src=['\"][^'\"]*"
+                  r"v600-single-patch\.js"
+                  r"[^'\"]*['\"][^>]*>\s*</script>\s*",
+                  "\n",
+                  html,
+                  flags=re.I,
+              )
+
+              tag=(
+                  '<script src="js/v600-single-patch.js?v=600">'
+                  '</script>'
+              )
+
+              home_pattern=(
+                  r"(<script\b[^>]*src=['\"][^'\"]*"
+                  r"data/home_data\.js(?:\?[^'\"]*)?"
+                  r"['\"][^>]*>\s*</script>)"
+              )
+
+              match=re.search(home_pattern,html,flags=re.I)
+
+              if match:
+                  position=match.end()
+                  html=html[:position]+"\n"+tag+html[position:]
+              else:
+                  if "</head>" not in html:
+                      fail(
+                          "home_data.js et </head> sont introuvables."
+                      )
+
+                  html=html.replace(
+                      "</head>",
+                      "\n"+tag+"\n</head>",
+                      1,
+                  )
+
+              write(INDEX,html)
+
+
+          def verify(original_count,selected):
+              errors=[]
+              data=parse_home()
+              notes=data.get("patch_notes") or []
+              html=read(INDEX)
+              runtime=read(RUNTIME)
+
+              if len(notes)!=1:
+                  errors.append(
+                      "Il reste "
+                      +str(len(notes))
+                      +" Patch Notes."
+                  )
+
+              if selected and notes:
+                  identifier=str(notes[0].get("id") or "")
+
+                  if (
+                      identifier!=PATCH_ID
+                      and PATCH_ID not in title_text(
+                          notes[0].get("title")
+                      )
+                  ):
+                      errors.append(
+                          "La note conservée n'est pas "
+                          +PATCH_ID+"."
+                      )
+
+              if "js/v600-single-patch.js?v=600" not in html:
+                  errors.append(
+                      "Le script V600 n'est pas chargé."
+                  )
+
+              for required in (
+                  "function keepOnePatch",
+                  "data.patch_notes=selected?[selected]:[]",
+                  "cleanRenderedButtons",
+                  "window.MHUR_V600",
+              ):
+                  if required not in runtime:
+                      errors.append(
+                          "Protection V600 absente : "+required
+                      )
+
+              syntax=subprocess.run(
+                  ["node","--check",str(RUNTIME)],
+                  text=True,
+                  capture_output=True,
+              )
+
+              if syntax.returncode:
+                  errors.append(
+                      "Syntaxe JavaScript invalide : "
+                      +syntax.stderr
+                  )
+
+              if errors:
+                  fail(
+                      "Vérification V600 échouée :\n- "
+                      +"\n- ".join(errors)
+                  )
+
+              lines=[
+                  "MHUR FRANCE — RAPPORT V600",
+                  "",
+                  "PATCH NOTES AVANT : "+str(original_count),
+                  "PATCH NOTES APRÈS : "+str(len(notes)),
+                  "",
+                  "NOTE CONSERVÉE",
+                  "- ID : "
+                  +str(notes[0].get("id") or "")
+                  if notes else "- Aucune note",
+                  "",
+                  "PROTECTION",
+                  "- home_data.js contient une seule note.",
+                  "- home_data.json est synchronisé s'il existe.",
+                  "- Le navigateur déduplique encore avant le rendu.",
+                  "- Les boutons dupliqués sont retirés de la fenêtre.",
+                  "",
+                  "VÉRIFICATIONS",
+                  "- une seule Patch Note : OK",
+                  "- syntaxe JavaScript : OK",
+                  "- cache V600 : OK",
+              ]
+
+              write(REPORT,"\n".join(lines))
+
+
+          def main():
+              for path in (INDEX,HOME_JS):
+                  if not path.is_file():
+                      fail(
+                          "Fichier requis absent : "
+                          +path.as_posix()
+                      )
+
+              original_count,selected=keep_one_patch()
+              write(RUNTIME,RUNTIME_CONTENT)
+              patch_index()
+              verify(original_count,selected)
+
+              print("[OK] V600 appliqué et vérifié.")
+              print(
+                  "[OK] Patch Notes avant : "
+                  +str(original_count)
+              )
+              print("[OK] Patch Notes après : 1")
+              print(
+                  "[OK] Seule "
+                  +PATCH_ID
+                  +" est conservée."
+              )
+
+
+          if __name__=="__main__":
+              main()
+          PY
+          python /tmp/appliquer_v600.py
+
+      - name: Commit automatique
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          files=(
+            public/index.html
+            public/data/home_data.js
+            public/js/v600-single-patch.js
+            RAPPORT_V600_UN_SEUL_PATCH.txt
+          )
+
+          if [ -f public/data/home_data.json ]; then
+            files+=(public/data/home_data.json)
+          fi
+
+          git add "${files[@]}"
+
+          if git diff --cached --quiet; then
+            echo "V600 est deja installe."
+            exit 0
+          fi
+
+          git commit -m "Supprimer le doublon du Patch Note V600"
+          git push
