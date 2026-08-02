@@ -276,56 +276,32 @@
     {
       "name": "D.J. Board",
       "points": 100,
-      "image": "assets/present_mic/present_mic_technical/portrait.webp",
-      "character": "Present Mic",
-      "style": "Technical",
-      "style_id": "present_mic_technical",
-      "role": "technical"
+      "image": "assets/home/discounts/d_j_board.webp"
     },
     {
       "name": "Flow Runner",
       "points": 100,
-      "image": "assets/aizawa/aizawa_strike/portrait.webp",
-      "character": "Shota Aizawa",
-      "style": "Strike",
-      "style_id": "aizawa_strike",
-      "role": "strike"
+      "image": "assets/home/discounts/flow_runner.webp"
     },
     {
       "name": "Gentle Criminal",
       "points": 100,
-      "image": "assets/home/discounts/gentle_criminal_v531.png?v=531",
-      "character": "Gentle Criminal",
-      "style": "Technical",
-      "style_id": "gentle_criminal",
-      "role": "technical"
+      "image": "assets/home/discounts/gentle_criminal.webp"
     },
     {
       "name": "Factor Fusion",
       "points": 50,
-      "image": "assets/all_for_one/all_for_one_strike/portrait.png",
-      "character": "All For One",
-      "style": "Strike",
-      "style_id": "all_for_one_strike",
-      "role": "strike"
+      "image": "assets/home/discounts/factor_fusion.webp"
     },
     {
       "name": "Cluster",
       "points": 50,
-      "image": "assets/bakugo/bakugo_technical/portrait.webp",
-      "character": "Katsuki Bakugo",
-      "style": "Technical",
-      "style_id": "bakugo_technical",
-      "role": "technical"
+      "image": "assets/home/discounts/cluster.webp"
     },
     {
       "name": "Mirko",
       "points": 50,
-      "image": "assets/mirko/mirko_rapid/portrait.webp",
-      "character": "Mirko",
-      "style": "Rapid",
-      "style_id": "mirko_rapid",
-      "role": "speed"
+      "image": "assets/home/discounts/mirko.webp"
     }
   ],
   "patch_notes": [

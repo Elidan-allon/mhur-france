@@ -472,12 +472,9 @@ def patch_home(root: Path, session: requests.Session) -> None:
     if bonuses or any("login bonuses" in clean(h.get_text(" ")).lower() for h in soup.find_all(["h1", "h2", "h3"])):
         data["login_bonuses"] = bonuses
 
-    # V558_DISCOUNT_LOCK: ces six cartes sont validées manuellement.
-    # L'actualisation automatique ne doit plus remplacer leurs portraits.
-    if not isinstance(data.get("discounts"), list) or not data.get("discounts"):
-        discounts = parse_entry_discounts(session, root, soup)
-        if discounts:
-            data["discounts"] = discounts
+    discounts = parse_entry_discounts(session, root, soup)
+    if discounts:
+        data["discounts"] = discounts
 
     links: list[str] = []
     for a in soup.find_all("a", href=True):

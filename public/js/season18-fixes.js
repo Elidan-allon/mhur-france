@@ -523,8 +523,8 @@ function notesModal(){
     modal=document.createElement('div');modal.id='s18NotesDevModalV10';modal.className='s18NotesOverlayV10';
     modal.innerHTML=`<section class="s18NotesPanelV10" tabindex="-1"><header><div><span>MHUR NEXUS</span><h2 data-notes-title></h2></div><button type="button" data-close>×</button></header><nav><button type="button" data-tab="patch" class="active"></button><button type="button" data-tab="dev"></button></nav><div class="s18NotesBodyV10"><aside></aside><main></main></div></section>`;
     document.body.appendChild(modal);
-    modal.querySelector('[data-close]').onclick=()=>{modal.classList.remove('open');document.body.classList.remove('s18NotesOpenV11');modal.remove()};
-    modal.onclick=e=>{if(e.target===modal){modal.classList.remove('open');document.body.classList.remove('s18NotesOpenV11');modal.remove()}};
+    modal.querySelector('[data-close]').onclick=()=>{modal.classList.remove('open');document.body.classList.remove('s18NotesOpenV11')};
+    modal.onclick=e=>{if(e.target===modal){modal.classList.remove('open');document.body.classList.remove('s18NotesOpenV11')}};
     modal.querySelectorAll('[data-tab]').forEach(btn=>btn.onclick=()=>showNotesTab(btn.dataset.tab));
   }
   modal.querySelector('[data-notes-title]').textContent='Patch Notes / Dev Notes';
@@ -551,9 +551,6 @@ function showNotesTab(tab){
   else showPatch(0);
 }
 function openNotes(){
-  /* MHUR_V551_FRESH_NOTES_EACH_OPEN */
-  const previous=document.getElementById('s18NotesDevModalV10');
-  if(previous){previous.remove();document.body.classList.remove('s18NotesOpenV11');}
   const modal=notesModal();
   modal.classList.add('open');document.body.classList.add('s18NotesOpenV11');
   showNotesTab('patch');
@@ -764,7 +761,7 @@ const DISCOUNT_PORTRAITS={
   d_j_board:'assets/present_mic/present_mic_technical/portrait.webp',
   flow_runner:'assets/aizawa/aizawa_strike/portrait.webp',
   gentle_criminal:'assets/home/season18/gentle_s18_portrait.webp',
-  factor_fusion:'assets/overhaul/overhaul_assault/portrait.webp',
+  factor_fusion:'assets/all_for_one/all_for_one_strike/portrait.png',
   cluster:'assets/bakugo/bakugo_technical/portrait.webp',
   mirko:'assets/mirko/mirko_rapid/portrait.webp',
   star_and_stripe:'assets/star_and_stripe/star_and_stripe_strike/portrait.webp',
@@ -1278,14 +1275,15 @@ const DISCOUNT_STYLE_KEYS={
   d_j_board:'present_mic_technical',
   flow_runner:'aizawa_strike',
   gentle_criminal:'gentle_criminal',
-  factor_fusion:'overhaul_assault',
+  factor_fusion:'all_for_one_strike',
   cluster:'bakugo_technical',
   mirko:'mirko_rapid',
   star_and_stripe:'star_and_stripe_strike',
   star_stripe:'star_and_stripe_strike'
 };
 const DISCOUNT_FALLBACK={
-  gentle_criminal:'assets/home/season18/gentle_s18_portrait.webp'
+  gentle_criminal:'assets/home/season18/gentle_s18_portrait.webp',
+  factor_fusion:'assets/all_for_one/all_for_one_strike/portrait.png'
 };
 const L=()=>typeof lang!=='undefined'&&lang==='en'?'en':'fr';
 
@@ -1354,7 +1352,7 @@ function decorateMiniPortraitsV35(root=document){
   imgs.forEach(img=>{
     if(img.dataset.s18MiniBgV35) return;
     const src=String(img.getAttribute('src')||'');
-    if(!/(portrait|mhur_database\/characters|fullbullet|ofa|bakugo|ochaco|midoriya|aizawa|present_mic|overhaul|mirko|tsuyu|kirishima|todoroki|cementoss|all_might|hawks)/i.test(src)) return;
+    if(!/(portrait|mhur_database\/characters|fullbullet|ofa|bakugo|ochaco|midoriya|aizawa|present_mic|overhaul|all_for_one|mirko|tsuyu|kirishima|todoroki|cementoss|all_might|hawks)/i.test(src)) return;
     const w=img.clientWidth||parseFloat(getComputedStyle(img).width)||0;
     const h=img.clientHeight||parseFloat(getComputedStyle(img).height)||0;
     if(w<24||h<24||w>90||h>90) return;
