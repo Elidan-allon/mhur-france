@@ -1,0 +1,102 @@
+/* MHUR FRANCE — V561
+   Corrige les cartes de réduction coupées en deux.
+   Le vieux CSS conservait plusieurs colonnes à l'intérieur des cartes V559.
+*/
+
+.discountGridV296.v559DiscountGrid > .v559DiscountCard {
+  grid-template-columns: minmax(0, 1fr) !important;
+  grid-auto-columns: minmax(0, 1fr) !important;
+  grid-auto-flow: row !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  box-sizing: border-box !important;
+}
+
+/* Chaque partie prend toute la largeur de la carte. */
+.discountGridV296.v559DiscountGrid > .v559DiscountCard > .v559DiscountArt,
+.discountGridV296.v559DiscountGrid > .v559DiscountCard > .s18DiscountArtV19 {
+  grid-column: 1 / -1 !important;
+  grid-row: 1 !important;
+  justify-self: stretch !important;
+  align-self: stretch !important;
+  width: 100% !important;
+  min-width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+.discountGridV296.v559DiscountGrid > .v559DiscountCard > .v559DiscountName {
+  grid-column: 1 / -1 !important;
+  grid-row: 2 !important;
+  justify-self: stretch !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  box-sizing: border-box !important;
+}
+
+.discountGridV296.v559DiscountGrid > .v559DiscountCard > .v559DiscountRole {
+  grid-column: 1 / -1 !important;
+  grid-row: 3 !important;
+  justify-self: stretch !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  box-sizing: border-box !important;
+}
+
+.discountGridV296.v559DiscountGrid > .v559DiscountCard > .v559DiscountPointsRow {
+  grid-column: 1 / -1 !important;
+  grid-row: 4 !important;
+  justify-self: stretch !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  box-sizing: border-box !important;
+}
+
+/* Le portrait remplit réellement le bloc image. */
+.discountGridV296.v559DiscountGrid
+> .v559DiscountCard
+> .v559DiscountArt
+> img,
+.discountGridV296.v559DiscountGrid
+> .v559DiscountCard
+> .s18DiscountArtV19
+> img {
+  position: absolute !important;
+  inset: 0 !important;
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-width: 100% !important;
+  min-height: 100% !important;
+  max-width: none !important;
+  max-height: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  object-fit: cover !important;
+  object-position: center center !important;
+  transform: none !important;
+  box-sizing: border-box !important;
+}
+
+/* Protection contre les anciennes règles qui recréaient une colonne étroite. */
+.discountGridV296.v559DiscountGrid > .v559DiscountCard > * {
+  float: none !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+
+@media (min-width: 701px) {
+  .discountGridV296.v559DiscountGrid > .v559DiscountCard {
+    grid-template-rows: 174px 40px 45px 45px !important;
+  }
+}
+
+@media (max-width: 700px) {
+  .discountGridV296.v559DiscountGrid > .v559DiscountCard {
+    grid-template-rows: 150px 39px 43px 43px !important;
+  }
+}

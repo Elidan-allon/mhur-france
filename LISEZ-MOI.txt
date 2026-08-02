@@ -1,0 +1,23 @@
+MHUR FRANCE — CORRECTIF V561
+
+PROBLÈME CORRIGÉ
+Les cartes « Réductions de points personnage » étaient coupées en deux :
+l'ancien CSS conservait plusieurs colonnes à l'intérieur de chaque carte.
+
+INSTALLATION
+1. Décompresse tout à la racine du dépôt mhur-france.
+2. Vérifie que ce dossier contient aussi public et mise_a_jour.
+3. Lance APPLIQUER_CORRECTIF_V561.bat.
+4. Fais ton commit et ton push GitHub.
+5. Après le déploiement Cloudflare, recharge avec Ctrl + F5.
+
+RÉSULTAT
+- portrait sur toute la largeur ;
+- nom sur toute la largeur ;
+- rôle sur toute la largeur ;
+- points sur toute la largeur ;
+- aucun retour du rôle en double ;
+- Factor Fusion reste All For One Strike.
+
+RETOUR EN ARRIÈRE
+Lance ANNULER_CORRECTIF_V561.bat.
