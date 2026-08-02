@@ -1,0 +1,76 @@
+MHUR FRANCE — RAPPORT V589 PHOTOS LOCALES
+
+RÈGLE APPLIQUÉE
+- Alpha utilise uniquement alpha.* local.
+- Bêta utilise uniquement beta.* local.
+- Gamma utilise uniquement gamma.* local.
+- Aucune URL distante n'est utilisée.
+
+Styles locaux détectés : 60
+Styles complets Alpha/Bêta/Gamma : 60
+Styles incomplets : 0
+
+STYLES COMPLETS
+- aizawa_strike
+- aizawa_technical
+- all_for_one_strike
+- all_for_one_technical
+- all_for_one_young_assault
+- all_might_assault
+- all_might_rapid
+- armored_all_might_technical
+- bakugo_attack
+- bakugo_rapid
+- bakugo_technical
+- cementoss_support
+- dabi_strike
+- dabi_technical
+- endeavor_assault
+- endeavor_strike
+- gentle_criminal_technical
+- hawks_rapid
+- hawks_strike
+- ibara_support
+- kaminari_strike
+- kaminari_technical
+- kendo_assault
+- kendo_strike
+- kirishima_assault
+- kirishima_strike
+- kurogiri_support
+- lady_nagant_strike
+- midoriya_assault
+- midoriya_attack
+- midoriya_ofa
+- mirio_rapid
+- mirio_technical
+- mirko_rapid
+- momo_support
+- monoma_technical
+- mr_compress_support
+- mt_lady_assault
+- nejire_support
+- nejire_technical
+- ochaco_assault
+- ochaco_rapid
+- overhaul_assault
+- overhaul_support
+- present_mic_strike
+- present_mic_technical
+- shigaraki_assault
+- shigaraki_strike
+- shigaraki_technical
+- shinso_strike
+- shoto_attack
+- shoto_technical
+- star_and_stripe_strike
+- tamaki_strike
+- tenya_rapid
+- toga_rapid
+- toga_technical
+- tokoyami_assault
+- tsuyu_rapid
+- twice_rapid
+
+AVERTISSEMENTS
+- Aucun.
