@@ -1,0 +1,12 @@
+MHUR FRANCE — RAPPORT V604C
+
+CORRECTION
+- Nom EN : Heaven-Piercing Ice Wall
+- Nom FR : Mur de glace transperçant les cieux
+- Nom et description remis dans le bon ordre.
+- Texte espagnol remplacé dans le rendu.
+
+CORRECTION DE L'ÉCHEC
+- Aucun contrôle global du texte espagnol dans index.html.
+- Aucun parsing fragile de la base intégrée.
+- Ancien script V604 retiré du chargement.
