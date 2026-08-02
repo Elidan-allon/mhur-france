@@ -1,16 +1,12 @@
-MHUR FRANCE — CORRECTIF V573
+MHUR FRANCE — CORRECTIF V574
 
-Ce correctif ajuste l’emplacement et l’animation des badges NEW.
+Tu n'as plus besoin de remplacer index.html.
 
-CORRECTIONS
-- NEW à droite sur Personnages et T.U.N.I.N.G ;
-- animation sur tous les NEW ;
-- NEW des tenues plus petit ;
-- NEW ajouté sur les nouvelles tenues détectées automatiquement ;
-- typographie des réductions toujours moins grasse.
+1. Décompresse ce ZIP à la racine de mhur-france.
+2. Lance APPLIQUER_CORRECTIF_V574.bat.
+3. Sur GitHub, remplace uniquement :
+   public/js/season18-fixes.js
+4. Clique sur Commit changes.
+5. Attends Cloudflare puis fais Ctrl + F5.
 
-INSTALLATION
-1. Décompresse le ZIP à la racine de mhur-france.
-2. Lance APPLIQUER_CORRECTIF_V573.bat.
-3. Fais ton commit et ton push.
-4. Après Cloudflare, recharge avec Ctrl + F5.
+V574 force season18-fixes.js, déjà chargé par le site, à charger V573 après tous les anciens scripts.
