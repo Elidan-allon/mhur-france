@@ -1,0 +1,33 @@
+MHUR FRANCE — RAPPORT V598B
+
+ANCIENNE ERREUR
+- L'ancien workflow modifiait une ligne précise.
+- Cette ligne avait changé dans season18-fixes.js.
+- Le workflow s'arrêtait avant le commit.
+
+NOUVELLE MÉTHODE
+- season18-fixes.js n'est plus modifié.
+- Le correcteur agit après chaque rendu.
+- Les anciennes couches ne peuvent pas conserver une mauvaise image.
+
+IMAGES EXACTES
+- Izuku Midoriya OFA : style OFA.
+- Bakugo Original : style Attaque.
+- Bakugo Cluster : style Technique.
+- Denki Kaminari : style Attaque.
+- Mirio Sheer Counter : style Technique.
+- Armored All Might : style Technique.
+- Hawks : style Vitesse.
+- Lady Nagant : style Attaque.
+- Itsuka Kendo : style Assaut.
+- Twice : style Vitesse.
+
+ARMORED ALL MIGHT
+- Nom EN : Ice Bullet Shot.
+- Nom FR : Tir de balle de glace.
+- Image : armored_all_might_technical/alpha.webp.
+- Portrait : armored_all_might_technical/portrait.webp.
+
+VÉRIFICATIONS
+- syntaxe JavaScript : OK
+- chargement en dernière position : OK
