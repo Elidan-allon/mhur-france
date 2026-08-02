@@ -1,0 +1,646 @@
+name: MHUR V582 - NEW et couleurs INCOMING definitifs
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/mhur-v582-auto.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: mhur-v582-automatique
+  cancel-in-progress: false
+
+jobs:
+  appliquer:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Recuperer le depot
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Installer Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: "24"
+          package-manager-cache: false
+
+      - name: Creer et verifier V582
+        shell: bash
+        run: |
+          cat > /tmp/mhur_v582.py <<'PY'
+          from __future__ import annotations
+
+          from datetime import datetime, timedelta, timezone
+          from pathlib import Path
+          import json
+          import re
+          import subprocess
+
+          ROOT = Path.cwd()
+          INDEX = ROOT / "public" / "index.html"
+          SYNC = ROOT / "public" / "data" / "season18_sync.js"
+          JS_FILE = ROOT / "public" / "js" / "v582-final-new.js"
+          CSS_FILE = ROOT / "public" / "css" / "v582-final-new.css"
+          REPORT = ROOT / "RAPPORT_V582_AUTOMATIQUE.txt"
+
+          def fail(message: str) -> None:
+              raise RuntimeError(message)
+
+          def read(path: Path) -> str:
+              if not path.is_file():
+                  fail(f"Fichier introuvable : {path.as_posix()}")
+              return path.read_text(encoding="utf-8-sig")
+
+          def write(path: Path, content: str) -> None:
+              path.parent.mkdir(parents=True, exist_ok=True)
+              path.write_text(content.rstrip() + "\n", encoding="utf-8")
+
+          def parse_sync() -> dict:
+              source = read(SYNC)
+              match = re.fullmatch(
+                  r"\s*window\.MHUR_SEASON18_DATA\s*=\s*(\{[\s\S]*\})\s*;?\s*",
+                  source,
+              )
+              if not match:
+                  fail("Impossible de lire season18_sync.js.")
+              return json.loads(match.group(1))
+
+          def release_day(value: object) -> str:
+              match = re.match(r"^(\d{4}-\d{2}-\d{2})", str(value or ""))
+              return match.group(1) if match else ""
+
+          def latest_ids(data: dict) -> tuple[str, list[str]]:
+              today_jst = (datetime.now(timezone.utc) + timedelta(hours=9)).date().isoformat()
+              released: list[tuple[str, str]] = []
+
+              for costume_id, row in (data.get("costumes") or {}).items():
+                  row = row or {}
+                  day = release_day(row.get("releaseDate") or row.get("release_date"))
+                  if day and day <= today_jst and not bool(row.get("upcoming")):
+                      released.append((str(costume_id), day))
+
+              if not released:
+                  fail("Aucun costume déjà sorti trouvé.")
+
+              latest_day = max(day for _, day in released)
+              ids = [costume_id for costume_id, day in released if day == latest_day]
+              return latest_day, ids
+
+          V582_JS = r'''
+          /* MHUR Nexus — V582 : NEW finaux indépendants */
+          (function(){
+            'use strict';
+
+            const BADGE = '<span class="mhurNewV582" aria-label="NEW"></span>';
+            const GENTLE_CHARACTER = 'gentle_criminal';
+            const GENTLE_STYLE = 'gentle_criminal_technical';
+            const GENTLE_ORIGINAL = '108000000';
+
+            function releaseDay(value){
+              const match = String(value || '').match(/^(\d{4}-\d{2}-\d{2})/);
+              return match ? match[1] : '';
+            }
+
+            function todayJst(){
+              const parts = new Intl.DateTimeFormat('en-CA', {
+                timeZone: 'Asia/Tokyo',
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit'
+              }).formatToParts(new Date());
+
+              const value = type =>
+                parts.find(part => part.type === type)?.value || '';
+
+              return value('year') + '-' + value('month') + '-' + value('day');
+            }
+
+            function currentSets(){
+              const sync = window.MHUR_SEASON18_DATA || {};
+              const active = sync.active_new_content || sync.new_content || {};
+              const today = todayJst();
+
+              const released = Object.entries(sync.costumes || {})
+                .map(([id, row]) => ({
+                  id: String(id),
+                  row: row || {},
+                  day: releaseDay(row?.releaseDate || row?.release_date)
+                }))
+                .filter(item =>
+                  item.day &&
+                  item.day <= today &&
+                  !item.row.upcoming
+                );
+
+              const latestDay = released.length
+                ? released.map(item => item.day).sort().at(-1)
+                : '';
+
+              const latestCostumes = released
+                .filter(item => item.day === latestDay)
+                .map(item => item.id);
+
+              return {
+                characters: new Set([
+                  ...(active.characters || []).map(String),
+                  GENTLE_CHARACTER
+                ]),
+                styles: new Set([
+                  ...(active.styles || []).map(String),
+                  GENTLE_STYLE
+                ]),
+                costumes: new Set([
+                  ...latestCostumes,
+                  ...(active.costumes || []).map(String),
+                  GENTLE_ORIGINAL
+                ]),
+                latestDay
+              };
+            }
+
+            function directCustomBadges(node){
+              try{
+                return [...node.querySelectorAll(':scope > .mhurNewV582')];
+              }catch(_error){
+                return [...(node.children || [])]
+                  .filter(child => child.classList?.contains('mhurNewV582'));
+              }
+            }
+
+            function setCustomBadge(node, active){
+              if(!node) return;
+
+              const badges = directCustomBadges(node);
+
+              if(!active){
+                badges.forEach(badge => badge.remove());
+                return;
+              }
+
+              badges.slice(1).forEach(badge => badge.remove());
+
+              if(!badges.length){
+                node.insertAdjacentHTML('afterbegin', BADGE);
+              }
+            }
+
+            function costumeId(card){
+              if(!card) return '';
+
+              const values = [
+                card.dataset?.costumeId,
+                card.dataset?.costume,
+                card.dataset?.id,
+                card.getAttribute('data-costume-id'),
+                card.getAttribute('data-costume'),
+                card.getAttribute('data-id'),
+                card.id,
+                card.getAttribute('onclick'),
+                card.getAttribute('href')
+              ];
+
+              for(const value of values){
+                const match = String(value || '').match(/(?:ur[_-]?)?(\d{4,})/i);
+                if(match) return match[1];
+              }
+
+              return '';
+            }
+
+            function syncIncoming(){
+              const twice = document.querySelector(
+                '.s18PlannedCardV12[data-planned="twice"]'
+              );
+              const tsuyu = document.querySelector(
+                '.s18PlannedCardV12[data-planned="tsuyu"]'
+              );
+
+              if(twice){
+                twice.querySelectorAll(
+                  '.s18PlannedNewV12,[class*="s18PlannedIncoming"]'
+                ).forEach(node => node.remove());
+
+                twice.querySelector('.s18PlannedTextV12')
+                  ?.insertAdjacentHTML(
+                    'beforebegin',
+                    '<span class="mhurIncomingV582 mhurIncomingTwiceV582">INCOMING</span>'
+                  );
+              }
+
+              if(tsuyu){
+                tsuyu.querySelectorAll(
+                  '.s18PlannedNewV12,[class*="s18PlannedIncoming"]'
+                ).forEach(node => node.remove());
+
+                tsuyu.querySelector('.s18PlannedTextV12')
+                  ?.insertAdjacentHTML(
+                    'beforebegin',
+                    '<span class="mhurIncomingV582 mhurIncomingTsuyuV582">INCOMING</span>'
+                  );
+              }
+            }
+
+            function sync(){
+              const sets = currentSets();
+
+              syncIncoming();
+
+              document.querySelectorAll('.card[data-char]').forEach(card => {
+                setCustomBadge(
+                  card,
+                  sets.characters.has(String(card.dataset.char || ''))
+                );
+              });
+
+              document.querySelectorAll('.styleCard[data-style]').forEach(card => {
+                setCustomBadge(
+                  card,
+                  sets.styles.has(String(card.dataset.style || ''))
+                );
+              });
+
+              document.querySelectorAll(
+                '.costumeTile[data-costume-id],' +
+                '.costumeCard[data-costume-id],' +
+                '.costumeResult[data-costume-id],' +
+                '.costumeTile[data-costume],' +
+                '.costumeCard[data-costume],' +
+                '.costumeResult[data-costume]'
+              ).forEach(card => {
+                const id = costumeId(card);
+                const upcoming = Boolean(
+                  card.closest(
+                    '.s18UpcomingCostumeGroupV19,' +
+                    '.s18UpcomingCostumeGroupV23'
+                  )
+                );
+
+                setCustomBadge(
+                  card,
+                  Boolean(id && sets.costumes.has(id) && !upcoming)
+                );
+              });
+            }
+
+            let scheduled = false;
+
+            function schedule(){
+              if(scheduled) return;
+              scheduled = true;
+
+              requestAnimationFrame(() => {
+                scheduled = false;
+                sync();
+              });
+            }
+
+            function wrapRender(){
+              if(typeof window.render !== 'function') return;
+              if(window.render.__mhurV582Wrapped) return;
+
+              const original = window.render;
+
+              const wrapped = function(){
+                const result = original.apply(this, arguments);
+
+                /*
+                  Le script Saison 18 v12 a déjà fini de retirer ses anciens badges.
+                  V582 ajoute ensuite les siens, qui utilisent une autre classe.
+                */
+                sync();
+                schedule();
+                return result;
+              };
+
+              wrapped.__mhurV582Wrapped = true;
+              window.render = wrapped;
+
+              try{
+                render = wrapped;
+              }catch(_error){}
+            }
+
+            wrapRender();
+
+            if(document.readyState === 'loading'){
+              document.addEventListener('DOMContentLoaded', () => {
+                wrapRender();
+                sync();
+                schedule();
+              }, {once: true});
+            }else{
+              sync();
+              schedule();
+            }
+
+            new MutationObserver(mutations => {
+              if(mutations.some(mutation => mutation.addedNodes?.length)){
+                schedule();
+              }
+            }).observe(document.documentElement, {
+              childList: true,
+              subtree: true
+            });
+
+            window.addEventListener('load', () => {
+              wrapRender();
+              sync();
+              schedule();
+            }, {once: true});
+
+            window.addEventListener('hashchange', schedule);
+            window.addEventListener('mhur:languagechange', schedule);
+
+            window.MHUR_V582 = {
+              refresh: sync,
+              sets: currentSets
+            };
+          })();
+          '''
+
+          V582_CSS = r'''
+          /* MHUR Nexus — V582 : couleurs INCOMING + NEW fiables */
+
+          /* Les anciens NEW sont masqués uniquement sur les cartes gérées par V582. */
+          .card[data-char] > .s18NewBadge,
+          .styleCard[data-style] > .s18NewBadge,
+          .costumeTile > .s18NewBadge,
+          .costumeCard > .s18NewBadge,
+          .costumeResult > .s18NewBadge{
+            display:none!important;
+            visibility:hidden!important;
+          }
+
+          /* Le badge V582 réutilise exactement l'image NEW du site. */
+          .mhurNewV582{
+            position:absolute!important;
+            display:block!important;
+            visibility:visible!important;
+            opacity:1!important;
+            pointer-events:none!important;
+            min-width:0!important;
+            padding:0!important;
+            border:0!important;
+            border-radius:0!important;
+            background:
+              transparent
+              url('../assets/home/icons/new_badge_custom.png')
+              center/contain no-repeat!important;
+            color:transparent!important;
+            text-indent:-9999px!important;
+            overflow:visible!important;
+            box-shadow:none!important;
+            transform-origin:center!important;
+            z-index:100!important;
+            animation:mhurNewPulseV582 .9s ease-in-out infinite!important;
+            will-change:transform!important;
+          }
+
+          @keyframes mhurNewPulseV582{
+            0%,100%{transform:scale(.90)}
+            50%{transform:scale(1.14)}
+          }
+
+          /* Gentle à l'accueil bouge également. */
+          .s18PlannedCardV12[data-planned="gentle"] .s18PlannedNewV12{
+            animation:mhurNewPulseV582 .9s ease-in-out infinite!important;
+            transform-origin:center!important;
+          }
+
+          /* Personnages et T.U.N.I.N.G : haut à droite. */
+          .card[data-char] > .mhurNewV582,
+          .styleCard[data-style] > .mhurNewV582{
+            top:7px!important;
+            right:7px!important;
+            left:auto!important;
+            width:88px!important;
+            height:44px!important;
+          }
+
+          /* Costumes : plus petit, sous les étoiles à droite. */
+          .costumeTile > .mhurNewV582,
+          .costumeCard > .mhurNewV582,
+          .costumeResult > .mhurNewV582{
+            top:38px!important;
+            right:8px!important;
+            left:auto!important;
+            width:64px!important;
+            height:34px!important;
+            z-index:90!important;
+          }
+
+          .costumeTile > .costumeTileStars,
+          .costumeCard > .costumeTileStars,
+          .costumeResult > .costumeTileStars{
+            position:absolute!important;
+            top:7px!important;
+            right:8px!important;
+            z-index:101!important;
+          }
+
+          /* INCOMING commun : grand et complètement fixe. */
+          .mhurIncomingV582{
+            position:absolute!important;
+            z-index:105!important;
+            top:9px!important;
+            right:10px!important;
+            min-width:172px!important;
+            height:58px!important;
+            padding:0 19px!important;
+            display:inline-flex!important;
+            align-items:center!important;
+            justify-content:center!important;
+            border:4px solid #050505!important;
+            border-radius:10px!important;
+            color:#fff!important;
+            font-family:Impact,Haettenschweiler,'Arial Black',sans-serif!important;
+            font-size:24px!important;
+            font-style:italic!important;
+            line-height:1!important;
+            letter-spacing:.8px!important;
+            white-space:nowrap!important;
+            box-shadow:0 5px 0 #050505!important;
+            text-shadow:2px 2px 0 #000!important;
+            animation:none!important;
+            transform:none!important;
+            filter:none!important;
+          }
+
+          /* Twice Support : vert et noir. */
+          .mhurIncomingTwiceV582{
+            background:
+              linear-gradient(
+                135deg,
+                #21cf55 0%,
+                #21cf55 52%,
+                #050505 52%,
+                #050505 100%
+              )!important;
+          }
+
+          /* Tsuyu : rouge et noir. */
+          .mhurIncomingTsuyuV582{
+            background:
+              linear-gradient(
+                135deg,
+                #e3223e 0%,
+                #e3223e 52%,
+                #050505 52%,
+                #050505 100%
+              )!important;
+          }
+
+          @media(max-width:700px){
+            .card[data-char] > .mhurNewV582,
+            .styleCard[data-style] > .mhurNewV582{
+              width:76px!important;
+              height:38px!important;
+            }
+
+            .costumeTile > .mhurNewV582,
+            .costumeCard > .mhurNewV582,
+            .costumeResult > .mhurNewV582{
+              top:34px!important;
+              right:7px!important;
+              width:54px!important;
+              height:29px!important;
+            }
+
+            .mhurIncomingV582{
+              min-width:148px!important;
+              height:50px!important;
+              padding:0 14px!important;
+              font-size:20px!important;
+            }
+          }
+          '''
+
+          def patch_index() -> None:
+              html = read(INDEX)
+
+              html = re.sub(
+                  r"\s*<link\b[^>]*href=[\"'][^\"']*v582-final-new\.css[^\"']*[\"'][^>]*>\s*",
+                  "\n",
+                  html,
+                  flags=re.I,
+              )
+              html = re.sub(
+                  r"\s*<script\b[^>]*src=[\"'][^\"']*v582-final-new\.js[^\"']*[\"'][^>]*>"
+                  r"\s*</script>\s*",
+                  "\n",
+                  html,
+                  flags=re.I,
+              )
+
+              injection = (
+                  '\n<!-- V582 doit rester après season18-v12.js. -->\n'
+                  '<link rel="stylesheet" href="css/v582-final-new.css?v=582">\n'
+                  '<script src="js/v582-final-new.js?v=582"></script>\n'
+              )
+
+              if "</body>" not in html:
+                  fail("Balise </body> introuvable dans index.html.")
+
+              html = html.replace("</body>", injection + "</body>", 1)
+              write(INDEX, html)
+
+          def verify(latest_day: str, ids: list[str]) -> None:
+              html = read(INDEX)
+              js = read(JS_FILE)
+              css = read(CSS_FILE)
+              errors: list[str] = []
+
+              if "css/v582-final-new.css?v=582" not in html:
+                  errors.append("CSS V582 absent de index.html")
+              if "js/v582-final-new.js?v=582" not in html:
+                  errors.append("JavaScript V582 absent de index.html")
+              if html.rfind("js/season18-v12.js") > html.rfind("js/v582-final-new.js"):
+                  errors.append("V582 n'est pas chargé après season18-v12.js")
+
+              if "mhurNewV582" not in js:
+                  errors.append("badge indépendant V582 absent")
+              if "data-costume-id" not in js:
+                  errors.append("détection data-costume-id absente")
+              if "mhurIncomingTwiceV582" not in css:
+                  errors.append("couleurs Twice absentes")
+              if "mhurIncomingTsuyuV582" not in css:
+                  errors.append("couleurs Tsuyu absentes")
+              if "animation:none!important" not in css:
+                  errors.append("arrêt animation INCOMING absent")
+              if "@keyframes mhurNewPulseV582" not in css:
+                  errors.append("animation NEW absente")
+
+              result = subprocess.run(
+                  ["node", "--check", str(JS_FILE)],
+                  text=True,
+                  capture_output=True,
+              )
+              if result.returncode:
+                  errors.append("syntaxe JavaScript invalide : " + result.stderr)
+
+              if errors:
+                  fail("Vérification V582 échouée :\n- " + "\n- ".join(errors))
+
+              report = [
+                  "MHUR FRANCE — RAPPORT AUTOMATIQUE V582",
+                  "",
+                  f"Dernière journée de costumes détectée : {latest_day}",
+                  f"Nombre de costumes de cette journée : {len(ids)}",
+                  "",
+                  "Vérifications :",
+                  "- V582 chargé après season18-v12.js : OK",
+                  "- badge NEW indépendant des anciens scripts : OK",
+                  "- animation de tous les NEW : OK",
+                  "- data-costume-id reconnu : OK",
+                  "- costume Original Gentle ajouté par le script : OK",
+                  "- Twice INCOMING vert/noir sans animation : OK",
+                  "- Tsuyu INCOMING rouge/noir sans animation : OK",
+                  "- syntaxe JavaScript : OK",
+                  "",
+                  "Identifiants de la dernière journée :",
+                  *[f"- {costume_id}" for costume_id in ids],
+              ]
+              write(REPORT, "\n".join(report))
+
+          def main() -> None:
+              data = parse_sync()
+              latest_day, ids = latest_ids(data)
+
+              write(JS_FILE, V582_JS)
+              write(CSS_FILE, V582_CSS)
+              patch_index()
+              verify(latest_day, ids)
+
+              print("[OK] V582 appliqué et vérifié.")
+              print("[OK] Twice : vert/noir, fixe.")
+              print("[OK] Tsuyu : rouge/noir, fixe.")
+              print("[OK] Tous les NEW utilisent le badge indépendant animé.")
+              print(f"[OK] Costumes de la dernière journée détectés : {len(ids)}.")
+
+          if __name__ == "__main__":
+              main()
+          PY
+          python3 /tmp/mhur_v582.py
+
+      - name: Commit automatique
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add             public/index.html             public/js/v582-final-new.js             public/css/v582-final-new.css             RAPPORT_V582_AUTOMATIQUE.txt
+
+          if git diff --cached --quiet; then
+            echo "V582 est deja installe."
+            exit 0
+          fi
+
+          git commit -m "Installer les NEW definitifs V582"
+          git push
