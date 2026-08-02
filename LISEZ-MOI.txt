@@ -1,19 +1,19 @@
-MHUR FRANCE — CORRECTIF V563
+MHUR FRANCE — CORRECTIF V564
 
-Ce correctif ajoute et harmonise les badges NEW / INCOMING.
+Ce correctif recale les badges NEW / INCOMING.
 
-MODIFICATIONS
-- les badges NEW utilisent le style de l'accueil ;
-- le badge NEW s'agrandit et rétrécit en boucle ;
-- les éléments pas encore sortis reçoivent un badge INCOMING de même taille ;
-- tout ce qui concerne Gentle Criminal reçoit un badge NEW ;
-- sur les cartes de costumes, le badge NEW passe à droite sous les étoiles.
+CORRECTIONS
+- le NEW de Gentle Criminal bouge maintenant bien ;
+- sur les cartes de sorties prévues, Twice et Tsuyu utilisent INCOMING à la place de NEW ;
+- sur la carte personnage de Gentle Criminal, le NEW est plus grand et en haut à droite ;
+- sur les cartes de skins / tuning, le NEW est placé sous les étoiles à droite ;
+- les badges parasites dans les cartes de sélection de costumes sont supprimés.
 
 INSTALLATION
 1. Décompresse le ZIP à la racine de mhur-france.
-2. Lance APPLIQUER_CORRECTIF_V563.bat.
+2. Lance APPLIQUER_CORRECTIF_V564.bat.
 3. Fais ton commit et ton push GitHub.
 4. Après le déploiement Cloudflare, recharge avec Ctrl + F5.
 
 RETOUR EN ARRIÈRE
-Lance ANNULER_CORRECTIF_V563.bat.
+Lance ANNULER_CORRECTIF_V564.bat.

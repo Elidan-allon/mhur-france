@@ -1,0 +1,126 @@
+/* MHUR FRANCE — V564
+   Recalage des badges NEW / INCOMING.
+*/
+
+@keyframes mhurV564PulseBadge {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.15); }
+  100% { transform: scale(1); }
+}
+
+.mhur-v564-badge-host,
+.mhur-v564-release-card,
+.mhur-v564-character-card,
+.mhur-v564-skin-card {
+  position: relative !important;
+}
+
+.mhurV564Badge,
+.mhur-v564-live {
+  position: absolute !important;
+  right: 12px !important;
+  top: 10px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-width: 66px !important;
+  height: 28px !important;
+  padding: 0 8px !important;
+  font-family: Impact, Haettenschweiler, 'Arial Black', sans-serif !important;
+  font-size: 15px !important;
+  font-style: italic !important;
+  font-weight: 900 !important;
+  line-height: 1 !important;
+  letter-spacing: 0.2px !important;
+  color: #fff !important;
+  text-transform: uppercase !important;
+  white-space: nowrap !important;
+  text-shadow:
+    -1px -1px 0 #ff2f92,
+     1px -1px 0 #ff2f92,
+    -1px  1px 0 #ff2f92,
+     1px  1px 0 #ff2f92,
+     2px  2px 0 rgba(0,0,0,.8) !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  transform-origin: center center !important;
+  animation: mhurV564PulseBadge 1.15s ease-in-out infinite !important;
+  z-index: 40 !important;
+  pointer-events: none !important;
+}
+
+.mhurV564Badge::before,
+.mhur-v564-live::before {
+  content: attr(data-mhur-label) !important;
+}
+
+.mhurV564Badge[data-mhur-type="incoming"],
+.mhur-v564-live[data-mhur-type="incoming"] {
+  min-width: 104px !important;
+  font-size: 13px !important;
+}
+
+/* Cartes de sorties prévues. */
+.mhur-v564-release-card .mhurV564Badge,
+.mhur-v564-release-card .mhur-v564-live {
+  top: 10px !important;
+  right: 14px !important;
+}
+
+/* Carte personnage Gentle Criminal : badge plus gros, en haut à droite. */
+.mhur-v564-character-card .mhurV564Badge,
+.mhur-v564-character-card .mhur-v564-live {
+  top: 12px !important;
+  right: 10px !important;
+  min-width: 70px !important;
+  height: 30px !important;
+  font-size: 16px !important;
+}
+
+/* Cartes de skins / tuning : NEW sous les étoiles à droite. */
+.mhur-v564-skin-card .mhurV564Badge,
+.mhur-v564-skin-card .mhur-v564-live {
+  top: 24px !important;
+  right: 10px !important;
+  min-width: 62px !important;
+  height: 27px !important;
+  font-size: 14px !important;
+}
+
+/* Si une ligne d'étoiles est détectée comme élément classique, elle reste au-dessus. */
+.mhur-v564-skin-card [class*="star"],
+.mhur-v564-skin-card [class*="rarity"],
+.mhur-v564-skin-card .mhur-v564-stars {
+  position: absolute !important;
+  top: 6px !important;
+  right: 8px !important;
+  z-index: 41 !important;
+}
+
+/* Cache les anciens badges générés au mauvais endroit. */
+.mhur-v564-hide-old {
+  display: none !important;
+}
+
+@media (max-width: 700px) {
+  .mhurV564Badge,
+  .mhur-v564-live {
+    min-width: 60px !important;
+    height: 26px !important;
+    font-size: 14px !important;
+  }
+
+  .mhurV564Badge[data-mhur-type="incoming"],
+  .mhur-v564-live[data-mhur-type="incoming"] {
+    min-width: 96px !important;
+    font-size: 12px !important;
+  }
+
+  .mhur-v564-character-card .mhurV564Badge,
+  .mhur-v564-character-card .mhur-v564-live {
+    min-width: 64px !important;
+    height: 28px !important;
+    font-size: 15px !important;
+  }
+}
