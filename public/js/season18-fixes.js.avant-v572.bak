@@ -89,8 +89,7 @@ function newSets(){
   const characters=hasActive?(data.characters||[]):(latestHomeIdsV24('character','character_id').length?latestHomeIdsV24('character','character_id'):(data.characters||[]));
   const stylesList=hasActive?(data.styles||[]):(latestHomeIdsV24('style','style_id').length?latestHomeIdsV24('style','style_id'):(data.styles||[]));
   const latestCostumes=latestReleasedCostumeIdsV24(sync);
-  /* V572 merge latest costume wave */
-  const costumes=Array.from(new Set([...(data.costumes||[]),...latestCostumes,'108000000']));
+  const costumes=hasActive?(data.costumes||[]):(latestCostumes.length?latestCostumes:(data.costumes||[]));
   return {
     characters:new Set(characters.map(String)),
     styles:new Set(stylesList.map(String)),
@@ -338,8 +337,6 @@ function installRenders(){
       const official=window.MHUR_DATABASE_ASSETS?.costumes?.[id]||'';
       const officialCostume=official?{...ct,img:official}:ct;
       let html=String(baseCostumeCard(officialCostume)||'');
-      /* V572 preserve costume id */
-      if(id&&!/\bdata-costume\s*=/.test(html)) html=html.replace(/^(<(?:button|div)\b)/i,`$1 data-costume="${esc(id)}"`);
       if(newSets().costumes.has(id)&&!html.includes('s18NewBadge')) html=html.replace(/^(<button\b[^>]*>|<div\b[^>]*>)/i,`$1${NEW_HTML}`);
       return html;
     };
@@ -1171,8 +1168,7 @@ function activeSets(){
   const latestCostumeIds=latestCostumes(sync);
   const characters=hasActive?(source.characters||[]):(homeCharacters.length?homeCharacters:(source.characters||[]));
   const stylesList=hasActive?(source.styles||[]):(homeStyles.length?homeStyles:(source.styles||[]));
-  /* V572 merge latest costume wave v24 */
-  const costumes=Array.from(new Set([...(source.costumes||[]),...latestCostumeIds,'108000000']));
+  const costumes=hasActive?(source.costumes||[]):(latestCostumeIds.length?latestCostumeIds:(source.costumes||[]));
   return {
     characters:new Set(characters.map(String)),
     styles:new Set(stylesList.map(String)),

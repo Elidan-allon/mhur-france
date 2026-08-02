@@ -1,24 +1,24 @@
-MHUR FRANCE — CORRECTIF V571
+MHUR FRANCE — CORRECTIF V572 SOURCE
+
+Ce correctif modifie directement les données et le rendu Saison 18.
 
 CORRECTIONS
-- écriture des réductions de points moins grasse ;
-- NEW restauré sur les cartes Gentle Criminal dans Personnages,
-  T.U.N.I.N.G et Costumes ;
-- NEW ajouté au costume Original de Gentle Criminal ;
-- NEW ajouté automatiquement à tous les costumes sortis à la date
-  la plus récente contenue dans season18_sync.js ;
-- tous les NEW utilisent la même animation de pulsation ;
-- NEW des costumes reste à droite sous les étoiles.
-
-La liste est calculée depuis les dates du fichier Saison 18 : elle ne dépend
-pas uniquement d'une liste écrite à la main et continuera donc de fonctionner
-lors des prochaines mises à jour.
+- écriture des réductions moins grasse ;
+- NEW animé sur Gentle Criminal dans Personnages et T.U.N.I.N.G ;
+- NEW animé sur le style Technique de Gentle ;
+- NEW sur le costume Original de Gentle (108000000) ;
+- NEW sur tous les costumes de la vague sortie à la date la plus récente ;
+- tous les NEW utilisent la même animation ;
+- NEW des costumes placé à droite sous les étoiles ;
+- suppression des anciens scripts de badges V563 à V571 ;
+- conservation de data-costume dans les cartes pour éviter que le badge disparaisse.
 
 INSTALLATION
 1. Décompresse le ZIP à la racine de mhur-france.
-2. Lance APPLIQUER_CORRECTIF_V571.bat.
-3. Fais ton commit et ton push GitHub.
-4. Après le déploiement Cloudflare, recharge avec Ctrl + F5.
+2. Lance APPLIQUER_CORRECTIF_V572.bat.
+3. La fenêtre doit afficher cinq lignes [VÉRIFIÉ].
+4. Fais ton commit et ton push.
+5. Après Cloudflare, recharge avec Ctrl + F5.
 
 RETOUR EN ARRIÈRE
-Lance ANNULER_CORRECTIF_V571.bat.
+Lance ANNULER_CORRECTIF_V572.bat.
