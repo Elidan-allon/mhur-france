@@ -523,8 +523,8 @@ function notesModal(){
     modal=document.createElement('div');modal.id='s18NotesDevModalV10';modal.className='s18NotesOverlayV10';
     modal.innerHTML=`<section class="s18NotesPanelV10" tabindex="-1"><header><div><span>MHUR NEXUS</span><h2 data-notes-title></h2></div><button type="button" data-close>×</button></header><nav><button type="button" data-tab="patch" class="active"></button><button type="button" data-tab="dev"></button></nav><div class="s18NotesBodyV10"><aside></aside><main></main></div></section>`;
     document.body.appendChild(modal);
-    modal.querySelector('[data-close]').onclick=()=>{modal.classList.remove('open');document.body.classList.remove('s18NotesOpenV11');modal.remove()};
-    modal.onclick=e=>{if(e.target===modal){modal.classList.remove('open');document.body.classList.remove('s18NotesOpenV11');modal.remove()}};
+    modal.querySelector('[data-close]').onclick=()=>{modal.classList.remove('open');document.body.classList.remove('s18NotesOpenV11')};
+    modal.onclick=e=>{if(e.target===modal){modal.classList.remove('open');document.body.classList.remove('s18NotesOpenV11')}};
     modal.querySelectorAll('[data-tab]').forEach(btn=>btn.onclick=()=>showNotesTab(btn.dataset.tab));
   }
   modal.querySelector('[data-notes-title]').textContent='Patch Notes / Dev Notes';
@@ -551,9 +551,6 @@ function showNotesTab(tab){
   else showPatch(0);
 }
 function openNotes(){
-  /* MHUR_V551_FRESH_NOTES_EACH_OPEN */
-  const previous=document.getElementById('s18NotesDevModalV10');
-  if(previous){previous.remove();document.body.classList.remove('s18NotesOpenV11');}
   const modal=notesModal();
   modal.classList.add('open');document.body.classList.add('s18NotesOpenV11');
   showNotesTab('patch');

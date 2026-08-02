@@ -835,8 +835,7 @@
 <link rel="stylesheet" href="css/v543-moderation-evidence.css?v=543">
 <link rel="stylesheet" href="css/v547-mobile-profile-roles.css?v=547">
 <link rel="stylesheet" href="css/v548-mobile-season-offset.css?v=548">
-<link rel="stylesheet" href="css/v551-bars-notes-persistent.css?v=551">
-<link rel="stylesheet" href="css/v552-mods-arrow-only.css?v=552">
+<link rel="stylesheet" href="css/v550-notes-mods-repair.css?v=550">
 </head>
 <body>
 
@@ -7160,7 +7159,6 @@ body .costumeTile > img,
 <script src="js/v542-tier-notes-mobile.js?v=542"></script>
 <script src="js/v543-moderation-evidence.js?v=543"></script>
 <script src="js/v547-mobile-profile-roles.js?v=547"></script>
-<script src="js/v551-bars-notes-persistent.js?v=551"></script>
-<script src="js/v552-mods-arrow-only.js?v=552"></script>
+<script src="js/v550-notes-mods-repair.js?v=550"></script>
 </body>
 </html>

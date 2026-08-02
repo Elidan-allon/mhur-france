@@ -1,0 +1,25 @@
+﻿MHUR FRANCE — CORRECTIF V549
+================================
+
+Ce correctif règle uniquement les deux flèches du tutoriel Mods.
+
+Il :
+- supprime les anciennes flèches présentes dans le bouton ;
+- supprime l'ancienne pastille située sous le bouton ;
+- désactive les anciens pseudo-éléments ;
+- affiche une seule flèche à droite ;
+- conserve entièrement le V547 et le V548.
+
+INSTALLATION
+
+1. Décompresse le ZIP.
+2. Copie son contenu dans le dossier principal mhur-france.
+3. Lance APPLIQUER_CORRECTIF_V549.bat.
+4. Attends :
+   TOUTES LES VERIFICATIONS V549 SONT BONNES
+5. Dans GitHub Desktop :
+   Commit to main
+   Push origin
+6. Recharge avec Ctrl + F5.
+
+Aucun SQL Supabase n'est nécessaire.

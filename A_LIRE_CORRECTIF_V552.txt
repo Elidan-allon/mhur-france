@@ -1,0 +1,22 @@
+﻿MHUR FRANCE — CORRECTIF V552
+================================
+
+Ce correctif modifie uniquement la flèche du tutoriel Mods.
+
+- une seule flèche ;
+- anciennes flèches supprimées ;
+- pseudo-éléments neutralisés ;
+- flèche légèrement remontée ;
+- barre jaune/orange du V551 conservée ;
+- Patch Notes et Dev Notes non modifiées.
+
+INSTALLATION
+
+1. Décompresse le ZIP.
+2. Copie son contenu dans le dossier principal mhur-france.
+3. Lance APPLIQUER_CORRECTIF_V552.bat.
+4. Attends :
+   TOUTES LES VERIFICATIONS V552 SONT BONNES
+5. Commit to main.
+6. Push origin.
+7. Recharge avec Ctrl + F5.
