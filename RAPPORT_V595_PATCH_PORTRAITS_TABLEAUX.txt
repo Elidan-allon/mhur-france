@@ -1,0 +1,12 @@
+MHUR FRANCE — RAPPORT V595
+
+Dossiers de styles détectés : 60
+Styles avec portrait local : 59
+Styles avec Alpha/Bêta/Gamma locaux : 60
+
+RÈGLES
+- Portraits pris uniquement dans public/assets.
+- Images Alpha/Bêta/Gamma prises uniquement dans public/assets.
+- Aucun lien distant ajouté.
+- Les cartes sans image d'Alter utilisent toute la largeur.
+- Tous les tableaux possèdent une largeur minimale lisible.

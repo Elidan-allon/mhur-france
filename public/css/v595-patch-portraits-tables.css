@@ -1,0 +1,194 @@
+/* MHUR Nexus — V595 : portraits visibles et tableaux pleine largeur */
+
+/* Chaque carte personnage conserve toute la largeur disponible. */
+#s18NotesDevModalV10 .s18PatchCharacterV10,
+#s18NotesDevModalV10 .s18PatchChangesV10,
+#s18NotesDevModalV10 .s18PatchChangeV10{
+  width:100%!important;
+  min-width:0!important;
+  box-sizing:border-box!important;
+}
+
+/* Portrait de profil local. */
+#s18NotesDevModalV10 .s18PatchPortraitV10{
+  display:grid!important;
+  place-items:center!important;
+  width:138px!important;
+  min-width:138px!important;
+  height:138px!important;
+  min-height:138px!important;
+  overflow:hidden!important;
+  border:4px solid #02060b!important;
+  border-radius:16px!important;
+  background:#07111f!important;
+}
+
+#s18NotesDevModalV10 .s18PatchPortraitV10 img,
+#s18NotesDevModalV10 .s18PatchPortraitImageV595{
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+  width:100%!important;
+  height:100%!important;
+  max-width:none!important;
+  max-height:none!important;
+  object-fit:contain!important;
+  object-position:center!important;
+}
+
+/* Deux colonnes seulement quand l'image de l'Alter existe. */
+#s18NotesDevModalV10 .s18PatchSkillV10{
+  display:grid!important;
+  grid-template-columns:120px minmax(0,1fr)!important;
+  align-items:start!important;
+  gap:18px!important;
+  width:100%!important;
+  min-width:0!important;
+  box-sizing:border-box!important;
+}
+
+#s18NotesDevModalV10 .s18PatchSkillV10 > main{
+  grid-column:2!important;
+  width:100%!important;
+  min-width:0!important;
+  max-width:none!important;
+  box-sizing:border-box!important;
+}
+
+/*
+  Lorsque l'image manque réellement, le contenu occupe les deux colonnes.
+  C'est ce qui empêche le tableau de retomber dans la colonne de 120 px.
+*/
+#s18NotesDevModalV10
+.s18PatchSkillV10.s18NoSkillImageV595{
+  grid-template-columns:minmax(0,1fr)!important;
+}
+
+#s18NotesDevModalV10
+.s18PatchSkillV10.s18NoSkillImageV595 > main,
+#s18NotesDevModalV10
+.s18PatchSkillV10 > main:only-child{
+  grid-column:1 / -1!important;
+}
+
+#s18NotesDevModalV10 .s18PatchSkillImageV595,
+#s18NotesDevModalV10
+.s18PatchSkillV10 > div:not(.s18PatchTableWrapV10){
+  grid-column:1!important;
+  display:grid!important;
+  place-items:center!important;
+  width:120px!important;
+  min-width:120px!important;
+  height:120px!important;
+  overflow:hidden!important;
+  border:3px solid #315d89!important;
+  border-radius:14px!important;
+  background:#07111f!important;
+}
+
+#s18NotesDevModalV10 .s18PatchSkillImageV595 img,
+#s18NotesDevModalV10 .s18PatchSkillImageElementV595{
+  display:block!important;
+  width:100%!important;
+  height:100%!important;
+  max-width:none!important;
+  max-height:none!important;
+  object-fit:contain!important;
+}
+
+/* Le contenu et chacune de ses statistiques occupent toute la largeur. */
+#s18NotesDevModalV10 .s18MetricV593,
+#s18NotesDevModalV10 .s18PatchWideV595{
+  width:100%!important;
+  min-width:0!important;
+  max-width:none!important;
+  box-sizing:border-box!important;
+}
+
+/* Zone de défilement horizontale lisible. */
+#s18NotesDevModalV10 .s18PatchTableWrapV10{
+  display:block!important;
+  width:100%!important;
+  min-width:0!important;
+  max-width:100%!important;
+  overflow-x:auto!important;
+  overflow-y:hidden!important;
+  padding-bottom:8px!important;
+  box-sizing:border-box!important;
+}
+
+/* Un tableau à 9 niveaux ne peut plus mesurer quelques centimètres. */
+#s18NotesDevModalV10 .s18PatchTableV10{
+  width:100%!important;
+  min-width:820px!important;
+  max-width:none!important;
+  table-layout:fixed!important;
+  border-collapse:collapse!important;
+  box-sizing:border-box!important;
+}
+
+#s18NotesDevModalV10 .s18PatchTableV10 th,
+#s18NotesDevModalV10 .s18PatchTableV10 td{
+  width:auto!important;
+  min-width:72px!important;
+  padding:11px 10px!important;
+  text-align:center!important;
+  white-space:nowrap!important;
+  box-sizing:border-box!important;
+}
+
+#s18NotesDevModalV10 .s18PatchTableV10 th:first-child{
+  width:112px!important;
+  min-width:112px!important;
+}
+
+/* Les petites tables gardent également une taille normale. */
+#s18NotesDevModalV10 .s18PatchTableV10 tr{
+  width:100%!important;
+}
+
+@media(max-width:800px){
+  #s18NotesDevModalV10 .s18PatchPortraitV10{
+    width:108px!important;
+    min-width:108px!important;
+    height:108px!important;
+    min-height:108px!important;
+  }
+
+  #s18NotesDevModalV10 .s18PatchSkillV10{
+    grid-template-columns:92px minmax(0,1fr)!important;
+    gap:12px!important;
+  }
+
+  #s18NotesDevModalV10 .s18PatchSkillImageV595,
+  #s18NotesDevModalV10
+  .s18PatchSkillV10 > div:not(.s18PatchTableWrapV10){
+    width:92px!important;
+    min-width:92px!important;
+    height:92px!important;
+  }
+
+  #s18NotesDevModalV10 .s18PatchTableV10{
+    min-width:760px!important;
+  }
+}
+
+@media(max-width:560px){
+  #s18NotesDevModalV10 .s18PatchSkillV10{
+    grid-template-columns:minmax(0,1fr)!important;
+  }
+
+  #s18NotesDevModalV10 .s18PatchSkillV10 > main{
+    grid-column:1!important;
+  }
+
+  #s18NotesDevModalV10 .s18PatchSkillImageV595,
+  #s18NotesDevModalV10
+  .s18PatchSkillV10 > div:not(.s18PatchTableWrapV10){
+    grid-column:1!important;
+    width:110px!important;
+    min-width:110px!important;
+    height:110px!important;
+    margin-bottom:4px!important;
+  }
+}
