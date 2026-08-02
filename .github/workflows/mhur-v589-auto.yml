@@ -1,0 +1,550 @@
+name: MHUR V589 - photos locales des Alters
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/mhur-v589-auto.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: mhur-v589-photos-locales-alters
+  cancel-in-progress: false
+
+jobs:
+  appliquer:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Recuperer le depot
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Installer Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: "24"
+          package-manager-cache: false
+
+      - name: Scanner les photos locales
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          from datetime import datetime, timezone
+          import json
+
+          root = Path.cwd()
+          public = root / "public"
+          assets = public / "assets"
+          manifest = public / "data" / "local_skill_assets_v589.js"
+          report = root / "RAPPORT_V589_PHOTOS_LOCALES_ALTERS.txt"
+
+          extensions = (".webp", ".png", ".jpg", ".jpeg", ".avif")
+          names = ("alpha", "beta", "gamma")
+
+          if not assets.is_dir():
+              raise SystemExit("[ERREUR] public/assets est introuvable.")
+
+          def find_image(directory: Path, base: str):
+              for extension in extensions:
+                  candidate = directory / f"{base}{extension}"
+                  if candidate.is_file():
+                      return candidate
+
+              for candidate in directory.iterdir():
+                  if (
+                      candidate.is_file()
+                      and candidate.suffix.lower() in extensions
+                      and candidate.stem.lower() == base
+                  ):
+                      return candidate
+
+              return None
+
+          styles = {}
+          warnings = []
+
+          for directory in sorted(path for path in assets.rglob("*") if path.is_dir()):
+              found = {name: find_image(directory, name) for name in names}
+
+              if not any(found.values()):
+                  continue
+
+              style_id = directory.name
+              row = {
+                  name: path.resolve().relative_to(public.resolve()).as_posix()
+                  for name, path in found.items()
+                  if path is not None
+              }
+
+              if style_id in styles and styles[style_id] != row:
+                  raise SystemExit(
+                      "[ERREUR] Deux dossiers utilisent le même style : " + style_id
+                  )
+
+              styles[style_id] = row
+
+              missing = [name for name in names if name not in row]
+              if missing:
+                  warnings.append(style_id + " : manque " + ", ".join(missing))
+
+          if not styles:
+              raise SystemExit(
+                  "[ERREUR] Aucun dossier avec alpha/beta/gamma n'a été trouvé."
+              )
+
+          payload = {
+              "version": 589,
+              "generated_at": datetime.now(timezone.utc).isoformat(),
+              "source": "public/assets uniquement",
+              "styles": styles,
+          }
+
+          source = (
+              "/* MHUR Nexus — V589 : index des photos locales des Alters */\n"
+              "(function(){\n"
+              "  'use strict';\n"
+              "  const data=" + json.dumps(
+                  payload,
+                  ensure_ascii=False,
+                  separators=(",", ":"),
+              ) + ";\n"
+              "  window.MHUR_LOCAL_SKILL_ASSETS_V589=data;\n"
+              "  function mergeIntoDatabase(){\n"
+              "    const database=window.MHUR_DATABASE_ASSETS="
+              "window.MHUR_DATABASE_ASSETS||{};\n"
+              "    database.styles=database.styles||{};\n"
+              "    Object.entries(data.styles||{}).forEach(([styleId,row])=>{\n"
+              "      const target=database.styles[styleId]="
+              "database.styles[styleId]||{};\n"
+              "      if(row.alpha)target.alpha=row.alpha;\n"
+              "      if(row.beta)target.beta=row.beta;\n"
+              "      if(row.gamma)target.gamma=row.gamma;\n"
+              "    });\n"
+              "  }\n"
+              "  mergeIntoDatabase();\n"
+              "  document.addEventListener('DOMContentLoaded',mergeIntoDatabase,"
+              "{once:true});\n"
+              "  window.MHUR_V589_MERGE_LOCAL_ASSETS=mergeIntoDatabase;\n"
+              "})();\n"
+          )
+
+          manifest.parent.mkdir(parents=True, exist_ok=True)
+          manifest.write_text(source, encoding="utf-8")
+
+          complete = [
+              style_id
+              for style_id, row in styles.items()
+              if all(name in row for name in names)
+          ]
+
+          lines = [
+              "MHUR FRANCE — RAPPORT V589 PHOTOS LOCALES",
+              "",
+              "RÈGLE APPLIQUÉE",
+              "- Alpha utilise uniquement alpha.* local.",
+              "- Bêta utilise uniquement beta.* local.",
+              "- Gamma utilise uniquement gamma.* local.",
+              "- Aucune URL distante n'est utilisée.",
+              "",
+              f"Styles locaux détectés : {len(styles)}",
+              f"Styles complets Alpha/Bêta/Gamma : {len(complete)}",
+              f"Styles incomplets : {len(styles) - len(complete)}",
+              "",
+              "STYLES COMPLETS",
+          ]
+          lines.extend("- " + style_id for style_id in complete)
+          lines += ["", "AVERTISSEMENTS"]
+          lines.extend("- " + warning for warning in warnings)
+          if not warnings:
+              lines.append("- Aucun.")
+
+          report.write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+          print(f"[OK] Styles locaux détectés : {len(styles)}")
+          print(f"[OK] Styles complets : {len(complete)}")
+          print("[OK] Aucune URL distante utilisée.")
+          PY
+
+      - name: Creer le correcteur local
+        shell: bash
+        run: |
+          cat > public/js/v589-local-skill-images.js <<'JS'
+          /* MHUR Nexus — V589 : photos locales obligatoires pour les Alters */
+          (function(){
+            'use strict';
+
+            function clean(value){
+              return String(value??'').trim();
+            }
+
+            function normal(value){
+              return clean(value)
+                .normalize('NFD')
+                .replace(/[\u0300-\u036f]/g,'')
+                .toLowerCase()
+                .replace(/[^a-z0-9]+/g,'_')
+                .replace(/^_+|_+$/g,'');
+            }
+
+            function localMap(){
+              return window.MHUR_LOCAL_SKILL_ASSETS_V589?.styles||{};
+            }
+
+            function stylesMap(){
+              try{
+                if(typeof styles!=='undefined'&&styles)return styles;
+              }catch(_error){}
+
+              return window.styles||{};
+            }
+
+            function localPath(value){
+              const path=clean(value)
+                .replace(/^\.?\//,'')
+                .replace(/^public\//,'');
+
+              return path.startsWith('assets/')?path:'';
+            }
+
+            function letterKey(value){
+              const raw=clean(value);
+              const key=normal(raw);
+
+              if(
+                /^(?:α|a|alpha)(?:\s|[-—:(]|$)/i.test(raw)||
+                key==='alpha'||
+                key.startsWith('alpha_')
+              )return 'alpha';
+
+              if(
+                /^(?:β|b|beta)(?:\s|[-—:(]|$)/i.test(raw)||
+                key==='beta'||
+                key.startsWith('beta_')
+              )return 'beta';
+
+              if(
+                /^(?:γ|y|g|gamma)(?:\s|[-—:(]|$)/i.test(raw)||
+                key==='gamma'||
+                key.startsWith('gamma_')
+              )return 'gamma';
+
+              return '';
+            }
+
+            function assetsForStyle(styleId){
+              const direct=localMap()[String(styleId)];
+              if(direct)return direct;
+
+              const wanted=normal(styleId);
+              const entry=Object.entries(localMap()).find(
+                ([key])=>normal(key)===wanted
+              );
+
+              return entry?.[1]||null;
+            }
+
+            function mergeDatabase(){
+              const database=window.MHUR_DATABASE_ASSETS=
+                window.MHUR_DATABASE_ASSETS||{};
+
+              database.styles=database.styles||{};
+
+              Object.entries(localMap()).forEach(([styleId,row])=>{
+                const target=database.styles[styleId]=
+                  database.styles[styleId]||{};
+
+                for(const key of ['alpha','beta','gamma']){
+                  const path=localPath(row?.[key]);
+                  if(path)target[key]=path;
+                }
+              });
+            }
+
+            function applyLocalToObjects(){
+              mergeDatabase();
+
+              const map=stylesMap();
+
+              Object.keys(map).forEach(styleId=>{
+                const style=map[styleId];
+                const local=assetsForStyle(styleId);
+
+                if(!style||!local)return;
+
+                (style.skills||[]).forEach(skill=>{
+                  const key=letterKey(skill?.letter);
+                  const path=localPath(local?.[key]);
+
+                  if(key&&path)skill.img=path;
+
+                  if(skill?.sub){
+                    const subKey=letterKey(skill.sub.letter);
+                    const subPath=localPath(local?.[subKey]);
+
+                    if(subKey&&subPath)skill.sub.img=subPath;
+                  }
+                });
+              });
+            }
+
+            function currentStyleId(){
+              try{
+                if(typeof selectedStyle!=='undefined'&&selectedStyle){
+                  return String(selectedStyle);
+                }
+              }catch(_error){}
+
+              return String(
+                window.selectedStyle||
+                document.querySelector('[data-style].active')?.dataset?.style||
+                ''
+              );
+            }
+
+            function removeFallbacks(image){
+              if(!image)return;
+
+              image.onerror=null;
+              image.removeAttribute('onerror');
+              image.removeAttribute('srcset');
+
+              if(image.dataset){
+                delete image.dataset.s18Fallbacks;
+                delete image.dataset.s18v13Fallbacks;
+                delete image.dataset.s18v14Applied;
+              }
+            }
+
+            function repairCharacterPage(){
+              const styleId=currentStyleId();
+              const style=stylesMap()[styleId];
+              const local=assetsForStyle(styleId);
+
+              if(!style||!local)return;
+
+              document.querySelectorAll('.charPanel .skill').forEach(block=>{
+                const heading=block.querySelector('.skillHead');
+                const key=letterKey(heading?.textContent||'');
+                const path=localPath(local?.[key]);
+
+                if(!key||!path)return;
+
+                const image=block.querySelector('.skillImgBox img');
+                if(!image)return;
+
+                removeFallbacks(image);
+
+                if(image.getAttribute('src')!==path){
+                  image.setAttribute('src',path);
+                }
+              });
+            }
+
+            function refresh(){
+              applyLocalToObjects();
+              repairCharacterPage();
+            }
+
+            function wrapRender(){
+              if(typeof window.render!=='function')return;
+              if(window.render.__mhurV589)return;
+
+              const original=window.render;
+
+              const wrapped=function(){
+                applyLocalToObjects();
+                const result=original.apply(this,arguments);
+                applyLocalToObjects();
+                repairCharacterPage();
+                requestAnimationFrame(repairCharacterPage);
+                return result;
+              };
+
+              wrapped.__mhurV589=true;
+              window.render=wrapped;
+
+              try{
+                render=wrapped;
+              }catch(_error){}
+            }
+
+            let queued=false;
+
+            function schedule(){
+              if(queued)return;
+              queued=true;
+
+              requestAnimationFrame(()=>{
+                queued=false;
+                refresh();
+              });
+            }
+
+            applyLocalToObjects();
+            wrapRender();
+
+            if(document.readyState==='loading'){
+              document.addEventListener('DOMContentLoaded',()=>{
+                applyLocalToObjects();
+                wrapRender();
+                repairCharacterPage();
+                schedule();
+              },{once:true});
+            }else{
+              repairCharacterPage();
+              schedule();
+            }
+
+            new MutationObserver(mutations=>{
+              if(mutations.some(mutation=>mutation.addedNodes?.length)){
+                schedule();
+              }
+            }).observe(document.documentElement,{
+              childList:true,
+              subtree:true
+            });
+
+            window.addEventListener('load',()=>{
+              applyLocalToObjects();
+              wrapRender();
+              repairCharacterPage();
+              schedule();
+            },{once:true});
+
+            window.addEventListener('hashchange',schedule);
+            window.addEventListener('mhur:languagechange',schedule);
+
+            window.MHUR_V589={
+              refresh,
+              applyLocalToObjects,
+              repairCharacterPage,
+              localMap
+            };
+          })();
+          JS
+
+      - name: Charger V589 au bon endroit
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+
+          path = Path("public/index.html")
+          html = path.read_text(encoding="utf-8-sig")
+
+          patterns = [
+              r"\s*<script\b[^>]*src=['\"][^'\"]*v588-character-skill-images\.js[^'\"]*['\"][^>]*>\s*</script>\s*",
+              r"\s*<script\b[^>]*src=['\"][^'\"]*local_skill_assets_v589\.js[^'\"]*['\"][^>]*>\s*</script>\s*",
+              r"\s*<script\b[^>]*src=['\"][^'\"]*v589-local-skill-images\.js[^'\"]*['\"][^>]*>\s*</script>\s*",
+          ]
+
+          for pattern in patterns:
+              html = re.sub(pattern, "\n", html, flags=re.I)
+
+          season_pattern = re.compile(
+              r"(<script\b[^>]*src=['\"]js/season18-fixes\.js(?:\?[^'\"]*)?['\"][^>]*>\s*</script>)",
+              flags=re.I,
+          )
+
+          match = season_pattern.search(html)
+          if not match:
+              raise SystemExit("[ERREUR] season18-fixes.js introuvable.")
+
+          manifest = '<script src="data/local_skill_assets_v589.js?v=589"></script>\n'
+          html = html[:match.start()] + manifest + html[match.start():]
+
+          if "</body>" not in html:
+              raise SystemExit("[ERREUR] </body> introuvable.")
+
+          final = (
+              "\n<!-- V589 : photos locales uniquement, chargé en dernier. -->\n"
+              '<script src="js/v589-local-skill-images.js?v=589"></script>\n'
+          )
+
+          html = html.replace("</body>", final + "</body>", 1)
+          path.write_text(html.rstrip() + "\n", encoding="utf-8")
+          PY
+
+      - name: Verifier V589
+        shell: bash
+        run: |
+          node --check public/js/v589-local-skill-images.js
+          python - <<'PY'
+          from pathlib import Path
+          import json
+          import re
+
+          public = Path("public")
+          index = (public / "index.html").read_text(encoding="utf-8")
+          manifest = (public / "data/local_skill_assets_v589.js").read_text(
+              encoding="utf-8"
+          )
+
+          errors = []
+
+          if "v588-character-skill-images.js" in index:
+              errors.append("V588 est encore chargé.")
+
+          if index.find("local_skill_assets_v589.js") > index.find(
+              "js/season18-fixes.js"
+          ):
+              errors.append("Le manifeste local est chargé trop tard.")
+
+          if index.rfind("v589-local-skill-images.js") < index.rfind(
+              "js/season18-v12.js"
+          ):
+              errors.append("V589 n'est pas chargé après season18-v12.js.")
+
+          if re.search(r"https?://|//ultrarumble", manifest, flags=re.I):
+              errors.append("Le manifeste contient une URL distante.")
+
+          match = re.search(r"const data=(\{.*\});", manifest)
+          if not match:
+              errors.append("Le manifeste local est illisible.")
+          else:
+              data = json.loads(match.group(1))
+
+              for style_id, row in data.get("styles", {}).items():
+                  for key, relative in row.items():
+                      if not relative.startswith("assets/"):
+                          errors.append(f"{style_id}/{key} n'est pas local.")
+                      if not (public / relative).is_file():
+                          errors.append(f"Fichier absent : {relative}")
+
+          if errors:
+              raise SystemExit(
+                  "[ERREUR V589]\n- " + "\n- ".join(errors)
+              )
+
+          print("[OK] Manifeste local vérifié.")
+          print("[OK] Aucun lien distant.")
+          print("[OK] V589 est chargé en dernier.")
+          PY
+
+      - name: Commit automatique
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add \
+            public/index.html \
+            public/data/local_skill_assets_v589.js \
+            public/js/v589-local-skill-images.js \
+            RAPPORT_V589_PHOTOS_LOCALES_ALTERS.txt
+
+          if git diff --cached --quiet; then
+            echo "V589 est deja installe."
+            exit 0
+          fi
+
+          git commit -m "Utiliser les photos locales des Alters V589"
+          git push
