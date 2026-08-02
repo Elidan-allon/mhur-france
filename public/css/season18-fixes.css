@@ -2128,25 +2128,26 @@ article[data-planned="tsuyu"] .s18PlannedTsuyuV14 img,
 }
 /* === MHUR V570 END === */
 
-/* MHUR Nexus — V579 : NEW animés et INCOMING agrandis */
-.s18NewBadgeV579{
+
+/* MHUR Nexus — V580 : affichage final des NEW et INCOMING */
+.s18NewBadgeV580{
   animation:none!important;
   overflow:visible!important;
 }
 
-.s18NewPulseInnerV579{
-  width:100%!important;
-  height:100%!important;
+.s18NewPulseInnerV580{
   display:flex!important;
   align-items:center!important;
   justify-content:center!important;
+  width:100%!important;
+  height:100%!important;
   transform-origin:center!important;
-  will-change:scale!important;
+  will-change:transform!important;
 }
 
-/* Personnages et T.U.N.I.N.G : en haut à droite. */
-.card[data-char] > .s18NewBadgeV579,
-.styleCard[data-style] > .s18NewBadgeV579{
+/* Personnages et T.U.N.I.N.G : NEW en haut à droite. */
+.card[data-char] > .s18NewBadgeV580,
+.styleCard[data-style] > .s18NewBadgeV580{
   display:block!important;
   visibility:visible!important;
   opacity:1!important;
@@ -2156,70 +2157,123 @@ article[data-planned="tsuyu"] .s18PlannedTsuyuV14 img,
   width:88px!important;
   height:44px!important;
   transform:none!important;
+  transform-origin:center!important;
   z-index:90!important;
 }
 
-/* Costumes : plus petit, à droite sous les étoiles. */
-.costumeTile > .s18NewBadgeV579,
-.costumeCard > .s18NewBadgeV579,
-.costumeResult > .s18NewBadgeV579,
-[data-costume] > .s18NewBadgeV579,
-[data-costume-id] > .s18NewBadgeV579{
+/* Costumes : badge plus petit et placé sous les étoiles. */
+.costumeTile > .s18NewBadgeV580,
+.costumeCard > .s18NewBadgeV580,
+.costumeResult > .s18NewBadgeV580,
+[data-costume] > .s18NewBadgeV580,
+[data-costume-id] > .s18NewBadgeV580{
   display:block!important;
   visibility:visible!important;
   opacity:1!important;
-  top:36px!important;
+  top:38px!important;
   right:8px!important;
   left:auto!important;
-  width:58px!important;
-  height:30px!important;
+  width:60px!important;
+  height:31px!important;
   transform:none!important;
+  transform-origin:center!important;
   z-index:90!important;
 }
 
-/* INCOMING nettement plus grand. */
-.s18PlannedIncomingV578,
-.s18PlannedIncomingV579{
-  min-width:168px!important;
-  width:auto!important;
-  height:56px!important;
-  padding:0 18px!important;
-  font-size:23px!important;
-  line-height:1!important;
-  top:10px!important;
+/* Les étoiles restent au-dessus du badge costume. */
+.costumeTile > .costumeTileStars,
+.costumeCard > .costumeTileStars,
+.costumeResult > .costumeTileStars{
+  top:7px!important;
+  right:8px!important;
+  z-index:91!important;
+}
+
+/* INCOMING plus grand sur Twice et Tsuyu. */
+.s18PlannedIncomingV580{
+  position:absolute!important;
+  z-index:7!important;
+  top:9px!important;
   right:10px!important;
+  min-width:172px!important;
+  width:auto!important;
+  height:58px!important;
+  padding:0 19px!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  border:0!important;
+  background:transparent!important;
+  color:#fff!important;
+  font-family:Impact,Haettenschweiler,'Arial Black',sans-serif!important;
+  font-size:24px!important;
+  font-style:italic!important;
+  line-height:1!important;
+  letter-spacing:.7px!important;
+  white-space:nowrap!important;
+  text-shadow:
+    -2px -2px 0 #ff2f92,
+     2px -2px 0 #ff2f92,
+    -2px  2px 0 #ff2f92,
+     2px  2px 0 #ff2f92,
+     3px  3px 0 #000!important;
+  filter:drop-shadow(0 4px 0 rgba(0,0,0,.72))!important;
+  animation:mhurIncomingPulseV580 1.05s ease-in-out infinite!important;
   transform-origin:top right!important;
 }
 
-/* L'accueil conserve son animation actuelle. */
-.s18PlannedCardV12[data-planned="gentle"] .s18PlannedNewV12{
-  animation:mhurNewPulseV577 1.05s ease-in-out infinite!important;
+@keyframes mhurIncomingPulseV580{
+  0%,100%{transform:scale(.96)}
+  50%{transform:scale(1.07)}
+}
+
+/* Gentle est le seul NEW conservé dans les sorties prévues de l'accueil. */
+.s18PlannedCardV12[data-planned="twice"] .s18PlannedNewV12,
+.s18PlannedCardV12[data-planned="tsuyu"] .s18PlannedNewV12{
+  display:none!important;
+  visibility:hidden!important;
+}
+
+/* Réductions de points : texte moins gras. */
+.discountGridV296 .discountCardV296 > b,
+.discountGridV296 .s18DiscountCardV19 > b,
+.discountGridV296 .v559DiscountName{
+  font-family:Arial,Helvetica,sans-serif!important;
+  font-weight:600!important;
+  letter-spacing:0!important;
+}
+
+.discountGridV296 .discountCardV296 > span,
+.discountGridV296 .s18DiscountCardV19 > span,
+.discountGridV296 .v559DiscountPoints,
+.discountGridV296 .v559RoleBadge{
+  font-family:Arial,Helvetica,sans-serif!important;
+  font-weight:600!important;
+  letter-spacing:0!important;
 }
 
 @media(max-width:700px){
-  .card[data-char] > .s18NewBadgeV579,
-  .styleCard[data-style] > .s18NewBadgeV579{
+  .card[data-char] > .s18NewBadgeV580,
+  .styleCard[data-style] > .s18NewBadgeV580{
     width:76px!important;
     height:38px!important;
   }
 
-  .costumeTile > .s18NewBadgeV579,
-  .costumeCard > .s18NewBadgeV579,
-  .costumeResult > .s18NewBadgeV579,
-  [data-costume] > .s18NewBadgeV579,
-  [data-costume-id] > .s18NewBadgeV579{
-    top:32px!important;
+  .costumeTile > .s18NewBadgeV580,
+  .costumeCard > .s18NewBadgeV580,
+  .costumeResult > .s18NewBadgeV580,
+  [data-costume] > .s18NewBadgeV580,
+  [data-costume-id] > .s18NewBadgeV580{
+    top:34px!important;
     right:7px!important;
-    width:52px!important;
-    height:27px!important;
+    width:54px!important;
+    height:28px!important;
   }
 
-  .s18PlannedIncomingV578,
-  .s18PlannedIncomingV579{
-    min-width:145px!important;
-    height:49px!important;
+  .s18PlannedIncomingV580{
+    min-width:148px!important;
+    height:50px!important;
     padding:0 14px!important;
     font-size:20px!important;
   }
 }
-

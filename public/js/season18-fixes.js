@@ -85,9 +85,12 @@ function latestHomeIdsV24(kind,key){
 function newSets(){
   const sync=window.MHUR_SEASON18_DATA||{};
   const hasActive=Boolean(sync.active_new_content&&typeof sync.active_new_content==='object');
-  const data=hasActive?sync.active_new_content:(sync.new_content||{});  const characters=Array.from(new Set([...((data.characters)||[]),'gentle_criminal']));  const stylesList=Array.from(new Set([...((data.styles)||[]),'gentle_criminal_technical']));
+  const data=hasActive?sync.active_new_content:(sync.new_content||{});
+  const characters=Array.from(new Set([...((data.characters)||[]),'gentle_criminal']));
+  const stylesList=Array.from(new Set([...((data.styles)||[]),'gentle_criminal_technical']));
   const latestCostumes=latestReleasedCostumeIdsV24(sync);
-  /* V572 merge latest costume wave */  const costumes=Array.from(new Set([...((data.costumes)||[]),...latestCostumes,'108000000']));
+  /* V572 merge latest costume wave */
+  const costumes=Array.from(new Set([...((data.costumes)||[]),...latestCostumes,'108000000']));
   return {
     characters:new Set(characters.map(String)),
     styles:new Set(stylesList.map(String)),
@@ -1167,8 +1170,11 @@ function activeSets(){
   const source=hasActive?sync.active_new_content:(sync.new_content||{});
   const homeCharacters=latestHome('character','character_id');
   const homeStyles=latestHome('style','style_id');
-  const latestCostumeIds=latestCostumes(sync);  const characters=Array.from(new Set([...((source.characters)||[]),'gentle_criminal']));  const stylesList=Array.from(new Set([...((source.styles)||[]),'gentle_criminal_technical']));
-  /* V572 merge latest costume wave v24 */  const costumes=Array.from(new Set([...((source.costumes)||[]),...latestCostumeIds,'108000000']));
+  const latestCostumeIds=latestCostumes(sync);
+  const characters=Array.from(new Set([...((source.characters)||[]),'gentle_criminal']));
+  const stylesList=Array.from(new Set([...((source.styles)||[]),'gentle_criminal_technical']));
+  /* V572 merge latest costume wave v24 */
+  const costumes=Array.from(new Set([...((source.costumes)||[]),...latestCostumeIds,'108000000']));
   return {
     characters:new Set(characters.map(String)),
     styles:new Set(stylesList.map(String)),
@@ -1397,325 +1403,366 @@ window.addEventListener('mhur-auth-change',scheduleV35);
 window.addEventListener('mhur-role-change',scheduleV35);
 })();
 
-/* MHUR Nexus — V579 : animation immédiate et vague complète */
+
+/* MHUR Nexus — V580 : NEW automatiques fiables */
 (function(){
   'use strict';
 
-  const BADGE='<span class="s18NewBadge s18NewBadgeV9 s18NewBadgeV24 s18NewBadgeV579" aria-label="NEW"><span class="s18NewPulseInnerV579">NEW!</span></span>';
-  const GENTLE_CHARACTER='gentle_criminal';
-  const GENTLE_STYLE='gentle_criminal_technical';
-  const GENTLE_ORIGINAL='108000000';
+  const BADGE =
+    '<span class="s18NewBadge s18NewBadgeV9 s18NewBadgeV24 s18NewBadgeV580" aria-label="NEW">' +
+      '<span class="s18NewPulseInnerV580">NEW!</span>' +
+    '</span>';
 
-  function dayV579(value){
-    const match=String(value||'').match(/^(\d{4}-\d{2}-\d{2})/);
-    return match?match[1]:'';
+  const GENTLE_CHARACTER = 'gentle_criminal';
+  const GENTLE_STYLE = 'gentle_criminal_technical';
+  const GENTLE_ORIGINAL = '108000000';
+
+  function releaseDay(value){
+    const match = String(value || '').match(/^(\d{4}-\d{2}-\d{2})/);
+    return match ? match[1] : '';
   }
 
-  function todayJstV579(){
-    const parts=new Intl.DateTimeFormat('en-CA',{
-      timeZone:'Asia/Tokyo',
-      year:'numeric',
-      month:'2-digit',
-      day:'2-digit'
+  function todayJst(){
+    const parts = new Intl.DateTimeFormat('en-CA', {
+      timeZone: 'Asia/Tokyo',
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit'
     }).formatToParts(new Date());
-    const get=type=>parts.find(part=>part.type===type)?.value||'';
-    return get('year')+'-'+get('month')+'-'+get('day');
+
+    const get = type => parts.find(part => part.type === type)?.value || '';
+    return get('year') + '-' + get('month') + '-' + get('day');
   }
 
-  function latestDayV579(){
-    const sync=window.MHUR_SEASON18_DATA||{};
-    const today=todayJstV579();
-    const days=Object.values(sync.costumes||{})
-      .filter(row=>row&&!row.upcoming)
-      .map(row=>dayV579(row?.releaseDate||row?.release_date))
-      .filter(day=>day&&day<=today)
-      .sort();
-    return days.length?days[days.length-1]:'';
+  function latestRows(){
+    const sync = window.MHUR_SEASON18_DATA || {};
+    const today = todayJst();
+
+    const rows = Object.entries(sync.costumes || {}).map(([id, row]) => ({
+      id: String(id),
+      row: row || {},
+      day: releaseDay(row?.releaseDate || row?.release_date)
+    })).filter(item =>
+      item.day &&
+      item.day <= today &&
+      !item.row.upcoming
+    );
+
+    if(!rows.length) return [];
+
+    const latestDay = rows.map(item => item.day).sort().at(-1);
+    return rows.filter(item => item.day === latestDay);
   }
 
-  function latestRowsV579(){
-    const sync=window.MHUR_SEASON18_DATA||{};
-    const latest=latestDayV579();
-
-    return Object.entries(sync.costumes||{})
-      .map(([id,row])=>({
-        id:String(id),
-        row:row||{},
-        day:dayV579(row?.releaseDate||row?.release_date)
-      }))
-      .filter(item=>!item.row.upcoming&&item.day===latest);
-  }
-
-  function setsV579(){
-    const sync=window.MHUR_SEASON18_DATA||{};
-    const active=sync.active_new_content||sync.new_content||{};
-    const latest=latestRowsV579();
+  function newSets(){
+    const sync = window.MHUR_SEASON18_DATA || {};
+    const source = sync.active_new_content || sync.new_content || {};
+    const recent = latestRows();
 
     return {
-      characters:new Set([
-        ...(active.characters||[]).map(String),
+      characters: new Set([
+        ...(source.characters || []).map(String),
         GENTLE_CHARACTER
       ]),
-      styles:new Set([
-        ...(active.styles||[]).map(String),
+      styles: new Set([
+        ...(source.styles || []).map(String),
         GENTLE_STYLE
       ]),
-      costumes:new Set([
-        ...latest.map(item=>item.id),
-        ...(active.costumes||[]).map(String),
+      costumes: new Set([
+        ...recent.map(item => item.id),
+        ...(source.costumes || []).map(String),
         GENTLE_ORIGINAL
       ]),
-      latest
+      recent
     };
   }
 
-  function normalizeV579(value){
-    return String(value||'')
+  function normalize(value){
+    return String(value || '')
       .normalize('NFD')
-      .replace(/[\u0300-\u036f]/g,'')
+      .replace(/[\u0300-\u036f]/g, '')
       .toLowerCase()
-      .replace(/[^a-z0-9]+/g,' ')
+      .replace(/[^a-z0-9]+/g, ' ')
       .trim();
   }
 
-  function allCardTextV579(card){
-    const values=[
-      card?.textContent,
-      card?.getAttribute?.('aria-label'),
-      card?.getAttribute?.('title'),
-      card?.getAttribute?.('alt')
+  function digitIds(value){
+    return [...String(value || '').matchAll(/(?:ur[_-]?)?(\d{5,})/gi)]
+      .map(match => match[1]);
+  }
+
+  function valuesFromCard(card){
+    const values = [
+      card?.dataset?.costume,
+      card?.dataset?.costumeId,
+      card?.dataset?.id,
+      card?.id,
+      card?.getAttribute?.('data-costume'),
+      card?.getAttribute?.('data-costume-id'),
+      card?.getAttribute?.('data-id'),
+      card?.getAttribute?.('onclick'),
+      card?.getAttribute?.('href'),
+      card?.getAttribute?.('style')
     ];
 
-    card?.querySelectorAll?.('[alt],[title],[aria-label],img[src],a[href]')?.forEach(node=>{
-      values.push(
-        node.getAttribute('alt'),
-        node.getAttribute('title'),
-        node.getAttribute('aria-label'),
-        node.getAttribute('src'),
-        node.getAttribute('href')
-      );
+    card?.querySelectorAll?.('*')?.forEach(node => {
+      for(const attr of [
+        'src', 'href', 'data-costume', 'data-costume-id',
+        'data-id', 'id', 'onclick', 'style'
+      ]){
+        values.push(node.getAttribute?.(attr));
+      }
     });
 
-    return normalizeV579(values.filter(Boolean).join(' '));
+    return values;
   }
 
-  function digitsFromV579(value){
-    const text=String(value||'');
-    const matches=[...text.matchAll(/(?:ur[_-]?)?(\d{5,})/gi)];
-    return matches.map(match=>match[1]);
-  }
-
-  function costumeIdFromAttributesV579(card, validIds){
-    const values=[];
-
-    if(card){
-      values.push(
-        card.dataset?.costume,
-        card.dataset?.costumeId,
-        card.dataset?.id,
-        card.id,
-        card.getAttribute?.('data-costume'),
-        card.getAttribute?.('data-costume-id'),
-        card.getAttribute?.('data-id'),
-        card.getAttribute?.('onclick'),
-        card.getAttribute?.('href'),
-        card.getAttribute?.('style')
-      );
-
-      card.querySelectorAll?.('*')?.forEach(node=>{
-        for(const attr of ['src','href','data-costume','data-costume-id','data-id','id','onclick','style']){
-          values.push(node.getAttribute?.(attr));
-        }
-      });
-    }
-
-    for(const value of values){
-      for(const id of digitsFromV579(value)){
-        if(validIds.has(id))return id;
+  function idFromAttributes(card, validIds){
+    for(const value of valuesFromCard(card)){
+      for(const id of digitIds(value)){
+        if(validIds.has(id)) return id;
       }
     }
-
     return '';
   }
 
-  function labelsForRowV579(row){
-    const groupFr=normalizeV579(row?.group_fr||row?.name_fr);
-    const groupEn=normalizeV579(row?.group_en||row?.name_en);
-    const variantFr=normalizeV579(row?.variant_fr);
-    const variantEn=normalizeV579(row?.variant_en);
+  function labelsFor(row){
+    const groups = [
+      normalize(row?.group_fr || row?.name_fr),
+      normalize(row?.group_en || row?.name_en)
+    ].filter(Boolean);
 
-    const labels=new Set();
-    for(const group of [groupFr,groupEn]){
-      if(!group)continue;
+    const variants = [
+      normalize(row?.variant_fr),
+      normalize(row?.variant_en)
+    ].filter(Boolean);
+
+    const labels = new Set();
+
+    for(const group of groups){
       labels.add(group);
-      for(const variant of [variantFr,variantEn]){
-        if(variant)labels.add((group+' '+variant).trim());
+      for(const variant of variants){
+        labels.add((group + ' ' + variant).trim());
       }
     }
-    return [...labels].sort((a,b)=>b.length-a.length);
+
+    return [...labels].sort((a, b) => b.length - a.length);
   }
 
-  function costumeIdFromTextV579(card, latestRows){
-    const text=allCardTextV579(card);
-    if(!text)return '';
+  function cardText(card){
+    const values = [
+      card?.textContent,
+      card?.getAttribute?.('aria-label'),
+      card?.getAttribute?.('title')
+    ];
 
-    const matches=[];
+    card?.querySelectorAll?.('[alt],[title],[aria-label],img[src],a[href]')
+      ?.forEach(node => {
+        values.push(
+          node.getAttribute('alt'),
+          node.getAttribute('title'),
+          node.getAttribute('aria-label'),
+          node.getAttribute('src'),
+          node.getAttribute('href')
+        );
+      });
 
-    for(const item of latestRows){
-      const labels=labelsForRowV579(item.row);
-      const best=labels.find(label=>label.length>=4&&text.includes(label));
-      if(best)matches.push({id:item.id,length:best.length});
+    return normalize(values.filter(Boolean).join(' '));
+  }
+
+  function idFromText(card, rows){
+    const text = cardText(card);
+    if(!text) return '';
+
+    const matches = [];
+
+    for(const item of rows){
+      const label = labelsFor(item.row)
+        .find(candidate => candidate.length >= 4 && text.includes(candidate));
+
+      if(label){
+        matches.push({id: item.id, length: label.length});
+      }
     }
 
-    matches.sort((a,b)=>b.length-a.length);
-    if(!matches.length)return '';
-    if(matches.length>1&&matches[0].length===matches[1].length)return '';
+    matches.sort((a, b) => b.length - a.length);
+
+    if(!matches.length) return '';
+    if(matches.length > 1 && matches[0].length === matches[1].length) return '';
     return matches[0].id;
   }
 
-  function directBadgesV579(node){
+  function directBadges(node){
     try{
       return [...node.querySelectorAll(':scope > .s18NewBadge')];
     }catch(_error){
-      return [...(node.children||[])].filter(child=>child.classList?.contains('s18NewBadge'));
+      return [...(node.children || [])]
+        .filter(child => child.classList?.contains('s18NewBadge'));
     }
   }
 
-  function startPulseV579(badge){
-    if(!badge||badge.__mhurPulseV579)return;
-    badge.__mhurPulseV579=true;
+  function startPulse(badge){
+    if(!badge || badge.__mhurV580Pulse) return;
 
-    const inner=badge.querySelector('.s18NewPulseInnerV579')||badge;
+    badge.__mhurV580Pulse = true;
+    const inner = badge.querySelector('.s18NewPulseInnerV580') || badge;
 
-    /*
-      Web Animations démarre immédiatement et ne dépend pas des anciennes
-      règles transform/animation qui bloquaient les badges hors accueil.
-    */
-    if(typeof inner.animate==='function'){
+    if(typeof inner.animate === 'function'){
       inner.animate(
         [
-          {scale:'0.92'},
-          {scale:'1.12'},
-          {scale:'0.92'}
+          {transform: 'scale(.92)'},
+          {transform: 'scale(1.12)'},
+          {transform: 'scale(.92)'}
         ],
         {
-          duration:950,
-          iterations:Infinity,
-          easing:'ease-in-out'
+          duration: 950,
+          iterations: Infinity,
+          easing: 'ease-in-out'
         }
       );
     }
   }
 
-  function setBadgeV579(node,active){
-    if(!node)return;
+  function setBadge(node, active){
+    if(!node) return;
 
-    directBadgesV579(node).forEach(badge=>badge.remove());
+    const badges = directBadges(node);
+    let badge = badges.find(item => item.classList.contains('s18NewBadgeV580'));
 
-    if(active){
-      node.insertAdjacentHTML('afterbegin',BADGE);
-      startPulseV579(directBadgesV579(node)[0]);
+    if(!active){
+      badges.forEach(item => item.remove());
+      return;
     }
+
+    badges.forEach(item => {
+      if(item !== badge) item.remove();
+    });
+
+    if(!badge){
+      node.insertAdjacentHTML('afterbegin', BADGE);
+      badge = directBadges(node)
+        .find(item => item.classList.contains('s18NewBadgeV580'));
+    }
+
+    startPulse(badge);
   }
 
-  function syncV579(){
-    const sets=setsV579();
+  function sync(){
+    const sets = newSets();
 
-    document.querySelectorAll('.card[data-char]').forEach(card=>{
-      setBadgeV579(
+    document.querySelectorAll('.card[data-char]').forEach(card => {
+      setBadge(
         card,
-        sets.characters.has(String(card.dataset.char||''))
+        sets.characters.has(String(card.dataset.char || ''))
       );
     });
 
-    document.querySelectorAll('.styleCard[data-style]').forEach(card=>{
-      setBadgeV579(
+    document.querySelectorAll('.styleCard[data-style]').forEach(card => {
+      setBadge(
         card,
-        sets.styles.has(String(card.dataset.style||''))
+        sets.styles.has(String(card.dataset.style || ''))
       );
     });
 
-    const validIds=new Set([
-      ...sets.costumes,
-      ...Object.keys((window.MHUR_SEASON18_DATA||{}).costumes||{}).map(String)
+    const syncData = window.MHUR_SEASON18_DATA || {};
+    const validIds = new Set([
+      ...Object.keys(syncData.costumes || {}).map(String),
+      ...sets.costumes
     ]);
 
     document.querySelectorAll(
       '.costumeTile,.costumeCard,.costumeResult,[data-costume],[data-costume-id]'
-    ).forEach(card=>{
-      let id=costumeIdFromAttributesV579(card,validIds);
+    ).forEach(card => {
+      let id = idFromAttributes(card, validIds);
 
       if(!id){
-        id=costumeIdFromTextV579(card,sets.latest);
+        id = idFromText(card, sets.recent);
       }
 
-      if(id)card.dataset.costume=id;
+      if(id){
+        card.dataset.costume = id;
+      }
 
-      const upcoming=Boolean(
-        card.closest('.s18UpcomingCostumeGroupV19,.s18UpcomingCostumeGroupV23')
+      const upcoming = Boolean(
+        card.closest(
+          '.s18UpcomingCostumeGroupV19,.s18UpcomingCostumeGroupV23'
+        )
       );
 
-      setBadgeV579(
+      setBadge(
         card,
-        Boolean(id&&sets.costumes.has(id)&&!upcoming)
+        Boolean(id && sets.costumes.has(id) && !upcoming)
       );
     });
   }
 
-  let queued=false;
+  let queued = false;
 
-  function scheduleV579(){
-    if(queued)return;
-    queued=true;
+  function schedule(){
+    if(queued) return;
+    queued = true;
 
-    queueMicrotask(()=>{
-      requestAnimationFrame(()=>{
-        queued=false;
-        syncV579();
+    queueMicrotask(() => {
+      requestAnimationFrame(() => {
+        queued = false;
+        sync();
       });
     });
   }
 
-  function wrapRenderV579(){
-    if(typeof window.render!=='function'||window.render.__mhurV579)return;
+  function wrapRender(){
+    if(typeof window.render !== 'function' || window.render.__mhurV580) return;
 
-    const original=window.render;
-    const wrapped=function(){
-      const result=original.apply(this,arguments);
-      scheduleV579();
+    const original = window.render;
+
+    const wrapped = function(){
+      const result = original.apply(this, arguments);
+      sync();
+      schedule();
       return result;
     };
 
-    wrapped.__mhurV579=true;
-    window.render=wrapped;
+    wrapped.__mhurV580 = true;
+    window.render = wrapped;
 
     try{
-      render=wrapped;
+      render = wrapped;
     }catch(_error){}
   }
 
-  wrapRenderV579();
+  wrapRender();
 
-  if(document.readyState==='loading'){
-    document.addEventListener('DOMContentLoaded',scheduleV579,{once:true});
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', () => {
+      wrapRender();
+      sync();
+      schedule();
+    }, {once: true});
   }else{
-    scheduleV579();
+    sync();
+    schedule();
   }
 
-  new MutationObserver(mutations=>{
-    if(mutations.some(mutation=>mutation.addedNodes?.length)){
-      scheduleV579();
+  new MutationObserver(mutations => {
+    if(mutations.some(mutation => mutation.addedNodes?.length)){
+      schedule();
     }
-  }).observe(document.documentElement,{childList:true,subtree:true});
+  }).observe(document.documentElement, {
+    childList: true,
+    subtree: true
+  });
 
-  window.addEventListener('load',scheduleV579,{once:true});
-  window.addEventListener('hashchange',scheduleV579);
-  window.addEventListener('mhur:languagechange',scheduleV579);
+  window.addEventListener('load', () => {
+    wrapRender();
+    sync();
+    schedule();
+  }, {once: true});
 
-  window.MHUR_V579_NEW={
-    refresh:syncV579,
-    latestDay:latestDayV579,
-    latestRows:latestRowsV579
+  window.addEventListener('hashchange', schedule);
+  window.addEventListener('mhur:languagechange', schedule);
+
+  window.MHUR_V580_NEW = {
+    refresh: sync,
+    latestRows
   };
 })();
-
