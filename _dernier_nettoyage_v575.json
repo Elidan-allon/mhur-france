@@ -1,0 +1,1097 @@
+{
+  "version": "575",
+  "createdAt": "2026-08-02T04:55:49.431Z",
+  "archive": "_archive_nettoyage_v575_20260802_045545",
+  "indexBackup": "_archive_nettoyage_v575_20260802_045545/public/index.html.avant-nettoyage-v575.bak",
+  "moves": [
+    {
+      "from": "ANNULER_CORRECTIF_V532.bat",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/ANNULER_CORRECTIF_V532.bat"
+    },
+    {
+      "from": "ANNULER_CORRECTIF_V532.js",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/ANNULER_CORRECTIF_V532.js"
+    },
+    {
+      "from": "ANNULER_CORRECTIF_V533.bat",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/ANNULER_CORRECTIF_V533.bat"
+    },
+    {
+      "from": "ANNULER_CORRECTIF_V533.js",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/ANNULER_CORRECTIF_V533.js"
+    },
+    {
+      "from": "ANNULER_CORRECTIF_V534.bat",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/ANNULER_CORRECTIF_V534.bat"
+    },
+    {
+      "from": "ANNULER_CORRECTIF_V534.js",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/ANNULER_CORRECTIF_V534.js"
+    },
+    {
+      "from": "ANNULER_CORRECTIF_V535.bat",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/ANNULER_CORRECTIF_V535.bat"
+    },
+    {
+      "from": "ANNULER_CORRECTIF_V535.js",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/ANNULER_CORRECTIF_V535.js"
+    },
+    {
+      "from": "ANNULER_CORRECTIF_V536.bat",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/ANNULER_CORRECTIF_V536.bat"
+    },
+    {
+      "from": "ANNULER_CORRECTIF_V536.js",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/ANNULER_CORRECTIF_V536.js"
+    },
+    {
+      "from": "ANNULER_CORRECTIF_V537.bat",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/ANNULER_CORRECTIF_V537.bat"
+    },
+    {
+      "from": "ANNULER_CORRECTIF_V537.js",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/ANNULER_CORRECTIF_V537.js"
+    },
+    {
+      "from": "ANNULER_CORRECTIF_V538.bat",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/ANNULER_CORRECTIF_V538.bat"
+    },
+    {
+      "from": "ANNULER_CORRECTIF_V538.js",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/ANNULER_CORRECTIF_V538.js"
+    },
+    {
+      "from": "ANNULER_CORRECTIF_V539.bat",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/ANNULER_CORRECTIF_V539.bat"
+    },
+    {
+      "from": "ANNULER_CORRECTIF_V539.js",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/ANNULER_CORRECTIF_V539.js"
+    },
+    {
+      "from": "ANNULER_CORRECTIF_V540.bat",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/ANNULER_CORRECTIF_V540.bat"
+    },
+    {
+      "from": "ANNULER_CORRECTIF_V540.js",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/ANNULER_CORRECTIF_V540.js"
+    },
+    {
+      "from": "ANNULER_CORRECTIF_V541.bat",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/ANNULER_CORRECTIF_V541.bat"
+    },
+    {
+      "from": "ANNULER_CORRECTIF_V541.js",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/ANNULER_CORRECTIF_V541.js"
+    },
+    {
+      "from": "ANNULER_CORRECTIF_V542.bat",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/ANNULER_CORRECTIF_V542.bat"
+    },
+    {
+      "from": "ANNULER_CORRECTIF_V542.js",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/ANNULER_CORRECTIF_V542.js"
+    },
+    {
+      "from": "ANNULER_CORRECTIF_V543.bat",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/ANNULER_CORRECTIF_V543.bat"
+    },
+    {
+      "from": "ANNULER_CORRECTIF_V543.js",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/ANNULER_CORRECTIF_V543.js"
+    },
+    {
+      "from": "ANNULER_CORRECTIF_V544.bat",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/ANNULER_CORRECTIF_V544.bat"
+    },
+    {
+      "from": "ANNULER_CORRECTIF_V544.js",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/ANNULER_CORRECTIF_V544.js"
+    },
+    {
+      "from": "ANNULER_CORRECTIF_V545.bat",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/ANNULER_CORRECTIF_V545.bat"
+    },
+    {
+      "from": "ANNULER_CORRECTIF_V545.js",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/ANNULER_CORRECTIF_V545.js"
+    },
+    {
+      "from": "ANNULER_CORRECTIF_V546.bat",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/ANNULER_CORRECTIF_V546.bat"
+    },
+    {
+      "from": "ANNULER_CORRECTIF_V546.js",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/ANNULER_CORRECTIF_V546.js"
+    },
+    {
+      "from": "ANNULER_CORRECTIF_V547.bat",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/ANNULER_CORRECTIF_V547.bat"
+    },
+    {
+      "from": "ANNULER_CORRECTIF_V547.js",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/ANNULER_CORRECTIF_V547.js"
+    },
+    {
+      "from": "ANNULER_CORRECTIF_V548.bat",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/ANNULER_CORRECTIF_V548.bat"
+    },
+    {
+      "from": "ANNULER_CORRECTIF_V548.js",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/ANNULER_CORRECTIF_V548.js"
+    },
+    {
+      "from": "ANNULER_CORRECTIF_V550.bat",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/ANNULER_CORRECTIF_V550.bat"
+    },
+    {
+      "from": "ANNULER_CORRECTIF_V550.js",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/ANNULER_CORRECTIF_V550.js"
+    },
+    {
+      "from": "ANNULER_CORRECTIF_V558.bat",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/ANNULER_CORRECTIF_V558.bat"
+    },
+    {
+      "from": "ANNULER_CORRECTIF_V558.js",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/ANNULER_CORRECTIF_V558.js"
+    },
+    {
+      "from": "ANNULER_CORRECTIF_V559.bat",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/ANNULER_CORRECTIF_V559.bat"
+    },
+    {
+      "from": "ANNULER_CORRECTIF_V559.js",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/ANNULER_CORRECTIF_V559.js"
+    },
+    {
+      "from": "ANNULER_CORRECTIF_V560.bat",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/ANNULER_CORRECTIF_V560.bat"
+    },
+    {
+      "from": "ANNULER_CORRECTIF_V560.js",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/ANNULER_CORRECTIF_V560.js"
+    },
+    {
+      "from": "ANNULER_CORRECTIF_V561.bat",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/ANNULER_CORRECTIF_V561.bat"
+    },
+    {
+      "from": "ANNULER_CORRECTIF_V561.js",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/ANNULER_CORRECTIF_V561.js"
+    },
+    {
+      "from": "ANNULER_CORRECTIF_V563.bat",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/ANNULER_CORRECTIF_V563.bat"
+    },
+    {
+      "from": "ANNULER_CORRECTIF_V563.js",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/ANNULER_CORRECTIF_V563.js"
+    },
+    {
+      "from": "ANNULER_CORRECTIF_V564.bat",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/ANNULER_CORRECTIF_V564.bat"
+    },
+    {
+      "from": "ANNULER_CORRECTIF_V564.js",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/ANNULER_CORRECTIF_V564.js"
+    },
+    {
+      "from": "ANNULER_CORRECTIF_V565.bat",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/ANNULER_CORRECTIF_V565.bat"
+    },
+    {
+      "from": "ANNULER_CORRECTIF_V565.js",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/ANNULER_CORRECTIF_V565.js"
+    },
+    {
+      "from": "ANNULER_CORRECTIF_V566.bat",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/ANNULER_CORRECTIF_V566.bat"
+    },
+    {
+      "from": "ANNULER_CORRECTIF_V566.js",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/ANNULER_CORRECTIF_V566.js"
+    },
+    {
+      "from": "ANNULER_CORRECTIF_V567.bat",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/ANNULER_CORRECTIF_V567.bat"
+    },
+    {
+      "from": "ANNULER_CORRECTIF_V567.js",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/ANNULER_CORRECTIF_V567.js"
+    },
+    {
+      "from": "ANNULER_CORRECTIF_V568.bat",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/ANNULER_CORRECTIF_V568.bat"
+    },
+    {
+      "from": "ANNULER_CORRECTIF_V568.js",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/ANNULER_CORRECTIF_V568.js"
+    },
+    {
+      "from": "ANNULER_CORRECTIF_V569.bat",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/ANNULER_CORRECTIF_V569.bat"
+    },
+    {
+      "from": "ANNULER_CORRECTIF_V569.js",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/ANNULER_CORRECTIF_V569.js"
+    },
+    {
+      "from": "ANNULER_CORRECTIF_V570.bat",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/ANNULER_CORRECTIF_V570.bat"
+    },
+    {
+      "from": "ANNULER_CORRECTIF_V570.js",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/ANNULER_CORRECTIF_V570.js"
+    },
+    {
+      "from": "ANNULER_CORRECTIF_V571.bat",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/ANNULER_CORRECTIF_V571.bat"
+    },
+    {
+      "from": "ANNULER_CORRECTIF_V571.js",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/ANNULER_CORRECTIF_V571.js"
+    },
+    {
+      "from": "ANNULER_CORRECTIF_V572.bat",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/ANNULER_CORRECTIF_V572.bat"
+    },
+    {
+      "from": "ANNULER_CORRECTIF_V572.js",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/ANNULER_CORRECTIF_V572.js"
+    },
+    {
+      "from": "ANNULER_CORRECTIF_V573.bat",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/ANNULER_CORRECTIF_V573.bat"
+    },
+    {
+      "from": "ANNULER_CORRECTIF_V573.js",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/ANNULER_CORRECTIF_V573.js"
+    },
+    {
+      "from": "ANNULER_CORRECTIF_V574.bat",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/ANNULER_CORRECTIF_V574.bat"
+    },
+    {
+      "from": "ANNULER_CORRECTIF_V574.js",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/ANNULER_CORRECTIF_V574.js"
+    },
+    {
+      "from": "APPLIQUER_CORRECTIF_V532.bat",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/APPLIQUER_CORRECTIF_V532.bat"
+    },
+    {
+      "from": "APPLIQUER_CORRECTIF_V532.js",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/APPLIQUER_CORRECTIF_V532.js"
+    },
+    {
+      "from": "APPLIQUER_CORRECTIF_V533.bat",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/APPLIQUER_CORRECTIF_V533.bat"
+    },
+    {
+      "from": "APPLIQUER_CORRECTIF_V533.js",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/APPLIQUER_CORRECTIF_V533.js"
+    },
+    {
+      "from": "APPLIQUER_CORRECTIF_V534.bat",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/APPLIQUER_CORRECTIF_V534.bat"
+    },
+    {
+      "from": "APPLIQUER_CORRECTIF_V534.js",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/APPLIQUER_CORRECTIF_V534.js"
+    },
+    {
+      "from": "APPLIQUER_CORRECTIF_V535.bat",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/APPLIQUER_CORRECTIF_V535.bat"
+    },
+    {
+      "from": "APPLIQUER_CORRECTIF_V535.js",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/APPLIQUER_CORRECTIF_V535.js"
+    },
+    {
+      "from": "APPLIQUER_CORRECTIF_V536.bat",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/APPLIQUER_CORRECTIF_V536.bat"
+    },
+    {
+      "from": "APPLIQUER_CORRECTIF_V536.js",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/APPLIQUER_CORRECTIF_V536.js"
+    },
+    {
+      "from": "APPLIQUER_CORRECTIF_V537_REPARE.bat",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/APPLIQUER_CORRECTIF_V537_REPARE.bat"
+    },
+    {
+      "from": "APPLIQUER_CORRECTIF_V537_REPARE.js",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/APPLIQUER_CORRECTIF_V537_REPARE.js"
+    },
+    {
+      "from": "APPLIQUER_CORRECTIF_V538.bat",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/APPLIQUER_CORRECTIF_V538.bat"
+    },
+    {
+      "from": "APPLIQUER_CORRECTIF_V538.js",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/APPLIQUER_CORRECTIF_V538.js"
+    },
+    {
+      "from": "APPLIQUER_CORRECTIF_V539.bat",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/APPLIQUER_CORRECTIF_V539.bat"
+    },
+    {
+      "from": "APPLIQUER_CORRECTIF_V539.js",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/APPLIQUER_CORRECTIF_V539.js"
+    },
+    {
+      "from": "APPLIQUER_CORRECTIF_V540.bat",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/APPLIQUER_CORRECTIF_V540.bat"
+    },
+    {
+      "from": "APPLIQUER_CORRECTIF_V540.js",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/APPLIQUER_CORRECTIF_V540.js"
+    },
+    {
+      "from": "APPLIQUER_CORRECTIF_V541.bat",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/APPLIQUER_CORRECTIF_V541.bat"
+    },
+    {
+      "from": "APPLIQUER_CORRECTIF_V541.js",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/APPLIQUER_CORRECTIF_V541.js"
+    },
+    {
+      "from": "APPLIQUER_CORRECTIF_V542.bat",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/APPLIQUER_CORRECTIF_V542.bat"
+    },
+    {
+      "from": "APPLIQUER_CORRECTIF_V542.js",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/APPLIQUER_CORRECTIF_V542.js"
+    },
+    {
+      "from": "APPLIQUER_CORRECTIF_V543.bat",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/APPLIQUER_CORRECTIF_V543.bat"
+    },
+    {
+      "from": "APPLIQUER_CORRECTIF_V543.js",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/APPLIQUER_CORRECTIF_V543.js"
+    },
+    {
+      "from": "APPLIQUER_CORRECTIF_V544.bat",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/APPLIQUER_CORRECTIF_V544.bat"
+    },
+    {
+      "from": "APPLIQUER_CORRECTIF_V544.js",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/APPLIQUER_CORRECTIF_V544.js"
+    },
+    {
+      "from": "APPLIQUER_CORRECTIF_V545.bat",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/APPLIQUER_CORRECTIF_V545.bat"
+    },
+    {
+      "from": "APPLIQUER_CORRECTIF_V545.js",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/APPLIQUER_CORRECTIF_V545.js"
+    },
+    {
+      "from": "APPLIQUER_CORRECTIF_V546.bat",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/APPLIQUER_CORRECTIF_V546.bat"
+    },
+    {
+      "from": "APPLIQUER_CORRECTIF_V546.js",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/APPLIQUER_CORRECTIF_V546.js"
+    },
+    {
+      "from": "APPLIQUER_CORRECTIF_V547.bat",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/APPLIQUER_CORRECTIF_V547.bat"
+    },
+    {
+      "from": "APPLIQUER_CORRECTIF_V547.js",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/APPLIQUER_CORRECTIF_V547.js"
+    },
+    {
+      "from": "APPLIQUER_CORRECTIF_V548.bat",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/APPLIQUER_CORRECTIF_V548.bat"
+    },
+    {
+      "from": "APPLIQUER_CORRECTIF_V548.js",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/APPLIQUER_CORRECTIF_V548.js"
+    },
+    {
+      "from": "APPLIQUER_CORRECTIF_V550.bat",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/APPLIQUER_CORRECTIF_V550.bat"
+    },
+    {
+      "from": "APPLIQUER_CORRECTIF_V550.js",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/APPLIQUER_CORRECTIF_V550.js"
+    },
+    {
+      "from": "APPLIQUER_CORRECTIF_V558.bat",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/APPLIQUER_CORRECTIF_V558.bat"
+    },
+    {
+      "from": "APPLIQUER_CORRECTIF_V558.js",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/APPLIQUER_CORRECTIF_V558.js"
+    },
+    {
+      "from": "APPLIQUER_CORRECTIF_V559.bat",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/APPLIQUER_CORRECTIF_V559.bat"
+    },
+    {
+      "from": "APPLIQUER_CORRECTIF_V559.js",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/APPLIQUER_CORRECTIF_V559.js"
+    },
+    {
+      "from": "APPLIQUER_CORRECTIF_V560.bat",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/APPLIQUER_CORRECTIF_V560.bat"
+    },
+    {
+      "from": "APPLIQUER_CORRECTIF_V560.js",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/APPLIQUER_CORRECTIF_V560.js"
+    },
+    {
+      "from": "APPLIQUER_CORRECTIF_V561.bat",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/APPLIQUER_CORRECTIF_V561.bat"
+    },
+    {
+      "from": "APPLIQUER_CORRECTIF_V561.js",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/APPLIQUER_CORRECTIF_V561.js"
+    },
+    {
+      "from": "APPLIQUER_CORRECTIF_V563.bat",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/APPLIQUER_CORRECTIF_V563.bat"
+    },
+    {
+      "from": "APPLIQUER_CORRECTIF_V563.js",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/APPLIQUER_CORRECTIF_V563.js"
+    },
+    {
+      "from": "APPLIQUER_CORRECTIF_V564.bat",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/APPLIQUER_CORRECTIF_V564.bat"
+    },
+    {
+      "from": "APPLIQUER_CORRECTIF_V564.js",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/APPLIQUER_CORRECTIF_V564.js"
+    },
+    {
+      "from": "APPLIQUER_CORRECTIF_V565.bat",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/APPLIQUER_CORRECTIF_V565.bat"
+    },
+    {
+      "from": "APPLIQUER_CORRECTIF_V565.js",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/APPLIQUER_CORRECTIF_V565.js"
+    },
+    {
+      "from": "APPLIQUER_CORRECTIF_V566.bat",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/APPLIQUER_CORRECTIF_V566.bat"
+    },
+    {
+      "from": "APPLIQUER_CORRECTIF_V566.js",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/APPLIQUER_CORRECTIF_V566.js"
+    },
+    {
+      "from": "APPLIQUER_CORRECTIF_V567.bat",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/APPLIQUER_CORRECTIF_V567.bat"
+    },
+    {
+      "from": "APPLIQUER_CORRECTIF_V567.js",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/APPLIQUER_CORRECTIF_V567.js"
+    },
+    {
+      "from": "APPLIQUER_CORRECTIF_V568.bat",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/APPLIQUER_CORRECTIF_V568.bat"
+    },
+    {
+      "from": "APPLIQUER_CORRECTIF_V568.js",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/APPLIQUER_CORRECTIF_V568.js"
+    },
+    {
+      "from": "APPLIQUER_CORRECTIF_V569.bat",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/APPLIQUER_CORRECTIF_V569.bat"
+    },
+    {
+      "from": "APPLIQUER_CORRECTIF_V569.js",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/APPLIQUER_CORRECTIF_V569.js"
+    },
+    {
+      "from": "APPLIQUER_CORRECTIF_V570.bat",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/APPLIQUER_CORRECTIF_V570.bat"
+    },
+    {
+      "from": "APPLIQUER_CORRECTIF_V570.js",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/APPLIQUER_CORRECTIF_V570.js"
+    },
+    {
+      "from": "APPLIQUER_CORRECTIF_V571.bat",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/APPLIQUER_CORRECTIF_V571.bat"
+    },
+    {
+      "from": "APPLIQUER_CORRECTIF_V571.js",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/APPLIQUER_CORRECTIF_V571.js"
+    },
+    {
+      "from": "APPLIQUER_CORRECTIF_V572.bat",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/APPLIQUER_CORRECTIF_V572.bat"
+    },
+    {
+      "from": "APPLIQUER_CORRECTIF_V572.js",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/APPLIQUER_CORRECTIF_V572.js"
+    },
+    {
+      "from": "APPLIQUER_CORRECTIF_V573.bat",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/APPLIQUER_CORRECTIF_V573.bat"
+    },
+    {
+      "from": "APPLIQUER_CORRECTIF_V573.js",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/APPLIQUER_CORRECTIF_V573.js"
+    },
+    {
+      "from": "APPLIQUER_CORRECTIF_V574.bat",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/APPLIQUER_CORRECTIF_V574.bat"
+    },
+    {
+      "from": "APPLIQUER_CORRECTIF_V574.js",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/APPLIQUER_CORRECTIF_V574.js"
+    },
+    {
+      "from": "correctif_v523",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/correctif_v523"
+    },
+    {
+      "from": "correctif_v524",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/correctif_v524"
+    },
+    {
+      "from": "correctif_v525",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/correctif_v525"
+    },
+    {
+      "from": "correctif_v528",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/correctif_v528"
+    },
+    {
+      "from": "correctif_v531",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/correctif_v531"
+    },
+    {
+      "from": "DIAGNOSTIC_V573_SANS_GIT.ps1",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/DIAGNOSTIC_V573_SANS_GIT.ps1"
+    },
+    {
+      "from": "LANCER_DIAGNOSTIC_V573.bat",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/LANCER_DIAGNOSTIC_V573.bat"
+    },
+    {
+      "from": "LISEZ-MOI.txt",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/LISEZ-MOI.txt"
+    },
+    {
+      "from": "LISEZ-MOI_V576.txt",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/LISEZ-MOI_V576.txt"
+    },
+    {
+      "from": "RAPPORT_DIAGNOSTIC_V573.txt",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/RAPPORT_DIAGNOSTIC_V573.txt"
+    },
+    {
+      "from": "README_V558.txt",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/README_V558.txt"
+    },
+    {
+      "from": "README_V559.txt",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/README_V559.txt"
+    },
+    {
+      "from": "README_V560.txt",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/README_V560.txt"
+    },
+    {
+      "from": "_v558_payload",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/_v558_payload"
+    },
+    {
+      "from": "_v559_payload",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/_v559_payload"
+    },
+    {
+      "from": "_v560_payload",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/_v560_payload"
+    },
+    {
+      "from": "_v563_payload",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/_v563_payload"
+    },
+    {
+      "from": "_v564_payload",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/_v564_payload"
+    },
+    {
+      "from": "_v565_payload",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/_v565_payload"
+    },
+    {
+      "from": "_v566_payload",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/_v566_payload"
+    },
+    {
+      "from": "_v567_payload",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/_v567_payload"
+    },
+    {
+      "from": "_v568_payload",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/_v568_payload"
+    },
+    {
+      "from": "_v569_payload",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/_v569_payload"
+    },
+    {
+      "from": "_v572_payload",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/_v572_payload"
+    },
+    {
+      "from": "_v573_payload",
+      "to": "_archive_nettoyage_v575_20260802_045545/racine/_v573_payload"
+    },
+    {
+      "from": "public/assets/home/discounts/gentle_criminal.webp.avant-v531.bak",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/assets/home/discounts/gentle_criminal.webp.avant-v531.bak"
+    },
+    {
+      "from": "public/assets/home/season18/gentle_s18_portrait.webp.avant-v531.bak",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/assets/home/season18/gentle_s18_portrait.webp.avant-v531.bak"
+    },
+    {
+      "from": "public/css/season18-fixes.css.avant-v570.bak",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/css/season18-fixes.css.avant-v570.bak"
+    },
+    {
+      "from": "public/css/v563-badges-new-incoming.css",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/css/v563-badges-new-incoming.css"
+    },
+    {
+      "from": "public/css/v564-badges-refines.css",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/css/v564-badges-refines.css"
+    },
+    {
+      "from": "public/css/v565-badges-propres.css",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/css/v565-badges-propres.css"
+    },
+    {
+      "from": "public/css/v566-badges-final.css",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/css/v566-badges-final.css"
+    },
+    {
+      "from": "public/css/v567-badges-propres.css",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/css/v567-badges-propres.css"
+    },
+    {
+      "from": "public/css/v568-costume-new-lower.css",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/css/v568-costume-new-lower.css"
+    },
+    {
+      "from": "public/css/v569-home-remove-new.css",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/css/v569-home-remove-new.css"
+    },
+    {
+      "from": "public/data/home_data.js.avant-v522.bak",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/data/home_data.js.avant-v522.bak"
+    },
+    {
+      "from": "public/data/home_data.js.avant-v523.bak",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/data/home_data.js.avant-v523.bak"
+    },
+    {
+      "from": "public/data/home_data.js.avant-v524.bak",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/data/home_data.js.avant-v524.bak"
+    },
+    {
+      "from": "public/data/home_data.js.avant-v525.bak",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/data/home_data.js.avant-v525.bak"
+    },
+    {
+      "from": "public/data/home_data.js.avant-v526.bak",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/data/home_data.js.avant-v526.bak"
+    },
+    {
+      "from": "public/data/home_data.js.avant-v529.bak",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/data/home_data.js.avant-v529.bak"
+    },
+    {
+      "from": "public/data/home_data.js.avant-v531.bak",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/data/home_data.js.avant-v531.bak"
+    },
+    {
+      "from": "public/data/home_data.js.avant-v558.bak",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/data/home_data.js.avant-v558.bak"
+    },
+    {
+      "from": "public/data/home_data.js.avant-v559.bak",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/data/home_data.js.avant-v559.bak"
+    },
+    {
+      "from": "public/data/home_data.json.avant-v522.bak",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/data/home_data.json.avant-v522.bak"
+    },
+    {
+      "from": "public/data/home_data.json.avant-v523.bak",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/data/home_data.json.avant-v523.bak"
+    },
+    {
+      "from": "public/data/home_data.json.avant-v524.bak",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/data/home_data.json.avant-v524.bak"
+    },
+    {
+      "from": "public/data/home_data.json.avant-v525.bak",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/data/home_data.json.avant-v525.bak"
+    },
+    {
+      "from": "public/data/home_data.json.avant-v526.bak",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/data/home_data.json.avant-v526.bak"
+    },
+    {
+      "from": "public/data/home_data.json.avant-v529.bak",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/data/home_data.json.avant-v529.bak"
+    },
+    {
+      "from": "public/data/home_data.json.avant-v531.bak",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/data/home_data.json.avant-v531.bak"
+    },
+    {
+      "from": "public/data/home_data.json.avant-v558.bak",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/data/home_data.json.avant-v558.bak"
+    },
+    {
+      "from": "public/data/home_data.json.avant-v559.bak",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/data/home_data.json.avant-v559.bak"
+    },
+    {
+      "from": "public/data/season18_sync.js.avant-v572.bak",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/data/season18_sync.js.avant-v572.bak"
+    },
+    {
+      "from": "public/index.html.avant-v519.bak",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/index.html.avant-v519.bak"
+    },
+    {
+      "from": "public/index.html.avant-v520.bak",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/index.html.avant-v520.bak"
+    },
+    {
+      "from": "public/index.html.avant-v521.bak",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/index.html.avant-v521.bak"
+    },
+    {
+      "from": "public/index.html.avant-v522.bak",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/index.html.avant-v522.bak"
+    },
+    {
+      "from": "public/index.html.avant-v523.bak",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/index.html.avant-v523.bak"
+    },
+    {
+      "from": "public/index.html.avant-v524.bak",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/index.html.avant-v524.bak"
+    },
+    {
+      "from": "public/index.html.avant-v525.bak",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/index.html.avant-v525.bak"
+    },
+    {
+      "from": "public/index.html.avant-v526.bak",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/index.html.avant-v526.bak"
+    },
+    {
+      "from": "public/index.html.avant-v527.bak",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/index.html.avant-v527.bak"
+    },
+    {
+      "from": "public/index.html.avant-v529.bak",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/index.html.avant-v529.bak"
+    },
+    {
+      "from": "public/index.html.avant-v530.bak",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/index.html.avant-v530.bak"
+    },
+    {
+      "from": "public/index.html.avant-v531.bak",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/index.html.avant-v531.bak"
+    },
+    {
+      "from": "public/index.html.avant-v532.bak",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/index.html.avant-v532.bak"
+    },
+    {
+      "from": "public/index.html.avant-v533.bak",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/index.html.avant-v533.bak"
+    },
+    {
+      "from": "public/index.html.avant-v534.bak",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/index.html.avant-v534.bak"
+    },
+    {
+      "from": "public/index.html.avant-v535.bak",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/index.html.avant-v535.bak"
+    },
+    {
+      "from": "public/index.html.avant-v536.bak",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/index.html.avant-v536.bak"
+    },
+    {
+      "from": "public/index.html.avant-v537-repare.bak",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/index.html.avant-v537-repare.bak"
+    },
+    {
+      "from": "public/index.html.avant-v537.bak",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/index.html.avant-v537.bak"
+    },
+    {
+      "from": "public/index.html.avant-v538.bak",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/index.html.avant-v538.bak"
+    },
+    {
+      "from": "public/index.html.avant-v539.bak",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/index.html.avant-v539.bak"
+    },
+    {
+      "from": "public/index.html.avant-v540.bak",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/index.html.avant-v540.bak"
+    },
+    {
+      "from": "public/index.html.avant-v541.bak",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/index.html.avant-v541.bak"
+    },
+    {
+      "from": "public/index.html.avant-v542.bak",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/index.html.avant-v542.bak"
+    },
+    {
+      "from": "public/index.html.avant-v543.bak",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/index.html.avant-v543.bak"
+    },
+    {
+      "from": "public/index.html.avant-v544.bak",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/index.html.avant-v544.bak"
+    },
+    {
+      "from": "public/index.html.avant-v545.bak",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/index.html.avant-v545.bak"
+    },
+    {
+      "from": "public/index.html.avant-v546.bak",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/index.html.avant-v546.bak"
+    },
+    {
+      "from": "public/index.html.avant-v547.bak",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/index.html.avant-v547.bak"
+    },
+    {
+      "from": "public/index.html.avant-v548.bak",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/index.html.avant-v548.bak"
+    },
+    {
+      "from": "public/index.html.avant-v550.bak",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/index.html.avant-v550.bak"
+    },
+    {
+      "from": "public/index.html.avant-v558.bak",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/index.html.avant-v558.bak"
+    },
+    {
+      "from": "public/index.html.avant-v559.bak",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/index.html.avant-v559.bak"
+    },
+    {
+      "from": "public/index.html.avant-v560.bak",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/index.html.avant-v560.bak"
+    },
+    {
+      "from": "public/index.html.avant-v561.bak",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/index.html.avant-v561.bak"
+    },
+    {
+      "from": "public/index.html.avant-v562.bak",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/index.html.avant-v562.bak"
+    },
+    {
+      "from": "public/index.html.avant-v563.bak",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/index.html.avant-v563.bak"
+    },
+    {
+      "from": "public/index.html.avant-v564.bak",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/index.html.avant-v564.bak"
+    },
+    {
+      "from": "public/index.html.avant-v565.bak",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/index.html.avant-v565.bak"
+    },
+    {
+      "from": "public/index.html.avant-v566.bak",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/index.html.avant-v566.bak"
+    },
+    {
+      "from": "public/index.html.avant-v567.bak",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/index.html.avant-v567.bak"
+    },
+    {
+      "from": "public/index.html.avant-v568.bak",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/index.html.avant-v568.bak"
+    },
+    {
+      "from": "public/index.html.avant-v569.bak",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/index.html.avant-v569.bak"
+    },
+    {
+      "from": "public/index.html.avant-v570.bak",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/index.html.avant-v570.bak"
+    },
+    {
+      "from": "public/index.html.avant-v572.bak",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/index.html.avant-v572.bak"
+    },
+    {
+      "from": "public/index.html.avant-v573.bak",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/index.html.avant-v573.bak"
+    },
+    {
+      "from": "public/index.html.avant-v576.bak",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/index.html.avant-v576.bak"
+    },
+    {
+      "from": "public/js/community-hub.js.avant-v542.bak",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/js/community-hub.js.avant-v542.bak"
+    },
+    {
+      "from": "public/js/community-hub.js.avant-v546.bak",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/js/community-hub.js.avant-v546.bak"
+    },
+    {
+      "from": "public/js/community-mods.js.avant-v537-repare.bak",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/js/community-mods.js.avant-v537-repare.bak"
+    },
+    {
+      "from": "public/js/community-mods.js.avant-v537.bak",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/js/community-mods.js.avant-v537.bak"
+    },
+    {
+      "from": "public/js/community-mods.js.avant-v540.bak",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/js/community-mods.js.avant-v540.bak"
+    },
+    {
+      "from": "public/js/community-mods.js.avant-v542.bak",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/js/community-mods.js.avant-v542.bak"
+    },
+    {
+      "from": "public/js/home.js.avant-v536.bak",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/js/home.js.avant-v536.bak"
+    },
+    {
+      "from": "public/js/home.js.avant-v537-repare.bak",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/js/home.js.avant-v537-repare.bak"
+    },
+    {
+      "from": "public/js/home.js.avant-v537.bak",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/js/home.js.avant-v537.bak"
+    },
+    {
+      "from": "public/js/home.js.avant-v540.bak",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/js/home.js.avant-v540.bak"
+    },
+    {
+      "from": "public/js/home.js.avant-v559.bak",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/js/home.js.avant-v559.bak"
+    },
+    {
+      "from": "public/js/season18-early.js.avant-v570.bak",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/js/season18-early.js.avant-v570.bak"
+    },
+    {
+      "from": "public/js/season18-fixes.js.avant-v531.bak",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/js/season18-fixes.js.avant-v531.bak"
+    },
+    {
+      "from": "public/js/season18-fixes.js.avant-v532.bak",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/js/season18-fixes.js.avant-v532.bak"
+    },
+    {
+      "from": "public/js/season18-fixes.js.avant-v537-repare.bak",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/js/season18-fixes.js.avant-v537-repare.bak"
+    },
+    {
+      "from": "public/js/season18-fixes.js.avant-v537.bak",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/js/season18-fixes.js.avant-v537.bak"
+    },
+    {
+      "from": "public/js/season18-fixes.js.avant-v542.bak",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/js/season18-fixes.js.avant-v542.bak"
+    },
+    {
+      "from": "public/js/season18-fixes.js.avant-v558.bak",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/js/season18-fixes.js.avant-v558.bak"
+    },
+    {
+      "from": "public/js/season18-fixes.js.avant-v559.bak",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/js/season18-fixes.js.avant-v559.bak"
+    },
+    {
+      "from": "public/js/season18-fixes.js.avant-v570.bak",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/js/season18-fixes.js.avant-v570.bak"
+    },
+    {
+      "from": "public/js/season18-fixes.js.avant-v571.bak",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/js/season18-fixes.js.avant-v571.bak"
+    },
+    {
+      "from": "public/js/season18-fixes.js.avant-v572.bak",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/js/season18-fixes.js.avant-v572.bak"
+    },
+    {
+      "from": "public/js/season18-fixes.js.avant-v574.bak",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/js/season18-fixes.js.avant-v574.bak"
+    },
+    {
+      "from": "public/js/season18-v12.js.avant-v537-repare.bak",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/js/season18-v12.js.avant-v537-repare.bak"
+    },
+    {
+      "from": "public/js/season18-v12.js.avant-v537.bak",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/js/season18-v12.js.avant-v537.bak"
+    },
+    {
+      "from": "public/js/v526-ui-final.js.avant-v529.bak",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/js/v526-ui-final.js.avant-v529.bak"
+    },
+    {
+      "from": "public/js/v526-ui-final.js.avant-v531.bak",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/js/v526-ui-final.js.avant-v531.bak"
+    },
+    {
+      "from": "public/js/v558-discount-lock.js",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/js/v558-discount-lock.js"
+    },
+    {
+      "from": "public/js/v563-badges-new-incoming.js",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/js/v563-badges-new-incoming.js"
+    },
+    {
+      "from": "public/js/v564-badges-refines.js",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/js/v564-badges-refines.js"
+    },
+    {
+      "from": "public/js/v565-badges-propres.js",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/js/v565-badges-propres.js"
+    },
+    {
+      "from": "public/js/v566-badges-final.js",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/js/v566-badges-final.js"
+    },
+    {
+      "from": "public/js/v567-badges-propres.js",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/js/v567-badges-propres.js"
+    },
+    {
+      "from": "public/js/v568-costume-new-lower.js",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/js/v568-costume-new-lower.js"
+    },
+    {
+      "from": "public/js/v569-home-remove-new.js",
+      "to": "_archive_nettoyage_v575_20260802_045545/public/js/v569-home-remove-new.js"
+    }
+  ],
+  "indexChanged": true
+}

@@ -1,0 +1,14 @@
+MHUR FRANCE — RAPPORT V576
+
+Références mortes retirées :
+- css/v551-bars-notes-persistent.css
+- css/v552-mods-arrow-only.css
+- js/v551-bars-notes-persistent.js
+- js/v552-mods-arrow-only.js
+- css/v562-discount-typography.css
+
+Vérification des références JS/CSS : OK
+Nettoyage sécurisé V575 : OK
+Aucun fichier supprimé définitivement : OK
+
+Pour revenir en arrière : lancer ANNULER_TOUT_V576.bat

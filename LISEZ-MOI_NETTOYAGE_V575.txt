@@ -1,0 +1,36 @@
+MHUR FRANCE — NETTOYAGE SÉCURISÉ V575
+
+OBJECTIF
+Nettoyer l'accumulation d'anciens correctifs sans changer volontairement
+le fonctionnement du site.
+
+CE QUE LE SCRIPT FAIT
+- vérifie les fichiers essentiels avant toute modification ;
+- refuse de continuer si index.html contient un conflit Git ;
+- vérifie que tous les JS/CSS chargés par index.html existent ;
+- crée une archive horodatée ;
+- déplace les anciens installateurs, payloads et sauvegardes dans l'archive ;
+- archive les fichiers expérimentaux V558 à V574 uniquement s'ils ne sont
+  référencés par aucun fichier du site ;
+- retire seulement les balises strictement identiques répétées ;
+- retire les commentaires « Season 18 compatibility layer » répétés ;
+- vérifie encore le site après le nettoyage ;
+- restaure automatiquement en cas d'erreur ;
+- ne supprime aucun fichier définitivement.
+
+UTILISATION CONSEILLÉE
+1. Décompresse le ZIP à la racine de mhur-france.
+2. Lance d'abord SIMULER_NETTOYAGE_V575.bat.
+3. Lis le plan affiché.
+4. Lance APPLIQUER_NETTOYAGE_V575.bat.
+5. Vérifie RAPPORT_NETTOYAGE_V575.txt.
+6. Ouvre le site localement avant d'envoyer quoi que ce soit sur GitHub.
+
+ANNULATION
+Lance ANNULER_NETTOYAGE_V575.bat.
+
+IMPORTANT
+Ce nettoyage remet le projet en ordre mais ne change pas volontairement
+la logique des badges NEW. Une fois la base nettoyée, les corrections
+fonctionnelles pourront être faites dans les fichiers sources principaux,
+sans empiler de nouveaux correctifs.

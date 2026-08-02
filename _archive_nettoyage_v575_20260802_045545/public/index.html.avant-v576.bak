@@ -829,6 +829,9 @@
 <link rel="stylesheet" href="css/v543-moderation-evidence.css?v=543">
 <link rel="stylesheet" href="css/v547-mobile-profile-roles.css?v=547">
 <link rel="stylesheet" href="css/v548-mobile-season-offset.css?v=548">
+<link rel="stylesheet" href="css/v551-bars-notes-persistent.css?v=551">
+<link rel="stylesheet" href="css/v552-mods-arrow-only.css?v=552">
+
 <link rel="preload" as="image" href="assets/home/season18/gentle_s18_banner.webp">
 <link rel="preload" as="image" href="assets/home/season18/twice_s18_banner.webp">
 <link rel="preload" as="image" href="assets/home/season18/tsuyu_profile.webp">
@@ -836,6 +839,7 @@
 <link rel="stylesheet" href="css/season18-fixes.css?v=570">
 <link rel="stylesheet" href="css/v559-discounts-stable.css?v=559">
 <link rel="stylesheet" href="css/v560-discount-role-dedupe.css?v=560">
+
 
 </head>
 <body>
@@ -7002,9 +7006,9 @@ body .costumeTile > img,
 <link rel="stylesheet" href="css/v510-back-button-offset.css?v=510">
 <script src="js/v510-back-button-offset.js?v=510"></script>
 <!-- V5.13 reste chargé en dernier : logo non coupé et boutons verrouillés. -->
-
-
-
+<link rel="stylesheet" href="css/v511-responsive-ui.css?v=511">
+<link rel="stylesheet" href="css/v512-header-first-paint.css?v=512">
+<link rel="stylesheet" href="css/v513-header-locked-mobile.css?v=513">
 <!-- V5.13: header mobile à géométrie fixe, sans saut pendant la restauration du compte. -->
 <!-- V5.14 : corrections ciblées profil, panneaux mobiles et alignement du header. -->
 <link rel="stylesheet" href="css/v514-targeted-ui-fixes.css?v=5142">
@@ -7020,137 +7024,137 @@ body .costumeTile > img,
 
 <!-- Season 18 data compatibility layer. -->
 
+<!-- Season 18 data compatibility layer. -->
 
+<!-- Season 18 data compatibility layer. -->
 
+<!-- Season 18 data compatibility layer. -->
 
+<!-- Season 18 data compatibility layer. -->
 
+<!-- Season 18 data compatibility layer. -->
 
+<!-- Season 18 data compatibility layer. -->
 
+<!-- Season 18 data compatibility layer. -->
 
+<!-- Season 18 data compatibility layer. -->
 
+<!-- Season 18 data compatibility layer. -->
 
+<!-- Season 18 data compatibility layer. -->
 
+<!-- Season 18 data compatibility layer. -->
 
+<!-- Season 18 data compatibility layer. -->
 
+<!-- Season 18 data compatibility layer. -->
 
+<!-- Season 18 data compatibility layer. -->
 
+<!-- Season 18 data compatibility layer. -->
 
+<!-- Season 18 data compatibility layer. -->
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+<!-- Season 18 data compatibility layer. -->
 
 <!-- Season 18 v9 targeted compatibility layer. -->
 
+<!-- Season 18 v9 targeted compatibility layer. -->
 
-
-
+<!-- Season 18 v9 targeted compatibility layer. -->
 
 <!-- Season 18 v10 targeted compatibility layer. -->
 
+<!-- Season 18 v10 targeted compatibility layer. -->
 
+<!-- Season 18 v10 targeted compatibility layer. -->
 
+<!-- Season 18 v9 targeted compatibility layer. -->
 
+<!-- Season 18 v9 targeted compatibility layer. -->
 
+<!-- Season 18 v9 targeted compatibility layer. -->
 
+<!-- Season 18 v9 targeted compatibility layer. -->
 
+<!-- Season 18 v9 targeted compatibility layer. -->
 
-
-
-
-
-
-
-
-
+<!-- Season 18 v9 targeted compatibility layer. -->
 
 <!-- Season 18 v12 compatibility layer. -->
 
+<!-- Season 18 v12 compatibility layer. -->
 
-
-
+<!-- Season 18 v12 compatibility layer. -->
 
 <!-- Season 18 v13 compatibility layer. -->
 
+<!-- Season 18 v13 compatibility layer. -->
 
-
-
+<!-- Season 18 v13 compatibility layer. -->
 
 <!-- Season 18 v14 compatibility layer. -->
 
+<!-- Season 18 v14 compatibility layer. -->
 
+<!-- Season 18 v14 compatibility layer. -->
 
+<!-- Season 18 v14 compatibility layer. -->
 
+<!-- Season 18 v14 compatibility layer. -->
 
+<!-- Season 18 v14 compatibility layer. -->
 
+<!-- Season 18 v14 compatibility layer. -->
 
+<!-- Season 18 v14 compatibility layer. -->
 
+<!-- Season 18 v14 compatibility layer. -->
 
+<!-- Season 18 v14 compatibility layer. -->
 
+<!-- Season 18 v14 compatibility layer. -->
 
+<!-- Season 18 v14 compatibility layer. -->
 
+<!-- Season 18 v14 compatibility layer. -->
 
+<!-- Season 18 v14 compatibility layer. -->
 
+<!-- Season 18 v14 compatibility layer. -->
 
+<!-- Season 18 v14 compatibility layer. -->
 
+<!-- Season 18 v14 compatibility layer. -->
 
+<!-- Season 18 v14 compatibility layer. -->
 
+<!-- Season 18 v14 compatibility layer. -->
 
+<!-- Season 18 v14 compatibility layer. -->
 
+<!-- Season 18 v14 compatibility layer. -->
 
+<!-- Season 18 v14 compatibility layer. -->
 
+<!-- Season 18 v14 compatibility layer. -->
 
+<!-- Season 18 v14 compatibility layer. -->
 
+<!-- Season 18 v14 compatibility layer. -->
 
+<!-- Season 18 v14 compatibility layer. -->
 
+<!-- Season 18 v14 compatibility layer. -->
 
+<!-- Season 18 v14 compatibility layer. -->
 
+<!-- Season 18 v14 compatibility layer. -->
 
+<!-- Season 18 v14 compatibility layer. -->
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+<!-- Season 18 v14 compatibility layer. -->
 <script src="js/v526-ui-final.js?v=531"></script>
 <script src="js/v520-character-styles.js?v=537r"></script>
 <script src="js/v539-mobile-admin.js?v=539"></script>
@@ -7158,16 +7162,22 @@ body .costumeTile > img,
 <script src="js/v542-tier-notes-mobile.js?v=542"></script>
 <script src="js/v543-moderation-evidence.js?v=543"></script>
 <script src="js/v547-mobile-profile-roles.js?v=547"></script>
+<script src="js/v551-bars-notes-persistent.js?v=551"></script>
+<script src="js/v552-mods-arrow-only.js?v=552"></script>
 
+<!-- Season 18 v14 compatibility layer. -->
 
+<!-- Season 18 v14 compatibility layer. -->
 
-
-
+<!-- Season 18 v14 compatibility layer. -->
 <script src="js/season18-fixes.js?v=570"></script>
 <script src="js/season18-v12.js?v=1785451218648514700"></script>
 <script src="js/v559-discounts-stable.js?v=559"></script>
 <script src="js/v560-discount-role-dedupe.js?v=560"></script>
   <link id="mhur-v561-css" rel="stylesheet" href="css/v561-discount-full-width.css?v=561">
+  <link id="mhur-v562-css" rel="stylesheet" href="css/v562-discount-typography.css?v=562">
+
+
 <link rel="stylesheet" href="css/v572-source-new-gentle-costumes.css?v=572">
 <script src="js/v572-source-new-gentle-costumes.js?v=572"></script>
 <link rel="stylesheet" href="css/v573-new-right-animation-costumes.css?v=573">

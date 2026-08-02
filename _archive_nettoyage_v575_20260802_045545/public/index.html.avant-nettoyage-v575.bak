@@ -7002,9 +7002,9 @@ body .costumeTile > img,
 <link rel="stylesheet" href="css/v510-back-button-offset.css?v=510">
 <script src="js/v510-back-button-offset.js?v=510"></script>
 <!-- V5.13 reste chargé en dernier : logo non coupé et boutons verrouillés. -->
-
-
-
+<link rel="stylesheet" href="css/v511-responsive-ui.css?v=511">
+<link rel="stylesheet" href="css/v512-header-first-paint.css?v=512">
+<link rel="stylesheet" href="css/v513-header-locked-mobile.css?v=513">
 <!-- V5.13: header mobile à géométrie fixe, sans saut pendant la restauration du compte. -->
 <!-- V5.14 : corrections ciblées profil, panneaux mobiles et alignement du header. -->
 <link rel="stylesheet" href="css/v514-targeted-ui-fixes.css?v=5142">
@@ -7020,137 +7020,137 @@ body .costumeTile > img,
 
 <!-- Season 18 data compatibility layer. -->
 
+<!-- Season 18 data compatibility layer. -->
 
+<!-- Season 18 data compatibility layer. -->
 
+<!-- Season 18 data compatibility layer. -->
 
+<!-- Season 18 data compatibility layer. -->
 
+<!-- Season 18 data compatibility layer. -->
 
+<!-- Season 18 data compatibility layer. -->
 
+<!-- Season 18 data compatibility layer. -->
 
+<!-- Season 18 data compatibility layer. -->
 
+<!-- Season 18 data compatibility layer. -->
 
+<!-- Season 18 data compatibility layer. -->
 
+<!-- Season 18 data compatibility layer. -->
 
+<!-- Season 18 data compatibility layer. -->
 
+<!-- Season 18 data compatibility layer. -->
 
+<!-- Season 18 data compatibility layer. -->
 
+<!-- Season 18 data compatibility layer. -->
 
+<!-- Season 18 data compatibility layer. -->
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+<!-- Season 18 data compatibility layer. -->
 
 <!-- Season 18 v9 targeted compatibility layer. -->
 
+<!-- Season 18 v9 targeted compatibility layer. -->
 
-
-
+<!-- Season 18 v9 targeted compatibility layer. -->
 
 <!-- Season 18 v10 targeted compatibility layer. -->
 
+<!-- Season 18 v10 targeted compatibility layer. -->
 
+<!-- Season 18 v10 targeted compatibility layer. -->
 
+<!-- Season 18 v9 targeted compatibility layer. -->
 
+<!-- Season 18 v9 targeted compatibility layer. -->
 
+<!-- Season 18 v9 targeted compatibility layer. -->
 
+<!-- Season 18 v9 targeted compatibility layer. -->
 
+<!-- Season 18 v9 targeted compatibility layer. -->
 
-
-
-
-
-
-
-
-
+<!-- Season 18 v9 targeted compatibility layer. -->
 
 <!-- Season 18 v12 compatibility layer. -->
 
+<!-- Season 18 v12 compatibility layer. -->
 
-
-
+<!-- Season 18 v12 compatibility layer. -->
 
 <!-- Season 18 v13 compatibility layer. -->
 
+<!-- Season 18 v13 compatibility layer. -->
 
-
-
+<!-- Season 18 v13 compatibility layer. -->
 
 <!-- Season 18 v14 compatibility layer. -->
 
+<!-- Season 18 v14 compatibility layer. -->
 
+<!-- Season 18 v14 compatibility layer. -->
 
+<!-- Season 18 v14 compatibility layer. -->
 
+<!-- Season 18 v14 compatibility layer. -->
 
+<!-- Season 18 v14 compatibility layer. -->
 
+<!-- Season 18 v14 compatibility layer. -->
 
+<!-- Season 18 v14 compatibility layer. -->
 
+<!-- Season 18 v14 compatibility layer. -->
 
+<!-- Season 18 v14 compatibility layer. -->
 
+<!-- Season 18 v14 compatibility layer. -->
 
+<!-- Season 18 v14 compatibility layer. -->
 
+<!-- Season 18 v14 compatibility layer. -->
 
+<!-- Season 18 v14 compatibility layer. -->
 
+<!-- Season 18 v14 compatibility layer. -->
 
+<!-- Season 18 v14 compatibility layer. -->
 
+<!-- Season 18 v14 compatibility layer. -->
 
+<!-- Season 18 v14 compatibility layer. -->
 
+<!-- Season 18 v14 compatibility layer. -->
 
+<!-- Season 18 v14 compatibility layer. -->
 
+<!-- Season 18 v14 compatibility layer. -->
 
+<!-- Season 18 v14 compatibility layer. -->
 
+<!-- Season 18 v14 compatibility layer. -->
 
+<!-- Season 18 v14 compatibility layer. -->
 
+<!-- Season 18 v14 compatibility layer. -->
 
+<!-- Season 18 v14 compatibility layer. -->
 
+<!-- Season 18 v14 compatibility layer. -->
 
+<!-- Season 18 v14 compatibility layer. -->
 
+<!-- Season 18 v14 compatibility layer. -->
 
+<!-- Season 18 v14 compatibility layer. -->
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+<!-- Season 18 v14 compatibility layer. -->
 <script src="js/v526-ui-final.js?v=531"></script>
 <script src="js/v520-character-styles.js?v=537r"></script>
 <script src="js/v539-mobile-admin.js?v=539"></script>
@@ -7158,11 +7158,11 @@ body .costumeTile > img,
 <script src="js/v542-tier-notes-mobile.js?v=542"></script>
 <script src="js/v543-moderation-evidence.js?v=543"></script>
 <script src="js/v547-mobile-profile-roles.js?v=547"></script>
+<!-- Season 18 v14 compatibility layer. -->
 
+<!-- Season 18 v14 compatibility layer. -->
 
-
-
-
+<!-- Season 18 v14 compatibility layer. -->
 <script src="js/season18-fixes.js?v=570"></script>
 <script src="js/season18-v12.js?v=1785451218648514700"></script>
 <script src="js/v559-discounts-stable.js?v=559"></script>

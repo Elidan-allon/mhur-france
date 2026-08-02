@@ -1,0 +1,25 @@
+MHUR FRANCE — RÉPARATION ET NETTOYAGE V576
+
+Le nettoyage V575 s'est arrêté parce que index.html charge cinq fichiers absents.
+C'est normal et sécurisé : aucun changement n'a été appliqué.
+
+V576 fait dans cet ordre :
+1. sauvegarde public/index.html ;
+2. retire uniquement les cinq références mortes connues ;
+3. refuse de continuer si un autre fichier absent est détecté ;
+4. vérifie que tous les JS/CSS chargés existent ;
+5. lance automatiquement le nettoyage sécurisé V575 ;
+6. crée RAPPORT_REPARATION_V576.txt.
+
+Les cinq références retirées ne peuvent actuellement avoir aucun effet,
+puisque les fichiers correspondants sont absents.
+
+UTILISATION
+1. Décompresse le ZIP à la racine de mhur-france.
+2. Lance APPLIQUER_REPARATION_ET_NETTOYAGE_V576.bat.
+3. La fenêtre doit terminer par deux lignes [OK].
+4. Ouvre RAPPORT_REPARATION_V576.txt.
+5. Teste le site localement avant tout envoi sur GitHub.
+
+ANNULATION
+Lance ANNULER_TOUT_V576.bat.
