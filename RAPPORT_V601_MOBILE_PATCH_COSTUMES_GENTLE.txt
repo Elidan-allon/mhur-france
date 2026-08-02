@@ -1,0 +1,32 @@
+MHUR FRANCE — RAPPORT V601
+
+PATCH NOTES MOBILE
+- Toutes les cartes Mirio du dernier patch utilisent mirio_technical.
+- Rôle forcé : Technique / Technical.
+- Style forcé : Sheer Counter.
+- Portrait local du style Technique.
+- Alpha local : Phantom Smash.
+- Les anciens textes comme Rupture ophtalmique invisible sont remplacés.
+
+COSTUMES MOBILE
+- Une seule colonne sur téléphone.
+- Chaque carte utilise toute la largeur disponible.
+- Image agrandie sans être coupée.
+- Nom, rareté, étoiles et T.U.N.I.N.G. repositionnés.
+
+GENTLE CRIMINAL γ
+- Titre FR : Dégâts γ supplémentaires.
+- Titre EN : Additional γ damage.
+- Bloc 1 : Ruée / Rush.
+- Bloc 2 : Rebond / Rebound.
+- Bloc 3 : Impact final / Final Impact.
+- Correction appliquée aux données et au DOM.
+- Fonctionne sur PC et mobile.
+
+CACHE
+- nouveaux fichiers chargés avec ?v=601.
+
+VÉRIFICATIONS
+- syntaxe JavaScript : OK
+- CSS mobile : OK
+- chargement en dernière position : OK
