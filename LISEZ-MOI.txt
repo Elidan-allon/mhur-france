@@ -1,22 +1,24 @@
-MHUR FRANCE — CORRECTIF V570
-
-Ce correctif modifie directement les fichiers qui génèrent l'accueil
-et les badges des costumes. Il ne rajoute pas une nouvelle détection par texte.
+MHUR FRANCE — CORRECTIF V571
 
 CORRECTIONS
-- suppression du NEW de Twice à l'accueil ;
-- suppression du NEW de Tsuyu Asui à l'accueil ;
-- conservation du NEW de Gentle Criminal ;
-- déplacement du NEW des costumes sous les étoiles à droite ;
-- désactivation des anciens correctifs V563 à V569 dans index.html ;
-- changement des numéros de cache vers V570.
+- écriture des réductions de points moins grasse ;
+- NEW restauré sur les cartes Gentle Criminal dans Personnages,
+  T.U.N.I.N.G et Costumes ;
+- NEW ajouté au costume Original de Gentle Criminal ;
+- NEW ajouté automatiquement à tous les costumes sortis à la date
+  la plus récente contenue dans season18_sync.js ;
+- tous les NEW utilisent la même animation de pulsation ;
+- NEW des costumes reste à droite sous les étoiles.
+
+La liste est calculée depuis les dates du fichier Saison 18 : elle ne dépend
+pas uniquement d'une liste écrite à la main et continuera donc de fonctionner
+lors des prochaines mises à jour.
 
 INSTALLATION
-1. Décompresse tout à la racine de mhur-france.
-2. Lance APPLIQUER_CORRECTIF_V570.bat.
-3. Vérifie que la fenêtre affiche les quatre lignes [OK].
-4. Fais ton commit et ton push GitHub.
-5. Après le déploiement Cloudflare, recharge avec Ctrl + F5.
+1. Décompresse le ZIP à la racine de mhur-france.
+2. Lance APPLIQUER_CORRECTIF_V571.bat.
+3. Fais ton commit et ton push GitHub.
+4. Après le déploiement Cloudflare, recharge avec Ctrl + F5.
 
 RETOUR EN ARRIÈRE
-Lance ANNULER_CORRECTIF_V570.bat.
+Lance ANNULER_CORRECTIF_V571.bat.
