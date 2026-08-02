@@ -1,0 +1,159 @@
+
+/* MHUR Nexus — V587 : bouton Notes, navigation et résultats mixtes */
+
+/* Le bouton reste toujours dans le header. */
+#mhurPatchDevButtonV14,
+.mhurPatchDevButtonV14,
+[data-s18-notes-button]{
+  display:inline-flex!important;
+  visibility:visible!important;
+  opacity:1!important;
+  align-items:center!important;
+  justify-content:center!important;
+  pointer-events:auto!important;
+  flex:0 0 auto!important;
+  min-width:46px!important;
+  min-height:42px!important;
+  z-index:250!important;
+}
+
+.mhurPatchDevIconV587{
+  width:22px!important;
+  height:22px!important;
+  display:grid!important;
+  place-items:center!important;
+  flex:0 0 22px!important;
+}
+
+.mhurPatchDevIconV587 svg{
+  display:block!important;
+  width:22px!important;
+  height:22px!important;
+}
+
+.mhurPatchDevLabelV587{
+  display:inline!important;
+  white-space:nowrap!important;
+}
+
+/* Les deux onglets Patch Notes / Dev Notes restent toujours visibles. */
+#s18NotesDevModalV10 .s18NotesPanelV10 > nav{
+  display:flex!important;
+  visibility:visible!important;
+  opacity:1!important;
+  min-height:54px!important;
+  flex:0 0 54px!important;
+  pointer-events:auto!important;
+  position:sticky!important;
+  top:0!important;
+  z-index:30!important;
+}
+
+#s18NotesDevModalV10 .s18NotesPanelV10 > nav > button{
+  display:flex!important;
+  visibility:visible!important;
+  opacity:1!important;
+  align-items:center!important;
+  justify-content:center!important;
+  pointer-events:auto!important;
+  min-height:52px!important;
+  flex:1 1 50%!important;
+}
+
+#s18NotesDevModalV10 [data-patch-index]{
+  pointer-events:auto!important;
+  cursor:pointer!important;
+  position:relative!important;
+  z-index:2!important;
+}
+
+/* Carte mixte : NERF sur certains niveaux et BUFF sur d'autres. */
+.s18PatchChangeV10.mixed{
+  border-color:#f3a62f!important;
+  box-shadow:
+    inset 5px 0 0 #c92340,
+    inset -5px 0 0 #15944a!important;
+}
+
+.s18ToneV10.mixed,
+.s18PatchDetailHeadV10 .mixed{
+  color:#fff!important;
+  background:
+    linear-gradient(
+      90deg,
+      #c92340 0%,
+      #c92340 50%,
+      #15944a 50%,
+      #15944a 100%
+    )!important;
+  border:2px solid #080b10!important;
+  border-radius:999px!important;
+  font-weight:1000!important;
+  white-space:nowrap!important;
+}
+
+.s18ToneV10.mixed{
+  min-width:128px!important;
+  text-align:center!important;
+}
+
+.s18PatchTableV10 tr.after td{
+  position:relative!important;
+}
+
+.s18PatchTableV10 tr.after td.mhurLevel-buffV587{
+  background:#164b2d!important;
+  box-shadow:inset 0 -4px 0 #20d26f!important;
+}
+
+.s18PatchTableV10 tr.after td.mhurLevel-nerfV587{
+  background:#551923!important;
+  box-shadow:inset 0 -4px 0 #ff4e67!important;
+}
+
+.s18PatchTableV10 tr.after td.mhurLevel-sameV587{
+  background:#273347!important;
+  box-shadow:inset 0 -4px 0 #8da2bf!important;
+}
+
+.s18PatchTableV10 tr.after td.mhurLevel-unknownV587{
+  background:#3b300f!important;
+  box-shadow:inset 0 -4px 0 #d1a92a!important;
+}
+
+.mhurLevelToneV587{
+  display:block!important;
+  margin-top:4px!important;
+  font-size:10px!important;
+  font-weight:1000!important;
+  line-height:1!important;
+  letter-spacing:.5px!important;
+}
+
+.mhurLevel-buffV587 .mhurLevelToneV587{
+  color:#6dffa3!important;
+}
+
+.mhurLevel-nerfV587 .mhurLevelToneV587{
+  color:#ff8b9b!important;
+}
+
+@media(max-width:900px){
+  #mhurPatchDevButtonV14,
+  .mhurPatchDevButtonV14,
+  [data-s18-notes-button]{
+    min-width:42px!important;
+    width:42px!important;
+    padding:8px!important;
+  }
+
+  .mhurPatchDevLabelV587,
+  #mhurPatchDevButtonV14 > span:last-child{
+    display:none!important;
+  }
+
+  #s18NotesDevModalV10 .s18NotesPanelV10 > nav{
+    min-height:50px!important;
+    flex-basis:50px!important;
+  }
+}

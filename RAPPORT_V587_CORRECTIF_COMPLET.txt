@@ -1,0 +1,33 @@
+MHUR FRANCE — RAPPORT V587
+
+IMAGES DES ALTERS
+- Les trois illustrations sont reconstruites avec leur numéro officiel :
+  Alpha = Unique1
+  Bêta = Unique2
+  Gamma = Unique3
+- La correction s'applique à tous les styles, y compris les styles futurs.
+- Les données exactes et MHUR_DATABASE_ASSETS sont corrigées en mémoire.
+- Les images déjà affichées sur une fiche sont rafraîchies.
+
+PATCH NOTES / DEV NOTES
+- Le bouton du header est recréé s'il disparaît.
+- Le bouton reste visible sur ordinateur et sous forme d'icône sur mobile.
+- Les onglets Patch Notes et Dev Notes sont forcés visibles.
+- Chaque clic sur une ancienne Patch Note est intercepté directement.
+- La note choisie est rechargée même si l'ancien onclick a été perdu.
+
+PATCH NOTES MIXTES
+- Calcul niveau par niveau.
+- NERF + BUFF lorsqu'une même statistique contient les deux.
+- Cellules NERF rouges et cellules BUFF vertes.
+- Nom et image officiels de l'Alter réappliqués dans chaque carte.
+
+PERSISTANCE
+- Intégration au workflow V585 : NON (modification interdite au jeton GitHub Actions)
+
+VÉRIFICATIONS
+- V587 chargé en dernier : OK
+- syntaxe JavaScript : OK
+- bouton permanent : OK
+- clics des Patch Notes : OK
+- mapping Unique1/Unique2/Unique3 : OK
