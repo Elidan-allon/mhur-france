@@ -1,0 +1,28 @@
+MHUR FRANCE — RAPPORT V593
+
+PATCH NOTE V1.17.0-14.5
+- Sections installées : 6
+- Cartes de changements installées : 25
+- PV : inclus
+- Dégâts : inclus
+- Munitions et recharge : inclus
+- T.U.N.I.N.G. normal : aucun changement
+- T.U.N.I.N.G. spécial : aucun changement
+- Nouveau contenu : Tomura Shigaraki et Gentle Criminal
+
+NOMS ET IMAGES
+- Les noms officiels sont lus depuis les fiches Personnages.
+- Les images sont lues depuis les objets officiels des Alters.
+- Les variantes descriptives sont bilingues.
+
+DEV NOTES
+- showNotesTab est désormais exportée.
+- Le bouton Dev Notes appelle directement showNotesTab('dev').
+- Le contenu officiel devHtml est conservé.
+
+VÉRIFICATIONS
+- données bilingues : OK
+- tableaux avec niveaux personnalisés : OK
+- changements mixtes : OK
+- onglet Dev Notes : OK
+- syntaxe JavaScript : OK

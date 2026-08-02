@@ -484,21 +484,112 @@ function skillForChange(st,change){
   return all.find(s=>{const n=NORM(s?.name),l=NORM(s?.letter);return (n&&raw.includes(n))||(l&&raw.startsWith(l))})||null;
 }
 function average(values){const n=(Array.isArray(values)?values:[values]).map(v=>parseFloat(String(v).replace(',','.'))).filter(Number.isFinite);return n.length?n.reduce((a,b)=>a+b,0)/n.length:null}
-function toneFor(change,sectionTitle=''){
-  const explicit=NORM(change?.tone||change?.type||'');
-  if(/buff|increase|improve|up/.test(explicit))return 'buff';
-  if(/nerf|decrease|reduce|down/.test(explicit))return 'nerf';
-  const before=average(change?.before),after=average(change?.after);if(before==null||after==null||before===after)return 'adjust';
-  const context=NORM(`${sectionTitle} ${change?.label||''} ${change?.skill_name||''}`);
-  const lowerIsBetter=/reload|cooldown|recharge|time|second|seconde/.test(context);
-  if(lowerIsBetter)return after<before?'buff':'nerf';
-  return after>before?'buff':'nerf';
+
+function metricToneV593(metric,sectionTitle=''){
+  const explicit=NORM(metric?.tone||metric?.type||'');
+
+  if(explicit==='buff')return 'buff';
+  if(explicit==='nerf')return 'nerf';
+  if(explicit==='same')return 'same';
+
+  const before=Array.isArray(metric?.before)?metric.before:[metric?.before];
+  const after=Array.isArray(metric?.after)?metric.after:[metric?.after];
+  const context=NORM(`${sectionTitle} ${CLEAN(metric?.label||'')}`);
+  const lowerIsBetter=/reload|recharge|cooldown|time|temps|penalty|penalite|duration|duree/.test(context);
+  const tones=[];
+
+  for(let i=0;i<Math.max(before.length,after.length);i+=1){
+    const oldValue=parseFloat(String(before[i]??'').replace(',','.'));
+    const newValue=parseFloat(String(after[i]??'').replace(',','.'));
+
+    if(!Number.isFinite(oldValue)||!Number.isFinite(newValue)||oldValue===newValue)continue;
+
+    tones.push(
+      lowerIsBetter
+        ?(newValue<oldValue?'buff':'nerf')
+        :(newValue>oldValue?'buff':'nerf')
+    );
+  }
+
+  if(tones.includes('buff')&&tones.includes('nerf'))return 'mixed';
+  if(tones.includes('buff'))return 'buff';
+  if(tones.includes('nerf'))return 'nerf';
+  return 'adjust';
 }
-function valuesHtml(change,tone){
-  const before=Array.isArray(change?.before)?change.before:[change?.before];const after=Array.isArray(change?.after)?change.after:[change?.after];const count=Math.max(before.length,after.length);
-  if(count>1)return `<div class="s18PatchTableWrapV10"><table class="s18PatchTableV10"><thead><tr><th></th>${Array.from({length:count},(_,i)=>`<th>Lv.${i+1}</th>`).join('')}</tr></thead><tbody><tr class="before"><th>${TX('Avant','Before')}</th>${Array.from({length:count},(_,i)=>`<td>${ESC(CLEAN(before[i]??''))}</td>`).join('')}</tr><tr class="after ${tone}"><th>${TX('Après','After')}</th>${Array.from({length:count},(_,i)=>`<td>${ESC(CLEAN(after[i]??''))}</td>`).join('')}</tr></tbody></table></div>`;
-  if(change?.before!=null||change?.after!=null)return `<div class="s18PatchRow"><span class="s18PatchBefore">${ESC(CLEAN(before[0]??'—'))}</span><span class="s18PatchArrow">→</span><span class="s18PatchAfter ${tone}">${ESC(CLEAN(after[0]??'—'))}</span></div>`;
-  return '';
+
+function changeToneV593(change,sectionTitle=''){
+  const metrics=Array.isArray(change?.metrics)&&change.metrics.length
+    ?change.metrics
+    :[change];
+
+  const tones=metrics
+    .map(metric=>metricToneV593(metric,sectionTitle))
+    .filter(tone=>tone==='buff'||tone==='nerf');
+
+  if(tones.includes('buff')&&tones.includes('nerf'))return 'mixed';
+  if(tones.includes('buff'))return 'buff';
+  if(tones.includes('nerf'))return 'nerf';
+  return 'adjust';
+}
+
+function toneLabelV593(tone){
+  if(tone==='buff')return 'BUFF';
+  if(tone==='nerf')return 'NERF';
+  if(tone==='mixed')return 'NERF + BUFF';
+  return TX('NEUTRE','NEUTRAL');
+}
+
+function valuesHtml(change,tone,sectionTitle=''){
+  const metrics=Array.isArray(change?.metrics)&&change.metrics.length
+    ?change.metrics
+    :[change];
+
+  return metrics.map(metric=>{
+    const metricTone=metricToneV593(metric,sectionTitle);
+    const before=Array.isArray(metric?.before)?metric.before:[metric?.before];
+    const after=Array.isArray(metric?.after)?metric.after:[metric?.after];
+    const count=Math.max(before.length,after.length);
+    const levels=Array.isArray(metric?.levels)&&metric.levels.length
+      ?metric.levels
+      :Array.from({length:count},(_,index)=>index+1);
+    const label=CLEAN(metric?.label||change?.label||'');
+
+    if(count>1){
+      return `<section class="s18MetricV593 tone-${metricTone}">
+        ${label?`<h6>${ESC(label)}</h6>`:''}
+        <div class="s18PatchTableWrapV10">
+          <table class="s18PatchTableV10 s18PatchTableV593">
+            <thead>
+              <tr>
+                <th></th>
+                ${levels.map(level=>`<th>Lv.${ESC(level)}</th>`).join('')}
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="before">
+                <th>${TX('Avant','Before')}</th>
+                ${before.map(value=>`<td>${ESC(CLEAN(value))}</td>`).join('')}
+              </tr>
+              <tr class="after ${metricTone}">
+                <th>${TX('Après','After')}</th>
+                ${after.map(value=>`<td>${ESC(CLEAN(value))}</td>`).join('')}
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>`;
+    }
+
+    return `<section class="s18MetricV593 tone-${metricTone}">
+      ${label?`<h6>${ESC(label)}</h6>`:''}
+      ${levels?.[0]?`<small class="s18MetricLevelV593">Lv.${ESC(levels[0])}</small>`:''}
+      <div class="s18PatchRow">
+        <span class="s18PatchBefore">${ESC(CLEAN(before[0]??'—'))}</span>
+        <span class="s18PatchArrow">→</span>
+        <span class="s18PatchAfter ${metricTone}">${ESC(CLEAN(after[0]??'—'))}</span>
+      </div>
+    </section>`;
+  }).join('');
 }
 function groupsForSection(section){
   const groups=[];const map=new Map();
@@ -509,15 +600,134 @@ function groupsForSection(section){
     map.get(key).changes.push(change);
   });return groups;
 }
+
 function groupHtml(group,sectionTitle){
-  const role=ROLE(group.st?.role||'technical');const side=group.ch?.side||'hero';
-  return `<article class="s18PatchCharacterV10 role-${role}"><header><div class="s18PatchPortraitV10">${group.st?.portrait&&typeof asset==='function'?asset(group.st.portrait,group.character):''}</div><div><h4>${ESC(group.character)}</h4><strong>${ESC(group.style)}</strong><div class="s18PatchBadgesV10"><span class="badge ${side==='villain'?'villain':'hero'}">${ESC(SIDE_TEXT(side))}</span><span class="badge ${role}">${ESC(ROLE_TEXT(role))}</span></div></div></header><div class="s18PatchChangesV10">${group.changes.map(change=>{const tone=toneFor(change,sectionTitle);const skill=skillForChange(group.st,change);const title=translatePatch(CLEAN(skill?.name||change?.skill_name||change?.label||TX('Ajustement','Adjustment')));const picture=skill?.img||change?.skill_image||'';const bullets=(change?.bullets||[]).map(translatePatch).filter(Boolean);return `<section class="s18PatchChangeV10 ${tone}"><span class="s18ToneV10 ${tone}">${tone==='buff'?'BUFF':tone==='nerf'?'NERF':TX('NEUTRE','NEUTRAL')}</span><div class="s18PatchSkillV10">${picture&&typeof asset==='function'?`<div>${asset(picture,title)}</div>`:''}<main><h5>${ESC(title)}</h5>${change?.label?`<p class="s18PatchLabelV10">${ESC(translatePatch(change.label))}</p>`:''}${valuesHtml(change,tone)}${bullets.length?`<ul>${bullets.map(b=>`<li>${ESC(b)}</li>`).join('')}</ul>`:''}</main></div></section>`}).join('')}</div></article>`;
+  const role=ROLE(group.st?.role||'technical');
+  const side=group.ch?.side||'hero';
+
+  return `<article class="s18PatchCharacterV10 role-${role}">
+    <header>
+      <div class="s18PatchPortraitV10">
+        ${group.st?.portrait&&typeof asset==='function'
+          ?asset(group.st.portrait,group.character)
+          :''
+        }
+      </div>
+      <div>
+        <h4>${ESC(group.character)}</h4>
+        <strong>${ESC(group.style)}</strong>
+        <div class="s18PatchBadgesV10">
+          <span class="badge ${side==='villain'?'villain':'hero'}">
+            ${ESC(SIDE_TEXT(side))}
+          </span>
+          <span class="badge ${role}">
+            ${ESC(ROLE_TEXT(role))}
+          </span>
+        </div>
+      </div>
+    </header>
+
+    <div class="s18PatchChangesV10">
+      ${group.changes.map(change=>{
+        const tone=changeToneV593(change,sectionTitle);
+        const skill=skillForChange(group.st,change);
+
+        /*
+          Le nom officiel vient directement de la fiche Personnage.
+          Aucune traduction manuelle ne peut le remplacer.
+        */
+        const title=CLEAN(
+          skill?.name||
+          change?.skill_name||
+          change?.label||
+          TX('Ajustement','Adjustment')
+        );
+
+        const variant=CLEAN(change?.variant||'');
+        const picture=skill?.img||change?.skill_image||'';
+        const bullets=(change?.bullets||[]).map(value=>CLEAN(value)).filter(Boolean);
+
+        return `<section class="s18PatchChangeV10 ${tone}">
+          <span class="s18ToneV10 ${tone}">${toneLabelV593(tone)}</span>
+
+          <div class="s18PatchSkillV10">
+            ${picture&&typeof asset==='function'
+              ?`<div>${asset(picture,title)}</div>`
+              :''
+            }
+
+            <main>
+              <h5>${ESC(title)}</h5>
+              ${variant?`<p class="s18PatchVariantV593">${ESC(variant)}</p>`:''}
+              ${valuesHtml(change,tone,sectionTitle)}
+              ${bullets.length
+                ?`<ul>${bullets.map(item=>`<li>${ESC(item)}</li>`).join('')}</ul>`
+                :''
+              }
+            </main>
+          </div>
+        </section>`;
+      }).join('')}
+    </div>
+  </article>`;
 }
+
 function patchDetailHtml(note){
-  const sections=(note?.details||[]).map(sec=>({...sec,changes:(sec.changes||[]).filter(Boolean)})).filter(sec=>sec.changes.length);
-  if(sections.length)return sections.map(sec=>`<section class="s18PatchSectionV10"><h3>${ESC(translatePatch(sec.title))}</h3>${sec.note?`<p>${ESC(translatePatch(sec.note))}</p>`:''}<div class="s18PatchSeparatedV10">${groupsForSection(sec).map(g=>groupHtml(g,sec.title)).join('')}</div></section>`).join('');
-  if((note?.rich_blocks||[]).length)return `<div class="s18DevArticleV10">${note.rich_blocks.map(b=>b.type==='heading'?`<h3>${ESC(translatePatch(b.text))}</h3>`:b.type==='image'&&typeof asset==='function'?`<figure>${asset(b.src,b.alt||'')}</figure>`:`<p>${ESC(translatePatch(b.text))}</p>`).join('')}</div>`;
-  return `<p>${TX('Aucun détail disponible.','No details available.')}</p>`;
+  const sections=Array.isArray(note?.details)?note.details:[];
+
+  if(!sections.length){
+    if((note?.rich_blocks||[]).length){
+      return `<div class="s18DevArticleV10">${
+        note.rich_blocks.map(block=>
+          block.type==='heading'
+            ?`<h3>${ESC(CLEAN(block.text))}</h3>`
+            :block.type==='image'&&typeof asset==='function'
+              ?`<figure>${asset(block.src,block.alt||'')}</figure>`
+              :`<p>${ESC(CLEAN(block.text))}</p>`
+        ).join('')
+      }</div>`;
+    }
+
+    return `<p>${TX('Aucun détail disponible.','No details available.')}</p>`;
+  }
+
+  return sections.map(section=>{
+    const title=CLEAN(section?.title||'');
+    const noteText=CLEAN(section?.note||'');
+
+    if(section?.kind==='empty'){
+      return `<section class="s18PatchSectionV10 s18PatchEmptyV593">
+        <h3>${ESC(title)}</h3>
+        <p>${ESC(noteText||TX('Aucun changement détecté.','No changes detected.'))}</p>
+      </section>`;
+    }
+
+    if(section?.kind==='new_content'){
+      return `<section class="s18PatchSectionV10 s18NewContentV593">
+        <h3>${ESC(title)}</h3>
+        <div class="s18NewContentGroupsV593">
+          ${(section.entries||[]).map(entry=>`
+            <article>
+              <h4>${ESC(CLEAN(entry.character))}</h4>
+              <ul>
+                ${(entry.items||[]).map(item=>`<li>${ESC(CLEAN(item))}</li>`).join('')}
+              </ul>
+            </article>
+          `).join('')}
+        </div>
+      </section>`;
+    }
+
+    const changes=(section?.changes||[]).filter(Boolean);
+
+    return `<section class="s18PatchSectionV10">
+      <h3>${ESC(title)}</h3>
+      ${noteText?`<p>${ESC(noteText)}</p>`:''}
+      <div class="s18PatchSeparatedV10">
+        ${groupsForSection({...section,changes}).map(group=>groupHtml(group,section.title)).join('')}
+      </div>
+    </section>`;
+  }).join('');
 }
 function devHtml(){
   return `<article class="s18DevArticleV10"><div class="s18DevHeroV10"><span>DEV BLOG VOL. 27</span><h2>Developer Notes — Season 18</h2><p>29/07/2026 · Bandai Namco / Byking</p></div><section><h3>20 ${TX('millions de téléchargements','million downloads')}</h3><p>${TX('Un bonus de connexion spécial de 28 jours célèbre ce cap, avec notamment 6 000 Cristaux Héros et 100 Tickets de tirage.','A special 28-day login bonus celebrates the milestone, including 6,000 Hero Crystals and 100 Roll Tickets.')}</p></section><section><h3>Gentle Criminal & La Brava</h3><p>${TX("Gentle est pensé comme un personnage Technique très mobile. Son Alter Élasticité crée des rebonds, une barrière d'air et un trampoline utilisable par les alliés. La Brava le soutient avec son drone et Lover Mode augmente sa puissance et sa recharge pendant Plus Chaos.","Gentle is designed as a highly mobile Technical character. Elasticity creates rebounds, an air barrier, and an ally-usable trampoline. La Brava supports him with her drone, while Lover Mode boosts attack and reload during Plus Chaos.")}</p></section><section><h3>Chaos City Ver. 02</h3><p>${TX("Le quartier commercial a été profondément rénové et une nouvelle zone souterraine, Tentoin Alley, permet de circuler par des passages sous la ville.","The shopping district has been heavily renovated, with the new underground Tentoin Alley area connecting parts of the city.")}</p></section><section><h3>Research Notebook</h3><p>${TX('La Mission n° 3, plus difficile, est ajoutée. Le niveau maximum passe à 200 avec de nouvelles récompenses, dont des Tickets et des objets T.U.N.I.N.G.','The more challenging Mission No. 3 is added. The level cap rises to 200 with new rewards, including Tickets and T.U.N.I.N.G items.')}</p></section><section><h3>3-Pick Battle</h3><p>${TX('Ce nouveau mode est prévu à partir de la fin août. Chaque joueur choisit trois styles et le vainqueur est celui qui inflige le plus de dégâts.','This new mode is planned from late August. Each player selects three styles, and the winner is the player who deals the most damage.')}</p></section><div class="s18OfficialLinksV10"><a href="https://en.bandainamcoent.eu/my-hero-academia/news/my-hero-ultra-rumble-development-blog-vol-27" target="_blank" rel="noopener">${TX('Lire la Dev Note officielle','Read the official Dev Note')}</a><a href="https://en.bandainamcoent.eu/my-hero-academia/news/my-hero-ultra-rumble-season-18" target="_blank" rel="noopener">${TX('Voir la page officielle Saison 18','View the official Season 18 page')}</a></div></article>`;
@@ -542,11 +752,44 @@ function resetNotesScroll(modal,resetAside=false){
   if(main)main.scrollTop=0;if(resetAside&&aside)aside.scrollTop=0;
   const panel=modal.querySelector('.s18NotesPanelV10');if(panel)panel.scrollTop=0;
 }
+
 function showPatch(index=0){
-  const modal=notesModal();const notes=window.MHUR_HOME_DATA?.patch_notes||[];const note=notes[index];
-  modal.querySelector('aside').innerHTML=notes.map((n,i)=>`<button type="button" data-patch-index="${i}" class="${i===index?'active':''}"><b>${ESC(translatePatch(n.title))}</b><small>${n.date?new Date(n.date).toLocaleDateString(L()==='fr'?'fr-FR':'en-US'):''}</small></button>`).join('')||`<p>${TX('Aucune note disponible.','No notes available.')}</p>`;
-  modal.querySelector('main').innerHTML=note?`<div class="s18PatchDetailHeadV10"><h2>${ESC(translatePatch(note.title))}</h2><div><span class="buff">BUFF</span><span class="nerf">NERF</span><span class="adjust">${TX('NEUTRE','NEUTRAL')}</span></div></div>${patchDetailHtml(note)}`:`<p>${TX('Aucune note disponible.','No notes available.')}</p>`;
-  modal.querySelectorAll('[data-patch-index]').forEach(b=>b.onclick=()=>showPatch(Number(b.dataset.patchIndex)));
+  const modal=notesModal();
+  const notes=window.MHUR_HOME_DATA?.patch_notes||[];
+  const note=notes[index];
+
+  modal.querySelector('aside').innerHTML=notes.map((item,itemIndex)=>`
+    <button
+      type="button"
+      data-patch-index="${itemIndex}"
+      class="${itemIndex===index?'active':''}"
+    >
+      <b>${ESC(CLEAN(item.title))}</b>
+      <small>${
+        item.date
+          ?new Date(item.date).toLocaleDateString(L()==='fr'?'fr-FR':'en-US')
+          :''
+      }</small>
+    </button>
+  `).join('')||`<p>${TX('Aucune note disponible.','No notes available.')}</p>`;
+
+  modal.querySelector('main').innerHTML=note
+    ?`<div class="s18PatchDetailHeadV10">
+        <h2>${ESC(CLEAN(note.title))}</h2>
+        <div>
+          <span class="buff">BUFF</span>
+          <span class="nerf">NERF</span>
+          <span class="adjust">${TX('NEUTRE','NEUTRAL')}</span>
+          <span class="mixed">NERF + BUFF</span>
+        </div>
+      </div>
+      ${patchDetailHtml(note)}`
+    :`<p>${TX('Aucune note disponible.','No notes available.')}</p>`;
+
+  modal.querySelectorAll('[data-patch-index]').forEach(button=>{
+    button.onclick=()=>showPatch(Number(button.dataset.patchIndex));
+  });
+
   requestAnimationFrame(()=>resetNotesScroll(modal,false));
 }
 function showNotesTab(tab){
@@ -667,9 +910,9 @@ function init(){
   window.addEventListener('mhur-role-change',()=>setTimeout(()=>{ensureHeaderButton();injectAdminProfileButton()},80));
   window.addEventListener('mhur:languagechange',()=>requestAnimationFrame(afterDom));
 }
-window.MHUR_S18_V10={openNotes,openAdminCenter,showPatch};
-window.MHUR_S18_V13={openNotes,openAdminCenter,showPatch,afterDom};
-window.MHUR_S18_V14={openNotes,openAdminCenter,showPatch,afterDom};
+window.MHUR_S18_V10={openNotes,openAdminCenter,showPatch,showNotesTab,devHtml};
+window.MHUR_S18_V13={openNotes,openAdminCenter,showPatch,showNotesTab,devHtml,afterDom};
+window.MHUR_S18_V14={openNotes,openAdminCenter,showPatch,showNotesTab,devHtml,afterDom};
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
 })();
 
