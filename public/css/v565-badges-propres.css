@@ -1,0 +1,137 @@
+/* MHUR FRANCE — V565
+   Système unique et propre pour les badges NEW / INCOMING.
+*/
+
+@keyframes mhurV565Pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.14); }
+}
+
+.mhur-v565-host {
+  position: relative !important;
+}
+
+.mhurV565Badge {
+  position: absolute !important;
+  top: 10px !important;
+  left: 10px !important;
+  right: auto !important;
+  z-index: 999 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-width: 72px !important;
+  height: 30px !important;
+  padding: 0 9px !important;
+  margin: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: #fff !important;
+  font-family: Impact, Haettenschweiler, "Arial Black", sans-serif !important;
+  font-size: 17px !important;
+  font-weight: 900 !important;
+  font-style: italic !important;
+  line-height: 1 !important;
+  letter-spacing: 0 !important;
+  white-space: nowrap !important;
+  text-transform: uppercase !important;
+  text-shadow:
+    -2px -2px 0 #ff2f92,
+     2px -2px 0 #ff2f92,
+    -2px  2px 0 #ff2f92,
+     2px  2px 0 #ff2f92,
+     3px  3px 0 rgba(0,0,0,.9) !important;
+  transform-origin: center center !important;
+  animation: mhurV565Pulse 1.05s ease-in-out infinite !important;
+  pointer-events: none !important;
+}
+
+.mhurV565Badge[data-type="new"]::before {
+  content: "NEW!";
+}
+
+.mhurV565Badge[data-type="incoming"]::before {
+  content: "INCOMING";
+}
+
+/* Sur l'accueil, badge à droite comme le NEW original. */
+.mhur-v565-home-card .mhurV565Badge {
+  top: 12px !important;
+  left: auto !important;
+  right: 14px !important;
+}
+
+/* INCOMING a la même présence visuelle que NEW. */
+.mhur-v565-home-card .mhurV565Badge[data-type="incoming"] {
+  min-width: 112px !important;
+  font-size: 16px !important;
+}
+
+/* Carte personnage : tout en haut à gauche. */
+.mhur-v565-character-card .mhurV565Badge {
+  top: 10px !important;
+  left: 10px !important;
+  right: auto !important;
+}
+
+/* Costumes et tuning : sous les étoiles à droite. */
+.mhur-v565-costume-card .mhurV565Badge,
+.mhur-v565-tuning-card .mhurV565Badge {
+  top: 32px !important;
+  left: auto !important;
+  right: 10px !important;
+  min-width: 66px !important;
+  height: 27px !important;
+  font-size: 15px !important;
+}
+
+/* Anciennes générations V563 / V564 masquées partout. */
+.mhurV563Badge,
+.mhurV564Badge,
+.mhur-v563-animate,
+.mhur-v564-live,
+.mhur-v564-hide-old {
+  display: none !important;
+  animation: none !important;
+}
+
+/* Réapplique la typographie légère des réductions après les badges. */
+.discountGridV296.v559DiscountGrid .v559DiscountName {
+  font-family: Arial, Helvetica, sans-serif !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  line-height: 1.15 !important;
+  letter-spacing: 0 !important;
+  text-shadow: 1px 1px 0 #000 !important;
+}
+
+.discountGridV296.v559DiscountGrid .v559RoleBadge {
+  font-family: Arial, Helvetica, sans-serif !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  line-height: 1 !important;
+  letter-spacing: 0 !important;
+}
+
+.discountGridV296.v559DiscountGrid .v559DiscountPoints {
+  font-family: Arial, Helvetica, sans-serif !important;
+  font-size: 17px !important;
+  font-weight: 700 !important;
+  line-height: 1 !important;
+  letter-spacing: 0 !important;
+}
+
+@media (max-width: 700px) {
+  .mhurV565Badge {
+    min-width: 66px !important;
+    height: 28px !important;
+    font-size: 16px !important;
+  }
+
+  .mhur-v565-home-card .mhurV565Badge[data-type="incoming"] {
+    min-width: 102px !important;
+    font-size: 14px !important;
+  }
+}
