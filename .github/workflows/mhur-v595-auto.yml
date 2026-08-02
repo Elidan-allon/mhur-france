@@ -1,0 +1,1039 @@
+name: MHUR V595 - portraits et tableaux Patch Notes
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/mhur-v595-auto.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: mhur-v595-patch-portraits-tables
+  cancel-in-progress: false
+
+jobs:
+  appliquer:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Recuperer le depot
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Installer Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: "24"
+          package-manager-cache: false
+
+      - name: Scanner les portraits et Alters locaux
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          from datetime import datetime, timezone
+          import json
+
+          root = Path.cwd()
+          public = root / "public"
+          assets = public / "assets"
+          manifest = public / "data" / "v595-local-patch-assets.js"
+          report = root / "RAPPORT_V595_PATCH_PORTRAITS_TABLEAUX.txt"
+
+          extensions = (".webp", ".png", ".jpg", ".jpeg", ".avif")
+          wanted = {
+              "portrait": ("portrait", "profile", "character", "chara"),
+              "alpha": ("alpha",),
+              "beta": ("beta",),
+              "gamma": ("gamma",),
+              "special": ("special", "sp"),
+          }
+
+
+          def find_file(directory: Path, stems: tuple[str, ...]):
+              files = [
+                  file for file in directory.iterdir()
+                  if file.is_file() and file.suffix.lower() in extensions
+              ]
+
+              for stem in stems:
+                  for extension in extensions:
+                      exact = directory / f"{stem}{extension}"
+                      if exact.is_file():
+                          return exact
+
+                  for file in files:
+                      if file.stem.lower() == stem.lower():
+                          return file
+
+              return None
+
+
+          if not assets.is_dir():
+              raise SystemExit("[ERREUR] public/assets est introuvable.")
+
+          candidates = {}
+
+          for directory in sorted(path for path in assets.rglob("*") if path.is_dir()):
+              row = {}
+
+              for key, stems in wanted.items():
+                  file = find_file(directory, stems)
+                  if file:
+                      row[key] = file.resolve().relative_to(public.resolve()).as_posix()
+
+              if not row:
+                  continue
+
+              style_id = directory.name
+              score = (
+                  10 * int("portrait" in row)
+                  + sum(int(key in row) for key in ("alpha", "beta", "gamma", "special"))
+              )
+
+              previous = candidates.get(style_id)
+
+              if previous is None or score > previous["score"]:
+                  candidates[style_id] = {
+                      "score": score,
+                      "row": row,
+                  }
+
+          styles = {
+              style_id: value["row"]
+              for style_id, value in sorted(candidates.items())
+          }
+
+          if not styles:
+              raise SystemExit("[ERREUR] Aucun portrait ou Alter local détecté.")
+
+          payload = {
+              "version": 595,
+              "generated_at": datetime.now(timezone.utc).isoformat(),
+              "source": "public/assets uniquement",
+              "styles": styles,
+          }
+
+          source = (
+              "/* MHUR Nexus — V595 : portraits et Alters locaux des Patch Notes */\n"
+              "window.MHUR_PATCH_LOCAL_ASSETS_V595="
+              + json.dumps(payload, ensure_ascii=False, separators=(",", ":"))
+              + ";\n"
+          )
+
+          manifest.parent.mkdir(parents=True, exist_ok=True)
+          manifest.write_text(source, encoding="utf-8")
+
+          with_portrait = sum("portrait" in row for row in styles.values())
+          with_triplet = sum(
+              all(key in row for key in ("alpha", "beta", "gamma"))
+              for row in styles.values()
+          )
+
+          lines = [
+              "MHUR FRANCE — RAPPORT V595",
+              "",
+              f"Dossiers de styles détectés : {len(styles)}",
+              f"Styles avec portrait local : {with_portrait}",
+              f"Styles avec Alpha/Bêta/Gamma locaux : {with_triplet}",
+              "",
+              "RÈGLES",
+              "- Portraits pris uniquement dans public/assets.",
+              "- Images Alpha/Bêta/Gamma prises uniquement dans public/assets.",
+              "- Aucun lien distant ajouté.",
+              "- Les cartes sans image d'Alter utilisent toute la largeur.",
+              "- Tous les tableaux possèdent une largeur minimale lisible.",
+          ]
+
+          report.write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+          print(f"[OK] Styles détectés : {len(styles)}")
+          print(f"[OK] Portraits locaux : {with_portrait}")
+          print(f"[OK] Triplets Alpha/Bêta/Gamma : {with_triplet}")
+          PY
+
+      - name: Installer le correcteur V595
+        shell: bash
+        run: |
+          cat > public/js/v595-patch-portraits-tables.js <<'JS'
+          /* MHUR Nexus — V595 : portraits des personnages et tableaux Patch Notes */
+          (function(){
+            'use strict';
+
+            const VERSION='595';
+
+            function clean(value){
+              return String(value??'').trim();
+            }
+
+            function normal(value){
+              return clean(value)
+                .normalize('NFD')
+                .replace(/[\u0300-\u036f]/g,'')
+                .toLowerCase()
+                .replace(/[^a-z0-9]+/g,'_')
+                .replace(/^_+|_+$/g,'');
+            }
+
+            function localPath(value){
+              const path=clean(value)
+                .replace(/^\.?\//,'')
+                .replace(/^public\//,'');
+
+              return path.startsWith('assets/')?path:'';
+            }
+
+            function localManifest(){
+              return window.MHUR_PATCH_LOCAL_ASSETS_V595?.styles||{};
+            }
+
+            function charactersList(){
+              try{
+                if(typeof characters!=='undefined'&&Array.isArray(characters)){
+                  return characters;
+                }
+              }catch(_error){}
+
+              return Array.isArray(window.characters)?window.characters:[];
+            }
+
+            function stylesMap(){
+              try{
+                if(typeof styles!=='undefined'&&styles)return styles;
+              }catch(_error){}
+
+              return window.styles||{};
+            }
+
+            function characterStyleIds(character){
+              const map=stylesMap();
+
+              return (character?.styles||[])
+                .map(String)
+                .filter(id=>map[id]);
+            }
+
+            function removeQuotedStyle(value){
+              return clean(value)
+                .replace(/\s*["“”'‘’][^"“”'‘’]+["“”'‘’]\s*$/u,'')
+                .replace(/\s*\([^)]*\)\s*$/u,'')
+                .trim();
+            }
+
+            function characterScore(character,label){
+              const raw=normal(label);
+              const base=normal(removeQuotedStyle(label));
+              const id=normal(character?.id);
+              const name=normal(character?.name);
+
+              if(!raw&&!base)return -1;
+              if(raw===id||raw===name)return 1000;
+              if(base===id||base===name)return 950;
+              if(raw.startsWith(name+'_')||raw.startsWith(id+'_'))return 900;
+              if(base.startsWith(name)||name.startsWith(base))return 850;
+              if(raw.includes(name)||name.includes(raw))return 800;
+              if(base.includes(name)||name.includes(base))return 780;
+
+              const wantedTokens=new Set(base.split('_').filter(Boolean));
+              const characterTokens=name.split('_').filter(Boolean);
+              const matching=characterTokens.filter(token=>wantedTokens.has(token)).length;
+
+              return matching?matching*100:0;
+            }
+
+            function resolveCharacter(label){
+              return charactersList()
+                .map(character=>({
+                  character,
+                  score:characterScore(character,label)
+                }))
+                .sort((a,b)=>b.score-a.score)
+                .find(row=>row.score>0)
+                ?.character||null;
+            }
+
+            function localized(value){
+              if(value&&typeof value==='object'&&!Array.isArray(value)){
+                let language='fr';
+
+                try{
+                  language=typeof lang!=='undefined'&&lang==='en'?'en':'fr';
+                }catch(_error){}
+
+                return value[language]??value.fr??value.en??'';
+              }
+
+              return value;
+            }
+
+            function extractQuotedStyle(value){
+              const match=clean(value).match(
+                /["“”'‘’]([^"“”'‘’]+)["“”'‘’]\s*$/u
+              );
+
+              return match?.[1]||'';
+            }
+
+            function skillKey(value){
+              const raw=clean(value);
+              const key=normal(raw);
+
+              if(
+                /^(?:α|a|alpha)(?:\s|[-—:(]|$)/i.test(raw)||
+                key==='alpha'||
+                key.startsWith('alpha_')
+              )return 'alpha';
+
+              if(
+                /^(?:β|b|beta)(?:\s|[-—:(]|$)/i.test(raw)||
+                key==='beta'||
+                key.startsWith('beta_')
+              )return 'beta';
+
+              if(
+                /^(?:γ|y|g|gamma)(?:\s|[-—:(]|$)/i.test(raw)||
+                key==='gamma'||
+                key.startsWith('gamma_')
+              )return 'gamma';
+
+              if(
+                /^(?:sp|special|action_speciale|special_action)(?:\s|[-—:(]|$)/i.test(raw)||
+                key.startsWith('sp_')||
+                key.startsWith('special_action')
+              )return 'special';
+
+              return '';
+            }
+
+            function skillsOf(style){
+              return [
+                {...(style?.special||{}),letter:'SP'},
+                ...(style?.skills||[])
+              ];
+            }
+
+            function styleSkillMatch(style,skillLabel){
+              const wanted=normal(skillLabel);
+              if(!wanted)return 0;
+
+              let best=0;
+
+              skillsOf(style).forEach(skill=>{
+                const name=normal(localized(skill?.name));
+                const letter=skillKey(skill?.letter);
+                const requestedLetter=skillKey(skillLabel);
+
+                if(name&&wanted===name)best=Math.max(best,1000);
+                else if(name&&(wanted.includes(name)||name.includes(wanted))){
+                  best=Math.max(best,900);
+                }
+
+                if(letter&&requestedLetter===letter){
+                  best=Math.max(best,700);
+                }
+              });
+
+              return best;
+            }
+
+            function resolveStyle(character,styleLabel,skillLabel,characterLabel){
+              const map=stylesMap();
+              const ids=characterStyleIds(character);
+              const requested=normal(
+                styleLabel||
+                extractQuotedStyle(characterLabel)||
+                'Original'
+              );
+
+              const rows=ids.map((id,index)=>{
+                const style=map[id];
+                const name=normal(localized(style?.name)||'Original');
+                let score=0;
+
+                if(name===requested)score+=1000;
+                else if(
+                  requested&&name&&
+                  (name.includes(requested)||requested.includes(name))
+                )score+=850;
+
+                score+=styleSkillMatch(style,skillLabel);
+                score-=index;
+
+                return {id,style,score};
+              });
+
+              return rows.sort((a,b)=>b.score-a.score)[0]||{
+                id:'',
+                style:null,
+                score:0
+              };
+            }
+
+            function manifestForStyle(styleId){
+              const map=localManifest();
+
+              if(map[styleId])return map[styleId];
+
+              const wanted=normal(styleId);
+
+              return Object.entries(map).find(
+                ([id])=>normal(id)===wanted
+              )?.[1]||{};
+            }
+
+            function databaseForStyle(styleId){
+              return window.MHUR_DATABASE_ASSETS?.styles?.[styleId]||{};
+            }
+
+            function firstLocal(){
+              for(const value of arguments){
+                const path=localPath(value);
+                if(path)return path;
+              }
+
+              return '';
+            }
+
+            function portraitFor(styleId,style,character){
+              const local=manifestForStyle(styleId);
+              const database=databaseForStyle(styleId);
+
+              return firstLocal(
+                local.portrait,
+                database.portrait,
+                style?.portrait,
+                character?.portrait
+              );
+            }
+
+            function resolvedSkill(style,skillLabel){
+              const wanted=normal(skillLabel);
+              const requestedKey=skillKey(skillLabel);
+              let best=null;
+              let bestScore=-1;
+
+              skillsOf(style).forEach(skill=>{
+                const name=normal(localized(skill?.name));
+                const key=skillKey(skill?.letter);
+                let score=0;
+
+                if(name&&wanted===name)score=1000;
+                else if(name&&(wanted.includes(name)||name.includes(wanted)))score=900;
+
+                if(requestedKey&&key===requestedKey)score=Math.max(score,750);
+
+                if(score>bestScore){
+                  bestScore=score;
+                  best=skill;
+                }
+              });
+
+              return best;
+            }
+
+            function imageForSkill(styleId,style,skillLabel){
+              const local=manifestForStyle(styleId);
+              const database=databaseForStyle(styleId);
+              const skill=resolvedSkill(style,skillLabel);
+              const key=(
+                skillKey(skill?.letter)||
+                skillKey(skillLabel)
+              );
+
+              return firstLocal(
+                local[key],
+                database[key],
+                skill?.img
+              );
+            }
+
+            function safeImage(path,alt,className){
+              const image=document.createElement('img');
+              image.src=path;
+              image.alt=alt||'';
+              image.className=className;
+              image.loading='lazy';
+              image.decoding='async';
+              image.onerror=function(){
+                this.hidden=true;
+                this.closest('.s18PatchSkillV10')
+                  ?.classList.add('s18NoSkillImageV595');
+              };
+              return image;
+            }
+
+            function fixPortrait(card,styleId,style,character,name){
+              const box=card.querySelector(
+                ':scope > header .s18PatchPortraitV10'
+              );
+
+              if(!box)return;
+
+              const path=portraitFor(styleId,style,character);
+
+              if(!path)return;
+
+              let image=box.querySelector('img');
+
+              if(!image){
+                box.replaceChildren(
+                  safeImage(path,name,'s18PatchPortraitImageV595')
+                );
+                return;
+              }
+
+              image.hidden=false;
+              image.classList.add('s18PatchPortraitImageV595');
+              image.removeAttribute('srcset');
+              image.onerror=function(){
+                this.hidden=true;
+              };
+
+              if(image.getAttribute('src')!==path){
+                image.setAttribute('src',path);
+              }
+            }
+
+            function ensureSkillSlot(layout,path,title){
+              const main=layout.querySelector(':scope > main');
+              if(!main)return;
+
+              let slot=[
+                ...layout.children
+              ].find(child=>child!==main&&child.tagName==='DIV');
+
+              if(path){
+                layout.classList.remove('s18NoSkillImageV595');
+
+                if(!slot){
+                  slot=document.createElement('div');
+                  slot.className='s18PatchSkillImageV595';
+                  layout.insertBefore(slot,main);
+                }
+
+                slot.classList.add('s18PatchSkillImageV595');
+
+                let image=slot.querySelector('img');
+
+                if(!image){
+                  image=safeImage(
+                    path,
+                    title,
+                    's18PatchSkillImageElementV595'
+                  );
+                  slot.replaceChildren(image);
+                }else{
+                  image.hidden=false;
+                  image.classList.add('s18PatchSkillImageElementV595');
+                  image.removeAttribute('srcset');
+
+                  if(image.getAttribute('src')!==path){
+                    image.setAttribute('src',path);
+                  }
+                }
+              }else{
+                layout.classList.add('s18NoSkillImageV595');
+              }
+            }
+
+            function fixChange(change,styleId,style){
+              const title=clean(
+                change.querySelector('h5')?.textContent||''
+              );
+
+              const path=imageForSkill(styleId,style,title);
+              const layout=change.querySelector('.s18PatchSkillV10');
+
+              if(layout){
+                ensureSkillSlot(layout,path,title);
+              }
+
+              change.querySelectorAll(
+                '.s18PatchTableWrapV10,.s18PatchTableV10,.s18MetricV593'
+              ).forEach(element=>{
+                element.classList.add('s18PatchWideV595');
+              });
+            }
+
+            function fixPatchCharacter(card){
+              const header=card.querySelector(':scope > header');
+              if(!header)return;
+
+              const name=clean(header.querySelector('h4')?.textContent||'');
+              const styleLabel=clean(header.querySelector('strong')?.textContent||'');
+              const firstSkill=clean(
+                card.querySelector('.s18PatchChangeV10 h5')?.textContent||''
+              );
+
+              const character=resolveCharacter(name);
+              if(!character)return;
+
+              const resolved=resolveStyle(
+                character,
+                styleLabel,
+                firstSkill,
+                name
+              );
+
+              if(!resolved.style)return;
+
+              card.dataset.v595StyleId=resolved.id;
+              fixPortrait(
+                card,
+                resolved.id,
+                resolved.style,
+                character,
+                name
+              );
+
+              card.querySelectorAll('.s18PatchChangeV10').forEach(change=>{
+                fixChange(change,resolved.id,resolved.style);
+              });
+            }
+
+            function fixAll(){
+              document.querySelectorAll('.s18PatchCharacterV10')
+                .forEach(fixPatchCharacter);
+            }
+
+            let queued=false;
+
+            function schedule(){
+              if(queued)return;
+              queued=true;
+
+              requestAnimationFrame(()=>{
+                queued=false;
+                fixAll();
+              });
+            }
+
+            new MutationObserver(mutations=>{
+              if(
+                mutations.some(mutation=>
+                  mutation.addedNodes?.length||
+                  mutation.type==='attributes'
+                )
+              ){
+                schedule();
+              }
+            }).observe(document.documentElement,{
+              childList:true,
+              subtree:true,
+              attributes:true,
+              attributeFilter:['class','src','hidden']
+            });
+
+            document.addEventListener('click',event=>{
+              if(
+                event.target?.closest?.(
+                  '[data-patch-index],'+
+                  '[data-tab="patch"],'+
+                  '#mhurPatchDevButtonV14,'+
+                  '[data-s18-notes-button]'
+                )
+              ){
+                setTimeout(fixAll,0);
+                setTimeout(fixAll,60);
+                setTimeout(fixAll,180);
+              }
+            },true);
+
+            window.addEventListener('mhur:languagechange',()=>{
+              setTimeout(fixAll,0);
+              setTimeout(fixAll,100);
+            });
+
+            if(document.readyState==='loading'){
+              document.addEventListener(
+                'DOMContentLoaded',
+                fixAll,
+                {once:true}
+              );
+            }else{
+              fixAll();
+            }
+
+            window.addEventListener('load',fixAll,{once:true});
+
+            window.MHUR_V595={
+              version:VERSION,
+              refresh:fixAll,
+              resolveCharacter,
+              resolveStyle
+            };
+          })();
+          JS
+
+          cat > public/css/v595-patch-portraits-tables.css <<'CSS'
+          /* MHUR Nexus — V595 : portraits visibles et tableaux pleine largeur */
+
+          /* Chaque carte personnage conserve toute la largeur disponible. */
+          #s18NotesDevModalV10 .s18PatchCharacterV10,
+          #s18NotesDevModalV10 .s18PatchChangesV10,
+          #s18NotesDevModalV10 .s18PatchChangeV10{
+            width:100%!important;
+            min-width:0!important;
+            box-sizing:border-box!important;
+          }
+
+          /* Portrait de profil local. */
+          #s18NotesDevModalV10 .s18PatchPortraitV10{
+            display:grid!important;
+            place-items:center!important;
+            width:138px!important;
+            min-width:138px!important;
+            height:138px!important;
+            min-height:138px!important;
+            overflow:hidden!important;
+            border:4px solid #02060b!important;
+            border-radius:16px!important;
+            background:#07111f!important;
+          }
+
+          #s18NotesDevModalV10 .s18PatchPortraitV10 img,
+          #s18NotesDevModalV10 .s18PatchPortraitImageV595{
+            display:block!important;
+            visibility:visible!important;
+            opacity:1!important;
+            width:100%!important;
+            height:100%!important;
+            max-width:none!important;
+            max-height:none!important;
+            object-fit:contain!important;
+            object-position:center!important;
+          }
+
+          /* Deux colonnes seulement quand l'image de l'Alter existe. */
+          #s18NotesDevModalV10 .s18PatchSkillV10{
+            display:grid!important;
+            grid-template-columns:120px minmax(0,1fr)!important;
+            align-items:start!important;
+            gap:18px!important;
+            width:100%!important;
+            min-width:0!important;
+            box-sizing:border-box!important;
+          }
+
+          #s18NotesDevModalV10 .s18PatchSkillV10 > main{
+            grid-column:2!important;
+            width:100%!important;
+            min-width:0!important;
+            max-width:none!important;
+            box-sizing:border-box!important;
+          }
+
+          /*
+            Lorsque l'image manque réellement, le contenu occupe les deux colonnes.
+            C'est ce qui empêche le tableau de retomber dans la colonne de 120 px.
+          */
+          #s18NotesDevModalV10
+          .s18PatchSkillV10.s18NoSkillImageV595{
+            grid-template-columns:minmax(0,1fr)!important;
+          }
+
+          #s18NotesDevModalV10
+          .s18PatchSkillV10.s18NoSkillImageV595 > main,
+          #s18NotesDevModalV10
+          .s18PatchSkillV10 > main:only-child{
+            grid-column:1 / -1!important;
+          }
+
+          #s18NotesDevModalV10 .s18PatchSkillImageV595,
+          #s18NotesDevModalV10
+          .s18PatchSkillV10 > div:not(.s18PatchTableWrapV10){
+            grid-column:1!important;
+            display:grid!important;
+            place-items:center!important;
+            width:120px!important;
+            min-width:120px!important;
+            height:120px!important;
+            overflow:hidden!important;
+            border:3px solid #315d89!important;
+            border-radius:14px!important;
+            background:#07111f!important;
+          }
+
+          #s18NotesDevModalV10 .s18PatchSkillImageV595 img,
+          #s18NotesDevModalV10 .s18PatchSkillImageElementV595{
+            display:block!important;
+            width:100%!important;
+            height:100%!important;
+            max-width:none!important;
+            max-height:none!important;
+            object-fit:contain!important;
+          }
+
+          /* Le contenu et chacune de ses statistiques occupent toute la largeur. */
+          #s18NotesDevModalV10 .s18MetricV593,
+          #s18NotesDevModalV10 .s18PatchWideV595{
+            width:100%!important;
+            min-width:0!important;
+            max-width:none!important;
+            box-sizing:border-box!important;
+          }
+
+          /* Zone de défilement horizontale lisible. */
+          #s18NotesDevModalV10 .s18PatchTableWrapV10{
+            display:block!important;
+            width:100%!important;
+            min-width:0!important;
+            max-width:100%!important;
+            overflow-x:auto!important;
+            overflow-y:hidden!important;
+            padding-bottom:8px!important;
+            box-sizing:border-box!important;
+          }
+
+          /* Un tableau à 9 niveaux ne peut plus mesurer quelques centimètres. */
+          #s18NotesDevModalV10 .s18PatchTableV10{
+            width:100%!important;
+            min-width:820px!important;
+            max-width:none!important;
+            table-layout:fixed!important;
+            border-collapse:collapse!important;
+            box-sizing:border-box!important;
+          }
+
+          #s18NotesDevModalV10 .s18PatchTableV10 th,
+          #s18NotesDevModalV10 .s18PatchTableV10 td{
+            width:auto!important;
+            min-width:72px!important;
+            padding:11px 10px!important;
+            text-align:center!important;
+            white-space:nowrap!important;
+            box-sizing:border-box!important;
+          }
+
+          #s18NotesDevModalV10 .s18PatchTableV10 th:first-child{
+            width:112px!important;
+            min-width:112px!important;
+          }
+
+          /* Les petites tables gardent également une taille normale. */
+          #s18NotesDevModalV10 .s18PatchTableV10 tr{
+            width:100%!important;
+          }
+
+          @media(max-width:800px){
+            #s18NotesDevModalV10 .s18PatchPortraitV10{
+              width:108px!important;
+              min-width:108px!important;
+              height:108px!important;
+              min-height:108px!important;
+            }
+
+            #s18NotesDevModalV10 .s18PatchSkillV10{
+              grid-template-columns:92px minmax(0,1fr)!important;
+              gap:12px!important;
+            }
+
+            #s18NotesDevModalV10 .s18PatchSkillImageV595,
+            #s18NotesDevModalV10
+            .s18PatchSkillV10 > div:not(.s18PatchTableWrapV10){
+              width:92px!important;
+              min-width:92px!important;
+              height:92px!important;
+            }
+
+            #s18NotesDevModalV10 .s18PatchTableV10{
+              min-width:760px!important;
+            }
+          }
+
+          @media(max-width:560px){
+            #s18NotesDevModalV10 .s18PatchSkillV10{
+              grid-template-columns:minmax(0,1fr)!important;
+            }
+
+            #s18NotesDevModalV10 .s18PatchSkillV10 > main{
+              grid-column:1!important;
+            }
+
+            #s18NotesDevModalV10 .s18PatchSkillImageV595,
+            #s18NotesDevModalV10
+            .s18PatchSkillV10 > div:not(.s18PatchTableWrapV10){
+              grid-column:1!important;
+              width:110px!important;
+              min-width:110px!important;
+              height:110px!important;
+              margin-bottom:4px!important;
+            }
+          }
+          CSS
+
+          python - <<'PY'
+          from pathlib import Path
+          import re
+
+          path = Path("public/index.html")
+
+          if not path.is_file():
+              raise SystemExit("[ERREUR] public/index.html est introuvable.")
+
+          html = path.read_text(encoding="utf-8-sig")
+
+          patterns = [
+              r"\s*<script\b[^>]*src=['\"][^'\"]*v595-local-patch-assets\.js[^'\"]*['\"][^>]*>\s*</script>\s*",
+              r"\s*<script\b[^>]*src=['\"][^'\"]*v595-patch-portraits-tables\.js[^'\"]*['\"][^>]*>\s*</script>\s*",
+              r"\s*<link\b[^>]*href=['\"][^'\"]*v595-patch-portraits-tables\.css[^'\"]*['\"][^>]*>\s*",
+          ]
+
+          for pattern in patterns:
+              html = re.sub(pattern, "\n", html, flags=re.I)
+
+          if "</head>" not in html or "</body>" not in html:
+              raise SystemExit("[ERREUR] Balises head/body introuvables.")
+
+          # Le manifeste est chargé avant les scripts qui ouvrent les Patch Notes.
+          first_script = re.search(r"<script\b", html, flags=re.I)
+
+          manifest_tag = (
+              '<script src="data/v595-local-patch-assets.js?v=595"></script>\n'
+          )
+
+          if first_script:
+              html = (
+                  html[:first_script.start()]
+                  + manifest_tag
+                  + html[first_script.start():]
+              )
+          else:
+              html = html.replace("</head>", manifest_tag + "</head>", 1)
+
+          html = html.replace(
+              "</head>",
+              '\n<link rel="stylesheet" '
+              'href="css/v595-patch-portraits-tables.css?v=595">\n'
+              "</head>",
+              1,
+          )
+
+          html = html.replace(
+              "</body>",
+              '\n<script src="js/v595-patch-portraits-tables.js?v=595"></script>\n'
+              "</body>",
+              1,
+          )
+
+          path.write_text(html.rstrip() + "\n", encoding="utf-8")
+          PY
+
+      - name: Verifier V595
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import json
+          import re
+          import subprocess
+
+          public = Path("public")
+          index = (public / "index.html").read_text(encoding="utf-8")
+          manifest = (
+              public / "data/v595-local-patch-assets.js"
+          ).read_text(encoding="utf-8")
+          js = (
+              public / "js/v595-patch-portraits-tables.js"
+          ).read_text(encoding="utf-8")
+          css = (
+              public / "css/v595-patch-portraits-tables.css"
+          ).read_text(encoding="utf-8")
+
+          errors = []
+
+          for resource in (
+              "data/v595-local-patch-assets.js?v=595",
+              "css/v595-patch-portraits-tables.css?v=595",
+              "js/v595-patch-portraits-tables.js?v=595",
+          ):
+              if resource not in index:
+                  errors.append("Référence absente : " + resource)
+
+          match = re.search(
+              r"window\.MHUR_PATCH_LOCAL_ASSETS_V595=(\{.*\});",
+              manifest,
+          )
+
+          if not match:
+              errors.append("Manifeste V595 illisible.")
+          else:
+              data = json.loads(match.group(1))
+
+              for style_id, row in data.get("styles", {}).items():
+                  for key, relative in row.items():
+                      if not relative.startswith("assets/"):
+                          errors.append(
+                              f"{style_id}/{key} n'est pas un fichier local."
+                          )
+
+                      if not (public / relative).is_file():
+                          errors.append("Fichier absent : " + relative)
+
+          if re.search(r"https?://", manifest, flags=re.I):
+              errors.append("Le manifeste contient une URL distante.")
+
+          for required in (
+              "function resolveCharacter",
+              "function resolveStyle",
+              "function fixPortrait",
+              "function ensureSkillSlot",
+              "function fixPatchCharacter",
+              "window.MHUR_V595",
+          ):
+              if required not in js:
+                  errors.append("Fonction absente : " + required)
+
+          for required in (
+              ".s18PatchPortraitImageV595",
+              ".s18NoSkillImageV595",
+              "min-width:820px",
+              ".s18PatchTableWrapV10",
+          ):
+              if required not in css:
+                  errors.append("Règle CSS absente : " + required)
+
+          syntax = subprocess.run(
+              [
+                  "node",
+                  "--check",
+                  "public/js/v595-patch-portraits-tables.js",
+              ],
+              text=True,
+              capture_output=True,
+          )
+
+          if syntax.returncode:
+              errors.append("Syntaxe JavaScript invalide : " + syntax.stderr)
+
+          if errors:
+              raise SystemExit(
+                  "[ERREUR V595]\n- " + "\n- ".join(errors)
+              )
+
+          print("[OK] Manifeste local vérifié.")
+          print("[OK] Portraits et Alters locaux uniquement.")
+          print("[OK] Tableaux Patch Notes protégés contre la largeur réduite.")
+          PY
+
+      - name: Commit automatique
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add             public/index.html             public/data/v595-local-patch-assets.js             public/js/v595-patch-portraits-tables.js             public/css/v595-patch-portraits-tables.css             RAPPORT_V595_PATCH_PORTRAITS_TABLEAUX.txt
+
+          if git diff --cached --quiet; then
+            echo "V595 est deja installe."
+            exit 0
+          fi
+
+          git commit -m "Corriger portraits et tableaux Patch Notes V595"
+          git push
