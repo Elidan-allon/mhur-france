@@ -840,7 +840,6 @@
 <link rel="stylesheet" href="css/v559-discounts-stable.css?v=559">
 <link rel="stylesheet" href="css/v560-discount-role-dedupe.css?v=560">
 <link rel="stylesheet" href="css/v565-badges-propres.css?v=565">
-<link rel="stylesheet" href="css/v566-badges-final.css?v=566">
 </head>
 <body>
 
@@ -7177,6 +7176,5 @@ body .costumeTile > img,
   <link id="mhur-v561-css" rel="stylesheet" href="css/v561-discount-full-width.css?v=561">
   <link id="mhur-v562-css" rel="stylesheet" href="css/v562-discount-typography.css?v=562">
 <script src="js/v565-badges-propres.js?v=565"></script>
-<script src="js/v566-badges-final.js?v=566"></script>
 </body>
 </html>

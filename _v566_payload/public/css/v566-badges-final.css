@@ -1,0 +1,144 @@
+/* MHUR FRANCE — V566
+   Nettoyage final des badges NEW / INCOMING.
+*/
+
+/* Coupe les générations précédentes. */
+.mhurV563Badge,
+.mhurV564Badge,
+.mhurV565Badge,
+.mhur-v563-animate,
+.mhur-v564-live,
+.mhur-v564-hide-old,
+[class*="mhur-v563"],
+[class*="mhur-v564"] {
+  display: none !important;
+}
+
+@keyframes mhurV566PulseBadge {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.15); }
+  100% { transform: scale(1); }
+}
+
+.mhur-v566-host,
+.mhur-v566-release-card,
+.mhur-v566-character-card,
+.mhur-v566-costume-card,
+.mhur-v566-costume-pick-card {
+  position: relative !important;
+}
+
+.mhurV566Badge {
+  position: absolute !important;
+  top: 10px !important;
+  right: 10px !important;
+  left: auto !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-width: 70px !important;
+  height: 30px !important;
+  padding: 0 8px !important;
+  font-family: Impact, Haettenschweiler, 'Arial Black', sans-serif !important;
+  font-size: 16px !important;
+  font-style: italic !important;
+  font-weight: 900 !important;
+  line-height: 1 !important;
+  letter-spacing: .2px !important;
+  text-transform: uppercase !important;
+  white-space: nowrap !important;
+  color: #fff !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  text-shadow:
+    -1px -1px 0 #ff2f92,
+     1px -1px 0 #ff2f92,
+    -1px  1px 0 #ff2f92,
+     1px  1px 0 #ff2f92,
+     2px  2px 0 rgba(0,0,0,.8) !important;
+  transform-origin: center center !important;
+  animation: mhurV566PulseBadge 1.15s ease-in-out infinite !important;
+  z-index: 99 !important;
+  pointer-events: none !important;
+}
+
+.mhurV566Badge::before {
+  content: attr(data-mhur-label) !important;
+}
+
+.mhurV566Badge[data-mhur-type="incoming"] {
+  min-width: 122px !important;
+  height: 31px !important;
+  font-size: 16px !important;
+}
+
+/* Toujours en haut à droite, même taille que l'accueil, y compris personnages et costumes. */
+.mhur-v566-release-card > .mhurV566Badge,
+.mhur-v566-character-card > .mhurV566Badge,
+.mhur-v566-costume-card > .mhurV566Badge,
+.mhur-v566-costume-pick-card > .mhurV566Badge {
+  top: 10px !important;
+  right: 10px !important;
+  left: auto !important;
+}
+
+/* Si les étoiles sont présentes, elles restent encore plus haut. */
+.mhur-v566-costume-card [class*="star"],
+.mhur-v566-costume-card [class*="rarity"],
+.mhur-v566-costume-card .mhur-v566-stars,
+.mhur-v566-costume-pick-card [class*="star"],
+.mhur-v566-costume-pick-card [class*="rarity"],
+.mhur-v566-costume-pick-card .mhur-v566-stars {
+  position: absolute !important;
+  top: 4px !important;
+  right: 8px !important;
+  z-index: 100 !important;
+}
+
+/* Retire visuellement les badges inline parasites restants. */
+.mhur-v566-inline-badge-trash {
+  display: none !important;
+}
+
+/* Typo légère des réductions de points restaurée. */
+.discountGridV296.v559DiscountGrid .v559DiscountName {
+  font-family: Arial, Helvetica, sans-serif !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  line-height: 1.15 !important;
+  letter-spacing: 0 !important;
+  text-shadow: 1px 1px 0 #000 !important;
+}
+
+.discountGridV296.v559DiscountGrid .v559RoleBadge {
+  font-family: Arial, Helvetica, sans-serif !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  line-height: 1 !important;
+  letter-spacing: 0 !important;
+}
+
+.discountGridV296.v559DiscountGrid .v559DiscountPoints {
+  font-family: Arial, Helvetica, sans-serif !important;
+  font-size: 17px !important;
+  font-weight: 700 !important;
+  line-height: 1 !important;
+  letter-spacing: 0 !important;
+}
+
+@media (max-width: 700px) {
+  .mhurV566Badge {
+    min-width: 64px !important;
+    height: 28px !important;
+    font-size: 15px !important;
+  }
+  .mhurV566Badge[data-mhur-type="incoming"] {
+    min-width: 110px !important;
+    height: 29px !important;
+    font-size: 14px !important;
+  }
+  .discountGridV296.v559DiscountGrid .v559DiscountName { font-size: 12px !important; }
+  .discountGridV296.v559DiscountGrid .v559RoleBadge { font-size: 10px !important; }
+  .discountGridV296.v559DiscountGrid .v559DiscountPoints { font-size: 16px !important; }
+}

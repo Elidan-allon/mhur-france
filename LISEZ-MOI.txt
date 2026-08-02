@@ -1,21 +1,20 @@
-MHUR FRANCE — CORRECTIF V565
+MHUR FRANCE — CORRECTIF V566
 
-Ce correctif remplace complètement V563 et V564.
+Ce correctif remet les badges NEW / INCOMING proprement.
 
 CORRECTIONS
-- supprime tous les NEW / INCOMING parasites ;
-- garde un seul badge par carte ;
-- Gentle Criminal : NEW animé, en haut à gauche sur la carte personnage ;
-- accueil : Twice et Tsuyu affichent uniquement INCOMING, de la même taille que NEW ;
-- aucun INCOMING sur la carte personnage de Tsuyu ;
-- les costumes de Gentle Criminal reçoivent NEW sous les étoiles à droite ;
-- restaure l'écriture moins grasse dans les réductions de points.
+- accueil : INCOMING plus grand sur Twice et Tsuyu ;
+- accueil : suppression totale du NEW sur Twice et Tsuyu ;
+- Gentle Criminal : un seul NEW animé ;
+- pages personnages / costumes / tuning : NEW en haut à droite ;
+- suppression des NEW parasites dans Super-Vilains ;
+- réapplication de la typo légère sur les réductions de points.
 
 INSTALLATION
-1. Décompresse le ZIP à la racine du dépôt mhur-france.
-2. Lance APPLIQUER_CORRECTIF_V565.bat.
-3. Fais ton commit et ton push.
-4. Attends Cloudflare puis fais Ctrl + F5.
+1. Décompresse le ZIP à la racine de mhur-france.
+2. Lance APPLIQUER_CORRECTIF_V566.bat.
+3. Fais ton commit et ton push GitHub.
+4. Après le déploiement Cloudflare, recharge avec Ctrl + F5.
 
 RETOUR EN ARRIÈRE
-Lance ANNULER_CORRECTIF_V565.bat.
+Lance ANNULER_CORRECTIF_V566.bat.
