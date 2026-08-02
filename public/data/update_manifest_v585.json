@@ -1,6 +1,6 @@
 {
   "version": "v585",
-  "updated_at": "2026-08-02T07:21:48.137406+00:00",
+  "updated_at": "2026-08-02T14:46:20.931656+00:00",
   "source": "UltraRumble.com",
   "new_content": {
     "characters": [],
@@ -12,9 +12,9 @@
     "costumes": 1628,
     "styles": 60,
     "active_characters": 1,
-    "active_styles": 1,
+    "active_styles": 0,
     "events": 2,
-    "latest_releases": 4,
+    "latest_releases": 1,
     "images": 4029
   },
   "counts_after": {
@@ -1001,7 +1001,5 @@
     "errors": [],
     "warnings": []
   },
-  "image_policy_files": [
-    "mise_a_jour/outils/season18_postprocess.py"
-  ]
+  "image_policy_files": []
 }
