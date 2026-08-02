@@ -2277,3 +2277,97 @@ article[data-planned="tsuyu"] .s18PlannedTsuyuV14 img,
     font-size:20px!important;
   }
 }
+
+
+/* MHUR Nexus — V581 : animation NEW fiable, INCOMING fixe */
+
+/* Les INCOMING restent grands mais ne bougent plus. */
+.s18PlannedIncomingV578,
+.s18PlannedIncomingV579,
+.s18PlannedIncomingV580,
+.s18PlannedIncomingV581,
+[class*="s18PlannedIncoming"]{
+  animation:none!important;
+  transform:none!important;
+  scale:1!important;
+}
+
+/*
+  Animation indépendante de transform :
+  elle reste active même si les anciens CSS imposent transform avec !important.
+*/
+@keyframes mhurNewPulseV581{
+  0%,100%{scale:.91}
+  50%{scale:1.13}
+}
+
+.card[data-char] > .s18NewBadgeV581,
+.styleCard[data-style] > .s18NewBadgeV581,
+.costumeTile > .s18NewBadgeV581,
+.costumeCard > .s18NewBadgeV581,
+.costumeResult > .s18NewBadgeV581,
+[data-costume-id] > .s18NewBadgeV581,
+[data-costume] > .s18NewBadgeV581{
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+  animation:mhurNewPulseV581 .9s ease-in-out infinite!important;
+  transform-origin:center!important;
+  will-change:scale!important;
+}
+
+/* Personnages et T.U.N.I.N.G : haut à droite. */
+.card[data-char] > .s18NewBadgeV581,
+.styleCard[data-style] > .s18NewBadgeV581{
+  top:7px!important;
+  right:7px!important;
+  left:auto!important;
+  width:88px!important;
+  height:44px!important;
+  z-index:95!important;
+}
+
+/* Costumes : petit NEW sous les étoiles. */
+.costumeTile > .s18NewBadgeV581,
+.costumeCard > .s18NewBadgeV581,
+.costumeResult > .s18NewBadgeV581,
+[data-costume-id] > .s18NewBadgeV581,
+[data-costume] > .s18NewBadgeV581{
+  top:38px!important;
+  right:8px!important;
+  left:auto!important;
+  width:60px!important;
+  height:31px!important;
+  z-index:90!important;
+}
+
+/* Les étoiles restent au-dessus. */
+.costumeTile > .costumeTileStars,
+.costumeCard > .costumeTileStars,
+.costumeResult > .costumeTileStars{
+  z-index:96!important;
+}
+
+/* Le NEW de l'accueil garde sa propre animation existante. */
+.s18PlannedCardV12[data-planned="gentle"] .s18PlannedNewV12{
+  scale:1!important;
+}
+
+@media(max-width:700px){
+  .card[data-char] > .s18NewBadgeV581,
+  .styleCard[data-style] > .s18NewBadgeV581{
+    width:76px!important;
+    height:38px!important;
+  }
+
+  .costumeTile > .s18NewBadgeV581,
+  .costumeCard > .s18NewBadgeV581,
+  .costumeResult > .s18NewBadgeV581,
+  [data-costume-id] > .s18NewBadgeV581,
+  [data-costume] > .s18NewBadgeV581{
+    top:34px!important;
+    right:7px!important;
+    width:54px!important;
+    height:28px!important;
+  }
+}

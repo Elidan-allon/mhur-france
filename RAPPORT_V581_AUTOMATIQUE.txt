@@ -1,0 +1,54 @@
+MHUR FRANCE — RAPPORT AUTOMATIQUE V581
+
+Dernière journée de costumes détectée : 2026-07-29
+Costumes de cette journée : 39
+
+- 2618100 — Loisirs d'été (Original)
+- 2618102 — Loisirs d'été (Super-vilain)
+- 2618103 — Loisirs d'été (D'enfer)
+- 2618104 — Loisirs d'été (Combat)
+- 2618105 — Loisirs d'été (Élégant)
+- 2618106 — Loisirs d'été (Dangereux)
+- 4618100 — Loisirs d'été (Original)
+- 4618105 — Loisirs d'été (Élégant)
+- 11601100 — Shinobi (Original)
+- 11601102 — Shinobi (Super-vilain)
+- 11601103 — Shinobi (D'enfer)
+- 11601104 — Shinobi (Combat)
+- 11601105 — Shinobi (Élégant)
+- 11601106 — Shinobi (Dangereux)
+- 15614100 — Tenue des Sables brûlants (Original)
+- 15614101 — Tenue des Sables brûlants (Vers. Héros)
+- 15614103 — Tenue des Sables brûlants (D'enfer)
+- 15614104 — Tenue des Sables brûlants (Combat)
+- 15614105 — Tenue des Sables brûlants (Élégant)
+- 15614106 — Tenue des Sables brûlants (Dangereux)
+- 23001103 — Tenue de Héros : version α (D'enfer)
+- 25401103 — Tenue d'hiver Yuei (D'enfer)
+- 37615103 — Pirate ennemi (D'enfer)
+- 38615103 — Pirate ennemi (D'enfer)
+- 108000001 — Tenue de Super-vilain (Vers. Héros)
+- 108000004 — Tenue de Super-vilain (Combat)
+- 108000006 — Tenue de Super-vilain (Dangereux)
+- 108100100 — Tenue de tous les jours (Original)
+- 108100101 — Tenue de tous les jours (Vers. Héros)
+- 108100103 — Tenue de tous les jours (D'enfer)
+- 108100104 — Tenue de tous les jours (Combat)
+- 108100105 — Tenue de tous les jours (Élégant)
+- 108100106 — Tenue de tous les jours (Dangereux)
+- 108607100 — Tenue de boost d'Alters (Original)
+- 108607101 — Tenue de boost d'Alters (Vers. Héros)
+- 108607103 — Tenue de boost d'Alters (D'enfer)
+- 108607104 — Tenue de boost d'Alters (Combat)
+- 108607105 — Tenue de boost d'Alters (Élégant)
+- 108607106 — Tenue de boost d'Alters (Dangereux)
+
+Vérifications :
+- INCOMING grands et sans animation : OK
+- NEW personnages non supprimés après rendu : OK
+- NEW animés par CSS scale : OK
+- data-costume-id reconnu : OK
+- toute la dernière journée de costumes NEW : OK
+- costume Original Gentle NEW : OK
+- style Technique Gentle NEW : OK
+- syntaxe JavaScript : OK

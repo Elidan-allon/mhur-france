@@ -132,7 +132,7 @@ function afterRender(){
   decorateCharacterCards();
   decorateStyleCards();
   decorateDetail();
-  document.querySelectorAll('.card[data-char] .s18NewBadge').forEach(node=>node.remove());
+  /* V581 : ne plus supprimer les badges NEW des personnages. */
 }
 function wrapRender(){
   if(typeof window.render!=='function'||window.render.__s18v13Decorated) return;
@@ -149,4 +149,261 @@ wrapRender();
 if(document.readyState!=='loading') afterRender();
 window.addEventListener('mhur:languagechange',()=>requestAnimationFrame(afterRender));
 window.MHUR_S18_V13_DECORATE=afterRender;
+})();
+
+
+/* MHUR Nexus — V581 : NEW finaux après tous les anciens scripts */
+(function(){
+  'use strict';
+
+  const BADGE =
+    '<span class="s18NewBadge s18NewBadgeV9 s18NewBadgeV24 s18NewBadgeV581" aria-label="NEW">NEW!</span>';
+
+  const GENTLE_CHARACTER = 'gentle_criminal';
+  const GENTLE_STYLE = 'gentle_criminal_technical';
+  const GENTLE_ORIGINAL = '108000000';
+
+  function sets(){
+    const data = window.MHUR_SEASON18_DATA || {};
+    const active = data.active_new_content || data.new_content || {};
+
+    return {
+      characters: new Set([
+        ...(active.characters || []).map(String),
+        GENTLE_CHARACTER
+      ]),
+      styles: new Set([
+        ...(active.styles || []).map(String),
+        GENTLE_STYLE
+      ]),
+      costumes: new Set([
+        ...(active.costumes || []).map(String),
+        GENTLE_ORIGINAL
+      ])
+    };
+  }
+
+  function costumeObjectId(costume){
+    return String(
+      costume?.urId ??
+      costume?.ur_id ??
+      costume?.id ??
+      ''
+    ).replace(/^ur_/i, '');
+  }
+
+  function costumeElementId(card){
+    if(!card) return '';
+
+    const values = [
+      card.dataset?.costumeId,
+      card.dataset?.costume,
+      card.dataset?.id,
+      card.getAttribute('data-costume-id'),
+      card.getAttribute('data-costume'),
+      card.getAttribute('data-id'),
+      card.id,
+      card.getAttribute('onclick'),
+      card.getAttribute('href')
+    ];
+
+    for(const value of values){
+      const match = String(value || '').match(/(?:ur[_-]?)?(\d{4,})/i);
+      if(match) return match[1];
+    }
+
+    return '';
+  }
+
+  function directBadges(node){
+    try{
+      return [...node.querySelectorAll(':scope > .s18NewBadge')];
+    }catch(_error){
+      return [...(node.children || [])]
+        .filter(child => child.classList?.contains('s18NewBadge'));
+    }
+  }
+
+  function setBadge(node, active){
+    if(!node) return;
+
+    const badges = directBadges(node);
+    let finalBadge = badges.find(
+      badge => badge.classList.contains('s18NewBadgeV581')
+    );
+
+    if(!active){
+      badges.forEach(badge => badge.remove());
+      return;
+    }
+
+    badges.forEach(badge => {
+      if(badge !== finalBadge) badge.remove();
+    });
+
+    if(!finalBadge){
+      node.insertAdjacentHTML('afterbegin', BADGE);
+      finalBadge = directBadges(node).find(
+        badge => badge.classList.contains('s18NewBadgeV581')
+      );
+    }
+
+    finalBadge?.classList.add('s18NewBadgeV581');
+  }
+
+  function installCostumeRenderer(){
+    if(typeof window.costumeCard !== 'function') return;
+    if(window.costumeCard.__mhurV581) return;
+
+    const original = window.costumeCard;
+
+    const wrapped = function(costume){
+      const id = costumeObjectId(costume);
+      let html = String(original.apply(this, arguments) || '');
+
+      if(id){
+        if(!/\bdata-costume-id\s*=/.test(html)){
+          html = html.replace(
+            /^(<(?:button|div)\b)/i,
+            '$1 data-costume-id="' + id + '"'
+          );
+        }
+
+        if(
+          sets().costumes.has(id) &&
+          !/s18NewBadgeV581/.test(html)
+        ){
+          html = html.replace(
+            /^(<(?:button|div)\b[^>]*>)/i,
+            '$1' + BADGE
+          );
+        }
+      }
+
+      return html;
+    };
+
+    wrapped.__mhurV581 = true;
+    wrapped.__mhurV581Original = original;
+
+    window.costumeCard = wrapped;
+
+    try{
+      costumeCard = wrapped;
+    }catch(_error){}
+  }
+
+  function sync(){
+    installCostumeRenderer();
+
+    const active = sets();
+
+    document.querySelectorAll('.card[data-char]').forEach(card => {
+      setBadge(
+        card,
+        active.characters.has(String(card.dataset.char || ''))
+      );
+    });
+
+    document.querySelectorAll('.styleCard[data-style]').forEach(card => {
+      setBadge(
+        card,
+        active.styles.has(String(card.dataset.style || ''))
+      );
+    });
+
+    document.querySelectorAll(
+      '.costumeTile,.costumeCard,.costumeResult,[data-costume-id],[data-costume]'
+    ).forEach(card => {
+      const id = costumeElementId(card);
+
+      if(id && !card.dataset.costumeId){
+        card.dataset.costumeId = id;
+      }
+
+      const upcoming = Boolean(
+        card.closest(
+          '.s18UpcomingCostumeGroupV19,.s18UpcomingCostumeGroupV23'
+        )
+      );
+
+      setBadge(
+        card,
+        Boolean(id && active.costumes.has(id) && !upcoming)
+      );
+    });
+  }
+
+  let queued = false;
+
+  function schedule(){
+    if(queued) return;
+    queued = true;
+
+    requestAnimationFrame(() => {
+      queued = false;
+      sync();
+    });
+  }
+
+  function wrapRender(){
+    if(typeof window.render !== 'function') return;
+    if(window.render.__mhurV581) return;
+
+    const original = window.render;
+
+    const wrapped = function(){
+      const result = original.apply(this, arguments);
+      installCostumeRenderer();
+      sync();
+      schedule();
+      return result;
+    };
+
+    wrapped.__mhurV581 = true;
+    window.render = wrapped;
+
+    try{
+      render = wrapped;
+    }catch(_error){}
+  }
+
+  installCostumeRenderer();
+  wrapRender();
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', () => {
+      installCostumeRenderer();
+      wrapRender();
+      sync();
+      schedule();
+    }, {once: true});
+  }else{
+    sync();
+    schedule();
+  }
+
+  new MutationObserver(mutations => {
+    if(mutations.some(mutation => mutation.addedNodes?.length)){
+      schedule();
+    }
+  }).observe(document.documentElement, {
+    childList: true,
+    subtree: true
+  });
+
+  window.addEventListener('load', () => {
+    installCostumeRenderer();
+    wrapRender();
+    sync();
+    schedule();
+  }, {once: true});
+
+  window.addEventListener('hashchange', schedule);
+  window.addEventListener('mhur:languagechange', schedule);
+
+  window.MHUR_V581_NEW = {
+    refresh: sync,
+    sets
+  };
 })();
