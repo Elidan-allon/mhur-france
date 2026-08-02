@@ -1,0 +1,50 @@
+MHUR FRANCE — RAPPORT ORDRE DES VARIANTES V583
+
+Ordre appliqué :
+00 Original
+01 Vers. Héros / Style Héros
+02 Super-vilain
+03 D'enfer
+04 Combat
+05 Élégant
+06 Dangereux
+
+Familles corrigées : 8
+
+Katsuki Bakugo — Carte à jouer : Valet de pique
+  Avant : Original [2619100] → Ardent [2619102] → Citronnelle [2619106] → Horizon [2619103] → Marin [2619105] → Érable [2619104]
+  Après : Original [2619100] → Ardent [2619102] → Horizon [2619103] → Érable [2619104] → Marin [2619105] → Citronnelle [2619106]
+
+Tsuyu Asui — À visage découvert
+  Avant : Original [6000100] → Super-vilain [6000102] → Combat [6000104] → Élégant [6000105] → Dangereux [6000106] → D'enfer [6000103]
+  Après : Original [6000100] → Super-vilain [6000102] → D'enfer [6000103] → Combat [6000104] → Élégant [6000105] → Dangereux [6000106]
+
+Nejire Hado — Tenue d'hiver Yuei
+  Avant : Original [25401100] → Dangereux [25401106] → D'enfer [25401103]
+  Après : Original [25401100] → D'enfer [25401103] → Dangereux [25401106]
+
+All Might — Carte à jouer : Valet de pique
+  Avant : Original [12619100] → Ardent [12619103] → Horizon [12619102] → Érable [12619104] → Marin [12619105] → Citronnelle [12619106]
+  Après : Original [12619100] → Horizon [12619102] → Ardent [12619103] → Érable [12619104] → Marin [12619105] → Citronnelle [12619106]
+
+Armored All Might — Tenue de Héros ver. métallique
+  Avant : Original [200000100] → Acier Ambre [200000103] → Chrome Saphir [200000104] → Fer rubis [200000102] → Metal Emeraude [200000106] → Opale dorée [200000105]
+  Après : Original [200000100] → Fer rubis [200000102] → Acier Ambre [200000103] → Chrome Saphir [200000104] → Opale dorée [200000105] → Metal Emeraude [200000106]
+
+Endeavor — Tenue de Héros : version α
+  Avant : Original [23001100] → Super-vilain [23001102] → Combat [23001104] → Élégant [23001105] → Dangereux [23001106] → D'enfer [23001103]
+  Après : Original [23001100] → Super-vilain [23001102] → D'enfer [23001103] → Combat [23001104] → Élégant [23001105] → Dangereux [23001106]
+
+Tomura Shigaraki — Manteau de Super-vilain
+  Avant : Original [15001100] → Combat [15001104] → Vers. Héros [15001101]
+  Après : Original [15001100] → Vers. Héros [15001101] → Combat [15001104]
+
+Twice — Pirate ennemi
+  Avant : Original [37615100] → Élégant [37615105] → D'enfer [37615103]
+  Après : Original [37615100] → D'enfer [37615103] → Élégant [37615105]
+
+Vérifications :
+- données intégrées réordonnées : OK
+- ordre des familles conservé : OK
+- variantes triées par identifiant UR : OK
+- tri automatique des futurs ajouts : OK
