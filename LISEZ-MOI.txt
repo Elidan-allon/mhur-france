@@ -1,23 +1,19 @@
-MHUR FRANCE — CORRECTIF V561
+MHUR FRANCE — CORRECTIF V563
 
-PROBLÈME CORRIGÉ
-Les cartes « Réductions de points personnage » étaient coupées en deux :
-l'ancien CSS conservait plusieurs colonnes à l'intérieur de chaque carte.
+Ce correctif ajoute et harmonise les badges NEW / INCOMING.
+
+MODIFICATIONS
+- les badges NEW utilisent le style de l'accueil ;
+- le badge NEW s'agrandit et rétrécit en boucle ;
+- les éléments pas encore sortis reçoivent un badge INCOMING de même taille ;
+- tout ce qui concerne Gentle Criminal reçoit un badge NEW ;
+- sur les cartes de costumes, le badge NEW passe à droite sous les étoiles.
 
 INSTALLATION
-1. Décompresse tout à la racine du dépôt mhur-france.
-2. Vérifie que ce dossier contient aussi public et mise_a_jour.
-3. Lance APPLIQUER_CORRECTIF_V561.bat.
-4. Fais ton commit et ton push GitHub.
-5. Après le déploiement Cloudflare, recharge avec Ctrl + F5.
-
-RÉSULTAT
-- portrait sur toute la largeur ;
-- nom sur toute la largeur ;
-- rôle sur toute la largeur ;
-- points sur toute la largeur ;
-- aucun retour du rôle en double ;
-- Factor Fusion reste All For One Strike.
+1. Décompresse le ZIP à la racine de mhur-france.
+2. Lance APPLIQUER_CORRECTIF_V563.bat.
+3. Fais ton commit et ton push GitHub.
+4. Après le déploiement Cloudflare, recharge avec Ctrl + F5.
 
 RETOUR EN ARRIÈRE
-Lance ANNULER_CORRECTIF_V561.bat.
+Lance ANNULER_CORRECTIF_V563.bat.

@@ -1,0 +1,43 @@
+/* MHUR FRANCE — V562
+   Allège uniquement la typographie des cartes de réduction.
+   Les dimensions, portraits, rôles et points ne sont pas modifiés.
+*/
+
+.discountGridV296.v559DiscountGrid .v559DiscountName {
+  font-family: Arial, Helvetica, sans-serif !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  line-height: 1.15 !important;
+  letter-spacing: 0 !important;
+  text-shadow: 1px 1px 0 #000 !important;
+}
+
+.discountGridV296.v559DiscountGrid .v559RoleBadge {
+  font-family: Arial, Helvetica, sans-serif !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  line-height: 1 !important;
+  letter-spacing: 0 !important;
+}
+
+.discountGridV296.v559DiscountGrid .v559DiscountPoints {
+  font-family: Arial, Helvetica, sans-serif !important;
+  font-size: 17px !important;
+  font-weight: 700 !important;
+  line-height: 1 !important;
+  letter-spacing: 0 !important;
+}
+
+@media (max-width: 700px) {
+  .discountGridV296.v559DiscountGrid .v559DiscountName {
+    font-size: 12px !important;
+  }
+
+  .discountGridV296.v559DiscountGrid .v559RoleBadge {
+    font-size: 10px !important;
+  }
+
+  .discountGridV296.v559DiscountGrid .v559DiscountPoints {
+    font-size: 16px !important;
+  }
+}

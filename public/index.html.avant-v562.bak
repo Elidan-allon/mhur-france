@@ -839,7 +839,6 @@
 <link rel="stylesheet" href="css/season18-fixes.css?v=1785451218648514700">
 <link rel="stylesheet" href="css/v559-discounts-stable.css?v=559">
 <link rel="stylesheet" href="css/v560-discount-role-dedupe.css?v=560">
-<link rel="stylesheet" href="css/v563-badges-new-incoming.css?v=563">
 </head>
 <body>
 
@@ -7174,7 +7173,5 @@ body .costumeTile > img,
 <script src="js/v559-discounts-stable.js?v=559"></script>
 <script src="js/v560-discount-role-dedupe.js?v=560"></script>
   <link id="mhur-v561-css" rel="stylesheet" href="css/v561-discount-full-width.css?v=561">
-  <link id="mhur-v562-css" rel="stylesheet" href="css/v562-discount-typography.css?v=562">
-<script src="js/v563-badges-new-incoming.js?v=563"></script>
 </body>
 </html>

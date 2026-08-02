@@ -1,0 +1,95 @@
+/* MHUR FRANCE — V563
+   - badges NEW / INCOMING animés
+   - NEW Gentle Criminal partout
+   - NEW des costumes déplacé sous les étoiles à droite
+*/
+
+@keyframes mhurV563PulseBadge {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.14); }
+  100% { transform: scale(1); }
+}
+
+.mhur-v563-badge-host,
+.mhur-v563-costume-card,
+.mhur-v563-gentle-card,
+[class*="costume"],
+[class*="skin"] {
+  position: relative;
+}
+
+.mhurV563Badge,
+.mhur-v563-animate {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-width: 54px !important;
+  height: 24px !important;
+  padding: 0 8px !important;
+  border-radius: 5px !important;
+  font-family: Impact, Haettenschweiler, 'Arial Black', sans-serif !important;
+  font-size: 13px !important;
+  font-style: italic !important;
+  font-weight: 900 !important;
+  line-height: 1 !important;
+  letter-spacing: 0.2px !important;
+  color: #fff !important;
+  text-transform: uppercase !important;
+  white-space: nowrap !important;
+  text-shadow:
+    -1px -1px 0 #ff2f92,
+     1px -1px 0 #ff2f92,
+    -1px  1px 0 #ff2f92,
+     1px  1px 0 #ff2f92,
+     2px  2px 0 rgba(0,0,0,.75) !important;
+  box-shadow: none !important;
+  background: transparent !important;
+  border: 0 !important;
+  z-index: 25 !important;
+  transform-origin: center center !important;
+  animation: mhurV563PulseBadge 1.15s ease-in-out infinite !important;
+  pointer-events: none !important;
+}
+
+.mhurV563Badge--new::before,
+.mhur-v563-animate[data-mhur-badge-type="new"]::before {
+  content: "NEW!";
+}
+
+.mhurV563Badge--incoming::before,
+.mhur-v563-animate[data-mhur-badge-type="incoming"]::before {
+  content: "INCOMING";
+}
+
+.mhurV563Badge--new,
+.mhurV563Badge--incoming {
+  position: absolute !important;
+  top: 8px !important;
+  left: 10px !important;
+}
+
+/* Les badges NEW des costumes passent à droite sous les étoiles. */
+.mhur-v563-costume-card .mhurV563Badge--new,
+.mhur-v563-costume-card .mhur-v563-animate[data-mhur-badge-type="new"] {
+  top: 34px !important;
+  right: 10px !important;
+  left: auto !important;
+}
+
+/* Garde les étoiles au-dessus et le NEW juste dessous. */
+.mhur-v563-costume-card [class*="star"],
+.mhur-v563-costume-card [class*="rarity"],
+.mhur-v563-costume-card .mhur-v563-stars {
+  position: absolute !important;
+  top: 8px !important;
+  right: 10px !important;
+  z-index: 26 !important;
+}
+
+/* Les badges générés doivent toujours rester visibles. */
+.mhur-v563-badge-anchor {
+  position: absolute !important;
+  inset: 0 !important;
+  pointer-events: none !important;
+  z-index: 24 !important;
+}
