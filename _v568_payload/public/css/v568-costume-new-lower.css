@@ -1,0 +1,60 @@
+/* MHUR FRANCE — V568
+   Descend le badge NEW des cartes de costumes sous les étoiles.
+*/
+
+/* Les cartes de costumes détectées par V568 deviennent des conteneurs positionnés. */
+.mhur-v568-costume-card {
+  position: relative !important;
+}
+
+/* On garde les étoiles en haut à droite. */
+.mhur-v568-costume-card [class*="star"],
+.mhur-v568-costume-card [class*="rarity"],
+.mhur-v568-costume-card .mhur-v568-stars,
+.mhur-v568-costume-card .mhur-v567-stars,
+.mhur-v568-costume-card .stars,
+.mhur-v568-costume-card .rarityStars {
+  position: absolute !important;
+  top: 4px !important;
+  right: 8px !important;
+  z-index: 101 !important;
+}
+
+/* On descend le NEW sous les étoiles. */
+.mhur-v568-costume-card > .mhurV567Badge,
+.mhur-v568-costume-card > .mhurV566Badge,
+.mhur-v568-costume-card > .mhurV565Badge,
+.mhur-v568-costume-card > .s18NewBadge,
+.mhur-v568-costume-card > .s18SeasonNewV10,
+.mhur-v568-costume-card > .mhur-v567-new,
+.mhur-v568-costume-card > .mhur-v568-live-badge {
+  position: absolute !important;
+  top: 28px !important;
+  right: 10px !important;
+  left: auto !important;
+  z-index: 100 !important;
+}
+
+/* Cas où le NEW est un petit élément inline transformé par le site. */
+.mhur-v568-costume-card .mhur-v568-inline-new {
+  position: absolute !important;
+  top: 28px !important;
+  right: 10px !important;
+  left: auto !important;
+  display: inline-flex !important;
+  z-index: 100 !important;
+}
+
+@media (max-width: 700px) {
+  .mhur-v568-costume-card > .mhurV567Badge,
+  .mhur-v568-costume-card > .mhurV566Badge,
+  .mhur-v568-costume-card > .mhurV565Badge,
+  .mhur-v568-costume-card > .s18NewBadge,
+  .mhur-v568-costume-card > .s18SeasonNewV10,
+  .mhur-v568-costume-card > .mhur-v567-new,
+  .mhur-v568-costume-card > .mhur-v568-live-badge,
+  .mhur-v568-costume-card .mhur-v568-inline-new {
+    top: 26px !important;
+    right: 8px !important;
+  }
+}

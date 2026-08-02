@@ -1,0 +1,39 @@
+/* MHUR FRANCE — V569
+   Supprime uniquement les badges NEW de Twice et Tsuyu sur l'accueil.
+*/
+
+.mhur-v569-home-twice,
+.mhur-v569-home-tsuyu {
+  position: relative !important;
+}
+
+/* Cache les badges NEW générés par les anciens correctifs ou le site natif. */
+.mhur-v569-home-twice .mhurV566Badge[data-mhur-type="new"],
+.mhur-v569-home-tsuyu .mhurV566Badge[data-mhur-type="new"],
+.mhur-v569-home-twice .mhurV565Badge[data-mhur-type="new"],
+.mhur-v569-home-tsuyu .mhurV565Badge[data-mhur-type="new"],
+.mhur-v569-home-twice .mhurV564Badge[data-mhur-type="new"],
+.mhur-v569-home-tsuyu .mhurV564Badge[data-mhur-type="new"],
+.mhur-v569-home-twice .mhurV563Badge[data-mhur-type="new"],
+.mhur-v569-home-tsuyu .mhurV563Badge[data-mhur-type="new"],
+.mhur-v569-home-twice .s18NewBadge,
+.mhur-v569-home-tsuyu .s18NewBadge,
+.mhur-v569-home-twice .s18SeasonNewV10,
+.mhur-v569-home-tsuyu .s18SeasonNewV10,
+.mhur-v569-home-twice .mhur-v567-new,
+.mhur-v569-home-tsuyu .mhur-v567-new,
+.mhur-v569-home-twice .mhur-v568-live-badge,
+.mhur-v569-home-tsuyu .mhur-v568-live-badge,
+.mhur-v569-home-twice .mhur-v568-inline-new,
+.mhur-v569-home-tsuyu .mhur-v568-inline-new,
+.mhur-v569-home-twice .mhur-v563-animate[data-mhur-badge-type="new"],
+.mhur-v569-home-tsuyu .mhur-v563-animate[data-mhur-badge-type="new"],
+.mhur-v569-home-twice .mhur-v564-live[data-mhur-type="new"],
+.mhur-v569-home-tsuyu .mhur-v564-live[data-mhur-type="new"] {
+  display: none !important;
+}
+
+/* Au cas où le NEW est juste un petit élément texte. */
+.mhur-v569-hide-new {
+  display: none !important;
+}

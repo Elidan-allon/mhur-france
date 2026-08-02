@@ -841,8 +841,6 @@
 <link rel="stylesheet" href="css/v560-discount-role-dedupe.css?v=560">
 
 <link id="mhur-v567-css" rel="stylesheet" href="css/v567-badges-propres.css?v=567">
-<link rel="stylesheet" href="css/v568-costume-new-lower.css?v=568">
-<link rel="stylesheet" href="css/v569-home-remove-new.css?v=569">
 </head>
 <body>
 
@@ -7180,7 +7178,5 @@ body .costumeTile > img,
   <link id="mhur-v562-css" rel="stylesheet" href="css/v562-discount-typography.css?v=562">
 
 <script id="mhur-v567-js" src="js/v567-badges-propres.js?v=567"></script>
-<script src="js/v568-costume-new-lower.js?v=568"></script>
-<script src="js/v569-home-remove-new.js?v=569"></script>
 </body>
 </html>
