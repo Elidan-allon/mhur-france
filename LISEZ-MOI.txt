@@ -1,0 +1,24 @@
+MHUR FRANCE — INSTALLATION AUTOMATIQUE V580
+
+TU N'AS PLUS À REMPLACER LES FICHIERS DU SITE UN PAR UN.
+
+1. Décompresse ce ZIP.
+2. Sur la page principale du dépôt GitHub, clique sur :
+   Add file > Upload files
+3. Fais glisser le dossier .github complet dans la page.
+4. Clique sur Commit changes.
+
+GitHub Actions fera ensuite automatiquement :
+- la modification des 5 fichiers du site ;
+- l'ajout des INCOMING plus grands ;
+- l'animation immédiate de tous les NEW hors accueil ;
+- le NEW sur toute la dernière journée de costumes MHUR Database ;
+- le NEW sur Gentle, son style Technique et son costume Original ;
+- les vérifications JavaScript ;
+- le commit final sur main.
+
+Pour voir le résultat :
+GitHub > Actions > MHUR V580 - correction automatique des NEW
+
+Le rapport final apparaîtra à la racine du dépôt :
+RAPPORT_V580_AUTOMATIQUE.txt
