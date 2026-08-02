@@ -1,0 +1,33 @@
+MHUR FRANCE — RAPPORT V592
+
+BOUTON DU HEADER
+- Le libellé reste toujours « Patch Notes / Dev Notes ».
+- Il reste en anglais en mode FR comme en mode EN.
+- Le bouton est recréé s'il disparaît.
+- Les doublons sont supprimés.
+
+ONGLETS DE LA FENÊTRE
+- Patch Notes et Dev Notes sont forcés visibles.
+- Une nouvelle barre d'onglets est créée si l'ancienne a été supprimée.
+- Les deux boutons ont un style MHUR Nexus.
+- Les boutons restent utilisables sur ordinateur et mobile.
+
+ANCIENNES PATCH NOTES
+- V587 est retiré du chargement, car son listener capture bloquait les clics.
+- Chaque bouton data-patch-index reçoit un nouvel onclick.
+- Le clic appelle directement MHUR_S18_V14.showPatch(index).
+- La liste est reconnectée après chaque reconstruction du contenu.
+
+TUTORIEL MODS
+- L'ancien V, les chevrons et les flèches DOM sont supprimés.
+- La nouvelle flèche est un SVG net dans un bouton rond MHUR Nexus.
+- Elle tourne proprement lorsque le tutoriel est ouvert.
+- Aucun caractère texte déformé n'est utilisé.
+
+VÉRIFICATIONS
+- V587 retiré de index.html : OK
+- V592 chargé après V591 : OK
+- onglets visibles : OK
+- anciennes notes reconnectées : OK
+- flèche SVG : OK
+- syntaxe JavaScript : OK
