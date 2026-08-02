@@ -1,0 +1,77 @@
+MHUR FRANCE — RAPPORT PATCH NOTES V584
+
+DOUBLE VÉRIFICATION UTILISÉE
+1. Déterminer si la statistique est meilleure en montant ou en baissant.
+2. Comparer chaque niveau Avant/Après, et pas seulement la moyenne.
+3. Une conclusion numérique remplace une mauvaise étiquette BUFF/NERF.
+4. Un résultat mélangé devient NEUTRE.
+5. Sans valeurs exploitables, l'étiquette explicite est conservée.
+
+Changements analysés : 177
+Changements vérifiés numériquement : 162
+Contradictions BUFF/NERF corrigées : 43
+
+NOMS DES ALTERS
+- Source : les objets Personnages et Styles déjà affichés par le site.
+- Le nom suit automatiquement la langue de la fiche Personnage.
+- Les noms officiels ne passent plus par la traduction libre des Patch Notes.
+- A/α, B/β, Y/G/γ et SP sont reconnus.
+- Foot Boost et Feet Boost sont rapprochés uniquement pour retrouver l'Alter.
+
+Corrections concernant Twice : 2
+- γ - Foot Boost / Reload Time : [5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0] → [4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0] : NERF corrigé en BUFF
+- γ - Foot Boost / Penalty Reload : 6.0 → 8.0 : BUFF corrigé en NERF
+
+TOUTES LES CONTRADICTIONS CORRIGÉES
+- Katsuki Bakugo — Cluster — γ - Howitzer Impact Cluster — Reload Time : 7.0 → 8.0 : BUFF → NERF
+- Katsuki Bakugo — Cluster — γ - Howitzer Impact Cluster — Penalty Reload : 7.0 → 11.0 : BUFF → NERF
+- Denki Kaminari — Original — - Electrification — Penalty Reload : 14.0 → 9.0 : NERF → BUFF
+- Twice — Original — γ - Foot Boost — Reload Time : [5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0] → [4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0] : NERF → BUFF
+- Twice — Original — γ - Foot Boost — Penalty Reload : 6.0 → 8.0 : BUFF → NERF
+- Lady Nagant — Original — γ - Kickback Shot — Reload Time : [7.0, 7.0, 7.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0] → [9.0, 9.0, 9.0, 8.0, 8.0, 8.0, 8.0, 8.0, 7.0] : BUFF → NERF
+- Lady Nagant — Original — γ - Kickback Shot — Penalty Reload : [7.0, 7.0, 7.0, 5.0, 5.0, 5.0, 5.0, 5.0, 8.0] → [9.0, 9.0, 9.0, 8.0, 8.0, 8.0, 8.0, 8.0, 7.0] : BUFF → ADJUST
+- Katsuki Bakugo — Cluster — γ - Howitzer Impact Cluster — Reload Time : [11.0, 11.0, 11.0, 10.0, 10.0, 10.0, 10.0, 10.0, 9.0] → [9.0, 9.0, 9.0, 8.0, 8.0, 8.0, 8.0, 8.0, 7.0] : NERF → BUFF
+- Katsuki Bakugo — Cluster — γ - Howitzer Impact Cluster — Penalty Reload : [11.0, 11.0, 11.0, 10.0, 10.0, 10.0, 10.0, 10.0, 9.0] → [9.0, 9.0, 9.0, 8.0, 8.0, 8.0, 8.0, 8.0, 7.0] : NERF → BUFF
+- Itsuka Kendo — Original — γ - Big Fist Grip — Reload Time : [2.0, 2.0, 2.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0] → [5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0] : BUFF → NERF
+- Itsuka Kendo — Original — γ - Big Fist Grip — Penalty Reload : [2.0, 2.0, 2.0, 3.0, 3.0, 3.0, 3.0, 3.0, 5.0] → [5.0, 5.0, 5.0, 7.5, 7.5, 7.5, 7.5, 7.5, 10.0] : BUFF → NERF
+- Itsuka Kendo — Twin Palm Strike — γ - Whirlwind Fist — Reload Time : [9.0, 9.0, 9.0, 8.5, 8.5, 8.5, 8.5, 8.5, 8.0] → [8.0, 8.0, 8.0, 7.5, 7.5, 7.5, 7.5, 7.5, 7.0] : NERF → BUFF
+- Itsuka Kendo — Twin Palm Strike — γ - Whirlwind Fist — Penalty Reload : [14.0, 14.0, 14.0, 13.0, 13.0, 13.0, 13.0, 13.0, 12.0] → [12.0, 12.0, 12.0, 11.0, 11.0, 11.0, 11.0, 11.0, 9.0] : NERF → BUFF
+- Tamaki Amajiki — Original — γ - Plasma Cannon — Penalty Reload : [14.0, 14.0, 14.0, 14.0, 14.0, 12.0] → [11.0, 11.0, 11.0, 11.0, 11.0, 10.0] : NERF → BUFF
+- Cementoss — Original — γ - Structural Slab — Reload Time : [10.0, 10.0, 10.0, 9.0, 9.0, 9.0, 9.0, 9.0, 8.0] → [9.0, 9.0, 9.0, 8.0, 8.0, 8.0, 8.0, 8.0, 7.0] : NERF → BUFF
+- Cementoss — Original — γ - Structural Slab — Penalty Reload : [15.0, 15.0, 15.0, 13.0, 13.0, 13.0, 13.0, 13.0, 12.0] → [12.0, 12.0, 12.0, 10.5, 10.5, 10.5, 10.5, 10.5, 9.0] : NERF → BUFF
+- Cementoss — Original — - Defensive Wall — Reload Time : 60.0 → 50.0 : NERF → BUFF
+- Cementoss — Original — - Defensive Wall — Penalty Reload : 60.0 → 50.0 : NERF → BUFF
+- Endeavor — Original — - Flight — Reload Time : 0.2 → 0.18 : NERF → BUFF
+- Endeavor — Original — - Flight — Ammo Used : 15 → 10 : NERF → BUFF
+- Shota Aizawa — Flow Runner — β - Binding Cloth: Flow Runner — Reload Time : [7.0, 7.0, 7.0, 6.0, 6.0, 6.0, 6.0, 6.0, 5.0] → [6.0, 6.0, 6.0, 5.0, 5.0, 5.0, 5.0, 5.0, 4.0] : NERF → BUFF
+- Shota Aizawa — Flow Runner — β - Binding Cloth: Flow Runner — Penalty Reload : [7.0, 7.0, 7.0, 6.0, 6.0, 6.0, 6.0, 6.0, 5.0] → [6.0, 6.0, 6.0, 5.0, 5.0, 5.0, 5.0, 5.0, 4.0] : NERF → BUFF
+- Shota Aizawa — Flow Runner — γ - Binding Cloth: Instance — Reload Time : [10.0, 10.0, 10.0, 9.0, 9.0, 9.0, 9.0, 9.0, 8.0] → [8.0, 8.0, 8.0, 7.0, 7.0, 7.0, 7.0, 7.0, 6.0] : NERF → BUFF
+- Shota Aizawa — Flow Runner — γ - Binding Cloth: Instance — Penalty Reload : [10.0, 10.0, 10.0, 9.0, 9.0, 9.0, 9.0, 9.0, 8.0] → [8.0, 8.0, 8.0, 7.0, 7.0, 7.0, 7.0, 7.0, 6.0] : NERF → BUFF
+- Tamaki Amajiki — Original — - Wing Claw — Reload Time : 8.0 → 6.0 : NERF → BUFF
+- Tamaki Amajiki — Original — - Wing Claw — Penalty Reload : 8.0 → 6.0 : NERF → BUFF
+- Nejire Hado — Fairy — α - Spiraling Pike — Penalty Reload : [5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0] → [6.0, 6.0, 6.0, 6.0, 6.0, 6.0, 6.0, 6.0, 6.0] : BUFF → NERF
+- Armored All Might — Original — - Thruster Uravity — Reload Time : 0.5 → 0.7 : BUFF → NERF
+- Armored All Might — Original — - Thruster Uravity — Penalty Reload : 12.0 → 15.0 : BUFF → NERF
+- Shota Aizawa — Original — β - Powerhouse Kick Barrage — Reload Time : [5.0, 5.0, 5.0, 3.0] → [4.0, 4.0, 4.0, 3.5] : NERF → ADJUST
+- Shota Aizawa — Original — - Erasure — Ammo Used : 20 → 50 : BUFF → NERF
+- Endeavor — Original — β - Searing Arrow — Reload Time : [5.5, 5.5, 5.5, 5.5, 5.5, 5.5, 5.5, 5.5, 5.5] → [4.5, 4.5, 4.5, 4.5, 4.5, 4.5, 4.5, 4.5, 4.5] : NERF → BUFF
+- Endeavor — Original — β - Searing Arrow — Penalty Reload : [7.5, 7.5, 7.5, 6.0, 6.0, 6.0, 6.0, 6.0, 9.0] → [6.5, 6.5, 6.5, 5.0, 5.0, 5.0, 5.0, 5.0, 8.0] : NERF → BUFF
+- Hawks — Original — γ - Storm Wings — Reload Time : [10.0, 10.0, 10.0, 9.0, 9.0, 9.0, 9.0, 9.0, 9.0] → [9.0, 9.0, 9.0, 8.0, 8.0, 8.0, 8.0, 8.0, 8.0] : NERF → BUFF
+- Hawks — Original — γ - Storm Wings — Penalty Reload : [13.0, 13.0, 13.0, 12.0, 12.0, 12.0, 12.0, 12.0, 14.0] → [11.0, 11.0, 11.0, 10.0, 10.0, 10.0, 10.0, 10.0, 12.0] : NERF → BUFF
+- Tomura Shigaraki — Thousand-Hand Break — γ - Super Regeneration — Penalty Reload : [11.0, 11.0, 11.0, 10.0, 10.0, 10.0, 10.0, 10.0, 9.0] → [13.0, 13.0, 13.0, 12.0, 12.0, 12.0, 12.0, 12.0, 11.0] : BUFF → NERF
+- Dabi — Crazy Torch — γ - Crazy Torch — Ammo Used : [22, 23, 24, 26, 27, 28, 29, 30, 32] → [27, 29, 31, 34, 37, 38, 39, 40, 42] : BUFF → NERF
+- Kurogiri — Original — γ - Shadow Haunt — Reload Time : [1.1, 1.05, 1.0, 0.95, 0.9, 0.85, 0.8, 0.75, 0.7] → [0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2] : NERF → BUFF
+- Lady Nagant — Original — α - Hollow Point Shot — Penalty Reload : [6.0, 6.0, 6.0, 6.0, 6.0, 6.0, 6.0, 6.0, 6.0] → [7.0, 7.0, 7.0, 7.0, 7.0, 7.0, 7.0, 7.0, 7.0] : BUFF → NERF
+- Lady Nagant — Original — γ - Kickback Shot — Reload Time : [6.0, 6.0, 6.0, 4.5] → [7.0, 7.0, 7.0, 5.0] : BUFF → NERF
+- Lady Nagant — Original — γ - Kickback Shot — Penalty Reload : [6.0, 6.0, 6.0, 9.0, 9.0, 9.0, 9.0, 9.0, 7.0] → [7.0, 7.0, 7.0, 5.0, 5.0, 5.0, 5.0, 5.0, 8.0] : NERF → ADJUST
+- Lady Nagant — Original — - Scope Mode — Reload Time : 12.0 → 17.0 : BUFF → NERF
+- Lady Nagant — Original — - Scope Mode — Penalty Reload : 12.0 → 17.0 : BUFF → NERF
+
+VÉRIFICATIONS TECHNIQUES
+- temps de recharge en baisse = BUFF : OK
+- vitesse de recharge en hausse = BUFF : OK
+- comparaison niveau par niveau : OK
+- noms officiels depuis les fiches Personnages : OK
+- reconnaissance de Y comme Alter γ : OK
+- script V584 chargé en dernier : OK
+- syntaxe JavaScript : OK

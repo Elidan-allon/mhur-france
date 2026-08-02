@@ -1285,7 +1285,7 @@
               "label": "Reload Time",
               "before": "7.0",
               "after": "8.0",
-              "tone": "buff"
+              "tone": "nerf"
             },
             {
               "character": "Katsuki Bakugo",
@@ -1297,7 +1297,7 @@
               "label": "Penalty Reload",
               "before": "7.0",
               "after": "11.0",
-              "tone": "buff"
+              "tone": "nerf"
             },
             {
               "character": "Denki Kaminari",
@@ -1309,7 +1309,7 @@
               "label": "Penalty Reload",
               "before": "14.0",
               "after": "9.0",
-              "tone": "nerf"
+              "tone": "buff"
             },
             {
               "character": "Itsuka Kendo",
@@ -1393,7 +1393,7 @@
                 "4.0",
                 "4.0"
               ],
-              "tone": "nerf"
+              "tone": "buff"
             },
             {
               "character": "Twice",
@@ -1417,7 +1417,7 @@
               "label": "Penalty Reload",
               "before": "6.0",
               "after": "8.0",
-              "tone": "buff"
+              "tone": "nerf"
             },
             {
               "character": "Lady Nagant",
@@ -1481,7 +1481,7 @@
                 "8.0",
                 "7.0"
               ],
-              "tone": "buff"
+              "tone": "nerf"
             },
             {
               "character": "Lady Nagant",
@@ -1513,7 +1513,7 @@
                 "8.0",
                 "7.0"
               ],
-              "tone": "buff"
+              "tone": "adjust"
             },
             {
               "character": "Lady Nagant",
@@ -2336,7 +2336,7 @@
                 "8.0",
                 "7.0"
               ],
-              "tone": "nerf"
+              "tone": "buff"
             },
             {
               "character": "Katsuki Bakugo",
@@ -2368,7 +2368,7 @@
                 "8.0",
                 "7.0"
               ],
-              "tone": "nerf"
+              "tone": "buff"
             },
             {
               "character": "Itsuka Kendo",
@@ -2400,7 +2400,7 @@
                 "5.0",
                 "5.0"
               ],
-              "tone": "buff"
+              "tone": "nerf"
             },
             {
               "character": "Itsuka Kendo",
@@ -2432,7 +2432,7 @@
                 "7.5",
                 "10.0"
               ],
-              "tone": "buff"
+              "tone": "nerf"
             },
             {
               "character": "Itsuka Kendo",
@@ -2484,7 +2484,7 @@
                 "7.5",
                 "7.0"
               ],
-              "tone": "nerf"
+              "tone": "buff"
             },
             {
               "character": "Itsuka Kendo",
@@ -2516,7 +2516,7 @@
                 "11.0",
                 "9.0"
               ],
-              "tone": "nerf"
+              "tone": "buff"
             },
             {
               "character": "Tamaki Amajiki",
@@ -2542,7 +2542,7 @@
                 "11.0",
                 "10.0"
               ],
-              "tone": "nerf"
+              "tone": "buff"
             },
             {
               "character": "Cementoss",
@@ -2574,7 +2574,7 @@
                 "8.0",
                 "7.0"
               ],
-              "tone": "nerf"
+              "tone": "buff"
             },
             {
               "character": "Cementoss",
@@ -2606,7 +2606,7 @@
                 "10.5",
                 "9.0"
               ],
-              "tone": "nerf"
+              "tone": "buff"
             },
             {
               "character": "Cementoss",
@@ -2618,7 +2618,7 @@
               "label": "Reload Time",
               "before": "60.0",
               "after": "50.0",
-              "tone": "nerf"
+              "tone": "buff"
             },
             {
               "character": "Cementoss",
@@ -2630,7 +2630,7 @@
               "label": "Penalty Reload",
               "before": "60.0",
               "after": "50.0",
-              "tone": "nerf"
+              "tone": "buff"
             },
             {
               "character": "Endeavor",
@@ -2642,7 +2642,7 @@
               "label": "Reload Time",
               "before": "0.2",
               "after": "0.18",
-              "tone": "nerf"
+              "tone": "buff"
             },
             {
               "character": "Endeavor",
@@ -2654,7 +2654,7 @@
               "label": "Ammo Used",
               "before": "15",
               "after": "10",
-              "tone": "nerf"
+              "tone": "buff"
             },
             {
               "character": "Endeavor",
@@ -2755,7 +2755,7 @@
                 "5.0",
                 "4.0"
               ],
-              "tone": "nerf"
+              "tone": "buff"
             },
             {
               "character": "Shota Aizawa",
@@ -2787,7 +2787,7 @@
                 "5.0",
                 "4.0"
               ],
-              "tone": "nerf"
+              "tone": "buff"
             },
             {
               "character": "Shota Aizawa",
@@ -2819,7 +2819,7 @@
                 "7.0",
                 "6.0"
               ],
-              "tone": "nerf"
+              "tone": "buff"
             },
             {
               "character": "Shota Aizawa",
@@ -2851,7 +2851,7 @@
                 "7.0",
                 "6.0"
               ],
-              "tone": "nerf"
+              "tone": "buff"
             },
             {
               "character": "Shota Aizawa",
@@ -4520,7 +4520,7 @@
               "label": "Reload Time",
               "before": "8.0",
               "after": "6.0",
-              "tone": "nerf"
+              "tone": "buff"
             },
             {
               "character": "Tamaki Amajiki",
@@ -4532,7 +4532,7 @@
               "label": "Penalty Reload",
               "before": "8.0",
               "after": "6.0",
-              "tone": "nerf"
+              "tone": "buff"
             },
             {
               "character": "Nejire Hado",
@@ -4564,7 +4564,7 @@
                 "6.0",
                 "6.0"
               ],
-              "tone": "buff"
+              "tone": "nerf"
             },
             {
               "character": "Armored All Might",
@@ -4576,7 +4576,7 @@
               "label": "Reload Time",
               "before": "0.5",
               "after": "0.7",
-              "tone": "buff"
+              "tone": "nerf"
             },
             {
               "character": "Armored All Might",
@@ -4588,7 +4588,7 @@
               "label": "Penalty Reload",
               "before": "12.0",
               "after": "15.0",
-              "tone": "buff"
+              "tone": "nerf"
             },
             {
               "character": "Shota Aizawa",
@@ -4630,7 +4630,7 @@
                 "4.0",
                 "3.5"
               ],
-              "tone": "nerf"
+              "tone": "adjust"
             },
             {
               "character": "Shota Aizawa",
@@ -4674,7 +4674,7 @@
               "label": "Ammo Used",
               "before": "20",
               "after": "50",
-              "tone": "buff"
+              "tone": "nerf"
             },
             {
               "character": "Endeavor",
@@ -4706,7 +4706,7 @@
                 "4.5",
                 "4.5"
               ],
-              "tone": "nerf"
+              "tone": "buff"
             },
             {
               "character": "Endeavor",
@@ -4738,7 +4738,7 @@
                 "5.0",
                 "8.0"
               ],
-              "tone": "nerf"
+              "tone": "buff"
             },
             {
               "character": "Hawks",
@@ -4770,7 +4770,7 @@
                 "8.0",
                 "8.0"
               ],
-              "tone": "nerf"
+              "tone": "buff"
             },
             {
               "character": "Hawks",
@@ -4802,7 +4802,7 @@
                 "10.0",
                 "12.0"
               ],
-              "tone": "nerf"
+              "tone": "buff"
             },
             {
               "character": "Tomura Shigaraki",
@@ -4834,7 +4834,7 @@
                 "12.0",
                 "11.0"
               ],
-              "tone": "buff"
+              "tone": "nerf"
             },
             {
               "character": "Dabi",
@@ -4866,7 +4866,7 @@
                 "40",
                 "42"
               ],
-              "tone": "buff"
+              "tone": "nerf"
             },
             {
               "character": "Kurogiri",
@@ -4898,7 +4898,7 @@
                 "0.2",
                 "0.2"
               ],
-              "tone": "nerf"
+              "tone": "buff"
             },
             {
               "character": "Lady Nagant",
@@ -4930,7 +4930,7 @@
                 "7.0",
                 "7.0"
               ],
-              "tone": "buff"
+              "tone": "nerf"
             },
             {
               "character": "Lady Nagant",
@@ -4952,7 +4952,7 @@
                 "7.0",
                 "5.0"
               ],
-              "tone": "buff"
+              "tone": "nerf"
             },
             {
               "character": "Lady Nagant",
@@ -4984,7 +4984,7 @@
                 "5.0",
                 "8.0"
               ],
-              "tone": "nerf"
+              "tone": "adjust"
             },
             {
               "character": "Lady Nagant",
@@ -5020,7 +5020,7 @@
               "label": "Reload Time",
               "before": "12.0",
               "after": "17.0",
-              "tone": "buff"
+              "tone": "nerf"
             },
             {
               "character": "Lady Nagant",
@@ -5032,7 +5032,7 @@
               "label": "Penalty Reload",
               "before": "12.0",
               "after": "17.0",
-              "tone": "buff"
+              "tone": "nerf"
             },
             {
               "character": "Lady Nagant",
