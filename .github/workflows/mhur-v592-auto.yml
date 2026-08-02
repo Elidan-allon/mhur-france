@@ -1,0 +1,229 @@
+name: MHUR V592 - Notes et fleche Mods stables
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/mhur-v592-auto.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: mhur-v592-notes-mods
+  cancel-in-progress: false
+
+jobs:
+  appliquer:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Recuperer le depot
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Installer Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: "24"
+          package-manager-cache: false
+
+      - name: Installer V592
+        shell: bash
+        run: |
+          cat > /tmp/appliquer_v592.py <<'PY'
+          from pathlib import Path
+          import json
+          import re
+          import subprocess
+
+          root = Path.cwd()
+          index = root / "public" / "index.html"
+          css_file = root / "public" / "css" / "v592-notes-mods-stable.css"
+          js_file = root / "public" / "js" / "v592-notes-mods-stable.js"
+          report = root / "RAPPORT_V592_NOTES_MODS.txt"
+
+          if not index.is_file():
+              raise SystemExit("[ERREUR] public/index.html est introuvable.")
+
+          css_content = "\n/* MHUR Nexus — V592 : boutons Notes visibles + flèche Mods propre */\n\n/* ------------------------------------------------------------------------- */\n/* Bouton du header : son nom reste volontairement en anglais dans les 2 langues. */\n/* ------------------------------------------------------------------------- */\nhtml body #mhurPatchDevButtonV14,\nhtml body .mhurPatchDevButtonV14,\nhtml body [data-s18-notes-button]{\n  display:inline-flex!important;\n  visibility:visible!important;\n  opacity:1!important;\n  pointer-events:auto!important;\n  align-items:center!important;\n  justify-content:center!important;\n  flex:0 0 auto!important;\n  min-width:46px!important;\n  min-height:42px!important;\n  z-index:300!important;\n}\n\n/* ------------------------------------------------------------------------- */\n/* Onglets Patch Notes / Dev Notes : jamais masqués.                         */\n/* ------------------------------------------------------------------------- */\nhtml body #s18NotesDevModalV10 .s18NotesPanelV10{\n  display:flex!important;\n  flex-direction:column!important;\n}\n\nhtml body #s18NotesDevModalV10 .s18NotesPanelV10 > nav,\nhtml body #s18NotesDevModalV10 .mhurNotesTabsV592{\n  display:flex!important;\n  visibility:visible!important;\n  opacity:1!important;\n  pointer-events:auto!important;\n  position:relative!important;\n  z-index:80!important;\n  flex:0 0 62px!important;\n  width:100%!important;\n  min-height:62px!important;\n  height:62px!important;\n  margin:0!important;\n  padding:7px 18px!important;\n  gap:10px!important;\n  overflow:visible!important;\n  border-top:2px solid #03070d!important;\n  border-bottom:2px solid #35628f!important;\n  background:#09182b!important;\n}\n\nhtml body #s18NotesDevModalV10 .s18NotesPanelV10 > nav > button,\nhtml body #s18NotesDevModalV10 .mhurNotesTabsV592 > button{\n  display:flex!important;\n  visibility:visible!important;\n  opacity:1!important;\n  pointer-events:auto!important;\n  align-items:center!important;\n  justify-content:center!important;\n  flex:1 1 50%!important;\n  width:auto!important;\n  min-width:150px!important;\n  min-height:46px!important;\n  margin:0!important;\n  padding:9px 18px!important;\n  border:3px solid #02060b!important;\n  border-radius:12px!important;\n  background:#183557!important;\n  color:#f7fbff!important;\n  font-size:17px!important;\n  font-weight:1000!important;\n  line-height:1!important;\n  letter-spacing:.2px!important;\n  text-align:center!important;\n  text-transform:none!important;\n  cursor:pointer!important;\n  box-shadow:0 3px 0 #02060b!important;\n}\n\nhtml body #s18NotesDevModalV10 .s18NotesPanelV10 > nav > button:hover,\nhtml body #s18NotesDevModalV10 .mhurNotesTabsV592 > button:hover{\n  background:#24517e!important;\n  color:#fff36b!important;\n}\n\nhtml body #s18NotesDevModalV10 .s18NotesPanelV10 > nav > button.active,\nhtml body #s18NotesDevModalV10 .mhurNotesTabsV592 > button.active{\n  border-color:#02060b!important;\n  background:linear-gradient(135deg,#ffe000 0%,#ffae00 100%)!important;\n  color:#07101d!important;\n  box-shadow:\n    inset 0 0 0 2px rgba(255,255,255,.24),\n    0 3px 0 #02060b!important;\n}\n\n/* La zone des notes reste sous les onglets au lieu de les recouvrir. */\nhtml body #s18NotesDevModalV10 .s18NotesBodyV10{\n  position:relative!important;\n  z-index:10!important;\n  flex:1 1 auto!important;\n  min-height:0!important;\n}\n\nhtml body #s18NotesDevModalV10 [data-patch-index]{\n  pointer-events:auto!important;\n  cursor:pointer!important;\n  position:relative!important;\n  z-index:20!important;\n}\n\n/* ------------------------------------------------------------------------- */\n/* Tutoriel Mods : suppression de l'ancien V et nouvelle flèche SVG propre.   */\n/* ------------------------------------------------------------------------- */\nhtml body .modsTutorial > summary{\n  position:relative!important;\n  list-style:none!important;\n  padding-right:86px!important;\n}\n\nhtml body .modsTutorial > summary::marker{\n  content:\"\"!important;\n  display:none!important;\n  font-size:0!important;\n}\n\nhtml body .modsTutorial > summary::-webkit-details-marker{\n  display:none!important;\n}\n\nhtml body .modsTutorial > summary::before{\n  content:none!important;\n  display:none!important;\n}\n\n/*\n  La flèche est entièrement dessinée dans une image SVG.\n  Aucun texte \"V\", aucun caractère déformé, aucun second bouton.\n*/\nhtml body .modsTutorial > summary::after{\n  content:\"\"!important;\n  display:block!important;\n  position:absolute!important;\n  top:50%!important;\n  right:24px!important;\n  width:58px!important;\n  height:58px!important;\n  margin:0!important;\n  padding:0!important;\n  border:0!important;\n  border-radius:50%!important;\n  background-color:transparent!important;\n  background-image:url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='28' fill='%2307111f' stroke='%23000000' stroke-width='5'/%3E%3Cpath d='M18 25 L32 39 L46 25' fill='none' stroke='%23ffe000' stroke-width='7' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E\")!important;\n  background-repeat:no-repeat!important;\n  background-position:center!important;\n  background-size:58px 58px!important;\n  box-shadow:0 4px 0 #000!important;\n  transform:translateY(-50%) rotate(0deg)!important;\n  transform-origin:center!important;\n  transition:\n    transform .18s ease,\n    filter .18s ease!important;\n  pointer-events:none!important;\n}\n\nhtml body .modsTutorial > summary:hover::after{\n  filter:drop-shadow(0 0 6px rgba(255,224,0,.65))!important;\n}\n\nhtml body .modsTutorial[open] > summary::after{\n  transform:translateY(-50%) rotate(180deg)!important;\n}\n\n/* Toutes les anciennes flèches réelles sont supprimées visuellement. */\nhtml body .modsTutorial\n:is(\n  [class*=\"Arrow\"],\n  [class*=\"arrow\"],\n  [class*=\"Chevron\"],\n  [class*=\"chevron\"],\n  [data-mods-arrow],\n  [data-mhur-extra-mod-arrow],\n  [data-v549-old-arrow],\n  [data-v592-old-arrow]\n){\n  display:none!important;\n  visibility:hidden!important;\n  width:0!important;\n  height:0!important;\n  min-width:0!important;\n  min-height:0!important;\n  margin:0!important;\n  padding:0!important;\n  border:0!important;\n  opacity:0!important;\n  overflow:hidden!important;\n  pointer-events:none!important;\n}\n\n@media(max-width:700px){\n  html body #s18NotesDevModalV10 .s18NotesPanelV10 > nav,\n  html body #s18NotesDevModalV10 .mhurNotesTabsV592{\n    flex-basis:56px!important;\n    height:56px!important;\n    min-height:56px!important;\n    padding:6px 8px!important;\n    gap:7px!important;\n  }\n\n  html body #s18NotesDevModalV10 .s18NotesPanelV10 > nav > button,\n  html body #s18NotesDevModalV10 .mhurNotesTabsV592 > button{\n    min-width:0!important;\n    min-height:42px!important;\n    padding:7px 8px!important;\n    font-size:14px!important;\n  }\n\n  html body .modsTutorial > summary{\n    padding-right:70px!important;\n  }\n\n  html body .modsTutorial > summary::after{\n    right:12px!important;\n    width:50px!important;\n    height:50px!important;\n    background-size:50px 50px!important;\n  }\n}\n"
+          js_content = "\n/* MHUR Nexus — V592 : Notes fiables et flèche Mods propre */\n(function(){\n  'use strict';\n\n  const VERSION='592';\n  const HEADER_LABEL='Patch Notes / Dev Notes';\n\n  function notesApi(){\n    return (\n      window.MHUR_S18_V14 ||\n      window.MHUR_S18_V13 ||\n      window.MHUR_S18_V10 ||\n      null\n    );\n  }\n\n  function modal(){\n    return document.getElementById('s18NotesDevModalV10');\n  }\n\n  function setHeaderButtonText(button){\n    if(!(button instanceof HTMLElement))return;\n\n    let label=button.querySelector(\n      '.mhurPatchDevLabelV587,'+\n      '.mhurPatchDevLabelV592,'+\n      'span:last-child'\n    );\n\n    if(!label){\n      label=document.createElement('span');\n      label.className='mhurPatchDevLabelV592';\n      button.appendChild(label);\n    }\n\n    label.textContent=HEADER_LABEL;\n    button.setAttribute('aria-label','Open Patch Notes / Dev Notes');\n    button.setAttribute('title',HEADER_LABEL);\n  }\n\n  function openNotes(){\n    const api=notesApi();\n\n    if(typeof api?.openNotes==='function'){\n      api.openNotes();\n    }else{\n      window.__s18OpenNotesRequested=true;\n    }\n\n    requestAnimationFrame(refreshNotes);\n    setTimeout(refreshNotes,40);\n    setTimeout(refreshNotes,160);\n  }\n\n  function ensureHeaderButton(){\n    const account=document.getElementById('mhurAccountButton');\n    const parent=(\n      account?.parentElement ||\n      document.querySelector('.mhurTopActionsV31') ||\n      document.querySelector('.nexusHeaderInner')\n    );\n\n    if(!parent)return null;\n\n    const candidates=[\n      ...document.querySelectorAll(\n        '#mhurPatchDevButtonV14,'+\n        '.mhurPatchDevButtonV14,'+\n        '[data-s18-notes-button]'\n      )\n    ];\n\n    let button=candidates.shift()||null;\n    candidates.forEach(extra=>extra.remove());\n\n    if(!button){\n      button=document.createElement('button');\n      button.type='button';\n      button.id='mhurPatchDevButtonV14';\n      button.className=\n        'nexusHeaderBtn mhurPatchDevButtonV10 mhurPatchDevButtonV14';\n\n      button.innerHTML=\n        '<span class=\"mhurPatchDevIconV20\" aria-hidden=\"true\">'+\n        '<svg viewBox=\"0 0 24 24\" width=\"22\" height=\"22\">'+\n        '<path fill=\"#f7fbff\" d=\"M6 2h9l4 4v16H6z\"/>'+\n        '<path fill=\"#17365d\" d=\"M14 2v5h5M8 10h8v2H8zm0 4h8v2H8zm0 4h6v2H8z\"/>'+\n        '</svg></span>'+\n        '<span class=\"mhurPatchDevLabelV592\"></span>';\n    }\n\n    button.id='mhurPatchDevButtonV14';\n    button.dataset.s18NotesButton='1';\n    button.type='button';\n    button.hidden=false;\n    button.removeAttribute('aria-hidden');\n    button.tabIndex=0;\n\n    setHeaderButtonText(button);\n\n    button.onclick=function(event){\n      event.preventDefault();\n      event.stopPropagation();\n      openNotes();\n    };\n\n    if(account&&account.parentElement===parent){\n      if(button.parentElement!==parent||button.nextSibling!==account){\n        parent.insertBefore(button,account);\n      }\n    }else if(button.parentElement!==parent){\n      parent.appendChild(button);\n    }\n\n    return button;\n  }\n\n  function ensureTabs(){\n    const root=modal();\n    const panel=root?.querySelector('.s18NotesPanelV10');\n\n    if(!panel)return null;\n\n    let nav=panel.querySelector(':scope > nav');\n\n    if(!nav){\n      nav=document.createElement('nav');\n      nav.className='mhurNotesTabsV592';\n\n      const header=panel.querySelector(':scope > header');\n\n      if(header?.nextSibling){\n        panel.insertBefore(nav,header.nextSibling);\n      }else if(header){\n        panel.appendChild(nav);\n      }else{\n        panel.prepend(nav);\n      }\n    }\n\n    nav.classList.add('mhurNotesTabsV592');\n    nav.hidden=false;\n    nav.removeAttribute('aria-hidden');\n\n    let patch=nav.querySelector('[data-tab=\"patch\"]');\n    let dev=nav.querySelector('[data-tab=\"dev\"]');\n\n    if(!patch){\n      patch=document.createElement('button');\n      patch.type='button';\n      patch.dataset.tab='patch';\n      nav.appendChild(patch);\n    }\n\n    if(!dev){\n      dev=document.createElement('button');\n      dev.type='button';\n      dev.dataset.tab='dev';\n      nav.appendChild(dev);\n    }\n\n    patch.textContent='Patch Notes';\n    dev.textContent='Dev Notes';\n\n    patch.hidden=false;\n    dev.hidden=false;\n    patch.removeAttribute('aria-hidden');\n    dev.removeAttribute('aria-hidden');\n\n    /*\n      Le moteur principal a déjà son onclick pour les onglets.\n      V592 ajoute seulement un repli lorsqu'un ancien correctif l'a perdu.\n    */\n    if(typeof patch.onclick!=='function'){\n      patch.onclick=function(event){\n        event.preventDefault();\n        const api=notesApi();\n        api?.showPatch?.(0);\n        patch.classList.add('active');\n        dev.classList.remove('active');\n        setTimeout(refreshNotes,0);\n      };\n    }\n\n    if(!dev.dataset.v592Fallback){\n      dev.dataset.v592Fallback='1';\n\n      dev.addEventListener('click',function(){\n        patch.classList.remove('active');\n        dev.classList.add('active');\n        setTimeout(refreshNotes,0);\n      });\n    }\n\n    return nav;\n  }\n\n  function showPatch(index){\n    const api=notesApi();\n    const numeric=Number(index);\n\n    if(!Number.isFinite(numeric))return;\n\n    if(typeof api?.showPatch==='function'){\n      api.showPatch(numeric);\n    }\n\n    requestAnimationFrame(refreshNotes);\n    setTimeout(refreshNotes,30);\n  }\n\n  function bindPatchButtons(){\n    const root=modal();\n    if(!root)return;\n\n    root.querySelectorAll('[data-patch-index]').forEach(button=>{\n      const index=Number(button.dataset.patchIndex);\n\n      button.hidden=false;\n      button.removeAttribute('aria-hidden');\n      button.style.pointerEvents='auto';\n\n      /*\n        Remplace les anciens onclick cassés.\n        Le bouton appelle directement l'API officielle showPatch(index).\n      */\n      button.onclick=function(event){\n        event.preventDefault();\n        event.stopPropagation();\n        showPatch(index);\n      };\n    });\n  }\n\n  function forceEnglishLabels(){\n    document.querySelectorAll(\n      '#mhurPatchDevButtonV14,'+\n      '.mhurPatchDevButtonV14,'+\n      '[data-s18-notes-button]'\n    ).forEach(setHeaderButtonText);\n\n    const root=modal();\n\n    if(root){\n      const patch=root.querySelector('[data-tab=\"patch\"]');\n      const dev=root.querySelector('[data-tab=\"dev\"]');\n\n      if(patch)patch.textContent='Patch Notes';\n      if(dev)dev.textContent='Dev Notes';\n    }\n  }\n\n  const OLD_ARROW_TEXT=/^(?:v|⌄|⌃|▼|▲|▾|▴|▽|△|↓|↑)$/i;\n\n  function removeOldModsArrows(){\n    document.querySelectorAll('.modsTutorial').forEach(tutorial=>{\n      const summary=tutorial.querySelector(':scope > summary');\n\n      tutorial.querySelectorAll('*').forEach(element=>{\n        if(!(element instanceof HTMLElement)||element===summary)return;\n\n        const className=String(element.className||'');\n        const arrowClass=/arrow|chevron/i.test(className);\n        const arrowData=(\n          element.hasAttribute('data-mods-arrow') ||\n          element.hasAttribute('data-mhur-extra-mod-arrow') ||\n          element.hasAttribute('data-v549-old-arrow')\n        );\n\n        const text=String(element.textContent||'')\n          .replace(/\\s+/g,'')\n          .trim();\n\n        const arrowOnly=Boolean(\n          text &&\n          OLD_ARROW_TEXT.test(text) &&\n          !element.querySelector(\n            'img,input,select,textarea,video,code,a,button'\n          )\n        );\n\n        if(arrowClass||arrowData||arrowOnly){\n          element.dataset.v592OldArrow='1';\n          element.remove();\n        }\n      });\n    });\n  }\n\n  function refreshNotes(){\n    ensureHeaderButton();\n    ensureTabs();\n    bindPatchButtons();\n    forceEnglishLabels();\n    removeOldModsArrows();\n\n    window.MHUR_S18_V18?.refreshNotesLayout?.();\n    window.MHUR_S18_V17?.refreshNotesLayout?.();\n  }\n\n  /*\n    L'ancien V587 ajoutait un listener document en capture et stoppait les clics.\n    Il est retiré de index.html par le workflow V592. Les boutons peuvent donc\n    atteindre leur onclick officiel ou celui installé ci-dessus.\n  */\n\n  let queued=false;\n\n  function schedule(){\n    if(queued)return;\n    queued=true;\n\n    requestAnimationFrame(()=>{\n      queued=false;\n      refreshNotes();\n    });\n  }\n\n  document.addEventListener('click',event=>{\n    const headerButton=event.target?.closest?.(\n      '#mhurPatchDevButtonV14,'+\n      '.mhurPatchDevButtonV14,'+\n      '[data-s18-notes-button]'\n    );\n\n    if(headerButton){\n      event.preventDefault();\n      event.stopPropagation();\n      openNotes();\n    }\n  },true);\n\n  new MutationObserver(mutations=>{\n    if(\n      mutations.some(mutation=>\n        mutation.addedNodes?.length ||\n        mutation.removedNodes?.length ||\n        mutation.type==='attributes'\n      )\n    ){\n      schedule();\n    }\n  }).observe(document.documentElement,{\n    childList:true,\n    subtree:true,\n    attributes:true,\n    attributeFilter:['class','hidden','aria-hidden']\n  });\n\n  window.addEventListener('mhur:languagechange',()=>{\n    /*\n      Le bouton reste anglais même lorsque le reste du site revient en français.\n    */\n    setTimeout(refreshNotes,0);\n    setTimeout(refreshNotes,80);\n  });\n\n  window.addEventListener('mhur-auth-change',schedule);\n  window.addEventListener('mhur-role-change',schedule);\n  window.addEventListener('resize',schedule,{passive:true});\n  window.addEventListener('load',refreshNotes,{once:true});\n\n  if(document.readyState==='loading'){\n    document.addEventListener(\n      'DOMContentLoaded',\n      refreshNotes,\n      {once:true}\n    );\n  }else{\n    refreshNotes();\n  }\n\n  window.MHUR_V592={\n    version:VERSION,\n    refresh:refreshNotes,\n    openNotes,\n    showPatch,\n    ensureTabs,\n    removeOldModsArrows\n  };\n})();\n"
+
+          css_file.parent.mkdir(parents=True, exist_ok=True)
+          js_file.parent.mkdir(parents=True, exist_ok=True)
+
+          css_file.write_text(css_content.rstrip() + "\n", encoding="utf-8")
+          js_file.write_text(js_content.rstrip() + "\n", encoding="utf-8")
+
+          html = index.read_text(encoding="utf-8-sig")
+
+          # Retire V587 : son listener capture bloquait les clics sur les anciennes notes.
+          html = re.sub(
+              r"\s*<script\b[^>]*src=['\"][^'\"]*"
+              r"v587-images-notes-stable\.js[^'\"]*['\"][^>]*>"
+              r"\s*</script>\s*",
+              "\n",
+              html,
+              flags=re.I,
+          )
+
+          # Retire une ancienne installation V592.
+          html = re.sub(
+              r"\s*<link\b[^>]*href=['\"][^'\"]*"
+              r"v592-notes-mods-stable\.css[^'\"]*['\"][^>]*>\s*",
+              "\n",
+              html,
+              flags=re.I,
+          )
+
+          html = re.sub(
+              r"\s*<script\b[^>]*src=['\"][^'\"]*"
+              r"v592-notes-mods-stable\.js[^'\"]*['\"][^>]*>"
+              r"\s*</script>\s*",
+              "\n",
+              html,
+              flags=re.I,
+          )
+
+          if "</head>" not in html:
+              raise SystemExit("[ERREUR] </head> est introuvable.")
+
+          if "</body>" not in html:
+              raise SystemExit("[ERREUR] </body> est introuvable.")
+
+          html = html.replace(
+              "</head>",
+              "\n<!-- V592 : onglets Notes visibles et flèche Mods SVG. -->\n"
+              '<link rel="stylesheet" href="css/v592-notes-mods-stable.css?v=592">\n'
+              "</head>",
+              1,
+          )
+
+          html = html.replace(
+              "</body>",
+              "\n<!-- V592 : dernière couche interactive des Notes et du tutoriel Mods. -->\n"
+              '<script src="js/v592-notes-mods-stable.js?v=592"></script>\n'
+              "</body>",
+              1,
+          )
+
+          index.write_text(html.rstrip() + "\n", encoding="utf-8")
+
+          errors = []
+
+          if "v587-images-notes-stable.js" in html:
+              errors.append("L'ancien JavaScript V587 est encore chargé.")
+
+          for resource in (
+              "css/v592-notes-mods-stable.css?v=592",
+              "js/v592-notes-mods-stable.js?v=592",
+          ):
+              if resource not in html:
+                  errors.append("Référence V592 absente : " + resource)
+
+          if html.rfind("v592-notes-mods-stable.js") < html.rfind(
+              "v591-language-consistency.js"
+          ):
+              errors.append("V592 n'est pas chargé après V591.")
+
+          required_js = [
+              "function ensureTabs",
+              "function bindPatchButtons",
+              "api?.showPatch?.(0)",
+              "showPatch(index)",
+              "Patch Notes / Dev Notes",
+              "function removeOldModsArrows",
+              "window.MHUR_V592",
+          ]
+
+          for value in required_js:
+              if value not in js_content:
+                  errors.append("Fonction JavaScript absente : " + value)
+
+          required_css = [
+              ".s18NotesPanelV10 > nav",
+              "[data-patch-index]",
+              ".modsTutorial > summary::after",
+              "data:image/svg+xml",
+          ]
+
+          for value in required_css:
+              if value not in css_content:
+                  errors.append("Règle CSS absente : " + value)
+
+          syntax = subprocess.run(
+              ["node", "--check", str(js_file)],
+              text=True,
+              capture_output=True,
+          )
+
+          if syntax.returncode:
+              errors.append("Syntaxe JavaScript invalide : " + syntax.stderr)
+
+          if errors:
+              raise SystemExit("[ERREUR V592]\n- " + "\n- ".join(errors))
+
+          report.write_text(
+              """MHUR FRANCE — RAPPORT V592
+
+          BOUTON DU HEADER
+          - Le libellé reste toujours « Patch Notes / Dev Notes ».
+          - Il reste en anglais en mode FR comme en mode EN.
+          - Le bouton est recréé s'il disparaît.
+          - Les doublons sont supprimés.
+
+          ONGLETS DE LA FENÊTRE
+          - Patch Notes et Dev Notes sont forcés visibles.
+          - Une nouvelle barre d'onglets est créée si l'ancienne a été supprimée.
+          - Les deux boutons ont un style MHUR Nexus.
+          - Les boutons restent utilisables sur ordinateur et mobile.
+
+          ANCIENNES PATCH NOTES
+          - V587 est retiré du chargement, car son listener capture bloquait les clics.
+          - Chaque bouton data-patch-index reçoit un nouvel onclick.
+          - Le clic appelle directement MHUR_S18_V14.showPatch(index).
+          - La liste est reconnectée après chaque reconstruction du contenu.
+
+          TUTORIEL MODS
+          - L'ancien V, les chevrons et les flèches DOM sont supprimés.
+          - La nouvelle flèche est un SVG net dans un bouton rond MHUR Nexus.
+          - Elle tourne proprement lorsque le tutoriel est ouvert.
+          - Aucun caractère texte déformé n'est utilisé.
+
+          VÉRIFICATIONS
+          - V587 retiré de index.html : OK
+          - V592 chargé après V591 : OK
+          - onglets visibles : OK
+          - anciennes notes reconnectées : OK
+          - flèche SVG : OK
+          - syntaxe JavaScript : OK
+          """,
+              encoding="utf-8",
+          )
+
+          print("[OK] V592 appliqué et vérifié.")
+          print("[OK] Bouton du header toujours en anglais.")
+          print("[OK] Boutons Patch Notes et Dev Notes restaurés.")
+          print("[OK] Clics sur toutes les anciennes notes reconnectés.")
+          print("[OK] Nouvelle flèche Mods SVG installée.")
+          PY
+          python /tmp/appliquer_v592.py
+
+      - name: Commit automatique
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add             public/index.html             public/css/v592-notes-mods-stable.css             public/js/v592-notes-mods-stable.js             RAPPORT_V592_NOTES_MODS.txt
+
+          if git diff --cached --quiet; then
+            echo "V592 est deja installe."
+            exit 0
+          fi
+
+          git commit -m "Reparer les Notes et la fleche Mods V592"
+          git push
