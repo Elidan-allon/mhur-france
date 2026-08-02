@@ -1,0 +1,662 @@
+name: MHUR V581 - NEW animes et costumes corriges
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/mhur-v581-auto.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: mhur-v581-automatique
+  cancel-in-progress: false
+
+jobs:
+  appliquer:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Recuperer le depot
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Installer Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: "24"
+          package-manager-cache: false
+
+      - name: Appliquer et verifier V581
+        shell: bash
+        run: |
+          cat > /tmp/mhur_v581.py <<'PY'
+          from __future__ import annotations
+
+          from datetime import datetime, timedelta, timezone
+          from pathlib import Path
+          import json
+          import re
+          import subprocess
+
+          ROOT = Path.cwd()
+          INDEX = ROOT / "public" / "index.html"
+          V12_JS = ROOT / "public" / "js" / "season18-v12.js"
+          FIXES_CSS = ROOT / "public" / "css" / "season18-fixes.css"
+          SYNC_JS = ROOT / "public" / "data" / "season18_sync.js"
+          REPORT = ROOT / "RAPPORT_V581_AUTOMATIQUE.txt"
+
+          FILES = [INDEX, V12_JS, FIXES_CSS, SYNC_JS]
+
+          JS_MARKER = "/* MHUR Nexus — V581 : NEW finaux après tous les anciens scripts */"
+          CSS_MARKER = "/* MHUR Nexus — V581 : animation NEW fiable, INCOMING fixe */"
+
+          def die(message: str) -> None:
+              raise RuntimeError(message)
+
+          def read(path: Path) -> str:
+              if not path.is_file():
+                  die(f"Fichier introuvable : {path.as_posix()}")
+              return path.read_text(encoding="utf-8-sig")
+
+          def write(path: Path, text: str) -> None:
+              path.write_text(text.rstrip() + "\n", encoding="utf-8")
+
+          def remove_tail_block(source: str, marker: str) -> str:
+              position = source.find(marker)
+              if position >= 0:
+                  source = source[:position]
+              return source.rstrip() + "\n"
+
+          def parse_sync() -> dict:
+              raw = read(SYNC_JS)
+              match = re.fullmatch(
+                  r"\s*window\.MHUR_SEASON18_DATA\s*=\s*(\{[\s\S]*\})\s*;?\s*",
+                  raw,
+              )
+              if not match:
+                  die("Impossible de lire public/data/season18_sync.js.")
+              return json.loads(match.group(1))
+
+          def date_day(value) -> str:
+              match = re.match(r"^(\d{4}-\d{2}-\d{2})", str(value or ""))
+              return match.group(1) if match else ""
+
+          def latest_released_costumes(data: dict) -> tuple[str, list[tuple[str, dict]]]:
+              today_jst = (datetime.now(timezone.utc) + timedelta(hours=9)).date().isoformat()
+              released: list[tuple[str, dict]] = []
+
+              for costume_id, row in (data.get("costumes") or {}).items():
+                  row = row or {}
+                  day = date_day(row.get("releaseDate") or row.get("release_date"))
+                  if day and day <= today_jst and not bool(row.get("upcoming")):
+                      released.append((str(costume_id), row))
+
+              if not released:
+                  die("Aucun costume déjà sorti n'a été trouvé dans season18_sync.js.")
+
+              latest_day = max(
+                  date_day(row.get("releaseDate") or row.get("release_date"))
+                  for _, row in released
+              )
+
+              latest_rows = [
+                  (costume_id, row)
+                  for costume_id, row in released
+                  if date_day(row.get("releaseDate") or row.get("release_date")) == latest_day
+              ]
+
+              return latest_day, latest_rows
+
+          def patch_data() -> tuple[str, list[tuple[str, dict]]]:
+              data = parse_sync()
+              latest_day, latest_rows = latest_released_costumes(data)
+              latest_ids = [costume_id for costume_id, _ in latest_rows]
+
+              for key in ("active_new_content", "new_content"):
+                  section = data.setdefault(key, {})
+                  section["characters"] = ["gentle_criminal"]
+                  section["styles"] = ["gentle_criminal_technical"]
+                  section["costumes"] = list(dict.fromkeys(latest_ids + ["108000000"]))
+
+              write(
+                  SYNC_JS,
+                  "window.MHUR_SEASON18_DATA = "
+                  + json.dumps(data, ensure_ascii=False, separators=(",", ":"))
+                  + ";",
+              )
+
+              return latest_day, latest_rows
+
+          V581_JS = r'''
+          /* MHUR Nexus — V581 : NEW finaux après tous les anciens scripts */
+          (function(){
+            'use strict';
+
+            const BADGE =
+              '<span class="s18NewBadge s18NewBadgeV9 s18NewBadgeV24 s18NewBadgeV581" aria-label="NEW">NEW!</span>';
+
+            const GENTLE_CHARACTER = 'gentle_criminal';
+            const GENTLE_STYLE = 'gentle_criminal_technical';
+            const GENTLE_ORIGINAL = '108000000';
+
+            function sets(){
+              const data = window.MHUR_SEASON18_DATA || {};
+              const active = data.active_new_content || data.new_content || {};
+
+              return {
+                characters: new Set([
+                  ...(active.characters || []).map(String),
+                  GENTLE_CHARACTER
+                ]),
+                styles: new Set([
+                  ...(active.styles || []).map(String),
+                  GENTLE_STYLE
+                ]),
+                costumes: new Set([
+                  ...(active.costumes || []).map(String),
+                  GENTLE_ORIGINAL
+                ])
+              };
+            }
+
+            function costumeObjectId(costume){
+              return String(
+                costume?.urId ??
+                costume?.ur_id ??
+                costume?.id ??
+                ''
+              ).replace(/^ur_/i, '');
+            }
+
+            function costumeElementId(card){
+              if(!card) return '';
+
+              const values = [
+                card.dataset?.costumeId,
+                card.dataset?.costume,
+                card.dataset?.id,
+                card.getAttribute('data-costume-id'),
+                card.getAttribute('data-costume'),
+                card.getAttribute('data-id'),
+                card.id,
+                card.getAttribute('onclick'),
+                card.getAttribute('href')
+              ];
+
+              for(const value of values){
+                const match = String(value || '').match(/(?:ur[_-]?)?(\d{4,})/i);
+                if(match) return match[1];
+              }
+
+              return '';
+            }
+
+            function directBadges(node){
+              try{
+                return [...node.querySelectorAll(':scope > .s18NewBadge')];
+              }catch(_error){
+                return [...(node.children || [])]
+                  .filter(child => child.classList?.contains('s18NewBadge'));
+              }
+            }
+
+            function setBadge(node, active){
+              if(!node) return;
+
+              const badges = directBadges(node);
+              let finalBadge = badges.find(
+                badge => badge.classList.contains('s18NewBadgeV581')
+              );
+
+              if(!active){
+                badges.forEach(badge => badge.remove());
+                return;
+              }
+
+              badges.forEach(badge => {
+                if(badge !== finalBadge) badge.remove();
+              });
+
+              if(!finalBadge){
+                node.insertAdjacentHTML('afterbegin', BADGE);
+                finalBadge = directBadges(node).find(
+                  badge => badge.classList.contains('s18NewBadgeV581')
+                );
+              }
+
+              finalBadge?.classList.add('s18NewBadgeV581');
+            }
+
+            function installCostumeRenderer(){
+              if(typeof window.costumeCard !== 'function') return;
+              if(window.costumeCard.__mhurV581) return;
+
+              const original = window.costumeCard;
+
+              const wrapped = function(costume){
+                const id = costumeObjectId(costume);
+                let html = String(original.apply(this, arguments) || '');
+
+                if(id){
+                  if(!/\bdata-costume-id\s*=/.test(html)){
+                    html = html.replace(
+                      /^(<(?:button|div)\b)/i,
+                      '$1 data-costume-id="' + id + '"'
+                    );
+                  }
+
+                  if(
+                    sets().costumes.has(id) &&
+                    !/s18NewBadgeV581/.test(html)
+                  ){
+                    html = html.replace(
+                      /^(<(?:button|div)\b[^>]*>)/i,
+                      '$1' + BADGE
+                    );
+                  }
+                }
+
+                return html;
+              };
+
+              wrapped.__mhurV581 = true;
+              wrapped.__mhurV581Original = original;
+
+              window.costumeCard = wrapped;
+
+              try{
+                costumeCard = wrapped;
+              }catch(_error){}
+            }
+
+            function sync(){
+              installCostumeRenderer();
+
+              const active = sets();
+
+              document.querySelectorAll('.card[data-char]').forEach(card => {
+                setBadge(
+                  card,
+                  active.characters.has(String(card.dataset.char || ''))
+                );
+              });
+
+              document.querySelectorAll('.styleCard[data-style]').forEach(card => {
+                setBadge(
+                  card,
+                  active.styles.has(String(card.dataset.style || ''))
+                );
+              });
+
+              document.querySelectorAll(
+                '.costumeTile,.costumeCard,.costumeResult,[data-costume-id],[data-costume]'
+              ).forEach(card => {
+                const id = costumeElementId(card);
+
+                if(id && !card.dataset.costumeId){
+                  card.dataset.costumeId = id;
+                }
+
+                const upcoming = Boolean(
+                  card.closest(
+                    '.s18UpcomingCostumeGroupV19,.s18UpcomingCostumeGroupV23'
+                  )
+                );
+
+                setBadge(
+                  card,
+                  Boolean(id && active.costumes.has(id) && !upcoming)
+                );
+              });
+            }
+
+            let queued = false;
+
+            function schedule(){
+              if(queued) return;
+              queued = true;
+
+              requestAnimationFrame(() => {
+                queued = false;
+                sync();
+              });
+            }
+
+            function wrapRender(){
+              if(typeof window.render !== 'function') return;
+              if(window.render.__mhurV581) return;
+
+              const original = window.render;
+
+              const wrapped = function(){
+                const result = original.apply(this, arguments);
+                installCostumeRenderer();
+                sync();
+                schedule();
+                return result;
+              };
+
+              wrapped.__mhurV581 = true;
+              window.render = wrapped;
+
+              try{
+                render = wrapped;
+              }catch(_error){}
+            }
+
+            installCostumeRenderer();
+            wrapRender();
+
+            if(document.readyState === 'loading'){
+              document.addEventListener('DOMContentLoaded', () => {
+                installCostumeRenderer();
+                wrapRender();
+                sync();
+                schedule();
+              }, {once: true});
+            }else{
+              sync();
+              schedule();
+            }
+
+            new MutationObserver(mutations => {
+              if(mutations.some(mutation => mutation.addedNodes?.length)){
+                schedule();
+              }
+            }).observe(document.documentElement, {
+              childList: true,
+              subtree: true
+            });
+
+            window.addEventListener('load', () => {
+              installCostumeRenderer();
+              wrapRender();
+              sync();
+              schedule();
+            }, {once: true});
+
+            window.addEventListener('hashchange', schedule);
+            window.addEventListener('mhur:languagechange', schedule);
+
+            window.MHUR_V581_NEW = {
+              refresh: sync,
+              sets
+            };
+          })();
+          '''
+
+          def patch_v12() -> None:
+              source = read(V12_JS)
+
+              # Cette ligne supprimait tous les NEW des personnages après chaque rendu.
+              source, count = re.subn(
+                  r"\s*document\.querySelectorAll\("
+                  r"['\"]\.card\[data-char\] \.s18NewBadge['\"]"
+                  r"\)\.forEach\(node=>node\.remove\(\)\);",
+                  "\n  /* V581 : ne plus supprimer les badges NEW des personnages. */",
+                  source,
+              )
+
+              if count == 0 and "V581 : ne plus supprimer les badges NEW" not in source:
+                  die("La suppression automatique des NEW n'a pas été trouvée dans season18-v12.js.")
+
+              source = remove_tail_block(source, JS_MARKER)
+              write(V12_JS, source + "\n" + V581_JS)
+
+          V581_CSS = r'''
+          /* MHUR Nexus — V581 : animation NEW fiable, INCOMING fixe */
+
+          /* Les INCOMING restent grands mais ne bougent plus. */
+          .s18PlannedIncomingV578,
+          .s18PlannedIncomingV579,
+          .s18PlannedIncomingV580,
+          .s18PlannedIncomingV581,
+          [class*="s18PlannedIncoming"]{
+            animation:none!important;
+            transform:none!important;
+            scale:1!important;
+          }
+
+          /*
+            Animation indépendante de transform :
+            elle reste active même si les anciens CSS imposent transform avec !important.
+          */
+          @keyframes mhurNewPulseV581{
+            0%,100%{scale:.91}
+            50%{scale:1.13}
+          }
+
+          .card[data-char] > .s18NewBadgeV581,
+          .styleCard[data-style] > .s18NewBadgeV581,
+          .costumeTile > .s18NewBadgeV581,
+          .costumeCard > .s18NewBadgeV581,
+          .costumeResult > .s18NewBadgeV581,
+          [data-costume-id] > .s18NewBadgeV581,
+          [data-costume] > .s18NewBadgeV581{
+            display:block!important;
+            visibility:visible!important;
+            opacity:1!important;
+            animation:mhurNewPulseV581 .9s ease-in-out infinite!important;
+            transform-origin:center!important;
+            will-change:scale!important;
+          }
+
+          /* Personnages et T.U.N.I.N.G : haut à droite. */
+          .card[data-char] > .s18NewBadgeV581,
+          .styleCard[data-style] > .s18NewBadgeV581{
+            top:7px!important;
+            right:7px!important;
+            left:auto!important;
+            width:88px!important;
+            height:44px!important;
+            z-index:95!important;
+          }
+
+          /* Costumes : petit NEW sous les étoiles. */
+          .costumeTile > .s18NewBadgeV581,
+          .costumeCard > .s18NewBadgeV581,
+          .costumeResult > .s18NewBadgeV581,
+          [data-costume-id] > .s18NewBadgeV581,
+          [data-costume] > .s18NewBadgeV581{
+            top:38px!important;
+            right:8px!important;
+            left:auto!important;
+            width:60px!important;
+            height:31px!important;
+            z-index:90!important;
+          }
+
+          /* Les étoiles restent au-dessus. */
+          .costumeTile > .costumeTileStars,
+          .costumeCard > .costumeTileStars,
+          .costumeResult > .costumeTileStars{
+            z-index:96!important;
+          }
+
+          /* Le NEW de l'accueil garde sa propre animation existante. */
+          .s18PlannedCardV12[data-planned="gentle"] .s18PlannedNewV12{
+            scale:1!important;
+          }
+
+          @media(max-width:700px){
+            .card[data-char] > .s18NewBadgeV581,
+            .styleCard[data-style] > .s18NewBadgeV581{
+              width:76px!important;
+              height:38px!important;
+            }
+
+            .costumeTile > .s18NewBadgeV581,
+            .costumeCard > .s18NewBadgeV581,
+            .costumeResult > .s18NewBadgeV581,
+            [data-costume-id] > .s18NewBadgeV581,
+            [data-costume] > .s18NewBadgeV581{
+              top:34px!important;
+              right:7px!important;
+              width:54px!important;
+              height:28px!important;
+            }
+          }
+          '''
+
+          def patch_css() -> None:
+              source = read(FIXES_CSS)
+              source = remove_tail_block(source, CSS_MARKER)
+              write(FIXES_CSS, source + "\n" + V581_CSS)
+
+          def update_query(html: str, resource: str) -> str:
+              pattern = re.compile(
+                  rf'(["\']){re.escape(resource)}(?:\?[^"\']*)?\1',
+                  flags=re.I,
+              )
+
+              if not pattern.search(html):
+                  die(f"Référence introuvable dans index.html : {resource}")
+
+              return pattern.sub(f'"{resource}?v=581"', html)
+
+          def patch_index() -> None:
+              html = read(INDEX)
+
+              for resource in (
+                  "css/season18-fixes.css",
+                  "data/season18_sync.js",
+                  "js/season18-v12.js",
+              ):
+                  html = update_query(html, resource)
+
+              write(INDEX, html)
+
+          def verify(latest_day: str, latest_rows: list[tuple[str, dict]]) -> None:
+              html = read(INDEX)
+              v12 = read(V12_JS)
+              css = read(FIXES_CSS)
+              data = parse_sync()
+
+              errors: list[str] = []
+
+              for resource in (
+                  "css/season18-fixes.css?v=581",
+                  "data/season18_sync.js?v=581",
+                  "js/season18-v12.js?v=581",
+              ):
+                  if resource not in html:
+                      errors.append(f"cache V581 absent : {resource}")
+
+              if JS_MARKER not in v12:
+                  errors.append("bloc JavaScript V581 absent")
+
+              if ".card[data-char] .s18NewBadge').forEach(node=>node.remove())" in v12:
+                  errors.append("ancienne suppression des NEW encore présente")
+
+              if "data-costume-id" not in v12:
+                  errors.append("détection data-costume-id absente")
+
+              if CSS_MARKER not in css:
+                  errors.append("bloc CSS V581 absent")
+
+              if "animation:none!important" not in css:
+                  errors.append("arrêt de l'animation INCOMING absent")
+
+              if "@keyframes mhurNewPulseV581" not in css:
+                  errors.append("animation NEW V581 absente")
+
+              expected_ids = {costume_id for costume_id, _ in latest_rows}
+              expected_ids.add("108000000")
+
+              for key in ("active_new_content", "new_content"):
+                  section = data.get(key) or {}
+                  costumes = set(map(str, section.get("costumes") or []))
+                  styles = set(map(str, section.get("styles") or []))
+                  characters = set(map(str, section.get("characters") or []))
+
+                  if costumes != expected_ids:
+                      errors.append(f"{key}: liste des costumes NEW incorrecte")
+                  if styles != {"gentle_criminal_technical"}:
+                      errors.append(f"{key}: style Gentle incorrect")
+                  if characters != {"gentle_criminal"}:
+                      errors.append(f"{key}: personnage Gentle incorrect")
+
+              result = subprocess.run(
+                  ["node", "--check", str(V12_JS)],
+                  text=True,
+                  capture_output=True,
+              )
+              if result.returncode:
+                  errors.append("syntaxe season18-v12.js invalide : " + result.stderr)
+
+              if errors:
+                  die("Vérification V581 échouée :\n- " + "\n- ".join(errors))
+
+              lines = [
+                  "MHUR FRANCE — RAPPORT AUTOMATIQUE V581",
+                  "",
+                  f"Dernière journée de costumes détectée : {latest_day}",
+                  f"Costumes de cette journée : {len(latest_rows)}",
+                  "",
+              ]
+
+              for costume_id, row in latest_rows:
+                  group = row.get("group_fr") or row.get("group_en") or "Costume"
+                  variant = row.get("variant_fr") or row.get("variant_en") or ""
+                  lines.append(
+                      f"- {costume_id} — {group}"
+                      + (f" ({variant})" if variant else "")
+                  )
+
+              lines += [
+                  "",
+                  "Vérifications :",
+                  "- INCOMING grands et sans animation : OK",
+                  "- NEW personnages non supprimés après rendu : OK",
+                  "- NEW animés par CSS scale : OK",
+                  "- data-costume-id reconnu : OK",
+                  "- toute la dernière journée de costumes NEW : OK",
+                  "- costume Original Gentle NEW : OK",
+                  "- style Technique Gentle NEW : OK",
+                  "- syntaxe JavaScript : OK",
+              ]
+
+              write(REPORT, "\n".join(lines))
+
+          def main() -> None:
+              for path in FILES:
+                  if not path.is_file():
+                      die(f"Fichier requis absent : {path.as_posix()}")
+
+              latest_day, latest_rows = patch_data()
+              patch_v12()
+              patch_css()
+              patch_index()
+              verify(latest_day, latest_rows)
+
+              print("[OK] V581 appliqué et vérifié.")
+              print(f"[OK] Dernière journée : {latest_day}")
+              print(f"[OK] Costumes NEW : {len(latest_rows)} + Original Gentle")
+              print("[OK] INCOMING sans animation.")
+              print("[OK] NEW animés et costumes détectés avec data-costume-id.")
+
+          if __name__ == "__main__":
+              main()
+          PY
+          python3 /tmp/mhur_v581.py
+
+      - name: Commit automatique
+        shell: bash
+        run: |
+          if git diff --quiet; then
+            echo "Aucun changement a enregistrer."
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add             public/index.html             public/js/season18-v12.js             public/css/season18-fixes.css             public/data/season18_sync.js             RAPPORT_V581_AUTOMATIQUE.txt
+
+          git commit -m "Corriger animation NEW et costumes V581"
+          git push
