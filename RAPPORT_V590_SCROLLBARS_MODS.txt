@@ -1,0 +1,24 @@
+MHUR FRANCE — RAPPORT V590
+
+BARRES DE DÉFILEMENT
+- Style MHUR Nexus appliqué à html, body et tous les éléments.
+- Compatible Firefox avec scrollbar-color / scrollbar-width.
+- Compatible Chrome, Edge et Safari avec ::-webkit-scrollbar.
+- Piste bleu nuit.
+- Curseur jaune vers cyan.
+- Survol et clic différenciés.
+- Barres horizontales également stylisées.
+- Boutons natifs de scrollbar masqués.
+
+TUTORIEL MODS
+- Marqueur natif du summary masqué.
+- Pseudo-élément ::before neutralisé.
+- Une seule flèche CSS conservée en haut à droite.
+- Toutes les classes Arrow/Chevron du tutoriel masquées.
+- Les flèches ajoutées dynamiquement sont supprimées par MutationObserver.
+- La flèche tourne lors de l'ouverture.
+
+VÉRIFICATIONS
+- CSS V590 chargé en dernier dans le head : OK
+- JavaScript V590 chargé à la fin du body : OK
+- Syntaxe JavaScript : OK

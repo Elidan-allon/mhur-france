@@ -1,0 +1,212 @@
+
+/* MHUR Nexus — V590 : barres de défilement globales + flèche Mods unique */
+
+:root{
+  --mhur-scroll-track:#07101d;
+  --mhur-scroll-track-mid:#142844;
+  --mhur-scroll-yellow:#ffe000;
+  --mhur-scroll-yellow-light:#fff36b;
+  --mhur-scroll-cyan:#19c9de;
+  --mhur-scroll-cyan-dark:#078ea5;
+}
+
+/* Firefox : toutes les zones déroulantes. */
+html,
+body,
+body *{
+  scrollbar-width:thin!important;
+  scrollbar-color:var(--mhur-scroll-yellow) var(--mhur-scroll-track)!important;
+}
+
+/* Chromium, Edge, Chrome, Safari : site, panneaux, modales, champs, listes. */
+html::-webkit-scrollbar,
+body::-webkit-scrollbar,
+body *::-webkit-scrollbar{
+  width:13px!important;
+  height:13px!important;
+}
+
+html::-webkit-scrollbar-track,
+body::-webkit-scrollbar-track,
+body *::-webkit-scrollbar-track{
+  background:
+    linear-gradient(
+      180deg,
+      var(--mhur-scroll-track) 0%,
+      var(--mhur-scroll-track-mid) 50%,
+      var(--mhur-scroll-track) 100%
+    )!important;
+  border:2px solid #000!important;
+  border-radius:999px!important;
+  box-shadow:inset 0 0 0 1px rgba(25,201,222,.16)!important;
+}
+
+html::-webkit-scrollbar-thumb,
+body::-webkit-scrollbar-thumb,
+body *::-webkit-scrollbar-thumb{
+  min-width:44px!important;
+  min-height:44px!important;
+  border:3px solid #02060c!important;
+  border-radius:999px!important;
+  background:
+    linear-gradient(
+      180deg,
+      var(--mhur-scroll-yellow-light) 0%,
+      var(--mhur-scroll-yellow) 38%,
+      var(--mhur-scroll-cyan) 72%,
+      var(--mhur-scroll-cyan-dark) 100%
+    )!important;
+  background-clip:padding-box!important;
+  box-shadow:
+    inset 0 0 0 2px rgba(255,255,255,.2),
+    0 0 7px rgba(255,224,0,.35)!important;
+}
+
+html::-webkit-scrollbar-thumb:horizontal,
+body::-webkit-scrollbar-thumb:horizontal,
+body *::-webkit-scrollbar-thumb:horizontal{
+  background:
+    linear-gradient(
+      90deg,
+      var(--mhur-scroll-yellow-light) 0%,
+      var(--mhur-scroll-yellow) 38%,
+      var(--mhur-scroll-cyan) 72%,
+      var(--mhur-scroll-cyan-dark) 100%
+    )!important;
+}
+
+html::-webkit-scrollbar-thumb:hover,
+body::-webkit-scrollbar-thumb:hover,
+body *::-webkit-scrollbar-thumb:hover{
+  background:
+    linear-gradient(
+      180deg,
+      #fff9a8 0%,
+      #ffea27 38%,
+      #45e4f3 72%,
+      #0bb5ce 100%
+    )!important;
+}
+
+html::-webkit-scrollbar-thumb:active,
+body::-webkit-scrollbar-thumb:active,
+body *::-webkit-scrollbar-thumb:active{
+  background:
+    linear-gradient(
+      180deg,
+      #ffe000 0%,
+      #ffb000 44%,
+      #19c9de 72%,
+      #08798d 100%
+    )!important;
+}
+
+html::-webkit-scrollbar-button,
+body::-webkit-scrollbar-button,
+body *::-webkit-scrollbar-button{
+  display:none!important;
+  width:0!important;
+  height:0!important;
+}
+
+html::-webkit-scrollbar-corner,
+body::-webkit-scrollbar-corner,
+body *::-webkit-scrollbar-corner{
+  background:var(--mhur-scroll-track)!important;
+}
+
+/* Le résumé natif ne doit produire aucun marqueur supplémentaire. */
+html body .modsTutorial > summary{
+  list-style:none!important;
+}
+
+html body .modsTutorial > summary::marker{
+  content:""!important;
+  display:none!important;
+  font-size:0!important;
+}
+
+html body .modsTutorial > summary::-webkit-details-marker{
+  display:none!important;
+  width:0!important;
+  height:0!important;
+}
+
+/*
+  Une seule flèche : le pseudo-élément de droite.
+  Toutes les anciennes flèches réelles sont masquées, quelle que soit
+  leur version ou leur nom de classe.
+*/
+html body .modsTutorial > summary::before{
+  content:none!important;
+  display:none!important;
+}
+
+html body .modsTutorial > summary::after{
+  content:"⌄"!important;
+  display:grid!important;
+  place-items:center!important;
+  flex:0 0 56px!important;
+  width:56px!important;
+  min-width:56px!important;
+  height:56px!important;
+  margin-left:auto!important;
+  border:4px solid #000!important;
+  border-radius:50%!important;
+  background:#07111f!important;
+  color:#ffe000!important;
+  font-size:38px!important;
+  font-weight:1000!important;
+  line-height:1!important;
+  box-shadow:0 4px 0 #000!important;
+  transform:rotate(0deg)!important;
+  transform-origin:center!important;
+  transition:transform .18s ease!important;
+  pointer-events:none!important;
+}
+
+html body .modsTutorial[open] > summary::after{
+  transform:rotate(180deg)!important;
+}
+
+/* Classes connues et futures contenant Arrow/Chevron dans le tutoriel. */
+html body .modsTutorial
+  :is(
+    [class*="Arrow"],
+    [class*="arrow"],
+    [class*="Chevron"],
+    [class*="chevron"],
+    [data-mods-arrow],
+    [data-mhur-extra-mod-arrow]
+  ){
+  display:none!important;
+  visibility:hidden!important;
+  width:0!important;
+  height:0!important;
+  min-width:0!important;
+  min-height:0!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  overflow:hidden!important;
+  opacity:0!important;
+  pointer-events:none!important;
+}
+
+/* La flèche est compacte sur téléphone, sans créer de deuxième ligne. */
+@media(max-width:700px){
+  html body .modsTutorial > summary::after{
+    flex-basis:48px!important;
+    width:48px!important;
+    min-width:48px!important;
+    height:48px!important;
+    font-size:32px!important;
+  }
+
+  html::-webkit-scrollbar,
+  body::-webkit-scrollbar,
+  body *::-webkit-scrollbar{
+    width:10px!important;
+    height:10px!important;
+  }
+}
