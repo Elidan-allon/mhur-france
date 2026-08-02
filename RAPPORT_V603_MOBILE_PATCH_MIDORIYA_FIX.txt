@@ -1,0 +1,13 @@
+MHUR FRANCE - RAPPORT V603
+
+CORRECTIONS APPLIQUEES
+- Patch Notes : les cartes HP n'affichent plus d'image de compétence.
+- Patch Notes : meilleure détection des vraies images alpha, surtout pour Midoriya.
+- Mobile : bouton back fixé à l'écran.
+- Mobile : cartes costumes remontées (photo, variante, tuning).
+- Mobile : panneaux Social networks et Content creators descendent plus bas.
+- Ouverture Patch Notes / Dev Notes / profil : fermeture des panneaux Social/Creator.
+
+FICHIERS AJOUTES
+- public/js/v603-mobile-patch-fix.js
+- public/css/v603-mobile-patch-fix.css

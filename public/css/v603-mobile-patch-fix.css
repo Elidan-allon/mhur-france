@@ -1,0 +1,53 @@
+
+/* MHUR Nexus - V603 */
+.s18PatchSkillV10.mhurV603NoSkillImage,
+#s18NotesDevModalV10 .s18PatchSkillV10.mhurV603NoSkillImage{
+  display: block !important;
+  width: 100% !important;
+  min-width: 0 !important;
+}
+.s18PatchSkillV10.mhurV603NoSkillImage > main,
+#s18NotesDevModalV10 .s18PatchSkillV10.mhurV603NoSkillImage > main{
+  display: block !important;
+  width: 100% !important;
+  max-width: none !important;
+}
+.s18PatchSkillV10 > div img,
+#s18NotesDevModalV10 .s18PatchSkillV10 > div img{
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain !important;
+  display: block !important;
+}
+
+@media (max-width: 900px){
+  .mhurV603FixedBack{
+    position: fixed !important;
+    right: 18px !important;
+    bottom: 22px !important;
+    z-index: 9999 !important;
+  }
+
+  .mhurV603NamedPanel{
+    top: 92px !important;
+    margin-top: 0 !important;
+    max-height: calc(100dvh - 115px) !important;
+    overflow: auto !important;
+  }
+
+  .mhurV603CostumeCard{
+    padding-top: 6px !important;
+  }
+  .mhurV603CostumeMainImage{
+    transform: translateY(-8px) !important;
+  }
+  .mhurV603CostumeVariantName{
+    display: block !important;
+    margin-top: -6px !important;
+    position: relative !important;
+  }
+  .mhurV603CostumeTuningIcon{
+    position: relative !important;
+    transform: translateY(-10px) !important;
+  }
+}
