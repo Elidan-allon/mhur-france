@@ -46,3 +46,23 @@
 /data/*
   Cache-Control: public, max-age=86400, stale-while-revalidate=604800
 # MHUR V633C ASSET CACHE END
+
+# MHUR V638 FAST CACHE START
+/
+  Cache-Control: public, max-age=60, stale-while-revalidate=86400
+
+/index.html
+  Cache-Control: public, max-age=60, stale-while-revalidate=86400
+
+/assets/*
+  Cache-Control: public, max-age=2592000, stale-while-revalidate=604800
+
+/css/*
+  Cache-Control: public, max-age=604800, stale-while-revalidate=604800
+
+/js/*
+  Cache-Control: public, max-age=604800, stale-while-revalidate=604800
+
+/data/*
+  Cache-Control: public, max-age=604800, stale-while-revalidate=604800
+# MHUR V638 FAST CACHE END

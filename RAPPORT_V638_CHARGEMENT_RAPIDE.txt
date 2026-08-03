@@ -1,0 +1,10 @@
+MHUR NEXUS — V638
+
+- 138 blocs CSS regroupés en un seul fichier.
+- Ordre de cascade conservé.
+- Bundle CSS chargé avec priorité élevée dans le head.
+- Aucun écran de chargement et aucun masquage JavaScript.
+- Les scripts fonctionnels gardent leur ordre.
+- Cache normal réactivé.
+- Images visibles prioritaires ; images hors écran différées.
+- Les images déjà optimisées par V637 ne sont pas recompressées.
