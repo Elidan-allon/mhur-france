@@ -1,0 +1,222 @@
+name: MHUR V622.1 - Costumes sans saut au chargement
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/mhur-v622-auto-v2.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: mhur-v622-costumes-loading
+  cancel-in-progress: false
+
+jobs:
+  appliquer:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Recuperer le depot
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Installer Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Appliquer et enregistrer V622
+        shell: bash
+        run: |
+          set -euo pipefail
+          
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          
+          cat > /tmp/appliquer_v622.py <<'PY'
+          from pathlib import Path
+          import base64
+          import re
+          
+          JS = base64.b64decode("LyogTUhVUiBOZXh1cyDigJQgVjYyMgogICBFbXDDqmNoZSBsZSBzYXV0IGxhdMOpcmFsIGRlcyBwaG90b3MgZGUgY29zdHVtZXMgc3VyIG1vYmlsZS4KCiAgIExhIHBob3RvIHJlc3RlIGludmlzaWJsZSBwZW5kYW50IHNvbiBkw6ljb2RhZ2UgZXQgbGUgY2FsY3VsIFY2MTgsCiAgIHB1aXMgYXBwYXJhw650IGRvdWNlbWVudCBsb3JzcXUnZWxsZSBlc3QgZMOpasOgIGNlbnRyw6llLgogICBBdWN1biBjYWRyYWdlLCBhdWN1bmUgdGFpbGxlIGV0IGF1Y3VuZSBhdXRyZSBpbnRlcmZhY2UgbmUgc29udCBtb2RpZmnDqXMuCiovCihmdW5jdGlvbigpewogICd1c2Ugc3RyaWN0JzsKCiAgaWYod2luZG93Lk1IVVJfVjYyMl9DT1NUVU1FX1JFVkVBTF9MT0FERUQpcmV0dXJuOwogIHdpbmRvdy5NSFVSX1Y2MjJfQ09TVFVNRV9SRVZFQUxfTE9BREVEPXRydWU7CgogIGNvbnN0IE1PQklMRV9RVUVSWT0nKG1heC13aWR0aDo3NjBweCknOwogIGNvbnN0IHdhdGNoZWQ9bmV3IFdlYWtTZXQoKTsKICBsZXQgcmVmcmVzaFF1ZXVlZD1mYWxzZTsKCiAgZnVuY3Rpb24gbW9iaWxlKCl7CiAgICByZXR1cm4gd2luZG93Lm1hdGNoTWVkaWEoTU9CSUxFX1FVRVJZKS5tYXRjaGVzOwogIH0KCiAgZnVuY3Rpb24gaXNNYWluQ29zdHVtZUltYWdlKGltYWdlKXsKICAgIHJldHVybiBCb29sZWFuKAogICAgICBpbWFnZSBpbnN0YW5jZW9mIEhUTUxJbWFnZUVsZW1lbnQmJgogICAgICBpbWFnZS5wYXJlbnRFbGVtZW50Py5tYXRjaGVzPy4oJy5jb3N0dW1lVGlsZScpCiAgICApOwogIH0KCiAgZnVuY3Rpb24gcG9zaXRpb25pbmdSZWFkeShpbWFnZSl7CiAgICBpZihpbWFnZS5kYXRhc2V0LnY2MThNYWluIT09JzEnKXJldHVybiBmYWxzZTsKCiAgICBjb25zdCBzdHlsZT1pbWFnZS5zdHlsZTsKCiAgICByZXR1cm4gWwogICAgICAnLS12NjE4LWxlZnQnLAogICAgICAnLS12NjE4LXRvcCcsCiAgICAgICctLXY2MTgtd2lkdGgnLAogICAgICAnLS12NjE4LWhlaWdodCcKICAgIF0uZXZlcnkobmFtZT0+c3R5bGUuZ2V0UHJvcGVydHlWYWx1ZShuYW1lKS50cmltKCkhPT0nJyk7CiAgfQoKICBmdW5jdGlvbiByZXF1ZXN0VjYxOCgpewogICAgdHJ5ewogICAgICBjb25zdCBhcGk9d2luZG93Lk1IVVJfVjYxOF9DT1NUVU1FUzsKCiAgICAgIGlmKGFwaSYmdHlwZW9mIGFwaS5yZWZyZXNoPT09J2Z1bmN0aW9uJyl7CiAgICAgICAgYXBpLnJlZnJlc2goKTsKICAgICAgfQogICAgfWNhdGNoKF9lcnJvcil7fQogIH0KCiAgZnVuY3Rpb24gcmV2ZWFsKGltYWdlKXsKICAgIGlmKAogICAgICAhaW1hZ2UuaXNDb25uZWN0ZWR8fAogICAgICBpbWFnZS5kYXRhc2V0LnY2MjJSZWFkeT09PScxJwogICAgKXsKICAgICAgcmV0dXJuOwogICAgfQoKICAgIC8qCiAgICAgIERldXggaW1hZ2VzIGQnYXR0ZW50ZSBnYXJhbnRpc3NlbnQgcXVlIGxlcyB2YXJpYWJsZXMgVjYxOCBvbnQgw6l0w6kKICAgICAgYXBwbGlxdcOpZXMgYXUgc3R5bGUgY2FsY3Vsw6kgYXZhbnQgZGUgbGFuY2VyIGxlIGZvbmR1LgogICAgKi8KICAgIHJlcXVlc3RBbmltYXRpb25GcmFtZSgoKT0+ewogICAgICByZXF1ZXN0QW5pbWF0aW9uRnJhbWUoKCk9PnsKICAgICAgICBpZigKICAgICAgICAgIGltYWdlLmlzQ29ubmVjdGVkJiYKICAgICAgICAgIHBvc2l0aW9uaW5nUmVhZHkoaW1hZ2UpCiAgICAgICAgKXsKICAgICAgICAgIGltYWdlLmRhdGFzZXQudjYyMlJlYWR5PScxJzsKICAgICAgICAgIGRlbGV0ZSBpbWFnZS5kYXRhc2V0LnY2MjJXYWl0aW5nOwogICAgICAgIH0KICAgICAgfSk7CiAgICB9KTsKICB9CgogIGZ1bmN0aW9uIHdhaXRVbnRpbENlbnRlcmVkKGltYWdlKXsKICAgIGlmKCFpc01haW5Db3N0dW1lSW1hZ2UoaW1hZ2UpfHx3YXRjaGVkLmhhcyhpbWFnZSkpcmV0dXJuOwoKICAgIHdhdGNoZWQuYWRkKGltYWdlKTsKICAgIGltYWdlLmRhdGFzZXQudjYyMldhaXRpbmc9JzEnOwoKICAgIGxldCBzdGFydGVkQXQ9cGVyZm9ybWFuY2Uubm93KCk7CiAgICBsZXQgbGFzdFJlZnJlc2g9MDsKCiAgICBmdW5jdGlvbiBjaGVjaygpewogICAgICBpZighaW1hZ2UuaXNDb25uZWN0ZWQpcmV0dXJuOwoKICAgICAgaWYoIW1vYmlsZSgpKXsKICAgICAgICBpbWFnZS5kYXRhc2V0LnY2MjJSZWFkeT0nMSc7CiAgICAgICAgZGVsZXRlIGltYWdlLmRhdGFzZXQudjYyMldhaXRpbmc7CiAgICAgICAgcmV0dXJuOwogICAgICB9CgogICAgICBpZihwb3NpdGlvbmluZ1JlYWR5KGltYWdlKSl7CiAgICAgICAgcmV2ZWFsKGltYWdlKTsKICAgICAgICByZXR1cm47CiAgICAgIH0KCiAgICAgIGNvbnN0IG5vdz1wZXJmb3JtYW5jZS5ub3coKTsKCiAgICAgIGlmKG5vdy1sYXN0UmVmcmVzaD45MCl7CiAgICAgICAgbGFzdFJlZnJlc2g9bm93OwogICAgICAgIHJlcXVlc3RWNjE4KCk7CiAgICAgIH0KCiAgICAgIC8qCiAgICAgICAgTGUgcmVuZHUgZGUgbGEgZ2FsZXJpZSBwZXV0IHJlY3LDqWVyIGxhIGNhcnRlIHBsdXNpZXVycyBmb2lzLgogICAgICAgIE9uIGNvbnRpbnVlIGRvbmMgw6AgYXR0ZW5kcmUgdGFudCBxdWUgbCdpbWFnZSBhcHBhcnRpZW50IMOgIGxhIHBhZ2UuCiAgICAgICovCiAgICAgIGlmKG5vdy1zdGFydGVkQXQ+NTAwMCl7CiAgICAgICAgc3RhcnRlZEF0PW5vdzsKICAgICAgfQoKICAgICAgcmVxdWVzdEFuaW1hdGlvbkZyYW1lKGNoZWNrKTsKICAgIH0KCiAgICBjb25zdCBiZWdpbj0oKT0+ewogICAgICBQcm9taXNlLnJlc29sdmUoCiAgICAgICAgdHlwZW9mIGltYWdlLmRlY29kZT09PSdmdW5jdGlvbicKICAgICAgICAgID9pbWFnZS5kZWNvZGUoKS5jYXRjaCgoKT0+e30pCiAgICAgICAgICA6dW5kZWZpbmVkCiAgICAgICkuZmluYWxseSgoKT0+ewogICAgICAgIHJlcXVlc3RWNjE4KCk7CiAgICAgICAgcmVxdWVzdEFuaW1hdGlvbkZyYW1lKGNoZWNrKTsKICAgICAgfSk7CiAgICB9OwoKICAgIGlmKGltYWdlLmNvbXBsZXRlJiZpbWFnZS5uYXR1cmFsV2lkdGg+MCl7CiAgICAgIGJlZ2luKCk7CiAgICB9ZWxzZXsKICAgICAgaW1hZ2UuYWRkRXZlbnRMaXN0ZW5lcignbG9hZCcsYmVnaW4se29uY2U6dHJ1ZX0pOwogICAgICBpbWFnZS5hZGRFdmVudExpc3RlbmVyKAogICAgICAgICdlcnJvcicsCiAgICAgICAgKCk9PnsKICAgICAgICAgIC8qCiAgICAgICAgICAgIEVuIGNhcyBkJ2ltYWdlIHLDqWVsbGVtZW50IGFic2VudGUsIG5lIHBhcyBibG9xdWVyIHVuIMOpdmVudHVlbAogICAgICAgICAgICBnZXN0aW9ubmFpcmUgZGUgcmVtcGxhY2VtZW50IGTDqWrDoCBwcsOpc2VudCBkYW5zIGxlIHNpdGUuCiAgICAgICAgICAqLwogICAgICAgICAgaW1hZ2UuZGF0YXNldC52NjIyUmVhZHk9JzEnOwogICAgICAgICAgZGVsZXRlIGltYWdlLmRhdGFzZXQudjYyMldhaXRpbmc7CiAgICAgICAgfSwKICAgICAgICB7b25jZTp0cnVlfQogICAgICApOwogICAgfQogIH0KCiAgZnVuY3Rpb24gc2Nhbihyb290PWRvY3VtZW50KXsKICAgIGlmKCFtb2JpbGUoKSlyZXR1cm47CgogICAgaWYoaXNNYWluQ29zdHVtZUltYWdlKHJvb3QpKXsKICAgICAgd2FpdFVudGlsQ2VudGVyZWQocm9vdCk7CiAgICB9CgogICAgaWYocm9vdD8ucXVlcnlTZWxlY3RvckFsbCl7CiAgICAgIHJvb3QucXVlcnlTZWxlY3RvckFsbCgnLmNvc3R1bWVUaWxlID4gaW1nJykKICAgICAgICAuZm9yRWFjaCh3YWl0VW50aWxDZW50ZXJlZCk7CiAgICB9CgogICAgcmVxdWVzdFY2MTgoKTsKICB9CgogIGZ1bmN0aW9uIHNjaGVkdWxlU2Nhbihyb290PWRvY3VtZW50KXsKICAgIGlmKHJlZnJlc2hRdWV1ZWQpcmV0dXJuOwoKICAgIHJlZnJlc2hRdWV1ZWQ9dHJ1ZTsKCiAgICByZXF1ZXN0QW5pbWF0aW9uRnJhbWUoKCk9PnsKICAgICAgcmVmcmVzaFF1ZXVlZD1mYWxzZTsKICAgICAgc2Nhbihyb290KTsKICAgIH0pOwogIH0KCiAgbmV3IE11dGF0aW9uT2JzZXJ2ZXIobXV0YXRpb25zPT57CiAgICBmb3IoY29uc3QgbXV0YXRpb24gb2YgbXV0YXRpb25zKXsKICAgICAgbXV0YXRpb24uYWRkZWROb2Rlcy5mb3JFYWNoKG5vZGU9PnsKICAgICAgICBpZihub2RlLm5vZGVUeXBlPT09Tm9kZS5FTEVNRU5UX05PREUpewogICAgICAgICAgc2Nhbihub2RlKTsKICAgICAgICB9CiAgICAgIH0pOwogICAgfQogIH0pLm9ic2VydmUoZG9jdW1lbnQuZG9jdW1lbnRFbGVtZW50LHsKICAgIGNoaWxkTGlzdDp0cnVlLAogICAgc3VidHJlZTp0cnVlCiAgfSk7CgogIGlmKGRvY3VtZW50LnJlYWR5U3RhdGU9PT0nbG9hZGluZycpewogICAgZG9jdW1lbnQuYWRkRXZlbnRMaXN0ZW5lcigKICAgICAgJ0RPTUNvbnRlbnRMb2FkZWQnLAogICAgICAoKT0+c2NhbigpLAogICAgICB7b25jZTp0cnVlfQogICAgKTsKICB9ZWxzZXsKICAgIHNjYW4oKTsKICB9CgogIHdpbmRvdy5hZGRFdmVudExpc3RlbmVyKCdsb2FkJywoKT0+c2NhbigpLHtvbmNlOnRydWV9KTsKICB3aW5kb3cuYWRkRXZlbnRMaXN0ZW5lcigncmVzaXplJywoKT0+c2NoZWR1bGVTY2FuKCkpOwogIHdpbmRvdy5hZGRFdmVudExpc3RlbmVyKCdvcmllbnRhdGlvbmNoYW5nZScsKCk9PnNjaGVkdWxlU2NhbigpKTsKICB3aW5kb3cuYWRkRXZlbnRMaXN0ZW5lcignaGFzaGNoYW5nZScsKCk9PnNjaGVkdWxlU2NhbigpKTsKICB3aW5kb3cuYWRkRXZlbnRMaXN0ZW5lcigncG9wc3RhdGUnLCgpPT5zY2hlZHVsZVNjYW4oKSk7CiAgZG9jdW1lbnQuYWRkRXZlbnRMaXN0ZW5lcignY2xpY2snLCgpPT5zY2hlZHVsZVNjYW4oKSx0cnVlKTsKCiAgd2luZG93Lk1IVVJfVjYyMl9DT1NUVU1FX1JFVkVBTD17CiAgICByZWZyZXNoKCl7CiAgICAgIGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3JBbGwoJy5jb3N0dW1lVGlsZSA+IGltZycpCiAgICAgICAgLmZvckVhY2goaW1hZ2U9PnsKICAgICAgICAgIHdhdGNoZWQuZGVsZXRlKGltYWdlKTsKICAgICAgICAgIGRlbGV0ZSBpbWFnZS5kYXRhc2V0LnY2MjJSZWFkeTsKICAgICAgICAgIHdhaXRVbnRpbENlbnRlcmVkKGltYWdlKTsKICAgICAgICB9KTsKICAgIH0KICB9Owp9KSgpOw==").decode("utf-8")
+          STYLE = base64.b64decode("PHN0eWxlIGlkPSJtaHVyLXY2MjItY29zdHVtZS1pbWFnZS1uby1qdW1wIj4KQG1lZGlhIChtYXgtd2lkdGg6NzYwcHgpewogIC8qCiAgICBDZXR0ZSByw6hnbGUgZXN0IGNoYXJnw6llIGRhbnMgPGhlYWQ+LCBhdmFudCBsYSBjcsOpYXRpb24gZGVzIGNhcnRlcyA6CiAgICBsJ2FuY2llbiBjYWRyYWdlIGTDqWNlbnRyw6kgbmUgcGV1dCBkb25jIGphbWFpcyDDqnRyZSB2aXNpYmxlLgogICovCiAgaHRtbCBib2R5ICNhcHAgLmNvc3R1bWVUaWxlID4gaW1newogICAgb3BhY2l0eTowIWltcG9ydGFudDsKICAgIHZpc2liaWxpdHk6aGlkZGVuIWltcG9ydGFudDsKICAgIHRyYW5zaXRpb246CiAgICAgIG9wYWNpdHkgMTkwbXMgY3ViaWMtYmV6aWVyKC4yMiwuNjEsLjM2LDEpIWltcG9ydGFudDsKICAgIHdpbGwtY2hhbmdlOm9wYWNpdHkhaW1wb3J0YW50OwogIH0KCiAgaHRtbCBib2R5ICNhcHAgLmNvc3R1bWVUaWxlID4gaW1nW2RhdGEtdjYyMi1yZWFkeT0iMSJdewogICAgb3BhY2l0eToxIWltcG9ydGFudDsKICAgIHZpc2liaWxpdHk6dmlzaWJsZSFpbXBvcnRhbnQ7CiAgfQp9CgpAbWVkaWEgKHByZWZlcnMtcmVkdWNlZC1tb3Rpb246cmVkdWNlKXsKICBodG1sIGJvZHkgI2FwcCAuY29zdHVtZVRpbGUgPiBpbWd7CiAgICB0cmFuc2l0aW9uOm5vbmUhaW1wb3J0YW50OwogIH0KfQo8L3N0eWxlPg==").decode("utf-8")
+          
+          index_path = Path("public/index.html")
+          js_path = Path("public/js/v622-costume-image-no-jump.js")
+          report_path = Path("RAPPORT_V622_COSTUMES_SANS_SAUT.txt")
+          
+          if not index_path.is_file():
+              raise SystemExit("[ERREUR] public/index.html introuvable.")
+          
+          js_path.parent.mkdir(parents=True, exist_ok=True)
+          js_path.write_text(JS + "\n", encoding="utf-8")
+          
+          html = index_path.read_text(encoding="utf-8")
+          
+          # Installation idempotente.
+          html = re.sub(
+              r'\s*<style id=["\']mhur-v622-costume-image-no-jump["\']>'
+              r'.*?</style>\s*',
+              "\n",
+              html,
+              flags=re.I | re.S,
+          )
+          html = re.sub(
+              r'\s*<!-- V622 : costumes sans saut au chargement\. -->\s*'
+              r'<script[^>]+v622-costume-image-no-jump\.js[^>]*>'
+              r'\s*</script>\s*',
+              "\n",
+              html,
+              flags=re.I,
+          )
+          html = re.sub(
+              r'\s*<script[^>]+v622-costume-image-no-jump\.js[^>]*>'
+              r'\s*</script>\s*',
+              "\n",
+              html,
+              flags=re.I,
+          )
+          
+          # V618 doit être chargé : il effectue le cadrage final déjà validé.
+          if not re.search(
+              r'<link[^>]+v618-mobile-costume-visible-center\.css',
+              html,
+              flags=re.I,
+          ):
+              head_matches=list(re.finditer(r'</head\s*>',html,flags=re.I))
+              if not head_matches:
+                  raise SystemExit("[ERREUR] Balise </head> introuvable.")
+              position=head_matches[-1].start()
+              tag=(
+                  '<link rel="stylesheet" '
+                  'href="css/v618-mobile-costume-visible-center.css?v=6182">\n'
+              )
+              html=html[:position]+tag+html[position:]
+          
+          # Le masquage est inline dans head pour agir avant le premier affichage.
+          head_matches=list(re.finditer(r'</head\s*>',html,flags=re.I))
+          if not head_matches:
+              raise SystemExit("[ERREUR] Balise </head> introuvable.")
+          position=head_matches[-1].start()
+          html=html[:position]+STYLE+"\n"+html[position:]
+          
+          # S'assurer que le moteur V618 précède V622.
+          if not re.search(
+              r'<script[^>]+v618-mobile-costume-visible-center\.js',
+              html,
+              flags=re.I,
+          ):
+              body_matches=list(re.finditer(r'</body\s*>',html,flags=re.I))
+              if not body_matches:
+                  raise SystemExit("[ERREUR] Balise </body> introuvable.")
+              position=body_matches[-1].start()
+              tag=(
+                  '<script '
+                  'src="js/v618-mobile-costume-visible-center.js?v=6182">'
+                  '</script>\n'
+              )
+              html=html[:position]+tag+html[position:]
+          
+          body_matches=list(re.finditer(r'</body\s*>',html,flags=re.I))
+          if not body_matches:
+              raise SystemExit("[ERREUR] Balise </body> introuvable.")
+          position=body_matches[-1].start()
+          script_tag=(
+              '<!-- V622 : costumes sans saut au chargement. -->\n'
+              '<script src="js/v622-costume-image-no-jump.js?v=6221">'
+              '</script>\n'
+          )
+          html=html[:position]+script_tag+html[position:]
+          
+          index_path.write_text(html,encoding="utf-8")
+          
+          report_path.write_text(
+              """MHUR NEXUS — V622
+          
+          CORRECTION UNIQUE
+          - La photo n'apparaît plus décalée à droite pendant son chargement.
+          - Elle reste invisible quelques instants pendant le calcul V618.
+          - Elle apparaît ensuite déjà centrée avec un fondu très court.
+          
+          NON MODIFIÉ
+          - Taille et position finales des costumes.
+          - Badges, NEW, rareté, T.U.N.I.N.G et noms.
+          - Version ordinateur.
+          """,
+              encoding="utf-8",
+          )
+          
+          print("[OK] V622 appliqué.")
+          PY
+          
+          cat > /tmp/verifier_v622.py <<'PY'
+          from pathlib import Path
+          
+          html=Path("public/index.html").read_text(encoding="utf-8")
+          js=Path("public/js/v622-costume-image-no-jump.js").read_text(
+              encoding="utf-8"
+          )
+          
+          if html.count('id="mhur-v622-costume-image-no-jump"')!=1:
+              raise SystemExit("[ERREUR] Style V622 absent ou dupliqué.")
+          
+          if html.count("js/v622-costume-image-no-jump.js?v=6221")!=1:
+              raise SystemExit("[ERREUR] Script V622 absent ou dupliqué.")
+          
+          for reference in [
+              "v618-mobile-costume-visible-center.css",
+              "v618-mobile-costume-visible-center.js",
+          ]:
+              if reference not in html:
+                  raise SystemExit(f"[ERREUR] Dépendance absente : {reference}")
+          
+          for token in [
+              "positioningReady",
+              "image.decode",
+              "dataset.v622Ready",
+              "requestV618",
+          ]:
+              if token not in js:
+                  raise SystemExit(f"[ERREUR] Élément V622 manquant : {token}")
+          
+          print("[OK] Contrôles V622 validés.")
+          PY
+          
+          for tentative in 1 2 3 4 5; do
+            echo "===== Tentative ${tentative}/5 ====="
+            git fetch origin main
+            git reset --hard origin/main
+          
+            python3 /tmp/appliquer_v622.py
+            node --check public/js/v622-costume-image-no-jump.js
+            python3 /tmp/verifier_v622.py
+          
+            git add \
+              public/index.html \
+              public/js/v622-costume-image-no-jump.js \
+              RAPPORT_V622_COSTUMES_SANS_SAUT.txt
+          
+            if git diff --cached --quiet; then
+              echo "[INFO] V622 est déjà appliqué."
+              exit 0
+            fi
+          
+            git commit -m "fix: afficher les costumes directement centrés V622"
+          
+            if git push origin HEAD:main; then
+              echo "[OK] V622 envoyé sur main."
+              exit 0
+            fi
+          
+            echo "[ATTENTE] main a changé, nouvelle tentative."
+            sleep $((tentative * 3))
+          done
+          
+          echo "[ERREUR] Impossible d'envoyer V622 après cinq tentatives."
+          exit 1
