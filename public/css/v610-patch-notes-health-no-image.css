@@ -1,0 +1,22 @@
+/* MHUR Nexus - V610.1 : cartes PV / HP sans image */
+#s18NotesDevModalV10 [data-v610-health-no-image="1"] [class*="PatchImage"],
+#s18NotesDevModalV10 [data-v610-health-no-image="1"] [class*="SkillImage"],
+#s18NotesDevModalV10 [data-v610-health-no-image="1"] .mhur-v610-health-no-image > img {
+  display: none !important;
+}
+
+#s18NotesDevModalV10 [data-v610-health-no-image="1"] .mhur-v610-health-no-image {
+  display: block !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  width: 100% !important;
+  min-width: 0 !important;
+}
+
+#s18NotesDevModalV10 [data-v610-health-no-image="1"] .mhur-v610-health-no-image > main {
+  display: block !important;
+  grid-column: 1 / -1 !important;
+  width: 100% !important;
+  max-width: none !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+}
