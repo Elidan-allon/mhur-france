@@ -1,0 +1,15 @@
+MHUR NEXUS — V612 — CORRECTIFS MOBILES
+
+CORRECTIONS
+- Le bouton Retour reste fixe juste sous le bas réel du header.
+- Les fenêtres Réseaux sociaux et Créateurs de contenu commencent sous le header.
+- Les Patch Notes et Dev Notes utilisent la même limite.
+- Le bouton Patch Notes / Dev Notes ferme la fenêtre lorsqu'elle est déjà ouverte.
+- Les photos de costumes et leurs icônes T.U.N.I.N.G sont légèrement remontées.
+- Les logos de rôle sont centrés avec les noms des rôles.
+
+PROTECTION
+- Les règles visuelles et le comportement de bascule sont limités aux écrans
+  de 760 px ou moins.
+- Les pages ordinateur ne sont pas modifiées.
+- Aucun contenu, aucune image source et aucune donnée de jeu ne sont modifiés.

@@ -1,0 +1,258 @@
+/* MHUR Nexus — V612 : correctifs mobiles ciblés */
+
+@media (max-width:760px){
+  :root{
+    --mhur-v612-header-bottom:
+      max(
+        var(--mhur-v517-measured-header-bottom,0px),
+        var(
+          --mhur-header-visual-bottom,
+          var(--mhur-mobile-header-height,115px)
+        )
+      );
+  }
+
+  /* 1. Bouton Retour fixe, toujours sous le header et toujours cliquable. */
+  html body #app > .back,
+  html body .wrap > .back,
+  html body .back{
+    position:fixed!important;
+    top:calc(var(--mhur-v612-header-bottom) + 8px)!important;
+    right:auto!important;
+    bottom:auto!important;
+    left:max(10px,env(safe-area-inset-left,0px))!important;
+    inset-inline-start:max(10px,env(safe-area-inset-left,0px))!important;
+    display:inline-flex!important;
+    width:max-content!important;
+    max-width:calc(100vw - 20px)!important;
+    margin:0!important;
+    translate:none!important;
+    transform:none!important;
+    visibility:visible!important;
+    opacity:1!important;
+    pointer-events:auto!important;
+    touch-action:manipulation!important;
+    z-index:2147482500!important;
+  }
+
+  html body #app.mhurHasBackV57,
+  html body #app:has(> .back){
+    padding-top:72px!important;
+  }
+
+  /* Les fenêtres passent devant le bouton Retour, mais restent sous le header. */
+  html body .nexusLinksOverlay,
+  html body #s18NotesDevModalV10.s18NotesOverlayV10{
+    z-index:2147482800!important;
+  }
+
+  /* 2. Réseaux sociaux / Créateurs de contenu sous le bas réel du header. */
+  html body .nexusLinksOverlay,
+  html body .nexusLinksOverlay.mhurV603NamedPanel{
+    position:fixed!important;
+    top:var(--mhur-v612-header-bottom)!important;
+    right:0!important;
+    bottom:0!important;
+    left:0!important;
+    inset:
+      var(--mhur-v612-header-bottom)
+      0
+      0
+      0!important;
+    box-sizing:border-box!important;
+    width:100%!important;
+    height:auto!important;
+    max-height:none!important;
+    margin:0!important;
+    padding:
+      8px
+      max(10px,env(safe-area-inset-right,0px))
+      max(12px,env(safe-area-inset-bottom,0px))
+      max(10px,env(safe-area-inset-left,0px))!important;
+    overflow-x:hidden!important;
+    overflow-y:auto!important;
+    overscroll-behavior:contain!important;
+    scroll-padding-top:0!important;
+  }
+
+  /*
+    V603 avait appliqué top:92px à plusieurs conteneurs génériques.
+    On neutralise cette ancienne position dans la fenêtre actuelle.
+  */
+  html body .nexusLinksOverlay.mhurV603NamedPanel{
+    top:var(--mhur-v612-header-bottom)!important;
+    margin-top:0!important;
+    max-height:none!important;
+  }
+
+  html body .nexusLinksOverlay
+  .mhurV603NamedPanel:not(.nexusLinksPanel){
+    position:static!important;
+    top:auto!important;
+    inset:auto!important;
+    max-height:none!important;
+    margin-top:0!important;
+  }
+
+  html body .nexusLinksPanel,
+  html body .nexusLinksPanel.mhurV603NamedPanel,
+  html body .mhurV603NamedPanel.nexusLinksPanel{
+    position:relative!important;
+    top:auto!important;
+    right:auto!important;
+    bottom:auto!important;
+    left:auto!important;
+    inset:auto!important;
+    box-sizing:border-box!important;
+    width:min(560px,100%)!important;
+    max-width:100%!important;
+    height:auto!important;
+    min-height:0!important;
+    max-height:
+      calc(100dvh - var(--mhur-v612-header-bottom) - 16px)!important;
+    margin:0 auto!important;
+    padding:14px 12px 12px!important;
+    overflow-x:hidden!important;
+    overflow-y:auto!important;
+    translate:none!important;
+    transform:none!important;
+  }
+
+  html body .nexusLinksTitle{
+    margin-top:0!important;
+    padding-top:4px!important;
+  }
+
+  /* 3. Patch Notes / Dev Notes sous le header, comme les autres panneaux. */
+  html body #s18NotesDevModalV10.s18NotesOverlayV10{
+    position:fixed!important;
+    top:var(--mhur-v612-header-bottom)!important;
+    right:0!important;
+    bottom:0!important;
+    left:0!important;
+    inset:
+      var(--mhur-v612-header-bottom)
+      0
+      0
+      0!important;
+    box-sizing:border-box!important;
+    width:100%!important;
+    height:auto!important;
+    min-height:0!important;
+    max-height:
+      calc(100dvh - var(--mhur-v612-header-bottom))!important;
+    margin:0!important;
+    padding:4px!important;
+  }
+
+  html body #s18NotesDevModalV10 .s18NotesPanelV10{
+    box-sizing:border-box!important;
+    width:100%!important;
+    height:100%!important;
+    min-height:0!important;
+    max-height:100%!important;
+    margin:0!important;
+  }
+
+  /*
+    Pendant l'ouverture d'une fenêtre, le Retour de la page située dessous
+    ne doit pas capter les touchers.
+  */
+  html body:has(.nexusLinksOverlay.is-open) #app > .back,
+  html body.s18NotesOpenV11 #app > .back{
+    pointer-events:none!important;
+  }
+
+  /* 4. Cartes costumes : photo et icônes T.U.N.I.N.G légèrement remontées. */
+  html body #app .costumeGalleryGrid .costumeTile > img,
+  html body #app .costumeGalleryGrid
+  .costumeTile > img.mhurV603CostumeMainImage{
+    top:20px!important;
+    object-position:center top!important;
+    transform:translateY(-8px) scale(1.07)!important;
+    transform-origin:center top!important;
+  }
+
+  html body #app .costumeTileBadge{
+    bottom:18px!important;
+    translate:none!important;
+    transform:none!important;
+  }
+
+  html body #app .costumeTileBadge img,
+  html body #app .costumeTileBadge .mhurV603CostumeTuningIcon{
+    margin:0!important;
+    translate:none!important;
+    transform:none!important;
+  }
+
+  /* 5. Logos de rôle centrés verticalement avec Assaut / Attaque / etc. */
+  html body #app .pageFrame.costumesFrame
+  .cardsGrid > .card .badges,
+  html body #app .pageFrame.tuningsFrame
+  .cardsGrid > .card .badges{
+    align-items:stretch!important;
+    gap:8px!important;
+  }
+
+  html body #app .pageFrame.costumesFrame
+  .cardsGrid > .card .badge,
+  html body #app .pageFrame.tuningsFrame
+  .cardsGrid > .card .badge{
+    position:relative!important;
+    display:flex!important;
+    min-height:48px!important;
+    padding:7px 12px!important;
+    align-items:center!important;
+    justify-content:flex-start!important;
+    gap:8px!important;
+    line-height:1!important;
+    vertical-align:middle!important;
+  }
+
+  html body #app .pageFrame.costumesFrame
+  .cardsGrid > .card .badge .roleIcon,
+  html body #app .pageFrame.tuningsFrame
+  .cardsGrid > .card .badge .roleIcon{
+    position:static!important;
+    inset:auto!important;
+    display:block!important;
+    align-self:center!important;
+    width:32px!important;
+    height:32px!important;
+    min-width:32px!important;
+    min-height:32px!important;
+    flex:0 0 32px!important;
+    margin:0!important;
+    padding:0!important;
+    object-fit:contain!important;
+    object-position:center!important;
+    vertical-align:middle!important;
+    translate:none!important;
+    transform:none!important;
+  }
+}
+
+@media (max-width:390px){
+  :root{
+    --mhur-v612-header-bottom:
+      max(
+        var(--mhur-v517-measured-header-bottom,0px),
+        var(
+          --mhur-header-visual-bottom,
+          var(--mhur-mobile-header-height,107px)
+        )
+      );
+  }
+
+  html body #app > .back,
+  html body .wrap > .back,
+  html body .back{
+    top:calc(var(--mhur-v612-header-bottom) + 6px)!important;
+  }
+
+  html body #app.mhurHasBackV57,
+  html body #app:has(> .back){
+    padding-top:68px!important;
+  }
+}
