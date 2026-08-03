@@ -1,0 +1,11 @@
+MHUR NEXUS — V633C
+
+- Aucun grand logo de chargement.
+- Aucun Service Worker.
+- Aucun rechargement automatique.
+- Aucun déplacement massif des feuilles CSS.
+- Fond normal du site pendant la préparation.
+- Révélation après CSS, polices, DOM et images visibles.
+- Délai de sécurité : la page ne peut jamais rester cachée.
+- Les premières images visibles passent en eager et priorité élevée.
+- Cache HTTP classique pour les assets.

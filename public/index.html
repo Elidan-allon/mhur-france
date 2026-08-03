@@ -1,6 +1,69 @@
 <!doctype html>
 <html lang="fr">
 <head>
+<script id="mhur-v633c-first-frame-start">
+(function(){
+  'use strict';
+
+  var root=document.documentElement;
+
+  root.classList.remove(
+    'mhurV630Booting',
+    'mhurV630RouteLoading',
+    'mhurV630Ready',
+    'mhurV631NoLoader',
+    'mhurV633Preparing',
+    'mhurV633RoutePreparing'
+  );
+
+  root.classList.add('mhurV633CPreparing');
+
+  /*
+    Sécurité absolue : même si un fichier échoue, la page redevient
+    visible. Aucun rechargement n'est déclenché.
+  */
+  window.MHUR_V633C_EMERGENCY=setTimeout(function(){
+    root.classList.remove('mhurV633CPreparing');
+    root.classList.add('mhurV633CReady');
+  },2600);
+})();
+</script>
+
+<style id="mhur-v633c-first-frame-critical">
+html,
+body{
+  background:#07101f!important;
+}
+
+html.mhurV633CPreparing body{
+  overflow:hidden!important;
+}
+
+html.mhurV633CPreparing body>*{
+  visibility:hidden!important;
+  opacity:0!important;
+}
+
+html.mhurV633CPreparing::before{
+  content:""!important;
+  position:fixed!important;
+  inset:0!important;
+  display:block!important;
+  background:#07101f!important;
+  visibility:visible!important;
+  opacity:1!important;
+  pointer-events:none!important;
+  z-index:2147483000!important;
+}
+
+html.mhurV633CReady body,
+html.mhurV633CReady body>*,
+html.mhurV633CReady #app{
+  visibility:visible!important;
+  opacity:1!important;
+}
+</style>
+
 <script id="mhur-v632-stop-reload-loop">
 (function(){
   'use strict';
@@ -981,6 +1044,9 @@ html body{
 <script defer src="js/v632-stop-reload-loop.js?v=632"></script>
 <!-- V634 : Tier List finale CSS. -->
 <link rel="stylesheet" href="css/v634-tier-final.css?v=634">
+
+<!-- V633C : rendu final CSS. -->
+<link rel="stylesheet" href="css/v633c-final-first-frame.css?v=633c">
 </head>
 <body>
 
@@ -7714,5 +7780,8 @@ body .costumeTile > img,
 <script src="js/v629-notes-open-stable.js?v=629"></script>
 <!-- V634 : Tier List finale JS. -->
 <script src="js/v634-tier-final.js?v=634"></script>
+
+<!-- V633C : rendu final JS. -->
+<script src="js/v633c-final-first-frame.js?v=633c"></script>
 </body>
 </html>
