@@ -1,0 +1,446 @@
+name: MHUR V614 - Photos costumes mobiles
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/mhur-v614-auto.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: mhur-v614-photos-costumes-mobiles
+  cancel-in-progress: false
+
+jobs:
+  appliquer:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Recuperer le depot
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Installer Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Installer le correctif V614
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          test -f public/index.html
+          mkdir -p public/js
+
+          cat > public/js/v614-mobile-costume-photos.js <<'JS'
+          /* MHUR Nexus — V614
+             Photos des costumes sur mobile :
+             - utilise toujours la vraie photo, meme si NEW est insere avant elle ;
+             - donne aux images verticales toute la hauteur de la zone photo ;
+             - remonte legerement tous les costumes ;
+             - NEW ne reduit plus la photo ;
+             - ne touche pas aux icones T.U.N.I.N.G, aux etoiles ou aux textes.
+          */
+          (function(){
+            'use strict';
+
+            if(window.MHUR_V614_COSTUME_PHOTOS_LOADED)return;
+            window.MHUR_V614_COSTUME_PHOTOS_LOADED=true;
+
+            const STYLE_ID='mhur-v614-mobile-costume-photos-style';
+            const CARD_SELECTOR=
+              '#app .costumeTile,'+
+              '#app .costumeCard,'+
+              '#app .costumeResult';
+
+            const CSS=`
+          @media (max-width:760px){
+            html body #app .costumeTile,
+            html body #app .costumeCard,
+            html body #app .costumeResult{
+              position:relative!important;
+              overflow:hidden!important;
+            }
+
+            /*
+              La zone photo prend toute la carte jusqu'au debut du nom.
+              Les anciennes hauteurs fixes (150/166 px) rendaient les images
+              verticales minuscules, notamment les costumes portant NEW.
+            */
+            html body #app .costumeTile > img.mhurCostumePhotoV614,
+            html body #app .costumeCard > img.mhurCostumePhotoV614,
+            html body #app .costumeResult > img.mhurCostumePhotoV614{
+              position:absolute!important;
+              inset:2px 6px 84px 6px!important;
+              top:2px!important;
+              right:6px!important;
+              bottom:84px!important;
+              left:6px!important;
+              width:calc(100% - 12px)!important;
+              height:auto!important;
+              min-width:0!important;
+              min-height:0!important;
+              max-width:none!important;
+              max-height:none!important;
+              padding:0!important;
+              margin:0!important;
+              border:0!important;
+              object-fit:contain!important;
+              object-position:center center!important;
+              transform:translateY(-6px)!important;
+              transform-origin:center center!important;
+              translate:none!important;
+              background:transparent!important;
+              opacity:1!important;
+              visibility:visible!important;
+              display:block!important;
+              z-index:2!important;
+            }
+
+            /*
+              Meme geometrie quand NEW existe : aucune reduction, aucun
+              changement de hauteur et aucune dependance a :first-child.
+            */
+            html body #app [data-mhur-v614-new="1"]
+            > img.mhurCostumePhotoV614{
+              inset:2px 6px 84px 6px!important;
+              width:calc(100% - 12px)!important;
+              height:auto!important;
+              object-fit:contain!important;
+              object-position:center center!important;
+              transform:translateY(-6px)!important;
+            }
+
+            /* NEW reste une surcouche et ne participe jamais au placement. */
+            html body #app .costumeTile > .mhurNewV582,
+            html body #app .costumeCard > .mhurNewV582,
+            html body #app .costumeResult > .mhurNewV582{
+              position:absolute!important;
+              top:34px!important;
+              right:7px!important;
+              bottom:auto!important;
+              left:auto!important;
+              width:54px!important;
+              height:29px!important;
+              min-width:0!important;
+              min-height:0!important;
+              margin:0!important;
+              padding:0!important;
+              pointer-events:none!important;
+              z-index:90!important;
+            }
+
+            /* Les elements de la carte restent au-dessus de la photo. */
+            html body #app .costumeTile .costumeTileRarity,
+            html body #app .costumeTile .costumeTileStars,
+            html body #app .costumeTile .costumeTileBadge,
+            html body #app .costumeTile .costumeTileName,
+            html body #app .costumeTile .costumeMiniDesc{
+              position:absolute!important;
+            }
+
+            html body #app .costumeTile .costumeTileRarity,
+            html body #app .costumeTile .costumeTileStars{
+              z-index:95!important;
+            }
+
+            html body #app .costumeTile .costumeTileBadge{
+              z-index:40!important;
+            }
+
+            html body #app .costumeTile .costumeTileName,
+            html body #app .costumeTile .costumeMiniDesc{
+              z-index:20!important;
+            }
+          }
+          `;
+
+            function installStyle(){
+              let style=document.getElementById(STYLE_ID);
+
+              if(!style){
+                style=document.createElement('style');
+                style.id=STYLE_ID;
+                document.head.appendChild(style);
+              }
+
+              if(style.textContent!==CSS){
+                style.textContent=CSS;
+              }
+            }
+
+            function directChildren(node){
+              return Array.from(node?.children||[]);
+            }
+
+            function isMainPhoto(image){
+              if(!(image instanceof HTMLImageElement))return false;
+
+              return !(
+                image.classList.contains('costumeTileBadgeIcon')||
+                image.classList.contains('roleIcon')||
+                image.closest('.costumeTileBadge')||
+                image.closest('.costumeTileStars')||
+                image.closest('.costumeTileRarity')
+              );
+            }
+
+            function mainPhoto(card){
+              /*
+                On inspecte les enfants directs au lieu d'utiliser
+                img:first-child. Le span NEW peut etre le premier enfant.
+              */
+              return directChildren(card).find(isMainPhoto)||null;
+            }
+
+            function patchCard(card){
+              if(!(card instanceof HTMLElement))return;
+
+              const photo=mainPhoto(card);
+
+              directChildren(card).forEach(child=>{
+                if(
+                  child instanceof HTMLImageElement&&
+                  child!==photo
+                ){
+                  child.classList.remove('mhurCostumePhotoV614');
+                }
+              });
+
+              if(photo){
+                photo.classList.add('mhurCostumePhotoV614');
+                photo.dataset.mhurV614MainPhoto='1';
+              }
+
+              const hasNew=Boolean(
+                directChildren(card).find(child=>
+                  child.classList?.contains('mhurNewV582')||
+                  child.classList?.contains('s18NewBadge')
+                )
+              );
+
+              if(hasNew){
+                card.dataset.mhurV614New='1';
+              }else{
+                delete card.dataset.mhurV614New;
+              }
+            }
+
+            function sync(root=document){
+              installStyle();
+
+              if(root instanceof Element&&root.matches(CARD_SELECTOR)){
+                patchCard(root);
+              }
+
+              root.querySelectorAll?.(CARD_SELECTOR).forEach(patchCard);
+            }
+
+            let scheduled=false;
+
+            function schedule(){
+              if(scheduled)return;
+              scheduled=true;
+
+              requestAnimationFrame(()=>{
+                scheduled=false;
+                sync();
+              });
+            }
+
+            function start(){
+              sync();
+              schedule();
+
+              new MutationObserver(mutations=>{
+                if(
+                  mutations.some(mutation=>
+                    mutation.type==='childList'||
+                    mutation.attributeName==='class'||
+                    mutation.attributeName==='src'
+                  )
+                ){
+                  schedule();
+                }
+              }).observe(document.documentElement,{
+                childList:true,
+                subtree:true,
+                attributes:true,
+                attributeFilter:['class','src','data-costume-id']
+              });
+            }
+
+            if(document.readyState==='loading'){
+              document.addEventListener(
+                'DOMContentLoaded',
+                start,
+                {once:true}
+              );
+            }else{
+              start();
+            }
+
+            window.addEventListener('load',schedule,{once:true});
+            window.addEventListener('pageshow',schedule,{passive:true});
+            window.addEventListener('resize',schedule,{passive:true});
+            window.addEventListener('orientationchange',()=>
+              setTimeout(schedule,80),
+              {passive:true}
+            );
+            window.addEventListener('mhur:languagechange',schedule);
+
+            window.MHUR_V614_COSTUME_PHOTOS={
+              version:'614',
+              refresh:schedule,
+              sync
+            };
+          })();
+          JS
+
+          python3 <<'PY'
+          from pathlib import Path
+          import re
+
+          index_path=Path('public/index.html')
+          report_path=Path('RAPPORT_V614_PHOTOS_COSTUMES_MOBILES.txt')
+          html=index_path.read_text(encoding='utf-8')
+
+          html=re.sub(
+              r'\s*<!-- V614 : photos costumes mobiles stables\. -->\s*'
+              r'<script\s+src=["\']js/v614-mobile-costume-photos\.js'
+              r'(?:\?[^"\']*)?["\']\s*></script>\s*',
+              '\n',
+              html,
+              flags=re.I
+          )
+          html=re.sub(
+              r'\s*<script\s+src=["\']js/v614-mobile-costume-photos\.js'
+              r'(?:\?[^"\']*)?["\']\s*></script>\s*',
+              '\n',
+              html,
+              flags=re.I
+          )
+
+          tag=(
+              '<!-- V614 : photos costumes mobiles stables. -->\n'
+              '<script src="js/v614-mobile-costume-photos.js?v=614"></script>\n'
+          )
+
+          if '</body>' not in html:
+              raise SystemExit('[ERREUR] Balise </body> introuvable.')
+
+          html=html.replace('</body>',tag+'</body>',1)
+          index_path.write_text(html,encoding='utf-8')
+
+          report_path.write_text(
+              'MHUR NEXUS — RAPPORT V614\n'
+              'PHOTOS DES COSTUMES SUR MOBILE\n\n'
+              'CORRECTIONS\n'
+              '- La vraie photo est reconnue parmi les enfants directs de la carte.\n'
+              '- La presence du badge NEW ne change plus le selecteur de la photo.\n'
+              '- Les images verticales utilisent toute la hauteur disponible.\n'
+              '- Toutes les photos sont legerement remontees.\n'
+              '- Les anciennes hauteurs fixes de 150/166 px sont neutralisees.\n\n'
+              'NON MODIFIE\n'
+              '- Le badge NEW et son animation.\n'
+              '- Les etoiles et la rarete.\n'
+              '- Les deux icones T.U.N.I.N.G.\n'
+              '- Le nom et la famille du costume.\n'
+              '- Les versions tablette et ordinateur au-dessus de 760 px.\n\n'
+              'FICHIERS\n'
+              '- public/index.html\n'
+              '- public/js/v614-mobile-costume-photos.js\n'
+              '- RAPPORT_V614_PHOTOS_COSTUMES_MOBILES.txt\n',
+              encoding='utf-8'
+          )
+
+          print('[OK] V614 installe.')
+          PY
+
+      - name: Controler le correctif
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          node --check public/js/v614-mobile-costume-photos.js
+
+          python3 <<'PY'
+          from pathlib import Path
+
+          html=Path('public/index.html').read_text(encoding='utf-8')
+          js=Path('public/js/v614-mobile-costume-photos.js').read_text(
+              encoding='utf-8'
+          )
+          ref='js/v614-mobile-costume-photos.js?v=614'
+
+          if html.count(ref)!=1:
+              raise SystemExit(
+                  '[ERREUR] La reference V614 est absente ou dupliquee.'
+              )
+
+          required=[
+              'mhurCostumePhotoV614',
+              'data-mhur-v614-new',
+              'bottom:84px',
+              'img:first-child',
+              'MutationObserver',
+              'object-fit:contain',
+          ]
+
+          for token in required:
+              if token not in js:
+                  raise SystemExit(f'[ERREUR] Element absent : {token}')
+
+          if html.index(ref)>html.index('</body>'):
+              raise SystemExit(
+                  '[ERREUR] Le script V614 doit etre avant </body>.'
+              )
+
+          print('[OK] Controle V614 valide.')
+          PY
+
+          git status --short
+
+      - name: Enregistrer automatiquement les changements
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          git config user.name "github-actions[bot]"
+          git config user.email \
+            "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add \
+            public/index.html \
+            public/js/v614-mobile-costume-photos.js \
+            RAPPORT_V614_PHOTOS_COSTUMES_MOBILES.txt
+
+          if git diff --cached --quiet; then
+            echo "[INFO] V614 est deja applique."
+            exit 0
+          fi
+
+          git commit -m \
+            "fix: agrandir et remonter les photos costumes mobiles V614"
+
+          for tentative in 1 2 3; do
+            git pull --rebase origin main
+
+            if git push origin HEAD:main; then
+              echo "[OK] V614 envoye sur main."
+              exit 0
+            fi
+
+            echo "[ATTENTE] Nouvelle tentative : ${tentative}/3"
+            sleep 3
+          done
+
+          echo "[ERREUR] Impossible d'envoyer le commit."
+          exit 1
