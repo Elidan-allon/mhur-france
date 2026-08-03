@@ -785,8 +785,7 @@ function cbBuilderPicker(costume,spec){
   const used=cbUsedStyles(spec.id);
   const ownFamily=cbCharacterFamilyId(CB_STATE.draft?.characterId);
   const options=compatibleTunings(spec.color,spec.kind,spec.condition)
-    .filter(t=>cbTuningFamilyId(t)!==ownFamily)
-    .slice(0,80);
+    .filter(t=>cbTuningFamilyId(t)!==ownFamily);
   window.__cbTuningOptions=options;
 
   const kindLabel=spec.kind==='sp'

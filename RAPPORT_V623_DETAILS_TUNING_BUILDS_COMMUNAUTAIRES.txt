@@ -1,0 +1,13 @@
+MHUR NEXUS — V623
+
+CRÉATEUR DE BUILDS COMMUNAUTAIRES — MOBILE
+- Description complète de chaque T.U.N.I.N.G.
+- Tous les effets affichés séparément.
+- Tous les niveaux et sous-effets affichés.
+- Nom du personnage, nom du T.U.N.I.N.G et faction non coupés.
+- Suppression de la limite artificielle de 80 résultats.
+
+NON MODIFIÉ
+- Aller-retour fluide déjà présent dans le créateur.
+- Builds publiés et détail des builds.
+- Costumes, fiches T.U.N.I.N.G et version ordinateur.

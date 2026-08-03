@@ -1,0 +1,289 @@
+/* MHUR Nexus — V623
+   Détails complets des T.U.N.I.N.G dans le créateur de builds communautaires.
+   Mobile uniquement. */
+
+.mhurV623CommunityDetails{
+  display:none;
+}
+
+@media (max-width:760px){
+  html body #cbBuilderModal
+  .cbOfficialCreatorScreenV308
+  .tuningPicker,
+  html body #cbBuilderModal
+  .cbOfficialCreatorScreenV308
+  .tuningOptions{
+    width:100%!important;
+    min-width:0!important;
+    max-width:none!important;
+    height:auto!important;
+    max-height:none!important;
+    overflow:visible!important;
+  }
+
+  html body #cbBuilderModal
+  .cbOfficialCreatorScreenV308
+  .tuningOptions{
+    display:grid!important;
+    grid-template-columns:minmax(0,1fr)!important;
+    gap:12px!important;
+    padding-bottom:18px!important;
+  }
+
+  html body #cbBuilderModal
+  .cbOfficialCreatorScreenV308
+  .tuningOption{
+    position:relative!important;
+    display:grid!important;
+    grid-template-columns:86px minmax(0,1fr)!important;
+    grid-template-areas:
+      "icon main"
+      "faction main"
+      "details details"!important;
+    column-gap:11px!important;
+    row-gap:8px!important;
+    align-items:start!important;
+    width:100%!important;
+    min-width:0!important;
+    max-width:none!important;
+    min-height:0!important;
+    height:auto!important;
+    max-height:none!important;
+    padding:11px!important;
+    box-sizing:border-box!important;
+    overflow:visible!important;
+    white-space:normal!important;
+  }
+
+  html body #cbBuilderModal
+  .cbOfficialCreatorScreenV308
+  .tuningOptionIconWrap{
+    grid-area:icon!important;
+    display:flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+    width:84px!important;
+    height:84px!important;
+    min-width:84px!important;
+    min-height:84px!important;
+    margin:0!important;
+    overflow:hidden!important;
+    align-self:start!important;
+    border-radius:8px!important;
+    background:rgba(0,0,0,.24)!important;
+  }
+
+  html body #cbBuilderModal
+  .cbOfficialCreatorScreenV308
+  .tuningOptionIconWrap img,
+  html body #cbBuilderModal
+  .cbOfficialCreatorScreenV308
+  .tuningOption > .tuningOptionImg{
+    width:84px!important;
+    height:84px!important;
+    min-width:84px!important;
+    min-height:84px!important;
+    max-width:84px!important;
+    max-height:84px!important;
+    margin:0!important;
+    padding:0!important;
+    border:0!important;
+    object-fit:contain!important;
+    object-position:center!important;
+    transform:none!important;
+    background:transparent!important;
+  }
+
+  html body #cbBuilderModal
+  .cbOfficialCreatorScreenV308
+  .tuningOptionMain{
+    grid-area:main!important;
+    display:block!important;
+    width:100%!important;
+    min-width:0!important;
+    max-width:none!important;
+    height:auto!important;
+    max-height:none!important;
+    margin:0!important;
+    padding:0!important;
+    overflow:visible!important;
+  }
+
+  html body #cbBuilderModal
+  .cbOfficialCreatorScreenV308
+  .tuningOptionChar{
+    display:block!important;
+    width:100%!important;
+    max-width:none!important;
+    margin:0 0 3px!important;
+    font-size:15px!important;
+    line-height:1.08!important;
+    white-space:normal!important;
+    overflow:visible!important;
+    text-overflow:clip!important;
+  }
+
+  html body #cbBuilderModal
+  .cbOfficialCreatorScreenV308
+  .tuningOptionName{
+    display:block!important;
+    width:100%!important;
+    max-width:none!important;
+    max-height:none!important;
+    margin:0!important;
+    font-size:20px!important;
+    line-height:1.08!important;
+    white-space:normal!important;
+    overflow:visible!important;
+    text-overflow:clip!important;
+    -webkit-line-clamp:unset!important;
+    -webkit-box-orient:unset!important;
+  }
+
+  /* La description raccourcie est remplacée par le bloc complet V623. */
+  html body #cbBuilderModal
+  .cbOfficialCreatorScreenV308
+  .tuningOptionDesc{
+    display:none!important;
+  }
+
+  html body #cbBuilderModal
+  .cbOfficialCreatorScreenV308
+  .tuningFaction{
+    grid-area:faction!important;
+    position:static!important;
+    display:block!important;
+    align-self:start!important;
+    justify-self:stretch!important;
+    width:84px!important;
+    min-width:0!important;
+    max-width:84px!important;
+    margin:0!important;
+    padding:5px 3px!important;
+    border:2px solid rgba(0,0,0,.78)!important;
+    border-radius:7px!important;
+    background:rgba(0,0,0,.82)!important;
+    color:#fff!important;
+    font-size:10px!important;
+    line-height:1.05!important;
+    font-weight:1000!important;
+    text-align:center!important;
+    white-space:normal!important;
+    overflow:visible!important;
+    text-overflow:clip!important;
+    box-sizing:border-box!important;
+  }
+
+  html body #cbBuilderModal
+  .cbOfficialCreatorScreenV308
+  .mhurV623CommunityDetails{
+    grid-area:details!important;
+    display:block!important;
+    width:100%!important;
+    min-width:0!important;
+    max-width:none!important;
+    margin:3px 0 0!important;
+    padding:11px!important;
+    border:2px solid rgba(0,0,0,.8)!important;
+    border-radius:9px!important;
+    background:rgba(3,9,17,.9)!important;
+    color:#fff!important;
+    text-align:left!important;
+    white-space:normal!important;
+    overflow:visible!important;
+    box-sizing:border-box!important;
+  }
+
+  html body #cbBuilderModal
+  .mhurV623CommunityDetailsTitle{
+    margin:0 0 9px!important;
+    color:#ffe500!important;
+    font-size:14px!important;
+    line-height:1.1!important;
+    font-weight:1000!important;
+  }
+
+  html body #cbBuilderModal
+  .mhurV623CommunityEffect{
+    display:block!important;
+    margin:0!important;
+    padding:0!important;
+  }
+
+  html body #cbBuilderModal
+  .mhurV623CommunityEffect
+  + .mhurV623CommunityEffect{
+    margin-top:12px!important;
+    padding-top:11px!important;
+    border-top:1px solid rgba(255,255,255,.28)!important;
+  }
+
+  html body #cbBuilderModal
+  .mhurV623CommunityEffectName{
+    margin:0 0 5px!important;
+    color:#fff!important;
+    font-size:15px!important;
+    line-height:1.13!important;
+    font-weight:1000!important;
+  }
+
+  html body #cbBuilderModal
+  .mhurV623CommunityEffectDesc{
+    margin:0!important;
+    color:#fff!important;
+    font-size:13px!important;
+    line-height:1.3!important;
+    font-weight:700!important;
+  }
+
+  html body #cbBuilderModal
+  .mhurV623CommunityLevelsLabel{
+    margin:9px 0 6px!important;
+    color:#ffe500!important;
+    font-size:12px!important;
+    line-height:1!important;
+    font-weight:1000!important;
+  }
+
+  html body #cbBuilderModal
+  .mhurV623CommunityLevels{
+    display:flex!important;
+    flex-wrap:wrap!important;
+    gap:5px!important;
+    width:100%!important;
+    overflow:visible!important;
+  }
+
+  html body #cbBuilderModal
+  .mhurV623CommunityLevel{
+    display:inline-flex!important;
+    align-items:center!important;
+    min-height:27px!important;
+    margin:0!important;
+    padding:4px 7px!important;
+    border:1px solid #45658f!important;
+    border-radius:7px!important;
+    background:#172b48!important;
+    color:#fff!important;
+    font-size:11px!important;
+    line-height:1.08!important;
+    font-weight:900!important;
+    white-space:normal!important;
+  }
+
+  html body #cbBuilderModal
+  .mhurV623CommunityLevel.mhurV623CommunitySub{
+    border-color:#ffe500!important;
+    background:#4a3c00!important;
+    color:#ffe500!important;
+  }
+
+  html body #cbBuilderModal
+  .cbOfficialCreatorScreenV308
+  .tuningOption.alreadyUsed::after{
+    top:7px!important;
+    right:7px!important;
+    bottom:auto!important;
+    z-index:12!important;
+  }
+}
