@@ -1,0 +1,74 @@
+/* MHUR Nexus — V624
+   Tier list mobile : badge NEW réparé + espacement nom/style. */
+
+@media (max-width:760px){
+  .mhurV624TierCard{
+    position:relative!important;
+    overflow:hidden!important;
+  }
+
+  .mhurV624TierNewWrap,
+  .mhurV624TierNew{
+    position:absolute!important;
+    top:8px!important;
+    left:8px!important;
+    right:auto!important;
+    bottom:auto!important;
+    z-index:12!important;
+    transform:none!important;
+    transform-origin:top left!important;
+  }
+
+  .mhurV624TierNewWrap{
+    width:auto!important;
+    height:auto!important;
+    min-width:0!important;
+    min-height:0!important;
+    max-width:none!important;
+    max-height:none!important;
+    pointer-events:none!important;
+  }
+
+  .mhurV624TierNew{
+    display:inline-block!important;
+    margin:0!important;
+    padding:0 2px!important;
+    font-size:.76em!important;
+    line-height:1!important;
+    white-space:nowrap!important;
+    animation:mhurV624TierNewFloat 1.9s ease-in-out infinite!important;
+  }
+
+  .mhurV624TierTextGroup{
+    display:flex!important;
+    flex-direction:column!important;
+    align-items:flex-start!important;
+    justify-content:flex-start!important;
+    gap:4px!important;
+    min-width:0!important;
+  }
+
+  .mhurV624TierName{
+    display:block!important;
+    margin:0!important;
+    line-height:1.04!important;
+  }
+
+  .mhurV624TierStyle{
+    display:block!important;
+    margin:0!important;
+    line-height:1!important;
+  }
+}
+
+@keyframes mhurV624TierNewFloat{
+  0%{
+    transform:translateY(0) scale(.84);
+  }
+  50%{
+    transform:translateY(-2px) scale(.89);
+  }
+  100%{
+    transform:translateY(0) scale(.84);
+  }
+}
