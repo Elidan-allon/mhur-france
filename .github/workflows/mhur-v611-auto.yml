@@ -1,0 +1,133 @@
+name: MHUR V611 - Supprimer le cadre PV des Patch Notes
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/mhur-v611-auto.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: mhur-v611-patch-notes-pv-sans-cadre
+  cancel-in-progress: false
+
+jobs:
+  appliquer:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Recuperer le depot
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Installer Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Installer le correctif V611
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          python3 - <<'PY'
+          from pathlib import Path
+          import base64
+          import re
+
+          index_path = Path("public/index.html")
+          js_path = Path("public/js/v611-patch-notes-health-remove-box.js")
+          css_path = Path("public/css/v611-patch-notes-health-remove-box.css")
+
+          if not index_path.is_file():
+              raise SystemExit("[ERREUR] public/index.html est introuvable.")
+
+          js_path.parent.mkdir(parents=True, exist_ok=True)
+          css_path.parent.mkdir(parents=True, exist_ok=True)
+
+          js_path.write_bytes(base64.b64decode("LyogTUhVUiBOZXh1cyAtIFY2MTEKICAgUGF0Y2ggTm90ZXMgOiBzdXBwcmltZSBhdXNzaSBsZSBjYWRyZSB2aWRlIGRlcyBjaGFuZ2VtZW50cyBQViAvIEhQLgoqLwooZnVuY3Rpb24oKXsKICAndXNlIHN0cmljdCc7CgogIGlmICh3aW5kb3cuTUhVUl9WNjExX0hFQUxUSF9SRU1PVkVfQk9YKSByZXR1cm47CiAgd2luZG93Lk1IVVJfVjYxMV9IRUFMVEhfUkVNT1ZFX0JPWCA9IHRydWU7CgogIGNvbnN0IENBUkRfU0VMRUNUT1IgPSBbCiAgICAnLnMxOFBhdGNoQ2hhbmdlVjEwJywKICAgICcuczE4UGF0Y2hDaGFuZ2VWMTEnLAogICAgJy5zMThQYXRjaENoYW5nZVYxMicsCiAgICAnLnMxOFBhdGNoQ2hhbmdlVjEzJywKICAgICcuczE4UGF0Y2hDaGFuZ2VWMTQnLAogICAgJ1tjbGFzcyo9InMxOFBhdGNoQ2hhbmdlViJdJwogIF0uam9pbignLCcpOwoKICBjb25zdCBTS0lMTF9BUkVBX1NFTEVDVE9SID0gWwogICAgJy5zMThQYXRjaFNraWxsVjEwJywKICAgICcuczE4UGF0Y2hTa2lsbFYxMScsCiAgICAnLnMxOFBhdGNoU2tpbGxWMTInLAogICAgJy5zMThQYXRjaFNraWxsVjEzJywKICAgICcuczE4UGF0Y2hTa2lsbFYxNCcsCiAgICAnW2NsYXNzKj0iczE4UGF0Y2hTa2lsbFYiXScKICBdLmpvaW4oJywnKTsKCiAgZnVuY3Rpb24gbm9ybWFsaXplKHZhbHVlKXsKICAgIHJldHVybiBTdHJpbmcodmFsdWUgfHwgJycpCiAgICAgIC5ub3JtYWxpemUoJ05GRCcpCiAgICAgIC5yZXBsYWNlKC9bXHUwMzAwLVx1MDM2Zl0vZywgJycpCiAgICAgIC50b0xvd2VyQ2FzZSgpCiAgICAgIC5yZXBsYWNlKC9bXmEtejAtOV0rL2csICdfJykKICAgICAgLnJlcGxhY2UoL15fK3xfKyQvZywgJycpOwogIH0KCiAgZnVuY3Rpb24gaXNIZWFsdGhUZXh0KHZhbHVlKXsKICAgIGNvbnN0IGtleSA9IG5vcm1hbGl6ZSh2YWx1ZSk7CiAgICBpZiAoIWtleSkgcmV0dXJuIGZhbHNlOwoKICAgIHJldHVybiBuZXcgU2V0KFsKICAgICAgJ2hwJywKICAgICAgJ3B2JywKICAgICAgJ2hlYWx0aCcsCiAgICAgICdzYW50ZScsCiAgICAgICdoaXRfcG9pbnRzJywKICAgICAgJ3BvaW50c19kZV92aWUnLAogICAgICAnbWF4X2hwJywKICAgICAgJ21heGltdW1faHAnLAogICAgICAnbWF4X2hlYWx0aCcsCiAgICAgICdtYXhpbXVtX2hlYWx0aCcsCiAgICAgICdwdl9tYXgnLAogICAgICAncHZfbWF4aW11bScsCiAgICAgICdzYW50ZV9tYXgnLAogICAgICAnc2FudGVfbWF4aW11bScKICAgIF0pLmhhcyhrZXkpIHx8CiAgICAgIGtleS5pbmNsdWRlcygnYmFsYW5jZV9jaGFuZ2VzX2hlYWx0aCcpIHx8CiAgICAgIGtleS5pbmNsdWRlcygnYmFsYW5jZV9jaGFuZ2VfaGVhbHRoJykgfHwKICAgICAga2V5LmluY2x1ZGVzKCdlcXVpbGlicmFnZV9wdicpIHx8CiAgICAgIGtleS5pbmNsdWRlcygnZXF1aWxpYnJhZ2Vfc2FudGUnKTsKICB9CgogIGZ1bmN0aW9uIGNhcmRJc0hlYWx0aChjYXJkKXsKICAgIGlmICghY2FyZCkgcmV0dXJuIGZhbHNlOwoKICAgIGNvbnN0IHNlY3Rpb24gPSBjYXJkLmNsb3Nlc3QoJ1tjbGFzcyo9InMxOFBhdGNoU2VjdGlvbiJdJyk7CiAgICBjb25zdCBzZWN0aW9uVGl0bGUgPSBzZWN0aW9uPy5xdWVyeVNlbGVjdG9yKAogICAgICAnOnNjb3BlID4gaDMsIDpzY29wZSA+IGg0JwogICAgKT8udGV4dENvbnRlbnQgfHwgJyc7CgogICAgY29uc3QgdGl0bGUgPSBjYXJkLnF1ZXJ5U2VsZWN0b3IoCiAgICAgICdoNSwgW2RhdGEtc2tpbGwtbmFtZV0sIFtjbGFzcyo9IlBhdGNoU2tpbGxUaXRsZSJdLCBbY2xhc3MqPSJQYXRjaExhYmVsIl0nCiAgICApPy50ZXh0Q29udGVudCB8fCAnJzsKCiAgICByZXR1cm4gaXNIZWFsdGhUZXh0KHRpdGxlKSB8fCBpc0hlYWx0aFRleHQoc2VjdGlvblRpdGxlKTsKICB9CgogIGZ1bmN0aW9uIGZpbmRTa2lsbEFyZWEoY2FyZCl7CiAgICByZXR1cm4gQXJyYXkuZnJvbShjYXJkLnF1ZXJ5U2VsZWN0b3JBbGwoU0tJTExfQVJFQV9TRUxFQ1RPUikpCiAgICAgIC5maW5kKGFyZWEgPT4gQXJyYXkuZnJvbShhcmVhLmNoaWxkcmVuKS5zb21lKAogICAgICAgIGNoaWxkID0+IGNoaWxkLnRhZ05hbWUgPT09ICdNQUlOJwogICAgICApKSB8fCBudWxsOwogIH0KCiAgZnVuY3Rpb24gcmVtb3ZlSGVhbHRoQm94KGNhcmQpewogICAgaWYgKCFjYXJkSXNIZWFsdGgoY2FyZCkpIHJldHVybiBmYWxzZTsKCiAgICBjYXJkLmRhdGFzZXQudjYxMUhlYWx0aE5vSW1hZ2UgPSAnMSc7CgogICAgY29uc3QgYXJlYSA9IGZpbmRTa2lsbEFyZWEoY2FyZCk7CiAgICBpZiAoIWFyZWEpIHJldHVybiBmYWxzZTsKCiAgICBhcmVhLmNsYXNzTGlzdC5hZGQoJ21odXItdjYxMS1oZWFsdGgtbm8taW1hZ2UnKTsKCiAgICAvKgogICAgICBEYW5zIGNlIGJsb2MsIGxlIGNvbnRlbnUgdXRpbGUgZXN0IGRhbnMgPG1haW4+LgogICAgICBUb3V0IGF1dHJlIGVuZmFudCBkaXJlY3QgY29ycmVzcG9uZCBhIGwnZW1wbGFjZW1lbnQgaW1hZ2UgOgogICAgICBpbWFnZSwgY2FkcmUgdmlkZSBvdSBhbmNpZW4gY29udGVuZXVyIGRlIGNvbXBhdGliaWxpdGUuCiAgICAqLwogICAgQXJyYXkuZnJvbShhcmVhLmNoaWxkcmVuKS5mb3JFYWNoKGNoaWxkID0+IHsKICAgICAgaWYgKGNoaWxkLnRhZ05hbWUgIT09ICdNQUlOJykgY2hpbGQucmVtb3ZlKCk7CiAgICB9KTsKCiAgICBjb25zdCBtYWluID0gQXJyYXkuZnJvbShhcmVhLmNoaWxkcmVuKS5maW5kKAogICAgICBjaGlsZCA9PiBjaGlsZC50YWdOYW1lID09PSAnTUFJTicKICAgICk7CgogICAgaWYgKG1haW4pIHsKICAgICAgbWFpbi5yZW1vdmVBdHRyaWJ1dGUoJ3N0eWxlJyk7CiAgICAgIG1haW4uZGF0YXNldC52NjExSGVhbHRoVGV4dCA9ICcxJzsKICAgIH0KCiAgICByZXR1cm4gdHJ1ZTsKICB9CgogIGZ1bmN0aW9uIHJlcGFpcihyb290ID0gZG9jdW1lbnQpewogICAgcm9vdC5xdWVyeVNlbGVjdG9yQWxsKENBUkRfU0VMRUNUT1IpLmZvckVhY2gocmVtb3ZlSGVhbHRoQm94KTsKICB9CgogIGxldCBzY2hlZHVsZWQgPSBmYWxzZTsKCiAgZnVuY3Rpb24gc2NoZWR1bGUoKXsKICAgIGlmIChzY2hlZHVsZWQpIHJldHVybjsKCiAgICBzY2hlZHVsZWQgPSB0cnVlOwogICAgcmVxdWVzdEFuaW1hdGlvbkZyYW1lKCgpID0+IHsKICAgICAgc2NoZWR1bGVkID0gZmFsc2U7CiAgICAgIHJlcGFpcigpOwogICAgfSk7CiAgfQoKICBmdW5jdGlvbiBzdGFydCgpewogICAgcmVwYWlyKCk7CgogICAgaWYgKCF3aW5kb3cuTUhVUl9WNjExX0hFQUxUSF9PQlNFUlZFUiAmJiBkb2N1bWVudC5ib2R5KSB7CiAgICAgIGNvbnN0IG9ic2VydmVyID0gbmV3IE11dGF0aW9uT2JzZXJ2ZXIoc2NoZWR1bGUpOwogICAgICBvYnNlcnZlci5vYnNlcnZlKGRvY3VtZW50LmJvZHksIHsKICAgICAgICBjaGlsZExpc3Q6IHRydWUsCiAgICAgICAgc3VidHJlZTogdHJ1ZQogICAgICB9KTsKICAgICAgd2luZG93Lk1IVVJfVjYxMV9IRUFMVEhfT0JTRVJWRVIgPSBvYnNlcnZlcjsKICAgIH0KCiAgICBkb2N1bWVudC5hZGRFdmVudExpc3RlbmVyKCdjbGljaycsIHNjaGVkdWxlLCB0cnVlKTsKICAgIHdpbmRvdy5hZGRFdmVudExpc3RlbmVyKCdtaHVyOmxhbmd1YWdlY2hhbmdlJywgc2NoZWR1bGUpOwoKICAgIHNldFRpbWVvdXQoc2NoZWR1bGUsIDApOwogICAgc2V0VGltZW91dChzY2hlZHVsZSwgODApOwogICAgc2V0VGltZW91dChzY2hlZHVsZSwgMjUwKTsKICB9CgogIGlmIChkb2N1bWVudC5yZWFkeVN0YXRlID09PSAnbG9hZGluZycpIHsKICAgIGRvY3VtZW50LmFkZEV2ZW50TGlzdGVuZXIoJ0RPTUNvbnRlbnRMb2FkZWQnLCBzdGFydCwgeyBvbmNlOiB0cnVlIH0pOwogIH0gZWxzZSB7CiAgICBzdGFydCgpOwogIH0KCiAgd2luZG93Lk1IVVJfVjYxMV9QQVRDSF9IRUFMVEggPSB7CiAgICByZXBhaXIsCiAgICByZWZyZXNoOiBzY2hlZHVsZQogIH07Cn0pKCk7Cg=="))
+          css_path.write_bytes(base64.b64decode("LyogTUhVUiBOZXh1cyAtIFY2MTEgOiBhdWN1bmUgaW1hZ2UgZXQgYXVjdW4gY2FkcmUgcG91ciBsZXMgUFYgLyBIUCAqLwoKI3MxOE5vdGVzRGV2TW9kYWxWMTAKW2RhdGEtdjYxMS1oZWFsdGgtbm8taW1hZ2U9IjEiXQoubWh1ci12NjExLWhlYWx0aC1uby1pbWFnZSA+IDpub3QobWFpbil7CiAgZGlzcGxheTpub25lIWltcG9ydGFudDsKICB3aWR0aDowIWltcG9ydGFudDsKICBoZWlnaHQ6MCFpbXBvcnRhbnQ7CiAgbWluLXdpZHRoOjAhaW1wb3J0YW50OwogIG1pbi1oZWlnaHQ6MCFpbXBvcnRhbnQ7CiAgbWFyZ2luOjAhaW1wb3J0YW50OwogIHBhZGRpbmc6MCFpbXBvcnRhbnQ7CiAgYm9yZGVyOjAhaW1wb3J0YW50OwogIG91dGxpbmU6MCFpbXBvcnRhbnQ7CiAgYm94LXNoYWRvdzpub25lIWltcG9ydGFudDsKfQoKI3MxOE5vdGVzRGV2TW9kYWxWMTAKW2RhdGEtdjYxMS1oZWFsdGgtbm8taW1hZ2U9IjEiXQoubWh1ci12NjExLWhlYWx0aC1uby1pbWFnZTo6YmVmb3JlLAojczE4Tm90ZXNEZXZNb2RhbFYxMApbZGF0YS12NjExLWhlYWx0aC1uby1pbWFnZT0iMSJdCi5taHVyLXY2MTEtaGVhbHRoLW5vLWltYWdlOjphZnRlcnsKICBjb250ZW50Om5vbmUhaW1wb3J0YW50OwogIGRpc3BsYXk6bm9uZSFpbXBvcnRhbnQ7Cn0KCiNzMThOb3Rlc0Rldk1vZGFsVjEwCltkYXRhLXY2MTEtaGVhbHRoLW5vLWltYWdlPSIxIl0KLm1odXItdjYxMS1oZWFsdGgtbm8taW1hZ2V7CiAgZGlzcGxheTpibG9jayFpbXBvcnRhbnQ7CiAgZ3JpZC10ZW1wbGF0ZS1jb2x1bW5zOm1pbm1heCgwLDFmcikhaW1wb3J0YW50OwogIHdpZHRoOjEwMCUhaW1wb3J0YW50OwogIG1pbi13aWR0aDowIWltcG9ydGFudDsKICBtaW4taGVpZ2h0OjAhaW1wb3J0YW50OwogIGdhcDowIWltcG9ydGFudDsKICBjb2x1bW4tZ2FwOjAhaW1wb3J0YW50OwogIHBhZGRpbmctbGVmdDowIWltcG9ydGFudDsKICBtYXJnaW4tbGVmdDowIWltcG9ydGFudDsKfQoKI3MxOE5vdGVzRGV2TW9kYWxWMTAKW2RhdGEtdjYxMS1oZWFsdGgtbm8taW1hZ2U9IjEiXQoubWh1ci12NjExLWhlYWx0aC1uby1pbWFnZSA+IG1haW57CiAgZGlzcGxheTpibG9jayFpbXBvcnRhbnQ7CiAgZ3JpZC1jb2x1bW46MSAvIC0xIWltcG9ydGFudDsKICB3aWR0aDoxMDAlIWltcG9ydGFudDsKICBtYXgtd2lkdGg6bm9uZSFpbXBvcnRhbnQ7CiAgbWluLXdpZHRoOjAhaW1wb3J0YW50OwogIG1pbi1oZWlnaHQ6MCFpbXBvcnRhbnQ7CiAgbWFyZ2luOjAhaW1wb3J0YW50OwogIHBhZGRpbmctbGVmdDowIWltcG9ydGFudDsKICB0cmFuc2Zvcm06bm9uZSFpbXBvcnRhbnQ7Cn0K"))
+
+          html = index_path.read_text(encoding="utf-8")
+
+          html = re.sub(
+              r'\s*<link[^>]+href=["\']css/v611-patch-notes-health-remove-box\.css(?:\?[^"\']*)?["\'][^>]*>\s*',
+              "\n",
+              html,
+              flags=re.I,
+          )
+          html = re.sub(
+              r'\s*<script[^>]+src=["\']js/v611-patch-notes-health-remove-box\.js(?:\?[^"\']*)?["\'][^>]*>\s*</script>\s*',
+              "\n",
+              html,
+              flags=re.I,
+          )
+
+          css_tag = (
+              '<link rel="stylesheet" '
+              'href="css/v611-patch-notes-health-remove-box.css?v=611">\n'
+          )
+          js_tag = (
+              '<script '
+              'src="js/v611-patch-notes-health-remove-box.js?v=611">'
+              '</script>\n'
+          )
+
+          if "</head>" not in html or "</body>" not in html:
+              raise SystemExit(
+                  "[ERREUR] Balises </head> ou </body> introuvables."
+              )
+
+          html = html.replace("</head>", css_tag + "</head>", 1)
+          html = html.replace("</body>", js_tag + "</body>", 1)
+
+          index_path.write_text(html, encoding="utf-8")
+
+          if html.count(
+              "css/v611-patch-notes-health-remove-box.css?v=611"
+          ) != 1:
+              raise SystemExit(
+                  "[ERREUR] Reference CSS V611 absente ou dupliquee."
+              )
+
+          if html.count(
+              "js/v611-patch-notes-health-remove-box.js?v=611"
+          ) != 1:
+              raise SystemExit(
+                  "[ERREUR] Reference JS V611 absente ou dupliquee."
+              )
+
+          print("[OK] Correctif V611 installe.")
+          PY
+
+          node --check public/js/v611-patch-notes-health-remove-box.js
+          echo "[OK] JavaScript et installation controles."
+          git status --short
+
+      - name: Enregistrer les changements
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add \
+            public/index.html \
+            public/js/v611-patch-notes-health-remove-box.js \
+            public/css/v611-patch-notes-health-remove-box.css
+
+          if git diff --cached --quiet; then
+            echo "[INFO] Le correctif V611 est deja applique."
+            exit 0
+          fi
+
+          git commit -m "fix: supprimer le cadre vide des changements PV V611"
+          git pull --rebase origin main
+          git push origin HEAD:main
