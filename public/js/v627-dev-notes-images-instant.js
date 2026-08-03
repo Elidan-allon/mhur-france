@@ -270,34 +270,33 @@
   }
 
   function headerBottom(){
-    const selectors=[
-      '#siteHeader',
-      '.nexusHeader',
-      'header.top',
-      '#topbar',
-      '.topbar',
-      'header'
-    ];
+    const candidates=[
+      document.querySelector('header.top'),
+      document.querySelector('#siteHeader'),
+      document.querySelector('.nexusHeader'),
+      document.querySelector('#topbar'),
+      document.querySelector('.topbar')
+    ].filter(Boolean);
 
     let bottom=0;
 
-    selectors.forEach(selector=>{
-      document.querySelectorAll(selector).forEach(element=>{
-        const style=getComputedStyle(element);
-        const rect=element.getBoundingClientRect();
+    candidates.forEach(element=>{
+      const style=getComputedStyle(element);
+      const rect=element.getBoundingClientRect();
 
-        if(
-          rect.width>0&&
-          rect.height>0&&
-          (
-            style.position==='fixed'||
-            style.position==='sticky'||
-            element.tagName==='HEADER'
-          )
-        ){
-          bottom=Math.max(bottom,rect.bottom);
-        }
-      });
+      if(
+        rect.width>0&&
+        rect.height>0&&
+        (
+          style.position==='fixed'||
+          style.position==='sticky'
+        )&&
+        rect.top<=2&&
+        rect.bottom>0&&
+        rect.bottom<window.innerHeight
+      ){
+        bottom=Math.max(bottom,rect.bottom);
+      }
     });
 
     return Math.max(0,Math.ceil(bottom));

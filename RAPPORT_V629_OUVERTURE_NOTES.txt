@@ -1,0 +1,14 @@
+MHUR NEXUS — V629
+
+PROBLÈME CORRIGÉ
+V627 utilisait tous les éléments <header> visibles de la page pour
+calculer la position de la fenêtre Patch Notes / Dev Notes. Un header
+de carte ou de section pouvait donc placer la fenêtre presque entièrement
+en dehors de l'écran.
+
+CORRECTIONS
+- Le calcul utilise uniquement le véritable header fixe du site.
+- Le bouton est intercepté au niveau window avant les anciennes couches.
+- La fenêtre est forcée visible et sous le vrai header.
+- Une ancienne structure de modal incompatible est supprimée et recréée.
+- Patch Notes, Dev Notes, liens officiels et contenu V628 restent inchangés.

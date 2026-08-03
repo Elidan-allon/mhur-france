@@ -1,0 +1,33 @@
+/* MHUR Nexus — V629
+   Ouverture stable de Patch Notes / Dev Notes. */
+
+#s18NotesDevModalV10.open{
+  position:fixed!important;
+  top:var(--mhur-v629-notes-top,0px)!important;
+  right:0!important;
+  bottom:0!important;
+  left:0!important;
+  width:100vw!important;
+  height:auto!important;
+  max-height:none!important;
+  visibility:visible!important;
+  opacity:1!important;
+  pointer-events:auto!important;
+  z-index:2147483000!important;
+}
+
+#s18NotesDevModalV10.open .s18NotesPanelV10{
+  height:calc(
+    100dvh - var(--mhur-v629-notes-top,0px) - 16px
+  )!important;
+  max-height:none!important;
+  min-height:0!important;
+}
+
+@media(max-width:760px){
+  #s18NotesDevModalV10.open .s18NotesPanelV10{
+    height:calc(
+      100dvh - var(--mhur-v629-notes-top,0px)
+    )!important;
+  }
+}
