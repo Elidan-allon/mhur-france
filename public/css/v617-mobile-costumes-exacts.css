@@ -1,0 +1,223 @@
+/* MHUR Nexus — V617
+   Correctif exact des cartes de costumes sur mobile.
+   Remplace les essais V614/V615/V616.
+*/
+
+@media (max-width: 760px){
+
+  /* Une seule carte propre et centrée par ligne. */
+  html body #app .costumeGroupsWrap .costumeGalleryGrid,
+  html body #app .s18UpcomingCostumeGridV23{
+    display:grid!important;
+    grid-template-columns:minmax(0,340px)!important;
+    justify-content:center!important;
+    justify-items:stretch!important;
+    align-items:start!important;
+    gap:18px!important;
+    width:100%!important;
+    padding:12px 0!important;
+    overflow:visible!important;
+  }
+
+  /* Même taille pour toutes les cartes, normales ou à venir. */
+  html body #app .costumeGroupsWrap .costumeTile,
+  html body #app .costumeGroupsWrap .costumeCard,
+  html body #app .s18UpcomingCostumeGridV23 .costumeTile,
+  html body #app .s18UpcomingCostumeGridV23 .costumeCard{
+    position:relative!important;
+    display:block!important;
+    width:100%!important;
+    min-width:0!important;
+    max-width:340px!important;
+    height:460px!important;
+    min-height:460px!important;
+    max-height:460px!important;
+    padding:0!important;
+    margin:0 auto!important;
+    overflow:hidden!important;
+    box-sizing:border-box!important;
+  }
+
+  /*
+    La vraie photo est toujours l'image directe de la carte.
+    :first-of-type continue de fonctionner même si NEW est inséré avant.
+  */
+  html body #app .costumeTile > img:first-of-type,
+  html body #app .costumeCard > img:first-of-type{
+    position:absolute!important;
+    inset:auto!important;
+    left:50%!important;
+    right:auto!important;
+    top:64px!important;
+    bottom:auto!important;
+    transform:translateX(-50%)!important;
+    transform-origin:center center!important;
+    display:block!important;
+    width:calc(100% - 34px)!important;
+    min-width:0!important;
+    max-width:none!important;
+    height:278px!important;
+    min-height:0!important;
+    max-height:none!important;
+    padding:0!important;
+    margin:0!important;
+    object-fit:contain!important;
+    object-position:center center!important;
+    background:transparent!important;
+    z-index:2!important;
+  }
+
+  /* Nom et sous-titre : aucune partie du personnage ne passe derrière. */
+  html body #app .costumeTile > .costumeTileName,
+  html body #app .costumeCard > .costumeTileName{
+    position:absolute!important;
+    left:0!important;
+    right:0!important;
+    bottom:28px!important;
+    height:72px!important;
+    min-height:72px!important;
+    display:flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+    padding:0 58px!important;
+    box-sizing:border-box!important;
+    z-index:20!important;
+  }
+
+  html body #app .costumeTile > .costumeMiniDesc,
+  html body #app .costumeCard > .costumeMiniDesc{
+    position:absolute!important;
+    left:0!important;
+    right:0!important;
+    bottom:0!important;
+    height:28px!important;
+    z-index:20!important;
+  }
+
+  /* T.U.N.I.N.G juste au-dessus du nom. */
+  html body #app .costumeTile > .costumeTileBadge,
+  html body #app .costumeCard > .costumeTileBadge{
+    position:absolute!important;
+    top:auto!important;
+    bottom:88px!important;
+    width:46px!important;
+    height:46px!important;
+    z-index:35!important;
+    transform:none!important;
+  }
+
+  html body #app .costumeTile > .costumeTileBadge.left,
+  html body #app .costumeCard > .costumeTileBadge.left{
+    left:14px!important;
+    right:auto!important;
+  }
+
+  html body #app .costumeTile > .costumeTileBadge.right,
+  html body #app .costumeCard > .costumeTileBadge.right{
+    right:14px!important;
+    left:auto!important;
+  }
+
+  /* Rareté et étoiles gardent leurs coins. */
+  html body #app .costumeTile > .costumeTileRarity,
+  html body #app .costumeCard > .costumeTileRarity{
+    position:absolute!important;
+    top:10px!important;
+    left:10px!important;
+    right:auto!important;
+    z-index:80!important;
+  }
+
+  html body #app .costumeTile > .costumeTileStars,
+  html body #app .costumeCard > .costumeTileStars{
+    position:absolute!important;
+    top:10px!important;
+    right:10px!important;
+    left:auto!important;
+    z-index:80!important;
+  }
+
+  /* NEW : même photo et même taille, le badge ne change plus le cadrage. */
+  html body #app .costumeTile > .mhurNewV582,
+  html body #app .costumeCard > .mhurNewV582,
+  html body #app .costumeTile > .s18NewBadge,
+  html body #app .costumeCard > .s18NewBadge{
+    position:absolute!important;
+    top:42px!important;
+    right:10px!important;
+    left:auto!important;
+    width:62px!important;
+    height:32px!important;
+    z-index:90!important;
+    transform-origin:center!important;
+  }
+
+  /*
+    Costumes à venir :
+    À VENIR / UPCOMING est centré tout en haut.
+    La date est centrée juste en dessous.
+  */
+  html body #app .s18UpcomingCostumeTileV25 > .s18UpcomingStatusV25{
+    position:absolute!important;
+    top:9px!important;
+    left:50%!important;
+    right:auto!important;
+    bottom:auto!important;
+    transform:translateX(-50%)!important;
+    width:max-content!important;
+    max-width:42%!important;
+    padding:7px 10px!important;
+    z-index:95!important;
+    white-space:nowrap!important;
+    text-align:center!important;
+  }
+
+  html body #app .s18UpcomingCostumeTileV25 > .s18UpcomingDateV25{
+    position:absolute!important;
+    top:48px!important;
+    left:50%!important;
+    right:auto!important;
+    bottom:auto!important;
+    transform:translateX(-50%)!important;
+    width:max-content!important;
+    max-width:calc(100% - 28px)!important;
+    padding:6px 9px!important;
+    z-index:95!important;
+    white-space:nowrap!important;
+    text-align:center!important;
+  }
+
+  /* La photo à venir descend juste assez pour laisser la date visible. */
+  html body #app .s18UpcomingCostumeTileV25 > img:first-of-type{
+    top:86px!important;
+    height:256px!important;
+  }
+}
+
+@media (max-width: 390px){
+  html body #app .costumeGroupsWrap .costumeGalleryGrid,
+  html body #app .s18UpcomingCostumeGridV23{
+    grid-template-columns:minmax(0,326px)!important;
+  }
+
+  html body #app .costumeGroupsWrap .costumeTile,
+  html body #app .costumeGroupsWrap .costumeCard,
+  html body #app .s18UpcomingCostumeGridV23 .costumeTile,
+  html body #app .s18UpcomingCostumeGridV23 .costumeCard{
+    max-width:326px!important;
+    height:448px!important;
+    min-height:448px!important;
+    max-height:448px!important;
+  }
+
+  html body #app .costumeTile > img:first-of-type,
+  html body #app .costumeCard > img:first-of-type{
+    top:62px!important;
+    height:268px!important;
+  }
+
+  html body #app .s18UpcomingCostumeTileV25 > img:first-of-type{
+    top:84px!important;
+    height:246px!important;
+  }
+}
