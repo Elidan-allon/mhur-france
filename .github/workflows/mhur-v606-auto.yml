@@ -1,0 +1,273 @@
+name: MHUR V606 - alpha Midoriya source
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/mhur-v606-auto.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: mhur-v606-midoriya-alpha-source
+  cancel-in-progress: false
+
+jobs:
+  appliquer:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Recuperer le depot
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Installer Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Installer V606
+        shell: bash
+        run: |
+          cat > /tmp/appliquer_v606.py <<'PY'
+          from pathlib import Path
+          import re
+          import subprocess
+
+          ROOT=Path.cwd()
+          INDEX=ROOT/"public/index.html"
+          FIXES=ROOT/"public/js/season18-fixes.js"
+          RUNTIME=ROOT/"public/js/v606-midoriya-alpha-final.js"
+          CSS=ROOT/"public/css/v606-midoriya-alpha.css"
+          REPORT=ROOT/"RAPPORT_V606_MIDORIYA_ALPHA.txt"
+
+          GROUP_REPLACEMENT="function patchHealthChangeV606(change,sectionTitle=''){\n  const skill=NORM(change?.skill_name||change?.label||'');\n  const section=NORM(sectionTitle||'');\n\n  return (\n    skill==='hp'||\n    skill==='pv'||\n    skill==='health'||\n    skill==='maximum_hp'||\n    skill==='maximum_main_health'||\n    section.includes('balance_changes_health')||\n    section.includes('equilibrage_pv')\n  );\n}\n\nfunction patchMidoriyaAlphaV606(group,change,skill){\n  const context=NORM([\n    group?.character,\n    group?.style,\n    group?.id,\n    change?.skill_name,\n    change?.label,\n    skill?.name\n  ].filter(Boolean).join(' '));\n\n  const midoriya=(\n    context.includes('midoriya')||\n    context.includes('deku')\n  );\n\n  if(!midoriya)return '';\n\n  if(\n    context.includes('delaware_smash_full_bullet')||\n    context.includes('full_bullet')\n  ){\n    return 'assets/midoriya/midoriya_attack/alpha.webp';\n  }\n\n  if(\n    context.includes('delaware_smash_airblast')||\n    context.includes('rafale_d_air')||\n    context.includes('airblast')\n  ){\n    return 'assets/midoriya_ofa/alpha.webp';\n  }\n\n  if(\n    context.includes('delaware_smash_air_force')||\n    context.includes('air_force')\n  ){\n    return 'assets/midoriya/midoriya_assault/alpha.webp';\n  }\n\n  const id=NORM(group?.id||'');\n\n  if(id==='fullbullet'||id.includes('midoriya_attack')){\n    return 'assets/midoriya/midoriya_attack/alpha.webp';\n  }\n\n  if(id==='ofa'||id.includes('midoriya_ofa')){\n    return 'assets/midoriya_ofa/alpha.webp';\n  }\n\n  if(id==='assault'||id.includes('midoriya_assault')){\n    return 'assets/midoriya/midoriya_assault/alpha.webp';\n  }\n\n  return '';\n}\n\nfunction patchPictureV606(group,change,skill,sectionTitle=''){\n  if(patchHealthChangeV606(change,sectionTitle)){\n    return '';\n  }\n\n  const midoriyaAlpha=patchMidoriyaAlphaV606(\n    group,\n    change,\n    skill\n  );\n\n  if(midoriyaAlpha)return midoriyaAlpha;\n\n  return skill?.img||change?.skill_image||'';\n}\n\nfunction groupHtml(group,sectionTitle){\n  const role=ROLE(group.st?.role||'technical');\n  const side=group.ch?.side||'hero';\n\n  return `<article\n    class=\"s18PatchCharacterV10 role-${role}\"\n    data-patch-style-id=\"${ESC(group.id||'')}\"\n  >\n    <header>\n      <div class=\"s18PatchPortraitV10\">\n        ${\n          group.st?.portrait&&typeof asset==='function'\n            ?asset(group.st.portrait,group.character)\n            :''\n        }\n      </div>\n\n      <div>\n        <h4>${ESC(group.character)}</h4>\n        <strong>${ESC(group.style)}</strong>\n\n        <div class=\"s18PatchBadgesV10\">\n          <span class=\"badge ${side==='villain'?'villain':'hero'}\">\n            ${ESC(SIDE_TEXT(side))}\n          </span>\n\n          <span class=\"badge ${role}\">\n            ${ESC(ROLE_TEXT(role))}\n          </span>\n        </div>\n      </div>\n    </header>\n\n    <div class=\"s18PatchChangesV10\">\n      ${group.changes.map(change=>{\n        const tone=toneFor(change,sectionTitle);\n        const skill=skillForChange(group.st,change);\n\n        const title=translatePatch(\n          CLEAN(\n            skill?.name||\n            change?.skill_name||\n            change?.label||\n            TX('Ajustement','Adjustment')\n          )\n        );\n\n        const picture=patchPictureV606(\n          group,\n          change,\n          skill,\n          sectionTitle\n        );\n\n        const bullets=(change?.bullets||[])\n          .map(translatePatch)\n          .filter(Boolean);\n\n        return `<section\n          class=\"s18PatchChangeV10 ${tone}\"\n          data-patch-skill-image=\"${ESC(picture)}\"\n        >\n          <span class=\"s18ToneV10 ${tone}\">\n            ${\n              tone==='buff'\n                ?'BUFF'\n                :tone==='nerf'\n                  ?'NERF'\n                  :TX('NEUTRE','NEUTRAL')\n            }\n          </span>\n\n          <div class=\"s18PatchSkillV10${\n            picture?'':' s18NoSkillImageV606'\n          }\">\n            ${\n              picture&&typeof asset==='function'\n                ?`<div>${asset(picture,title)}</div>`\n                :''\n            }\n\n            <main>\n              <h5>${ESC(title)}</h5>\n\n              ${\n                change?.label\n                  ?`<p class=\"s18PatchLabelV10\">${\n                    ESC(translatePatch(change.label))\n                  }</p>`\n                  :''\n              }\n\n              ${valuesHtml(change,tone)}\n\n              ${\n                bullets.length\n                  ?`<ul>${\n                    bullets.map(\n                      bullet=>`<li>${ESC(bullet)}</li>`\n                    ).join('')\n                  }</ul>`\n                  :''\n              }\n            </main>\n          </div>\n        </section>`;\n      }).join('')}\n    </div>\n  </article>`;\n}"
+          RUNTIME_CONTENT="/* MHUR Nexus — V606 : sécurité finale des images Midoriya */\n(function(){\n  'use strict';\n\n  if(window.MHUR_V606_LOADED)return;\n  window.MHUR_V606_LOADED=true;\n\n  const MAP=[\n    {\n      test:value=>\n        value.includes('delaware_smash_full_bullet')||\n        value.includes('full_bullet'),\n      src:'assets/midoriya/midoriya_attack/alpha.webp'\n    },\n    {\n      test:value=>\n        value.includes('delaware_smash_airblast')||\n        value.includes('rafale_d_air')||\n        value.includes('airblast'),\n      src:'assets/midoriya_ofa/alpha.webp'\n    },\n    {\n      test:value=>\n        value.includes('delaware_smash_air_force')||\n        value.includes('air_force'),\n      src:'assets/midoriya/midoriya_assault/alpha.webp'\n    }\n  ];\n\n  function clean(value){\n    return String(value??'').trim();\n  }\n\n  function norm(value){\n    return clean(value)\n      .normalize('NFD')\n      .replace(/[\\u0300-\\u036f]/g,'')\n      .toLowerCase()\n      .replace(/[^a-z0-9]+/g,'_')\n      .replace(/^_+|_+$/g,'');\n  }\n\n  function titleOf(change){\n    return clean(change.querySelector('h5')?.textContent);\n  }\n\n  function isHealth(change){\n    const title=norm(titleOf(change));\n    const label=norm(\n      change.querySelector(\n        '.s18PatchLabelV10,'+\n        '.s18PatchChangeBarV10,'+\n        '.miniTableTitle'\n      )?.textContent\n    );\n\n    return (\n      title==='hp'||\n      title==='pv'||\n      title==='health'||\n      label==='hp'||\n      label==='pv'||\n      label==='health'\n    );\n  }\n\n  function layoutOf(change){\n    return change.querySelector('.s18PatchSkillV10');\n  }\n\n  function mainOf(layout){\n    return layout?.querySelector(':scope > main');\n  }\n\n  function removePicture(change){\n    const layout=layoutOf(change);\n    const main=mainOf(layout);\n\n    if(!layout||!main)return;\n\n    [...layout.children].forEach(child=>{\n      if(child!==main&&child.tagName==='DIV'){\n        child.remove();\n      }\n    });\n\n    layout.classList.add('s18NoSkillImageV606');\n    change.dataset.patchSkillImage='';\n  }\n\n  function ensurePicture(change,src){\n    const layout=layoutOf(change);\n    const main=mainOf(layout);\n\n    if(!layout||!main)return;\n\n    let box=[...layout.children].find(\n      child=>child!==main&&child.tagName==='DIV'\n    );\n\n    if(!box){\n      box=document.createElement('div');\n      box.className='s18PatchSkillImageV606';\n      layout.insertBefore(box,main);\n    }\n\n    let image=box.querySelector('img');\n\n    if(!image){\n      image=document.createElement('img');\n      image.loading='lazy';\n      image.decoding='async';\n      box.replaceChildren(image);\n    }\n\n    image.removeAttribute('srcset');\n    image.alt=titleOf(change);\n    image.hidden=false;\n\n    const versioned=src+'?v=606';\n\n    if(image.getAttribute('src')!==versioned){\n      image.setAttribute('src',versioned);\n    }\n\n    layout.classList.remove('s18NoSkillImageV606');\n    change.dataset.patchSkillImage=src;\n  }\n\n  function fixChange(change){\n    if(isHealth(change)){\n      removePicture(change);\n      return;\n    }\n\n    const value=norm(titleOf(change));\n    const row=MAP.find(item=>item.test(value));\n\n    if(row){\n      ensurePicture(change,row.src);\n    }\n  }\n\n  function refresh(){\n    document.querySelectorAll(\n      '.s18PatchChangeV10'\n    ).forEach(fixChange);\n  }\n\n  let queued=false;\n\n  function schedule(){\n    if(queued)return;\n    queued=true;\n\n    requestAnimationFrame(()=>{\n      queued=false;\n      refresh();\n    });\n  }\n\n  const observer=new MutationObserver(mutations=>{\n    if(\n      mutations.some(mutation=>\n        mutation.addedNodes?.length\n      )\n    ){\n      schedule();\n    }\n  });\n\n  function start(){\n    refresh();\n\n    observer.observe(document.documentElement,{\n      childList:true,\n      subtree:true\n    });\n  }\n\n  document.addEventListener('click',event=>{\n    if(\n      event.target?.closest?.(\n        '[data-patch-index],'+\n        '#mhurPatchDevButtonV14,'+\n        '[data-s18-notes-button],'+\n        '[data-tab=\"patch\"]'\n      )\n    ){\n      setTimeout(schedule,0);\n      setTimeout(schedule,80);\n      setTimeout(schedule,220);\n    }\n  },true);\n\n  if(document.readyState==='loading'){\n    document.addEventListener(\n      'DOMContentLoaded',\n      start,\n      {once:true}\n    );\n  }else{\n    start();\n  }\n\n  window.addEventListener('load',schedule,{once:true});\n  window.MHUR_V606={refresh};\n})();"
+          CSS_CONTENT="/* MHUR Nexus — V606 */\n#s18NotesDevModalV10 .s18PatchSkillV10.s18NoSkillImageV606,\n.s18PatchSkillV10.s18NoSkillImageV606{\n  display:block!important;\n  width:100%!important;\n  min-width:0!important;\n}\n\n#s18NotesDevModalV10\n.s18PatchSkillV10.s18NoSkillImageV606 > main,\n.s18PatchSkillV10.s18NoSkillImageV606 > main{\n  display:block!important;\n  width:100%!important;\n  max-width:none!important;\n  grid-column:1 / -1!important;\n}\n\n#s18NotesDevModalV10 .s18PatchSkillImageV606 img,\n#s18NotesDevModalV10 .s18PatchSkillV10 > div img{\n  display:block!important;\n  width:100%!important;\n  height:100%!important;\n  object-fit:contain!important;\n}"
+
+          def fail(message):
+              raise RuntimeError(message)
+
+          def read(path):
+              if not path.is_file():
+                  fail("Fichier introuvable : "+path.as_posix())
+              return path.read_text(encoding="utf-8-sig")
+
+          def write(path,content):
+              path.parent.mkdir(parents=True,exist_ok=True)
+              path.write_text(content.rstrip()+"\n",encoding="utf-8")
+
+          def patch_fixes():
+              source=read(FIXES)
+
+              pattern=re.compile(
+                  r"function groupHtml\(group,sectionTitle\)\{"
+                  r"[\s\S]*?"
+                  r"\n\}"
+                  r"\nfunction patchDetailHtml",
+                  re.M,
+              )
+
+              replacement=(
+                  GROUP_REPLACEMENT+
+                  "\nfunction patchDetailHtml"
+              )
+
+              updated,count=pattern.subn(
+                  lambda _match:replacement,
+                  source,
+                  count=1,
+              )
+
+              if count!=1:
+                  fail(
+                      "Impossible de remplacer groupHtml "
+                      "dans season18-fixes.js."
+                  )
+
+              write(FIXES,updated)
+
+          def remove_old_image_patches(html):
+              names=[
+                  "v602-patch-images-fix",
+                  "v605-midoriya-alpha-fix",
+                  "v606-midoriya-alpha-final"
+              ]
+
+              for name in names:
+                  html=re.sub(
+                      r"\s*<script\b[^>]*src=['\"][^'\"]*"
+                      +re.escape(name)+
+                      r"[^'\"]*['\"][^>]*>\s*</script>\s*",
+                      "\n",
+                      html,
+                      flags=re.I,
+                  )
+
+              html=re.sub(
+                  r"\s*<link\b[^>]*href=['\"][^'\"]*"
+                  r"v606-midoriya-alpha\.css"
+                  r"[^'\"]*['\"][^>]*>\s*",
+                  "\n",
+                  html,
+                  flags=re.I,
+              )
+
+              return html
+
+          def patch_index():
+              html=remove_old_image_patches(read(INDEX))
+
+              html=re.sub(
+                  r"(['\"])js/season18-fixes\.js"
+                  r"(?:\?[^'\"]*)?\1",
+                  '"js/season18-fixes.js?v=606"',
+                  html,
+                  flags=re.I,
+              )
+
+              if "</head>" not in html or "</body>" not in html:
+                  fail("Balises </head> ou </body> introuvables.")
+
+              html=html.replace(
+                  "</head>",
+                  '\n<link rel="stylesheet" '
+                  'href="css/v606-midoriya-alpha.css?v=606">'
+                  '\n</head>',
+                  1,
+              )
+
+              html=html.replace(
+                  "</body>",
+                  '\n<script '
+                  'src="js/v606-midoriya-alpha-final.js?v=606">'
+                  '</script>\n</body>',
+                  1,
+              )
+
+              write(INDEX,html)
+
+          def verify():
+              errors=[]
+              fixes=read(FIXES)
+              html=read(INDEX)
+              runtime=read(RUNTIME)
+
+              for required in (
+                  "function patchHealthChangeV606",
+                  "function patchMidoriyaAlphaV606",
+                  "assets/midoriya/midoriya_assault/alpha.webp",
+                  "assets/midoriya/midoriya_attack/alpha.webp",
+                  "assets/midoriya_ofa/alpha.webp",
+                  "s18NoSkillImageV606",
+              ):
+                  if required not in fixes:
+                      errors.append(
+                          "Correctif source absent : "+required
+                      )
+
+              for resource in (
+                  "js/season18-fixes.js?v=606",
+                  "css/v606-midoriya-alpha.css?v=606",
+                  "js/v606-midoriya-alpha-final.js?v=606",
+              ):
+                  if resource not in html:
+                      errors.append(
+                          "Référence absente : "+resource
+                      )
+
+              if "v605-midoriya-alpha-fix.js" in html:
+                  errors.append(
+                      "L'ancien V605 est encore chargé."
+                  )
+
+              for path in (FIXES,RUNTIME):
+                  syntax=subprocess.run(
+                      ["node","--check",str(path)],
+                      text=True,
+                      capture_output=True,
+                  )
+
+                  if syntax.returncode:
+                      errors.append(
+                          "Syntaxe invalide "
+                          +path.name+
+                          " : "
+                          +syntax.stderr
+                      )
+
+              if errors:
+                  fail(
+                      "Vérification V606 échouée :\n- "
+                      +"\n- ".join(errors)
+                  )
+
+          def main():
+              for path in (INDEX,FIXES):
+                  if not path.is_file():
+                      fail(
+                          "Fichier requis absent : "
+                          +path.as_posix()
+                      )
+
+              patch_fixes()
+              write(RUNTIME,RUNTIME_CONTENT)
+              write(CSS,CSS_CONTENT)
+              patch_index()
+              verify()
+
+              report=[
+                  "MHUR FRANCE — RAPPORT V606",
+                  "",
+                  "CAUSE DU BUG V605",
+                  "- styles est déclaré avec const dans index.html.",
+                  "- V605 cherchait window.styles.",
+                  "- Il ne pouvait donc pas lire les vraies images.",
+                  "",
+                  "IMAGES EXACTES",
+                  "- Air Force : midoriya_assault/alpha.webp",
+                  "- Full Bullet : midoriya_attack/alpha.webp",
+                  "- Airblast : midoriya_ofa/alpha.webp",
+                  "- HP/PV/Health : aucune image",
+                  "",
+                  "MÉTHODE",
+                  "- Correction directe de season18-fixes.js.",
+                  "- Sécurité finale après chaque rendu du Patch Note.",
+                  "- Ancien script V605 retiré du chargement.",
+                  "- Aucun observer sur les attributs : pas de boucle infinie.",
+              ]
+
+              write(REPORT,"\n".join(report))
+
+              print("[OK] V606 appliqué et vérifié.")
+              print("[OK] Air Force = midoriya_assault/alpha.webp")
+              print("[OK] Full Bullet = midoriya_attack/alpha.webp")
+              print("[OK] Airblast = midoriya_ofa/alpha.webp")
+              print("[OK] HP/PV = aucune image")
+
+          if __name__=="__main__":
+              main()
+          PY
+
+          python3 /tmp/appliquer_v606.py
+
+      - name: Commit automatique
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add             public/index.html             public/js/season18-fixes.js             public/js/v606-midoriya-alpha-final.js             public/css/v606-midoriya-alpha.css             RAPPORT_V606_MIDORIYA_ALPHA.txt
+
+          if git diff --cached --quiet; then
+            echo "V606 est deja installe."
+            exit 0
+          fi
+
+          git commit -m "Corriger les alpha Midoriya du Patch Notes V606"
+          git push
