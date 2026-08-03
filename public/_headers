@@ -32,23 +32,3 @@
 
 /service-worker-v36.js
   Cache-Control: no-store, no-cache, must-revalidate
-
-# MHUR V630 CACHE START
-/index.html
-  Cache-Control: no-cache
-
-/
-  Cache-Control: no-cache
-
-/assets/*
-  Cache-Control: public, max-age=604800, stale-while-revalidate=86400
-
-/css/*
-  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
-
-/js/*
-  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
-
-/data/*
-  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
-# MHUR V630 CACHE END

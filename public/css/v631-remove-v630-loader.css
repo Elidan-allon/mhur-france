@@ -1,0 +1,31 @@
+/* MHUR Nexus — V631
+   Aucun écran de chargement V630 ne doit rester visible. */
+
+html.mhurV630Booting::before,
+html.mhurV630Booting::after,
+html.mhurV630RouteLoading::before,
+html.mhurV630RouteLoading::after{
+  content:none!important;
+  display:none!important;
+  visibility:hidden!important;
+  opacity:0!important;
+  pointer-events:none!important;
+}
+
+html.mhurV630Booting body,
+html.mhurV630Booting body>*,
+html.mhurV630RouteLoading body,
+html.mhurV630RouteLoading #app,
+html.mhurV631NoLoader body,
+html.mhurV631NoLoader body>*,
+html.mhurV631NoLoader #app{
+  visibility:visible!important;
+  opacity:1!important;
+}
+
+html.mhurV630Booting body,
+html.mhurV630RouteLoading body,
+html.mhurV631NoLoader body{
+  overflow:auto!important;
+  animation:none!important;
+}
