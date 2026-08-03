@@ -1,0 +1,11 @@
+MHUR NEXUS — V621
+
+CORRECTION UNIQUE
+- Remplace les téléportations de V620 par une animation continue.
+- Emplacement -> descente fluide vers les compatibles.
+- T.U.N.I.N.G choisi -> remontée fluide vers l'emplacement actif.
+
+AUCUN AUTRE CHANGEMENT
+- Aucun CSS.
+- Aucune carte ou donnée modifiée.
+- Aucun changement sur ordinateur.
