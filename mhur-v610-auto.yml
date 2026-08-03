@@ -1,0 +1,637 @@
+name: MHUR V610 - Patch Notes PV sans image
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/mhur-v610-auto.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: mhur-v610-patch-notes-pv-sans-image
+  cancel-in-progress: false
+
+jobs:
+  appliquer:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Recuperer le depot
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Installer Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Verifier les fichiers du site
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          test -f public/index.html
+          test -f public/js/v608-patch-notes-final.js
+          test -f public/css/v608-patch-notes-final.css
+
+          echo "[OK] Le moteur des Patch Notes est present."
+
+      - name: Installer le correctif V610
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          mkdir -p public/js public/css
+
+          cat > public/js/v610-patch-notes-health-no-image.js <<'JS'
+          /* MHUR Nexus — V610
+             Les changements de PV / HP dans les Patch Notes ne doivent
+             jamais afficher une image de competence.
+
+             Protection :
+             - cible uniquement les cartes PV / HP ;
+             - conserve le portrait du personnage dans l'en-tete ;
+             - conserve les images Alpha, Beta, Gamma et Action speciale ;
+             - fonctionne avec le rendu V608 et les anciens rendus ;
+             - se reapplique apres changement de note ou de langue.
+          */
+          (function(){
+            'use strict';
+
+            if(window.MHUR_V610_PATCH_HEALTH_LOADED)return;
+            window.MHUR_V610_PATCH_HEALTH_LOADED=true;
+
+            function clean(value){
+              return String(value??'').trim();
+            }
+
+            function normal(value){
+              return clean(value)
+                .normalize('NFD')
+                .replace(/[\u0300-\u036f]/g,'')
+                .toLowerCase()
+                .replace(/[^a-z0-9]+/g,'_')
+                .replace(/^_+|_+$/g,'');
+            }
+
+            function exactHealthText(value){
+              const key=normal(value);
+
+              return new Set([
+                'hp',
+                'pv',
+                'health',
+                'hit_points',
+                'points_de_vie',
+                'max_hp',
+                'maximum_hp',
+                'max_health',
+                'maximum_health',
+                'main_health',
+                'max_main_health',
+                'maximum_main_health',
+                'pv_max',
+                'pv_maximum',
+                'sante',
+                'sante_maximum'
+              ]).has(key);
+            }
+
+            function healthSection(value){
+              const key=normal(value);
+
+              return (
+                key.includes('balance_changes_health')||
+                key.includes('balance_change_health')||
+                key.includes('equilibrage_pv')||
+                key.includes('equilibrage_sante')||
+                key==='health'||
+                key==='pv'||
+                key==='sante'
+              );
+            }
+
+            function cardIsHealth(card){
+              if(!card)return false;
+
+              const section=card.closest(
+                '.s18PatchSectionV10,'+
+                '.s18PatchSectionV11,'+
+                '.s18PatchSectionV12,'+
+                '.s18PatchSectionV13,'+
+                '.s18PatchSectionV14'
+              );
+
+              const sectionTitle=section?.querySelector(
+                ':scope > h3'
+              )?.textContent||'';
+
+              const title=card.querySelector(
+                'h5, [data-skill-name], .s18PatchSkillTitleV10'
+              )?.textContent||'';
+
+              const label=card.querySelector(
+                '.s18PatchLabelV10,'+
+                '.s18PatchLabelV11,'+
+                '.s18PatchLabelV12,'+
+                '.s18PatchLabelV13,'+
+                '.s18PatchLabelV14'
+              )?.textContent||'';
+
+              return (
+                healthSection(sectionTitle)||
+                exactHealthText(title)||
+                exactHealthText(label)
+              );
+            }
+
+            function skillArea(card){
+              return card.querySelector(
+                '.s18PatchSkillV10,'+
+                '.s18PatchSkillV11,'+
+                '.s18PatchSkillV12,'+
+                '.s18PatchSkillV13,'+
+                '.s18PatchSkillV14,'+
+                '[class*="s18PatchSkill"]'
+              );
+            }
+
+            function removeSkillPicture(card){
+              if(!cardIsHealth(card))return false;
+
+              card.dataset.v610Health='1';
+
+              const area=skillArea(card);
+
+              if(!area)return false;
+
+              area.classList.add(
+                's18NoSkillImageV608',
+                's18NoSkillImageV610'
+              );
+
+              /*
+                Le portrait du personnage se trouve dans l'en-tete de
+                .s18PatchCharacterV10, donc hors de cette zone.
+                Nous ne retirons que les enfants image de la competence.
+              */
+              Array.from(area.children).forEach(child=>{
+                if(child.matches('main'))return;
+
+                const imageContainer=(
+                  child.matches(
+                    '.s18PatchImageV608,'+
+                    '[class*="PatchImage"],'+
+                    '[class*="SkillImage"]'
+                  )||
+                  !!child.querySelector('img')
+                );
+
+                if(imageContainer){
+                  child.remove();
+                }
+              });
+
+              return true;
+            }
+
+            function cards(root=document){
+              return Array.from(root.querySelectorAll(
+                '#s18NotesDevModalV10 .s18PatchChangeV10,'+
+                '#s18NotesDevModalV10 .s18PatchChangeV11,'+
+                '#s18NotesDevModalV10 .s18PatchChangeV12,'+
+                '#s18NotesDevModalV10 .s18PatchChangeV13,'+
+                '#s18NotesDevModalV10 .s18PatchChangeV14'
+              ));
+            }
+
+            function repair(root=document){
+              let changed=0;
+
+              cards(root).forEach(card=>{
+                if(removeSkillPicture(card))changed++;
+              });
+
+              return changed;
+            }
+
+            /*
+              Les donnees source ont normalement skill_image vide pour HP.
+              Cette securite empeche aussi une future synchronisation de
+              remettre accidentellement une image sur une variation de PV.
+            */
+            function sanitizeData(){
+              const notes=window.MHUR_HOME_DATA?.patch_notes;
+
+              if(!Array.isArray(notes))return 0;
+
+              let changed=0;
+
+              notes.forEach(note=>{
+                const sections=Array.isArray(note?.details)
+                  ?note.details
+                  :[];
+
+                sections.forEach(section=>{
+                  const sectionIsHealth=healthSection(
+                    section?.title||''
+                  );
+
+                  const changes=Array.isArray(section?.changes)
+                    ?section.changes
+                    :[];
+
+                  changes.forEach(change=>{
+                    const isHealth=(
+                      sectionIsHealth||
+                      exactHealthText(change?.skill_name)||
+                      exactHealthText(change?.label)
+                    );
+
+                    if(!isHealth)return;
+
+                    if(change.skill_image){
+                      change.skill_image='';
+                      changed++;
+                    }
+
+                    change.mhur_no_skill_image=true;
+                  });
+                });
+              });
+
+              return changed;
+            }
+
+            let scheduled=false;
+
+            function schedule(){
+              if(scheduled)return;
+
+              scheduled=true;
+
+              requestAnimationFrame(()=>{
+                scheduled=false;
+                sanitizeData();
+                repair();
+              });
+            }
+
+            function observe(){
+              if(window.MHUR_V610_PATCH_HEALTH_OBSERVER)return;
+              if(!document.body)return;
+
+              const observer=new MutationObserver(mutations=>{
+                const relevant=mutations.some(mutation=>
+                  mutation.type==='childList'&&
+                  (
+                    mutation.addedNodes.length>0||
+                    mutation.removedNodes.length>0
+                  )
+                );
+
+                if(relevant)schedule();
+              });
+
+              observer.observe(document.body,{
+                childList:true,
+                subtree:true
+              });
+
+              window.MHUR_V610_PATCH_HEALTH_OBSERVER=observer;
+            }
+
+            function start(){
+              sanitizeData();
+              repair();
+              observe();
+              schedule();
+            }
+
+            /*
+              Le rendu des Patch Notes est synchrone, mais plusieurs anciennes
+              couches peuvent ensuite toucher le DOM. Ces rappels legers
+              couvrent toutes les etapes sans boucle permanente.
+            */
+            document.addEventListener(
+              'click',
+              event=>{
+                if(
+                  event.target?.closest?.(
+                    '#mhurPatchDevButtonV14,'+
+                    '.mhurPatchDevButtonV14,'+
+                    '[data-s18-notes-button],'+
+                    '#s18NotesDevModalV10 [data-tab],'+
+                    '#s18NotesDevModalV10 [data-v608-patch-index],'+
+                    '#s18NotesDevModalV10 aside button'
+                  )
+                ){
+                  schedule();
+                  setTimeout(schedule,0);
+                  setTimeout(schedule,80);
+                }
+              },
+              true
+            );
+
+            window.addEventListener(
+              'mhur:languagechange',
+              ()=>{
+                schedule();
+                setTimeout(schedule,80);
+              }
+            );
+
+            if(document.readyState==='loading'){
+              document.addEventListener(
+                'DOMContentLoaded',
+                start,
+                {once:true}
+              );
+            }else{
+              start();
+            }
+
+            window.addEventListener(
+              'load',
+              ()=>{
+                start();
+                setTimeout(schedule,100);
+              },
+              {once:true}
+            );
+
+            window.MHUR_V610_PATCH_HEALTH={
+              repair,
+              sanitizeData,
+              refresh:schedule
+            };
+          })();
+          JS
+
+          cat > public/css/v610-patch-notes-health-no-image.css <<'CSS'
+          /* MHUR Nexus — V610 : PV / HP sans image de competence */
+
+          #s18NotesDevModalV10
+          [data-v610-health="1"]
+          [class*="PatchImage"],
+          #s18NotesDevModalV10
+          [data-v610-health="1"]
+          [class*="SkillImage"]{
+            display:none!important;
+          }
+
+          #s18NotesDevModalV10
+          [data-v610-health="1"]
+          .s18PatchSkillV10,
+          #s18NotesDevModalV10
+          [data-v610-health="1"]
+          .s18NoSkillImageV610{
+            display:block!important;
+            grid-template-columns:minmax(0,1fr)!important;
+            width:100%!important;
+            min-width:0!important;
+          }
+
+          #s18NotesDevModalV10
+          [data-v610-health="1"]
+          .s18PatchSkillV10>main,
+          #s18NotesDevModalV10
+          [data-v610-health="1"]
+          .s18NoSkillImageV610>main{
+            display:block!important;
+            grid-column:1 / -1!important;
+            width:100%!important;
+            max-width:none!important;
+            min-width:0!important;
+            margin:0!important;
+          }
+          CSS
+
+          python3 <<'PY'
+          from pathlib import Path
+          import re
+
+          index_path = Path("public/index.html")
+          report_path = Path(
+              "RAPPORT_V610_PATCH_NOTES_PV_SANS_IMAGE.txt"
+          )
+
+          html = index_path.read_text(encoding="utf-8")
+
+          css_pattern = re.compile(
+              r'\s*<!-- V610 : les changements PV / HP restent sans image\. -->\s*'
+              r'<link\s+rel=["\']stylesheet["\']\s+'
+              r'href=["\']css/v610-patch-notes-health-no-image\.css'
+              r'(?:\?[^"\']*)?["\']\s*/?>\s*',
+              re.I
+          )
+          js_pattern = re.compile(
+              r'\s*<!-- V610 : nettoyage final des images PV / HP\. -->\s*'
+              r'<script\s+src=["\']js/v610-patch-notes-health-no-image\.js'
+              r'(?:\?[^"\']*)?["\']\s*></script>\s*',
+              re.I
+          )
+
+          html = css_pattern.sub("\n", html)
+          html = js_pattern.sub("\n", html)
+
+          # Nettoyage supplementaire si les commentaires ont ete retires.
+          html = re.sub(
+              r'\s*<link\s+rel=["\']stylesheet["\']\s+'
+              r'href=["\']css/v610-patch-notes-health-no-image\.css'
+              r'(?:\?[^"\']*)?["\']\s*/?>\s*',
+              "\n",
+              html,
+              flags=re.I
+          )
+          html = re.sub(
+              r'\s*<script\s+src=["\']js/v610-patch-notes-health-no-image\.js'
+              r'(?:\?[^"\']*)?["\']\s*></script>\s*',
+              "\n",
+              html,
+              flags=re.I
+          )
+
+          css_tag = (
+              '<!-- V610 : les changements PV / HP restent sans image. -->\n'
+              '<link rel="stylesheet" '
+              'href="css/v610-patch-notes-health-no-image.css?v=610">\n'
+          )
+          js_tag = (
+              '<!-- V610 : nettoyage final des images PV / HP. -->\n'
+              '<script '
+              'src="js/v610-patch-notes-health-no-image.js?v=610">'
+              '</script>\n'
+          )
+
+          if "</head>" not in html:
+              raise SystemExit("[ERREUR] Balise </head> introuvable.")
+
+          if "</body>" not in html:
+              raise SystemExit("[ERREUR] Balise </body> introuvable.")
+
+          html = html.replace("</head>", css_tag + "</head>", 1)
+          html = html.replace("</body>", js_tag + "</body>", 1)
+
+          index_path.write_text(html, encoding="utf-8")
+
+          report_path.write_text(
+              """MHUR NEXUS — RAPPORT V610
+PATCH NOTES : CHANGEMENTS PV / HP SANS IMAGE
+
+PROBLEME
+Les donnees des changements de PV indiquent bien HP/PV et contiennent
+normalement une image vide. Une ancienne couche d'affichage pouvait
+cependant retrouver une competence du personnage et afficher sa photo.
+
+CORRECTION
+- Detection des sections Balance Changes: Health / Equilibrage PV.
+- Detection des titres HP, PV, Health, Points de vie et variantes Max HP.
+- Suppression uniquement de l'image de competence de la carte concernee.
+- Conservation du portrait du personnage dans l'en-tete.
+- Reapplication apres navigation, changement de note et changement de langue.
+- Securisation des donnees synchronisees pour laisser skill_image vide.
+
+NON MODIFIE
+- Images Alpha, Beta et Gamma.
+- Images des Actions speciales.
+- Portraits des personnages.
+- Valeurs avant/apres et badges BUFF/NERF.
+- Pages Personnages, T.U.N.I.N.G, Costumes, Builds, Mods et Tier List.
+
+FICHIERS
+- public/index.html
+- public/js/v610-patch-notes-health-no-image.js
+- public/css/v610-patch-notes-health-no-image.css
+- RAPPORT_V610_PATCH_NOTES_PV_SANS_IMAGE.txt
+""",
+              encoding="utf-8"
+          )
+
+          print("[OK] V610 installe.")
+          PY
+
+      - name: Controler le correctif
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          node --check \
+            public/js/v610-patch-notes-health-no-image.js
+
+          python3 <<'PY'
+          from pathlib import Path
+
+          html = Path("public/index.html").read_text(encoding="utf-8")
+          js = Path(
+              "public/js/v610-patch-notes-health-no-image.js"
+          ).read_text(encoding="utf-8")
+          css = Path(
+              "public/css/v610-patch-notes-health-no-image.css"
+          ).read_text(encoding="utf-8")
+
+          js_ref = (
+              "js/v610-patch-notes-health-no-image.js?v=610"
+          )
+          css_ref = (
+              "css/v610-patch-notes-health-no-image.css?v=610"
+          )
+
+          if html.count(js_ref) != 1:
+              raise SystemExit(
+                  "[ERREUR] Reference JS V610 absente ou dupliquee."
+              )
+
+          if html.count(css_ref) != 1:
+              raise SystemExit(
+                  "[ERREUR] Reference CSS V610 absente ou dupliquee."
+              )
+
+          required_js = [
+              "healthSection",
+              "exactHealthText",
+              "removeSkillPicture",
+              "s18NoSkillImageV610",
+              "MutationObserver",
+              "mhur:languagechange",
+          ]
+
+          for token in required_js:
+              if token not in js:
+                  raise SystemExit(
+                      f"[ERREUR] Element JS manquant : {token}"
+                  )
+
+          required_css = [
+              '[data-v610-health="1"]',
+              "display:none!important",
+              "grid-template-columns:minmax(0,1fr)!important",
+          ]
+
+          for token in required_css:
+              if token not in css:
+                  raise SystemExit(
+                      f"[ERREUR] Element CSS manquant : {token}"
+                  )
+
+          if html.index(css_ref) > html.index("</head>"):
+              raise SystemExit(
+                  "[ERREUR] Le CSS V610 doit etre avant </head>."
+              )
+
+          if html.index(js_ref) > html.index("</body>"):
+              raise SystemExit(
+                  "[ERREUR] Le JS V610 doit etre avant </body>."
+              )
+
+          print("[OK] Controle statique V610 valide.")
+          PY
+
+          echo
+          echo "Fichiers prepares :"
+          git status --short
+
+      - name: Enregistrer automatiquement les changements
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          git config user.name "github-actions[bot]"
+          git config user.email \
+            "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add \
+            public/index.html \
+            public/js/v610-patch-notes-health-no-image.js \
+            public/css/v610-patch-notes-health-no-image.css \
+            RAPPORT_V610_PATCH_NOTES_PV_SANS_IMAGE.txt
+
+          if git diff --cached --quiet; then
+            echo "[INFO] V610 est deja applique. Aucun commit necessaire."
+            exit 0
+          fi
+
+          git commit -m \
+            "fix: supprimer les images des changements PV dans les Patch Notes V610"
+
+          for tentative in 1 2 3; do
+            git pull --rebase origin main
+
+            if git push origin HEAD:main; then
+              echo "[OK] V610 envoye sur main."
+              exit 0
+            fi
+
+            echo "[ATTENTE] Nouvelle tentative de push : $tentative/3"
+            sleep 3
+          done
+
+          echo "[ERREUR] Impossible d'envoyer le commit apres trois tentatives."
+          exit 1
