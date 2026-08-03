@@ -1,0 +1,246 @@
+name: MHUR V606B - alpha Midoriya stable
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/mhur-v606b-auto.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: mhur-v606b-midoriya-alpha
+  cancel-in-progress: false
+
+jobs:
+  appliquer:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Recuperer le depot
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Installer Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Installer V606B
+        shell: bash
+        run: |
+          cat > /tmp/appliquer_v606b.py <<'PY'
+          from pathlib import Path
+          import re
+          import subprocess
+
+          ROOT=Path.cwd()
+          INDEX=ROOT/"public/index.html"
+          JS=ROOT/"public/js/v606b-midoriya-alpha-fix.js"
+          CSS=ROOT/"public/css/v606b-midoriya-alpha-fix.css"
+          REPORT=ROOT/"RAPPORT_V606B_MIDORIYA_ALPHA.txt"
+
+          JS_CONTENT="/* MHUR Nexus — V606B\n   Correction finale des images Midoriya dans les Patch Notes.\n   Aucun remplacement de groupHtml ni de season18-fixes.js.\n*/\n(function(){\n  'use strict';\n\n  if(window.MHUR_V606B_LOADED)return;\n  window.MHUR_V606B_LOADED=true;\n\n  const VERSION='606b';\n\n  const EXACT_IMAGES=[\n    {\n      matches:[\n        'delaware_smash_air_force'\n      ],\n      src:'assets/midoriya/midoriya_assault/alpha.webp'\n    },\n    {\n      matches:[\n        'delaware_smash_full_bullet',\n        'full_bullet'\n      ],\n      src:'assets/midoriya/midoriya_attack/alpha.webp'\n    },\n    {\n      matches:[\n        'delaware_smash_airblast',\n        'rafale_d_air',\n        'airblast'\n      ],\n      src:'assets/midoriya_ofa/alpha.webp'\n    }\n  ];\n\n  function clean(value){\n    return String(value??'').trim();\n  }\n\n  function norm(value){\n    return clean(value)\n      .normalize('NFD')\n      .replace(/[\\u0300-\\u036f]/g,'')\n      .toLowerCase()\n      .replace(/[^a-z0-9]+/g,'_')\n      .replace(/^_+|_+$/g,'');\n  }\n\n  function titleOf(change){\n    return clean(change.querySelector('h5')?.textContent);\n  }\n\n  function labelOf(change){\n    return clean(\n      change.querySelector(\n        '.s18PatchLabelV10,'+\n        '.s18PatchChangeBarV10,'+\n        '.s18PatchStatBarV10,'+\n        '.miniTableTitle'\n      )?.textContent\n    );\n  }\n\n  function isHealth(change){\n    const title=norm(titleOf(change));\n    const label=norm(labelOf(change));\n\n    return (\n      title==='hp'||\n      title==='pv'||\n      title==='health'||\n      title==='maximum_hp'||\n      title==='maximum_main_health'||\n      label==='hp'||\n      label==='pv'||\n      label==='health'\n    );\n  }\n\n  function exactImage(change){\n    const value=norm(\n      titleOf(change)+' '+labelOf(change)\n    );\n\n    const row=EXACT_IMAGES.find(item=>\n      item.matches.some(match=>value.includes(match))\n    );\n\n    return row?.src||'';\n  }\n\n  function layoutOf(change){\n    return change.querySelector('.s18PatchSkillV10');\n  }\n\n  function mainOf(layout){\n    return layout?.querySelector(':scope > main');\n  }\n\n  function removePicture(change){\n    const layout=layoutOf(change);\n    const main=mainOf(layout);\n\n    if(!layout||!main)return;\n\n    let changed=false;\n\n    [...layout.children].forEach(child=>{\n      if(child!==main&&child.tagName==='DIV'){\n        child.remove();\n        changed=true;\n      }\n    });\n\n    layout.classList.add('s18NoSkillImageV606B');\n    change.dataset.patchSkillImage='';\n\n    return changed;\n  }\n\n  function ensurePicture(change,src){\n    const layout=layoutOf(change);\n    const main=mainOf(layout);\n\n    if(!layout||!main||!src)return false;\n\n    let box=[...layout.children].find(\n      child=>child!==main&&child.tagName==='DIV'\n    );\n\n    let changed=false;\n\n    if(!box){\n      box=document.createElement('div');\n      box.className='s18PatchSkillImageV606B';\n      layout.insertBefore(box,main);\n      changed=true;\n    }\n\n    let image=box.querySelector('img');\n\n    if(!image){\n      image=document.createElement('img');\n      image.loading='lazy';\n      image.decoding='async';\n      box.replaceChildren(image);\n      changed=true;\n    }\n\n    image.removeAttribute('srcset');\n    image.alt=titleOf(change);\n    image.hidden=false;\n    image.onerror=null;\n\n    const versioned=src+'?v='+VERSION;\n\n    if(image.getAttribute('src')!==versioned){\n      image.setAttribute('src',versioned);\n      changed=true;\n    }\n\n    layout.classList.remove('s18NoSkillImageV606B');\n    change.dataset.patchSkillImage=src;\n\n    return changed;\n  }\n\n  function fixChange(change){\n    if(isHealth(change)){\n      removePicture(change);\n      return;\n    }\n\n    const src=exactImage(change);\n\n    if(src){\n      ensurePicture(change,src);\n    }\n  }\n\n  function refresh(){\n    document.querySelectorAll(\n      '.s18PatchChangeV10'\n    ).forEach(fixChange);\n  }\n\n  let queued=false;\n\n  function schedule(){\n    if(queued)return;\n    queued=true;\n\n    requestAnimationFrame(()=>{\n      queued=false;\n\n      try{\n        refresh();\n      }catch(_error){}\n    });\n  }\n\n  /*\n    Uniquement les nouveaux éléments.\n    Aucune surveillance des attributs src/class :\n    pas de boucle de chargement infinie.\n  */\n  const observer=new MutationObserver(mutations=>{\n    if(\n      mutations.some(mutation=>\n        mutation.addedNodes?.length\n      )\n    ){\n      schedule();\n    }\n  });\n\n  function start(){\n    refresh();\n\n    observer.observe(document.documentElement,{\n      childList:true,\n      subtree:true\n    });\n  }\n\n  document.addEventListener('click',event=>{\n    if(\n      event.target?.closest?.(\n        '[data-patch-index],'+\n        '#mhurPatchDevButtonV14,'+\n        '[data-s18-notes-button],'+\n        '[data-tab=\"patch\"]'\n      )\n    ){\n      setTimeout(schedule,0);\n      setTimeout(schedule,80);\n      setTimeout(schedule,220);\n    }\n  },true);\n\n  window.addEventListener(\n    'mhur:languagechange',\n    ()=>{\n      setTimeout(schedule,0);\n      setTimeout(schedule,100);\n    }\n  );\n\n  if(document.readyState==='loading'){\n    document.addEventListener(\n      'DOMContentLoaded',\n      start,\n      {once:true}\n    );\n  }else{\n    start();\n  }\n\n  window.addEventListener(\n    'load',\n    schedule,\n    {once:true}\n  );\n\n  window.MHUR_V606B={\n    version:VERSION,\n    refresh\n  };\n})();"
+          CSS_CONTENT="/* MHUR Nexus — V606B */\n\n#s18NotesDevModalV10\n.s18PatchSkillV10.s18NoSkillImageV606B,\n.s18PatchSkillV10.s18NoSkillImageV606B{\n  display:block!important;\n  width:100%!important;\n  min-width:0!important;\n}\n\n#s18NotesDevModalV10\n.s18PatchSkillV10.s18NoSkillImageV606B > main,\n.s18PatchSkillV10.s18NoSkillImageV606B > main{\n  display:block!important;\n  width:100%!important;\n  max-width:none!important;\n  grid-column:1 / -1!important;\n}\n\n#s18NotesDevModalV10\n.s18PatchSkillImageV606B img,\n#s18NotesDevModalV10\n.s18PatchSkillV10 > div img{\n  display:block!important;\n  width:100%!important;\n  height:100%!important;\n  object-fit:contain!important;\n}"
+
+          def fail(message):
+              raise RuntimeError(message)
+
+          def read(path):
+              if not path.is_file():
+                  fail("Fichier introuvable : "+path.as_posix())
+
+              return path.read_text(encoding="utf-8-sig")
+
+          def write(path,content):
+              path.parent.mkdir(parents=True,exist_ok=True)
+              path.write_text(content.rstrip()+"\n",encoding="utf-8")
+
+          def remove_old_references(html):
+              script_names=[
+                  "v602-patch-images-fix",
+                  "v605-midoriya-alpha-fix",
+                  "v606-midoriya-alpha-final",
+                  "v606b-midoriya-alpha-fix"
+              ]
+
+              for name in script_names:
+                  html=re.sub(
+                      r"\s*<script\b[^>]*src=['\"][^'\"]*"
+                      +re.escape(name)+
+                      r"[^'\"]*['\"][^>]*>\s*</script>\s*",
+                      "\n",
+                      html,
+                      flags=re.I,
+                  )
+
+              css_names=[
+                  "v602-patch-images-fix",
+                  "v606-midoriya-alpha",
+                  "v606b-midoriya-alpha-fix"
+              ]
+
+              for name in css_names:
+                  html=re.sub(
+                      r"\s*<link\b[^>]*href=['\"][^'\"]*"
+                      +re.escape(name)+
+                      r"[^'\"]*['\"][^>]*>\s*",
+                      "\n",
+                      html,
+                      flags=re.I,
+                  )
+
+              return html
+
+          def patch_index():
+              html=remove_old_references(read(INDEX))
+
+              if "</head>" not in html:
+                  fail("Balise </head> introuvable.")
+
+              if "</body>" not in html:
+                  fail("Balise </body> introuvable.")
+
+              html=html.replace(
+                  "</head>",
+                  '\n<link rel="stylesheet" '
+                  'href="css/v606b-midoriya-alpha-fix.css?v=606b">'
+                  '\n</head>',
+                  1,
+              )
+
+              html=html.replace(
+                  "</body>",
+                  '\n<script '
+                  'src="js/v606b-midoriya-alpha-fix.js?v=606b">'
+                  '</script>\n</body>',
+                  1,
+              )
+
+              write(INDEX,html)
+
+          def verify():
+              errors=[]
+              html=read(INDEX)
+              js=read(JS)
+              stylesheet=read(CSS)
+
+              for resource in (
+                  "css/v606b-midoriya-alpha-fix.css?v=606b",
+                  "js/v606b-midoriya-alpha-fix.js?v=606b",
+              ):
+                  if resource not in html:
+                      errors.append(
+                          "Référence absente : "+resource
+                      )
+
+              for old in (
+                  "v605-midoriya-alpha-fix.js",
+                  "v606-midoriya-alpha-final.js",
+              ):
+                  if old in html:
+                      errors.append(
+                          "Ancien correctif encore chargé : "+old
+                      )
+
+              for required in (
+                  "assets/midoriya/midoriya_assault/alpha.webp",
+                  "assets/midoriya/midoriya_attack/alpha.webp",
+                  "assets/midoriya_ofa/alpha.webp",
+                  "function isHealth",
+                  "function exactImage",
+                  "window.MHUR_V606B",
+              ):
+                  if required not in js:
+                      errors.append(
+                          "Correctif absent : "+required
+                      )
+
+              if "s18NoSkillImageV606B" not in stylesheet:
+                  errors.append(
+                      "Mise en page HP absente."
+                  )
+
+              syntax=subprocess.run(
+                  ["node","--check",str(JS)],
+                  text=True,
+                  capture_output=True,
+              )
+
+              if syntax.returncode:
+                  errors.append(
+                      "Syntaxe JavaScript invalide : "
+                      +syntax.stderr
+                  )
+
+              if errors:
+                  fail(
+                      "Vérification V606B échouée :\n- "
+                      +"\n- ".join(errors)
+                  )
+
+          def main():
+              if not INDEX.is_file():
+                  fail("public/index.html est introuvable.")
+
+              write(JS,JS_CONTENT)
+              write(CSS,CSS_CONTENT)
+              patch_index()
+              verify()
+
+              report=[
+                  "MHUR FRANCE — RAPPORT V606B",
+                  "",
+                  "ERREUR DE V606",
+                  "- groupHtml existe mais est compressé sur une ligne.",
+                  "- Le remplacement par expression régulière ne le reconnaissait pas.",
+                  "",
+                  "NOUVELLE MÉTHODE",
+                  "- season18-fixes.js n'est plus modifié.",
+                  "- Correction appliquée directement après le rendu.",
+                  "- Anciennes couches V602/V605/V606 retirées du chargement.",
+                  "",
+                  "IMAGES EXACTES",
+                  "- Air Force : assets/midoriya/midoriya_assault/alpha.webp",
+                  "- Full Bullet : assets/midoriya/midoriya_attack/alpha.webp",
+                  "- Airblast : assets/midoriya_ofa/alpha.webp",
+                  "- HP/PV/Health : aucune image",
+                  "",
+                  "STABILITÉ",
+                  "- MutationObserver limité aux nouveaux éléments.",
+                  "- Les attributs src/class ne sont pas surveillés.",
+                  "- Pas de boucle infinie.",
+              ]
+
+              write(REPORT,"\n".join(report))
+
+              print("[OK] V606B appliqué et vérifié.")
+              print("[OK] season18-fixes.js n'a pas été modifié.")
+              print("[OK] Les anciennes couches d'images ont été retirées.")
+
+          if __name__=="__main__":
+              main()
+          PY
+
+          python3 /tmp/appliquer_v606b.py
+
+      - name: Commit automatique
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add             public/index.html             public/js/v606b-midoriya-alpha-fix.js             public/css/v606b-midoriya-alpha-fix.css             RAPPORT_V606B_MIDORIYA_ALPHA.txt
+
+          if git diff --cached --quiet; then
+            echo "V606B est deja installe."
+            exit 0
+          fi
+
+          git commit -m "Corriger les alpha Midoriya V606B"
+          git push
