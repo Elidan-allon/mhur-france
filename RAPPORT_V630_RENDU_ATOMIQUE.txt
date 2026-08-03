@@ -1,0 +1,30 @@
+MHUR NEXUS — V630
+
+PROBLÈME TRAITÉ
+L'interface était peinte avant le chargement de toutes les couches CSS et
+JavaScript placées tard dans le document. Le visiteur voyait donc pendant
+un instant une version brute et incomplète des pages.
+
+RENDU ATOMIQUE
+- Une garde critique s'active dès le début du <head>.
+- Aucun élément brut du site ne peut être peint.
+- Le rendu final, les polices, les images visibles et les fonds sont préparés.
+- L'interface complète est ensuite révélée en une seule fois.
+- Les changements de route qui remplacent directement #app utilisent la même
+  protection afin d'éviter les rendus intermédiaires.
+
+IMAGES
+- Les images visibles passent en chargement eager et priorité élevée.
+- Les images liées au personnage présent dans l'URL sont préchargées.
+- Les anciennes attentes artificielles V622 sont neutralisées.
+- Un Service Worker garde les images, CSS, JS et polices en cache.
+- Après la première récupération, les ressources déjà vues peuvent être
+  affichées immédiatement depuis le cache local.
+- Une toute première visite nécessite toujours un téléchargement physique :
+  aucun navigateur ne peut afficher un fichier qu'il n'a jamais reçu.
+
+CACHE
+- Service Worker V630 avec stratégie cache + actualisation en arrière-plan.
+- Pré-cache des principaux CSS et JavaScript.
+- Préchargement après rendu des images utilisées sur la page.
+- Règles _headers pour Cloudflare.

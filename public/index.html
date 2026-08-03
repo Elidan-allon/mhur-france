@@ -1,9 +1,71 @@
 <!doctype html>
 <html lang="fr">
 <head>
-<meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
-<meta http-equiv="Pragma" content="no-cache">
-<meta http-equiv="Expires" content="0">
+<script id="mhur-v630-boot-start">
+document.documentElement.classList.add('mhurV630Booting');
+</script>
+<style id="mhur-v630-boot-critical">
+html.mhurV630Booting,
+html.mhurV630RouteLoading{
+  background:#07101f!important;
+  min-height:100%!important;
+}
+html.mhurV630Booting body{
+  overflow:hidden!important;
+}
+html.mhurV630Booting body>*{
+  visibility:hidden!important;
+}
+html.mhurV630Booting::before,
+html.mhurV630RouteLoading::before{
+  content:""!important;
+  position:fixed!important;
+  inset:0!important;
+  display:block!important;
+  background:
+    radial-gradient(circle at 50% 43%,rgba(32,75,122,.36),transparent 34%),
+    linear-gradient(180deg,#07101f,#02060d)!important;
+  z-index:2147483600!important;
+  visibility:visible!important;
+  opacity:1!important;
+}
+html.mhurV630Booting::after,
+html.mhurV630RouteLoading::after{
+  content:"MY HERO ULTRA RUMBLE\A NEXUS"!important;
+  white-space:pre!important;
+  position:fixed!important;
+  top:50%!important;
+  left:50%!important;
+  display:block!important;
+  width:min(88vw,620px)!important;
+  transform:translate(-50%,-50%)!important;
+  color:#fff!important;
+  font:1000 clamp(24px,4.8vw,48px)/.92 Arial,Helvetica,sans-serif!important;
+  letter-spacing:.08em!important;
+  text-align:center!important;
+  text-shadow:0 4px 0 #000,0 0 24px rgba(255,225,0,.22)!important;
+  z-index:2147483601!important;
+  visibility:visible!important;
+  opacity:1!important;
+}
+html.mhurV630RouteLoading #app{
+  visibility:hidden!important;
+  opacity:0!important;
+}
+html.mhurV630Ready body{
+  animation:mhurV630Reveal .12s ease-out both!important;
+}
+@keyframes mhurV630Reveal{
+  from{opacity:.01}
+  to{opacity:1}
+}
+@media(prefers-reduced-motion:reduce){
+  html.mhurV630Ready body{animation:none!important}
+}
+</style>
+
+
+
 <meta charset="utf-8">
 <base href="/">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -883,6 +945,12 @@
 <link rel="stylesheet" href="css/v628-tier-dev-final.css?v=628">
 <!-- V629 : ouverture stable des Notes CSS. -->
 <link rel="stylesheet" href="css/v629-notes-open-stable.css?v=629">
+<!-- V630 : données images. -->
+<script defer src="data/v630-image-index.js?v=630"></script>
+<!-- V630 : rendu atomique CSS. -->
+<link rel="stylesheet" href="css/v630-atomic-render.css?v=630">
+<!-- V630 : rendu atomique JS. -->
+<script defer src="js/v630-atomic-render.js?v=630"></script>
 </head>
 <body>
 
