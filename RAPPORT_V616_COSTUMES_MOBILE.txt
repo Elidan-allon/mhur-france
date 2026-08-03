@@ -1,0 +1,1 @@
+V616 applique. Corrige le cadrage des costumes sur mobile, y compris les cartes a venir, et replace le badge supplementaire sous la date ou centre en haut.
