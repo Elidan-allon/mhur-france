@@ -1,0 +1,21 @@
+MHUR NEXUS — V625
+
+CORRECTION SOURCE, PAS POST-TRAITEMENT
+
+BUILDS COMMUNAUTAIRES
+- Les détails sont générés directement par cbBuilderPicker.
+- Description complète.
+- Tous les effets.
+- Tous les niveaux et sous-effets.
+- Plus aucun ajout qui disparaît après cbRenderBuilder.
+
+TIER LIST
+- Cible exacte : #mhurTierList .mhurTierItem.
+- NEW déplacé comme enfant direct de la carte.
+- NEW petit et animé en haut à gauche.
+- Nom et style séparés dans le flux normal.
+
+NON MODIFIÉ
+- Aller-retour fluide.
+- Costumes.
+- Autres pages.

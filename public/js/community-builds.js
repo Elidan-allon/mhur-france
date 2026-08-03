@@ -781,6 +781,69 @@ function cbBuilderOfficialSlotV308(spec){
 function cbBuilderSlot(spec){
   return cbBuilderOfficialSlotV308(spec);
 }
+/* V625 COMMUNITY TUNING DETAILS START */
+function cbV625DetailText(value){
+  const holder=document.createElement('div');
+  holder.innerHTML=cbGameText(value??'');
+  return String(holder.textContent||holder.innerText||'')
+    .replace(/\u00a0/g,' ')
+    .replace(/[ \t]+\n/g,'\n')
+    .replace(/\n[ \t]+/g,'\n')
+    .replace(/[ \t]{2,}/g,' ')
+    .replace(/\n{3,}/g,'\n\n')
+    .trim();
+}
+function cbV625LevelText(value){
+  if(value&&typeof value==='object'&&!Array.isArray(value)){
+    return Object.entries(value)
+      .map(([key,item])=>`${key} : ${item}`)
+      .join(' · ');
+  }
+  return String(value??'').trim();
+}
+function cbV625DetailsHtml(tuning){
+  const detailsLabel=cbIsEnglish()?'Full details':'Détails complets';
+  const levelsLabel=cbIsEnglish()?'Levels':'Niveaux';
+  const effects=Array.isArray(tuning?.effects)&&tuning.effects.length
+    ?tuning.effects
+    :[{
+        name:tuning?.name||'',
+        desc:tuning?.desc||'',
+        levels:Array.isArray(tuning?.levels)?tuning.levels:[]
+      }];
+
+  const content=effects.map((effect,index)=>{
+    const effectName=cbV625DetailText(effect?.name||'');
+    const description=cbV625DetailText(effect?.desc||'');
+    const levels=Array.isArray(effect?.levels)
+      ?effect.levels.map(cbV625LevelText).filter(Boolean)
+      :[];
+
+    const nameHtml=(effects.length>1||index>0)&&effectName
+      ?`<div class="cbV625EffectName">${cbEsc(effectName)}</div>`
+      :'';
+
+    const descHtml=description
+      ?`<p class="cbV625EffectDesc">${cbEsc(description).replace(/\n/g,'<br>')}</p>`
+      :'';
+
+    const levelsHtml=levels.length
+      ?`<div class="cbV625LevelsLabel">${levelsLabel}</div>
+        <div class="cbV625Levels">${levels.map(level=>{
+          const sub=/^sub\s*effect/i.test(level);
+          return `<span class="cbV625Level ${sub?'cbV625Sub':''}">${cbEsc(level)}</span>`;
+        }).join('')}</div>`
+      :'';
+
+    return `<section class="cbV625Effect">${nameHtml}${descHtml}${levelsHtml}</section>`;
+  }).join('');
+
+  return `<div class="cbV625TuningDetails">
+    <div class="cbV625DetailsTitle">${detailsLabel}</div>
+    ${content}
+  </div>`;
+}
+/* V625 COMMUNITY TUNING DETAILS END */
 function cbBuilderPicker(costume,spec){
   const used=cbUsedStyles(spec.id);
   const ownFamily=cbCharacterFamilyId(CB_STATE.draft?.characterId);
@@ -804,7 +867,7 @@ function cbBuilderPicker(costume,spec){
           const isUsed=used.has(tuning.styleKey||tuning.character);
           const nm=safeTuningName(cbTuningName(tuning));
           const fs=tuningFontSize(nm,21);
-          const ds=cbPlain(cbTuningDesc(tuning),180);
+          const ds=cbTuningDesc(tuning);
           return `<button type="button"
               class="tuningOption ${slotColorClass(tuning.slot)} ${isUsed?'alreadyUsed':''}"
               ${isUsed?'disabled':''}
@@ -819,6 +882,7 @@ function cbBuilderPicker(costume,spec){
               <div class="tuningOptionDesc">${cbEsc(ds)}</div>
             </div>
             <div class="tuningFaction">${tuning.side==='Héros'?'HÉROS':'SUPER-VILAIN'}</div>
+            ${cbV625DetailsHtml(tuning)}
           </button>`;
         }).join('')||'<div class="homeBox">Aucun T.U.N.I.N.G compatible.</div>'}
       </div>
