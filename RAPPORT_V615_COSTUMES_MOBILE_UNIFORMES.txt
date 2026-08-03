@@ -1,0 +1,13 @@
+MHUR NEXUS - RAPPORT V615.1
+UNIFORMISATION DES PHOTOS DE COSTUMES SUR MOBILE
+
+CORRECTION
+- Les photos trop grandes sont reduites et centrees.
+- Le badge NEW ne change plus la taille de la photo.
+- Le meme rendu est utilise avec ou sans NEW.
+- Le correctif ne s'applique qu'aux ecrans mobiles.
+
+FICHIERS
+- public/css/v615-mobile-costume-image-balance.css
+- public/js/v615-mobile-costume-image-balance.js
+- public/index.html

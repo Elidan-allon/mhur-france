@@ -1,0 +1,60 @@
+/* MHUR Nexus — V615
+   Uniformise les photos de costumes sur mobile, avec ou sans NEW.
+   Objectif :
+   - reduire les photos trop grosses ;
+   - les centrer proprement ;
+   - garder le meme rendu quand le badge NEW est present ;
+   - ne toucher qu'aux cartes de costumes sur mobile.
+*/
+
+@media (max-width: 760px) {
+  [data-v615-costume-card="1"]{
+    position:relative!important;
+    overflow:hidden!important;
+  }
+
+  [data-v615-costume-card="1"] [data-v615-main-img="1"]{
+    position:absolute!important;
+    left:50%!important;
+    top:43%!important;
+    transform:translate(-50%,-50%)!important;
+    width:auto!important;
+    height:auto!important;
+    max-width:78%!important;
+    max-height:60%!important;
+    object-fit:contain!important;
+    object-position:center center!important;
+    margin:0!important;
+    z-index:2!important;
+  }
+
+  [data-v615-costume-card="1"][data-v615-shape="portrait"] [data-v615-main-img="1"]{
+    max-width:74%!important;
+    max-height:62%!important;
+    top:42.5%!important;
+  }
+
+  [data-v615-costume-card="1"][data-v615-shape="square"] [data-v615-main-img="1"]{
+    max-width:76%!important;
+    max-height:61%!important;
+    top:42.8%!important;
+  }
+
+  [data-v615-costume-card="1"][data-v615-shape="wide"] [data-v615-main-img="1"]{
+    max-width:82%!important;
+    max-height:58%!important;
+    top:43.5%!important;
+  }
+
+  /*
+    Le badge NEW doit rester en haut a droite et ne plus influencer
+    la taille ou le centrage de la photo principale.
+  */
+  [data-v615-costume-card="1"] img[src*="new"],
+  [data-v615-costume-card="1"] img[class*="new"],
+  [data-v615-costume-card="1"] [class*="newBadge"],
+  [data-v615-costume-card="1"] [class*="NewBadge"],
+  [data-v615-costume-card="1"] [class*="badgeNew"]{
+    z-index:6!important;
+  }
+}
