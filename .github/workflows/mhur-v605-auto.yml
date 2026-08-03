@@ -1,0 +1,106 @@
+name: MHUR V605 - corriger alpha Midoriya
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/mhur-v605-auto.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  appliquer:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Recuperer le depot
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Installer Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Installer V605
+        shell: bash
+        run: |
+          cat > /tmp/appliquer_v605.py <<'PY'
+          from pathlib import Path
+          import re, subprocess
+
+          ROOT = Path.cwd()
+          INDEX = ROOT / "public/index.html"
+          JS = ROOT / "public/js/v605-midoriya-alpha-fix.js"
+          REPORT = ROOT / "RAPPORT_V605_MIDORIYA_ALPHA.txt"
+          JS_CONTENT = "(function () {\n  'use strict';\n  if (window.MHUR_V605_MIDORIYA_ALPHA_FIX) return;\n  window.MHUR_V605_MIDORIYA_ALPHA_FIX = true;\n\n  function clean(v){ return String(v ?? '').trim(); }\n  function normalize(v){\n    return clean(v).normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').toLowerCase()\n      .replace(/[^a-z0-9]+/g,'_').replace(/^_+|_+$/g,'');\n  }\n  function isMidoriyaText(v){\n    const n = normalize(v);\n    return n.includes('izuku_midoriya') || n.includes('midoriya') || n.includes('deku');\n  }\n  function isAlphaSkill(skill){\n    const letter = normalize(skill?.letter || skill?.slot || skill?.key || skill?.skillLetter);\n    const title = normalize(skill?.name || skill?.title || skill?.label || skill?.skillName);\n    return letter === 'a' || letter === 'alpha' || title.includes('delaware_smash') || title.includes('air_force') || title.includes('airblast');\n  }\n  function getSkillImage(skill){\n    return skill?.image || skill?.img || skill?.icon || skill?.thumbnail || skill?.src || '';\n  }\n  function sources(){\n    const out = [];\n    if (window.styles && typeof window.styles === 'object') out.push(window.styles);\n    if (window.styleData && typeof window.styleData === 'object') out.push(window.styleData);\n    if (window.characters && typeof window.characters === 'object') out.push(window.characters);\n    if (window.characterData && typeof window.characterData === 'object') out.push(window.characterData);\n    return out;\n  }\n  function styleLabel(style, id){\n    return normalize([style?.id, style?.styleId, style?.slug, style?.key, style?.name, style?.role, style?.character, style?.characterName, id].join(' '));\n  }\n  function styleId(style, id){\n    return normalize(style?.id || style?.styleId || style?.slug || style?.key || style?.name || id);\n  }\n  function buildMap(){\n    const map = new Map();\n    for (const source of sources()){\n      for (const [id, style] of Object.entries(source)){\n        const label = styleLabel(style, id);\n        if (!isMidoriyaText(label)) continue;\n        const skills = Array.isArray(style?.skills) ? style.skills : [];\n        const alpha = skills.find(isAlphaSkill);\n        const image = alpha ? getSkillImage(alpha) : '';\n        if (!image) continue;\n        const sid = styleId(style, id);\n        map.set(sid, image);\n        if (label.includes('ofa')) map.set('izuku_midoriya_ofa', image);\n        if (label.includes('full_bullet')) map.set('izuku_midoriya_full_bullet', image);\n      }\n    }\n    return map;\n  }\n  function wrong(src){\n    const n = normalize(src);\n    return n.includes('gamma') || n.includes('beta') || n.includes('special') || n.includes('action') || n.includes('_y_');\n  }\n  function hpCard(el){\n    const t = normalize(el?.textContent || '');\n    return t.includes('hp') || t.includes('pv') || t.includes('health');\n  }\n  function alphaCard(el){\n    const t = normalize(el?.textContent || '');\n    return isMidoriyaText(t) && (t.includes('delaware_smash') || t.includes('air_force') || t.includes('airblast') || t.includes('alpha') || t.includes('ammo'));\n  }\n  function keyFor(el){\n    const t = normalize(el?.textContent || '');\n    if (t.includes('full_bullet')) return 'izuku_midoriya_full_bullet';\n    return 'izuku_midoriya_ofa';\n  }\n  function patchData(map){\n    for (const source of sources()){\n      for (const [id, style] of Object.entries(source)){\n        const label = styleLabel(style, id);\n        if (!isMidoriyaText(label)) continue;\n        const image = map.get(styleId(style,id)) || map.get('izuku_midoriya_ofa') || '';\n        if (!image) continue;\n        const skills = Array.isArray(style?.skills) ? style.skills : [];\n        for (const skill of skills){\n          if (isAlphaSkill(skill) && (!getSkillImage(skill) || wrong(getSkillImage(skill)))){\n            skill.image = image;\n            if ('img' in skill) skill.img = image;\n            if ('icon' in skill) skill.icon = image;\n            if ('thumbnail' in skill) skill.thumbnail = image;\n            if ('src' in skill) skill.src = image;\n          }\n        }\n      }\n    }\n  }\n  function patchDom(map){\n    document.querySelectorAll('.skill,.gamePanel,.char-skill,.skill-card,.patch-card,.balance-card,.patchSkillCard,.noteCard').forEach(el => {\n      const img = el.querySelector('img');\n      if (!img) return;\n      if (hpCard(el)) {\n        img.style.display = 'none';\n        const frame = img.closest('.skillIcon,.skillImage,.gameImage,.patchImage,.noteImage,.skill-thumb,.thumb');\n        if (frame) frame.style.display = 'none';\n        return;\n      }\n      if (!alphaCard(el)) return;\n      const replacement = map.get(keyFor(el)) || map.get('izuku_midoriya_ofa') || '';\n      if (!replacement) return;\n      const cur = img.getAttribute('src') || '';\n      if (!cur || wrong(cur) || cur !== replacement) img.setAttribute('src', replacement);\n    });\n  }\n  function run(){\n    const map = buildMap();\n    patchData(map);\n    patchDom(map);\n  }\n  let queued = false;\n  function schedule(){\n    if (queued) return;\n    queued = true;\n    requestAnimationFrame(() => { queued = false; try { run(); } catch(e) {} });\n  }\n  const obs = new MutationObserver(ms => { if (ms.some(m => m.addedNodes && m.addedNodes.length)) schedule(); });\n  function start(){\n    run();\n    obs.observe(document.documentElement, { childList: true, subtree: true });\n  }\n  document.addEventListener('click', () => { setTimeout(schedule,0); setTimeout(schedule,120); }, true);\n  window.addEventListener('load', schedule, { once: true });\n  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start, { once: true }); else start();\n})();"
+
+          def fail(msg):
+              raise RuntimeError(msg)
+
+          def read(path):
+              if not path.is_file():
+                  fail("Fichier introuvable : " + path.as_posix())
+              return path.read_text(encoding="utf-8-sig")
+
+          def write(path, content):
+              path.parent.mkdir(parents=True, exist_ok=True)
+              path.write_text(content.rstrip() + "\n", encoding="utf-8")
+
+          def patch_index():
+              html = read(INDEX)
+              html = re.sub(r'\s*<script\b[^>]*src=["\'][^"\']*v605-midoriya-alpha-fix[^"\']*["\'][^>]*>\s*</script>\s*', "\n", html, flags=re.I)
+              if "</body>" not in html:
+                  fail("Balise </body> introuvable.")
+              html = html.replace("</body>", '\n<script src="js/v605-midoriya-alpha-fix.js?v=605"></script>\n</body>', 1)
+              write(INDEX, html)
+
+          def verify():
+              html = read(INDEX)
+              js = read(JS)
+              errors = []
+              if 'js/v605-midoriya-alpha-fix.js?v=605' not in html:
+                  errors.append("Script V605 non charge.")
+              if "buildMap" not in js:
+                  errors.append("buildMap absent.")
+              syntax = subprocess.run(["node", "--check", str(JS)], text=True, capture_output=True)
+              if syntax.returncode:
+                  errors.append("Syntaxe JavaScript invalide : " + syntax.stderr)
+              if errors:
+                  fail("Verification V605 echouee :\n- " + "\n- ".join(errors))
+
+          def main():
+              write(JS, JS_CONTENT)
+              patch_index()
+              verify()
+              write(REPORT, "\n".join([
+                  "MHUR FRANCE — RAPPORT V605",
+                  "",
+                  "- Corrige les images alpha de tous les Midoriya.",
+                  "- Cache l'image de competence sur les cartes HP/PV/Health.",
+                  "- Reinjecte l'image alpha locale dans les panneaux et patch notes."
+              ]))
+              print("[OK] V605 applique et verifie.")
+
+          if __name__ == "__main__":
+              main()
+          PY
+          python3 /tmp/appliquer_v605.py
+
+      - name: Commit automatique
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/index.html public/js/v605-midoriya-alpha-fix.js RAPPORT_V605_MIDORIYA_ALPHA.txt
+          if git diff --cached --quiet; then
+            echo "V605 deja installe."
+            exit 0
+          fi
+          git commit -m "Corriger alpha Midoriya V605"
+          git push
