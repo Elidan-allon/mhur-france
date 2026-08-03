@@ -1,0 +1,11 @@
+MHUR NEXUS — V620
+
+CORRECTION UNIQUE
+- Emplacement T.U.N.I.N.G -> descente vers la liste compatible.
+- T.U.N.I.N.G sélectionné -> remontée vers l'emplacement actif.
+
+AUCUN AUTRE CHANGEMENT
+- Aucun CSS ajouté.
+- Aucune carte modifiée.
+- Aucun détail, niveau, costume ou donnée modifié.
+- Aucun changement sur ordinateur.
