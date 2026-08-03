@@ -1,0 +1,342 @@
+name: MHUR V607 - images Patch Notes source
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/mhur-v607-auto.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: mhur-v607-patch-images-source
+  cancel-in-progress: false
+
+jobs:
+  appliquer:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Recuperer le depot
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Installer Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Installer V607
+        shell: bash
+        run: |
+          cat > /tmp/appliquer_v607.py <<'PY'
+          from pathlib import Path
+          import re
+          import subprocess
+
+          ROOT=Path.cwd()
+          INDEX=ROOT/"public/index.html"
+          FIXES=ROOT/"public/js/season18-fixes.js"
+          CSS=ROOT/"public/css/v607-patch-images-source.css"
+          REPORT=ROOT/"RAPPORT_V607_PATCH_IMAGES_SOURCE.txt"
+
+          STYLE_BLOCK="function isHealthPatchV607(change){\n  const value=NORM(\n    `${change?.skill_name||''} ${change?.label||''}`\n  );\n\n  return (\n    value==='hp'||\n    value==='pv'||\n    value==='health'||\n    value==='maximum_hp'||\n    value==='maximum_main_health'\n  );\n}\n\nfunction patchSkillKeyV607(change){\n  if(isHealthPatchV607(change))return '';\n\n  const raw=String(\n    change?.skill_name||\n    change?.label||\n    ''\n  ).trim();\n\n  if(/^(?:α|a|alpha)(?:\\s|[-—:(]|$)/i.test(raw)){\n    return 'alpha';\n  }\n\n  if(/^(?:β|b|beta)(?:\\s|[-—:(]|$)/i.test(raw)){\n    return 'beta';\n  }\n\n  if(/^(?:γ|g|y|gamma)(?:\\s|[-—:(]|$)/i.test(raw)){\n    return 'gamma';\n  }\n\n  if(\n    /^(?:sp|special|special action|action spéciale)(?:\\s|[-—:(]|$)/i\n      .test(raw)\n  ){\n    return 'special';\n  }\n\n  const value=NORM(raw);\n\n  if(\n    value.includes('delaware_smash_air_force')||\n    value.includes('delaware_smash_full_bullet')||\n    value.includes('delaware_smash_airblast')||\n    value.includes('air_force')||\n    value.includes('full_bullet')||\n    value.includes('airblast')\n  ){\n    return 'alpha';\n  }\n\n  return '';\n}\n\nfunction styleForChange(change){\n  const ch=characterBy(change?.character||'');\n\n  if(!ch)return {ch:null,id:'',st:null};\n\n  const ids=styleIds(ch);\n  const raw=NORM(\n    change?.skill_name||\n    change?.label||\n    ''\n  );\n\n  /*\n    Les deux styles d'Izuku Midoriya s'appellent \"Original\".\n    Il faut donc choisir le style grâce au nom de l'Alter avant\n    de regarder le nom du style.\n  */\n  if(NORM(ch?.id)==='midoriya'){\n    if(\n      raw.includes('delaware_smash_full_bullet')||\n      raw.includes('full_bullet')\n    ){\n      if(ids.includes('fullbullet')){\n        return {\n          ch,\n          id:'fullbullet',\n          st:styles.fullbullet\n        };\n      }\n    }\n\n    if(\n      raw.includes('delaware_smash_air_force')||\n      raw.includes('air_force')\n    ){\n      if(ids.includes('assault')){\n        return {\n          ch,\n          id:'assault',\n          st:styles.assault\n        };\n      }\n    }\n  }\n\n  if(NORM(ch?.id)==='midoriya_ofa'&&ids.includes('ofa')){\n    return {\n      ch,\n      id:'ofa',\n      st:styles.ofa\n    };\n  }\n\n  /*\n    Priorité au vrai nom de l'Alter.\n    Cela évite qu'un style \"Original\" soit choisi trop tôt.\n  */\n  const exactSkillId=ids.find(id=>{\n    const st=styles[id];\n    const skills=[\n      ...(st?.skills||[]),\n      st?.special\n        ?{...st.special,letter:'SP'}\n        :null\n    ].filter(Boolean);\n\n    return skills.some(skill=>{\n      const name=NORM(skill?.name);\n\n      return (\n        name&&\n        (\n          raw===name||\n          raw.includes(name)||\n          name.includes(raw)\n        )\n      );\n    });\n  });\n\n  if(exactSkillId){\n    return {\n      ch,\n      id:exactSkillId,\n      st:styles[exactSkillId]\n    };\n  }\n\n  const wanted=NORM(change?.style||'Original');\n\n  let id=ids.find(styleId=>\n    NORM(styles[styleId]?.name||'Original')===wanted\n  )||'';\n\n  if(!id){\n    const key=patchSkillKeyV607(change);\n\n    id=ids.find(styleId=>{\n      const st=styles[styleId];\n      const skills=[\n        ...(st?.skills||[]),\n        st?.special\n          ?{...st.special,letter:'SP'}\n          :null\n      ].filter(Boolean);\n\n      return skills.some(skill=>{\n        const letter=String(skill?.letter||'').trim();\n\n        if(key==='alpha'){\n          return /^(?:α|a|alpha)$/i.test(letter);\n        }\n\n        if(key==='beta'){\n          return /^(?:β|b|beta)$/i.test(letter);\n        }\n\n        if(key==='gamma'){\n          return /^(?:γ|g|y|gamma)$/i.test(letter);\n        }\n\n        if(key==='special'){\n          return /^(?:sp|special)$/i.test(letter);\n        }\n\n        return false;\n      });\n    })||'';\n  }\n\n  if(!id)id=ids[0]||'';\n\n  return {\n    ch,\n    id,\n    st:styles[id]||null\n  };\n}"
+          SKILL_BLOCK="function skillForChange(st,change){\n  if(!st||isHealthPatchV607(change))return null;\n\n  const raw=NORM(\n    change?.skill_name||\n    change?.label||\n    ''\n  );\n\n  const all=[\n    ...(st?.skills||[]),\n    st?.special\n      ?{...st.special,letter:'SP'}\n      :null\n  ].filter(Boolean);\n\n  /*\n    Le nom exact passe avant Alpha/Bêta/Gamma.\n  */\n  const exact=all\n    .map(skill=>{\n      const name=NORM(skill?.name);\n      let score=0;\n\n      if(name&&raw===name){\n        score=3000;\n      }else if(name&&raw.includes(name)){\n        score=2000+name.length;\n      }else if(name&&name.includes(raw)){\n        score=1500+raw.length;\n      }\n\n      return {skill,score};\n    })\n    .sort((a,b)=>b.score-a.score)\n    .find(row=>row.score>0)\n    ?.skill;\n\n  if(exact)return exact;\n\n  const key=patchSkillKeyV607(change);\n\n  if(!key)return null;\n\n  return all.find(skill=>{\n    const letter=String(skill?.letter||'').trim();\n\n    if(key==='alpha'){\n      return /^(?:α|a|alpha)$/i.test(letter);\n    }\n\n    if(key==='beta'){\n      return /^(?:β|b|beta)$/i.test(letter);\n    }\n\n    if(key==='gamma'){\n      return /^(?:γ|g|y|gamma)$/i.test(letter);\n    }\n\n    if(key==='special'){\n      return /^(?:sp|special)$/i.test(letter);\n    }\n\n    return false;\n  })||null;\n}"
+          GROUP_BLOCK="function patchAssetV607(src,alt=''){\n  if(!src)return '';\n\n  const path=typeof rootAsset==='function'\n    ?rootAsset(src)\n    :String(src||'');\n\n  return `<img\n    src=\"${ESC(path)}\"\n    alt=\"${ESC(alt)}\"\n    loading=\"eager\"\n    decoding=\"async\"\n    fetchpriority=\"high\"\n  >`;\n}\n\nfunction groupHtml(group,sectionTitle){\n  const role=ROLE(group.st?.role||'technical');\n  const side=group.ch?.side||'hero';\n\n  return `<article\n    class=\"s18PatchCharacterV10 role-${role}\"\n    data-patch-style-id=\"${ESC(group.id||'')}\"\n  >\n    <header>\n      <div class=\"s18PatchPortraitV10\">\n        ${\n          group.st?.portrait\n            ?patchAssetV607(\n              group.st.portrait,\n              group.character\n            )\n            :''\n        }\n      </div>\n\n      <div>\n        <h4>${ESC(group.character)}</h4>\n        <strong>${ESC(group.style)}</strong>\n\n        <div class=\"s18PatchBadgesV10\">\n          <span class=\"badge ${\n            side==='villain'?'villain':'hero'\n          }\">\n            ${ESC(SIDE_TEXT(side))}\n          </span>\n\n          <span class=\"badge ${role}\">\n            ${ESC(ROLE_TEXT(role))}\n          </span>\n        </div>\n      </div>\n    </header>\n\n    <div class=\"s18PatchChangesV10\">\n      ${group.changes.map(change=>{\n        const tone=toneFor(change,sectionTitle);\n        const health=isHealthPatchV607(change);\n        const skill=health\n          ?null\n          :skillForChange(group.st,change);\n\n        const title=translatePatch(\n          CLEAN(\n            skill?.name||\n            change?.skill_name||\n            change?.label||\n            TX('Ajustement','Adjustment')\n          )\n        );\n\n        /*\n          Une modification de PV ne doit jamais avoir une photo.\n          Pour un Alter, la photo locale du style exact est prioritaire.\n        */\n        const picture=health\n          ?''\n          :(skill?.img||change?.skill_image||'');\n\n        const bullets=(change?.bullets||[])\n          .map(translatePatch)\n          .filter(Boolean);\n\n        return `<section\n          class=\"s18PatchChangeV10 ${tone}\"\n          data-patch-style-id=\"${ESC(group.id||'')}\"\n        >\n          <span class=\"s18ToneV10 ${tone}\">\n            ${\n              tone==='buff'\n                ?'BUFF'\n                :tone==='nerf'\n                  ?'NERF'\n                  :TX('NEUTRE','NEUTRAL')\n            }\n          </span>\n\n          <div class=\"s18PatchSkillV10${\n            picture?'':' s18NoSkillImageV607'\n          }\">\n            ${\n              picture\n                ?`<div>${\n                  patchAssetV607(picture,title)\n                }</div>`\n                :''\n            }\n\n            <main>\n              <h5>${ESC(title)}</h5>\n\n              ${\n                change?.label\n                  ?`<p class=\"s18PatchLabelV10\">${\n                    ESC(translatePatch(change.label))\n                  }</p>`\n                  :''\n              }\n\n              ${valuesHtml(change,tone)}\n\n              ${\n                bullets.length\n                  ?`<ul>${\n                    bullets.map(\n                      bullet=>`<li>${ESC(bullet)}</li>`\n                    ).join('')\n                  }</ul>`\n                  :''\n              }\n            </main>\n          </div>\n        </section>`;\n      }).join('')}\n    </div>\n  </article>`;\n}"
+          CSS_CONTENT="/* MHUR Nexus — V607 : rendu immédiat des Patch Notes */\n\n#s18NotesDevModalV10\n.s18PatchSkillV10.s18NoSkillImageV607,\n.s18PatchSkillV10.s18NoSkillImageV607{\n  display:block!important;\n  width:100%!important;\n  min-width:0!important;\n}\n\n#s18NotesDevModalV10\n.s18PatchSkillV10.s18NoSkillImageV607 > main,\n.s18PatchSkillV10.s18NoSkillImageV607 > main{\n  display:block!important;\n  width:100%!important;\n  max-width:none!important;\n  grid-column:1 / -1!important;\n}\n\n#s18NotesDevModalV10\n.s18PatchSkillV10 > div img,\n#s18NotesDevModalV10\n.s18PatchPortraitV10 img{\n  display:block!important;\n  width:100%!important;\n  height:100%!important;\n  object-fit:contain!important;\n}"
+
+          def fail(message):
+              raise RuntimeError(message)
+
+          def read(path):
+              if not path.is_file():
+                  fail("Fichier introuvable : "+path.as_posix())
+
+              return path.read_text(encoding="utf-8-sig")
+
+          def write(path,content):
+              path.parent.mkdir(parents=True,exist_ok=True)
+              path.write_text(content.rstrip()+"\n",encoding="utf-8")
+
+          def replace_between(source,start_marker,end_marker,replacement):
+              start=source.find(start_marker)
+
+              if start<0:
+                  fail(
+                      "Début introuvable : "
+                      +start_marker
+                  )
+
+              end=source.find(end_marker,start+len(start_marker))
+
+              if end<0:
+                  fail(
+                      "Fin introuvable : "
+                      +end_marker
+                  )
+
+              return (
+                  source[:start]
+                  +replacement.rstrip()
+                  +"\n"
+                  +source[end:]
+              )
+
+          def patch_source():
+              source=read(FIXES)
+
+              source=replace_between(
+                  source,
+                  "function styleForChange(change){",
+                  "function skillForChange(st,change){",
+                  STYLE_BLOCK,
+              )
+
+              source=replace_between(
+                  source,
+                  "function skillForChange(st,change){",
+                  "function average(values){",
+                  SKILL_BLOCK,
+              )
+
+              source=replace_between(
+                  source,
+                  "function groupHtml(group,sectionTitle){",
+                  "function patchDetailHtml(note){",
+                  GROUP_BLOCK,
+              )
+
+              write(FIXES,source)
+
+          def strip_old_overrides(html):
+              names=[
+                  "v598-patch-images-exactes",
+                  "v598b-patch-images-exactes",
+                  "v602-patch-images-fix",
+                  "v605-midoriya-alpha-fix",
+                  "v606-midoriya-alpha-final",
+                  "v606b-midoriya-alpha-fix"
+              ]
+
+              for name in names:
+                  html=re.sub(
+                      r"\s*<script\b[^>]*src=['\"][^'\"]*"
+                      +re.escape(name)+
+                      r"[^'\"]*['\"][^>]*>\s*</script>\s*",
+                      "\n",
+                      html,
+                      flags=re.I,
+                  )
+
+                  html=re.sub(
+                      r"\s*<link\b[^>]*href=['\"][^'\"]*"
+                      +re.escape(name)+
+                      r"[^'\"]*['\"][^>]*>\s*",
+                      "\n",
+                      html,
+                      flags=re.I,
+                  )
+
+              html=re.sub(
+                  r"\s*<link\b[^>]*href=['\"][^'\"]*"
+                  r"v607-patch-images-source\.css"
+                  r"[^'\"]*['\"][^>]*>\s*",
+                  "\n",
+                  html,
+                  flags=re.I,
+              )
+
+              return html
+
+          def patch_index():
+              html=strip_old_overrides(read(INDEX))
+
+              html=re.sub(
+                  r"(['\"])js/season18-fixes\.js"
+                  r"(?:\?[^'\"]*)?\1",
+                  '"js/season18-fixes.js?v=607"',
+                  html,
+                  flags=re.I,
+              )
+
+              preloads=[
+                  "assets/midoriya/midoriya_assault/alpha.webp",
+                  "assets/midoriya/midoriya_attack/alpha.webp",
+                  "assets/midoriya_ofa/alpha.webp",
+              ]
+
+              for path in preloads:
+                  html=re.sub(
+                      r"\s*<link\b[^>]*rel=['\"]preload['\"]"
+                      r"[^>]*href=['\"]/?"
+                      +re.escape(path)+
+                      r"[^'\"]*['\"][^>]*>\s*",
+                      "\n",
+                      html,
+                      flags=re.I,
+                  )
+
+              if "</head>" not in html:
+                  fail("Balise </head> introuvable.")
+
+              additions="\n".join(
+                  [
+                      '<link rel="preload" as="image" href="/'
+                      +path+
+                      '" fetchpriority="high">'
+                      for path in preloads
+                  ]
+              )
+
+              additions+=(
+                  '\n<link rel="stylesheet" '
+                  'href="css/v607-patch-images-source.css?v=607">'
+              )
+
+              html=html.replace(
+                  "</head>",
+                  "\n"+additions+"\n</head>",
+                  1,
+              )
+
+              write(INDEX,html)
+
+          def verify():
+              errors=[]
+              source=read(FIXES)
+              html=read(INDEX)
+              stylesheet=read(CSS)
+
+              for required in (
+                  "function isHealthPatchV607",
+                  "function patchSkillKeyV607",
+                  "function patchAssetV607",
+                  "raw.includes('delaware_smash_full_bullet')",
+                  "raw.includes('delaware_smash_air_force')",
+                  "loading=\"eager\"",
+                  "fetchpriority=\"high\"",
+                  "s18NoSkillImageV607",
+              ):
+                  if required not in source:
+                      errors.append(
+                          "Correctif source absent : "
+                          +required
+                      )
+
+              for required in (
+                  "js/season18-fixes.js?v=607",
+                  "css/v607-patch-images-source.css?v=607",
+                  "assets/midoriya/midoriya_assault/alpha.webp",
+                  "assets/midoriya/midoriya_attack/alpha.webp",
+                  "assets/midoriya_ofa/alpha.webp",
+              ):
+                  if required not in html:
+                      errors.append(
+                          "Référence index absente : "
+                          +required
+                      )
+
+              for old in (
+                  "v605-midoriya-alpha-fix.js",
+                  "v606-midoriya-alpha-final.js",
+                  "v606b-midoriya-alpha-fix.js",
+              ):
+                  if old in html:
+                      errors.append(
+                          "Ancien correctif encore chargé : "
+                          +old
+                      )
+
+              if "s18NoSkillImageV607" not in stylesheet:
+                  errors.append(
+                      "Mise en page sans image absente."
+                  )
+
+              syntax=subprocess.run(
+                  ["node","--check",str(FIXES)],
+                  text=True,
+                  capture_output=True,
+              )
+
+              if syntax.returncode:
+                  errors.append(
+                      "Syntaxe season18-fixes.js invalide : "
+                      +syntax.stderr
+                  )
+
+              if errors:
+                  fail(
+                      "Vérification V607 échouée :\n- "
+                      +"\n- ".join(errors)
+                  )
+
+          def main():
+              for path in (INDEX,FIXES):
+                  if not path.is_file():
+                      fail(
+                          "Fichier requis absent : "
+                          +path.as_posix()
+                      )
+
+              patch_source()
+              write(CSS,CSS_CONTENT)
+              patch_index()
+              verify()
+
+              report=[
+                  "MHUR FRANCE — RAPPORT V607",
+                  "",
+                  "CAUSE",
+                  "- Les anciens correctifs changeaient src après le rendu.",
+                  "- Les images apparaissaient donc en retard.",
+                  "- Les styles Assault et Full Bullet portent tous les deux le nom Original.",
+                  "- Le moteur choisissait parfois le premier style au lieu du bon Alter.",
+                  "",
+                  "CORRECTION SOURCE",
+                  "- Choix du style grâce au vrai nom de l'Alter avant le nom Original.",
+                  "- Air Force sélectionne Assault.",
+                  "- Full Bullet sélectionne Full Bullet.",
+                  "- Airblast sélectionne OFA.",
+                  "- HP/PV/Health n'affiche aucune image.",
+                  "",
+                  "VITESSE",
+                  "- Image correcte présente dès le premier HTML.",
+                  "- loading=eager.",
+                  "- fetchpriority=high.",
+                  "- préchargement des trois Alpha Midoriya.",
+                  "- suppression des anciens scripts qui remplaçaient les images après coup.",
+                  "- aucun MutationObserver ajouté.",
+              ]
+
+              write(REPORT,"\n".join(report))
+
+              print("[OK] V607 appliqué et vérifié.")
+              print("[OK] Les images sont correctes dès le premier rendu.")
+              print("[OK] Aucun script de remplacement tardif n'est ajouté.")
+
+          if __name__=="__main__":
+              main()
+          PY
+
+          python3 /tmp/appliquer_v607.py
+
+      - name: Commit automatique
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add             public/index.html             public/js/season18-fixes.js             public/css/v607-patch-images-source.css             RAPPORT_V607_PATCH_IMAGES_SOURCE.txt
+
+          if git diff --cached --quiet; then
+            echo "V607 est deja installe."
+            exit 0
+          fi
+
+          git commit -m "Corriger les images Patch Notes à la source V607"
+          git push
