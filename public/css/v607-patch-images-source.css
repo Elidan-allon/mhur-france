@@ -1,0 +1,28 @@
+/* MHUR Nexus — V607 : rendu immédiat des Patch Notes */
+
+#s18NotesDevModalV10
+.s18PatchSkillV10.s18NoSkillImageV607,
+.s18PatchSkillV10.s18NoSkillImageV607{
+  display:block!important;
+  width:100%!important;
+  min-width:0!important;
+}
+
+#s18NotesDevModalV10
+.s18PatchSkillV10.s18NoSkillImageV607 > main,
+.s18PatchSkillV10.s18NoSkillImageV607 > main{
+  display:block!important;
+  width:100%!important;
+  max-width:none!important;
+  grid-column:1 / -1!important;
+}
+
+#s18NotesDevModalV10
+.s18PatchSkillV10 > div img,
+#s18NotesDevModalV10
+.s18PatchPortraitV10 img{
+  display:block!important;
+  width:100%!important;
+  height:100%!important;
+  object-fit:contain!important;
+}

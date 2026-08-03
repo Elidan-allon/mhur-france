@@ -1,0 +1,22 @@
+MHUR FRANCE — RAPPORT V607
+
+CAUSE
+- Les anciens correctifs changeaient src après le rendu.
+- Les images apparaissaient donc en retard.
+- Les styles Assault et Full Bullet portent tous les deux le nom Original.
+- Le moteur choisissait parfois le premier style au lieu du bon Alter.
+
+CORRECTION SOURCE
+- Choix du style grâce au vrai nom de l'Alter avant le nom Original.
+- Air Force sélectionne Assault.
+- Full Bullet sélectionne Full Bullet.
+- Airblast sélectionne OFA.
+- HP/PV/Health n'affiche aucune image.
+
+VITESSE
+- Image correcte présente dès le premier HTML.
+- loading=eager.
+- fetchpriority=high.
+- préchargement des trois Alpha Midoriya.
+- suppression des anciens scripts qui remplaçaient les images après coup.
+- aucun MutationObserver ajouté.

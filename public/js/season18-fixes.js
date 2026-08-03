@@ -467,21 +467,267 @@ function translatePatch(v){
   ];
   replacements.forEach(([a,b])=>{out=out.replace(a,b)});return out;
 }
-function styleForChange(change){
-  const ch=characterBy(change?.character||'');if(!ch)return {ch:null,id:'',st:null};
-  const ids=styleIds(ch);const wanted=NORM(change?.style||'Original');
-  let id=ids.find(x=>NORM(styles[x]?.name||'Original')===wanted)||'';
-  if(!id){
-    const skill=NORM(change?.skill_name||change?.label||'');
-    id=ids.find(x=>[{...(styles[x]?.special||{}),letter:'SP'},...(styles[x]?.skills||[])].some(s=>{const n=NORM(s?.name),l=NORM(s?.letter);return (n&&skill.includes(n))||(l&&skill.startsWith(l))}))||'';
+function isHealthPatchV607(change){
+  const value=NORM(
+    `${change?.skill_name||''} ${change?.label||''}`
+  );
+
+  return (
+    value==='hp'||
+    value==='pv'||
+    value==='health'||
+    value==='maximum_hp'||
+    value==='maximum_main_health'
+  );
+}
+
+function patchSkillKeyV607(change){
+  if(isHealthPatchV607(change))return '';
+
+  const raw=String(
+    change?.skill_name||
+    change?.label||
+    ''
+  ).trim();
+
+  if(/^(?:α|a|alpha)(?:\s|[-—:(]|$)/i.test(raw)){
+    return 'alpha';
   }
+
+  if(/^(?:β|b|beta)(?:\s|[-—:(]|$)/i.test(raw)){
+    return 'beta';
+  }
+
+  if(/^(?:γ|g|y|gamma)(?:\s|[-—:(]|$)/i.test(raw)){
+    return 'gamma';
+  }
+
+  if(
+    /^(?:sp|special|special action|action spéciale)(?:\s|[-—:(]|$)/i
+      .test(raw)
+  ){
+    return 'special';
+  }
+
+  const value=NORM(raw);
+
+  if(
+    value.includes('delaware_smash_air_force')||
+    value.includes('delaware_smash_full_bullet')||
+    value.includes('delaware_smash_airblast')||
+    value.includes('air_force')||
+    value.includes('full_bullet')||
+    value.includes('airblast')
+  ){
+    return 'alpha';
+  }
+
+  return '';
+}
+
+function styleForChange(change){
+  const ch=characterBy(change?.character||'');
+
+  if(!ch)return {ch:null,id:'',st:null};
+
+  const ids=styleIds(ch);
+  const raw=NORM(
+    change?.skill_name||
+    change?.label||
+    ''
+  );
+
+  /*
+    Les deux styles d'Izuku Midoriya s'appellent "Original".
+    Il faut donc choisir le style grâce au nom de l'Alter avant
+    de regarder le nom du style.
+  */
+  if(NORM(ch?.id)==='midoriya'){
+    if(
+      raw.includes('delaware_smash_full_bullet')||
+      raw.includes('full_bullet')
+    ){
+      if(ids.includes('fullbullet')){
+        return {
+          ch,
+          id:'fullbullet',
+          st:styles.fullbullet
+        };
+      }
+    }
+
+    if(
+      raw.includes('delaware_smash_air_force')||
+      raw.includes('air_force')
+    ){
+      if(ids.includes('assault')){
+        return {
+          ch,
+          id:'assault',
+          st:styles.assault
+        };
+      }
+    }
+  }
+
+  if(NORM(ch?.id)==='midoriya_ofa'&&ids.includes('ofa')){
+    return {
+      ch,
+      id:'ofa',
+      st:styles.ofa
+    };
+  }
+
+  /*
+    Priorité au vrai nom de l'Alter.
+    Cela évite qu'un style "Original" soit choisi trop tôt.
+  */
+  const exactSkillId=ids.find(id=>{
+    const st=styles[id];
+    const skills=[
+      ...(st?.skills||[]),
+      st?.special
+        ?{...st.special,letter:'SP'}
+        :null
+    ].filter(Boolean);
+
+    return skills.some(skill=>{
+      const name=NORM(skill?.name);
+
+      return (
+        name&&
+        (
+          raw===name||
+          raw.includes(name)||
+          name.includes(raw)
+        )
+      );
+    });
+  });
+
+  if(exactSkillId){
+    return {
+      ch,
+      id:exactSkillId,
+      st:styles[exactSkillId]
+    };
+  }
+
+  const wanted=NORM(change?.style||'Original');
+
+  let id=ids.find(styleId=>
+    NORM(styles[styleId]?.name||'Original')===wanted
+  )||'';
+
+  if(!id){
+    const key=patchSkillKeyV607(change);
+
+    id=ids.find(styleId=>{
+      const st=styles[styleId];
+      const skills=[
+        ...(st?.skills||[]),
+        st?.special
+          ?{...st.special,letter:'SP'}
+          :null
+      ].filter(Boolean);
+
+      return skills.some(skill=>{
+        const letter=String(skill?.letter||'').trim();
+
+        if(key==='alpha'){
+          return /^(?:α|a|alpha)$/i.test(letter);
+        }
+
+        if(key==='beta'){
+          return /^(?:β|b|beta)$/i.test(letter);
+        }
+
+        if(key==='gamma'){
+          return /^(?:γ|g|y|gamma)$/i.test(letter);
+        }
+
+        if(key==='special'){
+          return /^(?:sp|special)$/i.test(letter);
+        }
+
+        return false;
+      });
+    })||'';
+  }
+
   if(!id)id=ids[0]||'';
-  return {ch,id,st:styles[id]||null};
+
+  return {
+    ch,
+    id,
+    st:styles[id]||null
+  };
 }
 function skillForChange(st,change){
-  if(!st)return null;const raw=NORM(change?.skill_name||change?.label||'');
-  const all=[{...(st.special||{}),letter:'SP'},...(st.skills||[])];
-  return all.find(s=>{const n=NORM(s?.name),l=NORM(s?.letter);return (n&&raw.includes(n))||(l&&raw.startsWith(l))})||null;
+  if(!st||isHealthPatchV607(change))return null;
+
+  const raw=NORM(
+    change?.skill_name||
+    change?.label||
+    ''
+  );
+
+  const all=[
+    ...(st?.skills||[]),
+    st?.special
+      ?{...st.special,letter:'SP'}
+      :null
+  ].filter(Boolean);
+
+  /*
+    Le nom exact passe avant Alpha/Bêta/Gamma.
+  */
+  const exact=all
+    .map(skill=>{
+      const name=NORM(skill?.name);
+      let score=0;
+
+      if(name&&raw===name){
+        score=3000;
+      }else if(name&&raw.includes(name)){
+        score=2000+name.length;
+      }else if(name&&name.includes(raw)){
+        score=1500+raw.length;
+      }
+
+      return {skill,score};
+    })
+    .sort((a,b)=>b.score-a.score)
+    .find(row=>row.score>0)
+    ?.skill;
+
+  if(exact)return exact;
+
+  const key=patchSkillKeyV607(change);
+
+  if(!key)return null;
+
+  return all.find(skill=>{
+    const letter=String(skill?.letter||'').trim();
+
+    if(key==='alpha'){
+      return /^(?:α|a|alpha)$/i.test(letter);
+    }
+
+    if(key==='beta'){
+      return /^(?:β|b|beta)$/i.test(letter);
+    }
+
+    if(key==='gamma'){
+      return /^(?:γ|g|y|gamma)$/i.test(letter);
+    }
+
+    if(key==='special'){
+      return /^(?:sp|special)$/i.test(letter);
+    }
+
+    return false;
+  })||null;
 }
 function average(values){const n=(Array.isArray(values)?values:[values]).map(v=>parseFloat(String(v).replace(',','.'))).filter(Number.isFinite);return n.length?n.reduce((a,b)=>a+b,0)/n.length:null}
 
@@ -601,25 +847,53 @@ function groupsForSection(section){
   });return groups;
 }
 
+function patchAssetV607(src,alt=''){
+  if(!src)return '';
+
+  const path=typeof rootAsset==='function'
+    ?rootAsset(src)
+    :String(src||'');
+
+  return `<img
+    src="${ESC(path)}"
+    alt="${ESC(alt)}"
+    loading="eager"
+    decoding="async"
+    fetchpriority="high"
+  >`;
+}
+
 function groupHtml(group,sectionTitle){
   const role=ROLE(group.st?.role||'technical');
   const side=group.ch?.side||'hero';
 
-  return `<article class="s18PatchCharacterV10 role-${role}">
+  return `<article
+    class="s18PatchCharacterV10 role-${role}"
+    data-patch-style-id="${ESC(group.id||'')}"
+  >
     <header>
       <div class="s18PatchPortraitV10">
-        ${group.st?.portrait&&typeof asset==='function'
-          ?asset(group.st.portrait,group.character)
-          :''
+        ${
+          group.st?.portrait
+            ?patchAssetV607(
+              group.st.portrait,
+              group.character
+            )
+            :''
         }
       </div>
+
       <div>
         <h4>${ESC(group.character)}</h4>
         <strong>${ESC(group.style)}</strong>
+
         <div class="s18PatchBadgesV10">
-          <span class="badge ${side==='villain'?'villain':'hero'}">
+          <span class="badge ${
+            side==='villain'?'villain':'hero'
+          }">
             ${ESC(SIDE_TEXT(side))}
           </span>
+
           <span class="badge ${role}">
             ${ESC(ROLE_TEXT(role))}
           </span>
@@ -629,40 +903,79 @@ function groupHtml(group,sectionTitle){
 
     <div class="s18PatchChangesV10">
       ${group.changes.map(change=>{
-        const tone=changeToneV593(change,sectionTitle);
-        const skill=skillForChange(group.st,change);
+        const tone=toneFor(change,sectionTitle);
+        const health=isHealthPatchV607(change);
+        const skill=health
+          ?null
+          :skillForChange(group.st,change);
 
-        /*
-          Le nom officiel vient directement de la fiche Personnage.
-          Aucune traduction manuelle ne peut le remplacer.
-        */
-        const title=CLEAN(
-          skill?.name||
-          change?.skill_name||
-          change?.label||
-          TX('Ajustement','Adjustment')
+        const title=translatePatch(
+          CLEAN(
+            skill?.name||
+            change?.skill_name||
+            change?.label||
+            TX('Ajustement','Adjustment')
+          )
         );
 
-        const variant=CLEAN(change?.variant||'');
-        const picture=skill?.img||change?.skill_image||'';
-        const bullets=(change?.bullets||[]).map(value=>CLEAN(value)).filter(Boolean);
+        /*
+          Une modification de PV ne doit jamais avoir une photo.
+          Pour un Alter, la photo locale du style exact est prioritaire.
+        */
+        const picture=health
+          ?''
+          :(skill?.img||change?.skill_image||'');
 
-        return `<section class="s18PatchChangeV10 ${tone}">
-          <span class="s18ToneV10 ${tone}">${toneLabelV593(tone)}</span>
+        const bullets=(change?.bullets||[])
+          .map(translatePatch)
+          .filter(Boolean);
 
-          <div class="s18PatchSkillV10">
-            ${picture&&typeof asset==='function'
-              ?`<div>${asset(picture,title)}</div>`
-              :''
+        return `<section
+          class="s18PatchChangeV10 ${tone}"
+          data-patch-style-id="${ESC(group.id||'')}"
+        >
+          <span class="s18ToneV10 ${tone}">
+            ${
+              tone==='buff'
+                ?'BUFF'
+                :tone==='nerf'
+                  ?'NERF'
+                  :TX('NEUTRE','NEUTRAL')
+            }
+          </span>
+
+          <div class="s18PatchSkillV10${
+            picture?'':' s18NoSkillImageV607'
+          }">
+            ${
+              picture
+                ?`<div>${
+                  patchAssetV607(picture,title)
+                }</div>`
+                :''
             }
 
             <main>
               <h5>${ESC(title)}</h5>
-              ${variant?`<p class="s18PatchVariantV593">${ESC(variant)}</p>`:''}
-              ${valuesHtml(change,tone,sectionTitle)}
-              ${bullets.length
-                ?`<ul>${bullets.map(item=>`<li>${ESC(item)}</li>`).join('')}</ul>`
-                :''
+
+              ${
+                change?.label
+                  ?`<p class="s18PatchLabelV10">${
+                    ESC(translatePatch(change.label))
+                  }</p>`
+                  :''
+              }
+
+              ${valuesHtml(change,tone)}
+
+              ${
+                bullets.length
+                  ?`<ul>${
+                    bullets.map(
+                      bullet=>`<li>${ESC(bullet)}</li>`
+                    ).join('')
+                  }</ul>`
+                  :''
               }
             </main>
           </div>
@@ -671,7 +984,6 @@ function groupHtml(group,sectionTitle){
     </div>
   </article>`;
 }
-
 function patchDetailHtml(note){
   const sections=Array.isArray(note?.details)?note.details:[];
 
