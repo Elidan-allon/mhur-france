@@ -1,0 +1,50 @@
+/* MHUR Nexus — V618
+   Cadrage réel des personnages dans les cartes de costumes sur mobile.
+   Le JavaScript calcule la zone non transparente de chaque PNG. */
+@media (max-width:760px){
+  html body #app .costumeTile{
+    position:relative!important;
+    overflow:hidden!important;
+  }
+
+  html body #app .costumeTile > img[data-v618-main="1"]{
+    position:absolute!important;
+    left:var(--v618-left,20px)!important;
+    top:var(--v618-top,62px)!important;
+    right:auto!important;
+    bottom:auto!important;
+    width:var(--v618-width,calc(100% - 40px))!important;
+    height:var(--v618-height,auto)!important;
+    min-width:0!important;
+    min-height:0!important;
+    max-width:none!important;
+    max-height:none!important;
+    margin:0!important;
+    padding:0!important;
+    border:0!important;
+    border-radius:0!important;
+    display:block!important;
+    object-fit:fill!important;
+    object-position:0 0!important;
+    transform:none!important;
+    translate:none!important;
+    scale:none!important;
+    transform-origin:0 0!important;
+    background:transparent!important;
+    z-index:2!important;
+    pointer-events:none!important;
+  }
+
+  /* Les éléments de carte restent au-dessus de la photo. */
+  html body #app .costumeTileRarity,
+  html body #app .costumeTileStars,
+  html body #app .costumeTileBadge,
+  html body #app .costumeTileName,
+  html body #app .costumeMiniDesc,
+  html body #app .s18NewBadge,
+  html body #app [class*="UpcomingStatus"],
+  html body #app [class*="UpcomingDate"]{
+    position:absolute!important;
+    z-index:80!important;
+  }
+}

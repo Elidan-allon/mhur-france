@@ -1,0 +1,7 @@
+MHUR NEXUS — V618
+
+- Centre les costumes Original d'après les pixels visibles du PNG.
+- Centre les costumes À venir malgré leur grande zone transparente.
+- Remonte tous les autres costumes sur mobile.
+- Conserve NEW, rareté, étoiles, date, statut et T.U.N.I.N.G.
+- N'agit pas sur la version ordinateur.
