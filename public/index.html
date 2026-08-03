@@ -869,6 +869,8 @@
 <link rel="stylesheet" href="css/season18-fixes.css?v=1785754283142783438">
 <!-- V617 : costumes mobile exacts. -->
 <link rel="stylesheet" href="css/v617-mobile-costumes-exacts.css?v=617">
+<!-- V619 : navigation TUNING mobile CSS. -->
+<link rel="stylesheet" href="css/v619-mobile-tuning-navigation.css?v=619">
 </head>
 <body>
 
@@ -1720,7 +1722,7 @@ function gameSlotBand(ct,color,kind,side,index){
 }
 function tuningPicker(ct){
   const spec=parseSelectedSlot(ct); const kindLabel=spec.kind==='sp'?'T.U.N.I.N.G SP':'T.U.N.I.N.G normal';
-  window.__lastTuningOptions=compatibleTunings(spec.color,spec.kind,spec.condition).slice(0,80);
+  window.__lastTuningOptions=compatibleTunings(spec.color,spec.kind,spec.condition);
   const opts=window.__lastTuningOptions;
   return `<div class="tuningPicker"><div class="tuningPickerHead">Choix compatible — ${kindLabel}</div><div class="tuningPickerSub">Slot : ${slotLabelLong(spec.color)}${spec.condition?' · '+spec.condition:''}</div><div class="tuningOptions">${opts.map((t,i)=>`<button type="button" class="tuningOption ${slotColorClass(t.slot)}" onclick='equipTuning("${spec.id}", window.__lastTuningOptions[${i}]);return false;'>${t.img?`<img src="${t.img}" alt="${t.character}">`:`<div class="tuningOptionImg"></div>`}<div class="tuningOptionMain"><div class="tuningOptionChar">${t.character}</div><div class="tuningOptionName">${t.name}</div><div class="tuningOptionDesc">${(t.desc||'').replace(/<br><br>/g,' — ').replace(/<[^>]+>/g,'').slice(0,135)}</div></div><div class="tuningFaction">${t.side==='Héros'?'HÉROS':'SUPER-VILAIN'}</div></button>`).join('') || '<div class="homeBox">Aucun T.U.N.I.N.G compatible.</div>'}</div></div>`;
 }
@@ -1807,7 +1809,7 @@ function gameSlotBand(ct,color,kind,side,index){
 }
 function tuningPicker(ct){
   const spec=parseSelectedSlot(ct); const kindLabel=spec.kind==='sp'?'T.U.N.I.N.G SP':'T.U.N.I.N.G normal';
-  window.__lastTuningOptions=compatibleTunings(spec.color,spec.kind,spec.condition).slice(0,80);
+  window.__lastTuningOptions=compatibleTunings(spec.color,spec.kind,spec.condition);
   const opts=window.__lastTuningOptions;
   return `<div class="tuningPicker"><div class="tuningPickerHead">T.U.N.I.N.G compatibles</div><div class="tuningPickerSub">${kindLabel} · ${slotLabelLong(spec.color)}${spec.condition?' · '+spec.condition:''}</div><div class="tuningOptions">${opts.map((t,i)=>`<button type="button" class="tuningOption ${slotColorClass(t.slot)}" onclick='equipTuning("${spec.id}", window.__lastTuningOptions[${i}]);return false;'>${t.img?`<img src="${t.img}" alt="${t.character}">`:`<div class="tuningOptionImg"></div>`}<div class="tuningOptionMain"><div class="tuningOptionChar">${t.character}</div><div class="tuningOptionName">${t.name}</div><div class="tuningOptionDesc">${compactDesc(t).slice(0,150)}</div></div><div class="tuningFaction">${t.side==='Héros'?'HÉROS':'SUPER-VILAIN'}</div></button>`).join('') || '<div class="homeBox">Aucun T.U.N.I.N.G compatible.</div>'}</div></div>`;
 }
@@ -1846,7 +1848,7 @@ function gameSlotBand(ct,color,kind,side,index){
 }
 function tuningPicker(ct){
   const spec=parseSelectedSlot(ct); const kindLabel=spec.kind==='sp'?'T.U.N.I.N.G SP':'T.U.N.I.N.G normal';
-  window.__lastTuningOptions=compatibleTunings(spec.color,spec.kind,spec.condition).slice(0,80);
+  window.__lastTuningOptions=compatibleTunings(spec.color,spec.kind,spec.condition);
   const opts=window.__lastTuningOptions;
   return `<div class="tuningPicker"><div class="tuningPickerHead">T.U.N.I.N.G compatibles</div><div class="tuningPickerSub">${kindLabel} · ${slotLabelLong(spec.color)}${spec.condition?' · '+spec.condition:''}</div><div class="tuningOptions">${opts.map((t,i)=>`<button type="button" class="tuningOption ${slotColorClass(t.slot)}" onclick='equipTuning("${spec.id}", window.__lastTuningOptions[${i}]);return false;'>${t.img?`<img src="${t.img}" alt="${t.character}">`:`<div class="tuningOptionImg"></div>`}<div class="tuningOptionMain"><div class="tuningOptionChar">${t.character}</div><div class="tuningOptionName">${fitName(t.name)}</div><div class="tuningOptionDesc">${compactDesc(t)}</div></div><div class="tuningFaction">${t.side==='Héros'?'HÉROS':'SUPER-VILAIN'}</div></button>`).join('') || '<div class="homeBox">Aucun T.U.N.I.N.G compatible.</div>'}</div></div>`;
 }
@@ -1918,7 +1920,7 @@ function gameSlotBand(ct,color,kind,side,index){
 function tuningPicker(ct){
   const spec=parseSelectedSlot(ct); const kindLabel=spec.kind==='sp'?'T.U.N.I.N.G SP':'T.U.N.I.N.G normal';
   const used=usedTuningCharacters(spec.id);
-  window.__lastTuningOptions=compatibleTunings(spec.color,spec.kind,spec.condition).slice(0,80);
+  window.__lastTuningOptions=compatibleTunings(spec.color,spec.kind,spec.condition);
   const opts=window.__lastTuningOptions;
   return `<div class="tuningPicker"><div class="tuningPickerHead">T.U.N.I.N.G compatibles</div><div class="tuningPickerSub">${kindLabel} · ${slotLabelLong(spec.color)}${spec.condition?' · '+spec.condition:''}</div><div class="tuningOptions">${opts.map((t,i)=>{const isUsed=used.has(t.styleKey || t.character); const nm=safeTuningName(t.name); const fs=tuningFontSize(nm,21); const ds=compactDesc(t); return `<button type="button" class="tuningOption ${slotColorClass(t.slot)} ${isUsed?'alreadyUsed':''}" ${isUsed?'disabled':''} style="--option-font:${fs}px;--desc-font:${ds.length>95?12:13}px" onclick='equipTuning("${spec.id}", window.__lastTuningOptions[${i}]);return false;'>${t.img?`<span class="tuningOptionIconWrap"><img src="${t.img}" alt="${t.character}"></span>`:`<div class="tuningOptionImg"></div>`}<div class="tuningOptionMain"><div class="tuningOptionChar">${t.character}</div><div class="tuningOptionName">${nm}</div><div class="tuningOptionDesc">${ds}</div></div><div class="tuningFaction">${t.side==='Héros'?'HÉROS':'SUPER-VILAIN'}</div></button>`}).join('') || '<div class="homeBox">Aucun T.U.N.I.N.G compatible.</div>'}</div></div>`;
 }
@@ -7585,5 +7587,7 @@ body .costumeTile > img,
 <!-- Season 18 v14 compatibility layer. -->
 <script src="js/season18-fixes.js?v=1785754283142783438"></script>
 <script src="js/season18-v12.js?v=1785754283142783438"></script>
+<!-- V619 : navigation TUNING mobile JS. -->
+<script src="js/v619-mobile-tuning-navigation.js?v=619"></script>
 </body>
 </html>

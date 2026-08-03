@@ -1,0 +1,268 @@
+/* MHUR Nexus — V619
+   Navigation mobile entre les emplacements et les T.U.N.I.N.G compatibles.
+   Affichage complet des effets et des niveaux. */
+
+.mhurV619Details{
+  display:none;
+}
+
+@media (max-width:760px){
+  html body #app .gameCostumeScreen .gameTuningArea,
+  html body #app .gameCostumeScreen .tuningPicker,
+  html body #app .gameCostumeScreen .tuningOptions{
+    min-width:0!important;
+    width:100%!important;
+    max-width:none!important;
+    height:auto!important;
+    max-height:none!important;
+    overflow:visible!important;
+  }
+
+  html body #app .gameCostumeScreen .tuningOptions{
+    display:grid!important;
+    grid-template-columns:minmax(0,1fr)!important;
+    gap:12px!important;
+    padding-bottom:18px!important;
+  }
+
+  html body #app .gameCostumeScreen .tuningPicker,
+  html body #app .gameCostumeScreen .gameSlot.active{
+    scroll-margin-top:calc(var(--mhur-v619-scroll-offset,190px) + 12px)!important;
+  }
+
+  html body #app .gameCostumeScreen .tuningOption{
+    position:relative!important;
+    display:grid!important;
+    grid-template-columns:78px minmax(0,1fr)!important;
+    grid-template-areas:
+      "icon main"
+      "faction main"
+      "details details"!important;
+    column-gap:10px!important;
+    row-gap:7px!important;
+    align-items:start!important;
+    width:100%!important;
+    min-width:0!important;
+    max-width:none!important;
+    min-height:0!important;
+    height:auto!important;
+    max-height:none!important;
+    padding:10px!important;
+    box-sizing:border-box!important;
+    overflow:visible!important;
+    white-space:normal!important;
+  }
+
+  html body #app .gameCostumeScreen .tuningOption >
+  .tuningOptionIconWrap{
+    grid-area:icon!important;
+    display:flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+    width:76px!important;
+    height:76px!important;
+    min-width:76px!important;
+    min-height:76px!important;
+    overflow:hidden!important;
+    align-self:start!important;
+    background:rgba(0,0,0,.22)!important;
+    border-radius:7px!important;
+  }
+
+  html body #app .gameCostumeScreen .tuningOption >
+  .tuningOptionIconWrap img,
+  html body #app .gameCostumeScreen .tuningOption > img,
+  html body #app .gameCostumeScreen .tuningOption >
+  .tuningOptionImg{
+    grid-area:icon!important;
+    width:76px!important;
+    height:76px!important;
+    min-width:76px!important;
+    min-height:76px!important;
+    max-width:76px!important;
+    max-height:76px!important;
+    margin:0!important;
+    padding:0!important;
+    border:0!important;
+    object-fit:contain!important;
+    object-position:center center!important;
+    transform:none!important;
+    align-self:start!important;
+    background:transparent!important;
+    border-radius:7px!important;
+  }
+
+  html body #app .gameCostumeScreen .tuningOptionMain{
+    grid-area:main!important;
+    display:block!important;
+    min-width:0!important;
+    width:100%!important;
+    max-width:none!important;
+    height:auto!important;
+    max-height:none!important;
+    padding:0!important;
+    margin:0!important;
+    overflow:visible!important;
+  }
+
+  html body #app .gameCostumeScreen .tuningOptionChar{
+    display:block!important;
+    width:100%!important;
+    max-width:none!important;
+    margin:0 0 3px!important;
+    font-size:14px!important;
+    line-height:1.08!important;
+    white-space:normal!important;
+    overflow:visible!important;
+    text-overflow:clip!important;
+  }
+
+  html body #app .gameCostumeScreen .tuningOptionName{
+    display:block!important;
+    width:100%!important;
+    max-width:none!important;
+    max-height:none!important;
+    margin:0!important;
+    font-size:19px!important;
+    line-height:1.08!important;
+    white-space:normal!important;
+    overflow:visible!important;
+    text-overflow:clip!important;
+    -webkit-line-clamp:unset!important;
+    -webkit-box-orient:unset!important;
+  }
+
+  /* La description courte est remplacée par les détails complets V619. */
+  html body #app .gameCostumeScreen .tuningOptionDesc{
+    display:none!important;
+  }
+
+  html body #app .gameCostumeScreen .tuningFaction{
+    grid-area:faction!important;
+    position:static!important;
+    display:block!important;
+    align-self:start!important;
+    justify-self:stretch!important;
+    width:76px!important;
+    min-width:0!important;
+    max-width:76px!important;
+    margin:0!important;
+    padding:4px 3px!important;
+    border:2px solid rgba(0,0,0,.75)!important;
+    border-radius:7px!important;
+    background:rgba(0,0,0,.78)!important;
+    color:#fff!important;
+    font-size:10px!important;
+    line-height:1.05!important;
+    font-weight:1000!important;
+    text-align:center!important;
+    white-space:normal!important;
+    word-break:normal!important;
+    overflow:visible!important;
+    text-overflow:clip!important;
+    box-sizing:border-box!important;
+  }
+
+  html body #app .gameCostumeScreen .mhurV619Details{
+    grid-area:details!important;
+    display:block!important;
+    min-width:0!important;
+    width:100%!important;
+    max-width:none!important;
+    margin:3px 0 0!important;
+    padding:10px!important;
+    border:2px solid rgba(0,0,0,.78)!important;
+    border-radius:9px!important;
+    background:rgba(4,10,18,.88)!important;
+    color:#fff!important;
+    text-align:left!important;
+    white-space:normal!important;
+    overflow:visible!important;
+    box-sizing:border-box!important;
+  }
+
+  html body #app .gameCostumeScreen .mhurV619DetailsTitle{
+    margin:0 0 8px!important;
+    color:#ffe500!important;
+    font-size:14px!important;
+    line-height:1.1!important;
+    font-weight:1000!important;
+  }
+
+  html body #app .gameCostumeScreen .mhurV619Effect{
+    display:block!important;
+    margin:0!important;
+    padding:0!important;
+  }
+
+  html body #app .gameCostumeScreen
+  .mhurV619Effect + .mhurV619Effect{
+    margin-top:11px!important;
+    padding-top:10px!important;
+    border-top:1px solid rgba(255,255,255,.28)!important;
+  }
+
+  html body #app .gameCostumeScreen .mhurV619EffectName{
+    margin:0 0 4px!important;
+    color:#fff!important;
+    font-size:15px!important;
+    line-height:1.12!important;
+    font-weight:1000!important;
+  }
+
+  html body #app .gameCostumeScreen .mhurV619EffectDesc{
+    margin:0!important;
+    color:#fff!important;
+    font-size:13px!important;
+    line-height:1.28!important;
+    font-weight:700!important;
+  }
+
+  html body #app .gameCostumeScreen .mhurV619LevelsLabel{
+    margin:8px 0 5px!important;
+    color:#ffe500!important;
+    font-size:12px!important;
+    line-height:1!important;
+    font-weight:1000!important;
+  }
+
+  html body #app .gameCostumeScreen .mhurV619Levels{
+    display:flex!important;
+    flex-wrap:wrap!important;
+    gap:5px!important;
+    width:100%!important;
+    max-width:none!important;
+    overflow:visible!important;
+  }
+
+  html body #app .gameCostumeScreen .mhurV619Level{
+    display:inline-flex!important;
+    align-items:center!important;
+    min-height:26px!important;
+    margin:0!important;
+    padding:4px 7px!important;
+    border:1px solid #45658f!important;
+    border-radius:7px!important;
+    background:#172b48!important;
+    color:#fff!important;
+    font-size:11px!important;
+    line-height:1.08!important;
+    font-weight:900!important;
+    white-space:normal!important;
+  }
+
+  html body #app .gameCostumeScreen
+  .mhurV619Level.mhurV619Sub{
+    border-color:#ffe500!important;
+    background:#4a3c00!important;
+    color:#ffe500!important;
+  }
+
+  html body #app .gameCostumeScreen
+  .tuningOption.alreadyUsed::after{
+    top:7px!important;
+    right:7px!important;
+    bottom:auto!important;
+    z-index:12!important;
+  }
+}

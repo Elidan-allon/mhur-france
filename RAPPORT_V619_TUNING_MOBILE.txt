@@ -1,0 +1,10 @@
+MHUR NEXUS — V619
+
+MOBILE
+- Un appui sur un emplacement T.U.N.I.N.G descend vers la liste compatible.
+- Après le choix d'un T.U.N.I.N.G, la page remonte vers l'emplacement actif.
+- La liste compatible n'est plus enfermée dans un défilement interne.
+- La limite artificielle de 80 résultats est supprimée.
+- Chaque carte affiche la description complète, tous les effets et tous les niveaux.
+- Les T.U.N.I.N.G déjà utilisés restent désactivés.
+- Aucun changement sur ordinateur.
