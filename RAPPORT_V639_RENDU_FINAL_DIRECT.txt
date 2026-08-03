@@ -1,0 +1,32 @@
+MHUR NEXUS — V639
+
+PROBLÈME CORRIGÉ
+Le navigateur affichait le style de base des cartes avant de recevoir
+les correctifs visuels chargés à la fin de index.html.
+
+SOLUTION
+- 1 blocs CSS locaux regroupés dans un seul fichier.
+- Le CSS final est chargé dans le head avant le premier affichage.
+- Aucun ancien rendu brut ne peut être peint.
+- Aucun masque ou délai JavaScript.
+- Navigation interne immédiate une fois le CSS chargé.
+- Ordre de cascade conservé.
+- Workflow réutilisable : un deuxième lancement reprend le bundle V639
+  existant sans le vider.
+- V634 et les correctifs fonctionnels restent conservés.
+
+IMAGES
+- Les premières images sont chargées en priorité.
+- Les images proches de l'écran deviennent prioritaires.
+- Les images éloignées restent différées.
+- Aucune image n'est volontairement cachée.
+
+ANCIENS FICHIERS RUNTIME SUPPRIMÉS
+- public/css/v638-site-bundle.css
+- public/css/v633c-final-first-frame.css
+- public/css/v635-instant-navigation.css
+- public/css/v632-stop-reload-loop.css
+- public/js/v632-stop-reload-loop.js
+- public/js/v635-instant-navigation.js
+- public/js/v633c-final-first-frame.js
+- public/js/v638-fast-display.js

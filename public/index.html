@@ -193,8 +193,11 @@
 
 
 <!-- V638 : CSS complet regroupé avant le rendu. -->
-<link rel="preload" href="css/v638-site-bundle.css?v=638" as="style" fetchpriority="high">
-<link rel="stylesheet" href="css/v638-site-bundle.css?v=638">
+
+
+<!-- V639 : rendu final unique avant le premier affichage. -->
+<link rel="preload" href="css/v639-direct-final.css?v=639" as="style" fetchpriority="high">
+<link rel="stylesheet" href="css/v639-direct-final.css?v=639">
 </head>
 <body>
 
@@ -5036,6 +5039,8 @@ window.__V227_COSTUME_PHOTO_MAP = {"midoriya": {"Tenue de Héros": {"Original": 
 <script src="js/season18-v12.js?v=1785789525211026602"></script>
 
 <!-- V638 : affichage immédiat et priorité images. -->
-<script src="js/v638-fast-display.js?v=638"></script>
+
+<!-- V639 : images prioritaires sans bloquer la navigation. -->
+<script src="js/v639-direct-final.js?v=639"></script>
 </body>
 </html>

@@ -1,3 +1,6 @@
+/* MHUR Nexus — rendu final direct V639. */
+
+/* ===== css/v638-site-bundle.css ===== */
 /* MHUR Nexus — bundle CSS V638. */
 
 /* ===== inline ===== */
@@ -19220,3 +19223,48 @@ html body .communityBuildCard{
   content-visibility:auto;
   contain-intrinsic-size:auto 420px;
 }
+
+
+/* V639 RUNTIME START */
+html,
+body{
+  background:#07101f!important;
+}
+
+/* Neutralisation définitive des anciens moteurs de rendu. */
+html.mhurV630Booting body,
+html.mhurV630Booting body>*,
+html.mhurV630RouteLoading #app,
+html.mhurV633Preparing body,
+html.mhurV633RoutePreparing #app,
+html.mhurV633CPreparing body,
+html.mhurV633CRoutePreparing #app,
+html.mhurV636InitialPreparing body,
+html.mhurV636RoutePreparing #app,
+html.mhurV637Preparing body,
+html.mhurV637Preparing body>*{
+  visibility:visible!important;
+  opacity:1!important;
+  pointer-events:auto!important;
+}
+
+html.mhurV630Booting::before,
+html.mhurV630Booting::after,
+html.mhurV630RouteLoading::before,
+html.mhurV630RouteLoading::after,
+html.mhurV633Preparing::before,
+html.mhurV633CPreparing::before,
+html.mhurV636InitialPreparing::before,
+html.mhurV637Preparing::before{
+  content:none!important;
+  display:none!important;
+}
+
+/* Les anciennes versions ne peuvent plus cacher les images. */
+html body .costumeTile>img,
+html body #app .costumeTile>img[data-v622-waiting],
+html body #app .costumeTile>img:not([data-v622-ready]){
+  visibility:visible!important;
+  opacity:1!important;
+}
+/* V639 RUNTIME END */
