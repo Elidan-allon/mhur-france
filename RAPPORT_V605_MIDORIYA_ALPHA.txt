@@ -1,0 +1,5 @@
+MHUR FRANCE — RAPPORT V605
+
+- Corrige les images alpha de tous les Midoriya.
+- Cache l'image de competence sur les cartes HP/PV/Health.
+- Reinjecte l'image alpha locale dans les panneaux et patch notes.
