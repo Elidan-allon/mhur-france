@@ -1,0 +1,194 @@
+name: MHUR V624 - Tier list NEW mobile
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/mhur-v624-auto.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: mhur-v624-tierlist-new-mobile
+  cancel-in-progress: false
+
+jobs:
+  appliquer:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Recuperer le depot
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Installer Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Appliquer et enregistrer V624
+        shell: bash
+        run: |
+          set -euo pipefail
+          
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          
+          cat > /tmp/appliquer_v624.py <<'PY'
+          from pathlib import Path
+          import base64
+          import re
+          
+          CSS = base64.b64decode("LyogTUhVUiBOZXh1cyDigJQgVjYyNAogICBUaWVyIGxpc3QgbW9iaWxlIDogYmFkZ2UgTkVXIHLDqXBhcsOpICsgZXNwYWNlbWVudCBub20vc3R5bGUuICovCgpAbWVkaWEgKG1heC13aWR0aDo3NjBweCl7CiAgLm1odXJWNjI0VGllckNhcmR7CiAgICBwb3NpdGlvbjpyZWxhdGl2ZSFpbXBvcnRhbnQ7CiAgICBvdmVyZmxvdzpoaWRkZW4haW1wb3J0YW50OwogIH0KCiAgLm1odXJWNjI0VGllck5ld1dyYXAsCiAgLm1odXJWNjI0VGllck5ld3sKICAgIHBvc2l0aW9uOmFic29sdXRlIWltcG9ydGFudDsKICAgIHRvcDo4cHghaW1wb3J0YW50OwogICAgbGVmdDo4cHghaW1wb3J0YW50OwogICAgcmlnaHQ6YXV0byFpbXBvcnRhbnQ7CiAgICBib3R0b206YXV0byFpbXBvcnRhbnQ7CiAgICB6LWluZGV4OjEyIWltcG9ydGFudDsKICAgIHRyYW5zZm9ybTpub25lIWltcG9ydGFudDsKICAgIHRyYW5zZm9ybS1vcmlnaW46dG9wIGxlZnQhaW1wb3J0YW50OwogIH0KCiAgLm1odXJWNjI0VGllck5ld1dyYXB7CiAgICB3aWR0aDphdXRvIWltcG9ydGFudDsKICAgIGhlaWdodDphdXRvIWltcG9ydGFudDsKICAgIG1pbi13aWR0aDowIWltcG9ydGFudDsKICAgIG1pbi1oZWlnaHQ6MCFpbXBvcnRhbnQ7CiAgICBtYXgtd2lkdGg6bm9uZSFpbXBvcnRhbnQ7CiAgICBtYXgtaGVpZ2h0Om5vbmUhaW1wb3J0YW50OwogICAgcG9pbnRlci1ldmVudHM6bm9uZSFpbXBvcnRhbnQ7CiAgfQoKICAubWh1clY2MjRUaWVyTmV3ewogICAgZGlzcGxheTppbmxpbmUtYmxvY2shaW1wb3J0YW50OwogICAgbWFyZ2luOjAhaW1wb3J0YW50OwogICAgcGFkZGluZzowIDJweCFpbXBvcnRhbnQ7CiAgICBmb250LXNpemU6Ljc2ZW0haW1wb3J0YW50OwogICAgbGluZS1oZWlnaHQ6MSFpbXBvcnRhbnQ7CiAgICB3aGl0ZS1zcGFjZTpub3dyYXAhaW1wb3J0YW50OwogICAgYW5pbWF0aW9uOm1odXJWNjI0VGllck5ld0Zsb2F0IDEuOXMgZWFzZS1pbi1vdXQgaW5maW5pdGUhaW1wb3J0YW50OwogIH0KCiAgLm1odXJWNjI0VGllclRleHRHcm91cHsKICAgIGRpc3BsYXk6ZmxleCFpbXBvcnRhbnQ7CiAgICBmbGV4LWRpcmVjdGlvbjpjb2x1bW4haW1wb3J0YW50OwogICAgYWxpZ24taXRlbXM6ZmxleC1zdGFydCFpbXBvcnRhbnQ7CiAgICBqdXN0aWZ5LWNvbnRlbnQ6ZmxleC1zdGFydCFpbXBvcnRhbnQ7CiAgICBnYXA6NHB4IWltcG9ydGFudDsKICAgIG1pbi13aWR0aDowIWltcG9ydGFudDsKICB9CgogIC5taHVyVjYyNFRpZXJOYW1lewogICAgZGlzcGxheTpibG9jayFpbXBvcnRhbnQ7CiAgICBtYXJnaW46MCFpbXBvcnRhbnQ7CiAgICBsaW5lLWhlaWdodDoxLjA0IWltcG9ydGFudDsKICB9CgogIC5taHVyVjYyNFRpZXJTdHlsZXsKICAgIGRpc3BsYXk6YmxvY2shaW1wb3J0YW50OwogICAgbWFyZ2luOjAhaW1wb3J0YW50OwogICAgbGluZS1oZWlnaHQ6MSFpbXBvcnRhbnQ7CiAgfQp9CgpAa2V5ZnJhbWVzIG1odXJWNjI0VGllck5ld0Zsb2F0ewogIDAlewogICAgdHJhbnNmb3JtOnRyYW5zbGF0ZVkoMCkgc2NhbGUoLjg0KTsKICB9CiAgNTAlewogICAgdHJhbnNmb3JtOnRyYW5zbGF0ZVkoLTJweCkgc2NhbGUoLjg5KTsKICB9CiAgMTAwJXsKICAgIHRyYW5zZm9ybTp0cmFuc2xhdGVZKDApIHNjYWxlKC44NCk7CiAgfQp9").decode("utf-8")
+          JS = base64.b64decode("LyogTUhVUiBOZXh1cyDigJQgVjYyNAogICBDb3JyaWdlIHVuaXF1ZW1lbnQgbGEgY2FydGUgTkVXIGRlIGxhIHRpZXIgbGlzdCBtb2JpbGUgOgogICAtIGJhZGdlIE5FVyBlbiBoYXV0IMOgIGdhdWNoZSwgcGx1cyBwZXRpdCwgYXZlYyBhbmltYXRpb24gOwogICAtIGVzcGFjZW1lbnQgZW50cmUgbm9tIGR1IHBlcnNvIGV0IHN0eWxlLgoqLwooZnVuY3Rpb24oKXsKICAndXNlIHN0cmljdCc7CgogIGlmKHdpbmRvdy5NSFVSX1Y2MjRfVElFUkxJU1RfRklYX0xPQURFRClyZXR1cm47CiAgd2luZG93Lk1IVVJfVjYyNF9USUVSTElTVF9GSVhfTE9BREVEPXRydWU7CgogIGNvbnN0IE1PQklMRV9RVUVSWT0nKG1heC13aWR0aDo3NjBweCknOwogIGxldCBxdWV1ZWQ9ZmFsc2U7CgogIGZ1bmN0aW9uIGlzTW9iaWxlKCl7CiAgICByZXR1cm4gd2luZG93Lm1hdGNoTWVkaWEoTU9CSUxFX1FVRVJZKS5tYXRjaGVzOwogIH0KCiAgZnVuY3Rpb24gdmlzaWJsZShlbCl7CiAgICBpZighZWx8fCFlbC5pc0Nvbm5lY3RlZClyZXR1cm4gZmFsc2U7CiAgICBjb25zdCBzdHlsZT1nZXRDb21wdXRlZFN0eWxlKGVsKTsKICAgIGlmKAogICAgICBzdHlsZS5kaXNwbGF5PT09J25vbmUnfHwKICAgICAgc3R5bGUudmlzaWJpbGl0eT09PSdoaWRkZW4nfHwKICAgICAgTnVtYmVyKHN0eWxlLm9wYWNpdHkpPT09MAogICAgKXsKICAgICAgcmV0dXJuIGZhbHNlOwogICAgfQogICAgY29uc3QgcmVjdD1lbC5nZXRCb3VuZGluZ0NsaWVudFJlY3QoKTsKICAgIHJldHVybiByZWN0LndpZHRoPjAmJnJlY3QuaGVpZ2h0PjA7CiAgfQoKICBmdW5jdGlvbiB0ZXh0T25seShlbCl7CiAgICByZXR1cm4gU3RyaW5nKGVsPy50ZXh0Q29udGVudHx8JycpCiAgICAgIC5yZXBsYWNlKC9ccysvZywnICcpCiAgICAgIC50cmltKCk7CiAgfQoKICBmdW5jdGlvbiBtYXRjaGVzTmV3VGV4dChlbCl7CiAgICBjb25zdCB0ZXh0PXRleHRPbmx5KGVsKTsKICAgIHJldHVybiAvXm5ldyE/JC9pLnRlc3QodGV4dCk7CiAgfQoKICBmdW5jdGlvbiBsaWtlbHlUaWVyU2NvcGUocm9vdD1kb2N1bWVudCl7CiAgICByZXR1cm4gQXJyYXkuZnJvbSgKICAgICAgcm9vdC5xdWVyeVNlbGVjdG9yQWxsKAogICAgICAgICdbaWQqPSJ0aWVyIiBpXSxbY2xhc3MqPSJ0aWVyIiBpXScKICAgICAgKQogICAgKTsKICB9CgogIGZ1bmN0aW9uIG5lYXJlc3RDYXJkRnJvbUJhZGdlKGJhZGdlKXsKICAgIGxldCBjdXJyZW50PWJhZGdlIGluc3RhbmNlb2YgRWxlbWVudCA/IGJhZGdlIDogbnVsbDsKCiAgICB3aGlsZShjdXJyZW50JiZjdXJyZW50IT09ZG9jdW1lbnQuYm9keSl7CiAgICAgIGNvbnN0IHJlY3Q9Y3VycmVudC5nZXRCb3VuZGluZ0NsaWVudFJlY3QoKTsKICAgICAgY29uc3QgaGFzSW1hZ2U9Y3VycmVudC5xdWVyeVNlbGVjdG9yKCdpbWcnKTsKICAgICAgY29uc3QgdGV4dHM9Z2V0TGVhZlRleHROb2RlcyhjdXJyZW50KTsKCiAgICAgIGlmKAogICAgICAgIGhhc0ltYWdlJiYKICAgICAgICByZWN0LndpZHRoPj04MCYmCiAgICAgICAgcmVjdC5oZWlnaHQ+PTExMCYmCiAgICAgICAgdGV4dHMubGVuZ3RoPj0yCiAgICAgICl7CiAgICAgICAgcmV0dXJuIGN1cnJlbnQ7CiAgICAgIH0KCiAgICAgIGN1cnJlbnQ9Y3VycmVudC5wYXJlbnRFbGVtZW50OwogICAgfQoKICAgIHJldHVybiBiYWRnZT8ucGFyZW50RWxlbWVudHx8bnVsbDsKICB9CgogIGZ1bmN0aW9uIGdldExlYWZUZXh0Tm9kZXMocm9vdCl7CiAgICByZXR1cm4gQXJyYXkuZnJvbShyb290LnF1ZXJ5U2VsZWN0b3JBbGwoJyonKSkKICAgICAgLmZpbHRlcihlbD0+ewogICAgICAgIGlmKCF2aXNpYmxlKGVsKSlyZXR1cm4gZmFsc2U7CiAgICAgICAgaWYoZWwuY2hpbGRyZW4ubGVuZ3RoPjApcmV0dXJuIGZhbHNlOwogICAgICAgIGlmKAogICAgICAgICAgZWwuY2xhc3NMaXN0LmNvbnRhaW5zKCdtaHVyVjYyNFRpZXJOZXcnKXx8CiAgICAgICAgICBlbC5jbGFzc0xpc3QuY29udGFpbnMoJ21odXJWNjI0VGllck5hbWUnKXx8CiAgICAgICAgICBlbC5jbGFzc0xpc3QuY29udGFpbnMoJ21odXJWNjI0VGllclN0eWxlJykKICAgICAgICApewogICAgICAgICAgcmV0dXJuIGZhbHNlOwogICAgICAgIH0KCiAgICAgICAgY29uc3QgdGV4dD10ZXh0T25seShlbCk7CiAgICAgICAgaWYoIXRleHQpcmV0dXJuIGZhbHNlOwogICAgICAgIGlmKC9ebmV3IT8kL2kudGVzdCh0ZXh0KSlyZXR1cm4gZmFsc2U7CiAgICAgICAgaWYoL14oc3xhfGJ8Y3xkfGYpJC9pLnRlc3QodGV4dCkpcmV0dXJuIGZhbHNlOwogICAgICAgIGlmKHRleHQubGVuZ3RoPjQyKXJldHVybiBmYWxzZTsKCiAgICAgICAgcmV0dXJuIHRydWU7CiAgICAgIH0pOwogIH0KCiAgZnVuY3Rpb24gcGlja05hbWVBbmRTdHlsZShjYXJkKXsKICAgIGNvbnN0IHJlY3Q9Y2FyZC5nZXRCb3VuZGluZ0NsaWVudFJlY3QoKTsKCiAgICBjb25zdCBjYW5kaWRhdGVzPWdldExlYWZUZXh0Tm9kZXMoY2FyZCkKICAgICAgLmZpbHRlcihlbD0+ewogICAgICAgIGNvbnN0IHRleHQ9dGV4dE9ubHkoZWwpOwogICAgICAgIGNvbnN0IHRvcD1lbC5nZXRCb3VuZGluZ0NsaWVudFJlY3QoKS50b3AtcmVjdC50b3A7CgogICAgICAgIGlmKHRvcDxyZWN0LmhlaWdodCowLjM4KXJldHVybiBmYWxzZTsKICAgICAgICBpZih0ZXh0Lmxlbmd0aDwyKXJldHVybiBmYWxzZTsKCiAgICAgICAgcmV0dXJuIHRydWU7CiAgICAgIH0pCiAgICAgIC5zb3J0KChhLGIpPT57CiAgICAgICAgY29uc3QgYXI9YS5nZXRCb3VuZGluZ0NsaWVudFJlY3QoKTsKICAgICAgICBjb25zdCBicj1iLmdldEJvdW5kaW5nQ2xpZW50UmVjdCgpOwoKICAgICAgICBpZihNYXRoLmFicyhhci50b3AtYnIudG9wKT4yKXsKICAgICAgICAgIHJldHVybiBhci50b3AtYnIudG9wOwogICAgICAgIH0KCiAgICAgICAgcmV0dXJuIGFyLmxlZnQtYnIubGVmdDsKICAgICAgfSk7CgogICAgY29uc3QgdW5pcXVlPVtdOwogICAgY29uc3Qgc2Vlbj1uZXcgU2V0KCk7CgogICAgY2FuZGlkYXRlcy5mb3JFYWNoKGVsPT57CiAgICAgIGlmKHNlZW4uaGFzKGVsKSlyZXR1cm47CiAgICAgIHNlZW4uYWRkKGVsKTsKICAgICAgdW5pcXVlLnB1c2goZWwpOwogICAgfSk7CgogICAgaWYodW5pcXVlLmxlbmd0aDwyKXJldHVybiBudWxsOwoKICAgIGZvcihsZXQgaT0wO2k8dW5pcXVlLmxlbmd0aC0xO2krKyl7CiAgICAgIGNvbnN0IGE9dW5pcXVlW2ldOwogICAgICBjb25zdCBiPXVuaXF1ZVtpKzFdOwogICAgICBjb25zdCBhcj1hLmdldEJvdW5kaW5nQ2xpZW50UmVjdCgpOwogICAgICBjb25zdCBicj1iLmdldEJvdW5kaW5nQ2xpZW50UmVjdCgpOwoKICAgICAgaWYoCiAgICAgICAgYnIudG9wPj1hci50b3AtMSYmCiAgICAgICAgYnIudG9wLWFyLnRvcDwzNAogICAgICApewogICAgICAgIHJldHVybiB7bmFtZTphLHN0eWxlOmJ9OwogICAgICB9CiAgICB9CgogICAgcmV0dXJuIHtuYW1lOnVuaXF1ZVswXSxzdHlsZTp1bmlxdWVbMV19OwogIH0KCiAgZnVuY3Rpb24gZ3JvdXBUZXh0KG5hbWVFbCxzdHlsZUVsKXsKICAgIGlmKAogICAgICAhbmFtZUVsfHwKICAgICAgIXN0eWxlRWx8fAogICAgICAhbmFtZUVsLnBhcmVudEVsZW1lbnR8fAogICAgICAhc3R5bGVFbC5wYXJlbnRFbGVtZW50CiAgICApewogICAgICByZXR1cm47CiAgICB9CgogICAgbmFtZUVsLmNsYXNzTGlzdC5hZGQoJ21odXJWNjI0VGllck5hbWUnKTsKICAgIHN0eWxlRWwuY2xhc3NMaXN0LmFkZCgnbWh1clY2MjRUaWVyU3R5bGUnKTsKCiAgICBpZihuYW1lRWwucGFyZW50RWxlbWVudD09PXN0eWxlRWwucGFyZW50RWxlbWVudCl7CiAgICAgIGNvbnN0IHBhcmVudD1uYW1lRWwucGFyZW50RWxlbWVudDsKICAgICAgY29uc3QgY2hpbGRyZW49QXJyYXkuZnJvbShwYXJlbnQuY2hpbGRyZW4pOwoKICAgICAgaWYoCiAgICAgICAgY2hpbGRyZW4uaW5jbHVkZXMobmFtZUVsKSYmCiAgICAgICAgY2hpbGRyZW4uaW5jbHVkZXMoc3R5bGVFbCkKICAgICAgKXsKICAgICAgICBwYXJlbnQuY2xhc3NMaXN0LmFkZCgnbWh1clY2MjRUaWVyVGV4dEdyb3VwJyk7CiAgICAgIH0KICAgIH0KICB9CgogIGZ1bmN0aW9uIGZpeEJhZGdlKGNhcmQpewogICAgY29uc3QgYmFkZ2VDYW5kaWRhdGVzPUFycmF5LmZyb20oCiAgICAgIGNhcmQucXVlcnlTZWxlY3RvckFsbCgnKicpCiAgICApLmZpbHRlcihlbD0+bWF0Y2hlc05ld1RleHQoZWwpKTsKCiAgICBpZighYmFkZ2VDYW5kaWRhdGVzLmxlbmd0aClyZXR1cm47CgogICAgY29uc3QgYmFkZ2U9YmFkZ2VDYW5kaWRhdGVzWzBdOwogICAgYmFkZ2UuY2xhc3NMaXN0LmFkZCgnbWh1clY2MjRUaWVyTmV3Jyk7CiAgICBjYXJkLmNsYXNzTGlzdC5hZGQoJ21odXJWNjI0VGllckNhcmQnKTsKCiAgICBjb25zdCB3cmFwPWJhZGdlLnBhcmVudEVsZW1lbnQ7CiAgICBpZigKICAgICAgd3JhcCYmCiAgICAgIHdyYXAhPT1jYXJkJiYKICAgICAgd3JhcC5nZXRCb3VuZGluZ0NsaWVudFJlY3QoKS53aWR0aDwxNjAKICAgICl7CiAgICAgIHdyYXAuY2xhc3NMaXN0LmFkZCgnbWh1clY2MjRUaWVyTmV3V3JhcCcpOwogICAgfQogIH0KCiAgZnVuY3Rpb24gZml4Q2FyZChjYXJkKXsKICAgIGlmKCF2aXNpYmxlKGNhcmQpKXJldHVybjsKCiAgICBjb25zdCBoYXNOZXc9QXJyYXkuZnJvbShjYXJkLnF1ZXJ5U2VsZWN0b3JBbGwoJyonKSkKICAgICAgLnNvbWUobWF0Y2hlc05ld1RleHQpOwoKICAgIGlmKCFoYXNOZXcpcmV0dXJuOwoKICAgIGZpeEJhZGdlKGNhcmQpOwoKICAgIGNvbnN0IHBhaXI9cGlja05hbWVBbmRTdHlsZShjYXJkKTsKICAgIGlmKHBhaXIpewogICAgICBncm91cFRleHQocGFpci5uYW1lLHBhaXIuc3R5bGUpOwogICAgfQogIH0KCiAgZnVuY3Rpb24gc2Nhbihyb290PWRvY3VtZW50KXsKICAgIGlmKCFpc01vYmlsZSgpKXJldHVybjsKCiAgICBjb25zdCBzY29wZXM9bGlrZWx5VGllclNjb3BlKHJvb3QpOwogICAgY29uc3QgY2FyZHM9bmV3IFNldCgpOwoKICAgIHNjb3Blcy5mb3JFYWNoKHNjb3BlPT57CiAgICAgIEFycmF5LmZyb20oc2NvcGUucXVlcnlTZWxlY3RvckFsbCgnKicpKS5mb3JFYWNoKGVsPT57CiAgICAgICAgaWYoIXZpc2libGUoZWwpKXJldHVybjsKICAgICAgICBpZigKICAgICAgICAgIEFycmF5LmZyb20oZWwucXVlcnlTZWxlY3RvckFsbCgnKicpKQogICAgICAgICAgICAuc29tZShtYXRjaGVzTmV3VGV4dCkKICAgICAgICApewogICAgICAgICAgY29uc3QgY2FyZD1uZWFyZXN0Q2FyZEZyb21CYWRnZSgKICAgICAgICAgICAgQXJyYXkuZnJvbShlbC5xdWVyeVNlbGVjdG9yQWxsKCcqJykpCiAgICAgICAgICAgICAgLmZpbmQobWF0Y2hlc05ld1RleHQpCiAgICAgICAgICApOwogICAgICAgICAgaWYoY2FyZCljYXJkcy5hZGQoY2FyZCk7CiAgICAgICAgfQogICAgICB9KTsKICAgIH0pOwoKICAgIEFycmF5LmZyb20oZG9jdW1lbnQucXVlcnlTZWxlY3RvckFsbCgnKicpKS5mb3JFYWNoKGVsPT57CiAgICAgIGlmKG1hdGNoZXNOZXdUZXh0KGVsKSl7CiAgICAgICAgY29uc3QgY2FyZD1uZWFyZXN0Q2FyZEZyb21CYWRnZShlbCk7CiAgICAgICAgaWYoY2FyZCljYXJkcy5hZGQoY2FyZCk7CiAgICAgIH0KICAgIH0pOwoKICAgIGNhcmRzLmZvckVhY2goZml4Q2FyZCk7CiAgfQoKICBmdW5jdGlvbiBzY2hlZHVsZShyb290PWRvY3VtZW50KXsKICAgIGlmKHF1ZXVlZClyZXR1cm47CiAgICBxdWV1ZWQ9dHJ1ZTsKCiAgICByZXF1ZXN0QW5pbWF0aW9uRnJhbWUoKCk9PnsKICAgICAgcXVldWVkPWZhbHNlOwogICAgICBzY2FuKHJvb3QpOwogICAgfSk7CiAgfQoKICBuZXcgTXV0YXRpb25PYnNlcnZlcihtdXRhdGlvbnM9PnsKICAgIGZvcihjb25zdCBtdXRhdGlvbiBvZiBtdXRhdGlvbnMpewogICAgICBtdXRhdGlvbi5hZGRlZE5vZGVzLmZvckVhY2gobm9kZT0+ewogICAgICAgIGlmKG5vZGUubm9kZVR5cGU9PT1Ob2RlLkVMRU1FTlRfTk9ERSl7CiAgICAgICAgICBzY2hlZHVsZShub2RlKTsKICAgICAgICB9CiAgICAgIH0pOwogICAgfQogIH0pLm9ic2VydmUoZG9jdW1lbnQuZG9jdW1lbnRFbGVtZW50LHsKICAgIGNoaWxkTGlzdDp0cnVlLAogICAgc3VidHJlZTp0cnVlCiAgfSk7CgogIGlmKGRvY3VtZW50LnJlYWR5U3RhdGU9PT0nbG9hZGluZycpewogICAgZG9jdW1lbnQuYWRkRXZlbnRMaXN0ZW5lcigKICAgICAgJ0RPTUNvbnRlbnRMb2FkZWQnLAogICAgICAoKT0+c2NoZWR1bGUoKSwKICAgICAge29uY2U6dHJ1ZX0KICAgICk7CiAgfWVsc2V7CiAgICBzY2hlZHVsZSgpOwogIH0KCiAgd2luZG93LmFkZEV2ZW50TGlzdGVuZXIoJ2xvYWQnLCgpPT5zY2hlZHVsZSgpLHtvbmNlOnRydWV9KTsKICB3aW5kb3cuYWRkRXZlbnRMaXN0ZW5lcigncmVzaXplJywoKT0+c2NoZWR1bGUoKSk7CiAgd2luZG93LmFkZEV2ZW50TGlzdGVuZXIoJ29yaWVudGF0aW9uY2hhbmdlJywoKT0+c2NoZWR1bGUoKSk7CgogIHdpbmRvdy5NSFVSX1Y2MjRfVElFUkxJU1RfRklYPXsKICAgIHJlZnJlc2g6c2NoZWR1bGUsCiAgICBzY2FuCiAgfTsKfSkoKTs=").decode("utf-8")
+          
+          index_path = Path("public/index.html")
+          css_path = Path("public/css/v624-tierlist-new-fix.css")
+          js_path = Path("public/js/v624-tierlist-new-fix.js")
+          report_path = Path("RAPPORT_V624_TIERLIST_NEW_FIX.txt")
+          
+          if not index_path.is_file():
+              raise SystemExit("[ERREUR] public/index.html introuvable.")
+          
+          css_path.parent.mkdir(parents=True, exist_ok=True)
+          js_path.parent.mkdir(parents=True, exist_ok=True)
+          
+          css_path.write_text(CSS + "\n", encoding="utf-8")
+          js_path.write_text(JS + "\n", encoding="utf-8")
+          
+          html = index_path.read_text(encoding="utf-8")
+          
+          patterns = [
+              r'\s*<!-- V624 : tier list badge NEW CSS\. -->\s*'
+              r'<link[^>]+v624-tierlist-new-fix\.css[^>]*>\s*',
+              r'\s*<link[^>]+v624-tierlist-new-fix\.css[^>]*>\s*',
+              r'\s*<!-- V624 : tier list badge NEW JS\. -->\s*'
+              r'<script[^>]+v624-tierlist-new-fix\.js[^>]*>'
+              r'\s*</script>\s*',
+              r'\s*<script[^>]+v624-tierlist-new-fix\.js[^>]*>'
+              r'\s*</script>\s*',
+          ]
+          
+          for pattern in patterns:
+              html = re.sub(pattern, "\n", html, flags=re.I)
+          
+          css_tag = (
+              '<!-- V624 : tier list badge NEW CSS. -->\n'
+              '<link rel="stylesheet" '
+              'href="css/v624-tierlist-new-fix.css?v=624">\n'
+          )
+          
+          js_tag = (
+              '<!-- V624 : tier list badge NEW JS. -->\n'
+              '<script src="js/v624-tierlist-new-fix.js?v=624"></script>\n'
+          )
+          
+          head_matches = list(re.finditer(r'</head\s*>', html, flags=re.I))
+          body_matches = list(re.finditer(r'</body\s*>', html, flags=re.I))
+          
+          if not head_matches:
+              raise SystemExit("[ERREUR] Balise </head> introuvable.")
+          if not body_matches:
+              raise SystemExit("[ERREUR] Balise </body> introuvable.")
+          
+          head_pos = head_matches[-1].start()
+          html = html[:head_pos] + css_tag + html[head_pos:]
+          
+          body_matches = list(re.finditer(r'</body\s*>', html, flags=re.I))
+          body_pos = body_matches[-1].start()
+          html = html[:body_pos] + js_tag + html[body_pos:]
+          
+          index_path.write_text(html, encoding="utf-8")
+          
+          report_path.write_text(
+              """MHUR NEXUS — V624
+          
+          CORRECTION UNIQUE : TIER LIST MOBILE
+          - Le badge NEW! est déplacé en haut à gauche.
+          - Le badge NEW! est plus petit que les autres NEW.
+          - L'animation du badge NEW! est conservée.
+          - Le nom du personnage et le style sont un peu espacés.
+          
+          NON MODIFIÉ
+          - Aucune autre page.
+          - Aucune autre carte.
+          - Aucune donnée.
+          """,
+              encoding="utf-8",
+          )
+          
+          print("[OK] V624 appliqué.")
+          PY
+          
+          cat > /tmp/verifier_v624.py <<'PY'
+          from pathlib import Path
+          
+          html = Path("public/index.html").read_text(encoding="utf-8")
+          css = Path("public/css/v624-tierlist-new-fix.css").read_text(encoding="utf-8")
+          js = Path("public/js/v624-tierlist-new-fix.js").read_text(encoding="utf-8")
+          
+          if html.count("css/v624-tierlist-new-fix.css?v=624") != 1:
+              raise SystemExit("[ERREUR] Référence CSS V624 absente ou dupliquée.")
+          
+          if html.count("js/v624-tierlist-new-fix.js?v=624") != 1:
+              raise SystemExit("[ERREUR] Référence JS V624 absente ou dupliquée.")
+          
+          for token in [
+              ".mhurV624TierNew",
+              ".mhurV624TierStyle",
+              "@keyframes mhurV624TierNewFloat",
+          ]:
+              if token not in css:
+                  raise SystemExit(f"[ERREUR] Élément CSS manquant : {token}")
+          
+          for token in [
+              "matchesNewText",
+              "nearestCardFromBadge",
+              "groupText",
+              "mhurV624TierNew",
+          ]:
+              if token not in js:
+                  raise SystemExit(f"[ERREUR] Élément JS manquant : {token}")
+          
+          print("[OK] Contrôles V624 validés.")
+          PY
+          
+          for tentative in 1 2 3 4 5; do
+            echo "===== Tentative ${tentative}/5 ====="
+          
+            git fetch origin main
+            git reset --hard origin/main
+          
+            python3 /tmp/appliquer_v624.py
+            node --check public/js/v624-tierlist-new-fix.js
+            python3 /tmp/verifier_v624.py
+          
+            git add \
+              public/index.html \
+              public/css/v624-tierlist-new-fix.css \
+              public/js/v624-tierlist-new-fix.js \
+              RAPPORT_V624_TIERLIST_NEW_FIX.txt
+          
+            if git diff --cached --quiet; then
+              echo "[INFO] V624 est déjà appliqué."
+              exit 0
+            fi
+          
+            git commit -m "fix: tier list mobile new badge V624"
+          
+            if git push origin HEAD:main; then
+              echo "[OK] V624 envoyé sur main."
+              exit 0
+            fi
+          
+            echo "[ATTENTE] main a changé, nouvelle tentative."
+            sleep $((tentative * 3))
+          done
+          
+          echo "[ERREUR] Impossible d'envoyer V624 après cinq tentatives."
+          exit 1
