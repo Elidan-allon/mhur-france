@@ -1,0 +1,14 @@
+MHUR NEXUS — V635
+
+CORRECTION
+- Suppression du masquage de #app pendant les changements de page.
+- Suppression visuelle de l'attente ROUTE_MAX de V633C.
+- La nouvelle page est visible dès que le routeur la crée.
+- Les images passent immédiatement en eager et priorité élevée.
+- Le décodage des images se fait en arrière-plan, sans bloquer l'écran.
+
+CONSERVÉ
+- Protection du tout premier chargement V633C.
+- Aucun Service Worker.
+- Aucun rechargement automatique.
+- Aucun changement des costumes, Tier List, builds ou Notes.

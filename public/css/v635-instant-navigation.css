@@ -1,0 +1,17 @@
+/* MHUR Nexus — V635
+   Navigation instantanée : V633C ne doit plus cacher #app entre les pages. */
+
+html.mhurV633CRoutePreparing #app,
+html.mhurV633CRouteReady #app{
+  visibility:visible!important;
+  opacity:1!important;
+  animation:none!important;
+  transition:none!important;
+  pointer-events:auto!important;
+}
+
+/* Les images nouvellement créées restent visibles pendant leur arrivée. */
+html body #app img{
+  visibility:visible!important;
+  opacity:1!important;
+}
