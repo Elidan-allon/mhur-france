@@ -1,0 +1,21 @@
+MHUR NEXUS — RAPPORT V614
+PHOTOS DES COSTUMES SUR MOBILE
+
+CORRECTIONS
+- La vraie photo est reconnue parmi les enfants directs de la carte.
+- La presence du badge NEW ne change plus le selecteur de la photo.
+- Les images verticales utilisent toute la hauteur disponible.
+- Toutes les photos sont legerement remontees.
+- Les anciennes hauteurs fixes de 150/166 px sont neutralisees.
+
+NON MODIFIE
+- Le badge NEW et son animation.
+- Les etoiles et la rarete.
+- Les deux icones T.U.N.I.N.G.
+- Le nom et la famille du costume.
+- Les versions tablette et ordinateur au-dessus de 760 px.
+
+FICHIERS
+- public/index.html
+- public/js/v614-mobile-costume-photos.js
+- RAPPORT_V614_PHOTOS_COSTUMES_MOBILES.txt
