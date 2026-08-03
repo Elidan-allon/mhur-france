@@ -1,0 +1,23 @@
+MHUR NEXUS — V626
+
+TIER LIST — MOBILE ET ORDINATEUR
+- Toutes les cartes gardent une taille fixe et propre.
+- Gentle Criminal ne peut plus être agrandi par le badge NEW.
+- NEW est petit, animé et placé en haut à gauche.
+- Le nom et le style sont séparés.
+- La phrase d'aide est réécrite proprement sans caractères corrompus.
+
+BUILDS COMMUNAUTAIRES — ORDINATEUR
+- Description complète.
+- Tous les effets.
+- Tous les niveaux et sous-effets.
+
+COSTUMES — ORDINATEUR
+- Les détails V619 sont maintenant également enrichis sur PC.
+- Description complète, effets, niveaux et sous-effets.
+
+NON MODIFIÉ
+- Navigation fluide mobile.
+- Données du jeu.
+- Costumes et photos.
+- Patch Notes.

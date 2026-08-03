@@ -173,7 +173,7 @@
   }
 
   function enrich(){
-    if(!mobile())return;
+    
 
     const options=Array.isArray(window.__lastTuningOptions)
       ?window.__lastTuningOptions

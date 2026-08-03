@@ -1,0 +1,615 @@
+/* MHUR Nexus — V626
+   - Tier List fiable sur mobile et ordinateur.
+   - Détails complets T.U.N.I.N.G sur mobile et ordinateur.
+*/
+
+/* ==========================================================
+   1. TIER LIST — TOUS LES ÉCRANS
+   ========================================================== */
+
+html body #mhurTierList .mhurTierDragHelp{
+  font-family:Arial,Helvetica,sans-serif!important;
+  font-variant:normal!important;
+  letter-spacing:0!important;
+  text-transform:none!important;
+  line-height:1.25!important;
+}
+
+html body #mhurTierList .mhurTierItems{
+  align-items:flex-start!important;
+  align-content:flex-start!important;
+}
+
+html body #mhurTierList .mhurTierItem{
+  position:relative!important;
+  display:grid!important;
+  grid-template-rows:96px minmax(25px,auto) 13px!important;
+  align-content:start!important;
+  align-items:start!important;
+  width:128px!important;
+  min-width:128px!important;
+  max-width:128px!important;
+  height:150px!important;
+  min-height:150px!important;
+  max-height:150px!important;
+  padding:6px!important;
+  overflow:hidden!important;
+  box-sizing:border-box!important;
+}
+
+html body #mhurTierList .mhurTierItem > img{
+  position:static!important;
+  inset:auto!important;
+  grid-row:1!important;
+  display:block!important;
+  width:100%!important;
+  height:96px!important;
+  min-width:0!important;
+  min-height:96px!important;
+  max-width:100%!important;
+  max-height:96px!important;
+  margin:0!important;
+  padding:0!important;
+  object-fit:contain!important;
+  object-position:center bottom!important;
+  transform:none!important;
+  translate:none!important;
+  scale:none!important;
+}
+
+html body #mhurTierList .mhurTierItem > small{
+  position:static!important;
+  inset:auto!important;
+  grid-row:2!important;
+  display:-webkit-box!important;
+  width:100%!important;
+  min-width:0!important;
+  min-height:25px!important;
+  max-height:25px!important;
+  margin:5px 0 0!important;
+  padding:0!important;
+  overflow:hidden!important;
+  color:#fff!important;
+  font-size:12px!important;
+  line-height:1.04!important;
+  font-weight:1000!important;
+  text-align:left!important;
+  white-space:normal!important;
+  text-overflow:ellipsis!important;
+  -webkit-box-orient:vertical!important;
+  -webkit-line-clamp:2!important;
+}
+
+html body #mhurTierList .mhurTierItem > .mhurTierStyleName{
+  position:static!important;
+  inset:auto!important;
+  grid-row:3!important;
+  display:block!important;
+  width:100%!important;
+  min-width:0!important;
+  min-height:12px!important;
+  max-height:12px!important;
+  margin:4px 0 0!important;
+  padding:0!important;
+  overflow:hidden!important;
+  color:#ffe100!important;
+  font-size:10px!important;
+  line-height:1!important;
+  font-weight:1000!important;
+  text-align:left!important;
+  white-space:nowrap!important;
+  text-overflow:ellipsis!important;
+}
+
+/* Tous les anciens NEW de Gentle sont masqués.
+   V626 génère son badge indépendant. */
+html body #mhurTierList
+.mhurTierItem.mhurTierGentleV626
+.mhurNewV582,
+html body #mhurTierList
+.mhurTierItem.mhurTierGentleV626
+.s18NewBadge,
+html body #mhurTierList
+.mhurTierItem.mhurTierGentleV626
+[class*="s18NewBadge"],
+html body #mhurTierList
+.mhurTierItem.mhurTierGentleV626
+[class*="mhurTierNew"]:not(.mhurTierNewV626){
+  display:none!important;
+  visibility:hidden!important;
+}
+
+html body #mhurTierList .mhurTierNewV626{
+  position:absolute!important;
+  top:5px!important;
+  left:5px!important;
+  right:auto!important;
+  bottom:auto!important;
+  display:block!important;
+  visibility:visible!important;
+  width:45px!important;
+  height:23px!important;
+  min-width:0!important;
+  min-height:0!important;
+  max-width:45px!important;
+  max-height:23px!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:0!important;
+  background:
+    transparent
+    url('../assets/home/icons/new_badge_custom.png')
+    center/contain no-repeat!important;
+  color:transparent!important;
+  text-indent:-9999px!important;
+  overflow:visible!important;
+  box-shadow:none!important;
+  transform-origin:top left!important;
+  animation:mhurTierNewPulseV626 1.25s ease-in-out infinite!important;
+  z-index:50!important;
+  pointer-events:none!important;
+}
+
+@keyframes mhurTierNewPulseV626{
+  0%,100%{transform:translateY(0) scale(.86)}
+  50%{transform:translateY(-2px) scale(.96)}
+}
+
+@media(max-width:900px){
+  html body #mhurTierList .mhurTierItem{
+    grid-template-rows:74px minmax(25px,auto) 11px!important;
+    width:96px!important;
+    min-width:96px!important;
+    max-width:96px!important;
+    height:132px!important;
+    min-height:132px!important;
+    max-height:132px!important;
+    padding:5px!important;
+  }
+
+  html body #mhurTierList .mhurTierItem > img{
+    height:74px!important;
+    min-height:74px!important;
+    max-height:74px!important;
+  }
+
+  html body #mhurTierList .mhurTierItem > small{
+    min-height:25px!important;
+    max-height:25px!important;
+    margin-top:5px!important;
+    font-size:10px!important;
+  }
+
+  html body #mhurTierList
+  .mhurTierItem > .mhurTierStyleName{
+    min-height:10px!important;
+    max-height:10px!important;
+    margin-top:3px!important;
+    font-size:9px!important;
+  }
+
+  html body #mhurTierList .mhurTierNewV626{
+    top:4px!important;
+    left:4px!important;
+    width:38px!important;
+    height:20px!important;
+    max-width:38px!important;
+    max-height:20px!important;
+  }
+}
+
+/* ==========================================================
+   2. DÉTAILS COMMUNAUTAIRES — TOUS LES ÉCRANS
+   ========================================================== */
+
+html body #cbBuilderModal .cbV625TuningDetails{
+  display:block!important;
+  width:100%!important;
+  min-width:0!important;
+  max-width:none!important;
+  margin:7px 0 0!important;
+  padding:10px!important;
+  border:2px solid rgba(0,0,0,.82)!important;
+  border-radius:9px!important;
+  background:rgba(3,9,17,.92)!important;
+  color:#fff!important;
+  text-align:left!important;
+  white-space:normal!important;
+  overflow:visible!important;
+  box-sizing:border-box!important;
+}
+
+html body #cbBuilderModal .cbV625DetailsTitle,
+html body #app .mhurV619DetailsTitle{
+  margin:0 0 8px!important;
+  color:#ffe500!important;
+  font-size:14px!important;
+  line-height:1.1!important;
+  font-weight:1000!important;
+}
+
+html body #cbBuilderModal .cbV625Effect,
+html body #app .mhurV619Effect{
+  display:block!important;
+  margin:0!important;
+  padding:0!important;
+}
+
+html body #cbBuilderModal .cbV625Effect + .cbV625Effect,
+html body #app .mhurV619Effect + .mhurV619Effect{
+  margin-top:11px!important;
+  padding-top:10px!important;
+  border-top:1px solid rgba(255,255,255,.3)!important;
+}
+
+html body #cbBuilderModal .cbV625EffectName,
+html body #app .mhurV619EffectName{
+  margin:0 0 5px!important;
+  color:#fff!important;
+  font-size:15px!important;
+  line-height:1.14!important;
+  font-weight:1000!important;
+}
+
+html body #cbBuilderModal .cbV625EffectDesc,
+html body #app .mhurV619EffectDesc{
+  margin:0!important;
+  color:#fff!important;
+  font-size:13px!important;
+  line-height:1.3!important;
+  font-weight:700!important;
+}
+
+html body #cbBuilderModal .cbV625LevelsLabel,
+html body #app .mhurV619LevelsLabel{
+  margin:8px 0 5px!important;
+  color:#ffe500!important;
+  font-size:12px!important;
+  line-height:1!important;
+  font-weight:1000!important;
+}
+
+html body #cbBuilderModal .cbV625Levels,
+html body #app .mhurV619Levels{
+  display:flex!important;
+  flex-wrap:wrap!important;
+  gap:5px!important;
+  width:100%!important;
+  max-width:none!important;
+  overflow:visible!important;
+}
+
+html body #cbBuilderModal .cbV625Level,
+html body #app .mhurV619Level{
+  display:inline-flex!important;
+  align-items:center!important;
+  min-height:26px!important;
+  margin:0!important;
+  padding:4px 7px!important;
+  border:1px solid #45658f!important;
+  border-radius:7px!important;
+  background:#172b48!important;
+  color:#fff!important;
+  font-size:11px!important;
+  line-height:1.08!important;
+  font-weight:900!important;
+  white-space:normal!important;
+}
+
+html body #cbBuilderModal .cbV625Level.cbV625Sub,
+html body #app .mhurV619Level.mhurV619Sub{
+  border-color:#ffe500!important;
+  background:#4a3c00!important;
+  color:#ffe500!important;
+}
+
+/* ==========================================================
+   3. ORDINATEUR — BUILDS COMMUNAUTAIRES + COSTUMES
+   ========================================================== */
+
+@media(min-width:761px){
+  /* Créateur de build communautaire. */
+  html body #cbBuilderModal
+  .cbOfficialCreatorScreenV308
+  .tuningOptions{
+    display:grid!important;
+    grid-template-columns:minmax(0,1fr)!important;
+    gap:10px!important;
+    width:100%!important;
+    min-width:0!important;
+    max-width:none!important;
+    max-height:min(62vh,720px)!important;
+    padding:9px!important;
+    overflow-x:hidden!important;
+    overflow-y:auto!important;
+  }
+
+  html body #cbBuilderModal
+  .cbOfficialCreatorScreenV308
+  .tuningOption{
+    position:relative!important;
+    display:grid!important;
+    grid-template-columns:68px minmax(0,1fr) 72px!important;
+    grid-template-areas:
+      "icon main faction"
+      "details details details"!important;
+    column-gap:9px!important;
+    row-gap:7px!important;
+    align-items:start!important;
+    width:100%!important;
+    min-width:0!important;
+    max-width:none!important;
+    min-height:102px!important;
+    height:auto!important;
+    max-height:none!important;
+    padding:9px!important;
+    overflow:visible!important;
+    white-space:normal!important;
+    box-sizing:border-box!important;
+  }
+
+  html body #cbBuilderModal
+  .cbOfficialCreatorScreenV308
+  .tuningOptionIconWrap,
+  html body #cbBuilderModal
+  .cbOfficialCreatorScreenV308
+  .tuningOption > .tuningOptionImg{
+    grid-area:icon!important;
+    width:66px!important;
+    height:66px!important;
+    min-width:66px!important;
+    min-height:66px!important;
+    max-width:66px!important;
+    max-height:66px!important;
+    margin:0!important;
+    overflow:hidden!important;
+  }
+
+  html body #cbBuilderModal
+  .cbOfficialCreatorScreenV308
+  .tuningOptionIconWrap img{
+    width:100%!important;
+    height:100%!important;
+    object-fit:contain!important;
+    object-position:center!important;
+  }
+
+  html body #cbBuilderModal
+  .cbOfficialCreatorScreenV308
+  .tuningOptionMain{
+    grid-area:main!important;
+    display:block!important;
+    width:100%!important;
+    min-width:0!important;
+    max-width:none!important;
+    height:auto!important;
+    max-height:none!important;
+    margin:0!important;
+    padding:0!important;
+    overflow:visible!important;
+  }
+
+  html body #cbBuilderModal
+  .cbOfficialCreatorScreenV308
+  .tuningOptionChar,
+  html body #cbBuilderModal
+  .cbOfficialCreatorScreenV308
+  .tuningOptionName{
+    display:block!important;
+    width:100%!important;
+    max-width:none!important;
+    max-height:none!important;
+    white-space:normal!important;
+    overflow:visible!important;
+    text-overflow:clip!important;
+    -webkit-line-clamp:unset!important;
+  }
+
+  html body #cbBuilderModal
+  .cbOfficialCreatorScreenV308
+  .tuningOptionChar{
+    margin:0 0 3px!important;
+    font-size:12px!important;
+    line-height:1.05!important;
+  }
+
+  html body #cbBuilderModal
+  .cbOfficialCreatorScreenV308
+  .tuningOptionName{
+    margin:0!important;
+    font-size:17px!important;
+    line-height:1.05!important;
+  }
+
+  html body #cbBuilderModal
+  .cbOfficialCreatorScreenV308
+  .tuningOptionDesc{
+    display:none!important;
+  }
+
+  html body #cbBuilderModal
+  .cbOfficialCreatorScreenV308
+  .tuningFaction{
+    grid-area:faction!important;
+    position:static!important;
+    display:block!important;
+    align-self:start!important;
+    width:72px!important;
+    min-width:0!important;
+    max-width:72px!important;
+    margin:0!important;
+    padding:5px 3px!important;
+    border:2px solid rgba(0,0,0,.8)!important;
+    border-radius:7px!important;
+    background:rgba(0,0,0,.82)!important;
+    color:#fff!important;
+    font-size:10px!important;
+    line-height:1.05!important;
+    font-weight:1000!important;
+    text-align:center!important;
+    white-space:normal!important;
+    overflow:visible!important;
+    box-sizing:border-box!important;
+  }
+
+  html body #cbBuilderModal .cbV625TuningDetails{
+    grid-area:details!important;
+  }
+
+  /* Détails de costume sur ordinateur. */
+  html body #app .gameCostumeScreen .tuningOptions{
+    display:grid!important;
+    grid-template-columns:minmax(0,1fr)!important;
+    gap:10px!important;
+    width:100%!important;
+    min-width:0!important;
+    max-width:none!important;
+    max-height:min(70vh,760px)!important;
+    padding:9px!important;
+    overflow-x:hidden!important;
+    overflow-y:auto!important;
+  }
+
+  html body #app .gameCostumeScreen .tuningOption{
+    position:relative!important;
+    display:grid!important;
+    grid-template-columns:68px minmax(0,1fr) 72px!important;
+    grid-template-areas:
+      "icon main faction"
+      "details details details"!important;
+    column-gap:9px!important;
+    row-gap:7px!important;
+    align-items:start!important;
+    width:100%!important;
+    min-width:0!important;
+    max-width:none!important;
+    min-height:102px!important;
+    height:auto!important;
+    max-height:none!important;
+    padding:9px!important;
+    overflow:visible!important;
+    white-space:normal!important;
+    box-sizing:border-box!important;
+  }
+
+  html body #app .gameCostumeScreen
+  .tuningOption > .tuningOptionIconWrap{
+    grid-area:icon!important;
+    width:66px!important;
+    height:66px!important;
+    min-width:66px!important;
+    min-height:66px!important;
+    max-width:66px!important;
+    max-height:66px!important;
+    margin:0!important;
+    overflow:hidden!important;
+  }
+
+  html body #app .gameCostumeScreen
+  .tuningOption > .tuningOptionIconWrap img,
+  html body #app .gameCostumeScreen
+  .tuningOption > .tuningOptionImg,
+  html body #app .gameCostumeScreen
+  .tuningOption > img{
+    width:66px!important;
+    height:66px!important;
+    min-width:66px!important;
+    min-height:66px!important;
+    max-width:66px!important;
+    max-height:66px!important;
+    margin:0!important;
+    object-fit:contain!important;
+    object-position:center!important;
+  }
+
+  html body #app .gameCostumeScreen .tuningOptionMain{
+    grid-area:main!important;
+    display:block!important;
+    width:100%!important;
+    min-width:0!important;
+    max-width:none!important;
+    height:auto!important;
+    max-height:none!important;
+    margin:0!important;
+    padding:0!important;
+    overflow:visible!important;
+  }
+
+  html body #app .gameCostumeScreen .tuningOptionChar,
+  html body #app .gameCostumeScreen .tuningOptionName{
+    display:block!important;
+    width:100%!important;
+    max-width:none!important;
+    max-height:none!important;
+    white-space:normal!important;
+    overflow:visible!important;
+    text-overflow:clip!important;
+    -webkit-line-clamp:unset!important;
+  }
+
+  html body #app .gameCostumeScreen .tuningOptionChar{
+    margin:0 0 3px!important;
+    font-size:12px!important;
+    line-height:1.05!important;
+  }
+
+  html body #app .gameCostumeScreen .tuningOptionName{
+    margin:0!important;
+    font-size:17px!important;
+    line-height:1.05!important;
+  }
+
+  html body #app .gameCostumeScreen .tuningOptionDesc{
+    display:none!important;
+  }
+
+  html body #app .gameCostumeScreen .tuningFaction{
+    grid-area:faction!important;
+    position:static!important;
+    display:block!important;
+    align-self:start!important;
+    width:72px!important;
+    min-width:0!important;
+    max-width:72px!important;
+    margin:0!important;
+    padding:5px 3px!important;
+    border:2px solid rgba(0,0,0,.8)!important;
+    border-radius:7px!important;
+    background:rgba(0,0,0,.82)!important;
+    color:#fff!important;
+    font-size:10px!important;
+    line-height:1.05!important;
+    font-weight:1000!important;
+    text-align:center!important;
+    white-space:normal!important;
+    overflow:visible!important;
+    box-sizing:border-box!important;
+  }
+
+  html body #app .gameCostumeScreen .mhurV619Details{
+    grid-area:details!important;
+    display:block!important;
+    width:100%!important;
+    min-width:0!important;
+    max-width:none!important;
+    margin:7px 0 0!important;
+    padding:10px!important;
+    border:2px solid rgba(0,0,0,.82)!important;
+    border-radius:9px!important;
+    background:rgba(3,9,17,.92)!important;
+    color:#fff!important;
+    text-align:left!important;
+    white-space:normal!important;
+    overflow:visible!important;
+    box-sizing:border-box!important;
+  }
+}
+
+/* Le mobile conserve les détails V625/V619 déjà validés. */
+@media(max-width:760px){
+  html body #cbBuilderModal .cbV625TuningDetails,
+  html body #app .gameCostumeScreen .mhurV619Details{
+    display:block!important;
+  }
+}
