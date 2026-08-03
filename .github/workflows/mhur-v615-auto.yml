@@ -1,0 +1,687 @@
+name: MHUR V615 - Uniformiser les photos de costumes mobile
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/mhur-v615-auto.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: mhur-v615-mobile-costume-images
+  cancel-in-progress: false
+
+jobs:
+  appliquer:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Recuperer le depot
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Installer Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Installer le correctif V615
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          mkdir -p public/js public/css
+
+          cat > public/css/v615-mobile-costume-image-balance.css <<'CSS'
+          /* MHUR Nexus — V615
+             Uniformise les photos de costumes sur mobile, avec ou sans NEW.
+             Objectif :
+             - reduire les photos trop grosses ;
+             - les centrer proprement ;
+             - garder le meme rendu quand le badge NEW est present ;
+             - ne toucher qu'aux cartes de costumes sur mobile.
+          */
+
+          @media (max-width: 760px) {
+            [data-v615-costume-card="1"]{
+              position:relative!important;
+              overflow:hidden!important;
+            }
+
+            [data-v615-costume-card="1"] [data-v615-main-img="1"]{
+              position:absolute!important;
+              left:50%!important;
+              top:43%!important;
+              transform:translate(-50%,-50%)!important;
+              width:auto!important;
+              height:auto!important;
+              max-width:78%!important;
+              max-height:60%!important;
+              object-fit:contain!important;
+              object-position:center center!important;
+              margin:0!important;
+              z-index:2!important;
+            }
+
+            [data-v615-costume-card="1"][data-v615-shape="portrait"] [data-v615-main-img="1"]{
+              max-width:74%!important;
+              max-height:62%!important;
+              top:42.5%!important;
+            }
+
+            [data-v615-costume-card="1"][data-v615-shape="square"] [data-v615-main-img="1"]{
+              max-width:76%!important;
+              max-height:61%!important;
+              top:42.8%!important;
+            }
+
+            [data-v615-costume-card="1"][data-v615-shape="wide"] [data-v615-main-img="1"]{
+              max-width:82%!important;
+              max-height:58%!important;
+              top:43.5%!important;
+            }
+
+            /*
+              Le badge NEW doit rester en haut a droite et ne plus influencer
+              la taille ou le centrage de la photo principale.
+            */
+            [data-v615-costume-card="1"] img[src*="new"],
+            [data-v615-costume-card="1"] img[class*="new"],
+            [data-v615-costume-card="1"] [class*="newBadge"],
+            [data-v615-costume-card="1"] [class*="NewBadge"],
+            [data-v615-costume-card="1"] [class*="badgeNew"]{
+              z-index:6!important;
+            }
+          }
+          CSS
+
+          cat > public/js/v615-mobile-costume-image-balance.js <<'JS'
+          /* MHUR Nexus — V615
+             Uniformise les photos de costumes sur mobile, avec ou sans NEW.
+          */
+          (function(){
+            'use strict';
+
+            if (window.MHUR_V615_COSTUME_BALANCE_LOADED) return;
+            window.MHUR_V615_COSTUME_BALANCE_LOADED = true;
+
+            function isMobile(){
+              return window.matchMedia('(max-width: 760px)').matches;
+            }
+
+            function rect(el){
+              try{
+                return el.getBoundingClientRect();
+              }catch(_error){
+                return {width:0,height:0,top:0,left:0,right:0,bottom:0};
+              }
+            }
+
+            function imgArea(img){
+              const r = rect(img);
+              const width = Math.max(0, r.width || img.naturalWidth || 0);
+              const height = Math.max(0, r.height || img.naturalHeight || 0);
+              return width * height;
+            }
+
+            function getRatio(img){
+              const w = img.naturalWidth || rect(img).width || 1;
+              const h = img.naturalHeight || rect(img).height || 1;
+              return w / Math.max(1, h);
+            }
+
+            function likelyCostumeCard(el){
+              if (!el || !(el instanceof HTMLElement)) return false;
+
+              const labelText = (el.textContent || '').toLowerCase();
+              const classText = ((el.className && String(el.className)) || '').toLowerCase();
+
+              const hasCostumeHint = (
+                classText.includes('costume') ||
+                classText.includes('skin') ||
+                labelText.includes('pur') ||
+                labelText.includes('dangereux') ||
+                labelText.includes('élégant') ||
+                labelText.includes('elegant') ||
+                labelText.includes('loisirs') ||
+                labelText.includes('héro') ||
+                labelText.includes('hero')
+              );
+
+              if (!hasCostumeHint) return false;
+
+              const r = rect(el);
+              if (r.width < 180 || r.height < 240) return false;
+
+              const imgs = Array.from(el.querySelectorAll('img'));
+              if (!imgs.length) return false;
+
+              return true;
+            }
+
+            function candidateCards(){
+              const raw = Array.from(document.querySelectorAll(
+                '[class*="costume"], [class*="Costume"], [class*="skin"], [class*="Skin"], article, section, div'
+              ));
+
+              return raw.filter((el, index, arr) => {
+                if (!likelyCostumeCard(el)) return false;
+
+                // Eviter les gros conteneurs parents si une carte plus precise existe a l'interieur.
+                return !arr.some(other => other !== el && el.contains(other) && likelyCostumeCard(other));
+              });
+            }
+
+            function findMainImage(card){
+              const cardRect = rect(card);
+              const imgs = Array.from(card.querySelectorAll('img')).filter(img => {
+                const r = rect(img);
+                if (r.width < 50 || r.height < 50) return false;
+
+                const centerY = r.top + (r.height / 2);
+                const relativeY = centerY - cardRect.top;
+
+                // Ignorer les petits badges et les icones du bas.
+                if (relativeY > cardRect.height * 0.78) return false;
+                if (r.width <= 110 && r.height <= 110) return false;
+
+                return true;
+              });
+
+              if (!imgs.length) return null;
+
+              imgs.sort((a, b) => imgArea(b) - imgArea(a));
+              return imgs[0] || null;
+            }
+
+            function classifyShape(img){
+              const ratio = getRatio(img);
+
+              if (ratio <= 0.78) return 'portrait';
+              if (ratio <= 1.12) return 'square';
+              return 'wide';
+            }
+
+            function clearPrevious(card){
+              delete card.dataset.v615CostumeCard;
+              delete card.dataset.v615Shape;
+
+              Array.from(card.querySelectorAll('[data-v615-main-img="1"]')).forEach(img => {
+                delete img.dataset.v615MainImg;
+              });
+            }
+
+            function applyCard(card){
+              clearPrevious(card);
+
+              const mainImage = findMainImage(card);
+              if (!mainImage) return;
+
+              card.dataset.v615CostumeCard = '1';
+              card.dataset.v615Shape = classifyShape(mainImage);
+              mainImage.dataset.v615MainImg = '1';
+            }
+
+            function refresh(){
+              if (!isMobile()) return;
+              candidateCards().forEach(applyCard);
+            }
+
+            let raf = 0;
+            function schedule(){
+              if (raf) cancelAnimationFrame(raf);
+              raf = requestAnimationFrame(() => {
+                raf = 0;
+                refresh();
+              });
+            }
+
+            if (document.readyState === 'loading'){
+              document.addEventListener('DOMContentLoaded', schedule, {once:true});
+            } else {
+              schedule();
+            }
+
+            window.addEventListener('load', schedule, {once:true});
+            window.addEventListener('resize', schedule);
+            window.addEventListener('orientationchange', schedule);
+            window.addEventListener('scroll', schedule, {passive:true});
+            window.addEventListener('hashchange', schedule);
+            window.addEventListener('popstate', schedule);
+            document.addEventListener('click', schedule, true);
+            document.addEventListener('pointerdown', schedule, true);
+
+            const observer = new MutationObserver(schedule);
+            observer.observe(document.documentElement, {
+              childList: true,
+              subtree: true,
+              attributes: true
+            });
+
+            window.MHUR_V615_COSTUME_BALANCE = {
+              refresh
+            };
+          })();
+          JS
+
+          python3 <<'PY'
+          from pathlib import Path
+          import re
+
+          index_path = Path("public/index.html")
+          report_path = Path("RAPPORT_V615_COSTUMES_MOBILE_UNIFORMES.txt")
+
+          if not index_path.is_file():
+              raise SystemExit("[ERREUR] public/index.html est introuvable.")
+
+          html = index_path.read_text(encoding="utf-8")
+
+          patterns = [
+              r'\s*<!-- V615 : costumes mobile uniformes CSS\. -->\s*<link[^>]+href=["\'](?:/)?css/v615-mobile-costume-image-balance\.css(?:\?[^"\']*)?["\'][^>]*>\s*',
+              r'\s*<!-- V615 : costumes mobile uniformes JS\. -->\s*<script[^>]+src=["\'](?:/)?js/v615-mobile-costume-image-balance\.js(?:\?[^"\']*)?["\'][^>]*>\s*</script>\s*',
+              r'\s*<link[^>]+href=["\'](?:/)?css/v615-mobile-costume-image-balance\.css(?:\?[^"\']*)?["\'][^>]*>\s*',
+              r'\s*<script[^>]+src=["\'](?:/)?js/v615-mobile-costume-image-balance\.js(?:\?[^"\']*)?["\'][^>]*>\s*</script>\s*'
+          ]
+
+          for pattern in patterns:
+              html = re.sub(pattern, "\n", html, flags=re.I)
+
+          css_tag = (
+              '<!-- V615 : costumes mobile uniformes CSS. -->\n'
+              '<link rel="stylesheet" href="css/v615-mobile-costume-image-balance.css?v=615"></link>\n'
+          )
+          js_tag = (
+              '<!-- V615 : costumes mobile uniformes JS. -->\n'
+              '<script src="js/v615-mobile-costume-image-balance.js?v=615"></script>\n'
+          )
+
+          if "</head>" not in html:
+              raise SystemExit("[ERREUR] Balise </head> introuvable.")
+          if "</body>" not in html:
+              raise SystemExit("[ERREUR] Balise </body> introuvable.")
+
+          html = html.replace("</head>", css_tag + "</head>", 1)
+          html = html.replace("</body>", js_tag + "</body>", 1)
+
+          index_path.write_text(html, encoding="utf-8")
+
+          report_path.write_text(
+              """MHUR NEXUS — RAPPORT V615
+UNIFORMISATION DES PHOTOS DE COSTUMES SUR MOBILE
+
+BUT
+- Les costumes sans badge NEW ne doivent plus etre enormes.
+- Les costumes avec badge NEW doivent avoir exactement le meme comportement.
+- Les photos doivent etre reduites, recentrees et legerement remontees.
+
+CORRECTION
+- Detection de la vraie photo principale de chaque carte.
+- Le badge NEW n'influence plus la detection de la photo.
+- Classement de la photo (portrait / carre / large).
+- Taille harmonisee selon le format de la photo.
+- Centrage horizontal et vertical dans la zone visuelle.
+
+NON MODIFIE
+- Desktop
+- Rareté, etoiles, badges NEW
+- T.U.N.I.N.G et labels
+- Bouton Retour, panneaux, Patch Notes
+
+FICHIERS
+- public/css/v615-mobile-costume-image-balance.css
+- public/js/v615-mobile-costume-image-balance.js
+- public/index.html
+- RAPPORT_V615_COSTUMES_MOBILE_UNIFORMES.txt
+""",
+              encoding="utf-8"
+          )
+
+          print("[OK] V615 installe.")
+          PY
+
+      - name: Verifier V615
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          node --check public/js/v615-mobile-costume-image-balance.js
+
+          python3 <<'PY'
+          from pathlib import Path
+
+          html = Path("public/index.html").read_text(encoding="utf-8")
+          js = Path("public/js/v615-mobile-costume-image-balance.js").read_text(encoding="utf-8")
+          css = Path("public/css/v615-mobile-costume-image-balance.css").read_text(encoding="utf-8")
+
+          if html.count("css/v615-mobile-costume-image-balance.css?v=615") != 1:
+              raise SystemExit("[ERREUR] Reference CSS V615 absente ou dupliquee.")
+
+          if html.count("js/v615-mobile-costume-image-balance.js?v=615") != 1:
+              raise SystemExit("[ERREUR] Reference JS V615 absente ou dupliquee.")
+
+          for token in [
+              "data-v615-costume-card",
+              "data-v615-main-img",
+              "classifyShape",
+              "findMainImage"
+          ]:
+              if token not in js:
+                  raise SystemExit(f"[ERREUR] Element JS manquant : {token}")
+
+          for token in [
+              '[data-v615-costume-card="1"]',
+              'max-width:78%!important',
+              'max-height:60%!important'
+          ]:
+              if token not in css:
+                  raise SystemExit(f"[ERREUR] Element CSS manquant : {token}")
+
+          print("[OK] Controle statique V615 valide.")
+          PY
+
+      - name: Enregistrer automatiquement les changements
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          for tentative in 1 2 3 4 5; do
+            echo "===== Tentative ${tentative}/5 ====="
+
+            git fetch origin main
+            git reset --hard origin/main
+
+            # Rejouer l'installation sur la derniere version.
+            bash -lc '
+              set -euo pipefail
+              mkdir -p public/js public/css
+            '
+
+            # Reexecuter le correctif
+            bash <<'BASH'
+            set -euo pipefail
+
+            cat > public/css/v615-mobile-costume-image-balance.css <<'CSS'
+          /* MHUR Nexus — V615
+             Uniformise les photos de costumes sur mobile, avec ou sans NEW.
+             Objectif :
+             - reduire les photos trop grosses ;
+             - les centrer proprement ;
+             - garder le meme rendu quand le badge NEW est present ;
+             - ne toucher qu'aux cartes de costumes sur mobile.
+          */
+
+          @media (max-width: 760px) {
+            [data-v615-costume-card="1"]{
+              position:relative!important;
+              overflow:hidden!important;
+            }
+
+            [data-v615-costume-card="1"] [data-v615-main-img="1"]{
+              position:absolute!important;
+              left:50%!important;
+              top:43%!important;
+              transform:translate(-50%,-50%)!important;
+              width:auto!important;
+              height:auto!important;
+              max-width:78%!important;
+              max-height:60%!important;
+              object-fit:contain!important;
+              object-position:center center!important;
+              margin:0!important;
+              z-index:2!important;
+            }
+
+            [data-v615-costume-card="1"][data-v615-shape="portrait"] [data-v615-main-img="1"]{
+              max-width:74%!important;
+              max-height:62%!important;
+              top:42.5%!important;
+            }
+
+            [data-v615-costume-card="1"][data-v615-shape="square"] [data-v615-main-img="1"]{
+              max-width:76%!important;
+              max-height:61%!important;
+              top:42.8%!important;
+            }
+
+            [data-v615-costume-card="1"][data-v615-shape="wide"] [data-v615-main-img="1"]{
+              max-width:82%!important;
+              max-height:58%!important;
+              top:43.5%!important;
+            }
+
+            [data-v615-costume-card="1"] img[src*="new"],
+            [data-v615-costume-card="1"] img[class*="new"],
+            [data-v615-costume-card="1"] [class*="newBadge"],
+            [data-v615-costume-card="1"] [class*="NewBadge"],
+            [data-v615-costume-card="1"] [class*="badgeNew"]{
+              z-index:6!important;
+            }
+          }
+CSS
+
+            cat > public/js/v615-mobile-costume-image-balance.js <<'JS'
+          (function(){
+            'use strict';
+
+            if (window.MHUR_V615_COSTUME_BALANCE_LOADED) return;
+            window.MHUR_V615_COSTUME_BALANCE_LOADED = true;
+
+            function isMobile(){
+              return window.matchMedia('(max-width: 760px)').matches;
+            }
+
+            function rect(el){
+              try{
+                return el.getBoundingClientRect();
+              }catch(_error){
+                return {width:0,height:0,top:0,left:0,right:0,bottom:0};
+              }
+            }
+
+            function imgArea(img){
+              const r = rect(img);
+              const width = Math.max(0, r.width || img.naturalWidth || 0);
+              const height = Math.max(0, r.height || img.naturalHeight || 0);
+              return width * height;
+            }
+
+            function getRatio(img){
+              const w = img.naturalWidth || rect(img).width || 1;
+              const h = img.naturalHeight || rect(img).height || 1;
+              return w / Math.max(1, h);
+            }
+
+            function likelyCostumeCard(el){
+              if (!el || !(el instanceof HTMLElement)) return false;
+
+              const labelText = (el.textContent || '').toLowerCase();
+              const classText = ((el.className && String(el.className)) || '').toLowerCase();
+
+              const hasCostumeHint = (
+                classText.includes('costume') ||
+                classText.includes('skin') ||
+                labelText.includes('pur') ||
+                labelText.includes('dangereux') ||
+                labelText.includes('élégant') ||
+                labelText.includes('elegant') ||
+                labelText.includes('loisirs') ||
+                labelText.includes('héro') ||
+                labelText.includes('hero')
+              );
+
+              if (!hasCostumeHint) return false;
+
+              const r = rect(el);
+              if (r.width < 180 || r.height < 240) return false;
+
+              const imgs = Array.from(el.querySelectorAll('img'));
+              if (!imgs.length) return false;
+
+              return true;
+            }
+
+            function candidateCards(){
+              const raw = Array.from(document.querySelectorAll(
+                '[class*="costume"], [class*="Costume"], [class*="skin"], [class*="Skin"], article, section, div'
+              ));
+
+              return raw.filter((el, index, arr) => {
+                if (!likelyCostumeCard(el)) return false;
+                return !arr.some(other => other !== el && el.contains(other) && likelyCostumeCard(other));
+              });
+            }
+
+            function findMainImage(card){
+              const cardRect = rect(card);
+              const imgs = Array.from(card.querySelectorAll('img')).filter(img => {
+                const r = rect(img);
+                if (r.width < 50 || r.height < 50) return false;
+                const centerY = r.top + (r.height / 2);
+                const relativeY = centerY - cardRect.top;
+                if (relativeY > cardRect.height * 0.78) return false;
+                if (r.width <= 110 && r.height <= 110) return false;
+                return true;
+              });
+
+              if (!imgs.length) return null;
+
+              imgs.sort((a, b) => imgArea(b) - imgArea(a));
+              return imgs[0] || null;
+            }
+
+            function classifyShape(img){
+              const ratio = getRatio(img);
+              if (ratio <= 0.78) return 'portrait';
+              if (ratio <= 1.12) return 'square';
+              return 'wide';
+            }
+
+            function clearPrevious(card){
+              delete card.dataset.v615CostumeCard;
+              delete card.dataset.v615Shape;
+              Array.from(card.querySelectorAll('[data-v615-main-img="1"]')).forEach(img => {
+                delete img.dataset.v615MainImg;
+              });
+            }
+
+            function applyCard(card){
+              clearPrevious(card);
+              const mainImage = findMainImage(card);
+              if (!mainImage) return;
+              card.dataset.v615CostumeCard = '1';
+              card.dataset.v615Shape = classifyShape(mainImage);
+              mainImage.dataset.v615MainImg = '1';
+            }
+
+            function refresh(){
+              if (!isMobile()) return;
+              candidateCards().forEach(applyCard);
+            }
+
+            let raf = 0;
+            function schedule(){
+              if (raf) cancelAnimationFrame(raf);
+              raf = requestAnimationFrame(() => {
+                raf = 0;
+                refresh();
+              });
+            }
+
+            if (document.readyState === 'loading'){
+              document.addEventListener('DOMContentLoaded', schedule, {once:true});
+            } else {
+              schedule();
+            }
+
+            window.addEventListener('load', schedule, {once:true});
+            window.addEventListener('resize', schedule);
+            window.addEventListener('orientationchange', schedule);
+            window.addEventListener('scroll', schedule, {passive:true});
+            window.addEventListener('hashchange', schedule);
+            window.addEventListener('popstate', schedule);
+            document.addEventListener('click', schedule, true);
+            document.addEventListener('pointerdown', schedule, true);
+
+            const observer = new MutationObserver(schedule);
+            observer.observe(document.documentElement, {
+              childList: true,
+              subtree: true,
+              attributes: true
+            });
+
+            window.MHUR_V615_COSTUME_BALANCE = { refresh };
+          })();
+JS
+
+            python3 <<'PY'
+            from pathlib import Path
+            import re
+
+            index_path = Path("public/index.html")
+            html = index_path.read_text(encoding="utf-8")
+
+            patterns = [
+                r'\s*<!-- V615 : costumes mobile uniformes CSS\. -->\s*<link[^>]+href=["\'](?:/)?css/v615-mobile-costume-image-balance\.css(?:\?[^"\']*)?["\'][^>]*>\s*',
+                r'\s*<!-- V615 : costumes mobile uniformes JS\. -->\s*<script[^>]+src=["\'](?:/)?js/v615-mobile-costume-image-balance\.js(?:\?[^"\']*)?["\'][^>]*>\s*</script>\s*',
+                r'\s*<link[^>]+href=["\'](?:/)?css/v615-mobile-costume-image-balance\.css(?:\?[^"\']*)?["\'][^>]*>\s*',
+                r'\s*<script[^>]+src=["\'](?:/)?js/v615-mobile-costume-image-balance\.js(?:\?[^"\']*)?["\'][^>]*>\s*</script>\s*'
+            ]
+
+            for pattern in patterns:
+                html = re.sub(pattern, "\n", html, flags=re.I)
+
+            css_tag = (
+                '<!-- V615 : costumes mobile uniformes CSS. -->\n'
+                '<link rel="stylesheet" href="css/v615-mobile-costume-image-balance.css?v=615"></link>\n'
+            )
+            js_tag = (
+                '<!-- V615 : costumes mobile uniformes JS. -->\n'
+                '<script src="js/v615-mobile-costume-image-balance.js?v=615"></script>\n'
+            )
+
+            html = html.replace("</head>", css_tag + "</head>", 1)
+            html = html.replace("</body>", js_tag + "</body>", 1)
+
+            index_path.write_text(html, encoding="utf-8")
+            Path("RAPPORT_V615_COSTUMES_MOBILE_UNIFORMES.txt").write_text(
+                "V615 applique.\n",
+                encoding="utf-8"
+            )
+            PY
+BASH
+
+            node --check public/js/v615-mobile-costume-image-balance.js
+
+            git add \
+              public/index.html \
+              public/js/v615-mobile-costume-image-balance.js \
+              public/css/v615-mobile-costume-image-balance.css \
+              RAPPORT_V615_COSTUMES_MOBILE_UNIFORMES.txt
+
+            if git diff --cached --quiet; then
+              echo "[INFO] V615 est deja applique."
+              exit 0
+            fi
+
+            git commit -m "fix: uniformiser les photos de costumes mobile V615"
+
+            if git push origin HEAD:main; then
+              echo "[OK] V615 envoye sur main."
+              exit 0
+            fi
+
+            echo "[ATTENTE] main a change pendant le push, nouvelle tentative."
+            sleep $((tentative * 3))
+          done
+
+          echo "[ERREUR] Impossible d'envoyer V615 apres cinq tentatives."
+          exit 1
