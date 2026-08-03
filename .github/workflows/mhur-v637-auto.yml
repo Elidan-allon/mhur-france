@@ -1,0 +1,814 @@
+name: MHUR V637 - Nettoyage rendu et images légères
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/mhur-v637-auto.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: mhur-v637-final-cleanup
+  cancel-in-progress: false
+
+jobs:
+  appliquer:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+
+    steps:
+      - name: Recuperer le depot
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Installer Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: "22"
+          check-latest: false
+          package-manager-cache: false
+
+      - name: Nettoyer le rendu et optimiser les images
+        shell: bash
+        run: |
+          set -euo pipefail
+          
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          
+          cat > /tmp/appliquer_v637.py <<'PY'
+          from pathlib import Path
+          import base64
+          import json
+          import re
+          
+          CSS=base64.b64decode("LyogTUhVUiBOZXh1cyDigJQgVjYzNwogICBVbiBzZXVsIG1vdGV1ciBkZSBwcmVtaWVyIHJlbmR1LCBzYW5zIMOpY3JhbiBuaSBkw6lsYWkgZW50cmUgbGVzIHBhZ2VzLiAqLwoKaHRtbCwKYm9keXsKICBiYWNrZ3JvdW5kOiMwNzEwMWYhaW1wb3J0YW50Owp9CgovKiBTw6ljdXJpdMOpIGNvbnRyZSBsZXMgYW5jaWVubmVzIGNsYXNzZXMgZGUgcmVuZHUsIG3Dqm1lIHNpIGxlIG5hdmlnYXRldXIKICAgcG9zc8OoZGUgZW5jb3JlIHVuZSBhbmNpZW5uZSBjb3BpZSBkdSBIVE1MIHBlbmRhbnQgdW5lIGFjdHVhbGlzYXRpb24uICovCmh0bWwubWh1clY2MzBCb290aW5nOjpiZWZvcmUsCmh0bWwubWh1clY2MzBCb290aW5nOjphZnRlciwKaHRtbC5taHVyVjYzMFJvdXRlTG9hZGluZzo6YmVmb3JlLApodG1sLm1odXJWNjMwUm91dGVMb2FkaW5nOjphZnRlcnsKICBjb250ZW50Om5vbmUhaW1wb3J0YW50OwogIGRpc3BsYXk6bm9uZSFpbXBvcnRhbnQ7Cn0KCmh0bWwubWh1clY2MzNDUHJlcGFyaW5nIGJvZHk+KiwKaHRtbC5taHVyVjYzM0NSb3V0ZVByZXBhcmluZyAjYXBwLApodG1sLm1odXJWNjM2SW5pdGlhbFByZXBhcmluZyBib2R5PiosCmh0bWwubWh1clY2MzZSb3V0ZVByZXBhcmluZyAjYXBwewogIHZpc2liaWxpdHk6dmlzaWJsZSFpbXBvcnRhbnQ7CiAgb3BhY2l0eToxIWltcG9ydGFudDsKICBwb2ludGVyLWV2ZW50czphdXRvIWltcG9ydGFudDsKfQoKLyogTGVzIGFuY2llbm5lcyBjb3VjaGVzIG5lIGRvaXZlbnQgcGx1cyBtYXNxdWVyIGxlcyBpbWFnZXMgZGUgY29zdHVtZXMuICovCmh0bWwgYm9keSAuY29zdHVtZVRpbGUgPiBpbWcsCmh0bWwgYm9keSAjYXBwIC5jb3N0dW1lVGlsZSA+IGltZ1tkYXRhLXY2MjItd2FpdGluZ10sCmh0bWwgYm9keSAjYXBwIC5jb3N0dW1lVGlsZSA+IGltZzpub3QoW2RhdGEtdjYyMi1yZWFkeV0pewogIHZpc2liaWxpdHk6dmlzaWJsZSFpbXBvcnRhbnQ7CiAgb3BhY2l0eToxIWltcG9ydGFudDsKfQoKLyogTGVzIGdyYW5kZXMgbGlzdGVzIHNvbnQgbW9pbnMgY2/Du3RldXNlcyDDoCBkZXNzaW5lciBob3JzIMOpY3Jhbi4gKi8KaHRtbCBib2R5IC5jb3N0dW1lVGlsZSwKaHRtbCBib2R5IC5taHVyVGllckl0ZW0sCmh0bWwgYm9keSAudHVuaW5nQ2FyZCwKaHRtbCBib2R5IC5jb21tdW5pdHlCdWlsZENhcmR7CiAgY29udGVudC12aXNpYmlsaXR5OmF1dG87CiAgY29udGFpbi1pbnRyaW5zaWMtc2l6ZTphdXRvIDQyMHB4Owp9").decode("utf-8")
+          EARLY=base64.b64decode("PHNjcmlwdCBpZD0ibWh1ci12NjM3LWZpcnN0LXJlbmRlci1zdGFydCI+CihmdW5jdGlvbigpewogICd1c2Ugc3RyaWN0JzsKCiAgdmFyIHJvb3Q9ZG9jdW1lbnQuZG9jdW1lbnRFbGVtZW50OwoKICByb290LmNsYXNzTGlzdC5yZW1vdmUoCiAgICAnbWh1clY2MzBCb290aW5nJywKICAgICdtaHVyVjYzMFJvdXRlTG9hZGluZycsCiAgICAnbWh1clY2MzBSZWFkeScsCiAgICAnbWh1clY2MzFOb0xvYWRlcicsCiAgICAnbWh1clY2MzNQcmVwYXJpbmcnLAogICAgJ21odXJWNjMzUm91dGVQcmVwYXJpbmcnLAogICAgJ21odXJWNjMzQ1ByZXBhcmluZycsCiAgICAnbWh1clY2MzNDUm91dGVQcmVwYXJpbmcnLAogICAgJ21odXJWNjM1UHJlcGFyaW5nJywKICAgICdtaHVyVjYzNkluaXRpYWxQcmVwYXJpbmcnLAogICAgJ21odXJWNjM2Um91dGVQcmVwYXJpbmcnCiAgKTsKCiAgcm9vdC5jbGFzc0xpc3QuYWRkKCdtaHVyVjYzN1ByZXBhcmluZycpOwoKICAvKgogICAgQXVjdW4gbG9nbyBldCBhdWN1biB0ZXh0ZSA6IHNldWxlbWVudCBsZSBmb25kIG5vcm1hbCBkdSBzaXRlLgogICAgQ2UgZMOpbGFpIGVzdCB1bmUgc8OpY3VyaXTDqSwgcGFzIHVuZSBhdHRlbnRlIG9ibGlnYXRvaXJlLgogICovCiAgd2luZG93Lk1IVVJfVjYzN19TQUZFVFk9c2V0VGltZW91dChmdW5jdGlvbigpewogICAgcm9vdC5jbGFzc0xpc3QucmVtb3ZlKCdtaHVyVjYzN1ByZXBhcmluZycpOwogICAgcm9vdC5jbGFzc0xpc3QuYWRkKCdtaHVyVjYzN1JlYWR5Jyk7CiAgfSw5MDApOwp9KSgpOwo8L3NjcmlwdD4KPHN0eWxlIGlkPSJtaHVyLXY2MzctZmlyc3QtcmVuZGVyLWNyaXRpY2FsIj4KaHRtbCwKYm9keXsKICBiYWNrZ3JvdW5kOiMwNzEwMWYhaW1wb3J0YW50Owp9CgpodG1sLm1odXJWNjM3UHJlcGFyaW5nIGJvZHl7CiAgb3ZlcmZsb3c6aGlkZGVuIWltcG9ydGFudDsKfQoKaHRtbC5taHVyVjYzN1ByZXBhcmluZyBib2R5Pip7CiAgdmlzaWJpbGl0eTpoaWRkZW4haW1wb3J0YW50OwogIG9wYWNpdHk6MCFpbXBvcnRhbnQ7Cn0KCmh0bWwubWh1clY2MzdQcmVwYXJpbmc6OmJlZm9yZXsKICBjb250ZW50OiIiIWltcG9ydGFudDsKICBwb3NpdGlvbjpmaXhlZCFpbXBvcnRhbnQ7CiAgaW5zZXQ6MCFpbXBvcnRhbnQ7CiAgZGlzcGxheTpibG9jayFpbXBvcnRhbnQ7CiAgYmFja2dyb3VuZDojMDcxMDFmIWltcG9ydGFudDsKICB2aXNpYmlsaXR5OnZpc2libGUhaW1wb3J0YW50OwogIG9wYWNpdHk6MSFpbXBvcnRhbnQ7CiAgcG9pbnRlci1ldmVudHM6bm9uZSFpbXBvcnRhbnQ7CiAgei1pbmRleDoyMTQ3NDgzMDAwIWltcG9ydGFudDsKfQoKaHRtbC5taHVyVjYzN1JlYWR5IGJvZHksCmh0bWwubWh1clY2MzdSZWFkeSBib2R5PiosCmh0bWwubWh1clY2MzdSZWFkeSAjYXBwewogIHZpc2liaWxpdHk6dmlzaWJsZSFpbXBvcnRhbnQ7CiAgb3BhY2l0eToxIWltcG9ydGFudDsKfQo8L3N0eWxlPg==").decode("utf-8")
+          FINAL_JS=base64.b64decode("LyogTUhVUiBOZXh1cyDigJQgVjYzNwogICBQcmVtaWVyIHJlbmR1IGZpbmFsIGV0IGltYWdlcyBwcmlvcml0YWlyZXMuCgogICAtIGF1Y3VuIFNlcnZpY2UgV29ya2VyIDsKICAgLSBhdWN1biByZWNoYXJnZW1lbnQgYXV0b21hdGlxdWUgOwogICAtIGF1Y3VuZSBhdHRlbnRlIGxvcnMgZGVzIGNoYW5nZW1lbnRzIGRlIHBhZ2UgOwogICAtIGxlIHByZW1pZXIgcmVuZHUgZXN0IHLDqXbDqWzDqSBkw6hzIHF1ZSBsZSBET00gZXN0IHByw6p0LgoqLwooZnVuY3Rpb24oKXsKICAndXNlIHN0cmljdCc7CgogIGlmKHdpbmRvdy5NSFVSX1Y2MzdfRklOQUxfUkVOREVSX0xPQURFRClyZXR1cm47CiAgd2luZG93Lk1IVVJfVjYzN19GSU5BTF9SRU5ERVJfTE9BREVEPXRydWU7CgogIGNvbnN0IHJvb3Q9ZG9jdW1lbnQuZG9jdW1lbnRFbGVtZW50OwogIGxldCBiYXRjaFF1ZXVlZD1mYWxzZTsKCiAgZnVuY3Rpb24gcHJpb3JpdGl6ZUltYWdlcyhzY29wZT1kb2N1bWVudCl7CiAgICBjb25zdCBpbWFnZXM9QXJyYXkuZnJvbSgKICAgICAgc2NvcGUucXVlcnlTZWxlY3RvckFsbD8uKCdpbWcnKXx8W10KICAgICk7CgogICAgY29uc3Qgdmlld3BvcnRIZWlnaHQ9TWF0aC5tYXgoCiAgICAgIHdpbmRvdy5pbm5lckhlaWdodHx8MCwKICAgICAgZG9jdW1lbnQuZG9jdW1lbnRFbGVtZW50LmNsaWVudEhlaWdodHx8MAogICAgKTsKCiAgICBpbWFnZXMuZm9yRWFjaCgoaW1hZ2UsaW5kZXgpPT57CiAgICAgIGltYWdlLmRlY29kaW5nPSdhc3luYyc7CiAgICAgIGltYWdlLmRhdGFzZXQudjYyMlJlYWR5PScxJzsKICAgICAgZGVsZXRlIGltYWdlLmRhdGFzZXQudjYyMldhaXRpbmc7CgogICAgICBjb25zdCByZWN0PWltYWdlLmdldEJvdW5kaW5nQ2xpZW50UmVjdCgpOwogICAgICBjb25zdCBuZWFyVmlld3BvcnQ9KAogICAgICAgIHJlY3QuaGVpZ2h0PjAmJgogICAgICAgIHJlY3QuYm90dG9tPi0yMDAmJgogICAgICAgIHJlY3QudG9wPHZpZXdwb3J0SGVpZ2h0KjEuNgogICAgICApOwoKICAgICAgaWYobmVhclZpZXdwb3J0fHxpbmRleDwxMCl7CiAgICAgICAgaW1hZ2UubG9hZGluZz0nZWFnZXInOwoKICAgICAgICB0cnl7CiAgICAgICAgICBpbWFnZS5mZXRjaFByaW9yaXR5PWluZGV4PDY/J2hpZ2gnOidhdXRvJzsKICAgICAgICB9Y2F0Y2goX2Vycm9yKXt9CiAgICAgIH1lbHNlewogICAgICAgIGltYWdlLmxvYWRpbmc9J2xhenknOwoKICAgICAgICB0cnl7CiAgICAgICAgICBpbWFnZS5mZXRjaFByaW9yaXR5PSdsb3cnOwogICAgICAgIH1jYXRjaChfZXJyb3Ipe30KICAgICAgfQogICAgfSk7CiAgfQoKICBmdW5jdGlvbiByZXZlYWwoKXsKICAgIGNsZWFyVGltZW91dCh3aW5kb3cuTUhVUl9WNjM3X1NBRkVUWSk7CgogICAgcm9vdC5jbGFzc0xpc3QucmVtb3ZlKCdtaHVyVjYzN1ByZXBhcmluZycpOwogICAgcm9vdC5jbGFzc0xpc3QuYWRkKCdtaHVyVjYzN1JlYWR5Jyk7CgogICAgZG9jdW1lbnQuYm9keT8uc3R5bGUucmVtb3ZlUHJvcGVydHkoJ292ZXJmbG93Jyk7CiAgICBwcmlvcml0aXplSW1hZ2VzKGRvY3VtZW50KTsKCiAgICByZXF1ZXN0QW5pbWF0aW9uRnJhbWUoKCk9PnsKICAgICAgcHJpb3JpdGl6ZUltYWdlcyhkb2N1bWVudCk7CiAgICB9KTsKICB9CgogIGZ1bmN0aW9uIHNjaGVkdWxlSW1hZ2VzKCl7CiAgICBpZihiYXRjaFF1ZXVlZClyZXR1cm47CiAgICBiYXRjaFF1ZXVlZD10cnVlOwoKICAgIHJlcXVlc3RBbmltYXRpb25GcmFtZSgoKT0+ewogICAgICBiYXRjaFF1ZXVlZD1mYWxzZTsKICAgICAgcHJpb3JpdGl6ZUltYWdlcygKICAgICAgICBkb2N1bWVudC5nZXRFbGVtZW50QnlJZCgnYXBwJyl8fGRvY3VtZW50CiAgICAgICk7CiAgICB9KTsKICB9CgogIG5ldyBNdXRhdGlvbk9ic2VydmVyKHJlY29yZHM9PnsKICAgIGlmKAogICAgICByZWNvcmRzLnNvbWUocmVjb3JkPT4KICAgICAgICByZWNvcmQuYWRkZWROb2Rlcy5sZW5ndGh8fAogICAgICAgIHJlY29yZC50eXBlPT09J2F0dHJpYnV0ZXMnCiAgICAgICkKICAgICl7CiAgICAgIHNjaGVkdWxlSW1hZ2VzKCk7CiAgICB9CiAgfSkub2JzZXJ2ZShkb2N1bWVudC5kb2N1bWVudEVsZW1lbnQsewogICAgY2hpbGRMaXN0OnRydWUsCiAgICBzdWJ0cmVlOnRydWUsCiAgICBhdHRyaWJ1dGVzOnRydWUsCiAgICBhdHRyaWJ1dGVGaWx0ZXI6WydzcmMnXQogIH0pOwoKICBpZihkb2N1bWVudC5yZWFkeVN0YXRlPT09J2xvYWRpbmcnKXsKICAgIGRvY3VtZW50LmFkZEV2ZW50TGlzdGVuZXIoCiAgICAgICdET01Db250ZW50TG9hZGVkJywKICAgICAgKCk9PnsKICAgICAgICByZXF1ZXN0QW5pbWF0aW9uRnJhbWUoKCk9PnsKICAgICAgICAgIHJlcXVlc3RBbmltYXRpb25GcmFtZShyZXZlYWwpOwogICAgICAgIH0pOwogICAgICB9LAogICAgICB7b25jZTp0cnVlfQogICAgKTsKICB9ZWxzZXsKICAgIHJlcXVlc3RBbmltYXRpb25GcmFtZSgoKT0+ewogICAgICByZXF1ZXN0QW5pbWF0aW9uRnJhbWUocmV2ZWFsKTsKICAgIH0pOwogIH0KCiAgd2luZG93LmFkZEV2ZW50TGlzdGVuZXIoJ3BhZ2VzaG93JyxyZXZlYWwpOwogIHdpbmRvdy5hZGRFdmVudExpc3RlbmVyKCdsb2FkJyxzY2hlZHVsZUltYWdlcyx7b25jZTp0cnVlfSk7CgogIHdpbmRvdy5NSFVSX1Y2MzdfRklOQUxfUkVOREVSPXsKICAgIHJldmVhbCwKICAgIHJlZnJlc2g6c2NoZWR1bGVJbWFnZXMKICB9Owp9KSgpOw==").decode("utf-8")
+          HEADERS=base64.b64decode("IyBNSFVSIFY2MzcgQ0FDSEUgU1RBUlQKLwogIENhY2hlLUNvbnRyb2w6IG5vLWNhY2hlCgovaW5kZXguaHRtbAogIENhY2hlLUNvbnRyb2w6IG5vLWNhY2hlCgovYXNzZXRzLyoKICBDYWNoZS1Db250cm9sOiBwdWJsaWMsIG1heC1hZ2U9MjU5MjAwMCwgc3RhbGUtd2hpbGUtcmV2YWxpZGF0ZT02MDQ4MDAKCi9jc3MvKgogIENhY2hlLUNvbnRyb2w6IHB1YmxpYywgbWF4LWFnZT04NjQwMCwgc3RhbGUtd2hpbGUtcmV2YWxpZGF0ZT02MDQ4MDAKCi9qcy8qCiAgQ2FjaGUtQ29udHJvbDogcHVibGljLCBtYXgtYWdlPTg2NDAwLCBzdGFsZS13aGlsZS1yZXZhbGlkYXRlPTYwNDgwMAoKL2RhdGEvKgogIENhY2hlLUNvbnRyb2w6IHB1YmxpYywgbWF4LWFnZT04NjQwMCwgc3RhbGUtd2hpbGUtcmV2YWxpZGF0ZT02MDQ4MDAKIyBNSFVSIFY2MzcgQ0FDSEUgRU5E").decode("utf-8")
+          
+          root=Path(".")
+          public=root/"public"
+          index_path=public/"index.html"
+          css_path=public/"css"/"v637-final-render.css"
+          js_path=public/"js"/"v637-final-render.js"
+          headers_path=public/"_headers"
+          report_path=root/"RAPPORT_V637_NETTOYAGE_RENDU.txt"
+          
+          if not index_path.is_file():
+              raise SystemExit("[ERREUR] public/index.html introuvable.")
+          
+          css_path.parent.mkdir(parents=True,exist_ok=True)
+          js_path.parent.mkdir(parents=True,exist_ok=True)
+          
+          css_path.write_text(CSS+"\n",encoding="utf-8")
+          js_path.write_text(FINAL_JS+"\n",encoding="utf-8")
+          
+          html=index_path.read_text(encoding="utf-8")
+          
+          # ------------------------------------------------------------
+          # 1. Retire uniquement les moteurs de rendu expérimentaux.
+          #    V634 est conservé car il concerne la Tier List.
+          # ------------------------------------------------------------
+          
+          versions=r'(?:630|631|632|633(?:b|c)?|635|636)'
+          
+          patterns=[
+              rf'\s*<script[^>]+id=["\'][^"\']*v{0,1}{versions}[^"\']*["\'][^>]*>'
+              rf'.*?</script>\s*',
+              rf'\s*<style[^>]+id=["\'][^"\']*v{0,1}{versions}[^"\']*["\'][^>]*>'
+              rf'.*?</style>\s*',
+              rf'\s*<(?:script|link)[^>]+(?:src|href)=["\'][^"\']*'
+              rf'v{versions}[-_][^"\']*["\'][^>]*>'
+              rf'(?:\s*</script>)?\s*',
+          ]
+          
+          for pattern in patterns:
+              html=re.sub(
+                  pattern,
+                  "\n",
+                  html,
+                  flags=re.I|re.S
+              )
+          
+          # Nettoyage explicite des identifiants connus, y compris ceux sans tiret.
+          known_ids=[
+              "mhur-v630-boot-start",
+              "mhur-v630-boot-critical",
+              "mhur-v631-remove-v630-immediately",
+              "mhur-v631-remove-v630-critical",
+              "mhur-v632-stop-reload-loop",
+              "mhur-v632-stop-reload-loop-css",
+              "mhur-v633-final-first-frame-start",
+              "mhur-v633-final-first-frame-critical",
+              "mhur-v633c-first-frame-start",
+              "mhur-v633c-first-frame-critical",
+              "mhur-v636-first-frame-start",
+              "mhur-v636-first-frame-critical",
+              "mhur-v637-first-render-start",
+              "mhur-v637-first-render-critical",
+          ]
+          
+          for identifier in known_ids:
+              html=re.sub(
+                  rf'\s*<script[^>]+id=["\']{re.escape(identifier)}["\'][^>]*>'
+                  rf'.*?</script>\s*',
+                  "\n",
+                  html,
+                  flags=re.I|re.S
+              )
+              html=re.sub(
+                  rf'\s*<style[^>]+id=["\']{re.escape(identifier)}["\'][^>]*>'
+                  rf'.*?</style>\s*',
+                  "\n",
+                  html,
+                  flags=re.I|re.S
+              )
+          
+          html=re.sub(
+              r'\s*<link[^>]+v637-final-render\.css[^>]*>\s*',
+              "\n",
+              html,
+              flags=re.I
+          )
+          html=re.sub(
+              r'\s*<script[^>]+v637-final-render\.js[^>]*>'
+              r'\s*</script>\s*',
+              "\n",
+              html,
+              flags=re.I
+          )
+          
+          # Le HTML ne doit plus interdire le cache des images et scripts.
+          html=re.sub(
+              r'\s*<meta\s+http-equiv=["\']'
+              r'(?:Cache-Control|Pragma|Expires)'
+              r'["\'][^>]*>\s*',
+              "\n",
+              html,
+              flags=re.I
+          )
+          
+          # ------------------------------------------------------------
+          # 2. Déplace les vrais blocs CSS présents dans le body vers le head.
+          #    Les scripts sont ignorés par le scanner pour ne jamais extraire
+          #    une chaîne "<style>" contenue dans du JavaScript.
+          # ------------------------------------------------------------
+          
+          def tag_end(source,start):
+              quote=None
+              index=start
+          
+              while index<len(source):
+                  char=source[index]
+          
+                  if quote:
+                      if char==quote:
+                          quote=None
+                  elif char in ("'",'"'):
+                      quote=char
+                  elif char=='>':
+                      return index+1
+          
+                  index+=1
+          
+              return len(source)
+          
+          def scan_body_css(source):
+              head_close=re.search(r'</head\s*>',source,flags=re.I)
+              body_close=re.search(r'</body\s*>',source,flags=re.I)
+          
+              if not head_close or not body_close:
+                  raise SystemExit("[ERREUR] Structure HTML invalide.")
+          
+              start=head_close.end()
+              end=body_close.start()
+              index=start
+              blocks=[]
+          
+              while index<end:
+                  if source.startswith('<!--',index):
+                      close=source.find('-->',index+4)
+                      index=end if close<0 else close+3
+                      continue
+          
+                  if source[index]!='<':
+                      index+=1
+                      continue
+          
+                  match=re.match(
+                      r'<\s*([a-zA-Z0-9:-]+)\b',
+                      source[index:]
+                  )
+          
+                  if not match:
+                      index+=1
+                      continue
+          
+                  name=match.group(1).lower()
+                  opening_end=tag_end(source,index)
+                  opening=source[index:opening_end]
+          
+                  if name=='script':
+                      close=re.search(
+                          r'</script\s*>',
+                          source[opening_end:end],
+                          flags=re.I
+                      )
+                      index=(
+                          end
+                          if not close
+                          else opening_end+close.end()
+                      )
+                      continue
+          
+                  if name=='style':
+                      close=re.search(
+                          r'</style\s*>',
+                          source[opening_end:end],
+                          flags=re.I
+                      )
+          
+                      block_end=(
+                          end
+                          if not close
+                          else opening_end+close.end()
+                      )
+          
+                      blocks.append((index,block_end,source[index:block_end]))
+                      index=block_end
+                      continue
+          
+                  if name=='link' and re.search(
+                      r'\brel\s*=\s*["\'][^"\']*stylesheet',
+                      opening,
+                      flags=re.I
+                  ):
+                      blocks.append((index,opening_end,opening))
+                      index=opening_end
+                      continue
+          
+                  index=opening_end
+          
+              return blocks
+          
+          body_css=scan_body_css(html)
+          
+          for start,end,_block in reversed(body_css):
+              html=html[:start]+html[end:]
+          
+          moved_css="\n".join(
+              block for _start,_end,block in body_css
+          )
+          
+          # ------------------------------------------------------------
+          # 3. Installe le seul moteur final.
+          # ------------------------------------------------------------
+          
+          head_open=re.search(r'<head[^>]*>',html,flags=re.I)
+          
+          if not head_open:
+              raise SystemExit("[ERREUR] Balise <head> introuvable.")
+          
+          position=head_open.end()
+          html=html[:position]+"\n"+EARLY+"\n"+html[position:]
+          
+          head_closes=list(re.finditer(r'</head\s*>',html,flags=re.I))
+          
+          if not head_closes:
+              raise SystemExit("[ERREUR] Balise </head> introuvable.")
+          
+          position=head_closes[-1].start()
+          
+          head_assets=(
+              ("\n<!-- V637 : CSS statiques déplacés avant le rendu. -->\n"
+               +moved_css+"\n")
+              if moved_css
+              else "\n"
+          )
+          head_assets+=(
+              '<!-- V637 : moteur de rendu final unique. -->\n'
+              '<link rel="stylesheet" '
+              'href="css/v637-final-render.css?v=637">\n'
+          )
+          
+          html=html[:position]+head_assets+html[position:]
+          
+          body_closes=list(re.finditer(r'</body\s*>',html,flags=re.I))
+          
+          if not body_closes:
+              raise SystemExit("[ERREUR] Balise </body> introuvable.")
+          
+          position=body_closes[-1].start()
+          
+          html=(
+              html[:position]
+              +'\n<!-- V637 : priorité images et révélation finale. -->\n'
+              '<script src="js/v637-final-render.js?v=637"></script>\n'
+              +html[position:]
+          )
+          
+          index_path.write_text(html,encoding="utf-8")
+          
+          # ------------------------------------------------------------
+          # 4. Supprime les fichiers runtime expérimentaux devenus inutiles.
+          # ------------------------------------------------------------
+          
+          removed=[]
+          
+          for folder in [
+              public/"css",
+              public/"js",
+              public/"data",
+          ]:
+              if not folder.is_dir():
+                  continue
+          
+              for path in folder.iterdir():
+                  if not path.is_file():
+                      continue
+          
+                  if re.match(
+                      r'v(?:630|631|632|633(?:b|c)?|635|636)[-_]',
+                      path.name,
+                      flags=re.I
+                  ):
+                      path.unlink()
+                      removed.append(path.as_posix())
+          
+          for name in [
+              "sw-v630.js",
+              "sw-v631-cleanup.js",
+          ]:
+              path=public/name
+          
+              if path.is_file():
+                  path.unlink()
+                  removed.append(path.as_posix())
+          
+          for path in root.glob(
+              "RAPPORT_V63*.txt"
+          ):
+              if "V634" in path.name or "V637" in path.name:
+                  continue
+          
+              path.unlink()
+              removed.append(path.as_posix())
+          
+          # ------------------------------------------------------------
+          # 5. Cache HTTP normal, sans Service Worker.
+          # ------------------------------------------------------------
+          
+          existing=(
+              headers_path.read_text(encoding="utf-8")
+              if headers_path.is_file()
+              else ""
+          )
+          
+          existing=re.sub(
+              r'\n?# MHUR V(?:630|631|632|633C?|635|636|637) '
+              r'.*? START.*?'
+              r'# MHUR V(?:630|631|632|633C?|635|636|637) '
+              r'.*? END\n?',
+              "\n",
+              existing,
+              flags=re.I|re.S
+          ).strip()
+          
+          headers_path.write_text(
+              ((existing+"\n\n") if existing else "")
+              +HEADERS
+              +"\n",
+              encoding="utf-8"
+          )
+          
+          report_path.write_text(
+              """MHUR NEXUS — V637
+          
+          NETTOYAGE DU RENDU
+          - Suppression des moteurs expérimentaux V630, V631, V632,
+            V633/V633B/V633C, V635 et V636.
+          - V634 est conservé : il corrige la Tier List et ne pilote pas le rendu.
+          - Les autres anciens correctifs fonctionnels sont conservés afin de
+            ne pas casser les personnages, costumes, T.U.N.I.N.G et builds.
+          - Les styles statiques placés dans le body sont déplacés dans le head,
+            dans leur ordre d'origine.
+          - Un seul moteur de premier rendu reste chargé : V637.
+          - Aucun écran avec logo.
+          - Aucun Service Worker.
+          - Aucun délai entre les pages.
+          - Aucun rechargement automatique.
+          
+          IMAGES
+          - Les chemins des images ne changent pas.
+          - Les images visibles sont prioritaires.
+          - Les images hors écran utilisent le chargement différé.
+          - Les images lourdes sont recompressées directement dans leurs fichiers.
+          - Le cache HTTP normal est réactivé.
+          
+          FICHIERS RUNTIME SUPPRIMÉS
+          """
+              +"\n".join(f"- {item}" for item in removed)
+              +"\n",
+              encoding="utf-8"
+          )
+          
+          print(
+              f"[OK] V637 : {len(body_css)} bloc(s) CSS déplacé(s), "
+              f"{len(removed)} ancien(s) fichier(s) supprimé(s)."
+          )
+          PY
+          
+          cat > /tmp/verifier_v637.py <<'PY'
+          from pathlib import Path
+          import re
+          
+          index=Path("public/index.html").read_text(encoding="utf-8")
+          css=Path(
+              "public/css/v637-final-render.css"
+          ).read_text(encoding="utf-8")
+          js=Path(
+              "public/js/v637-final-render.js"
+          ).read_text(encoding="utf-8")
+          
+          for reference in [
+              'id="mhur-v637-first-render-start"',
+              'id="mhur-v637-first-render-critical"',
+              "css/v637-final-render.css?v=637",
+              "js/v637-final-render.js?v=637",
+          ]:
+              if index.count(reference)!=1:
+                  raise SystemExit(
+                      f"[ERREUR] Référence V637 absente ou dupliquée : {reference}"
+                  )
+          
+          for forbidden in [
+              "v630-atomic-render",
+              "v631-remove-v630-loader",
+              "v632-stop-reload-loop",
+              "v633-final-first-frame",
+              "v633c-final-first-frame",
+              "v635-instant-navigation",
+              "v636-final",
+          ]:
+              if forbidden in index:
+                  raise SystemExit(
+                      f"[ERREUR] Ancien moteur encore chargé : {forbidden}"
+                  )
+          
+          if re.search(
+              r'<body[^>]*>.*?<style\b',
+              index,
+              flags=re.I|re.S
+          ):
+              raise SystemExit(
+                  "[ERREUR] Un bloc <style> statique reste dans le body."
+              )
+          
+          if re.search(
+              r'<body[^>]*>.*?<link\b'
+              r'(?=[^>]*\brel=["\'][^"\']*stylesheet)',
+              index,
+              flags=re.I|re.S
+          ):
+              raise SystemExit(
+                  "[ERREUR] Une feuille CSS reste dans le body."
+              )
+          
+          for token in [
+              "prioritizeImages",
+              "mhurV637Preparing",
+              "loading='lazy'",
+          ]:
+              if token not in js and token not in index:
+                  raise SystemExit(
+                      f"[ERREUR] Moteur V637 incomplet : {token}"
+                  )
+          
+          for token in [
+              "content-visibility:auto",
+              ".costumeTile > img",
+          ]:
+              if token not in css:
+                  raise SystemExit(
+                      f"[ERREUR] CSS V637 incomplet : {token}"
+                  )
+          
+          print("[OK] Vérification structurelle V637 réussie.")
+          PY
+          
+          cat > /tmp/optimiser_images_v637.cjs <<'JS'
+          'use strict';
+          
+          const fs = require('fs');
+          const path = require('path');
+          const sharp = require('sharp');
+          
+          const root = path.resolve(process.argv[2] || 'public/assets');
+          const reportPath = path.resolve(
+            process.argv[3] || 'RAPPORT_V637_IMAGES.json'
+          );
+          
+          const supported = new Set([
+            '.png', '.jpg', '.jpeg', '.webp', '.avif'
+          ]);
+          
+          const skipParts = new Set([
+            '.git', 'node_modules'
+          ]);
+          
+          const MIN_BYTES = 120 * 1024;
+          const MAX_GENERAL = 1280;
+          const MAX_CARD = 1000;
+          const CONCURRENCY = 4;
+          
+          function walk(directory, output = []) {
+            if (!fs.existsSync(directory)) return output;
+          
+            for (const entry of fs.readdirSync(directory, {
+              withFileTypes: true
+            })) {
+              if (skipParts.has(entry.name)) continue;
+          
+              const full = path.join(directory, entry.name);
+          
+              if (entry.isDirectory()) {
+                walk(full, output);
+              } else if (
+                entry.isFile() &&
+                supported.has(path.extname(entry.name).toLowerCase())
+              ) {
+                output.push(full);
+              }
+            }
+          
+            return output;
+          }
+          
+          function isCardImage(file) {
+            const value = file.toLowerCase().replaceAll('\\', '/');
+          
+            return [
+              '/costume',
+              '/portrait',
+              '/character',
+              '/style',
+              '/card',
+              '/thumb'
+            ].some(part => value.includes(part));
+          }
+          
+          async function optimise(file) {
+            const before = fs.statSync(file).size;
+            const extension = path.extname(file).toLowerCase();
+          
+            let metadata;
+          
+            try {
+              metadata = await sharp(file, {
+                animated: true,
+                limitInputPixels: false
+              }).metadata();
+            } catch (error) {
+              return {
+                file,
+                status: 'unreadable',
+                before,
+                error: String(error.message || error)
+              };
+            }
+          
+            if ((metadata.pages || 1) > 1) {
+              return {
+                file,
+                status: 'animated-skip',
+                before
+              };
+            }
+          
+            const width = metadata.width || 0;
+            const height = metadata.height || 0;
+            const maxDimension = isCardImage(file)
+              ? MAX_CARD
+              : MAX_GENERAL;
+          
+            const requiresResize = (
+              width > maxDimension ||
+              height > maxDimension
+            );
+          
+            if (!requiresResize && before < MIN_BYTES) {
+              return {
+                file,
+                status: 'small-skip',
+                before
+              };
+            }
+          
+            const temporary = `${file}.v637tmp${extension}`;
+          
+            let pipeline = sharp(file, {
+              limitInputPixels: false
+            }).rotate();
+          
+            if (requiresResize) {
+              pipeline = pipeline.resize({
+                width: maxDimension,
+                height: maxDimension,
+                fit: 'inside',
+                withoutEnlargement: true,
+                fastShrinkOnLoad: true
+              });
+            }
+          
+            if (extension === '.webp') {
+              pipeline = pipeline.webp({
+                quality: isCardImage(file) ? 68 : 74,
+                alphaQuality: 84,
+                effort: 5,
+                smartSubsample: true
+              });
+            } else if (
+              extension === '.jpg' ||
+              extension === '.jpeg'
+            ) {
+              pipeline = pipeline.jpeg({
+                quality: isCardImage(file) ? 76 : 80,
+                mozjpeg: true,
+                chromaSubsampling: '4:2:0'
+              });
+            } else if (extension === '.png') {
+              pipeline = pipeline.png({
+                compressionLevel: 9,
+                adaptiveFiltering: true,
+                palette: false
+              });
+            } else if (extension === '.avif') {
+              pipeline = pipeline.avif({
+                quality: isCardImage(file) ? 48 : 54,
+                effort: 5
+              });
+            }
+          
+            try {
+              await pipeline.toFile(temporary);
+          
+              const after = fs.statSync(temporary).size;
+              const worthwhile = (
+                after < before * 0.96 ||
+                requiresResize
+              );
+          
+              if (worthwhile && after < before) {
+                fs.renameSync(temporary, file);
+          
+                return {
+                  file,
+                  status: 'optimized',
+                  before,
+                  after,
+                  saved: before - after,
+                  width,
+                  height,
+                  maxDimension
+                };
+              }
+          
+              fs.unlinkSync(temporary);
+          
+              return {
+                file,
+                status: 'not-smaller',
+                before,
+                after
+              };
+            } catch (error) {
+              if (fs.existsSync(temporary)) {
+                fs.unlinkSync(temporary);
+              }
+          
+              return {
+                file,
+                status: 'error',
+                before,
+                error: String(error.message || error)
+              };
+            }
+          }
+          
+          async function runPool(items, worker, concurrency) {
+            const results = [];
+            let cursor = 0;
+          
+            async function runner() {
+              while (true) {
+                const index = cursor++;
+                if (index >= items.length) return;
+          
+                results[index] = await worker(items[index]);
+              }
+            }
+          
+            await Promise.all(
+              Array.from(
+                { length: Math.min(concurrency, items.length || 1) },
+                () => runner()
+              )
+            );
+          
+            return results;
+          }
+          
+          (async () => {
+            const files = walk(root);
+            const results = await runPool(
+              files,
+              optimise,
+              CONCURRENCY
+            );
+          
+            const optimized = results.filter(
+              result => result.status === 'optimized'
+            );
+          
+            const errors = results.filter(
+              result => (
+                result.status === 'error' ||
+                result.status === 'unreadable'
+              )
+            );
+          
+            const summary = {
+              scanned: files.length,
+              optimized: optimized.length,
+              errors: errors.length,
+              bytesBefore: optimized.reduce(
+                (sum, item) => sum + item.before,
+                0
+              ),
+              bytesAfter: optimized.reduce(
+                (sum, item) => sum + item.after,
+                0
+              ),
+              bytesSaved: optimized.reduce(
+                (sum, item) => sum + item.saved,
+                0
+              ),
+              results
+            };
+          
+            fs.writeFileSync(
+              reportPath,
+              JSON.stringify(summary, null, 2)
+            );
+          
+            console.log(
+              `[V637] ${summary.optimized}/${summary.scanned} images optimisées.`
+            );
+            console.log(
+              `[V637] ${Math.round(summary.bytesSaved / 1024 / 1024)} Mo économisés.`
+            );
+          
+            if (errors.length) {
+              console.warn(
+                `[V637] ${errors.length} image(s) ignorée(s), voir le rapport.`
+              );
+            }
+          })().catch(error => {
+            console.error(error);
+            process.exitCode = 1;
+          });
+          JS
+          
+          python3 /tmp/appliquer_v637.py
+          
+          mkdir -p /tmp/mhur-v637-tools
+          cd /tmp/mhur-v637-tools
+          npm init -y >/dev/null 2>&1
+          npm install --no-audit --no-fund --silent sharp@0.35.3
+          
+          cd "$GITHUB_WORKSPACE"
+          NODE_PATH=/tmp/mhur-v637-tools/node_modules   node /tmp/optimiser_images_v637.cjs   public/assets   RAPPORT_V637_IMAGES.json
+          
+          node --check public/js/v637-final-render.js
+          python3 /tmp/verifier_v637.py
+          git diff --check
+          
+          git add -A
+          
+          if git diff --cached --quiet; then
+            echo "[INFO] V637 est déjà appliqué."
+            exit 0
+          fi
+          
+          git commit -m "perf: nettoyer rendu et alléger images V637"
+          
+          git pull --rebase origin main
+          git push origin HEAD:main
+          
+          echo "[OK] V637 envoyé sur main."
