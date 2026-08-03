@@ -1,0 +1,673 @@
+name: MHUR V639 - Rendu final direct
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/mhur-v639-auto.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: mhur-v639-direct-final
+  cancel-in-progress: false
+
+jobs:
+  appliquer:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+
+    steps:
+      - name: Recuperer le depot
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Installer Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: "22"
+
+      - name: Construire le rendu final direct
+        shell: bash
+        run: |
+          set -euo pipefail
+          
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          
+          cat > /tmp/appliquer_v639.py <<'PY'
+          
+          from pathlib import Path
+          import base64
+          import html as html_lib
+          import re
+          
+          RUNTIME_CSS=base64.b64decode("LyogVjYzOSBSVU5USU1FIFNUQVJUICovCmh0bWwsCmJvZHl7CiAgYmFja2dyb3VuZDojMDcxMDFmIWltcG9ydGFudDsKfQoKLyogTmV1dHJhbGlzYXRpb24gZMOpZmluaXRpdmUgZGVzIGFuY2llbnMgbW90ZXVycyBkZSByZW5kdS4gKi8KaHRtbC5taHVyVjYzMEJvb3RpbmcgYm9keSwKaHRtbC5taHVyVjYzMEJvb3RpbmcgYm9keT4qLApodG1sLm1odXJWNjMwUm91dGVMb2FkaW5nICNhcHAsCmh0bWwubWh1clY2MzNQcmVwYXJpbmcgYm9keSwKaHRtbC5taHVyVjYzM1JvdXRlUHJlcGFyaW5nICNhcHAsCmh0bWwubWh1clY2MzNDUHJlcGFyaW5nIGJvZHksCmh0bWwubWh1clY2MzNDUm91dGVQcmVwYXJpbmcgI2FwcCwKaHRtbC5taHVyVjYzNkluaXRpYWxQcmVwYXJpbmcgYm9keSwKaHRtbC5taHVyVjYzNlJvdXRlUHJlcGFyaW5nICNhcHAsCmh0bWwubWh1clY2MzdQcmVwYXJpbmcgYm9keSwKaHRtbC5taHVyVjYzN1ByZXBhcmluZyBib2R5Pip7CiAgdmlzaWJpbGl0eTp2aXNpYmxlIWltcG9ydGFudDsKICBvcGFjaXR5OjEhaW1wb3J0YW50OwogIHBvaW50ZXItZXZlbnRzOmF1dG8haW1wb3J0YW50Owp9CgpodG1sLm1odXJWNjMwQm9vdGluZzo6YmVmb3JlLApodG1sLm1odXJWNjMwQm9vdGluZzo6YWZ0ZXIsCmh0bWwubWh1clY2MzBSb3V0ZUxvYWRpbmc6OmJlZm9yZSwKaHRtbC5taHVyVjYzMFJvdXRlTG9hZGluZzo6YWZ0ZXIsCmh0bWwubWh1clY2MzNQcmVwYXJpbmc6OmJlZm9yZSwKaHRtbC5taHVyVjYzM0NQcmVwYXJpbmc6OmJlZm9yZSwKaHRtbC5taHVyVjYzNkluaXRpYWxQcmVwYXJpbmc6OmJlZm9yZSwKaHRtbC5taHVyVjYzN1ByZXBhcmluZzo6YmVmb3JlewogIGNvbnRlbnQ6bm9uZSFpbXBvcnRhbnQ7CiAgZGlzcGxheTpub25lIWltcG9ydGFudDsKfQoKLyogTGVzIGFuY2llbm5lcyB2ZXJzaW9ucyBuZSBwZXV2ZW50IHBsdXMgY2FjaGVyIGxlcyBpbWFnZXMuICovCmh0bWwgYm9keSAuY29zdHVtZVRpbGU+aW1nLApodG1sIGJvZHkgI2FwcCAuY29zdHVtZVRpbGU+aW1nW2RhdGEtdjYyMi13YWl0aW5nXSwKaHRtbCBib2R5ICNhcHAgLmNvc3R1bWVUaWxlPmltZzpub3QoW2RhdGEtdjYyMi1yZWFkeV0pewogIHZpc2liaWxpdHk6dmlzaWJsZSFpbXBvcnRhbnQ7CiAgb3BhY2l0eToxIWltcG9ydGFudDsKfQovKiBWNjM5IFJVTlRJTUUgRU5EICov").decode("utf-8")
+          RUNTIME_JS=base64.b64decode("LyogTUhVUiBOZXh1cyDigJQgVjYzOQogICBBdWN1biBtYXNxdWUsIGF1Y3VuIGTDqWxhaSBldCBhdWN1biBTZXJ2aWNlIFdvcmtlci4KICAgTGUgQ1NTIGZpbmFsIGVzdCBkw6lqw6AgY2hhcmfDqSBhdmFudCBsZSBwcmVtaWVyIHJlbmR1LgoqLwooZnVuY3Rpb24oKXsKICAndXNlIHN0cmljdCc7CgogIGlmKHdpbmRvdy5NSFVSX1Y2MzlfRElSRUNUX0ZJTkFMX0xPQURFRClyZXR1cm47CiAgd2luZG93Lk1IVVJfVjYzOV9ESVJFQ1RfRklOQUxfTE9BREVEPXRydWU7CgogIGNvbnN0IHJvb3Q9ZG9jdW1lbnQuZG9jdW1lbnRFbGVtZW50OwogIGNvbnN0IHJlZ2lzdGVyZWQ9bmV3IFdlYWtTZXQoKTsKCiAgZnVuY3Rpb24gcmV2ZWFsKCl7CiAgICByb290LmNsYXNzTGlzdC5yZW1vdmUoCiAgICAgICdtaHVyVjYzMEJvb3RpbmcnLAogICAgICAnbWh1clY2MzBSb3V0ZUxvYWRpbmcnLAogICAgICAnbWh1clY2MzBSZWFkeScsCiAgICAgICdtaHVyVjYzMU5vTG9hZGVyJywKICAgICAgJ21odXJWNjMzUHJlcGFyaW5nJywKICAgICAgJ21odXJWNjMzUm91dGVQcmVwYXJpbmcnLAogICAgICAnbWh1clY2MzNDUHJlcGFyaW5nJywKICAgICAgJ21odXJWNjMzQ1JvdXRlUHJlcGFyaW5nJywKICAgICAgJ21odXJWNjM2SW5pdGlhbFByZXBhcmluZycsCiAgICAgICdtaHVyVjYzNlJvdXRlUHJlcGFyaW5nJywKICAgICAgJ21odXJWNjM3UHJlcGFyaW5nJwogICAgKTsKCiAgICBkb2N1bWVudC5ib2R5Py5zdHlsZS5yZW1vdmVQcm9wZXJ0eSgnb3ZlcmZsb3cnKTsKICAgIGRvY3VtZW50LmJvZHk/LnN0eWxlLnJlbW92ZVByb3BlcnR5KCd2aXNpYmlsaXR5Jyk7CiAgICBkb2N1bWVudC5ib2R5Py5zdHlsZS5yZW1vdmVQcm9wZXJ0eSgnb3BhY2l0eScpOwoKICAgIGNvbnN0IGFwcD1kb2N1bWVudC5nZXRFbGVtZW50QnlJZCgnYXBwJyk7CiAgICBhcHA/LnN0eWxlLnJlbW92ZVByb3BlcnR5KCd2aXNpYmlsaXR5Jyk7CiAgICBhcHA/LnN0eWxlLnJlbW92ZVByb3BlcnR5KCdvcGFjaXR5Jyk7CiAgICBhcHA/LnN0eWxlLnJlbW92ZVByb3BlcnR5KCdwb2ludGVyLWV2ZW50cycpOwogIH0KCiAgY29uc3Qgb2JzZXJ2ZXI9KAogICAgJ0ludGVyc2VjdGlvbk9ic2VydmVyJyBpbiB3aW5kb3cKICAgICAgPyBuZXcgSW50ZXJzZWN0aW9uT2JzZXJ2ZXIoZW50cmllcz0+ewogICAgICAgICAgZW50cmllcy5mb3JFYWNoKGVudHJ5PT57CiAgICAgICAgICAgIGlmKCFlbnRyeS5pc0ludGVyc2VjdGluZylyZXR1cm47CgogICAgICAgICAgICBjb25zdCBpbWFnZT1lbnRyeS50YXJnZXQ7CgogICAgICAgICAgICBpbWFnZS5sb2FkaW5nPSdlYWdlcic7CgogICAgICAgICAgICB0cnl7CiAgICAgICAgICAgICAgaW1hZ2UuZmV0Y2hQcmlvcml0eT0naGlnaCc7CiAgICAgICAgICAgIH1jYXRjaChfZXJyb3Ipe30KCiAgICAgICAgICAgIG9ic2VydmVyLnVub2JzZXJ2ZShpbWFnZSk7CiAgICAgICAgICB9KTsKICAgICAgICB9LHsKICAgICAgICAgIHJvb3RNYXJnaW46JzcwMHB4IDBweCcKICAgICAgICB9KQogICAgICA6IG51bGwKICApOwoKICBmdW5jdGlvbiByZWdpc3RlckltYWdlKGltYWdlLGluZGV4PTApewogICAgaWYoIShpbWFnZSBpbnN0YW5jZW9mIEhUTUxJbWFnZUVsZW1lbnQpKXJldHVybjsKICAgIGlmKHJlZ2lzdGVyZWQuaGFzKGltYWdlKSlyZXR1cm47CgogICAgcmVnaXN0ZXJlZC5hZGQoaW1hZ2UpOwoKICAgIGltYWdlLmRlY29kaW5nPSdhc3luYyc7CiAgICBpbWFnZS5kYXRhc2V0LnY2MjJSZWFkeT0nMSc7CiAgICBkZWxldGUgaW1hZ2UuZGF0YXNldC52NjIyV2FpdGluZzsKCiAgICBpZihpbmRleDwxMCl7CiAgICAgIGltYWdlLmxvYWRpbmc9J2VhZ2VyJzsKCiAgICAgIHRyeXsKICAgICAgICBpbWFnZS5mZXRjaFByaW9yaXR5PWluZGV4PDY/J2hpZ2gnOidhdXRvJzsKICAgICAgfWNhdGNoKF9lcnJvcil7fQogICAgfWVsc2V7CiAgICAgIGltYWdlLmxvYWRpbmc9J2xhenknOwoKICAgICAgdHJ5ewogICAgICAgIGltYWdlLmZldGNoUHJpb3JpdHk9J2xvdyc7CiAgICAgIH1jYXRjaChfZXJyb3Ipe30KCiAgICAgIG9ic2VydmVyPy5vYnNlcnZlKGltYWdlKTsKICAgIH0KICB9CgogIGZ1bmN0aW9uIHJlZ2lzdGVySW1hZ2VzKHNjb3BlPWRvY3VtZW50KXsKICAgIGlmKHNjb3BlIGluc3RhbmNlb2YgSFRNTEltYWdlRWxlbWVudCl7CiAgICAgIHJlZ2lzdGVySW1hZ2Uoc2NvcGUsMCk7CiAgICAgIHJldHVybjsKICAgIH0KCiAgICBBcnJheS5mcm9tKAogICAgICBzY29wZS5xdWVyeVNlbGVjdG9yQWxsPy4oJ2ltZycpfHxbXQogICAgKS5mb3JFYWNoKHJlZ2lzdGVySW1hZ2UpOwogIH0KCiAgbmV3IE11dGF0aW9uT2JzZXJ2ZXIocmVjb3Jkcz0+ewogICAgcmV2ZWFsKCk7CgogICAgcmVjb3Jkcy5mb3JFYWNoKHJlY29yZD0+ewogICAgICByZWNvcmQuYWRkZWROb2Rlcy5mb3JFYWNoKG5vZGU9PnsKICAgICAgICBpZighKG5vZGUgaW5zdGFuY2VvZiBFbGVtZW50KSlyZXR1cm47CgogICAgICAgIHJlZ2lzdGVySW1hZ2VzKG5vZGUpOwogICAgICB9KTsKICAgIH0pOwogIH0pLm9ic2VydmUoZG9jdW1lbnQuZG9jdW1lbnRFbGVtZW50LHsKICAgIGNoaWxkTGlzdDp0cnVlLAogICAgc3VidHJlZTp0cnVlCiAgfSk7CgogIHJldmVhbCgpOwogIHJlZ2lzdGVySW1hZ2VzKGRvY3VtZW50KTsKCiAgaWYoZG9jdW1lbnQucmVhZHlTdGF0ZT09PSdsb2FkaW5nJyl7CiAgICBkb2N1bWVudC5hZGRFdmVudExpc3RlbmVyKAogICAgICAnRE9NQ29udGVudExvYWRlZCcsCiAgICAgICgpPT57CiAgICAgICAgcmV2ZWFsKCk7CiAgICAgICAgcmVnaXN0ZXJJbWFnZXMoZG9jdW1lbnQpOwogICAgICB9LAogICAgICB7b25jZTp0cnVlfQogICAgKTsKICB9CgogIHdpbmRvdy5hZGRFdmVudExpc3RlbmVyKCdwYWdlc2hvdycsKCk9PnsKICAgIHJldmVhbCgpOwogICAgcmVnaXN0ZXJJbWFnZXMoZG9jdW1lbnQpOwogIH0pOwoKICB3aW5kb3cuTUhVUl9WNjM5X0RJUkVDVF9GSU5BTD17CiAgICByZXZlYWwsCiAgICByZWZyZXNoOnJlZ2lzdGVySW1hZ2VzCiAgfTsKfSkoKTs=").decode("utf-8")
+          HEADERS=base64.b64decode("IyBNSFVSIFY2MzkgRElSRUNUIEZJTkFMIENBQ0hFIFNUQVJUCi8KICBDYWNoZS1Db250cm9sOiBuby1jYWNoZQoKL2luZGV4Lmh0bWwKICBDYWNoZS1Db250cm9sOiBuby1jYWNoZQoKL2Fzc2V0cy8qCiAgQ2FjaGUtQ29udHJvbDogcHVibGljLCBtYXgtYWdlPTI1OTIwMDAsIHN0YWxlLXdoaWxlLXJldmFsaWRhdGU9NjA0ODAwCgovY3NzLyoKICBDYWNoZS1Db250cm9sOiBwdWJsaWMsIG1heC1hZ2U9NjA0ODAwLCBzdGFsZS13aGlsZS1yZXZhbGlkYXRlPTYwNDgwMAoKL2pzLyoKICBDYWNoZS1Db250cm9sOiBwdWJsaWMsIG1heC1hZ2U9NjA0ODAwLCBzdGFsZS13aGlsZS1yZXZhbGlkYXRlPTYwNDgwMAoKL2RhdGEvKgogIENhY2hlLUNvbnRyb2w6IHB1YmxpYywgbWF4LWFnZT02MDQ4MDAsIHN0YWxlLXdoaWxlLXJldmFsaWRhdGU9NjA0ODAwCiMgTUhVUiBWNjM5IERJUkVDVCBGSU5BTCBDQUNIRSBFTkQ=").decode("utf-8")
+          
+          root=Path(".")
+          public=root/"public"
+          
+          index_path=public/"index.html"
+          bundle_path=public/"css"/"v639-direct-final.css"
+          runtime_path=public/"js"/"v639-direct-final.js"
+          headers_path=public/"_headers"
+          report_path=root/"RAPPORT_V639_RENDU_FINAL_DIRECT.txt"
+          
+          if not index_path.is_file():
+              raise SystemExit(
+                  "[ERREUR] public/index.html introuvable."
+              )
+          
+          bundle_path.parent.mkdir(parents=True,exist_ok=True)
+          runtime_path.parent.mkdir(parents=True,exist_ok=True)
+          
+          html=index_path.read_text(encoding="utf-8")
+          
+          # ------------------------------------------------------------
+          # 1. Supprime uniquement les anciens moteurs de chargement.
+          #    V634 et les correctifs fonctionnels restent conservés.
+          # ------------------------------------------------------------
+          
+          known_ids=[
+              "mhur-v630-boot-start",
+              "mhur-v630-boot-critical",
+              "mhur-v631-remove-v630-immediately",
+              "mhur-v631-remove-v630-critical",
+              "mhur-v632-stop-reload-loop",
+              "mhur-v632-stop-reload-loop-css",
+              "mhur-v633-final-first-frame-start",
+              "mhur-v633-final-first-frame-critical",
+              "mhur-v633c-first-frame-start",
+              "mhur-v633c-first-frame-critical",
+              "mhur-v636-first-frame-start",
+              "mhur-v636-first-frame-critical",
+              "mhur-v637-first-render-start",
+              "mhur-v637-first-render-critical",
+          ]
+          
+          for identifier in known_ids:
+              escaped=re.escape(identifier)
+          
+              html=re.sub(
+                  rf'\s*<script[^>]+id=["\']{escaped}["\'][^>]*>'
+                  rf'.*?</script>\s*',
+                  "\n",
+                  html,
+                  flags=re.I|re.S
+              )
+          
+              html=re.sub(
+                  rf'\s*<style[^>]+id=["\']{escaped}["\'][^>]*>'
+                  rf'.*?</style>\s*',
+                  "\n",
+                  html,
+                  flags=re.I|re.S
+              )
+          
+          old_runtime_names=[
+              "v630-atomic-render",
+              "v631-remove-v630-loader",
+              "v632-stop-reload-loop",
+              "v633-final-first-frame",
+              "v633c-final-first-frame",
+              "v635-instant-navigation",
+              "v636-final-fast",
+              "v637-final-render",
+              "v638-site-bundle",
+              "v638-fast-display",
+              "v639-direct-final",
+          ]
+          
+          # Retire d'abord seulement les scripts runtime.
+          for name in old_runtime_names:
+              escaped=re.escape(name)
+          
+              html=re.sub(
+                  rf'\s*<script[^>]+src=["\'][^"\']*{escaped}'
+                  rf'[^"\']*["\'][^>]*>\s*</script>\s*',
+                  "\n",
+                  html,
+                  flags=re.I
+              )
+          
+          # Retire l'ancien preload V638/V639. La feuille stylesheet reste
+          # disponible pour le scanner et garantit l'idempotence.
+          html=re.sub(
+              r'\s*<link[^>]+rel=["\']preload["\'][^>]+'
+              r'href=["\'][^"\']*(?:v638-site-bundle|v639-direct-final)'
+              r'[^"\']*["\'][^>]*>\s*',
+              "\n",
+              html,
+              flags=re.I
+          )
+          
+          html=re.sub(
+              r'\s*<meta\s+http-equiv=["\']'
+              r'(?:Cache-Control|Pragma|Expires)["\'][^>]*>\s*',
+              "\n",
+              html,
+              flags=re.I
+          )
+          
+          # ------------------------------------------------------------
+          # 2. Scanner HTML qui ignore les scripts et commentaires.
+          # ------------------------------------------------------------
+          
+          def tag_end(source,start):
+              quote=None
+              index=start
+          
+              while index<len(source):
+                  char=source[index]
+          
+                  if quote:
+                      if char==quote:
+                          quote=None
+                  elif char in ("'",'"'):
+                      quote=char
+                  elif char=='>':
+                      return index+1
+          
+                  index+=1
+          
+              return len(source)
+          
+          def attr(tag,name):
+              match=re.search(
+                  rf'\b{re.escape(name)}\s*=\s*(["\'])(.*?)\1',
+                  tag,
+                  flags=re.I|re.S
+              )
+          
+              return (
+                  html_lib.unescape(match.group(2)).strip()
+                  if match
+                  else ""
+              )
+          
+          def scan_styles(source):
+              index=0
+              blocks=[]
+          
+              while index<len(source):
+                  if source.startswith('<!--',index):
+                      close=source.find('-->',index+4)
+                      index=len(source) if close<0 else close+3
+                      continue
+          
+                  if source[index]!='<':
+                      index+=1
+                      continue
+          
+                  match=re.match(
+                      r'<\s*([a-zA-Z0-9:-]+)\b',
+                      source[index:]
+                  )
+          
+                  if not match:
+                      index+=1
+                      continue
+          
+                  name=match.group(1).lower()
+                  opening_end=tag_end(source,index)
+                  opening=source[index:opening_end]
+          
+                  if name=='script':
+                      close=re.search(
+                          r'</script\s*>',
+                          source[opening_end:],
+                          flags=re.I
+                      )
+          
+                      index=(
+                          len(source)
+                          if not close
+                          else opening_end+close.end()
+                      )
+                      continue
+          
+                  if name=='style':
+                      close=re.search(
+                          r'</style\s*>',
+                          source[opening_end:],
+                          flags=re.I
+                      )
+          
+                      if not close:
+                          index=opening_end
+                          continue
+          
+                      content_end=opening_end+close.start()
+                      block_end=opening_end+close.end()
+          
+                      blocks.append({
+                          "start":index,
+                          "end":block_end,
+                          "kind":"inline",
+                          "content":source[opening_end:content_end],
+                          "media":attr(opening,"media"),
+                      })
+          
+                      index=block_end
+                      continue
+          
+                  if name=='link':
+                      rel=attr(opening,"rel").lower().split()
+                      href=attr(opening,"href")
+          
+                      if 'stylesheet' in rel and href:
+                          blocks.append({
+                              "start":index,
+                              "end":opening_end,
+                              "kind":"link",
+                              "href":href,
+                              "media":attr(opening,"media"),
+                              "original":opening,
+                          })
+          
+                      index=opening_end
+                      continue
+          
+                  index=opening_end
+          
+              return blocks
+          
+          def rewrite_inline_urls(css):
+              pattern=re.compile(
+                  r'url\(\s*(["\']?)(.*?)\1\s*\)',
+                  flags=re.I
+              )
+          
+              def replace(match):
+                  quote=match.group(1) or ""
+                  value=match.group(2).strip()
+          
+                  if (
+                      not value or
+                      value.startswith((
+                          "/",
+                          "data:",
+                          "http:",
+                          "https:",
+                          "//",
+                          "#",
+                          "blob:",
+                      ))
+                  ):
+                      return match.group(0)
+          
+                  while value.startswith("./"):
+                      value=value[2:]
+          
+                  return f"url({quote}../{value}{quote})"
+          
+              return pattern.sub(replace,css)
+          
+          def remove_runtime_section(css):
+              return re.sub(
+                  r'/\* V639 RUNTIME START \*/.*?'
+                  r'/\* V639 RUNTIME END \*/',
+                  "",
+                  css,
+                  flags=re.S
+              )
+          
+          blocks=scan_styles(html)
+          bundle_parts=[]
+          consumed=[]
+          external_links=[]
+          
+          for block in blocks:
+              media=block.get("media","").strip()
+          
+              if block["kind"]=="inline":
+                  content=rewrite_inline_urls(block["content"])
+                  label="inline"
+          
+              else:
+                  href=block["href"]
+                  clean=href.split("?",1)[0].split("#",1)[0]
+          
+                  if clean.startswith(("http:","https:","//","data:")):
+                      external_links.append(block["original"])
+                      consumed.append((block["start"],block["end"]))
+                      continue
+          
+                  if not clean.startswith("css/"):
+                      continue
+          
+                  file_path=public/clean
+          
+                  if not file_path.is_file():
+                      continue
+          
+                  content=file_path.read_text(
+                      encoding="utf-8",
+                      errors="replace"
+                  )
+          
+                  content=remove_runtime_section(content)
+          
+                  content=re.sub(
+                      r'^\s*@charset\s+["\'][^"\']+["\'];?',
+                      "",
+                      content,
+                      flags=re.I
+                  )
+          
+                  label=clean
+          
+              if media and media.lower() not in ("all","screen"):
+                  content=f"@media {media}{{\n{content}\n}}"
+          
+              bundle_parts.append(
+                  f"\n/* ===== {label} ===== */\n{content}\n"
+              )
+          
+              consumed.append((block["start"],block["end"]))
+          
+          if not bundle_parts:
+              raise SystemExit(
+                  "[ERREUR] Aucun style local trouvé. "
+                  "Le bundle final n'a pas été remplacé."
+              )
+          
+          for start,end in reversed(consumed):
+              html=html[:start]+html[end:]
+          
+          bundle=(
+              "/* MHUR Nexus — rendu final direct V639. */\n"
+              +"".join(bundle_parts)
+              +"\n"
+              +RUNTIME_CSS
+              +"\n"
+          )
+          
+          bundle_path.write_text(
+              bundle,
+              encoding="utf-8"
+          )
+          
+          runtime_path.write_text(
+              RUNTIME_JS+"\n",
+              encoding="utf-8"
+          )
+          
+          # ------------------------------------------------------------
+          # 3. Un seul CSS final, bloquant, placé dans le head.
+          #
+          # Le navigateur ne peut plus peindre l'ancienne mise en page :
+          # il attend uniquement ce fichier CSS, puis affiche le rendu final.
+          # ------------------------------------------------------------
+          
+          heads=list(
+              re.finditer(r'</head\s*>',html,flags=re.I)
+          )
+          
+          if not heads:
+              raise SystemExit(
+                  "[ERREUR] Balise </head> introuvable."
+              )
+          
+          position=heads[-1].start()
+          
+          head_assets=(
+              "\n"
+              +("\n".join(external_links)+"\n" if external_links else "")
+              +'<!-- V639 : rendu final unique avant le premier affichage. -->\n'
+              '<link rel="preload" '
+              'href="css/v639-direct-final.css?v=639" '
+              'as="style" fetchpriority="high">\n'
+              '<link rel="stylesheet" '
+              'href="css/v639-direct-final.css?v=639">\n'
+          )
+          
+          html=html[:position]+head_assets+html[position:]
+          
+          bodies=list(
+              re.finditer(r'</body\s*>',html,flags=re.I)
+          )
+          
+          if not bodies:
+              raise SystemExit(
+                  "[ERREUR] Balise </body> introuvable."
+              )
+          
+          position=bodies[-1].start()
+          
+          script_tag=(
+              '\n<!-- V639 : images prioritaires sans bloquer la navigation. -->\n'
+              '<script src="js/v639-direct-final.js?v=639"></script>\n'
+          )
+          
+          html=html[:position]+script_tag+html[position:]
+          
+          index_path.write_text(
+              html,
+              encoding="utf-8"
+          )
+          
+          # ------------------------------------------------------------
+          # 4. Supprime les anciens fichiers runtime après création du bundle.
+          # ------------------------------------------------------------
+          
+          removed=[]
+          
+          for folder in [
+              public/"css",
+              public/"js",
+              public/"data",
+          ]:
+              if not folder.is_dir():
+                  continue
+          
+              for path in folder.iterdir():
+                  if not path.is_file():
+                      continue
+          
+                  if path in (bundle_path,runtime_path):
+                      continue
+          
+                  if re.match(
+                      r'v(?:630|631|632|633(?:b|c)?|635|636|637|638)[-_]',
+                      path.name,
+                      flags=re.I
+                  ):
+                      path.unlink()
+                      removed.append(path.as_posix())
+          
+          for name in [
+              "sw-v630.js",
+              "sw-v631-cleanup.js",
+          ]:
+              path=public/name
+          
+              if path.is_file():
+                  path.unlink()
+                  removed.append(path.as_posix())
+          
+          # ------------------------------------------------------------
+          # 5. Cache normal : HTML revalidé, assets réellement conservés.
+          # ------------------------------------------------------------
+          
+          existing=(
+              headers_path.read_text(encoding="utf-8")
+              if headers_path.is_file()
+              else ""
+          )
+          
+          existing=re.sub(
+              r'\n?# MHUR V639 DIRECT FINAL CACHE START.*?'
+              r'# MHUR V639 DIRECT FINAL CACHE END\n?',
+              "\n",
+              existing,
+              flags=re.S
+          ).strip()
+          
+          headers_path.write_text(
+              ((existing+"\n\n") if existing else "")
+              +HEADERS
+              +"\n",
+              encoding="utf-8"
+          )
+          
+          report_path.write_text(
+              f"""MHUR NEXUS — V639
+          
+          PROBLÈME CORRIGÉ
+          Le navigateur affichait le style de base des cartes avant de recevoir
+          les correctifs visuels chargés à la fin de index.html.
+          
+          SOLUTION
+          - {len(bundle_parts)} blocs CSS locaux regroupés dans un seul fichier.
+          - Le CSS final est chargé dans le head avant le premier affichage.
+          - Aucun ancien rendu brut ne peut être peint.
+          - Aucun masque ou délai JavaScript.
+          - Navigation interne immédiate une fois le CSS chargé.
+          - Ordre de cascade conservé.
+          - Workflow réutilisable : un deuxième lancement reprend le bundle V639
+            existant sans le vider.
+          - V634 et les correctifs fonctionnels restent conservés.
+          
+          IMAGES
+          - Les premières images sont chargées en priorité.
+          - Les images proches de l'écran deviennent prioritaires.
+          - Les images éloignées restent différées.
+          - Aucune image n'est volontairement cachée.
+          
+          ANCIENS FICHIERS RUNTIME SUPPRIMÉS
+          """
+              +"\n".join(f"- {item}" for item in removed)
+              +"\n",
+              encoding="utf-8"
+          )
+          
+          print(
+              f"[OK] V639 : {len(bundle_parts)} styles regroupés, "
+              f"{len(removed)} anciens fichiers supprimés."
+          )
+          
+          PY
+          
+          cat > /tmp/verifier_v639.py <<'PY'
+          
+          from pathlib import Path
+          import re
+          
+          index=Path("public/index.html").read_text(
+              encoding="utf-8"
+          )
+          
+          bundle=Path(
+              "public/css/v639-direct-final.css"
+          ).read_text(
+              encoding="utf-8"
+          )
+          
+          runtime=Path(
+              "public/js/v639-direct-final.js"
+          ).read_text(
+              encoding="utf-8"
+          )
+          
+          if index.count(
+              "css/v639-direct-final.css?v=639"
+          )!=2:
+              raise SystemExit(
+                  "[ERREUR] Le CSS V639 doit avoir un preload et un stylesheet."
+              )
+          
+          if index.count(
+              "js/v639-direct-final.js?v=639"
+          )!=1:
+              raise SystemExit(
+                  "[ERREUR] Le runtime V639 est absent ou dupliqué."
+              )
+          
+          if len(bundle)<1000:
+              raise SystemExit(
+                  "[ERREUR] Le bundle V639 est anormalement petit."
+              )
+          
+          if bundle.count("V639 RUNTIME START")!=1:
+              raise SystemExit(
+                  "[ERREUR] Le runtime CSS V639 est absent ou dupliqué."
+              )
+          
+          for forbidden in [
+              "v630-atomic-render",
+              "v631-remove-v630-loader",
+              "v632-stop-reload-loop",
+              "v633-final-first-frame",
+              "v633c-final-first-frame",
+              "v635-instant-navigation",
+              "v636-final-fast",
+              "v637-final-render",
+              "v638-fast-display",
+          ]:
+              if forbidden in index:
+                  raise SystemExit(
+                      f"[ERREUR] Ancien moteur encore chargé : {forbidden}"
+                  )
+          
+          if re.search(
+              r'<link\b'
+              r'(?=[^>]*\brel=["\'][^"\']*stylesheet)'
+              r'(?=[^>]*\bhref=["\']css/(?!v639-direct-final))',
+              index,
+              flags=re.I
+          ):
+              raise SystemExit(
+                  "[ERREUR] Une ancienne feuille CSS locale reste séparée."
+              )
+          
+          for token in [
+              "IntersectionObserver",
+              "registerImages",
+              "mhurV637Preparing",
+          ]:
+              if token not in runtime:
+                  raise SystemExit(
+                      f"[ERREUR] Runtime V639 incomplet : {token}"
+                  )
+          
+          print("[OK] Vérification V639 réussie.")
+          
+          PY
+          
+          for tentative in 1 2 3 4 5; do
+            echo "===== Tentative ${tentative}/5 ====="
+          
+            git fetch origin main
+            git reset --hard origin/main
+          
+            python3 /tmp/appliquer_v639.py
+            node --check public/js/v639-direct-final.js
+            python3 /tmp/verifier_v639.py
+          
+            git add -A
+          
+            if git diff --cached --quiet; then
+              echo "[INFO] V639 est déjà appliqué."
+              exit 0
+            fi
+          
+            git commit -m "perf: rendu final direct sans ancien affichage V639"
+          
+            if git push origin HEAD:main; then
+              echo "[OK] V639 envoyé sur main."
+              exit 0
+            fi
+          
+            echo "[ATTENTE] main a changé, nouvelle tentative."
+            sleep $((tentative * 3))
+          done
+          
+          echo "[ERREUR] Impossible d'envoyer V639 après cinq tentatives."
+          exit 1
