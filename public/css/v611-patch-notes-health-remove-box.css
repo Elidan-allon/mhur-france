@@ -1,0 +1,54 @@
+/* MHUR Nexus - V611 : aucune image et aucun cadre pour les PV / HP */
+
+#s18NotesDevModalV10
+[data-v611-health-no-image="1"]
+.mhur-v611-health-no-image > :not(main){
+  display:none!important;
+  width:0!important;
+  height:0!important;
+  min-width:0!important;
+  min-height:0!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  outline:0!important;
+  box-shadow:none!important;
+}
+
+#s18NotesDevModalV10
+[data-v611-health-no-image="1"]
+.mhur-v611-health-no-image::before,
+#s18NotesDevModalV10
+[data-v611-health-no-image="1"]
+.mhur-v611-health-no-image::after{
+  content:none!important;
+  display:none!important;
+}
+
+#s18NotesDevModalV10
+[data-v611-health-no-image="1"]
+.mhur-v611-health-no-image{
+  display:block!important;
+  grid-template-columns:minmax(0,1fr)!important;
+  width:100%!important;
+  min-width:0!important;
+  min-height:0!important;
+  gap:0!important;
+  column-gap:0!important;
+  padding-left:0!important;
+  margin-left:0!important;
+}
+
+#s18NotesDevModalV10
+[data-v611-health-no-image="1"]
+.mhur-v611-health-no-image > main{
+  display:block!important;
+  grid-column:1 / -1!important;
+  width:100%!important;
+  max-width:none!important;
+  min-width:0!important;
+  min-height:0!important;
+  margin:0!important;
+  padding-left:0!important;
+  transform:none!important;
+}
