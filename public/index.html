@@ -875,6 +875,32 @@
 <link rel="stylesheet" href="css/v618-mobile-costume-visible-center.css?v=618">
 <!-- V624 : tier list badge NEW CSS. -->
 <link rel="stylesheet" href="css/v624-tierlist-new-fix.css?v=624">
+<style id="mhur-v622-costume-image-no-jump">
+@media (max-width:760px){
+  /*
+    Cette règle est chargée dans <head>, avant la création des cartes :
+    l'ancien cadrage décentré ne peut donc jamais être visible.
+  */
+  html body #app .costumeTile > img{
+    opacity:0!important;
+    visibility:hidden!important;
+    transition:
+      opacity 190ms cubic-bezier(.22,.61,.36,1)!important;
+    will-change:opacity!important;
+  }
+
+  html body #app .costumeTile > img[data-v622-ready="1"]{
+    opacity:1!important;
+    visibility:visible!important;
+  }
+}
+
+@media (prefers-reduced-motion:reduce){
+  html body #app .costumeTile > img{
+    transition:none!important;
+  }
+}
+</style>
 </head>
 <body>
 
@@ -7599,5 +7625,7 @@ body .costumeTile > img,
 <script src="js/v621-tuning-mobile-smooth-navigation.js?v=621"></script>
 <!-- V624 : tier list badge NEW JS. -->
 <script src="js/v624-tierlist-new-fix.js?v=624"></script>
+<!-- V622 : costumes sans saut au chargement. -->
+<script src="js/v622-costume-image-no-jump.js?v=6221"></script>
 </body>
 </html>

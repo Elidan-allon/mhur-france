@@ -1,0 +1,11 @@
+MHUR NEXUS — V622
+
+CORRECTION UNIQUE
+- La photo n'apparaît plus décalée à droite pendant son chargement.
+- Elle reste invisible quelques instants pendant le calcul V618.
+- Elle apparaît ensuite déjà centrée avec un fondu très court.
+
+NON MODIFIÉ
+- Taille et position finales des costumes.
+- Badges, NEW, rareté, T.U.N.I.N.G et noms.
+- Version ordinateur.
