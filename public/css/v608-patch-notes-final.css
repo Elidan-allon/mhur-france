@@ -1,0 +1,56 @@
+/* MHUR Nexus — V608 : rendu Patch Notes restauré */
+
+#s18NotesDevModalV10
+.s18PatchSkillV10.s18NoSkillImageV608,
+#s18NotesDevModalV10
+.s18PatchSkillV10:not(:has(>div)){
+  display:block!important;
+  width:100%!important;
+  min-width:0!important;
+}
+
+#s18NotesDevModalV10
+.s18PatchSkillV10.s18NoSkillImageV608>main,
+#s18NotesDevModalV10
+.s18PatchSkillV10:not(:has(>div))>main{
+  display:block!important;
+  width:100%!important;
+  max-width:none!important;
+  grid-column:1 / -1!important;
+}
+
+#s18NotesDevModalV10
+.s18PatchImageV608 img,
+#s18NotesDevModalV10
+.s18PatchPortraitV10 img{
+  display:block!important;
+  width:100%!important;
+  height:100%!important;
+  object-fit:contain!important;
+}
+
+#s18NotesDevModalV10
+[data-v608-patch-content]{
+  display:block!important;
+  width:100%!important;
+  min-height:120px!important;
+}
+
+#s18NotesDevModalV10
+.s18NotesBodyV10>main:empty::after{
+  content:'Loading Patch Notes…';
+  display:block;
+  padding:24px;
+  color:#fff;
+  font-weight:800;
+}
+
+@media(max-width:760px){
+  #s18NotesDevModalV10
+  .s18PatchTableWrapV10{
+    width:100%!important;
+    max-width:100%!important;
+    overflow-x:auto!important;
+    -webkit-overflow-scrolling:touch!important;
+  }
+}

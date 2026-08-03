@@ -1,0 +1,27 @@
+MHUR FRANCE — RAPPORT V608
+
+PATCH NOTES VIDE
+- Nouveau rendu autonome chargé après season18-fixes.js.
+- Le bouton Patch Notes utilise le rendu V608.
+- Les onglets Patch Notes et Dev Notes restent fonctionnels.
+- Le titre est affiché avant le traitement des détails.
+- Une donnée imparfaite ne peut plus laisser tout le panneau vide.
+
+MIDORIYA
+- Air Force sélectionne le style assault.
+- Full Bullet sélectionne le style fullbullet.
+- Airblast sélectionne le style ofa.
+- Les images viennent des compétences locales du style exact.
+- skill_image ne peut plus imposer Gamma ou Action spéciale à Midoriya.
+- HP / PV n'affiche aucune image de compétence.
+
+VITESSE
+- loading=eager.
+- fetchpriority=high.
+- préchargement des trois Alpha Midoriya.
+- aucun MutationObserver permanent.
+- aucun remplacement tardif des images.
+
+SÉCURITÉ
+- season18-fixes.js n'est pas modifié.
+- les pages personnages ne sont pas modifiées.
