@@ -1,0 +1,26 @@
+MHUR NEXUS — RAPPORT V609
+CORRECTIF DES IMAGES ALPHA DE MIDORIYA DANS LES FICHES PERSONNAGES
+
+CIBLE
+- Midoriya Original :
+  assets/midoriya/midoriya_assault/alpha.webp
+- Midoriya Full Bullet :
+  assets/midoriya/midoriya_attack/alpha.webp
+- Midoriya OFA :
+  assets/midoriya_ofa/alpha.webp
+- Sous-competence Full Burst de l'Original :
+  assets/midoriya/midoriya_assault/alpha_fullburst.webp
+
+PROTECTION
+- Aucune image Beta ou Gamma n'est modifiee.
+- Aucune action speciale n'est modifiee.
+- Aucun autre personnage n'est modifie.
+- Les tableaux, textes, traductions, PV, T.U.N.I.N.G,
+  costumes, builds et Patch Notes ne sont pas modifies.
+- Le correctif est idempotent : relancer le workflow
+  ne duplique ni le script ni les prechargements.
+
+FICHIERS MODIFIES/AJOUTES
+- public/index.html
+- public/js/v609-midoriya-alpha-personnages.js
+- RAPPORT_V609_MIDORIYA_ALPHA_PERSONNAGES.txt
