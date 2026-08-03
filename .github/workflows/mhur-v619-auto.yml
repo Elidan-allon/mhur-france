@@ -1,0 +1,220 @@
+name: MHUR V619 - Navigation TUNING mobile
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/mhur-v619-auto.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: mhur-v619-tuning-mobile
+  cancel-in-progress: false
+
+jobs:
+  appliquer:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Recuperer le depot
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Installer Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Appliquer et enregistrer V619
+        shell: bash
+        run: |
+          set -euo pipefail
+          
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          
+          cat > /tmp/appliquer_v619.py <<'PY'
+          from pathlib import Path
+          import base64
+          import re
+          
+          CSS = base64.b64decode("LyogTUhVUiBOZXh1cyDigJQgVjYxOQogICBOYXZpZ2F0aW9uIG1vYmlsZSBlbnRyZSBsZXMgZW1wbGFjZW1lbnRzIGV0IGxlcyBULlUuTi5JLk4uRyBjb21wYXRpYmxlcy4KICAgQWZmaWNoYWdlIGNvbXBsZXQgZGVzIGVmZmV0cyBldCBkZXMgbml2ZWF1eC4gKi8KCi5taHVyVjYxOURldGFpbHN7CiAgZGlzcGxheTpub25lOwp9CgpAbWVkaWEgKG1heC13aWR0aDo3NjBweCl7CiAgaHRtbCBib2R5ICNhcHAgLmdhbWVDb3N0dW1lU2NyZWVuIC5nYW1lVHVuaW5nQXJlYSwKICBodG1sIGJvZHkgI2FwcCAuZ2FtZUNvc3R1bWVTY3JlZW4gLnR1bmluZ1BpY2tlciwKICBodG1sIGJvZHkgI2FwcCAuZ2FtZUNvc3R1bWVTY3JlZW4gLnR1bmluZ09wdGlvbnN7CiAgICBtaW4td2lkdGg6MCFpbXBvcnRhbnQ7CiAgICB3aWR0aDoxMDAlIWltcG9ydGFudDsKICAgIG1heC13aWR0aDpub25lIWltcG9ydGFudDsKICAgIGhlaWdodDphdXRvIWltcG9ydGFudDsKICAgIG1heC1oZWlnaHQ6bm9uZSFpbXBvcnRhbnQ7CiAgICBvdmVyZmxvdzp2aXNpYmxlIWltcG9ydGFudDsKICB9CgogIGh0bWwgYm9keSAjYXBwIC5nYW1lQ29zdHVtZVNjcmVlbiAudHVuaW5nT3B0aW9uc3sKICAgIGRpc3BsYXk6Z3JpZCFpbXBvcnRhbnQ7CiAgICBncmlkLXRlbXBsYXRlLWNvbHVtbnM6bWlubWF4KDAsMWZyKSFpbXBvcnRhbnQ7CiAgICBnYXA6MTJweCFpbXBvcnRhbnQ7CiAgICBwYWRkaW5nLWJvdHRvbToxOHB4IWltcG9ydGFudDsKICB9CgogIGh0bWwgYm9keSAjYXBwIC5nYW1lQ29zdHVtZVNjcmVlbiAudHVuaW5nUGlja2VyLAogIGh0bWwgYm9keSAjYXBwIC5nYW1lQ29zdHVtZVNjcmVlbiAuZ2FtZVNsb3QuYWN0aXZlewogICAgc2Nyb2xsLW1hcmdpbi10b3A6Y2FsYyh2YXIoLS1taHVyLXY2MTktc2Nyb2xsLW9mZnNldCwxOTBweCkgKyAxMnB4KSFpbXBvcnRhbnQ7CiAgfQoKICBodG1sIGJvZHkgI2FwcCAuZ2FtZUNvc3R1bWVTY3JlZW4gLnR1bmluZ09wdGlvbnsKICAgIHBvc2l0aW9uOnJlbGF0aXZlIWltcG9ydGFudDsKICAgIGRpc3BsYXk6Z3JpZCFpbXBvcnRhbnQ7CiAgICBncmlkLXRlbXBsYXRlLWNvbHVtbnM6NzhweCBtaW5tYXgoMCwxZnIpIWltcG9ydGFudDsKICAgIGdyaWQtdGVtcGxhdGUtYXJlYXM6CiAgICAgICJpY29uIG1haW4iCiAgICAgICJmYWN0aW9uIG1haW4iCiAgICAgICJkZXRhaWxzIGRldGFpbHMiIWltcG9ydGFudDsKICAgIGNvbHVtbi1nYXA6MTBweCFpbXBvcnRhbnQ7CiAgICByb3ctZ2FwOjdweCFpbXBvcnRhbnQ7CiAgICBhbGlnbi1pdGVtczpzdGFydCFpbXBvcnRhbnQ7CiAgICB3aWR0aDoxMDAlIWltcG9ydGFudDsKICAgIG1pbi13aWR0aDowIWltcG9ydGFudDsKICAgIG1heC13aWR0aDpub25lIWltcG9ydGFudDsKICAgIG1pbi1oZWlnaHQ6MCFpbXBvcnRhbnQ7CiAgICBoZWlnaHQ6YXV0byFpbXBvcnRhbnQ7CiAgICBtYXgtaGVpZ2h0Om5vbmUhaW1wb3J0YW50OwogICAgcGFkZGluZzoxMHB4IWltcG9ydGFudDsKICAgIGJveC1zaXppbmc6Ym9yZGVyLWJveCFpbXBvcnRhbnQ7CiAgICBvdmVyZmxvdzp2aXNpYmxlIWltcG9ydGFudDsKICAgIHdoaXRlLXNwYWNlOm5vcm1hbCFpbXBvcnRhbnQ7CiAgfQoKICBodG1sIGJvZHkgI2FwcCAuZ2FtZUNvc3R1bWVTY3JlZW4gLnR1bmluZ09wdGlvbiA+CiAgLnR1bmluZ09wdGlvbkljb25XcmFwewogICAgZ3JpZC1hcmVhOmljb24haW1wb3J0YW50OwogICAgZGlzcGxheTpmbGV4IWltcG9ydGFudDsKICAgIGFsaWduLWl0ZW1zOmNlbnRlciFpbXBvcnRhbnQ7CiAgICBqdXN0aWZ5LWNvbnRlbnQ6Y2VudGVyIWltcG9ydGFudDsKICAgIHdpZHRoOjc2cHghaW1wb3J0YW50OwogICAgaGVpZ2h0Ojc2cHghaW1wb3J0YW50OwogICAgbWluLXdpZHRoOjc2cHghaW1wb3J0YW50OwogICAgbWluLWhlaWdodDo3NnB4IWltcG9ydGFudDsKICAgIG92ZXJmbG93OmhpZGRlbiFpbXBvcnRhbnQ7CiAgICBhbGlnbi1zZWxmOnN0YXJ0IWltcG9ydGFudDsKICAgIGJhY2tncm91bmQ6cmdiYSgwLDAsMCwuMjIpIWltcG9ydGFudDsKICAgIGJvcmRlci1yYWRpdXM6N3B4IWltcG9ydGFudDsKICB9CgogIGh0bWwgYm9keSAjYXBwIC5nYW1lQ29zdHVtZVNjcmVlbiAudHVuaW5nT3B0aW9uID4KICAudHVuaW5nT3B0aW9uSWNvbldyYXAgaW1nLAogIGh0bWwgYm9keSAjYXBwIC5nYW1lQ29zdHVtZVNjcmVlbiAudHVuaW5nT3B0aW9uID4gaW1nLAogIGh0bWwgYm9keSAjYXBwIC5nYW1lQ29zdHVtZVNjcmVlbiAudHVuaW5nT3B0aW9uID4KICAudHVuaW5nT3B0aW9uSW1newogICAgZ3JpZC1hcmVhOmljb24haW1wb3J0YW50OwogICAgd2lkdGg6NzZweCFpbXBvcnRhbnQ7CiAgICBoZWlnaHQ6NzZweCFpbXBvcnRhbnQ7CiAgICBtaW4td2lkdGg6NzZweCFpbXBvcnRhbnQ7CiAgICBtaW4taGVpZ2h0Ojc2cHghaW1wb3J0YW50OwogICAgbWF4LXdpZHRoOjc2cHghaW1wb3J0YW50OwogICAgbWF4LWhlaWdodDo3NnB4IWltcG9ydGFudDsKICAgIG1hcmdpbjowIWltcG9ydGFudDsKICAgIHBhZGRpbmc6MCFpbXBvcnRhbnQ7CiAgICBib3JkZXI6MCFpbXBvcnRhbnQ7CiAgICBvYmplY3QtZml0OmNvbnRhaW4haW1wb3J0YW50OwogICAgb2JqZWN0LXBvc2l0aW9uOmNlbnRlciBjZW50ZXIhaW1wb3J0YW50OwogICAgdHJhbnNmb3JtOm5vbmUhaW1wb3J0YW50OwogICAgYWxpZ24tc2VsZjpzdGFydCFpbXBvcnRhbnQ7CiAgICBiYWNrZ3JvdW5kOnRyYW5zcGFyZW50IWltcG9ydGFudDsKICAgIGJvcmRlci1yYWRpdXM6N3B4IWltcG9ydGFudDsKICB9CgogIGh0bWwgYm9keSAjYXBwIC5nYW1lQ29zdHVtZVNjcmVlbiAudHVuaW5nT3B0aW9uTWFpbnsKICAgIGdyaWQtYXJlYTptYWluIWltcG9ydGFudDsKICAgIGRpc3BsYXk6YmxvY2shaW1wb3J0YW50OwogICAgbWluLXdpZHRoOjAhaW1wb3J0YW50OwogICAgd2lkdGg6MTAwJSFpbXBvcnRhbnQ7CiAgICBtYXgtd2lkdGg6bm9uZSFpbXBvcnRhbnQ7CiAgICBoZWlnaHQ6YXV0byFpbXBvcnRhbnQ7CiAgICBtYXgtaGVpZ2h0Om5vbmUhaW1wb3J0YW50OwogICAgcGFkZGluZzowIWltcG9ydGFudDsKICAgIG1hcmdpbjowIWltcG9ydGFudDsKICAgIG92ZXJmbG93OnZpc2libGUhaW1wb3J0YW50OwogIH0KCiAgaHRtbCBib2R5ICNhcHAgLmdhbWVDb3N0dW1lU2NyZWVuIC50dW5pbmdPcHRpb25DaGFyewogICAgZGlzcGxheTpibG9jayFpbXBvcnRhbnQ7CiAgICB3aWR0aDoxMDAlIWltcG9ydGFudDsKICAgIG1heC13aWR0aDpub25lIWltcG9ydGFudDsKICAgIG1hcmdpbjowIDAgM3B4IWltcG9ydGFudDsKICAgIGZvbnQtc2l6ZToxNHB4IWltcG9ydGFudDsKICAgIGxpbmUtaGVpZ2h0OjEuMDghaW1wb3J0YW50OwogICAgd2hpdGUtc3BhY2U6bm9ybWFsIWltcG9ydGFudDsKICAgIG92ZXJmbG93OnZpc2libGUhaW1wb3J0YW50OwogICAgdGV4dC1vdmVyZmxvdzpjbGlwIWltcG9ydGFudDsKICB9CgogIGh0bWwgYm9keSAjYXBwIC5nYW1lQ29zdHVtZVNjcmVlbiAudHVuaW5nT3B0aW9uTmFtZXsKICAgIGRpc3BsYXk6YmxvY2shaW1wb3J0YW50OwogICAgd2lkdGg6MTAwJSFpbXBvcnRhbnQ7CiAgICBtYXgtd2lkdGg6bm9uZSFpbXBvcnRhbnQ7CiAgICBtYXgtaGVpZ2h0Om5vbmUhaW1wb3J0YW50OwogICAgbWFyZ2luOjAhaW1wb3J0YW50OwogICAgZm9udC1zaXplOjE5cHghaW1wb3J0YW50OwogICAgbGluZS1oZWlnaHQ6MS4wOCFpbXBvcnRhbnQ7CiAgICB3aGl0ZS1zcGFjZTpub3JtYWwhaW1wb3J0YW50OwogICAgb3ZlcmZsb3c6dmlzaWJsZSFpbXBvcnRhbnQ7CiAgICB0ZXh0LW92ZXJmbG93OmNsaXAhaW1wb3J0YW50OwogICAgLXdlYmtpdC1saW5lLWNsYW1wOnVuc2V0IWltcG9ydGFudDsKICAgIC13ZWJraXQtYm94LW9yaWVudDp1bnNldCFpbXBvcnRhbnQ7CiAgfQoKICAvKiBMYSBkZXNjcmlwdGlvbiBjb3VydGUgZXN0IHJlbXBsYWPDqWUgcGFyIGxlcyBkw6l0YWlscyBjb21wbGV0cyBWNjE5LiAqLwogIGh0bWwgYm9keSAjYXBwIC5nYW1lQ29zdHVtZVNjcmVlbiAudHVuaW5nT3B0aW9uRGVzY3sKICAgIGRpc3BsYXk6bm9uZSFpbXBvcnRhbnQ7CiAgfQoKICBodG1sIGJvZHkgI2FwcCAuZ2FtZUNvc3R1bWVTY3JlZW4gLnR1bmluZ0ZhY3Rpb257CiAgICBncmlkLWFyZWE6ZmFjdGlvbiFpbXBvcnRhbnQ7CiAgICBwb3NpdGlvbjpzdGF0aWMhaW1wb3J0YW50OwogICAgZGlzcGxheTpibG9jayFpbXBvcnRhbnQ7CiAgICBhbGlnbi1zZWxmOnN0YXJ0IWltcG9ydGFudDsKICAgIGp1c3RpZnktc2VsZjpzdHJldGNoIWltcG9ydGFudDsKICAgIHdpZHRoOjc2cHghaW1wb3J0YW50OwogICAgbWluLXdpZHRoOjAhaW1wb3J0YW50OwogICAgbWF4LXdpZHRoOjc2cHghaW1wb3J0YW50OwogICAgbWFyZ2luOjAhaW1wb3J0YW50OwogICAgcGFkZGluZzo0cHggM3B4IWltcG9ydGFudDsKICAgIGJvcmRlcjoycHggc29saWQgcmdiYSgwLDAsMCwuNzUpIWltcG9ydGFudDsKICAgIGJvcmRlci1yYWRpdXM6N3B4IWltcG9ydGFudDsKICAgIGJhY2tncm91bmQ6cmdiYSgwLDAsMCwuNzgpIWltcG9ydGFudDsKICAgIGNvbG9yOiNmZmYhaW1wb3J0YW50OwogICAgZm9udC1zaXplOjEwcHghaW1wb3J0YW50OwogICAgbGluZS1oZWlnaHQ6MS4wNSFpbXBvcnRhbnQ7CiAgICBmb250LXdlaWdodDoxMDAwIWltcG9ydGFudDsKICAgIHRleHQtYWxpZ246Y2VudGVyIWltcG9ydGFudDsKICAgIHdoaXRlLXNwYWNlOm5vcm1hbCFpbXBvcnRhbnQ7CiAgICB3b3JkLWJyZWFrOm5vcm1hbCFpbXBvcnRhbnQ7CiAgICBvdmVyZmxvdzp2aXNpYmxlIWltcG9ydGFudDsKICAgIHRleHQtb3ZlcmZsb3c6Y2xpcCFpbXBvcnRhbnQ7CiAgICBib3gtc2l6aW5nOmJvcmRlci1ib3ghaW1wb3J0YW50OwogIH0KCiAgaHRtbCBib2R5ICNhcHAgLmdhbWVDb3N0dW1lU2NyZWVuIC5taHVyVjYxOURldGFpbHN7CiAgICBncmlkLWFyZWE6ZGV0YWlscyFpbXBvcnRhbnQ7CiAgICBkaXNwbGF5OmJsb2NrIWltcG9ydGFudDsKICAgIG1pbi13aWR0aDowIWltcG9ydGFudDsKICAgIHdpZHRoOjEwMCUhaW1wb3J0YW50OwogICAgbWF4LXdpZHRoOm5vbmUhaW1wb3J0YW50OwogICAgbWFyZ2luOjNweCAwIDAhaW1wb3J0YW50OwogICAgcGFkZGluZzoxMHB4IWltcG9ydGFudDsKICAgIGJvcmRlcjoycHggc29saWQgcmdiYSgwLDAsMCwuNzgpIWltcG9ydGFudDsKICAgIGJvcmRlci1yYWRpdXM6OXB4IWltcG9ydGFudDsKICAgIGJhY2tncm91bmQ6cmdiYSg0LDEwLDE4LC44OCkhaW1wb3J0YW50OwogICAgY29sb3I6I2ZmZiFpbXBvcnRhbnQ7CiAgICB0ZXh0LWFsaWduOmxlZnQhaW1wb3J0YW50OwogICAgd2hpdGUtc3BhY2U6bm9ybWFsIWltcG9ydGFudDsKICAgIG92ZXJmbG93OnZpc2libGUhaW1wb3J0YW50OwogICAgYm94LXNpemluZzpib3JkZXItYm94IWltcG9ydGFudDsKICB9CgogIGh0bWwgYm9keSAjYXBwIC5nYW1lQ29zdHVtZVNjcmVlbiAubWh1clY2MTlEZXRhaWxzVGl0bGV7CiAgICBtYXJnaW46MCAwIDhweCFpbXBvcnRhbnQ7CiAgICBjb2xvcjojZmZlNTAwIWltcG9ydGFudDsKICAgIGZvbnQtc2l6ZToxNHB4IWltcG9ydGFudDsKICAgIGxpbmUtaGVpZ2h0OjEuMSFpbXBvcnRhbnQ7CiAgICBmb250LXdlaWdodDoxMDAwIWltcG9ydGFudDsKICB9CgogIGh0bWwgYm9keSAjYXBwIC5nYW1lQ29zdHVtZVNjcmVlbiAubWh1clY2MTlFZmZlY3R7CiAgICBkaXNwbGF5OmJsb2NrIWltcG9ydGFudDsKICAgIG1hcmdpbjowIWltcG9ydGFudDsKICAgIHBhZGRpbmc6MCFpbXBvcnRhbnQ7CiAgfQoKICBodG1sIGJvZHkgI2FwcCAuZ2FtZUNvc3R1bWVTY3JlZW4KICAubWh1clY2MTlFZmZlY3QgKyAubWh1clY2MTlFZmZlY3R7CiAgICBtYXJnaW4tdG9wOjExcHghaW1wb3J0YW50OwogICAgcGFkZGluZy10b3A6MTBweCFpbXBvcnRhbnQ7CiAgICBib3JkZXItdG9wOjFweCBzb2xpZCByZ2JhKDI1NSwyNTUsMjU1LC4yOCkhaW1wb3J0YW50OwogIH0KCiAgaHRtbCBib2R5ICNhcHAgLmdhbWVDb3N0dW1lU2NyZWVuIC5taHVyVjYxOUVmZmVjdE5hbWV7CiAgICBtYXJnaW46MCAwIDRweCFpbXBvcnRhbnQ7CiAgICBjb2xvcjojZmZmIWltcG9ydGFudDsKICAgIGZvbnQtc2l6ZToxNXB4IWltcG9ydGFudDsKICAgIGxpbmUtaGVpZ2h0OjEuMTIhaW1wb3J0YW50OwogICAgZm9udC13ZWlnaHQ6MTAwMCFpbXBvcnRhbnQ7CiAgfQoKICBodG1sIGJvZHkgI2FwcCAuZ2FtZUNvc3R1bWVTY3JlZW4gLm1odXJWNjE5RWZmZWN0RGVzY3sKICAgIG1hcmdpbjowIWltcG9ydGFudDsKICAgIGNvbG9yOiNmZmYhaW1wb3J0YW50OwogICAgZm9udC1zaXplOjEzcHghaW1wb3J0YW50OwogICAgbGluZS1oZWlnaHQ6MS4yOCFpbXBvcnRhbnQ7CiAgICBmb250LXdlaWdodDo3MDAhaW1wb3J0YW50OwogIH0KCiAgaHRtbCBib2R5ICNhcHAgLmdhbWVDb3N0dW1lU2NyZWVuIC5taHVyVjYxOUxldmVsc0xhYmVsewogICAgbWFyZ2luOjhweCAwIDVweCFpbXBvcnRhbnQ7CiAgICBjb2xvcjojZmZlNTAwIWltcG9ydGFudDsKICAgIGZvbnQtc2l6ZToxMnB4IWltcG9ydGFudDsKICAgIGxpbmUtaGVpZ2h0OjEhaW1wb3J0YW50OwogICAgZm9udC13ZWlnaHQ6MTAwMCFpbXBvcnRhbnQ7CiAgfQoKICBodG1sIGJvZHkgI2FwcCAuZ2FtZUNvc3R1bWVTY3JlZW4gLm1odXJWNjE5TGV2ZWxzewogICAgZGlzcGxheTpmbGV4IWltcG9ydGFudDsKICAgIGZsZXgtd3JhcDp3cmFwIWltcG9ydGFudDsKICAgIGdhcDo1cHghaW1wb3J0YW50OwogICAgd2lkdGg6MTAwJSFpbXBvcnRhbnQ7CiAgICBtYXgtd2lkdGg6bm9uZSFpbXBvcnRhbnQ7CiAgICBvdmVyZmxvdzp2aXNpYmxlIWltcG9ydGFudDsKICB9CgogIGh0bWwgYm9keSAjYXBwIC5nYW1lQ29zdHVtZVNjcmVlbiAubWh1clY2MTlMZXZlbHsKICAgIGRpc3BsYXk6aW5saW5lLWZsZXghaW1wb3J0YW50OwogICAgYWxpZ24taXRlbXM6Y2VudGVyIWltcG9ydGFudDsKICAgIG1pbi1oZWlnaHQ6MjZweCFpbXBvcnRhbnQ7CiAgICBtYXJnaW46MCFpbXBvcnRhbnQ7CiAgICBwYWRkaW5nOjRweCA3cHghaW1wb3J0YW50OwogICAgYm9yZGVyOjFweCBzb2xpZCAjNDU2NThmIWltcG9ydGFudDsKICAgIGJvcmRlci1yYWRpdXM6N3B4IWltcG9ydGFudDsKICAgIGJhY2tncm91bmQ6IzE3MmI0OCFpbXBvcnRhbnQ7CiAgICBjb2xvcjojZmZmIWltcG9ydGFudDsKICAgIGZvbnQtc2l6ZToxMXB4IWltcG9ydGFudDsKICAgIGxpbmUtaGVpZ2h0OjEuMDghaW1wb3J0YW50OwogICAgZm9udC13ZWlnaHQ6OTAwIWltcG9ydGFudDsKICAgIHdoaXRlLXNwYWNlOm5vcm1hbCFpbXBvcnRhbnQ7CiAgfQoKICBodG1sIGJvZHkgI2FwcCAuZ2FtZUNvc3R1bWVTY3JlZW4KICAubWh1clY2MTlMZXZlbC5taHVyVjYxOVN1YnsKICAgIGJvcmRlci1jb2xvcjojZmZlNTAwIWltcG9ydGFudDsKICAgIGJhY2tncm91bmQ6IzRhM2MwMCFpbXBvcnRhbnQ7CiAgICBjb2xvcjojZmZlNTAwIWltcG9ydGFudDsKICB9CgogIGh0bWwgYm9keSAjYXBwIC5nYW1lQ29zdHVtZVNjcmVlbgogIC50dW5pbmdPcHRpb24uYWxyZWFkeVVzZWQ6OmFmdGVyewogICAgdG9wOjdweCFpbXBvcnRhbnQ7CiAgICByaWdodDo3cHghaW1wb3J0YW50OwogICAgYm90dG9tOmF1dG8haW1wb3J0YW50OwogICAgei1pbmRleDoxMiFpbXBvcnRhbnQ7CiAgfQp9").decode("utf-8")
+          JS = base64.b64decode("LyogTUhVUiBOZXh1cyDigJQgVjYxOQogICAtIGNsaWMgc3VyIHVuIGVtcGxhY2VtZW50IDogZGVzY2VuZCBhdXggVC5VLk4uSS5OLkcgY29tcGF0aWJsZXMgOwogICAtIHPDqWxlY3Rpb24gZCd1biBULlUuTi5JLk4uRyA6IHJlbW9udGUgw6AgbCdlbXBsYWNlbWVudCBhY3RpZiA7CiAgIC0gYWpvdXRlIGxlcyBkZXNjcmlwdGlvbnMsIGVmZmV0cyBldCBuaXZlYXV4IGNvbXBsZXRzIHN1ciBtb2JpbGUuICovCihmdW5jdGlvbigpewogICd1c2Ugc3RyaWN0JzsKCiAgaWYod2luZG93Lk1IVVJfVjYxOV9UVU5JTkdfTU9CSUxFX0xPQURFRClyZXR1cm47CiAgd2luZG93Lk1IVVJfVjYxOV9UVU5JTkdfTU9CSUxFX0xPQURFRD10cnVlOwoKICBjb25zdCBNT0JJTEVfUVVFUlk9JyhtYXgtd2lkdGg6NzYwcHgpJzsKICBsZXQgcmVmcmVzaFF1ZXVlZD1mYWxzZTsKICBsZXQgbmF2aWdhdGlvblRva2VuPTA7CgogIGZ1bmN0aW9uIG1vYmlsZSgpewogICAgcmV0dXJuIHdpbmRvdy5tYXRjaE1lZGlhKE1PQklMRV9RVUVSWSkubWF0Y2hlczsKICB9CgogIGZ1bmN0aW9uIGxhbmd1YWdlKCl7CiAgICByZXR1cm4gU3RyaW5nKAogICAgICBkb2N1bWVudC5kb2N1bWVudEVsZW1lbnQubGFuZ3x8CiAgICAgICh0eXBlb2YgbGFuZyE9PSd1bmRlZmluZWQnP2xhbmc6J2ZyJyl8fAogICAgICAnZnInCiAgICApLnRvTG93ZXJDYXNlKCkuc3RhcnRzV2l0aCgnZW4nKT8nZW4nOidmcic7CiAgfQoKICBmdW5jdGlvbiBsYWJlbHMoKXsKICAgIHJldHVybiBsYW5ndWFnZSgpPT09J2VuJwogICAgICA/ewogICAgICAgICAgZGV0YWlsczonRnVsbCBkZXRhaWxzJywKICAgICAgICAgIGVmZmVjdDonRWZmZWN0JywKICAgICAgICAgIGxldmVsczonTGV2ZWxzJwogICAgICAgIH0KICAgICAgOnsKICAgICAgICAgIGRldGFpbHM6J0TDqXRhaWxzIGNvbXBsZXRzJywKICAgICAgICAgIGVmZmVjdDonRWZmZXQnLAogICAgICAgICAgbGV2ZWxzOidOaXZlYXV4JwogICAgICAgIH07CiAgfQoKICBmdW5jdGlvbiBjbGVhblRleHQodmFsdWUpewogICAgY29uc3QgaG9sZGVyPWRvY3VtZW50LmNyZWF0ZUVsZW1lbnQoJ2RpdicpOwogICAgaG9sZGVyLmlubmVySFRNTD1TdHJpbmcodmFsdWU/PycnKQogICAgICAucmVwbGFjZSgvPGJyXHMqXC8/PlxzKjxiclxzKlwvPz4vZ2ksJ1xuXG4nKQogICAgICAucmVwbGFjZSgvPGJyXHMqXC8/Pi9naSwnXG4nKTsKCiAgICByZXR1cm4gU3RyaW5nKGhvbGRlci50ZXh0Q29udGVudHx8aG9sZGVyLmlubmVyVGV4dHx8JycpCiAgICAgIC5yZXBsYWNlKC9cdTAwYTAvZywnICcpCiAgICAgIC5yZXBsYWNlKC9bIFx0XStcbi9nLCdcbicpCiAgICAgIC5yZXBsYWNlKC9cblsgXHRdKy9nLCdcbicpCiAgICAgIC5yZXBsYWNlKC9bIFx0XXsyLH0vZywnICcpCiAgICAgIC5yZXBsYWNlKC9cbnszLH0vZywnXG5cbicpCiAgICAgIC50cmltKCk7CiAgfQoKICBmdW5jdGlvbiBlbGVtZW50KHRhZyxjbGFzc05hbWUsdGV4dCl7CiAgICBjb25zdCBub2RlPWRvY3VtZW50LmNyZWF0ZUVsZW1lbnQodGFnKTsKICAgIGlmKGNsYXNzTmFtZSlub2RlLmNsYXNzTmFtZT1jbGFzc05hbWU7CiAgICBpZih0ZXh0IT09dW5kZWZpbmVkJiZ0ZXh0IT09bnVsbClub2RlLnRleHRDb250ZW50PVN0cmluZyh0ZXh0KTsKICAgIHJldHVybiBub2RlOwogIH0KCiAgZnVuY3Rpb24gYWRkTGV2ZWxzKHBhcmVudCxsZXZlbFZhbHVlcyx0ZXh0cyl7CiAgICBjb25zdCBsZXZlbHM9QXJyYXkuaXNBcnJheShsZXZlbFZhbHVlcykKICAgICAgP2xldmVsVmFsdWVzLmZpbHRlcih2YWx1ZT0+U3RyaW5nKHZhbHVlPz8nJykudHJpbSgpKQogICAgICA6W107CgogICAgaWYoIWxldmVscy5sZW5ndGgpcmV0dXJuOwoKICAgIHBhcmVudC5hcHBlbmRDaGlsZCgKICAgICAgZWxlbWVudCgnZGl2JywnbWh1clY2MTlMZXZlbHNMYWJlbCcsdGV4dHMubGV2ZWxzKQogICAgKTsKCiAgICBjb25zdCBsaXN0PWVsZW1lbnQoJ2RpdicsJ21odXJWNjE5TGV2ZWxzJyk7CgogICAgbGV2ZWxzLmZvckVhY2godmFsdWU9PnsKICAgICAgY29uc3QgdGV4dD1TdHJpbmcodmFsdWUpOwogICAgICBjb25zdCBjaGlwPWVsZW1lbnQoCiAgICAgICAgJ3NwYW4nLAogICAgICAgICdtaHVyVjYxOUxldmVsJysoCiAgICAgICAgICAvXnN1YlxzKmVmZmVjdC9pLnRlc3QodGV4dCkKICAgICAgICAgICAgPycgbWh1clY2MTlTdWInCiAgICAgICAgICAgIDonJwogICAgICAgICksCiAgICAgICAgdGV4dAogICAgICApOwogICAgICBsaXN0LmFwcGVuZENoaWxkKGNoaXApOwogICAgfSk7CgogICAgcGFyZW50LmFwcGVuZENoaWxkKGxpc3QpOwogIH0KCiAgZnVuY3Rpb24gYWRkRWZmZWN0KHBhcmVudCxlZmZlY3QsdGV4dHMsc2hvd05hbWUpewogICAgY29uc3QgYmxvY2s9ZWxlbWVudCgnc2VjdGlvbicsJ21odXJWNjE5RWZmZWN0Jyk7CgogICAgaWYoc2hvd05hbWUmJmVmZmVjdD8ubmFtZSl7CiAgICAgIGJsb2NrLmFwcGVuZENoaWxkKAogICAgICAgIGVsZW1lbnQoCiAgICAgICAgICAnZGl2JywKICAgICAgICAgICdtaHVyVjYxOUVmZmVjdE5hbWUnLAogICAgICAgICAgY2xlYW5UZXh0KGVmZmVjdC5uYW1lKQogICAgICAgICkKICAgICAgKTsKICAgIH0KCiAgICBjb25zdCBkZXNjcmlwdGlvbj1jbGVhblRleHQoZWZmZWN0Py5kZXNjfHwnJyk7CgogICAgaWYoZGVzY3JpcHRpb24pewogICAgICBibG9jay5hcHBlbmRDaGlsZCgKICAgICAgICBlbGVtZW50KCdwJywnbWh1clY2MTlFZmZlY3REZXNjJyxkZXNjcmlwdGlvbikKICAgICAgKTsKICAgIH0KCiAgICBhZGRMZXZlbHMoYmxvY2ssZWZmZWN0Py5sZXZlbHN8fFtdLHRleHRzKTsKICAgIHBhcmVudC5hcHBlbmRDaGlsZChibG9jayk7CiAgfQoKICBmdW5jdGlvbiBmdWxsRWZmZWN0cyh0dW5pbmcpewogICAgaWYoQXJyYXkuaXNBcnJheSh0dW5pbmc/LmVmZmVjdHMpJiZ0dW5pbmcuZWZmZWN0cy5sZW5ndGgpewogICAgICByZXR1cm4gdHVuaW5nLmVmZmVjdHM7CiAgICB9CgogICAgcmV0dXJuIFt7CiAgICAgIG5hbWU6dHVuaW5nPy5uYW1lfHwnJywKICAgICAgZGVzYzp0dW5pbmc/LmRlc2N8fCcnLAogICAgICBsZXZlbHM6QXJyYXkuaXNBcnJheSh0dW5pbmc/LmxldmVscyk/dHVuaW5nLmxldmVsczpbXQogICAgfV07CiAgfQoKICBmdW5jdGlvbiBlbnJpY2hPcHRpb24oYnV0dG9uLHR1bmluZyxpbmRleCl7CiAgICBpZighYnV0dG9ufHwhdHVuaW5nKXJldHVybjsKCiAgICBjb25zdCBzaWduYXR1cmU9WwogICAgICB0dW5pbmcuc3R5bGVLZXl8fCcnLAogICAgICB0dW5pbmcuY2hhcmFjdGVyfHwnJywKICAgICAgdHVuaW5nLm5hbWV8fCcnLAogICAgICBBcnJheS5pc0FycmF5KHR1bmluZy5sZXZlbHMpP3R1bmluZy5sZXZlbHMubGVuZ3RoOjAsCiAgICAgIEFycmF5LmlzQXJyYXkodHVuaW5nLmVmZmVjdHMpP3R1bmluZy5lZmZlY3RzLmxlbmd0aDowLAogICAgICBsYW5ndWFnZSgpCiAgICBdLmpvaW4oJ3wnKTsKCiAgICBpZigKICAgICAgYnV0dG9uLmRhdGFzZXQubWh1clY2MTlTaWduYXR1cmU9PT1zaWduYXR1cmUmJgogICAgICBidXR0b24ucXVlcnlTZWxlY3RvcignOnNjb3BlID4gLm1odXJWNjE5RGV0YWlscycpCiAgICApewogICAgICByZXR1cm47CiAgICB9CgogICAgYnV0dG9uLmRhdGFzZXQubWh1clY2MTlTaWduYXR1cmU9c2lnbmF0dXJlOwogICAgYnV0dG9uLmRhdGFzZXQubWh1clY2MTlJbmRleD1TdHJpbmcoaW5kZXgpOwoKICAgIGJ1dHRvbi5xdWVyeVNlbGVjdG9yQWxsKAogICAgICAnOnNjb3BlID4gLm1odXJWNjE5RGV0YWlscycKICAgICkuZm9yRWFjaChub2RlPT5ub2RlLnJlbW92ZSgpKTsKCiAgICBjb25zdCB0ZXh0cz1sYWJlbHMoKTsKICAgIGNvbnN0IGRldGFpbHM9ZWxlbWVudCgnZGl2JywnbWh1clY2MTlEZXRhaWxzJyk7CiAgICBkZXRhaWxzLmFwcGVuZENoaWxkKAogICAgICBlbGVtZW50KCdkaXYnLCdtaHVyVjYxOURldGFpbHNUaXRsZScsdGV4dHMuZGV0YWlscykKICAgICk7CgogICAgY29uc3QgZWZmZWN0cz1mdWxsRWZmZWN0cyh0dW5pbmcpOwogICAgZWZmZWN0cy5mb3JFYWNoKChlZmZlY3QsZWZmZWN0SW5kZXgpPT57CiAgICAgIGFkZEVmZmVjdCgKICAgICAgICBkZXRhaWxzLAogICAgICAgIGVmZmVjdCwKICAgICAgICB0ZXh0cywKICAgICAgICBlZmZlY3RzLmxlbmd0aD4xfHxlZmZlY3RJbmRleD4wCiAgICAgICk7CiAgICB9KTsKCiAgICBidXR0b24uYXBwZW5kQ2hpbGQoZGV0YWlscyk7CiAgfQoKICBmdW5jdGlvbiBlbnJpY2goKXsKICAgIGlmKCFtb2JpbGUoKSlyZXR1cm47CgogICAgY29uc3Qgb3B0aW9ucz1BcnJheS5pc0FycmF5KHdpbmRvdy5fX2xhc3RUdW5pbmdPcHRpb25zKQogICAgICA/d2luZG93Ll9fbGFzdFR1bmluZ09wdGlvbnMKICAgICAgOltdOwoKICAgIGNvbnN0IGJ1dHRvbnM9QXJyYXkuZnJvbSgKICAgICAgZG9jdW1lbnQucXVlcnlTZWxlY3RvckFsbCgKICAgICAgICAnI2FwcCAuZ2FtZUNvc3R1bWVTY3JlZW4gLnR1bmluZ09wdGlvbicKICAgICAgKQogICAgKTsKCiAgICBidXR0b25zLmZvckVhY2goKGJ1dHRvbixpbmRleCk9PnsKICAgICAgZW5yaWNoT3B0aW9uKGJ1dHRvbixvcHRpb25zW2luZGV4XSxpbmRleCk7CiAgICB9KTsKCiAgICB1cGRhdGVTY3JvbGxPZmZzZXQoKTsKICB9CgogIGZ1bmN0aW9uIHVwZGF0ZVNjcm9sbE9mZnNldCgpewogICAgaWYoIW1vYmlsZSgpKXJldHVybjsKCiAgICBjb25zdCBoZWFkZXI9ZG9jdW1lbnQucXVlcnlTZWxlY3RvcignaGVhZGVyJyk7CiAgICBjb25zdCBiYWNrPWRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoCiAgICAgICcjYXBwIC5nYW1lQ29zdHVtZVNjcmVlbiAuYmFjaywnKwogICAgICAnI2FwcCA+IC5iYWNrLCcrCiAgICAgICcjYXBwIC5iYWNrJwogICAgKTsKCiAgICBsZXQgYm90dG9tPTA7CgogICAgW2hlYWRlcixiYWNrXS5mb3JFYWNoKG5vZGU9PnsKICAgICAgaWYoIW5vZGUpcmV0dXJuOwoKICAgICAgY29uc3Qgc3R5bGU9Z2V0Q29tcHV0ZWRTdHlsZShub2RlKTsKICAgICAgaWYoCiAgICAgICAgbm9kZT09PWhlYWRlcnx8CiAgICAgICAgc3R5bGUucG9zaXRpb249PT0nZml4ZWQnfHwKICAgICAgICBzdHlsZS5wb3NpdGlvbj09PSdzdGlja3knCiAgICAgICl7CiAgICAgICAgY29uc3QgcmVjdD1ub2RlLmdldEJvdW5kaW5nQ2xpZW50UmVjdCgpOwogICAgICAgIGlmKHJlY3QuYm90dG9tPmJvdHRvbSYmcmVjdC5ib3R0b208aW5uZXJIZWlnaHQpewogICAgICAgICAgYm90dG9tPXJlY3QuYm90dG9tOwogICAgICAgIH0KICAgICAgfQogICAgfSk7CgogICAgZG9jdW1lbnQuZG9jdW1lbnRFbGVtZW50LnN0eWxlLnNldFByb3BlcnR5KAogICAgICAnLS1taHVyLXY2MTktc2Nyb2xsLW9mZnNldCcsCiAgICAgIGAke01hdGgubWF4KDkwLE1hdGguY2VpbChib3R0b20pKX1weGAKICAgICk7CiAgfQoKICBmdW5jdGlvbiBzY3JvbGxPZmZzZXQoKXsKICAgIHVwZGF0ZVNjcm9sbE9mZnNldCgpOwoKICAgIGNvbnN0IHZhbHVlPXBhcnNlRmxvYXQoCiAgICAgIGdldENvbXB1dGVkU3R5bGUoZG9jdW1lbnQuZG9jdW1lbnRFbGVtZW50KQogICAgICAgIC5nZXRQcm9wZXJ0eVZhbHVlKCctLW1odXItdjYxOS1zY3JvbGwtb2Zmc2V0JykKICAgICk7CgogICAgcmV0dXJuIE51bWJlci5pc0Zpbml0ZSh2YWx1ZSk/dmFsdWUrMTI6MjAyOwogIH0KCiAgZnVuY3Rpb24gc21vb3RoU2Nyb2xsVG8odGFyZ2V0KXsKICAgIGlmKCF0YXJnZXR8fCF0YXJnZXQuaXNDb25uZWN0ZWQpcmV0dXJuOwoKICAgIGNvbnN0IHRvcD1NYXRoLm1heCgKICAgICAgMCwKICAgICAgd2luZG93LnNjcm9sbFkrCiAgICAgIHRhcmdldC5nZXRCb3VuZGluZ0NsaWVudFJlY3QoKS50b3AtCiAgICAgIHNjcm9sbE9mZnNldCgpCiAgICApOwoKICAgIGNvbnN0IHJlZHVjZWQ9d2luZG93Lm1hdGNoTWVkaWEoCiAgICAgICcocHJlZmVycy1yZWR1Y2VkLW1vdGlvbjogcmVkdWNlKScKICAgICkubWF0Y2hlczsKCiAgICB3aW5kb3cuc2Nyb2xsVG8oewogICAgICB0b3AsCiAgICAgIGxlZnQ6MCwKICAgICAgYmVoYXZpb3I6cmVkdWNlZD8nYXV0byc6J3Ntb290aCcKICAgIH0pOwogIH0KCiAgZnVuY3Rpb24gbmF2aWdhdGVBZnRlclJlbmRlcihraW5kKXsKICAgIGNvbnN0IHRva2VuPSsrbmF2aWdhdGlvblRva2VuOwoKICAgIGNvbnN0IHBlcmZvcm09KCk9PnsKICAgICAgaWYodG9rZW4hPT1uYXZpZ2F0aW9uVG9rZW58fCFtb2JpbGUoKSlyZXR1cm47CgogICAgICBlbnJpY2goKTsKCiAgICAgIGNvbnN0IHRhcmdldD1raW5kPT09J3BpY2tlcicKICAgICAgICA/ZG9jdW1lbnQucXVlcnlTZWxlY3RvcigKICAgICAgICAgICAgJyNhcHAgLmdhbWVDb3N0dW1lU2NyZWVuIC50dW5pbmdQaWNrZXInCiAgICAgICAgICApCiAgICAgICAgOmRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoCiAgICAgICAgICAgICcjYXBwIC5nYW1lQ29zdHVtZVNjcmVlbiAuZ2FtZVNsb3QuYWN0aXZlJwogICAgICAgICAgKTsKCiAgICAgIHNtb290aFNjcm9sbFRvKHRhcmdldCk7CiAgICB9OwoKICAgIC8qCiAgICAgIExlcyBmb25jdGlvbnMgZXhpc3RhbnRlcyByZXN0YXVyZW50IGQnYWJvcmQgbCdhbmNpZW5uZSBwb3NpdGlvbgogICAgICBkYW5zIHJlcXVlc3RBbmltYXRpb25GcmFtZS4gVjYxOSBwYXNzZSB2b2xvbnRhaXJlbWVudCBhcHLDqHMuCiAgICAqLwogICAgc2V0VGltZW91dCgoKT0+ewogICAgICByZXF1ZXN0QW5pbWF0aW9uRnJhbWUoKCk9PnsKICAgICAgICByZXF1ZXN0QW5pbWF0aW9uRnJhbWUocGVyZm9ybSk7CiAgICAgIH0pOwogICAgfSw3MCk7CiAgfQoKICBmdW5jdGlvbiBzY2hlZHVsZVJlZnJlc2goKXsKICAgIGlmKHJlZnJlc2hRdWV1ZWQpcmV0dXJuOwoKICAgIHJlZnJlc2hRdWV1ZWQ9dHJ1ZTsKCiAgICByZXF1ZXN0QW5pbWF0aW9uRnJhbWUoKCk9PnsKICAgICAgcmVmcmVzaFF1ZXVlZD1mYWxzZTsKICAgICAgZW5yaWNoKCk7CiAgICB9KTsKICB9CgogIGRvY3VtZW50LmFkZEV2ZW50TGlzdGVuZXIoJ2NsaWNrJyxldmVudD0+ewogICAgaWYoIW1vYmlsZSgpKXJldHVybjsKCiAgICBjb25zdCBzbG90PWV2ZW50LnRhcmdldD8uY2xvc2VzdD8uKAogICAgICAnI2FwcCAuZ2FtZUNvc3R1bWVTY3JlZW4gLmdhbWVTbG90JwogICAgKTsKCiAgICBpZihzbG90KXsKICAgICAgbmF2aWdhdGVBZnRlclJlbmRlcigncGlja2VyJyk7CiAgICAgIHJldHVybjsKICAgIH0KCiAgICBjb25zdCBvcHRpb249ZXZlbnQudGFyZ2V0Py5jbG9zZXN0Py4oCiAgICAgICcjYXBwIC5nYW1lQ29zdHVtZVNjcmVlbiAudHVuaW5nT3B0aW9uJwogICAgKTsKCiAgICBpZihvcHRpb24mJiFvcHRpb24uZGlzYWJsZWQpewogICAgICBuYXZpZ2F0ZUFmdGVyUmVuZGVyKCdzbG90Jyk7CiAgICB9CiAgfSk7CgogIG5ldyBNdXRhdGlvbk9ic2VydmVyKG11dGF0aW9ucz0+ewogICAgaWYoCiAgICAgIG11dGF0aW9ucy5zb21lKG11dGF0aW9uPT4KICAgICAgICBtdXRhdGlvbi5hZGRlZE5vZGVzPy5sZW5ndGh8fAogICAgICAgIG11dGF0aW9uLnJlbW92ZWROb2Rlcz8ubGVuZ3RoCiAgICAgICkKICAgICl7CiAgICAgIHNjaGVkdWxlUmVmcmVzaCgpOwogICAgfQogIH0pLm9ic2VydmUoZG9jdW1lbnQuZG9jdW1lbnRFbGVtZW50LHsKICAgIGNoaWxkTGlzdDp0cnVlLAogICAgc3VidHJlZTp0cnVlCiAgfSk7CgogIHdpbmRvdy5hZGRFdmVudExpc3RlbmVyKCdyZXNpemUnLHNjaGVkdWxlUmVmcmVzaCk7CiAgd2luZG93LmFkZEV2ZW50TGlzdGVuZXIoJ29yaWVudGF0aW9uY2hhbmdlJyxzY2hlZHVsZVJlZnJlc2gpOwogIHdpbmRvdy5hZGRFdmVudExpc3RlbmVyKCdsb2FkJyxzY2hlZHVsZVJlZnJlc2gse29uY2U6dHJ1ZX0pOwogIHdpbmRvdy5hZGRFdmVudExpc3RlbmVyKCdtaHVyOmxhbmd1YWdlY2hhbmdlJywoKT0+ewogICAgZG9jdW1lbnQucXVlcnlTZWxlY3RvckFsbCgKICAgICAgJy5taHVyVjYxOURldGFpbHMnCiAgICApLmZvckVhY2gobm9kZT0+bm9kZS5yZW1vdmUoKSk7CgogICAgc2NoZWR1bGVSZWZyZXNoKCk7CiAgfSk7CgogIGlmKGRvY3VtZW50LnJlYWR5U3RhdGU9PT0nbG9hZGluZycpewogICAgZG9jdW1lbnQuYWRkRXZlbnRMaXN0ZW5lcigKICAgICAgJ0RPTUNvbnRlbnRMb2FkZWQnLAogICAgICBzY2hlZHVsZVJlZnJlc2gsCiAgICAgIHtvbmNlOnRydWV9CiAgICApOwogIH1lbHNlewogICAgc2NoZWR1bGVSZWZyZXNoKCk7CiAgfQoKICB3aW5kb3cuTUhVUl9WNjE5X1RVTklOR19NT0JJTEU9ewogICAgcmVmcmVzaDpzY2hlZHVsZVJlZnJlc2gsCiAgICBlbnJpY2gsCiAgICBzY3JvbGxUb1BpY2tlcigpewogICAgICBuYXZpZ2F0ZUFmdGVyUmVuZGVyKCdwaWNrZXInKTsKICAgIH0sCiAgICBzY3JvbGxUb0FjdGl2ZVNsb3QoKXsKICAgICAgbmF2aWdhdGVBZnRlclJlbmRlcignc2xvdCcpOwogICAgfQogIH07Cn0pKCk7").decode("utf-8")
+          
+          index_path = Path("public/index.html")
+          css_path = Path("public/css/v619-mobile-tuning-navigation.css")
+          js_path = Path("public/js/v619-mobile-tuning-navigation.js")
+          report_path = Path("RAPPORT_V619_TUNING_MOBILE.txt")
+          
+          if not index_path.is_file():
+              raise SystemExit("[ERREUR] public/index.html introuvable.")
+          
+          css_path.parent.mkdir(parents=True, exist_ok=True)
+          js_path.parent.mkdir(parents=True, exist_ok=True)
+          
+          css_path.write_text(CSS + "\n", encoding="utf-8")
+          js_path.write_text(JS + "\n", encoding="utf-8")
+          
+          html = index_path.read_text(encoding="utf-8")
+          
+          # Retire la limite artificielle de 80 options compatibles.
+          html = re.sub(
+              r'(compatibleTunings\(spec\.color,\s*spec\.kind,\s*spec\.condition\))'
+              r'\.slice\(0,\s*80\)',
+              r'\1',
+              html,
+          )
+          
+          patterns = [
+              r'\s*<!-- V619 : navigation TUNING mobile CSS\. -->\s*'
+              r'<link[^>]+v619-mobile-tuning-navigation\.css[^>]*>\s*',
+              r'\s*<link[^>]+v619-mobile-tuning-navigation\.css[^>]*>\s*',
+              r'\s*<!-- V619 : navigation TUNING mobile JS\. -->\s*'
+              r'<script[^>]+v619-mobile-tuning-navigation\.js[^>]*>'
+              r'\s*</script>\s*',
+              r'\s*<script[^>]+v619-mobile-tuning-navigation\.js[^>]*>'
+              r'\s*</script>\s*',
+          ]
+          
+          for pattern in patterns:
+              html = re.sub(pattern, "\n", html, flags=re.I)
+          
+          css_tag = (
+              '<!-- V619 : navigation TUNING mobile CSS. -->\n'
+              '<link rel="stylesheet" '
+              'href="css/v619-mobile-tuning-navigation.css?v=619">\n'
+          )
+          js_tag = (
+              '<!-- V619 : navigation TUNING mobile JS. -->\n'
+              '<script '
+              'src="js/v619-mobile-tuning-navigation.js?v=619">'
+              '</script>\n'
+          )
+          
+          head_matches = list(re.finditer(r'</head\s*>', html, flags=re.I))
+          body_matches = list(re.finditer(r'</body\s*>', html, flags=re.I))
+          
+          if not head_matches:
+              raise SystemExit("[ERREUR] Balise </head> introuvable.")
+          if not body_matches:
+              raise SystemExit("[ERREUR] Balise </body> introuvable.")
+          
+          head_position = head_matches[-1].start()
+          html = html[:head_position] + css_tag + html[head_position:]
+          
+          body_matches = list(re.finditer(r'</body\s*>', html, flags=re.I))
+          body_position = body_matches[-1].start()
+          html = html[:body_position] + js_tag + html[body_position:]
+          
+          index_path.write_text(html, encoding="utf-8")
+          
+          report_path.write_text(
+              """MHUR NEXUS — V619
+          
+          MOBILE
+          - Un appui sur un emplacement T.U.N.I.N.G descend vers la liste compatible.
+          - Après le choix d'un T.U.N.I.N.G, la page remonte vers l'emplacement actif.
+          - La liste compatible n'est plus enfermée dans un défilement interne.
+          - La limite artificielle de 80 résultats est supprimée.
+          - Chaque carte affiche la description complète, tous les effets et tous les niveaux.
+          - Les T.U.N.I.N.G déjà utilisés restent désactivés.
+          - Aucun changement sur ordinateur.
+          """,
+              encoding="utf-8",
+          )
+          
+          print("[OK] V619 appliqué.")
+          PY
+          
+          cat > /tmp/verifier_v619.py <<'PY'
+          from pathlib import Path
+          import re
+          
+          html = Path("public/index.html").read_text(encoding="utf-8")
+          js = Path(
+              "public/js/v619-mobile-tuning-navigation.js"
+          ).read_text(encoding="utf-8")
+          css = Path(
+              "public/css/v619-mobile-tuning-navigation.css"
+          ).read_text(encoding="utf-8")
+          
+          js_ref = "js/v619-mobile-tuning-navigation.js?v=619"
+          css_ref = "css/v619-mobile-tuning-navigation.css?v=619"
+          
+          if html.count(js_ref) != 1:
+              raise SystemExit("[ERREUR] Référence JS V619 absente ou dupliquée.")
+          
+          if html.count(css_ref) != 1:
+              raise SystemExit("[ERREUR] Référence CSS V619 absente ou dupliquée.")
+          
+          if re.search(
+              r'compatibleTunings\\(spec\\.color,\\s*spec\\.kind,'
+              r'\\s*spec\\.condition\\)\\.slice\\(0,\\s*80\\)',
+              html,
+          ):
+              raise SystemExit("[ERREUR] La limite de 80 résultats existe encore.")
+          
+          for token in [
+              "navigateAfterRender",
+              "mhurV619Details",
+              "fullEffects",
+              "mhurV619Levels",
+              ".gameSlot.active",
+              ".tuningPicker",
+          ]:
+              if token not in js:
+                  raise SystemExit(f"[ERREUR] Élément JS manquant : {token}")
+          
+          for token in [
+              ".mhurV619Details",
+              "max-height:none!important",
+              "overflow:visible!important",
+              "grid-template-areas",
+              ".mhurV619Level",
+          ]:
+              if token not in css:
+                  raise SystemExit(f"[ERREUR] Élément CSS manquant : {token}")
+          
+          print("[OK] Contrôles V619 validés.")
+          PY
+          
+          for tentative in 1 2 3 4 5; do
+            echo "===== Tentative ${tentative}/5 ====="
+          
+            git fetch origin main
+            git reset --hard origin/main
+          
+            python3 /tmp/appliquer_v619.py
+            node --check public/js/v619-mobile-tuning-navigation.js
+            python3 /tmp/verifier_v619.py
+          
+            git add \
+              public/index.html \
+              public/css/v619-mobile-tuning-navigation.css \
+              public/js/v619-mobile-tuning-navigation.js \
+              RAPPORT_V619_TUNING_MOBILE.txt
+          
+            if git diff --cached --quiet; then
+              echo "[INFO] V619 est déjà appliqué."
+              exit 0
+            fi
+          
+            git commit -m "fix: navigation et détails TUNING mobile V619"
+          
+            if git push origin HEAD:main; then
+              echo "[OK] V619 envoyé sur main."
+              exit 0
+            fi
+          
+            echo "[ATTENTE] main a changé, nouvelle tentative."
+            sleep $((tentative * 3))
+          done
+          
+          echo "[ERREUR] Impossible d'envoyer V619 après cinq tentatives."
+          exit 1

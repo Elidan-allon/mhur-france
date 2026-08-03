@@ -1,0 +1,194 @@
+name: MHUR V618.1 - Costumes mobiles centres
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/mhur-v618-auto-v2.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: mhur-v618-costumes-mobile
+  cancel-in-progress: false
+
+jobs:
+  appliquer:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Recuperer le depot
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Installer Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Appliquer et enregistrer V618
+        shell: bash
+        run: |
+          set -euo pipefail
+          
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          
+          cat > /tmp/appliquer_v618.py <<'PY'
+          from pathlib import Path
+          import base64
+          import re
+          
+          CSS = base64.b64decode("LyogTUhVUiBOZXh1cyDigJQgVjYxOAogICBDYWRyYWdlIHLDqWVsIGRlcyBwZXJzb25uYWdlcyBkYW5zIGxlcyBjYXJ0ZXMgZGUgY29zdHVtZXMgc3VyIG1vYmlsZS4KICAgTGUgSmF2YVNjcmlwdCBjYWxjdWxlIGxhIHpvbmUgbm9uIHRyYW5zcGFyZW50ZSBkZSBjaGFxdWUgUE5HLiAqLwpAbWVkaWEgKG1heC13aWR0aDo3NjBweCl7CiAgaHRtbCBib2R5ICNhcHAgLmNvc3R1bWVUaWxlewogICAgcG9zaXRpb246cmVsYXRpdmUhaW1wb3J0YW50OwogICAgb3ZlcmZsb3c6aGlkZGVuIWltcG9ydGFudDsKICB9CgogIGh0bWwgYm9keSAjYXBwIC5jb3N0dW1lVGlsZSA+IGltZ1tkYXRhLXY2MTgtbWFpbj0iMSJdewogICAgcG9zaXRpb246YWJzb2x1dGUhaW1wb3J0YW50OwogICAgbGVmdDp2YXIoLS12NjE4LWxlZnQsMjBweCkhaW1wb3J0YW50OwogICAgdG9wOnZhcigtLXY2MTgtdG9wLDYycHgpIWltcG9ydGFudDsKICAgIHJpZ2h0OmF1dG8haW1wb3J0YW50OwogICAgYm90dG9tOmF1dG8haW1wb3J0YW50OwogICAgd2lkdGg6dmFyKC0tdjYxOC13aWR0aCxjYWxjKDEwMCUgLSA0MHB4KSkhaW1wb3J0YW50OwogICAgaGVpZ2h0OnZhcigtLXY2MTgtaGVpZ2h0LGF1dG8pIWltcG9ydGFudDsKICAgIG1pbi13aWR0aDowIWltcG9ydGFudDsKICAgIG1pbi1oZWlnaHQ6MCFpbXBvcnRhbnQ7CiAgICBtYXgtd2lkdGg6bm9uZSFpbXBvcnRhbnQ7CiAgICBtYXgtaGVpZ2h0Om5vbmUhaW1wb3J0YW50OwogICAgbWFyZ2luOjAhaW1wb3J0YW50OwogICAgcGFkZGluZzowIWltcG9ydGFudDsKICAgIGJvcmRlcjowIWltcG9ydGFudDsKICAgIGJvcmRlci1yYWRpdXM6MCFpbXBvcnRhbnQ7CiAgICBkaXNwbGF5OmJsb2NrIWltcG9ydGFudDsKICAgIG9iamVjdC1maXQ6ZmlsbCFpbXBvcnRhbnQ7CiAgICBvYmplY3QtcG9zaXRpb246MCAwIWltcG9ydGFudDsKICAgIHRyYW5zZm9ybTpub25lIWltcG9ydGFudDsKICAgIHRyYW5zbGF0ZTpub25lIWltcG9ydGFudDsKICAgIHNjYWxlOm5vbmUhaW1wb3J0YW50OwogICAgdHJhbnNmb3JtLW9yaWdpbjowIDAhaW1wb3J0YW50OwogICAgYmFja2dyb3VuZDp0cmFuc3BhcmVudCFpbXBvcnRhbnQ7CiAgICB6LWluZGV4OjIhaW1wb3J0YW50OwogICAgcG9pbnRlci1ldmVudHM6bm9uZSFpbXBvcnRhbnQ7CiAgfQoKICAvKiBMZXMgw6lsw6ltZW50cyBkZSBjYXJ0ZSByZXN0ZW50IGF1LWRlc3N1cyBkZSBsYSBwaG90by4gKi8KICBodG1sIGJvZHkgI2FwcCAuY29zdHVtZVRpbGVSYXJpdHksCiAgaHRtbCBib2R5ICNhcHAgLmNvc3R1bWVUaWxlU3RhcnMsCiAgaHRtbCBib2R5ICNhcHAgLmNvc3R1bWVUaWxlQmFkZ2UsCiAgaHRtbCBib2R5ICNhcHAgLmNvc3R1bWVUaWxlTmFtZSwKICBodG1sIGJvZHkgI2FwcCAuY29zdHVtZU1pbmlEZXNjLAogIGh0bWwgYm9keSAjYXBwIC5zMThOZXdCYWRnZSwKICBodG1sIGJvZHkgI2FwcCBbY2xhc3MqPSJVcGNvbWluZ1N0YXR1cyJdLAogIGh0bWwgYm9keSAjYXBwIFtjbGFzcyo9IlVwY29taW5nRGF0ZSJdewogICAgcG9zaXRpb246YWJzb2x1dGUhaW1wb3J0YW50OwogICAgei1pbmRleDo4MCFpbXBvcnRhbnQ7CiAgfQp9").decode("utf-8")
+          JS = base64.b64decode("LyogTUhVUiBOZXh1cyDigJQgVjYxOAogICBDZW50cmUgbGUgY29udGVudSB2aXNpYmxlIGRlcyBQTkcgZGUgY29zdHVtZXMsIHBhcyBsZXVyIHRvaWxlIHRyYW5zcGFyZW50ZS4gKi8KKGZ1bmN0aW9uKCl7CiAgJ3VzZSBzdHJpY3QnOwoKICBpZih3aW5kb3cuTUhVUl9WNjE4X0NPU1RVTUVTX0xPQURFRCkgcmV0dXJuOwogIHdpbmRvdy5NSFVSX1Y2MThfQ09TVFVNRVNfTE9BREVEPXRydWU7CgogIGNvbnN0IE1PQklMRT0nKG1heC13aWR0aDo3NjBweCknOwogIGNvbnN0IGFscGhhQ2FjaGU9bmV3IE1hcCgpOwogIGxldCBxdWV1ZWQ9ZmFsc2U7CgogIGZ1bmN0aW9uIG1vYmlsZSgpewogICAgcmV0dXJuIHdpbmRvdy5tYXRjaE1lZGlhKE1PQklMRSkubWF0Y2hlczsKICB9CgogIGZ1bmN0aW9uIGNsZWFuKHZhbHVlKXsKICAgIHJldHVybiBTdHJpbmcodmFsdWU/PycnKS50cmltKCk7CiAgfQoKICBmdW5jdGlvbiBub3JtYWwodmFsdWUpewogICAgcmV0dXJuIGNsZWFuKHZhbHVlKQogICAgICAubm9ybWFsaXplKCdORkQnKQogICAgICAucmVwbGFjZSgvW1x1MDMwMC1cdTAzNmZdL2csJycpCiAgICAgIC50b0xvd2VyQ2FzZSgpCiAgICAgIC5yZXBsYWNlKC9bXmEtejAtOV0rL2csJ18nKQogICAgICAucmVwbGFjZSgvXl8rfF8rJC9nLCcnKTsKICB9CgogIGZ1bmN0aW9uIGRpcmVjdE1haW5JbWFnZShjYXJkKXsKICAgIHJldHVybiBBcnJheS5mcm9tKGNhcmQuY2hpbGRyZW58fFtdKQogICAgICAuZmluZChjaGlsZD0+Y2hpbGQudGFnTmFtZT09PSdJTUcnKXx8bnVsbDsKICB9CgogIGZ1bmN0aW9uIGlzVXBjb21pbmcoY2FyZCl7CiAgICBpZigKICAgICAgY2FyZC5tYXRjaGVzKAogICAgICAgICcuczE4VXBjb21pbmdDb3N0dW1lVGlsZVYyNSwnKwogICAgICAgICdbY2xhc3MqPSJVcGNvbWluZ0Nvc3R1bWVUaWxlIl0sJysKICAgICAgICAnW2NsYXNzKj0idXBjb21pbmdDb3N0dW1lVGlsZSJdJwogICAgICApCiAgICApIHJldHVybiB0cnVlOwoKICAgIGlmKAogICAgICBjYXJkLmNsb3Nlc3QoCiAgICAgICAgJy5zMThVcGNvbWluZ0Nvc3R1bWVHcm91cFYxOSwnKwogICAgICAgICcuczE4VXBjb21pbmdDb3N0dW1lR3JvdXBWMjMsJysKICAgICAgICAnW2NsYXNzKj0iVXBjb21pbmdDb3N0dW1lR3JvdXAiXSwnKwogICAgICAgICdbY2xhc3MqPSJ1cGNvbWluZ0Nvc3R1bWVHcm91cCJdJwogICAgICApCiAgICApIHJldHVybiB0cnVlOwoKICAgIHJldHVybiBCb29sZWFuKAogICAgICBjYXJkLnF1ZXJ5U2VsZWN0b3IoCiAgICAgICAgJy5zMThVcGNvbWluZ1N0YXR1c1YyNSwnKwogICAgICAgICcuczE4VXBjb21pbmdEYXRlVjI1LCcrCiAgICAgICAgJ1tjbGFzcyo9IlVwY29taW5nU3RhdHVzIl0sJysKICAgICAgICAnW2NsYXNzKj0iVXBjb21pbmdEYXRlIl0sJysKICAgICAgICAnW2NsYXNzKj0idXBjb21pbmdTdGF0dXMiXSwnKwogICAgICAgICdbY2xhc3MqPSJ1cGNvbWluZ0RhdGUiXScKICAgICAgKQogICAgKTsKICB9CgogIGZ1bmN0aW9uIGlzT3JpZ2luYWwoY2FyZCl7CiAgICBjb25zdCBuYW1lPW5vcm1hbCgKICAgICAgY2FyZC5xdWVyeVNlbGVjdG9yKCcuY29zdHVtZVRpbGVOYW1lJyk/LnRleHRDb250ZW50fHwnJwogICAgKTsKICAgIHJldHVybiBuYW1lPT09J29yaWdpbmFsJ3x8bmFtZS5zdGFydHNXaXRoKCdvcmlnaW5hbF8nKTsKICB9CgogIGZ1bmN0aW9uIGltYWdlS2V5KGltZyl7CiAgICByZXR1cm4gY2xlYW4oaW1nLmN1cnJlbnRTcmN8fGltZy5nZXRBdHRyaWJ1dGUoJ3NyYycpfHxpbWcuc3JjKTsKICB9CgogIGZ1bmN0aW9uIGZ1bGxCb3goaW1nKXsKICAgIGNvbnN0IHdpZHRoPU1hdGgubWF4KDEsaW1nLm5hdHVyYWxXaWR0aHx8MSk7CiAgICBjb25zdCBoZWlnaHQ9TWF0aC5tYXgoMSxpbWcubmF0dXJhbEhlaWdodHx8MSk7CiAgICByZXR1cm4gewogICAgICB4OjAsCiAgICAgIHk6MCwKICAgICAgd2lkdGgsCiAgICAgIGhlaWdodCwKICAgICAgY2VudGVyWDp3aWR0aC8yLAogICAgICBjZW50ZXJZOmhlaWdodC8yCiAgICB9OwogIH0KCiAgZnVuY3Rpb24gc2NhblZpc2libGVCb3goaW1nKXsKICAgIGNvbnN0IGtleT1pbWFnZUtleShpbWcpOwogICAgaWYoYWxwaGFDYWNoZS5oYXMoa2V5KSkgcmV0dXJuIGFscGhhQ2FjaGUuZ2V0KGtleSk7CgogICAgY29uc3QgcHJvbWlzZT1uZXcgUHJvbWlzZShyZXNvbHZlPT57CiAgICAgIHRyeXsKICAgICAgICBjb25zdCBuYXR1cmFsV2lkdGg9TWF0aC5tYXgoMSxpbWcubmF0dXJhbFdpZHRofHwxKTsKICAgICAgICBjb25zdCBuYXR1cmFsSGVpZ2h0PU1hdGgubWF4KDEsaW1nLm5hdHVyYWxIZWlnaHR8fDEpOwogICAgICAgIGNvbnN0IGxvbmdlc3Q9TWF0aC5tYXgobmF0dXJhbFdpZHRoLG5hdHVyYWxIZWlnaHQpOwogICAgICAgIGNvbnN0IHNjYWxlPU1hdGgubWluKDEsMzIwL2xvbmdlc3QpOwogICAgICAgIGNvbnN0IHdpZHRoPU1hdGgubWF4KDEsTWF0aC5yb3VuZChuYXR1cmFsV2lkdGgqc2NhbGUpKTsKICAgICAgICBjb25zdCBoZWlnaHQ9TWF0aC5tYXgoMSxNYXRoLnJvdW5kKG5hdHVyYWxIZWlnaHQqc2NhbGUpKTsKCiAgICAgICAgY29uc3QgY2FudmFzPWRvY3VtZW50LmNyZWF0ZUVsZW1lbnQoJ2NhbnZhcycpOwogICAgICAgIGNhbnZhcy53aWR0aD13aWR0aDsKICAgICAgICBjYW52YXMuaGVpZ2h0PWhlaWdodDsKCiAgICAgICAgY29uc3QgY29udGV4dD1jYW52YXMuZ2V0Q29udGV4dCgnMmQnLHsKICAgICAgICAgIGFscGhhOnRydWUsCiAgICAgICAgICB3aWxsUmVhZEZyZXF1ZW50bHk6dHJ1ZQogICAgICAgIH0pOwoKICAgICAgICBpZighY29udGV4dCl7CiAgICAgICAgICByZXNvbHZlKGZ1bGxCb3goaW1nKSk7CiAgICAgICAgICByZXR1cm47CiAgICAgICAgfQoKICAgICAgICBjb250ZXh0LmNsZWFyUmVjdCgwLDAsd2lkdGgsaGVpZ2h0KTsKICAgICAgICBjb250ZXh0LmRyYXdJbWFnZShpbWcsMCwwLHdpZHRoLGhlaWdodCk7CgogICAgICAgIGNvbnN0IGRhdGE9Y29udGV4dC5nZXRJbWFnZURhdGEoMCwwLHdpZHRoLGhlaWdodCkuZGF0YTsKICAgICAgICBsZXQgbWluWD13aWR0aDsKICAgICAgICBsZXQgbWluWT1oZWlnaHQ7CiAgICAgICAgbGV0IG1heFg9LTE7CiAgICAgICAgbGV0IG1heFk9LTE7CgogICAgICAgIGZvcihsZXQgeT0wO3k8aGVpZ2h0O3krKyl7CiAgICAgICAgICBmb3IobGV0IHg9MDt4PHdpZHRoO3grKyl7CiAgICAgICAgICAgIGNvbnN0IGluZGV4PSh5KndpZHRoK3gpKjQ7CiAgICAgICAgICAgIGlmKGRhdGFbaW5kZXgrM10+MTIpewogICAgICAgICAgICAgIGlmKHg8bWluWCkgbWluWD14OwogICAgICAgICAgICAgIGlmKHk8bWluWSkgbWluWT15OwogICAgICAgICAgICAgIGlmKHg+bWF4WCkgbWF4WD14OwogICAgICAgICAgICAgIGlmKHk+bWF4WSkgbWF4WT15OwogICAgICAgICAgICB9CiAgICAgICAgICB9CiAgICAgICAgfQoKICAgICAgICBpZihtYXhYPG1pblh8fG1heFk8bWluWSl7CiAgICAgICAgICByZXNvbHZlKGZ1bGxCb3goaW1nKSk7CiAgICAgICAgICByZXR1cm47CiAgICAgICAgfQoKICAgICAgICBjb25zdCBpbnZlcnNlPTEvc2NhbGU7CiAgICAgICAgY29uc3QgeD1taW5YKmludmVyc2U7CiAgICAgICAgY29uc3QgeT1taW5ZKmludmVyc2U7CiAgICAgICAgY29uc3QgdmlzaWJsZVdpZHRoPShtYXhYLW1pblgrMSkqaW52ZXJzZTsKICAgICAgICBjb25zdCB2aXNpYmxlSGVpZ2h0PShtYXhZLW1pblkrMSkqaW52ZXJzZTsKCiAgICAgICAgcmVzb2x2ZSh7CiAgICAgICAgICB4LAogICAgICAgICAgeSwKICAgICAgICAgIHdpZHRoOnZpc2libGVXaWR0aCwKICAgICAgICAgIGhlaWdodDp2aXNpYmxlSGVpZ2h0LAogICAgICAgICAgY2VudGVyWDp4Kyh2aXNpYmxlV2lkdGgvMiksCiAgICAgICAgICBjZW50ZXJZOnkrKHZpc2libGVIZWlnaHQvMikKICAgICAgICB9KTsKICAgICAgfWNhdGNoKF9lcnJvcil7CiAgICAgICAgcmVzb2x2ZShmdWxsQm94KGltZykpOwogICAgICB9CiAgICB9KTsKCiAgICBhbHBoYUNhY2hlLnNldChrZXkscHJvbWlzZSk7CiAgICByZXR1cm4gcHJvbWlzZTsKICB9CgogIGZ1bmN0aW9uIHJlbGF0aXZlQm90dG9tKGVsZW1lbnQsY2FyZFJlY3QpewogICAgaWYoIWVsZW1lbnQpIHJldHVybiAwOwogICAgY29uc3QgcmVjdD1lbGVtZW50LmdldEJvdW5kaW5nQ2xpZW50UmVjdCgpOwogICAgcmV0dXJuIE1hdGgubWF4KDAscmVjdC5ib3R0b20tY2FyZFJlY3QudG9wKTsKICB9CgogIGZ1bmN0aW9uIHJlbGF0aXZlVG9wKGVsZW1lbnQsY2FyZFJlY3QsZmFsbGJhY2spewogICAgaWYoIWVsZW1lbnQpIHJldHVybiBmYWxsYmFjazsKICAgIGNvbnN0IHJlY3Q9ZWxlbWVudC5nZXRCb3VuZGluZ0NsaWVudFJlY3QoKTsKICAgIGNvbnN0IHZhbHVlPXJlY3QudG9wLWNhcmRSZWN0LnRvcDsKICAgIHJldHVybiBOdW1iZXIuaXNGaW5pdGUodmFsdWUpP3ZhbHVlOmZhbGxiYWNrOwogIH0KCiAgZnVuY3Rpb24gc2V0UHgoaW1nLG5hbWUsdmFsdWUpewogICAgaW1nLnN0eWxlLnNldFByb3BlcnR5KG5hbWUsYCR7TWF0aC5yb3VuZCh2YWx1ZSoxMDApLzEwMH1weGApOwogIH0KCiAgYXN5bmMgZnVuY3Rpb24gZml0Q2FyZChjYXJkKXsKICAgIGlmKCFtb2JpbGUoKXx8IWNhcmQ/LmlzQ29ubmVjdGVkKSByZXR1cm47CgogICAgY29uc3QgaW1nPWRpcmVjdE1haW5JbWFnZShjYXJkKTsKICAgIGlmKCFpbWcpIHJldHVybjsKCiAgICBpZighaW1nLmNvbXBsZXRlfHwhaW1nLm5hdHVyYWxXaWR0aHx8IWltZy5uYXR1cmFsSGVpZ2h0KXsKICAgICAgaW1nLmFkZEV2ZW50TGlzdGVuZXIoJ2xvYWQnLHNjaGVkdWxlLHtvbmNlOnRydWV9KTsKICAgICAgcmV0dXJuOwogICAgfQoKICAgIGNvbnN0IGNhcmRSZWN0PWNhcmQuZ2V0Qm91bmRpbmdDbGllbnRSZWN0KCk7CiAgICBpZihjYXJkUmVjdC53aWR0aDwxNjB8fGNhcmRSZWN0LmhlaWdodDwyMjApIHJldHVybjsKCiAgICBjb25zdCBuYW1lPWNhcmQucXVlcnlTZWxlY3RvcignLmNvc3R1bWVUaWxlTmFtZScpOwogICAgY29uc3Qgc3RhdHVzPWNhcmQucXVlcnlTZWxlY3RvcigKICAgICAgJy5zMThVcGNvbWluZ1N0YXR1c1YyNSwnKwogICAgICAnW2NsYXNzKj0iVXBjb21pbmdTdGF0dXMiXSwnKwogICAgICAnW2NsYXNzKj0idXBjb21pbmdTdGF0dXMiXScKICAgICk7CiAgICBjb25zdCBkYXRlPWNhcmQucXVlcnlTZWxlY3RvcigKICAgICAgJy5zMThVcGNvbWluZ0RhdGVWMjUsJysKICAgICAgJ1tjbGFzcyo9IlVwY29taW5nRGF0ZSJdLCcrCiAgICAgICdbY2xhc3MqPSJ1cGNvbWluZ0RhdGUiXScKICAgICk7CgogICAgY29uc3QgdXBjb21pbmc9aXNVcGNvbWluZyhjYXJkKTsKICAgIGNvbnN0IG9yaWdpbmFsPWlzT3JpZ2luYWwoY2FyZCk7CgogICAgY29uc3QgaG9yaXpvbnRhbFBhZGRpbmc9TWF0aC5tYXgoMTgsY2FyZFJlY3Qud2lkdGgqMC4wNDUpOwogICAgY29uc3QgYXJlYUxlZnQ9aG9yaXpvbnRhbFBhZGRpbmc7CiAgICBjb25zdCBhcmVhUmlnaHQ9Y2FyZFJlY3Qud2lkdGgtaG9yaXpvbnRhbFBhZGRpbmc7CiAgICBjb25zdCBhcmVhV2lkdGg9TWF0aC5tYXgoODAsYXJlYVJpZ2h0LWFyZWFMZWZ0KTsKCiAgICBsZXQgYXJlYVRvcD11cGNvbWluZwogICAgICA/TWF0aC5tYXgoOTIscmVsYXRpdmVCb3R0b20oZGF0ZXx8c3RhdHVzLGNhcmRSZWN0KSsxMikKICAgICAgOk1hdGgubWF4KDU0LGNhcmRSZWN0LmhlaWdodCowLjA3NSk7CgogICAgY29uc3QgZmFsbGJhY2tOYW1lVG9wPWNhcmRSZWN0LmhlaWdodC1NYXRoLm1heCgxMjAsY2FyZFJlY3QuaGVpZ2h0KjAuMjIpOwogICAgY29uc3QgbmFtZVRvcD1yZWxhdGl2ZVRvcChuYW1lLGNhcmRSZWN0LGZhbGxiYWNrTmFtZVRvcCk7CiAgICBjb25zdCBhcmVhQm90dG9tPU1hdGgubWF4KGFyZWFUb3ArMTIwLG5hbWVUb3AtMzQpOwogICAgY29uc3QgYXJlYUhlaWdodD1NYXRoLm1heCgxMjAsYXJlYUJvdHRvbS1hcmVhVG9wKTsKCiAgICBjb25zdCBib3g9YXdhaXQgc2NhblZpc2libGVCb3goaW1nKTsKICAgIGlmKCFjYXJkLmlzQ29ubmVjdGVkKSByZXR1cm47CgogICAgLyoKICAgICAgTGUgY29udGVudSB2aXNpYmxlIG9jY3VwZSBlbnZpcm9uIDgyICUgZGUgbGEgbGFyZ2V1ciBldCA4OCAlIGRlCiAgICAgIGxhIGhhdXRldXIgZGlzcG9uaWJsZS4gTGVzIGNvc3R1bWVzIMOgIHZlbmlyIG9udCB1biBwZXUgbW9pbnMgZGUKICAgICAgcGxhY2Ugw6AgY2F1c2UgZHUgc3RhdHV0IGV0IGRlIGxhIGRhdGUuCiAgICAqLwogICAgY29uc3Qgd2lkdGhDb3ZlcmFnZT11cGNvbWluZz8wLjg0OjAuODI7CiAgICBjb25zdCBoZWlnaHRDb3ZlcmFnZT11cGNvbWluZz8wLjg0OjAuODg7CgogICAgbGV0IHNjYWxlPU1hdGgubWluKAogICAgICAoYXJlYVdpZHRoKndpZHRoQ292ZXJhZ2UpL01hdGgubWF4KDEsYm94LndpZHRoKSwKICAgICAgKGFyZWFIZWlnaHQqaGVpZ2h0Q292ZXJhZ2UpL01hdGgubWF4KDEsYm94LmhlaWdodCkKICAgICk7CgogICAgaWYob3JpZ2luYWwpIHNjYWxlKj0xLjAzOwogICAgaWYodXBjb21pbmcpIHNjYWxlKj0xLjAyOwoKICAgIGNvbnN0IG5hdHVyYWxXaWR0aD1NYXRoLm1heCgxLGltZy5uYXR1cmFsV2lkdGgpOwogICAgY29uc3QgbmF0dXJhbEhlaWdodD1NYXRoLm1heCgxLGltZy5uYXR1cmFsSGVpZ2h0KTsKCiAgICAvKgogICAgICBUb3VzIGxlcyBjb3N0dW1lcyBub3JtYXV4IHJlbW9udGVudC4gT3JpZ2luYWwgZXQgw4AgdmVuaXIgc29udAogICAgICByZWNlbnRyw6lzIGhvcml6b250YWxlbWVudCBkJ2FwcsOocyBsZXVyIHNpbGhvdWV0dGUgcsOpZWxsZS4KICAgICovCiAgICBjb25zdCBjZW50ZXJYPWFyZWFMZWZ0KyhhcmVhV2lkdGgvMik7CiAgICBjb25zdCB2ZXJ0aWNhbFJhdGlvPXVwY29taW5nPzAuNDk6KG9yaWdpbmFsPzAuNDU6MC40MCk7CiAgICBjb25zdCBjZW50ZXJZPWFyZWFUb3ArKGFyZWFIZWlnaHQqdmVydGljYWxSYXRpbyk7CgogICAgbGV0IGxlZnQ9Y2VudGVyWC0oYm94LmNlbnRlclgqc2NhbGUpOwogICAgbGV0IHRvcD1jZW50ZXJZLShib3guY2VudGVyWSpzY2FsZSk7CgogICAgbGV0IHZpc2libGVMZWZ0PWxlZnQrKGJveC54KnNjYWxlKTsKICAgIGxldCB2aXNpYmxlUmlnaHQ9dmlzaWJsZUxlZnQrKGJveC53aWR0aCpzY2FsZSk7CiAgICBsZXQgdmlzaWJsZVRvcD10b3ArKGJveC55KnNjYWxlKTsKICAgIGxldCB2aXNpYmxlQm90dG9tPXZpc2libGVUb3ArKGJveC5oZWlnaHQqc2NhbGUpOwoKICAgIGNvbnN0IG1pbkxlZnQ9YXJlYUxlZnQrMjsKICAgIGNvbnN0IG1heFJpZ2h0PWFyZWFSaWdodC0yOwogICAgY29uc3QgbWluVG9wPWFyZWFUb3ArMjsKICAgIGNvbnN0IG1heEJvdHRvbT1hcmVhQm90dG9tLTI7CgogICAgaWYodmlzaWJsZUxlZnQ8bWluTGVmdCkgbGVmdCs9bWluTGVmdC12aXNpYmxlTGVmdDsKICAgIGlmKHZpc2libGVSaWdodD5tYXhSaWdodCkgbGVmdC09dmlzaWJsZVJpZ2h0LW1heFJpZ2h0OwogICAgaWYodmlzaWJsZVRvcDxtaW5Ub3ApIHRvcCs9bWluVG9wLXZpc2libGVUb3A7CiAgICBpZih2aXNpYmxlQm90dG9tPm1heEJvdHRvbSkgdG9wLT12aXNpYmxlQm90dG9tLW1heEJvdHRvbTsKCiAgICBpbWcuZGF0YXNldC52NjE4TWFpbj0nMSc7CiAgICBjYXJkLmRhdGFzZXQudjYxOFVwY29taW5nPXVwY29taW5nPycxJzonMCc7CiAgICBjYXJkLmRhdGFzZXQudjYxOE9yaWdpbmFsPW9yaWdpbmFsPycxJzonMCc7CgogICAgc2V0UHgoaW1nLCctLXY2MTgtbGVmdCcsbGVmdCk7CiAgICBzZXRQeChpbWcsJy0tdjYxOC10b3AnLHRvcCk7CiAgICBzZXRQeChpbWcsJy0tdjYxOC13aWR0aCcsbmF0dXJhbFdpZHRoKnNjYWxlKTsKICAgIHNldFB4KGltZywnLS12NjE4LWhlaWdodCcsbmF0dXJhbEhlaWdodCpzY2FsZSk7CiAgfQoKICBhc3luYyBmdW5jdGlvbiByZWZyZXNoKCl7CiAgICBpZighbW9iaWxlKCkpIHJldHVybjsKICAgIGNvbnN0IGNhcmRzPUFycmF5LmZyb20oZG9jdW1lbnQucXVlcnlTZWxlY3RvckFsbCgnLmNvc3R1bWVUaWxlJykpOwogICAgYXdhaXQgUHJvbWlzZS5hbGwoY2FyZHMubWFwKGNhcmQ9PmZpdENhcmQoY2FyZCkpKTsKICB9CgogIGZ1bmN0aW9uIHNjaGVkdWxlKCl7CiAgICBpZihxdWV1ZWQpIHJldHVybjsKICAgIHF1ZXVlZD10cnVlOwogICAgcmVxdWVzdEFuaW1hdGlvbkZyYW1lKCgpPT57CiAgICAgIHF1ZXVlZD1mYWxzZTsKICAgICAgcmVmcmVzaCgpOwogICAgfSk7CiAgfQoKICBpZihkb2N1bWVudC5yZWFkeVN0YXRlPT09J2xvYWRpbmcnKXsKICAgIGRvY3VtZW50LmFkZEV2ZW50TGlzdGVuZXIoJ0RPTUNvbnRlbnRMb2FkZWQnLHNjaGVkdWxlLHtvbmNlOnRydWV9KTsKICB9ZWxzZXsKICAgIHNjaGVkdWxlKCk7CiAgfQoKICB3aW5kb3cuYWRkRXZlbnRMaXN0ZW5lcignbG9hZCcsc2NoZWR1bGUse29uY2U6dHJ1ZX0pOwogIHdpbmRvdy5hZGRFdmVudExpc3RlbmVyKCdyZXNpemUnLHNjaGVkdWxlKTsKICB3aW5kb3cuYWRkRXZlbnRMaXN0ZW5lcignb3JpZW50YXRpb25jaGFuZ2UnLHNjaGVkdWxlKTsKICB3aW5kb3cuYWRkRXZlbnRMaXN0ZW5lcignaGFzaGNoYW5nZScsc2NoZWR1bGUpOwogIHdpbmRvdy5hZGRFdmVudExpc3RlbmVyKCdwb3BzdGF0ZScsc2NoZWR1bGUpOwogIHdpbmRvdy5hZGRFdmVudExpc3RlbmVyKCdtaHVyOmxhbmd1YWdlY2hhbmdlJyxzY2hlZHVsZSk7CiAgZG9jdW1lbnQuYWRkRXZlbnRMaXN0ZW5lcignY2xpY2snLHNjaGVkdWxlLHRydWUpOwoKICBuZXcgTXV0YXRpb25PYnNlcnZlcihtdXRhdGlvbnM9PnsKICAgIGlmKG11dGF0aW9ucy5zb21lKG11dGF0aW9uPT5tdXRhdGlvbi5hZGRlZE5vZGVzPy5sZW5ndGgpKXsKICAgICAgc2NoZWR1bGUoKTsKICAgIH0KICB9KS5vYnNlcnZlKGRvY3VtZW50LmRvY3VtZW50RWxlbWVudCx7CiAgICBjaGlsZExpc3Q6dHJ1ZSwKICAgIHN1YnRyZWU6dHJ1ZQogIH0pOwoKICB3aW5kb3cuTUhVUl9WNjE4X0NPU1RVTUVTPXsKICAgIHJlZnJlc2gsCiAgICBjbGVhckNhY2hlKCl7CiAgICAgIGFscGhhQ2FjaGUuY2xlYXIoKTsKICAgICAgc2NoZWR1bGUoKTsKICAgIH0KICB9Owp9KSgpOw==").decode("utf-8")
+          
+          index_path = Path("public/index.html")
+          css_path = Path("public/css/v618-mobile-costume-visible-center.css")
+          js_path = Path("public/js/v618-mobile-costume-visible-center.js")
+          report_path = Path("RAPPORT_V618_COSTUMES_MOBILE_CENTRES.txt")
+          
+          if not index_path.is_file():
+              raise SystemExit("[ERREUR] public/index.html introuvable.")
+          
+          css_path.parent.mkdir(parents=True, exist_ok=True)
+          js_path.parent.mkdir(parents=True, exist_ok=True)
+          css_path.write_text(CSS + "\n", encoding="utf-8")
+          js_path.write_text(JS + "\n", encoding="utf-8")
+          
+          html = index_path.read_text(encoding="utf-8")
+          
+          patterns = [
+              r'\s*<style id=["\']mhur-v617-costumes-mobile-final["\']>.*?</style>\s*',
+              r'\s*<!-- V618 : costumes mobiles centres CSS\. -->\s*<link[^>]+v618-mobile-costume-visible-center\.css[^>]*>\s*',
+              r'\s*<link[^>]+v618-mobile-costume-visible-center\.css[^>]*>\s*',
+              r'\s*<!-- V618 : costumes mobiles centres JS\. -->\s*<script[^>]+v618-mobile-costume-visible-center\.js[^>]*></script>\s*',
+              r'\s*<script[^>]+v618-mobile-costume-visible-center\.js[^>]*></script>\s*',
+          ]
+          
+          for pattern in patterns:
+              html = re.sub(pattern, "\n", html, flags=re.I | re.S)
+          
+          css_tag = (
+              '<!-- V618 : costumes mobiles centres CSS. -->\n'
+              '<link rel="stylesheet" '
+              'href="css/v618-mobile-costume-visible-center.css?v=618">\n'
+          )
+          js_tag = (
+              '<!-- V618 : costumes mobiles centres JS. -->\n'
+              '<script '
+              'src="js/v618-mobile-costume-visible-center.js?v=618">'
+              '</script>\n'
+          )
+          
+          head_matches = list(re.finditer(r'</head\s*>', html, flags=re.I))
+          body_matches = list(re.finditer(r'</body\s*>', html, flags=re.I))
+          
+          if not head_matches:
+              raise SystemExit("[ERREUR] Balise </head> introuvable.")
+          if not body_matches:
+              raise SystemExit("[ERREUR] Balise </body> introuvable.")
+          
+          head_pos = head_matches[-1].start()
+          html = html[:head_pos] + css_tag + html[head_pos:]
+          
+          body_matches = list(re.finditer(r'</body\s*>', html, flags=re.I))
+          body_pos = body_matches[-1].start()
+          html = html[:body_pos] + js_tag + html[body_pos:]
+          
+          index_path.write_text(html, encoding="utf-8")
+          
+          report_path.write_text(
+              """MHUR NEXUS — V618
+          
+          - Centre les costumes Original d'après les pixels visibles du PNG.
+          - Centre les costumes À venir malgré leur grande zone transparente.
+          - Remonte tous les autres costumes sur mobile.
+          - Conserve NEW, rareté, étoiles, date, statut et T.U.N.I.N.G.
+          - N'agit pas sur la version ordinateur.
+          """,
+              encoding="utf-8"
+          )
+          
+          print("[OK] V618 appliqué.")
+          PY
+          
+          cat > /tmp/verifier_v618.py <<'PY'
+          from pathlib import Path
+          
+          html = Path("public/index.html").read_text(encoding="utf-8")
+          js = Path(
+              "public/js/v618-mobile-costume-visible-center.js"
+          ).read_text(encoding="utf-8")
+          css = Path(
+              "public/css/v618-mobile-costume-visible-center.css"
+          ).read_text(encoding="utf-8")
+          
+          js_ref = "js/v618-mobile-costume-visible-center.js?v=618"
+          css_ref = "css/v618-mobile-costume-visible-center.css?v=618"
+          
+          if html.count(js_ref) != 1:
+              raise SystemExit("[ERREUR] Référence JS V618 absente ou dupliquée.")
+          if html.count(css_ref) != 1:
+              raise SystemExit("[ERREUR] Référence CSS V618 absente ou dupliquée.")
+          
+          for token in [
+              "scanVisibleBox",
+              "getImageData",
+              "isUpcoming",
+              "isOriginal",
+              "verticalRatio",
+              "dataset.v618Main",
+          ]:
+              if token not in js:
+                  raise SystemExit(f"[ERREUR] Élément JS manquant : {token}")
+          
+          for token in [
+              'img[data-v618-main="1"]',
+              "--v618-left",
+              "--v618-top",
+              "object-fit:fill!important",
+          ]:
+              if token not in css:
+                  raise SystemExit(f"[ERREUR] Élément CSS manquant : {token}")
+          
+          print("[OK] Contrôles V618 validés.")
+          PY
+          
+          for tentative in 1 2 3 4 5; do
+            echo "===== Tentative ${tentative}/5 ====="
+            git fetch origin main
+            git reset --hard origin/main
+          
+            python3 /tmp/appliquer_v618.py
+            node --check public/js/v618-mobile-costume-visible-center.js
+            python3 /tmp/verifier_v618.py
+          
+            git add \
+              public/index.html \
+              public/css/v618-mobile-costume-visible-center.css \
+              public/js/v618-mobile-costume-visible-center.js \
+              RAPPORT_V618_COSTUMES_MOBILE_CENTRES.txt
+          
+            if git diff --cached --quiet; then
+              echo "[INFO] V618 est déjà appliqué."
+              exit 0
+            fi
+          
+            git commit -m "fix: centrer et remonter les costumes mobile V618"
+          
+            if git push origin HEAD:main; then
+              echo "[OK] V618 envoyé sur main."
+              exit 0
+            fi
+          
+            echo "[ATTENTE] main a changé, nouvelle tentative."
+            sleep $((tentative * 3))
+          done
+          
+          echo "[ERREUR] Impossible d'envoyer V618 après cinq tentatives."
+          exit 1
