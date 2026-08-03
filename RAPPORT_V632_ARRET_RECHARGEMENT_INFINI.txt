@@ -1,0 +1,21 @@
+MHUR NEXUS — V632
+
+CAUSE DU RECHARGEMENT INFINI
+V631 enregistrait sw-v631-cleanup.js au chargement et une seconde fois
+dans l'événement load. Ce worker utilisait skipWaiting(), clients.claim()
+puis se désinscrivait. Un nouveau changement de contrôleur pouvait alors
+provoquer un nouveau chargement, qui réinstallait le même worker.
+
+CORRECTION
+- Suppression de V630 et V631 dans index.html.
+- Suppression de sw-v630.js et sw-v631-cleanup.js.
+- Aucun nouveau Service Worker n'est enregistré.
+- Aucun location.reload() n'est utilisé.
+- Les anciens workers sont seulement désinscrits.
+- Les caches V630/V631 sont seulement supprimés.
+- L'interface est immédiatement rendue visible.
+- Les autres versions du site restent inchangées.
+
+APRÈS DÉPLOIEMENT
+Fermer tous les onglets mhurfrance.com puis rouvrir le site une fois
+permet à l'ancien contrôleur déjà en mémoire de disparaître définitivement.

@@ -1,56 +1,72 @@
 <!doctype html>
 <html lang="fr">
 <head>
-<script id="mhur-v631-remove-v630-immediately">
+<script id="mhur-v632-stop-reload-loop">
 (function(){
   'use strict';
 
-  const root=document.documentElement;
+  var root=document.documentElement;
 
-  function reveal(){
-    root.classList.remove(
-      'mhurV630Booting',
-      'mhurV630RouteLoading'
-    );
+  root.classList.remove(
+    'mhurV630Booting',
+    'mhurV630RouteLoading',
+    'mhurV630Ready',
+    'mhurV631NoLoader'
+  );
 
-    root.classList.add('mhurV631NoLoader');
+  function removeOldWorkers(){
+    if(!('serviceWorker' in navigator))return;
 
-    if(document.body){
-      document.body.style.removeProperty('overflow');
-      document.body.style.removeProperty('visibility');
-      document.body.style.removeProperty('opacity');
-    }
+    navigator.serviceWorker.getRegistrations()
+      .then(function(registrations){
+        return Promise.all(
+          registrations.map(function(registration){
+            var worker=
+              registration.active||
+              registration.waiting||
+              registration.installing;
 
-    const app=document.getElementById('app');
+            var url=String(worker&&worker.scriptURL||'');
 
-    if(app){
-      app.style.removeProperty('visibility');
-      app.style.removeProperty('opacity');
-    }
+            if(
+              /sw-v630\.js|sw-v631-cleanup\.js/i.test(url)
+            ){
+              return registration.unregister();
+            }
+          })
+        );
+      })
+      .catch(function(){});
   }
 
-  reveal();
+  function removeOldCaches(){
+    if(!('caches' in window))return;
 
-  new MutationObserver(reveal).observe(root,{
-    attributes:true,
-    attributeFilter:['class']
-  });
+    caches.keys()
+      .then(function(keys){
+        return Promise.all(
+          keys
+            .filter(function(key){
+              return /mhur-v630|mhur-v631/i.test(key);
+            })
+            .map(function(key){
+              return caches.delete(key);
+            })
+        );
+      })
+      .catch(function(){});
+  }
 
-  document.addEventListener(
-    'DOMContentLoaded',
-    reveal,
-    {once:true}
-  );
+  removeOldWorkers();
+  removeOldCaches();
 
-  window.addEventListener(
-    'pageshow',
-    reveal
-  );
-
-  window.MHUR_V631_REVEAL=reveal;
+  window.MHUR_V632_CLEANUP={
+    workers:removeOldWorkers,
+    caches:removeOldCaches
+  };
 })();
 </script>
-<style id="mhur-v631-remove-v630-critical">
+<style id="mhur-v632-stop-reload-loop-css">
 html.mhurV630Booting::before,
 html.mhurV630Booting::after,
 html.mhurV630RouteLoading::before,
@@ -73,9 +89,7 @@ html.mhurV631NoLoader #app{
   opacity:1!important;
 }
 
-html.mhurV630Booting body,
-html.mhurV630RouteLoading body,
-html.mhurV631NoLoader body{
+html body{
   overflow:auto!important;
 }
 </style>
@@ -960,9 +974,11 @@ html.mhurV631NoLoader body{
 <!-- V629 : ouverture stable des Notes CSS. -->
 <link rel="stylesheet" href="css/v629-notes-open-stable.css?v=629">
 <!-- V631 : suppression définitive du loader V630 CSS. -->
-<link rel="stylesheet" href="css/v631-remove-v630-loader.css?v=631">
 <!-- V631 : suppression définitive du loader V630 JS. -->
-<script defer src="js/v631-remove-v630-loader.js?v=631"></script>
+<!-- V632 : arrêt du rechargement infini CSS. -->
+<link rel="stylesheet" href="css/v632-stop-reload-loop.css?v=632">
+<!-- V632 : nettoyage passif sans nouveau Service Worker. -->
+<script defer src="js/v632-stop-reload-loop.js?v=632"></script>
 </head>
 <body>
 

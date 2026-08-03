@@ -1,5 +1,5 @@
-/* MHUR Nexus — V631
-   Aucun écran de chargement V630 ne doit rester visible. */
+/* MHUR Nexus — V632
+   Neutralisation définitive de l'ancien écran V630. */
 
 html.mhurV630Booting::before,
 html.mhurV630Booting::after,
@@ -23,9 +23,6 @@ html.mhurV631NoLoader #app{
   opacity:1!important;
 }
 
-html.mhurV630Booting body,
-html.mhurV630RouteLoading body,
-html.mhurV631NoLoader body{
+html body{
   overflow:auto!important;
-  animation:none!important;
 }
