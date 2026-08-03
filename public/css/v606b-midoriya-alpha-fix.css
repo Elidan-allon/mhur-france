@@ -1,0 +1,28 @@
+/* MHUR Nexus — V606B */
+
+#s18NotesDevModalV10
+.s18PatchSkillV10.s18NoSkillImageV606B,
+.s18PatchSkillV10.s18NoSkillImageV606B{
+  display:block!important;
+  width:100%!important;
+  min-width:0!important;
+}
+
+#s18NotesDevModalV10
+.s18PatchSkillV10.s18NoSkillImageV606B > main,
+.s18PatchSkillV10.s18NoSkillImageV606B > main{
+  display:block!important;
+  width:100%!important;
+  max-width:none!important;
+  grid-column:1 / -1!important;
+}
+
+#s18NotesDevModalV10
+.s18PatchSkillImageV606B img,
+#s18NotesDevModalV10
+.s18PatchSkillV10 > div img{
+  display:block!important;
+  width:100%!important;
+  height:100%!important;
+  object-fit:contain!important;
+}

@@ -1,0 +1,21 @@
+MHUR FRANCE — RAPPORT V606B
+
+ERREUR DE V606
+- groupHtml existe mais est compressé sur une ligne.
+- Le remplacement par expression régulière ne le reconnaissait pas.
+
+NOUVELLE MÉTHODE
+- season18-fixes.js n'est plus modifié.
+- Correction appliquée directement après le rendu.
+- Anciennes couches V602/V605/V606 retirées du chargement.
+
+IMAGES EXACTES
+- Air Force : assets/midoriya/midoriya_assault/alpha.webp
+- Full Bullet : assets/midoriya/midoriya_attack/alpha.webp
+- Airblast : assets/midoriya_ofa/alpha.webp
+- HP/PV/Health : aucune image
+
+STABILITÉ
+- MutationObserver limité aux nouveaux éléments.
+- Les attributs src/class ne sont pas surveillés.
+- Pas de boucle infinie.
