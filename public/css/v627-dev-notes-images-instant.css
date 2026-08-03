@@ -1,0 +1,187 @@
+/* MHUR Nexus — V627
+   Dev Notes complètes + costumes affichés directement centrés. */
+
+/* ===================== DEV / PATCH NOTES ===================== */
+
+#s18NotesDevModalV10.open{
+  position:fixed!important;
+  top:var(--mhur-v627-notes-top,0px)!important;
+  right:0!important;
+  bottom:0!important;
+  left:0!important;
+  width:100vw!important;
+  height:auto!important;
+  max-height:none!important;
+  padding:8px!important;
+  overflow:hidden!important;
+  box-sizing:border-box!important;
+  align-items:flex-start!important;
+  justify-content:center!important;
+}
+
+#s18NotesDevModalV10 .s18NotesPanelV10{
+  display:flex!important;
+  flex-direction:column!important;
+  width:min(1420px,calc(100vw - 16px))!important;
+  height:calc(100dvh - var(--mhur-v627-notes-top,0px) - 16px)!important;
+  min-height:0!important;
+  max-height:none!important;
+  margin:0 auto!important;
+  overflow:hidden!important;
+  box-sizing:border-box!important;
+}
+
+#s18NotesDevModalV10 .s18NotesPanelV10 > header,
+#s18NotesDevModalV10 .s18NotesPanelV10 > nav{
+  flex:0 0 auto!important;
+}
+
+#s18NotesDevModalV10 .s18NotesBodyV10{
+  display:grid!important;
+  grid-template-columns:minmax(190px,260px) minmax(0,1fr)!important;
+  grid-template-rows:minmax(0,1fr)!important;
+  flex:1 1 auto!important;
+  width:100%!important;
+  height:auto!important;
+  min-height:0!important;
+  max-height:none!important;
+  overflow:hidden!important;
+}
+
+#s18NotesDevModalV10 .s18NotesBodyV10 > aside,
+#s18NotesDevModalV10 .s18NotesBodyV10 > main{
+  min-width:0!important;
+  min-height:0!important;
+  height:100%!important;
+  max-height:none!important;
+  overflow-x:hidden!important;
+  overflow-y:auto!important;
+  overscroll-behavior:contain!important;
+  -webkit-overflow-scrolling:touch!important;
+}
+
+#s18NotesDevModalV10 .s18NotesBodyV10 > main{
+  padding-bottom:max(32px,env(safe-area-inset-bottom))!important;
+  scroll-padding-bottom:max(32px,env(safe-area-inset-bottom))!important;
+}
+
+#s18NotesDevModalV10 .s18DevArticleV10,
+#s18NotesDevModalV10 .s18DevArticleV10 > section,
+#s18NotesDevModalV10 .s18DevHeroV10,
+#s18NotesDevModalV10 .s18OfficialLinksV10{
+  height:auto!important;
+  min-height:0!important;
+  max-height:none!important;
+  overflow:visible!important;
+}
+
+#s18NotesDevModalV10 .s18DevArticleV10{
+  display:block!important;
+  width:100%!important;
+  padding-bottom:32px!important;
+  box-sizing:border-box!important;
+}
+
+#s18NotesDevModalV10 .s18OfficialLinksV10{
+  display:flex!important;
+  flex-wrap:wrap!important;
+  gap:10px!important;
+  margin-bottom:24px!important;
+}
+
+@media(max-width:760px){
+  #s18NotesDevModalV10.open{
+    padding:0!important;
+  }
+
+  #s18NotesDevModalV10 .s18NotesPanelV10{
+    width:100vw!important;
+    height:calc(100dvh - var(--mhur-v627-notes-top,0px))!important;
+    border-radius:0!important;
+  }
+
+  #s18NotesDevModalV10 .s18NotesBodyV10{
+    grid-template-columns:minmax(0,1fr)!important;
+    grid-template-rows:auto minmax(0,1fr)!important;
+  }
+
+  #s18NotesDevModalV10 .s18NotesBodyV10 > aside{
+    width:100%!important;
+    height:auto!important;
+    max-height:112px!important;
+  }
+
+  #s18NotesDevModalV10.mhurV627DevActive
+  .s18NotesBodyV10 > aside{
+    max-height:78px!important;
+    overflow:hidden!important;
+  }
+
+  #s18NotesDevModalV10 .s18NotesBodyV10 > main{
+    height:100%!important;
+    padding-bottom:max(54px,env(safe-area-inset-bottom))!important;
+  }
+}
+
+/* ===================== COSTUMES INSTANTANÉS ===================== */
+
+@media(max-width:760px){
+  html body #app .costumeTile{
+    position:relative!important;
+    overflow:hidden!important;
+  }
+
+  html body #app .costumeTile > img{
+    opacity:1!important;
+    visibility:visible!important;
+    transition:none!important;
+    will-change:auto!important;
+  }
+
+  html body #app .costumeTile >
+  img[data-v627-costume-ready="1"]{
+    position:absolute!important;
+    left:var(--v627-left,20px)!important;
+    top:var(--v627-top,58px)!important;
+    right:auto!important;
+    bottom:auto!important;
+    width:var(--v627-width,calc(100% - 40px))!important;
+    height:var(--v627-height,auto)!important;
+    min-width:0!important;
+    min-height:0!important;
+    max-width:none!important;
+    max-height:none!important;
+    margin:0!important;
+    padding:0!important;
+    border:0!important;
+    object-fit:fill!important;
+    object-position:0 0!important;
+    transform:none!important;
+    translate:none!important;
+    scale:none!important;
+    transform-origin:0 0!important;
+    background:transparent!important;
+    display:block!important;
+    z-index:2!important;
+    pointer-events:none!important;
+  }
+
+  /* Repli immédiat si une image rare n'existe pas dans le manifeste. */
+  html body #app .costumeTile >
+  img[data-v627-costume-fallback="1"]{
+    position:absolute!important;
+    left:20px!important;
+    top:58px!important;
+    right:20px!important;
+    bottom:146px!important;
+    width:calc(100% - 40px)!important;
+    height:auto!important;
+    max-width:none!important;
+    max-height:none!important;
+    object-fit:contain!important;
+    object-position:center center!important;
+    transform:none!important;
+    opacity:1!important;
+    visibility:visible!important;
+  }
+}

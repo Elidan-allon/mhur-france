@@ -866,34 +866,6 @@
 <link rel="stylesheet" href="css/v617-mobile-costumes-exacts.css?v=617">
 <!-- V619 : navigation TUNING mobile CSS. -->
 <link rel="stylesheet" href="css/v619-mobile-tuning-navigation.css?v=619">
-<!-- V618 : costumes mobiles centres CSS. -->
-<link rel="stylesheet" href="css/v618-mobile-costume-visible-center.css?v=618">
-<style id="mhur-v622-costume-image-no-jump">
-@media (max-width:760px){
-  /*
-    Cette règle est chargée dans <head>, avant la création des cartes :
-    l'ancien cadrage décentré ne peut donc jamais être visible.
-  */
-  html body #app .costumeTile > img{
-    opacity:0!important;
-    visibility:hidden!important;
-    transition:
-      opacity 190ms cubic-bezier(.22,.61,.36,1)!important;
-    will-change:opacity!important;
-  }
-
-  html body #app .costumeTile > img[data-v622-ready="1"]{
-    opacity:1!important;
-    visibility:visible!important;
-  }
-}
-
-@media (prefers-reduced-motion:reduce){
-  html body #app .costumeTile > img{
-    transition:none!important;
-  }
-}
-</style>
 <link rel="preload" as="image" href="assets/home/season18/gentle_s18_banner.webp">
 <link rel="preload" as="image" href="assets/home/season18/twice_s18_banner.webp">
 <link rel="preload" as="image" href="assets/home/season18/tsuyu_profile.webp">
@@ -901,6 +873,12 @@
 <link rel="stylesheet" href="css/season18-fixes.css?v=1785772274087607212">
 <!-- V626 : Tier List et détails PC CSS. -->
 <link rel="stylesheet" href="css/v626-tier-desktop-details.css?v=626">
+<!-- V627 : Dev Notes complètes et images immédiates CSS. -->
+<link rel="stylesheet" href="css/v627-dev-notes-images-instant.css?v=627">
+<!-- V627 : cadrages précalculés des costumes. -->
+<script src="data/v627-costume-bounds.js?v=627"></script>
+<!-- V627 : Dev Notes complètes et images immédiates JS. -->
+<script defer src="js/v627-dev-notes-images-instant.js?v=627"></script>
 </head>
 <body>
 
@@ -7144,7 +7122,7 @@ body .costumeTile > img,
     const rightCond=c.condition&&c.condition!=='Tous'?c.condition:'';
     const icon=(color,cond='')=>typeof slotIconPath==='function'?slotIconPath(color,cond):'';
     return `<button class="costumeTile ${selectedCostume===c.id?'selected':''}" data-costume-id="${c.id}" data-sp-left="${c.spLeft||''}" data-sp-right="${c.spRight||''}" data-signature="${signature(c)}" onclick="showCostumeDetail('${c.id}')">
-      <img src="${c.img}" alt="${c.variant}">
+      <img src="${c.img}" alt="${c.variant}" loading="eager" decoding="async" fetchpriority="high">
       <div class="costumeTileRarity">${c.rarity||'C'}</div>
       <div class="costumeTileStars">${stars}</div>
       <div class="costumeTileBadge left" title="SP gauche : ${slotLabelLong(c.spLeft)}"><img class="costumeTileBadgeIcon" src="${icon(c.spLeft)}" alt=""></div>
@@ -7598,7 +7576,7 @@ body .costumeTile > img,
 <!-- Season 18 v14 compatibility layer. -->
 
 <!-- Season 18 v14 compatibility layer. -->
-<script src="js/v608-patch-notes-final.js?v=608"></script>
+<script src="js/v608-patch-notes-final.js?v=627"></script>
 <!-- V609 : images Alpha Midoriya dans les fiches personnages. -->
 <script src="js/v609-midoriya-alpha-personnages.js?v=609"></script>
 <script src="js/v610-patch-notes-health-no-image.js?v=6101"></script>
@@ -7617,12 +7595,8 @@ body .costumeTile > img,
 <!-- Season 18 v14 compatibility layer. -->
 <!-- V619 : navigation TUNING mobile JS. -->
 <script src="js/v619-mobile-tuning-navigation.js?v=626"></script>
-<!-- V618 : costumes mobiles centres JS. -->
-<script src="js/v618-mobile-costume-visible-center.js?v=618"></script>
 <!-- V621 : navigation TUNING mobile fluide. -->
 <script src="js/v621-tuning-mobile-smooth-navigation.js?v=621"></script>
-<!-- V622 : costumes sans saut au chargement. -->
-<script src="js/v622-costume-image-no-jump.js?v=6221"></script>
 <!-- Season 18 v14 compatibility layer. -->
 
 <!-- Season 18 v14 compatibility layer. -->

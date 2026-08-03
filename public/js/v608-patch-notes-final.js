@@ -960,6 +960,27 @@
   }
 
   function devHtml(){
+    const sources=[
+      window.MHUR_S18_V14?.devHtml,
+      window.MHUR_S18_V13?.devHtml,
+      window.MHUR_S18_V10?.devHtml
+    ];
+
+    for(const source of sources){
+      if(
+        typeof source==='function'&&
+        source!==devHtml
+      ){
+        try{
+          const result=String(source()||'').trim();
+
+          if(result){
+            return result;
+          }
+        }catch(_error){}
+      }
+    }
+
     return `<article class="s18DevArticleV10">
       <div class="s18DevHeroV10">
         <span>DEV BLOG VOL. 27</span>
@@ -981,18 +1002,58 @@
       <section>
         <h3>Gentle Criminal & La Brava</h3>
         <p>${tx(
-          "Gentle est pensé comme un personnage Technique très mobile. Son Alter Élasticité crée des rebonds, une barrière d'air et un trampoline utilisable par les alliés.",
-          'Gentle is designed as a highly mobile Technical character. Elasticity creates rebounds, an air barrier, and an ally-usable trampoline.'
+          "Gentle est pensé comme un personnage Technique très mobile. Son Alter Élasticité crée des rebonds, une barrière d'air et un trampoline utilisable par les alliés. La Brava le soutient avec son drone et Lover Mode augmente sa puissance et sa recharge pendant Plus Chaos.",
+          'Gentle is designed as a highly mobile Technical character. Elasticity creates rebounds, an air barrier, and an ally-usable trampoline. La Brava supports him with her drone, while Lover Mode boosts attack and reload during Plus Chaos.'
         )}</p>
       </section>
 
       <section>
         <h3>Chaos City Ver. 02</h3>
         <p>${tx(
-          'Le quartier commercial a été profondément rénové avec une nouvelle zone souterraine.',
-          'The shopping district has been heavily renovated with a new underground area.'
+          'Le quartier commercial a été profondément rénové et une nouvelle zone souterraine, Tentoin Alley, permet de circuler par des passages sous la ville.',
+          'The shopping district has been heavily renovated, with the new underground Tentoin Alley area connecting parts of the city.'
         )}</p>
       </section>
+
+      <section>
+        <h3>Research Notebook</h3>
+        <p>${tx(
+          'La Mission n° 3, plus difficile, est ajoutée. Le niveau maximum passe à 200 avec de nouvelles récompenses, dont des Tickets et des objets T.U.N.I.N.G.',
+          'The more challenging Mission No. 3 is added. The level cap rises to 200 with new rewards, including Tickets and T.U.N.I.N.G items.'
+        )}</p>
+      </section>
+
+      <section>
+        <h3>3-Pick Battle</h3>
+        <p>${tx(
+          'Ce nouveau mode est prévu à partir de la fin août. Chaque joueur choisit trois styles et le vainqueur est celui qui inflige le plus de dégâts.',
+          'This new mode is planned from late August. Each player selects three styles, and the winner is the player who deals the most damage.'
+        )}</p>
+      </section>
+
+      <div class="s18OfficialLinksV10">
+        <a
+          href="https://en.bandainamcoent.eu/my-hero-academia/news/my-hero-ultra-rumble-development-blog-vol-27"
+          target="_blank"
+          rel="noopener"
+        >
+          ${tx(
+            'Lire la Dev Note officielle',
+            'Read the official Dev Note'
+          )}
+        </a>
+
+        <a
+          href="https://en.bandainamcoent.eu/my-hero-academia/news/my-hero-ultra-rumble-season-18"
+          target="_blank"
+          rel="noopener"
+        >
+          ${tx(
+            'Voir la page officielle Saison 18',
+            'View the official Season 18 page'
+          )}
+        </a>
+      </div>
     </article>`;
   }
 

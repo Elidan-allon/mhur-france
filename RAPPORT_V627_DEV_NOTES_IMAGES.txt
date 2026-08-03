@@ -1,0 +1,18 @@
+MHUR NEXUS — V627
+
+DEV NOTES
+- Restaure les cinq sections complètes et les liens officiels.
+- Supprime les hauteurs fixes qui coupaient le bas.
+- Le contenu principal possède son propre défilement.
+- Fonctionne sur mobile et ordinateur.
+
+IMAGES DE COSTUMES
+- Supprime l'attente artificielle de V622.
+- Le cadrage transparent est calculé pendant le workflow.
+- Les coordonnées sont disponibles avant le chargement de l'image.
+- Les images sont chargées en eager avec priorité élevée.
+- V618 et V622 ne sont plus chargés pour éviter un second déplacement.
+
+LIMITATION NATURELLE
+- Lors d'une toute première visite, le téléchargement réel dépend toujours
+  de la connexion. Le site ne rajoute toutefois plus aucun délai artificiel.
