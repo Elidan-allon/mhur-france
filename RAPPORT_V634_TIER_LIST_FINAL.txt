@@ -1,0 +1,24 @@
+MHUR NEXUS — V634
+
+CORRECTION UNIQUE : TIER LIST MOBILE ET ORDINATEUR
+
+GENTLE CRIMINAL
+- Suppression de tous les anciens badges NEW en double.
+- Blocage des injections Tier List de V626 et V628 après V634.
+- Création d'un seul badge NEW en haut à droite.
+- Petite taille et animation conservées.
+- La carte garde sa taille normale.
+- Le nom et le style restent sur deux lignes distinctes.
+
+TEXTES
+- Dֳ©pose ici / D�pose ici devient « Dépose ici ».
+- Non classֳ©s devient « Non classés ».
+- La phrase d'aide est réécrite en UTF-8 propre.
+- Les textes anglais restent inchangés.
+
+NON MODIFIÉ
+- Dev Notes de V628.
+- Builds communautaires.
+- Costumes.
+- T.U.N.I.N.G.
+- Header et navigation.

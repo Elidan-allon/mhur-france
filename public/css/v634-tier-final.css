@@ -1,0 +1,163 @@
+/* MHUR Nexus — V634
+   Tier List finale mobile + ordinateur :
+   un seul NEW Gentle et textes UTF-8 propres. */
+
+html body #mhurTierList
+.mhurTierItem.mhurTierGentleV634{
+  position:relative!important;
+  overflow:hidden!important;
+}
+
+html body #mhurTierList
+.mhurTierItem.mhurTierGentleV634
+.mhurNewV582,
+html body #mhurTierList
+.mhurTierItem.mhurTierGentleV634
+.mhurTierNewV626,
+html body #mhurTierList
+.mhurTierItem.mhurTierGentleV634
+.mhurTierNewV628,
+html body #mhurTierList
+.mhurTierItem.mhurTierGentleV634
+.s18NewBadge,
+html body #mhurTierList
+.mhurTierItem.mhurTierGentleV634
+[class*="s18NewBadge"],
+html body #mhurTierList
+.mhurTierItem.mhurTierGentleV634
+[class*="mhurTierNew"]:not(.mhurTierNewV634),
+html body #mhurTierList
+.mhurTierItem.mhurTierGentleV634
+[aria-label="NEW"]:not(.mhurTierNewV634),
+html body #mhurTierList
+.mhurTierItem.mhurTierGentleV634
+img[src*="new_badge"]{
+  display:none!important;
+  visibility:hidden!important;
+  opacity:0!important;
+  pointer-events:none!important;
+}
+
+html body #mhurTierList
+.mhurTierItem.mhurTierGentleV634
+> .mhurTierNewV634{
+  position:absolute!important;
+  top:5px!important;
+  right:5px!important;
+  bottom:auto!important;
+  left:auto!important;
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+  width:44px!important;
+  height:23px!important;
+  min-width:44px!important;
+  min-height:23px!important;
+  max-width:44px!important;
+  max-height:23px!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:0!important;
+  background:
+    transparent
+    url('../assets/home/icons/new_badge_custom.png')
+    center/contain no-repeat!important;
+  color:transparent!important;
+  font-size:0!important;
+  line-height:0!important;
+  text-indent:-9999px!important;
+  box-shadow:none!important;
+  transform-origin:top right!important;
+  animation:mhurV634NewPulse 1.35s ease-in-out infinite!important;
+  z-index:100!important;
+  pointer-events:none!important;
+}
+
+html body #mhurTierList
+.mhurTierItem.mhurTierGentleV634
+> small{
+  position:static!important;
+  display:-webkit-box!important;
+  width:100%!important;
+  margin-top:6px!important;
+  line-height:1.05!important;
+  overflow:hidden!important;
+  -webkit-box-orient:vertical!important;
+  -webkit-line-clamp:2!important;
+}
+
+html body #mhurTierList
+.mhurTierItem.mhurTierGentleV634
+> .mhurTierStyleName{
+  position:static!important;
+  display:block!important;
+  width:100%!important;
+  margin-top:4px!important;
+  line-height:1!important;
+  overflow:hidden!important;
+  white-space:nowrap!important;
+  text-overflow:ellipsis!important;
+}
+
+html body #mhurTierList .mhurTierDropHint{
+  font-family:Arial,Helvetica,sans-serif!important;
+  font-variant:normal!important;
+  letter-spacing:0!important;
+  text-transform:none!important;
+  line-height:1.15!important;
+  text-align:center!important;
+  white-space:normal!important;
+  overflow-wrap:normal!important;
+  word-break:normal!important;
+}
+
+html body #mhurTierList .mhurTierDragHelp,
+html body #mhurTierList .mhurTierLabel.U{
+  font-family:Arial,Helvetica,sans-serif!important;
+  font-variant:normal!important;
+  letter-spacing:0!important;
+  text-transform:none!important;
+}
+
+@keyframes mhurV634NewPulse{
+  0%,100%{
+    transform:translateY(0) scale(.86);
+  }
+  50%{
+    transform:translateY(-2px) scale(.96);
+  }
+}
+
+@media(max-width:900px){
+  html body #mhurTierList
+  .mhurTierItem.mhurTierGentleV634
+  > .mhurTierNewV634{
+    top:4px!important;
+    right:4px!important;
+    width:36px!important;
+    height:19px!important;
+    min-width:36px!important;
+    min-height:19px!important;
+    max-width:36px!important;
+    max-height:19px!important;
+  }
+
+  html body #mhurTierList
+  .mhurTierItem.mhurTierGentleV634
+  > small{
+    margin-top:5px!important;
+  }
+
+  html body #mhurTierList
+  .mhurTierItem.mhurTierGentleV634
+  > .mhurTierStyleName{
+    margin-top:3px!important;
+  }
+
+  html body #mhurTierList .mhurTierDropHint{
+    min-width:92px!important;
+    padding:6px!important;
+    font-size:12px!important;
+  }
+}

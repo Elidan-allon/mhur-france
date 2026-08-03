@@ -75,6 +75,7 @@
   }
 
   function fixCards(output){
+    if(window.MHUR_V634_TIER_FINAL_LOADED)return;
     output.querySelectorAll('.mhurTierItem').forEach(card=>{
       card.classList.add('mhurTierCardV626');
 

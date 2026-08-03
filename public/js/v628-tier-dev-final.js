@@ -79,6 +79,7 @@
   }
 
   function repairTier(){
+    if(window.MHUR_V634_TIER_FINAL_LOADED)return;
     const tier=document.getElementById('mhurTierList');
 
     if(!tier)return;
