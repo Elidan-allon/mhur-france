@@ -1,0 +1,18 @@
+MHUR NEXUS — RAPPORT V613
+DERNIERS CORRECTIFS MOBILES
+
+CORRECTIONS
+- Le bouton Patch Notes / Dev Notes ferme réellement Réseaux sociaux et Créateurs de contenu avant l'ouverture des notes.
+- Le bouton Retour reste fixé juste sous le bas réel du header, même après défilement ou nouveau rendu.
+- Les icônes T.U.N.I.N.G des cartes costumes remontent dans la zone photo.
+- Les icônes Assaut, Attaque, Vitesse, Technique et Soutien sont alignées avec leur nom dans le choix des styles.
+
+PORTÉE
+- Correctif limité aux écrans de 760 px ou moins.
+- Aucun changement sur la version ordinateur.
+- Aucun changement sur les données, images, traductions ou valeurs du jeu.
+
+FICHIERS
+- public/js/v613-mobile-last-fixes.js
+- public/css/v613-mobile-last-fixes.css
+- public/index.html
