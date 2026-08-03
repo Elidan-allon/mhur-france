@@ -1,0 +1,171 @@
+name: MHUR V620 - Aller-retour TUNING mobile
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/mhur-v620-auto.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: mhur-v620-tuning-mobile
+  cancel-in-progress: false
+
+jobs:
+  appliquer:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Recuperer le depot
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Installer Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Appliquer et enregistrer V620
+        shell: bash
+        run: |
+          set -euo pipefail
+          
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          
+          cat > /tmp/appliquer_v620.py <<'PY'
+          from pathlib import Path
+          import base64
+          import re
+          
+          JS = base64.b64decode("LyogTUhVUiBOZXh1cyDigJQgVjYyMAogICBDb3JyZWN0aWYgRVhDTFVTSUYgZGUgbCdhbGxlci1yZXRvdXIgYXV0b21hdGlxdWUgVC5VLk4uSS5OLkcgc3VyIG1vYmlsZS4KCiAgIC0gQ2xpYyBzdXIgdW4gZW1wbGFjZW1lbnQgOiBkZXNjZW5kIHZlcnMgLnR1bmluZ1BpY2tlci4KICAgLSBDaG9peCBkJ3VuIFQuVS5OLkkuTi5HIDogcmVtb250ZSB2ZXJzIC5nYW1lU2xvdC5hY3RpdmUuCiAgIC0gQXVjdW4gY2hhbmdlbWVudCBkZSBzdHlsZSwgZGUgZG9ubsOpZXMsIGRlIGNhcnRlIG91IGRlIGTDqXRhaWwuCiovCihmdW5jdGlvbigpewogICd1c2Ugc3RyaWN0JzsKCiAgaWYod2luZG93Lk1IVVJfVjYyMF9UVU5JTkdfQVVUT19OQVZfTE9BREVEKXJldHVybjsKICB3aW5kb3cuTUhVUl9WNjIwX1RVTklOR19BVVRPX05BVl9MT0FERUQ9dHJ1ZTsKCiAgY29uc3QgTU9CSUxFX1FVRVJZPScobWF4LXdpZHRoOjc2MHB4KSc7CiAgbGV0IG5hdmlnYXRpb25JZD0wOwoKICBmdW5jdGlvbiBpc01vYmlsZSgpewogICAgcmV0dXJuIHdpbmRvdy5tYXRjaE1lZGlhKE1PQklMRV9RVUVSWSkubWF0Y2hlczsKICB9CgogIGZ1bmN0aW9uIGlzVmlzaWJsZShlbGVtZW50KXsKICAgIGlmKCFlbGVtZW50fHwhZWxlbWVudC5pc0Nvbm5lY3RlZClyZXR1cm4gZmFsc2U7CgogICAgY29uc3Qgc3R5bGU9Z2V0Q29tcHV0ZWRTdHlsZShlbGVtZW50KTsKICAgIGlmKAogICAgICBzdHlsZS5kaXNwbGF5PT09J25vbmUnfHwKICAgICAgc3R5bGUudmlzaWJpbGl0eT09PSdoaWRkZW4nfHwKICAgICAgTnVtYmVyKHN0eWxlLm9wYWNpdHkpPT09MAogICAgKXsKICAgICAgcmV0dXJuIGZhbHNlOwogICAgfQoKICAgIGNvbnN0IHJlY3Q9ZWxlbWVudC5nZXRCb3VuZGluZ0NsaWVudFJlY3QoKTsKICAgIHJldHVybiByZWN0LndpZHRoPjAmJnJlY3QuaGVpZ2h0PjA7CiAgfQoKICBmdW5jdGlvbiBmaXJzdFZpc2libGUoc2VsZWN0b3JzKXsKICAgIGZvcihjb25zdCBzZWxlY3RvciBvZiBzZWxlY3RvcnMpewogICAgICBjb25zdCBlbGVtZW50cz1BcnJheS5mcm9tKGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3JBbGwoc2VsZWN0b3IpKTsKICAgICAgY29uc3QgZm91bmQ9ZWxlbWVudHMuZmluZChpc1Zpc2libGUpOwogICAgICBpZihmb3VuZClyZXR1cm4gZm91bmQ7CiAgICB9CgogICAgcmV0dXJuIG51bGw7CiAgfQoKICBmdW5jdGlvbiBmaXhlZE9mZnNldCgpewogICAgbGV0IGJvdHRvbT0wOwoKICAgIGNvbnN0IGNhbmRpZGF0ZXM9WwogICAgICBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKCdoZWFkZXInKSwKICAgICAgZmlyc3RWaXNpYmxlKFsKICAgICAgICAnI2FwcCAuY29zdHVtZURldGFpbCAuYmFjaycsCiAgICAgICAgJyNhcHAgLmdhbWVMaWtlRGV0YWlsIC5iYWNrJywKICAgICAgICAnI2FwcCAuZ2FtZUNvc3R1bWVTY3JlZW4gLmJhY2snLAogICAgICAgICcjYXBwID4gLmJhY2snLAogICAgICAgICcjYXBwIC5iYWNrJwogICAgICBdKQogICAgXTsKCiAgICBjYW5kaWRhdGVzLmZvckVhY2goZWxlbWVudD0+ewogICAgICBpZighZWxlbWVudClyZXR1cm47CgogICAgICBjb25zdCBzdHlsZT1nZXRDb21wdXRlZFN0eWxlKGVsZW1lbnQpOwogICAgICBjb25zdCByZWN0PWVsZW1lbnQuZ2V0Qm91bmRpbmdDbGllbnRSZWN0KCk7CgogICAgICBpZigKICAgICAgICBlbGVtZW50LnRhZ05hbWU9PT0nSEVBREVSJ3x8CiAgICAgICAgc3R5bGUucG9zaXRpb249PT0nZml4ZWQnfHwKICAgICAgICBzdHlsZS5wb3NpdGlvbj09PSdzdGlja3knCiAgICAgICl7CiAgICAgICAgaWYoCiAgICAgICAgICByZWN0LmJvdHRvbT5ib3R0b20mJgogICAgICAgICAgcmVjdC5ib3R0b208d2luZG93LmlubmVySGVpZ2h0CiAgICAgICAgKXsKICAgICAgICAgIGJvdHRvbT1yZWN0LmJvdHRvbTsKICAgICAgICB9CiAgICAgIH0KICAgIH0pOwoKICAgIHJldHVybiBNYXRoLm1heCg5MCxNYXRoLmNlaWwoYm90dG9tKSsxMik7CiAgfQoKICBmdW5jdGlvbiBuYXZpZ2F0aW9uVGFyZ2V0KGtpbmQpewogICAgaWYoa2luZD09PSdwaWNrZXInKXsKICAgICAgcmV0dXJuIGZpcnN0VmlzaWJsZShbCiAgICAgICAgJyNhcHAgLmNvc3R1bWVEZXRhaWwgLnR1bmluZ1BpY2tlcicsCiAgICAgICAgJyNhcHAgLmdhbWVMaWtlRGV0YWlsIC50dW5pbmdQaWNrZXInLAogICAgICAgICcjYXBwIC5nYW1lQ29zdHVtZVNjcmVlbiAudHVuaW5nUGlja2VyJywKICAgICAgICAnI2FwcCAudHVuaW5nUGlja2VyJywKICAgICAgICAnLnR1bmluZ1BpY2tlcicKICAgICAgXSk7CiAgICB9CgogICAgcmV0dXJuIGZpcnN0VmlzaWJsZShbCiAgICAgICcjYXBwIC5jb3N0dW1lRGV0YWlsIC5nYW1lU2xvdC5hY3RpdmUnLAogICAgICAnI2FwcCAuZ2FtZUxpa2VEZXRhaWwgLmdhbWVTbG90LmFjdGl2ZScsCiAgICAgICcjYXBwIC5nYW1lQ29zdHVtZVNjcmVlbiAuZ2FtZVNsb3QuYWN0aXZlJywKICAgICAgJyNhcHAgLmdhbWVTbG90LmFjdGl2ZScsCiAgICAgICcuZ2FtZVNsb3QuYWN0aXZlJwogICAgXSk7CiAgfQoKICBmdW5jdGlvbiBzY3JvbGxUb1RhcmdldChraW5kLGJlaGF2aW9yKXsKICAgIGNvbnN0IHRhcmdldD1uYXZpZ2F0aW9uVGFyZ2V0KGtpbmQpOwogICAgaWYoIXRhcmdldClyZXR1cm4gZmFsc2U7CgogICAgY29uc3QgdG9wPU1hdGgubWF4KAogICAgICAwLAogICAgICB3aW5kb3cuc2Nyb2xsWSsKICAgICAgdGFyZ2V0LmdldEJvdW5kaW5nQ2xpZW50UmVjdCgpLnRvcC0KICAgICAgZml4ZWRPZmZzZXQoKQogICAgKTsKCiAgICB3aW5kb3cuc2Nyb2xsVG8oewogICAgICB0b3AsCiAgICAgIGxlZnQ6MCwKICAgICAgYmVoYXZpb3IKICAgIH0pOwoKICAgIHJldHVybiB0cnVlOwogIH0KCiAgZnVuY3Rpb24gbmF2aWdhdGUoa2luZCl7CiAgICBpZighaXNNb2JpbGUoKSlyZXR1cm47CgogICAgY29uc3QgaWQ9KytuYXZpZ2F0aW9uSWQ7CgogICAgLyoKICAgICAgY2hvb3NlU2xvdCgpIGV0IGVxdWlwVHVuaW5nKCkgcmVuZGVudCBsYSBwYWdlLCBwdWlzIHJlc3RhdXJlbnQKICAgICAgbCdhbmNpZW5uZSBwb3NpdGlvbiBkYW5zIHJlcXVlc3RBbmltYXRpb25GcmFtZS4gQ2VzIHBhc3NhZ2VzCiAgICAgIHLDqXDDqXTDqXMgcydleMOpY3V0ZW50IHZvbG9udGFpcmVtZW50IGFwcsOocyBjZXR0ZSByZXN0YXVyYXRpb24uCiAgICAqLwogICAgY29uc3QgYXR0ZW1wdHM9WwogICAgICB7ZGVsYXk6MzUsYmVoYXZpb3I6J2F1dG8nfSwKICAgICAge2RlbGF5OjkwLGJlaGF2aW9yOidhdXRvJ30sCiAgICAgIHtkZWxheToxODAsYmVoYXZpb3I6J2F1dG8nfSwKICAgICAge2RlbGF5OjMyMCxiZWhhdmlvcjonc21vb3RoJ30sCiAgICAgIHtkZWxheTo2MDAsYmVoYXZpb3I6J2F1dG8nfQogICAgXTsKCiAgICBhdHRlbXB0cy5mb3JFYWNoKCh7ZGVsYXksYmVoYXZpb3J9KT0+ewogICAgICBzZXRUaW1lb3V0KCgpPT57CiAgICAgICAgaWYoaWQhPT1uYXZpZ2F0aW9uSWR8fCFpc01vYmlsZSgpKXJldHVybjsKCiAgICAgICAgcmVxdWVzdEFuaW1hdGlvbkZyYW1lKCgpPT57CiAgICAgICAgICBpZihpZCE9PW5hdmlnYXRpb25JZClyZXR1cm47CiAgICAgICAgICBzY3JvbGxUb1RhcmdldChraW5kLGJlaGF2aW9yKTsKICAgICAgICB9KTsKICAgICAgfSxkZWxheSk7CiAgICB9KTsKICB9CgogIGZ1bmN0aW9uIGluc2lkZVR1bmluZ0RldGFpbChlbGVtZW50KXsKICAgIHJldHVybiBCb29sZWFuKAogICAgICBlbGVtZW50Py5jbG9zZXN0Py4oCiAgICAgICAgJyNhcHAgLmNvc3R1bWVEZXRhaWwsJysKICAgICAgICAnI2FwcCAuZ2FtZUxpa2VEZXRhaWwsJysKICAgICAgICAnI2FwcCAuZ2FtZUNvc3R1bWVTY3JlZW4nCiAgICAgICkKICAgICk7CiAgfQoKICAvKgogICAgQ2FwdHVyZSBsZSBjbGljIGF2YW50IHF1ZSBsZSByZW5kdSBuZSBzdXBwcmltZSBsZSBib3V0b24gZCdvcmlnaW5lLgogICAgQ2VsYSBmb25jdGlvbm5lIG3Dqm1lIHNpIGxlcyBmb25jdGlvbnMgZ2xvYmFsZXMgc29udCBlbnN1aXRlIHJlbXBsYWPDqWVzCiAgICBwYXIgdW5lIGF1dHJlIGNvdWNoZSBkdSBzaXRlLgogICovCiAgZG9jdW1lbnQuYWRkRXZlbnRMaXN0ZW5lcigKICAgICdjbGljaycsCiAgICBldmVudD0+ewogICAgICBpZighaXNNb2JpbGUoKSlyZXR1cm47CgogICAgICBjb25zdCB0YXJnZXQ9ZXZlbnQudGFyZ2V0OwogICAgICBpZighKHRhcmdldCBpbnN0YW5jZW9mIEVsZW1lbnQpKXJldHVybjsKICAgICAgaWYoIWluc2lkZVR1bmluZ0RldGFpbCh0YXJnZXQpKXJldHVybjsKCiAgICAgIGNvbnN0IG9wdGlvbj10YXJnZXQuY2xvc2VzdCgnLnR1bmluZ09wdGlvbicpOwoKICAgICAgaWYob3B0aW9uKXsKICAgICAgICBpZighb3B0aW9uLmRpc2FibGVkJiYhb3B0aW9uLmNsYXNzTGlzdC5jb250YWlucygnYWxyZWFkeVVzZWQnKSl7CiAgICAgICAgICBuYXZpZ2F0ZSgnc2xvdCcpOwogICAgICAgIH0KICAgICAgICByZXR1cm47CiAgICAgIH0KCiAgICAgIGNvbnN0IHNsb3Q9dGFyZ2V0LmNsb3Nlc3QoJy5nYW1lU2xvdCcpOwoKICAgICAgaWYoc2xvdCl7CiAgICAgICAgbmF2aWdhdGUoJ3BpY2tlcicpOwogICAgICB9CiAgICB9LAogICAgdHJ1ZQogICk7CgogIC8qCiAgICBEZXV4acOobWUgc8OpY3VyaXTDqSA6IGVudmVsb3BwZSBkaXJlY3RlbWVudCBsZXMgZm9uY3Rpb25zIGZpbmFsZXMuCiAgICBMZSByw6lzdWx0YXQgZm9uY3Rpb25uZWwgb3JpZ2luYWwgcmVzdGUgc3RyaWN0ZW1lbnQgaW5jaGFuZ8OpLgogICovCiAgZnVuY3Rpb24gaW5zdGFsbFdyYXBwZXJzKCl7CiAgICBjb25zdCBjdXJyZW50Q2hvb3NlPXdpbmRvdy5jaG9vc2VTbG90OwoKICAgIGlmKAogICAgICB0eXBlb2YgY3VycmVudENob29zZT09PSdmdW5jdGlvbicmJgogICAgICAhY3VycmVudENob29zZS5fX21odXJWNjIwV3JhcHBlZAogICAgKXsKICAgICAgY29uc3Qgd3JhcHBlZENob29zZT1mdW5jdGlvbigpewogICAgICAgIGNvbnN0IHJlc3VsdD1jdXJyZW50Q2hvb3NlLmFwcGx5KHRoaXMsYXJndW1lbnRzKTsKICAgICAgICBuYXZpZ2F0ZSgncGlja2VyJyk7CiAgICAgICAgcmV0dXJuIHJlc3VsdDsKICAgICAgfTsKCiAgICAgIHdyYXBwZWRDaG9vc2UuX19taHVyVjYyMFdyYXBwZWQ9dHJ1ZTsKICAgICAgd3JhcHBlZENob29zZS5fX21odXJWNjIwT3JpZ2luYWw9Y3VycmVudENob29zZTsKCiAgICAgIHdpbmRvdy5jaG9vc2VTbG90PXdyYXBwZWRDaG9vc2U7CgogICAgICB0cnl7CiAgICAgICAgY2hvb3NlU2xvdD13cmFwcGVkQ2hvb3NlOwogICAgICB9Y2F0Y2goX2Vycm9yKXt9CiAgICB9CgogICAgY29uc3QgY3VycmVudEVxdWlwPXdpbmRvdy5lcXVpcFR1bmluZzsKCiAgICBpZigKICAgICAgdHlwZW9mIGN1cnJlbnRFcXVpcD09PSdmdW5jdGlvbicmJgogICAgICAhY3VycmVudEVxdWlwLl9fbWh1clY2MjBXcmFwcGVkCiAgICApewogICAgICBjb25zdCB3cmFwcGVkRXF1aXA9ZnVuY3Rpb24oKXsKICAgICAgICBjb25zdCByZXN1bHQ9Y3VycmVudEVxdWlwLmFwcGx5KHRoaXMsYXJndW1lbnRzKTsKICAgICAgICBuYXZpZ2F0ZSgnc2xvdCcpOwogICAgICAgIHJldHVybiByZXN1bHQ7CiAgICAgIH07CgogICAgICB3cmFwcGVkRXF1aXAuX19taHVyVjYyMFdyYXBwZWQ9dHJ1ZTsKICAgICAgd3JhcHBlZEVxdWlwLl9fbWh1clY2MjBPcmlnaW5hbD1jdXJyZW50RXF1aXA7CgogICAgICB3aW5kb3cuZXF1aXBUdW5pbmc9d3JhcHBlZEVxdWlwOwoKICAgICAgdHJ5ewogICAgICAgIGVxdWlwVHVuaW5nPXdyYXBwZWRFcXVpcDsKICAgICAgfWNhdGNoKF9lcnJvcil7fQogICAgfQogIH0KCiAgaW5zdGFsbFdyYXBwZXJzKCk7CgogIGlmKGRvY3VtZW50LnJlYWR5U3RhdGU9PT0nbG9hZGluZycpewogICAgZG9jdW1lbnQuYWRkRXZlbnRMaXN0ZW5lcigKICAgICAgJ0RPTUNvbnRlbnRMb2FkZWQnLAogICAgICBpbnN0YWxsV3JhcHBlcnMsCiAgICAgIHtvbmNlOnRydWV9CiAgICApOwogIH0KCiAgd2luZG93LmFkZEV2ZW50TGlzdGVuZXIoCiAgICAnbG9hZCcsCiAgICBpbnN0YWxsV3JhcHBlcnMsCiAgICB7b25jZTp0cnVlfQogICk7CgogIHNldFRpbWVvdXQoaW5zdGFsbFdyYXBwZXJzLDApOwogIHNldFRpbWVvdXQoaW5zdGFsbFdyYXBwZXJzLDI1MCk7CiAgc2V0VGltZW91dChpbnN0YWxsV3JhcHBlcnMsMTAwMCk7CgogIHdpbmRvdy5NSFVSX1Y2MjBfVFVOSU5HX0FVVE9fTkFWPXsKICAgIHRvQ29tcGF0aWJsZSgpewogICAgICBuYXZpZ2F0ZSgncGlja2VyJyk7CiAgICB9LAogICAgdG9BY3RpdmVTbG90KCl7CiAgICAgIG5hdmlnYXRlKCdzbG90Jyk7CiAgICB9LAogICAgcmVpbnN0YWxsOmluc3RhbGxXcmFwcGVycwogIH07Cn0pKCk7").decode("utf-8")
+          
+          index_path = Path("public/index.html")
+          js_path = Path("public/js/v620-tuning-mobile-auto-navigation.js")
+          report_path = Path("RAPPORT_V620_NAVIGATION_TUNING_MOBILE.txt")
+          
+          if not index_path.is_file():
+              raise SystemExit("[ERREUR] public/index.html introuvable.")
+          
+          js_path.parent.mkdir(parents=True, exist_ok=True)
+          js_path.write_text(JS + "\n", encoding="utf-8")
+          
+          html = index_path.read_text(encoding="utf-8")
+          
+          patterns = [
+              r'\s*<!-- V620 : aller-retour TUNING mobile\. -->\s*'
+              r'<script[^>]+v620-tuning-mobile-auto-navigation\.js'
+              r'[^>]*>\s*</script>\s*',
+              r'\s*<script[^>]+v620-tuning-mobile-auto-navigation\.js'
+              r'[^>]*>\s*</script>\s*',
+          ]
+          
+          for pattern in patterns:
+              html = re.sub(pattern, "\n", html, flags=re.I)
+          
+          script_tag = (
+              '<!-- V620 : aller-retour TUNING mobile. -->\n'
+              '<script '
+              'src="js/v620-tuning-mobile-auto-navigation.js?v=620">'
+              '</script>\n'
+          )
+          
+          body_matches = list(re.finditer(r'</body\s*>', html, flags=re.I))
+          
+          if not body_matches:
+              raise SystemExit("[ERREUR] Balise </body> introuvable.")
+          
+          position = body_matches[-1].start()
+          html = html[:position] + script_tag + html[position:]
+          index_path.write_text(html, encoding="utf-8")
+          
+          report_path.write_text(
+              """MHUR NEXUS — V620
+          
+          CORRECTION UNIQUE
+          - Emplacement T.U.N.I.N.G -> descente vers la liste compatible.
+          - T.U.N.I.N.G sélectionné -> remontée vers l'emplacement actif.
+          
+          AUCUN AUTRE CHANGEMENT
+          - Aucun CSS ajouté.
+          - Aucune carte modifiée.
+          - Aucun détail, niveau, costume ou donnée modifié.
+          - Aucun changement sur ordinateur.
+          """,
+              encoding="utf-8",
+          )
+          
+          print("[OK] V620 appliqué.")
+          PY
+          
+          cat > /tmp/verifier_v620.py <<'PY'
+          from pathlib import Path
+          
+          html = Path("public/index.html").read_text(encoding="utf-8")
+          js = Path(
+              "public/js/v620-tuning-mobile-auto-navigation.js"
+          ).read_text(encoding="utf-8")
+          
+          reference = "js/v620-tuning-mobile-auto-navigation.js?v=620"
+          
+          if html.count(reference) != 1:
+              raise SystemExit(
+                  "[ERREUR] Référence V620 absente ou dupliquée."
+              )
+          
+          for token in [
+              "navigationTarget",
+              "navigate('picker')",
+              "navigate('slot')",
+              ".tuningPicker",
+              ".gameSlot.active",
+              "wrappedChoose",
+              "wrappedEquip",
+          ]:
+              if token not in js:
+                  raise SystemExit(
+                      f"[ERREUR] Élément V620 manquant : {token}"
+                  )
+          
+          print("[OK] Contrôles V620 validés.")
+          PY
+          
+          for tentative in 1 2 3 4 5; do
+            echo "===== Tentative ${tentative}/5 ====="
+          
+            git fetch origin main
+            git reset --hard origin/main
+          
+            python3 /tmp/appliquer_v620.py
+            node --check public/js/v620-tuning-mobile-auto-navigation.js
+            python3 /tmp/verifier_v620.py
+          
+            git add \
+              public/index.html \
+              public/js/v620-tuning-mobile-auto-navigation.js \
+              RAPPORT_V620_NAVIGATION_TUNING_MOBILE.txt
+          
+            if git diff --cached --quiet; then
+              echo "[INFO] V620 est déjà appliqué."
+              exit 0
+            fi
+          
+            git commit -m "fix: aller-retour automatique TUNING mobile V620"
+          
+            if git push origin HEAD:main; then
+              echo "[OK] V620 envoyé sur main."
+              exit 0
+            fi
+          
+            echo "[ATTENTE] main a changé, nouvelle tentative."
+            sleep $((tentative * 3))
+          done
+          
+          echo "[ERREUR] Impossible d'envoyer V620 après cinq tentatives."
+          exit 1
