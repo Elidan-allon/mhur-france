@@ -1,0 +1,18 @@
+MHUR NEXUS — V628
+
+TIER LIST
+- Gentle Criminal est détecté directement dans .mhurTierItem.
+- Tous les anciens badges NEW de sa carte sont supprimés.
+- Un seul badge NEW est créé en haut à droite.
+- Fonctionne sur mobile et ordinateur.
+- Animation et petite taille conservées.
+
+DEV NOTES
+- Le contenu ne dépend plus de la fonction devHtml raccourcie de V608.
+- Le rendu complet est réappliqué après chaque ouverture de l'onglet Dev.
+- Toutes les informations du Dev Blog Vol. 27 sont présentes :
+  20 millions, Gentle et La Brava, compétences, Lover Mode,
+  Chaos City Ver. 02, Research Notebook Mission n°3,
+  niveaux 31 à 200, récompenses et 3-Pick Battle.
+- Trois boutons ouvrent les pages officielles Bandai Namco.
+- Fonctionne en français et en anglais.

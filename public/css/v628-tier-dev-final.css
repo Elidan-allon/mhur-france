@@ -1,0 +1,284 @@
+/* MHUR Nexus — V628
+   Gentle NEW en haut à droite + Dev Notes complètes et officielles. */
+
+/* ==========================================================
+   TIER LIST — MOBILE ET ORDINATEUR
+   ========================================================== */
+
+html body #mhurTierList
+.mhurTierItem.mhurTierGentleV628{
+  position:relative!important;
+  overflow:hidden!important;
+}
+
+html body #mhurTierList
+.mhurTierItem.mhurTierGentleV628
+.mhurTierNewV628{
+  position:absolute!important;
+  top:5px!important;
+  right:5px!important;
+  bottom:auto!important;
+  left:auto!important;
+  display:block!important;
+  visibility:visible!important;
+  width:45px!important;
+  height:23px!important;
+  min-width:0!important;
+  min-height:0!important;
+  max-width:45px!important;
+  max-height:23px!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:0!important;
+  background:
+    transparent
+    url('../assets/home/icons/new_badge_custom.png')
+    center/contain no-repeat!important;
+  color:transparent!important;
+  font-size:0!important;
+  line-height:0!important;
+  text-indent:-9999px!important;
+  overflow:visible!important;
+  box-shadow:none!important;
+  transform-origin:top right!important;
+  animation:mhurTierNewPulseV628 1.25s ease-in-out infinite!important;
+  z-index:60!important;
+  pointer-events:none!important;
+}
+
+@keyframes mhurTierNewPulseV628{
+  0%,100%{
+    transform:translateY(0) scale(.86);
+  }
+  50%{
+    transform:translateY(-2px) scale(.96);
+  }
+}
+
+@media(max-width:900px){
+  html body #mhurTierList
+  .mhurTierItem.mhurTierGentleV628
+  .mhurTierNewV628{
+    top:4px!important;
+    right:4px!important;
+    width:38px!important;
+    height:20px!important;
+    max-width:38px!important;
+    max-height:20px!important;
+  }
+}
+
+/* ==========================================================
+   DEV NOTES — CONTENU COMPLET
+   ========================================================== */
+
+#s18NotesDevModalV10.mhurV628DevActive
+.s18NotesBodyV10{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr)!important;
+  grid-template-rows:minmax(0,1fr)!important;
+  min-height:0!important;
+  overflow:hidden!important;
+}
+
+#s18NotesDevModalV10.mhurV628DevActive
+.s18NotesBodyV10 > aside{
+  display:none!important;
+}
+
+#s18NotesDevModalV10.mhurV628DevActive
+.s18NotesBodyV10 > main{
+  display:block!important;
+  width:100%!important;
+  min-width:0!important;
+  min-height:0!important;
+  height:100%!important;
+  max-height:none!important;
+  padding:18px!important;
+  padding-bottom:max(52px,env(safe-area-inset-bottom))!important;
+  overflow-x:hidden!important;
+  overflow-y:auto!important;
+  overscroll-behavior:contain!important;
+  -webkit-overflow-scrolling:touch!important;
+  box-sizing:border-box!important;
+}
+
+#s18NotesDevModalV10
+.mhurV628DevArticle{
+  display:block!important;
+  width:100%!important;
+  max-width:1120px!important;
+  height:auto!important;
+  min-height:0!important;
+  max-height:none!important;
+  margin:0 auto!important;
+  padding:0 0 36px!important;
+  overflow:visible!important;
+  box-sizing:border-box!important;
+}
+
+#s18NotesDevModalV10
+.mhurV628DevHero{
+  margin:0 0 16px!important;
+  padding:20px!important;
+  border:3px solid #000!important;
+  border-radius:14px!important;
+  background:
+    linear-gradient(135deg,#1b3d63,#102238)!important;
+  color:#fff!important;
+}
+
+#s18NotesDevModalV10
+.mhurV628DevHero span{
+  display:inline-block!important;
+  margin-bottom:8px!important;
+  padding:5px 9px!important;
+  border:2px solid #000!important;
+  border-radius:999px!important;
+  background:#ffe100!important;
+  color:#000!important;
+  font-size:13px!important;
+  font-weight:1000!important;
+}
+
+#s18NotesDevModalV10
+.mhurV628DevHero h2{
+  margin:0 0 7px!important;
+  color:#fff!important;
+  font-size:clamp(27px,4vw,43px)!important;
+  line-height:1.05!important;
+  text-shadow:2px 2px 0 #000!important;
+}
+
+#s18NotesDevModalV10
+.mhurV628DevHero p{
+  margin:0!important;
+  color:#d5e6ff!important;
+  font-size:15px!important;
+  line-height:1.35!important;
+}
+
+#s18NotesDevModalV10
+.mhurV628DevSection{
+  display:block!important;
+  width:100%!important;
+  height:auto!important;
+  min-height:0!important;
+  max-height:none!important;
+  margin:0 0 14px!important;
+  padding:17px!important;
+  border:3px solid #000!important;
+  border-radius:13px!important;
+  background:#172338!important;
+  color:#fff!important;
+  overflow:visible!important;
+  box-sizing:border-box!important;
+}
+
+#s18NotesDevModalV10
+.mhurV628DevSection h3{
+  margin:0 0 10px!important;
+  color:#ffe100!important;
+  font-size:clamp(20px,2.4vw,28px)!important;
+  line-height:1.08!important;
+}
+
+#s18NotesDevModalV10
+.mhurV628DevSection p{
+  margin:0 0 10px!important;
+  color:#fff!important;
+  font-size:16px!important;
+  line-height:1.48!important;
+}
+
+#s18NotesDevModalV10
+.mhurV628DevSection p:last-child{
+  margin-bottom:0!important;
+}
+
+#s18NotesDevModalV10
+.mhurV628DevSection ul{
+  margin:10px 0 0 20px!important;
+  padding:0!important;
+  color:#fff!important;
+}
+
+#s18NotesDevModalV10
+.mhurV628DevSection li{
+  margin:7px 0!important;
+  font-size:15px!important;
+  line-height:1.35!important;
+}
+
+#s18NotesDevModalV10
+.mhurV628OfficialLinks{
+  display:grid!important;
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  gap:12px!important;
+  width:100%!important;
+  margin:18px 0 0!important;
+  padding:0!important;
+}
+
+#s18NotesDevModalV10
+.mhurV628OfficialLink{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  min-height:58px!important;
+  padding:12px 14px!important;
+  border:3px solid #000!important;
+  border-radius:12px!important;
+  background:#ffe100!important;
+  color:#000!important;
+  font-size:15px!important;
+  line-height:1.15!important;
+  font-weight:1000!important;
+  text-align:center!important;
+  text-decoration:none!important;
+  box-shadow:0 4px 0 #000!important;
+}
+
+#s18NotesDevModalV10
+.mhurV628OfficialLink:hover,
+#s18NotesDevModalV10
+.mhurV628OfficialLink:focus-visible{
+  transform:translateY(-2px)!important;
+  background:#fff000!important;
+}
+
+#s18NotesDevModalV10
+.mhurV628DevSignature{
+  margin:16px 0 0!important;
+  padding:14px!important;
+  border-left:5px solid #ffe100!important;
+  background:#0c1626!important;
+  color:#d7e6fb!important;
+  font-size:15px!important;
+  line-height:1.35!important;
+  font-style:italic!important;
+}
+
+@media(max-width:760px){
+  #s18NotesDevModalV10.mhurV628DevActive
+  .s18NotesBodyV10 > main{
+    padding:12px!important;
+    padding-bottom:max(62px,env(safe-area-inset-bottom))!important;
+  }
+
+  #s18NotesDevModalV10
+  .mhurV628DevHero{
+    padding:15px!important;
+  }
+
+  #s18NotesDevModalV10
+  .mhurV628DevSection{
+    padding:14px!important;
+  }
+
+  #s18NotesDevModalV10
+  .mhurV628OfficialLinks{
+    grid-template-columns:minmax(0,1fr)!important;
+  }
+}
