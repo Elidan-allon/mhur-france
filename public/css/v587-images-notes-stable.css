@@ -158,9 +158,14 @@
   }
 }
 
-/* === MHUR V650 STYLE CENTER START === */
-/* Centre le groupe des cartes de styles sur ordinateur.
-   Ne modifie ni la largeur, ni la hauteur des cartes. */
+/* === MHUR V651 STYLE PICKER CENTER START === */
+/* Centre le nom du personnage et les cartes de styles.
+   Les dimensions des cartes ne sont jamais modifiées. */
+h1.title:has(+ .styleGrid) {
+  width: 100% !important;
+  text-align: center !important;
+}
+
 @media (min-width: 761px) {
   html body #app .styleGrid,
   html body .styleGrid {
@@ -172,4 +177,4 @@
     margin-right: auto !important;
   }
 }
-/* === MHUR V650 STYLE CENTER END === */
+/* === MHUR V651 STYLE PICKER CENTER END === */
