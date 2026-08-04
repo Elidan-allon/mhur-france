@@ -1,0 +1,333 @@
+name: MHUR V647 - Synchronisation horaire fiable
+
+on:
+  schedule:
+    - cron: "17 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: mhur-v647-hourly-sync
+  cancel-in-progress: false
+
+jobs:
+  synchroniser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+
+    env:
+      DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+      DISCORD_USER_ID: ${{ secrets.DISCORD_USER_ID }}
+
+    steps:
+      - name: Récupérer le dépôt
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Installer Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: mise_a_jour/requirements.txt
+
+      - name: Installer les dépendances
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install --upgrade pip
+          python -m pip install -r mise_a_jour/requirements.txt
+
+      - name: Vérifier UltraRumble
+        id: verifier
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          set +e
+          python mise_a_jour/outils/surveiller_ultrarumble.py \
+            --site-root public \
+            --check-only
+          code=$?
+          set -e
+
+          case "$code" in
+            0)
+              echo "changed=false" >> "$GITHUB_OUTPUT"
+              ;;
+            10)
+              echo "changed=true" >> "$GITHUB_OUTPUT"
+              ;;
+            *)
+              echo "[ERREUR] Vérification UltraRumble : code $code"
+              exit "$code"
+              ;;
+          esac
+
+          python - <<'PY' >> "$GITHUB_OUTPUT"
+          import json
+          from pathlib import Path
+
+          path = Path(
+              "public/data/ultrarumble/derniere_synchronisation.json"
+          )
+
+          try:
+              status = json.loads(path.read_text(encoding="utf-8"))
+          except Exception:
+              status = {}
+
+          initialized = status.get("status") == "initialisé"
+          urls = status.get("changed_urls") or []
+          urls = [str(value) for value in urls if str(value).strip()]
+
+          print(f"initialized={'true' if initialized else 'false'}")
+          print(f"detected_count={len(urls)}")
+          PY
+
+      - name: Appliquer la mise à jour
+        if: steps.verifier.outputs.changed == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          python mise_a_jour/outils/surveiller_ultrarumble.py \
+            --site-root public \
+            --wait-lock 300
+
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          path = Path(
+              "public/data/ultrarumble/derniere_synchronisation.json"
+          )
+          status = json.loads(path.read_text(encoding="utf-8"))
+
+          if status.get("status") != "mis_à_jour":
+              raise SystemExit(
+                  "[ERREUR] La synchronisation n'a pas produit "
+                  "le statut mis_à_jour."
+              )
+          PY
+
+      - name: Publier les fichiers
+        id: publier
+        shell: bash
+        env:
+          WAS_INITIALIZED: ${{ steps.verifier.outputs.initialized }}
+          SOURCE_CHANGED: ${{ steps.verifier.outputs.changed }}
+        run: |
+          set -euo pipefail
+
+          git config user.name "github-actions[bot]"
+          git config user.email \
+            "41898282+github-actions[bot]@users.noreply.github.com"
+
+          rm -f \
+            public/data/ultrarumble/synchronisation_ultrarumble.log \
+            public/data/ultrarumble/synchronisation_en_cours.lock
+          rm -rf public/sauvegardes
+
+          # Supprime automatiquement l'ancien workflow défectueux.
+          git rm -f --ignore-unmatch \
+            .github/workflows/mhur-v645-auto.yml
+
+          if [ "$WAS_INITIALIZED" = "true" ]; then
+            git add -f \
+              public/data/ultrarumble/synchronisation_state.json \
+              public/data/ultrarumble/derniere_synchronisation.json
+
+            if [ -f public/data/diagnostic_data.js ]; then
+              git add public/data/diagnostic_data.js
+            fi
+
+            commit_message="chore: initialiser la surveillance UltraRumble V647"
+
+          elif [ "$SOURCE_CHANGED" = "true" ]; then
+            git add -A public
+
+            # Ces fichiers sont volontairement ignorés par .gitignore,
+            # mais doivent être conservés par l'automatisation.
+            git add -f \
+              public/data/ultrarumble/synchronisation_state.json \
+              public/data/ultrarumble/derniere_synchronisation.json
+
+            commit_message="update: synchronisation automatique UltraRumble"
+
+          else
+            # La vérification sans changement modifie seulement le diagnostic.
+            # On ne crée pas un commit inutile chaque heure.
+            git restore --staged --worktree -- \
+              public/data/ultrarumble/derniere_synchronisation.json \
+              public/data/diagnostic_data.js \
+              2>/dev/null || true
+
+            commit_message="chore: retirer l'ancien workflow V645"
+          fi
+
+          if git diff --cached --quiet; then
+            echo "committed=false" >> "$GITHUB_OUTPUT"
+            echo "updated=false" >> "$GITHUB_OUTPUT"
+            echo "[INFO] Aucun fichier à publier."
+            exit 0
+          fi
+
+          git commit -m "$commit_message"
+
+          pushed=false
+          for tentative in 1 2 3 4 5; do
+            if git pull --rebase origin main && git push origin HEAD:main; then
+              pushed=true
+              break
+            fi
+
+            echo "[ATTENTE] Nouvelle tentative de publication..."
+            sleep $((tentative * 4))
+          done
+
+          if [ "$pushed" != "true" ]; then
+            echo "[ERREUR] Impossible de publier sur main."
+            exit 1
+          fi
+
+          echo "committed=true" >> "$GITHUB_OUTPUT"
+          echo "commit_sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+          if [ "$SOURCE_CHANGED" = "true" ]; then
+            echo "updated=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "updated=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Envoyer le message Discord
+        if: steps.publier.outputs.updated == 'true'
+        shell: bash
+        env:
+          COMMIT_SHA: ${{ steps.publier.outputs.commit_sha }}
+        run: |
+          set -euo pipefail
+
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          import requests
+
+          webhook = os.environ.get("DISCORD_WEBHOOK_URL", "").strip()
+          user_id = os.environ.get("DISCORD_USER_ID", "").strip()
+          commit_sha = os.environ.get("COMMIT_SHA", "").strip()
+
+          if not webhook:
+              print("[INFO] Aucun webhook Discord configuré.")
+              raise SystemExit(0)
+
+          path = Path(
+              "public/data/ultrarumble/derniere_synchronisation.json"
+          )
+
+          try:
+              status = json.loads(path.read_text(encoding="utf-8"))
+          except Exception:
+              status = {}
+
+          urls = [
+              str(value).strip()
+              for value in status.get("changed_urls", [])
+              if str(value).strip()
+          ]
+
+          shown = urls[:8]
+          details = "\n".join(f"• {url}" for url in shown)
+
+          if len(urls) > len(shown):
+              details += f"\n• … et {len(urls) - len(shown)} autre(s)"
+
+          repository = os.environ.get("GITHUB_REPOSITORY", "")
+          commit_url = (
+              f"https://github.com/{repository}/commit/{commit_sha}"
+              if repository and commit_sha
+              else ""
+          )
+
+          mention = f"<@{user_id}> " if user_id else ""
+          content = (
+              f"{mention}✅ **MHUR Nexus a été mis à jour automatiquement**\n"
+              f"{len(urls)} page(s) UltraRumble modifiée(s)."
+          )
+
+          if details:
+              content += f"\n\n{details}"
+
+          if commit_url:
+              content += f"\n\n🔗 {commit_url}"
+
+          response = requests.post(
+              webhook,
+              json={
+                  "username": "MHUR Nexus — Mise à jour",
+                  "content": content[:1950],
+                  "allowed_mentions": (
+                      {"users": [user_id]}
+                      if user_id
+                      else {"parse": []}
+                  ),
+              },
+              timeout=30,
+          )
+          response.raise_for_status()
+          print("[OK] Message Discord envoyé.")
+          PY
+
+      - name: Signaler une erreur sur Discord
+        if: failure()
+        shell: bash
+        run: |
+          python - <<'PY'
+          import os
+          import requests
+
+          webhook = os.environ.get("DISCORD_WEBHOOK_URL", "").strip()
+          user_id = os.environ.get("DISCORD_USER_ID", "").strip()
+
+          if not webhook:
+              raise SystemExit(0)
+
+          repository = os.environ.get("GITHUB_REPOSITORY", "")
+          run_id = os.environ.get("GITHUB_RUN_ID", "")
+          run_url = (
+              f"https://github.com/{repository}/actions/runs/{run_id}"
+              if repository and run_id
+              else ""
+          )
+
+          mention = f"<@{user_id}> " if user_id else ""
+          content = (
+              f"{mention}❌ **La synchronisation automatique MHUR a échoué.**"
+          )
+
+          if run_url:
+              content += f"\nRapport : {run_url}"
+
+          try:
+              response = requests.post(
+                  webhook,
+                  json={
+                      "username": "MHUR Nexus — Erreur",
+                      "content": content,
+                      "allowed_mentions": (
+                          {"users": [user_id]}
+                          if user_id
+                          else {"parse": []}
+                      ),
+                  },
+                  timeout=30,
+              )
+              response.raise_for_status()
+          except Exception as error:
+              print(f"[AVERTISSEMENT] Discord indisponible : {error}")
+          PY
