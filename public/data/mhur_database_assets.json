@@ -5,7 +5,7 @@
     "styles": 64,
     "costumes": 1629,
     "failed_this_run": 0,
-    "updated_at": "2026-08-04T09:14:52Z"
+    "updated_at": "2026-08-04T09:51:58Z"
   },
   "styles": {
     "aizawa_strike": {
@@ -75,7 +75,7 @@
       "gamma": "assets/armored_all_might/armored_all_might_technical/gamma.webp",
       "special": "assets/armored_all_might/armored_all_might_technical/special.webp",
       "tuning": "assets/armored_all_might/armored_all_might_technical/tuning.webp",
-      "portrait": "assets/armored_all_might/armored_all_might_technical/portrait.png"
+      "portrait": "assets/armored_all_might/armored_all_might_technical/portrait.webp"
     },
     "bakugo_attack": {
       "alpha": "assets/bakugo/bakugo_attack/alpha.webp",
