@@ -157,3 +157,19 @@
     flex-basis:50px!important;
   }
 }
+
+/* === MHUR V650 STYLE CENTER START === */
+/* Centre le groupe des cartes de styles sur ordinateur.
+   Ne modifie ni la largeur, ni la hauteur des cartes. */
+@media (min-width: 761px) {
+  html body #app .styleGrid,
+  html body .styleGrid {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+    width: 100% !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+}
+/* === MHUR V650 STYLE CENTER END === */

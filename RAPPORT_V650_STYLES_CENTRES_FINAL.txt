@@ -1,0 +1,11 @@
+MHUR NEXUS — V650
+
+CORRECTION FINALE DU CENTRAGE DES STYLES
+
+- Le correctif est ajouté dans v587-images-notes-stable.css.
+- Ce fichier est déjà chargé à la fin du site.
+- Le groupe .styleGrid est centré sur ordinateur.
+- La largeur et la hauteur des cartes ne changent pas.
+- Le comportement mobile ne change pas.
+- La version du CSS passe à v=650 pour éviter l'ancien cache.
+- Aucun remplacement de l'ancienne règle .styleGrid n'est nécessaire.
