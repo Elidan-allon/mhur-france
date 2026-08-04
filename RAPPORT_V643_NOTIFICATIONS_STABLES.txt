@@ -1,0 +1,30 @@
+MHUR NEXUS — V643
+
+PROBLÈMES CORRIGÉS
+- Notifications absentes malgré un compteur non nul.
+- Gros nombre non lu qui apparaît puis disparaît.
+- Plusieurs anciens centres de notifications en concurrence.
+- Données localStorage invalides ou dupliquées.
+- Compteur pouvant afficher une valeur incohérente.
+
+NOUVEAU FONCTIONNEMENT
+- Un seul centre de notifications et une seule cloche.
+- Migration des anciennes notifications valides.
+- Nettoyage automatique des notifications invalides.
+- Déduplication et maximum de 100 éléments.
+- Compteur calculé uniquement à partir des éléments réellement visibles.
+- Affichage plafonné à 99+.
+- Filtres Toutes / Non lues.
+- Tout marquer comme lu.
+- Supprimer les lues.
+- Lecture/non-lecture et suppression individuelles.
+- Synchronisation entre plusieurs onglets.
+- Compatibilité avec les mises à jour de builds et mods favoris.
+- Détection des nouvelles versions, sorties, notes de patch et événements.
+- Si un ancien nombre fantôme existait sans notification réelle, une seule
+  notification explique que les anciennes données ont été nettoyées.
+
+AUCUN CHANGEMENT
+- Aucun changement des cartes, costumes, Alters, T.U.N.I.N.G ou builds.
+- Aucun Service Worker.
+- Aucun rechargement automatique.
