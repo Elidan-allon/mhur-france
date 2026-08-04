@@ -1,0 +1,70 @@
+name: MHUR V650 - Centrage styles via CSS déjà chargé
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/mhur-v650-auto.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: mhur-v650-style-center
+  cancel-in-progress: false
+
+jobs:
+  appliquer:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Récupérer le dépôt
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Installer le centrage sans rechercher styleGrid
+        shell: bash
+        run: |
+          set -euo pipefail
+          
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          
+          printf '%s' 'ZnJvbSBwYXRobGliIGltcG9ydCBQYXRoCmltcG9ydCByZQoKcm9vdCA9IFBhdGgoIi4iKQppbmRleF9wYXRoID0gcm9vdCAvICJwdWJsaWMiIC8gImluZGV4Lmh0bWwiCmNzc19wYXRoID0gcm9vdCAvICJwdWJsaWMiIC8gImNzcyIgLyAidjU4Ny1pbWFnZXMtbm90ZXMtc3RhYmxlLmNzcyIKcmVwb3J0X3BhdGggPSByb290IC8gIlJBUFBPUlRfVjY1MF9TVFlMRVNfQ0VOVFJFU19GSU5BTC50eHQiCgppZiBub3QgaW5kZXhfcGF0aC5pc19maWxlKCk6CiAgICByYWlzZSBTeXN0ZW1FeGl0KCJbRVJSRVVSXSBwdWJsaWMvaW5kZXguaHRtbCBpbnRyb3V2YWJsZS4iKQoKaWYgbm90IGNzc19wYXRoLmlzX2ZpbGUoKToKICAgIHJhaXNlIFN5c3RlbUV4aXQoCiAgICAgICAgIltFUlJFVVJdIHB1YmxpYy9jc3MvdjU4Ny1pbWFnZXMtbm90ZXMtc3RhYmxlLmNzcyBpbnRyb3V2YWJsZS4iCiAgICApCgpzdGFydCA9ICIvKiA9PT0gTUhVUiBWNjUwIFNUWUxFIENFTlRFUiBTVEFSVCA9PT0gKi8iCmVuZCA9ICIvKiA9PT0gTUhVUiBWNjUwIFNUWUxFIENFTlRFUiBFTkQgPT09ICovIgoKYmxvY2sgPSAiIiIvKiA9PT0gTUhVUiBWNjUwIFNUWUxFIENFTlRFUiBTVEFSVCA9PT0gKi8KLyogQ2VudHJlIGxlIGdyb3VwZSBkZXMgY2FydGVzIGRlIHN0eWxlcyBzdXIgb3JkaW5hdGV1ci4KICAgTmUgbW9kaWZpZSBuaSBsYSBsYXJnZXVyLCBuaSBsYSBoYXV0ZXVyIGRlcyBjYXJ0ZXMuICovCkBtZWRpYSAobWluLXdpZHRoOiA3NjFweCkgewogIGh0bWwgYm9keSAjYXBwIC5zdHlsZUdyaWQsCiAgaHRtbCBib2R5IC5zdHlsZUdyaWQgewogICAgZGlzcGxheTogZmxleCAhaW1wb3J0YW50OwogICAgZmxleC13cmFwOiB3cmFwICFpbXBvcnRhbnQ7CiAgICBqdXN0aWZ5LWNvbnRlbnQ6IGNlbnRlciAhaW1wb3J0YW50OwogICAgd2lkdGg6IDEwMCUgIWltcG9ydGFudDsKICAgIG1hcmdpbi1sZWZ0OiBhdXRvICFpbXBvcnRhbnQ7CiAgICBtYXJnaW4tcmlnaHQ6IGF1dG8gIWltcG9ydGFudDsKICB9Cn0KLyogPT09IE1IVVIgVjY1MCBTVFlMRSBDRU5URVIgRU5EID09PSAqLyIiIgoKY3NzID0gY3NzX3BhdGgucmVhZF90ZXh0KGVuY29kaW5nPSJ1dGYtOCIpCgppZiBzdGFydCBpbiBjc3M6CiAgICBiZWZvcmUsIHJlbWFpbmRlciA9IGNzcy5zcGxpdChzdGFydCwgMSkKCiAgICBpZiBlbmQgbm90IGluIHJlbWFpbmRlcjoKICAgICAgICByYWlzZSBTeXN0ZW1FeGl0KAogICAgICAgICAgICAiW0VSUkVVUl0gQW5jaWVuIGJsb2MgVjY1MCBpbmNvbXBsZXQgZGFucyBsZSBDU1MuIgogICAgICAgICkKCiAgICBfLCBhZnRlciA9IHJlbWFpbmRlci5zcGxpdChlbmQsIDEpCiAgICBjc3MgPSBiZWZvcmUucnN0cmlwKCkgKyAiXG4iICsgYWZ0ZXIubHN0cmlwKCkKCmNzcyA9IGNzcy5yc3RyaXAoKSArICJcblxuIiArIGJsb2NrICsgIlxuIgpjc3NfcGF0aC53cml0ZV90ZXh0KGNzcywgZW5jb2Rpbmc9InV0Zi04IikKCmh0bWwgPSBpbmRleF9wYXRoLnJlYWRfdGV4dChlbmNvZGluZz0idXRmLTgiKQoKcGF0dGVybiA9IHJlLmNvbXBpbGUoCiAgICByJyg8bGlua1tePl0raHJlZj1bIlwnXWNzcy92NTg3LWltYWdlcy1ub3Rlcy1zdGFibGVcLmNzcyknCiAgICByJyg/Olw/dj1bXiJcJ10qKT8nCiAgICByJyhbIlwnXVtePl0qPiknLAogICAgZmxhZ3M9cmUuSSwKKQoKaHRtbCwgY291bnQgPSBwYXR0ZXJuLnN1Ym4oCiAgICByJ1wxP3Y9NjUwXDInLAogICAgaHRtbCwKICAgIGNvdW50PTEsCikKCmlmIGNvdW50ID09IDA6CiAgICBjbG9zaW5nID0gcmUuc2VhcmNoKHInPC9ib2R5XHMqPicsIGh0bWwsIGZsYWdzPXJlLkkpCgogICAgaWYgbm90IGNsb3Npbmc6CiAgICAgICAgcmFpc2UgU3lzdGVtRXhpdCgiW0VSUkVVUl0gQmFsaXNlIDwvYm9keT4gaW50cm91dmFibGUuIikKCiAgICB0YWcgPSAoCiAgICAgICAgJ1xuPCEtLSBNSFVSIFY2NTAgOiBjZW50cmFnZSBwZXJtYW5lbnQgZGVzIHN0eWxlcyAtLT5cbicKICAgICAgICAnPGxpbmsgcmVsPSJzdHlsZXNoZWV0IiAnCiAgICAgICAgJ2hyZWY9ImNzcy92NTg3LWltYWdlcy1ub3Rlcy1zdGFibGUuY3NzP3Y9NjUwIj5cbicKICAgICkKCiAgICBodG1sID0gKAogICAgICAgIGh0bWxbOmNsb3Npbmcuc3RhcnQoKV0KICAgICAgICArIHRhZwogICAgICAgICsgaHRtbFtjbG9zaW5nLnN0YXJ0KCk6XQogICAgKQoKaW5kZXhfcGF0aC53cml0ZV90ZXh0KGh0bWwsIGVuY29kaW5nPSJ1dGYtOCIpCgpyZXBvcnRfcGF0aC53cml0ZV90ZXh0KAogICAgIiIiTUhVUiBORVhVUyDigJQgVjY1MAoKQ09SUkVDVElPTiBGSU5BTEUgRFUgQ0VOVFJBR0UgREVTIFNUWUxFUwoKLSBMZSBjb3JyZWN0aWYgZXN0IGFqb3V0w6kgZGFucyB2NTg3LWltYWdlcy1ub3Rlcy1zdGFibGUuY3NzLgotIENlIGZpY2hpZXIgZXN0IGTDqWrDoCBjaGFyZ8OpIMOgIGxhIGZpbiBkdSBzaXRlLgotIExlIGdyb3VwZSAuc3R5bGVHcmlkIGVzdCBjZW50csOpIHN1ciBvcmRpbmF0ZXVyLgotIExhIGxhcmdldXIgZXQgbGEgaGF1dGV1ciBkZXMgY2FydGVzIG5lIGNoYW5nZW50IHBhcy4KLSBMZSBjb21wb3J0ZW1lbnQgbW9iaWxlIG5lIGNoYW5nZSBwYXMuCi0gTGEgdmVyc2lvbiBkdSBDU1MgcGFzc2Ugw6Agdj02NTAgcG91ciDDqXZpdGVyIGwnYW5jaWVuIGNhY2hlLgotIEF1Y3VuIHJlbXBsYWNlbWVudCBkZSBsJ2FuY2llbm5lIHLDqGdsZSAuc3R5bGVHcmlkIG4nZXN0IG7DqWNlc3NhaXJlLgoiIiIsCiAgICBlbmNvZGluZz0idXRmLTgiLAopCgpwcmludCgiW09LXSBWNjUwIGluc3RhbGzDqSBkYW5zIGxlIENTUyBkw6lqw6AgY2hhcmfDqSBwYXIgbGUgc2l0ZS4iKQ==' | base64 --decode > /tmp/apply_v650.py
+          printf '%s' 'ZnJvbSBwYXRobGliIGltcG9ydCBQYXRoCgppbmRleCA9IFBhdGgoInB1YmxpYy9pbmRleC5odG1sIikucmVhZF90ZXh0KGVuY29kaW5nPSJ1dGYtOCIpCmNzcyA9IFBhdGgoCiAgICAicHVibGljL2Nzcy92NTg3LWltYWdlcy1ub3Rlcy1zdGFibGUuY3NzIgopLnJlYWRfdGV4dChlbmNvZGluZz0idXRmLTgiKQoKY2hlY2tzID0gWwogICAgIi8qID09PSBNSFVSIFY2NTAgU1RZTEUgQ0VOVEVSIFNUQVJUID09PSAqLyIsCiAgICAiaHRtbCBib2R5ICNhcHAgLnN0eWxlR3JpZCIsCiAgICAianVzdGlmeS1jb250ZW50OiBjZW50ZXIgIWltcG9ydGFudDsiLAogICAgIndpZHRoOiAxMDAlICFpbXBvcnRhbnQ7IiwKICAgICJtYXJnaW4tbGVmdDogYXV0byAhaW1wb3J0YW50OyIsCiAgICAibWFyZ2luLXJpZ2h0OiBhdXRvICFpbXBvcnRhbnQ7IiwKXQoKZm9yIHRva2VuIGluIGNoZWNrczoKICAgIGlmIGNzcy5jb3VudCh0b2tlbikgIT0gMToKICAgICAgICByYWlzZSBTeXN0ZW1FeGl0KAogICAgICAgICAgICBmIltFUlJFVVJdIMOJbMOpbWVudCBWNjUwIGFic2VudCBvdSBkdXBsaXF1w6kgOiB7dG9rZW59IgogICAgICAgICkKCmlmIGluZGV4LmNvdW50KAogICAgImNzcy92NTg3LWltYWdlcy1ub3Rlcy1zdGFibGUuY3NzP3Y9NjUwIgopICE9IDE6CiAgICByYWlzZSBTeXN0ZW1FeGl0KAogICAgICAgICJbRVJSRVVSXSBMZSBDU1MgVjY1MCBuJ2VzdCBwYXMgY2hhcmfDqSBleGFjdGVtZW50IHVuZSBmb2lzLiIKICAgICkKCmJsb2NrID0gY3NzLnNwbGl0KAogICAgIi8qID09PSBNSFVSIFY2NTAgU1RZTEUgQ0VOVEVSIFNUQVJUID09PSAqLyIsCiAgICAxLAopWzFdLnNwbGl0KAogICAgIi8qID09PSBNSFVSIFY2NTAgU1RZTEUgQ0VOVEVSIEVORCA9PT0gKi8iLAogICAgMSwKKVswXQoKZm9yIGZvcmJpZGRlbiBpbiBbCiAgICAiLnN0eWxlQ2FyZCIsCiAgICAiaGVpZ2h0OiIsCiAgICAibWF4LXdpZHRoOiIsCiAgICAidHJhbnNmb3JtOiIsCiAgICAic2NhbGUoIiwKXToKICAgIGlmIGZvcmJpZGRlbiBpbiBibG9jazoKICAgICAgICByYWlzZSBTeXN0ZW1FeGl0KAogICAgICAgICAgICBmIltFUlJFVVJdIFY2NTAgbW9kaWZpZSBsZXMgY2FydGVzIDoge2ZvcmJpZGRlbn0iCiAgICAgICAgKQoKcHJpbnQoIltPS10gVsOpcmlmaWNhdGlvbiBWNjUwIHLDqXVzc2llLiIp' | base64 --decode > /tmp/verify_v650.py
+          
+          for tentative in 1 2 3 4 5; do
+            echo "===== Tentative ${tentative}/5 ====="
+          
+            git fetch origin main
+            git reset --hard origin/main
+          
+            python3 /tmp/apply_v650.py
+            python3 /tmp/verify_v650.py
+          
+            git rm -f --ignore-unmatch     .github/workflows/mhur-v646-auto.yml     .github/workflows/mhur-v648-auto.yml     .github/workflows/mhur-v649-auto.yml
+          
+            git add     public/index.html     public/css/v587-images-notes-stable.css     RAPPORT_V650_STYLES_CENTRES_FINAL.txt
+          
+            if git diff --cached --quiet; then
+              echo "[INFO] V650 est déjà appliqué."
+              exit 0
+            fi
+          
+            git commit -m "fix: centrer définitivement les styles V650"
+          
+            if git pull --rebase origin main && git push origin HEAD:main; then
+              echo "[OK] V650 envoyé sur main."
+              exit 0
+            fi
+          
+            echo "[ATTENTE] main a changé, nouvelle tentative."
+            sleep $((tentative * 3))
+          done
+          
+          echo "[ERREUR] Impossible d'envoyer V650."
+          exit 1
