@@ -1,0 +1,238 @@
+name: MHUR V649 - Styles centrés définitivement
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/mhur-v649-auto.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: mhur-v649-style-center-final
+  cancel-in-progress: false
+
+jobs:
+  appliquer:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Récupérer le dépôt
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Centrer définitivement les styles
+        shell: bash
+        run: |
+          set -euo pipefail
+          
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          
+          cat > /tmp/appliquer_v649.py <<'PY'
+          from pathlib import Path
+          import base64
+          import re
+          
+          FINAL_STYLE=base64.b64decode(
+              "PCEtLSBNSFVSIFY2NDkgOiBjZW50cmFnZSBmaW5hbCBkZXMgY2hvaXggZGUgc3R5bGVzIC0tPgo8c3R5bGUgaWQ9Im1odXItdjY0OS1zdHlsZS1jZW50ZXItZmluYWwiPgpAbWVkaWEgKG1pbi13aWR0aDogNzYxcHgpIHsKICBodG1sIGJvZHkgI2FwcCAuc3R5bGVHcmlkLAogIGh0bWwgYm9keSAuc3R5bGVHcmlkIHsKICAgIGRpc3BsYXk6IGZsZXggIWltcG9ydGFudDsKICAgIGZsZXgtd3JhcDogd3JhcCAhaW1wb3J0YW50OwogICAganVzdGlmeS1jb250ZW50OiBjZW50ZXIgIWltcG9ydGFudDsKICAgIHdpZHRoOiAxMDAlICFpbXBvcnRhbnQ7CiAgICBtYXJnaW4tbGVmdDogYXV0byAhaW1wb3J0YW50OwogICAgbWFyZ2luLXJpZ2h0OiBhdXRvICFpbXBvcnRhbnQ7CiAgfQp9Cjwvc3R5bGU+"
+          ).decode("utf-8")
+          
+          root = Path(".")
+          index_path = root / "public" / "index.html"
+          report_path = root / "RAPPORT_V649_STYLES_CENTRES_FINAL.txt"
+          
+          if not index_path.is_file():
+              raise SystemExit("[ERREUR] public/index.html introuvable.")
+          
+          html = index_path.read_text(encoding="utf-8")
+          
+          style_grid_pattern = re.compile(
+              r'(?P<prefix>\.styleGrid\s*\{)'
+              r'(?P<body>[^{}]*)'
+              r'\}',
+              flags=re.I,
+          )
+          
+          state = {"replaced": False}
+          
+          def patch_style_grid(match):
+              body = match.group("body")
+          
+              if state["replaced"] or not re.search(
+                  r'display\s*:\s*flex',
+                  body,
+                  flags=re.I,
+              ):
+                  return match.group(0)
+          
+              body = re.sub(
+                  r'justify-content\s*:\s*[^;}]+;?',
+                  '',
+                  body,
+                  flags=re.I,
+              )
+          
+              body = re.sub(
+                  r'width\s*:\s*[^;}]+;?',
+                  '',
+                  body,
+                  flags=re.I,
+              )
+          
+              body = body.rstrip().rstrip(';')
+              state["replaced"] = True
+          
+              return (
+                  match.group("prefix")
+                  + body
+                  + ';justify-content:center;width:100%'
+                  + '}'
+              )
+          
+          html = style_grid_pattern.sub(patch_style_grid, html)
+          
+          if not state["replaced"]:
+              raise SystemExit(
+                  "[ERREUR] La règle flex principale .styleGrid est introuvable."
+              )
+          
+          html = re.sub(
+              r'\s*<!-- MHUR V646 FIX : styles centrés PC -->'
+              r'.*?<!-- /MHUR V646 FIX -->\s*',
+              '\n',
+              html,
+              flags=re.I | re.S,
+          )
+          
+          html = re.sub(
+              r'\s*<link[^>]+v648-style-grid-center\.css[^>]*>\s*',
+              '\n',
+              html,
+              flags=re.I,
+          )
+          
+          html = re.sub(
+              r'\s*<style[^>]+id=["\']mhur-v649-style-center-final["\'][^>]*>'
+              r'.*?</style>\s*',
+              '\n',
+              html,
+              flags=re.I | re.S,
+          )
+          
+          body_closes = list(re.finditer(r'</body\s*>', html, flags=re.I))
+          
+          if not body_closes:
+              raise SystemExit("[ERREUR] Balise </body> introuvable.")
+          
+          position = body_closes[-1].start()
+          html = html[:position] + "\n" + FINAL_STYLE + "\n" + html[position:]
+          
+          index_path.write_text(html, encoding="utf-8")
+          
+          for obsolete in [
+              root / "public" / "css" / "v648-style-grid-center.css",
+              root / "RAPPORT_V648_STYLES_CENTRES.txt",
+          ]:
+              if obsolete.is_file():
+                  obsolete.unlink()
+          
+          report_path.write_text(
+              """MHUR NEXUS — V649
+          
+          CORRECTION FINALE DU CHOIX DES STYLES
+          
+          - La règle principale .styleGrid est corrigée directement.
+          - Une dernière règle prioritaire est ajoutée juste avant </body>.
+          - Les cartes de styles sont centrées horizontalement sur ordinateur.
+          - La largeur et la hauteur des cartes ne sont pas modifiées.
+          - .styleCard conserve sa largeur actuelle de 360 px.
+          - Aucun changement sur mobile.
+          - Aucun changement des portraits, rôles, badges ou textes.
+          - Les anciens essais V646/V648 sont retirés.
+          """,
+              encoding="utf-8",
+          )
+          
+          print("[OK] V649 appliqué : styles centrés définitivement.")
+          PY
+          
+          cat > /tmp/verifier_v649.py <<'PY'
+          from pathlib import Path
+          import re
+          
+          index = Path("public/index.html").read_text(encoding="utf-8")
+          
+          if index.count('id="mhur-v649-style-center-final"') != 1:
+              raise SystemExit(
+                  "[ERREUR] La règle finale V649 est absente ou dupliquée."
+              )
+          
+          required = [
+              "justify-content:center;width:100%",
+              "justify-content: center !important;",
+              "width: 100% !important;",
+              "margin-left: auto !important;",
+              "margin-right: auto !important;",
+          ]
+          
+          for token in required:
+              if token not in index:
+                  raise SystemExit(
+                      f"[ERREUR] Centrage V649 incomplet : {token}"
+                  )
+          
+          if not re.search(
+              r'\.styleCard\s*\{\s*width\s*:\s*360px\s*;'
+              r'\s*text-align\s*:\s*center\s*\}',
+              index,
+              flags=re.I,
+          ):
+              raise SystemExit(
+                  "[ERREUR] La largeur originale de 360 px a été modifiée."
+              )
+          
+          if "v648-style-grid-center.css" in index:
+              raise SystemExit(
+                  "[ERREUR] Une ancienne référence V648 est encore chargée."
+              )
+          
+          print("[OK] Vérification V649 réussie.")
+          PY
+          
+          for tentative in 1 2 3 4 5; do
+            echo "===== Tentative ${tentative}/5 ====="
+          
+            git fetch origin main
+            git reset --hard origin/main
+          
+            python3 /tmp/appliquer_v649.py
+            python3 /tmp/verifier_v649.py
+          
+            git rm -f --ignore-unmatch     .github/workflows/mhur-v646-auto.yml     .github/workflows/mhur-v648-auto.yml
+          
+            git add -A
+          
+            if git diff --cached --quiet; then
+              echo "[INFO] V649 est déjà appliqué."
+              exit 0
+            fi
+          
+            git commit -m "fix: centrer définitivement les cartes de styles V649"
+          
+            if git pull --rebase origin main && git push origin HEAD:main; then
+              echo "[OK] V649 envoyé sur main."
+              exit 0
+            fi
+          
+            echo "[ATTENTE] main a changé, nouvelle tentative."
+            sleep $((tentative * 3))
+          done
+          
+          echo "[ERREUR] Impossible d'envoyer V649."
+          exit 1
