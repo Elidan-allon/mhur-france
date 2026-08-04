@@ -1,0 +1,10 @@
+/* MHUR Nexus — V644
+   Centre les choix de styles uniquement sur ordinateur.
+   Aucune dimension de carte n'est modifiée. */
+
+@media (min-width:761px){
+  .styleGrid{
+    justify-content:center!important;
+    width:100%!important;
+  }
+}

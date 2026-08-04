@@ -188,6 +188,9 @@
 
 <!-- V643 : notifications stables CSS. -->
 <link rel="stylesheet" href="css/v643-notifications-stable.css?v=643">
+
+<!-- V644 : styles centrés sur ordinateur. -->
+<link rel="stylesheet" href="css/v644-alter-style-center.css?v=644">
 </head>
 <body>
 
@@ -644,7 +647,8 @@ function tables(ts){
     const safe=table&&typeof table==='object'?table:{};
     const title=mhurV546Cell(safe.title);
     const normalized=title.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
-    const priority=/effets? de montee|level[- ]?up effects?/.test(normalized)?0:1;
+    /* MHUR_V644_LEVEL_PRIORITY */
+    const priority=/(?:effets?\s*(?:de\s*)?(?:montee|niveau)|(?:montee|progression)\s+(?:de\s+)?l?\s*alter|level\s*[- ]?\s*up\s+effects?|levelup\s+effects?|upgrade\s+effects?)/.test(normalized)?0:1;
     return {table:safe,index,title,priority};
   }).sort((a,b)=>a.priority-b.priority||a.index-b.index);
   return `<div class="tables">${ordered.map(entry=>{
@@ -5073,5 +5077,8 @@ window.__V227_COSTUME_PHOTO_MAP = {"midoriya": {"Tenue de Héros": {"Original": 
 
 <!-- V643 : notifications stables JS. -->
 <script src="js/v643-notifications-stable.js?v=643"></script>
+
+<!-- V644 : ordre des effets de montée. -->
+<script src="js/v644-alter-style-center.js?v=644"></script>
 </body>
 </html>

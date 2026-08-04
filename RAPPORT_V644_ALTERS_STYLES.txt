@@ -1,0 +1,16 @@
+MHUR NEXUS — V644
+
+ALTERS
+- Les tableaux Effets de montée sont triés en premier dès la génération.
+- Une vérification après chaque rendu empêche une ancienne couche de les
+  replacer plus bas.
+- Fonctionne en français et en anglais.
+- Reconnaît aussi Effet de niveau, Level Up Effects et Upgrade Effects.
+- Le bouton et son tableau restent ensemble.
+- Aucun tableau n'est supprimé ou ouvert automatiquement.
+
+CHOIX DES STYLES SUR ORDINATEUR
+- La rangée des styles est centrée horizontalement.
+- Les cartes conservent exactement leurs dimensions actuelles.
+- Aucun changement sur mobile.
+- Aucun changement des images, badges, rôles ou boutons.
