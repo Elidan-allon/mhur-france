@@ -1,0 +1,57 @@
+/* MHUR Nexus — V642
+   Optimisation générale mobile + ordinateur, sans changement de design. */
+
+.costumeGalleryGroup,
+.detailSectionV296,
+.gamePanel,
+.buildResult,
+.communityBuildCard,
+.mhurTierRow,
+.tuningBlock,
+.pageFrame{
+  content-visibility:auto;
+  contain-intrinsic-size:auto 680px;
+}
+
+.card,
+.styleCard,
+.costumeTile,
+.tuningCard,
+.tuningOption,
+.detailCardV296,
+.releaseCardV296,
+.gachaCardV296,
+.eventCardV296,
+.bonusCardV296,
+.discountCardV296{
+  contain:layout paint style;
+}
+
+.mhurPerfPausedV642{
+  animation-play-state:paused!important;
+}
+
+.countdownV296,
+.maintenanceCountdownV520{
+  contain:layout paint;
+}
+
+.countdownV296 b[data-u],
+.maintenanceCountdownV520 b[data-maintenance-u]{
+  display:inline-block;
+  min-width:2ch;
+  font-variant-numeric:tabular-nums;
+  font-feature-settings:"tnum" 1;
+  animation:none!important;
+  transition:none!important;
+  transform:none!important;
+  will-change:auto!important;
+}
+
+.countdownV296 .tickV334,
+.maintenanceCountdownV520 .tickV334{
+  animation:none!important;
+  transition:none!important;
+  transform:none!important;
+  filter:none!important;
+}

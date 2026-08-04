@@ -136,22 +136,6 @@
 
 <!-- V592 : onglets Notes visibles et flèche Mods SVG. -->
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<link rel="preload" as="image" href="/assets/midoriya/midoriya_assault/alpha.webp?v=609" fetchpriority="high">
-<link rel="preload" as="image" href="/assets/midoriya/midoriya_attack/alpha.webp?v=609" fetchpriority="high">
 <link rel="preload" as="image" href="/assets/midoriya_ofa/alpha.webp?v=609" fetchpriority="high">
 
 
@@ -198,6 +182,9 @@
 <!-- V639 : rendu final unique avant le premier affichage. -->
 <link rel="preload" href="css/v639-direct-final.css?v=639" as="style" fetchpriority="high">
 <link rel="stylesheet" href="css/v639-direct-final.css?v=639">
+
+<!-- V642 : performances globales. -->
+<link rel="stylesheet" href="css/v642-global-performance.css?v=642">
 </head>
 <body>
 
@@ -274,7 +261,7 @@ const IMG={
 };
 const txt={fr:{home:'Accueil',characters:'Personnages',tunings:'T.U.N.I.N.G',costumes:'Costumes',builds:'Builds communauté',heroes:'HÉROS',villains:'SUPER-VILAINS',back:'Retour',choose:'Clique pour choisir le style.',search:'Rechercher un personnage, rôle ou style...',costumeChoose:'Choisis un personnage pour ses costumes.',buildChoose:'Choisis un personnage pour voir les builds de la communauté.',costumeTag:'COSTUMES',buildTag:'BUILDS COMMUNAUTÉ',charactersTag:'PERSONNAGES',characterNotice:'Clique sur un personnage pour choisir son style.',tuningNotice:'Clique sur un personnage pour voir ses compétences T.U.N.I.N.G.',tuningChoose:'Clique pour choisir le T.U.N.I.N.G.',chooseCharacterTitle:'Choisis un personnage',costumesIntro:'Choisis d’abord le personnage, puis les costumes apparaîtront par famille.',recommendedBuildsTitle:'Builds communauté',communityBuildsTitle:'Builds de la communauté',communityBuildsIntro:'Choisis un personnage. Les builds sont séparés par personnage et par style, puis classés selon le nombre de cœurs.',eachStyleRanking:'Chaque style possède son propre classement.',createFullBuild:'Créer un build complet',characterNotFound:'Personnage introuvable.'},en:{home:'Home',characters:'Characters',tunings:'T.U.N.I.N.G',costumes:'Costumes',builds:'Community Builds',heroes:'HEROES',villains:'SUPER-VILLAINS',back:'Back',choose:'Click to choose style.',search:'Search Midoriya, OFA, attack, assault...',costumeChoose:'Choose a character for costumes.',buildChoose:'Choose a character to view community builds.',costumeTag:'COSTUMES',buildTag:'COMMUNITY BUILDS',charactersTag:'CHARACTERS',characterNotice:'Click a character to choose a style.',tuningNotice:'Click a character to view their T.U.N.I.N.G. skills.',tuningChoose:'Click to choose the T.U.N.I.N.G.',chooseCharacterTitle:'Choose a character',costumesIntro:'Choose a character first, then costumes will appear by family.',recommendedBuildsTitle:'Community Builds',communityBuildsTitle:'Community Builds',communityBuildsIntro:'Choose a character. Builds are separated by character and style, then ranked by likes.',eachStyleRanking:'Each style has its own ranking.',createFullBuild:'Create a full build',characterNotFound:'Character not found.'}};
 const roles={assault:{fr:'Assaut',en:'Assault',cls:'assault',img:IMG.roleAssault},strike:{fr:'Attaque',en:'Strike',cls:'attack',img:IMG.roleAttack},speed:{fr:'Vitesse',en:'Rapid',cls:'rapid',img:IMG.roleRapid},technical:{fr:'Technique',en:'Technical',cls:'technical',img:IMG.roleTechnical},support:{fr:'Soutien',en:'Support',cls:'support',img:IMG.roleSupport}};
-function tr(k){return txt[lang][k]||k}function label(v){return typeof v==='string'?v:(v[lang]||v.fr)}function rootAsset(src){const value=String(src||'');if(!value||/^(?:https?:|data:|blob:|\/)/i.test(value))return value;return '/'+value.replace(/^(?:\.{1,2}\/)+/,'')}function asset(src,alt=''){return `<img src="${rootAsset(src)}" alt="${alt}">`}function sideBadge(side){return `<span class="badge ${side==='villain'?'villain':'hero'}">${side==='villain'?tr('villains'):tr('heroes')}</span>`}function roleBadge(r){const x=roles[r];return `<span class="badge ${x.cls}"><img class="roleIcon" src="${rootAsset(x.img)}" alt="${label(x)}">${label(x)}</span>`}function roleOnly(r){const x=roles[r];return `<img src="${rootAsset(x.img)}" alt="${label(x)}">`}
+function tr(k){return txt[lang][k]||k}function label(v){return typeof v==='string'?v:(v[lang]||v.fr)}function rootAsset(src){const value=String(src||'');if(!value||/^(?:https?:|data:|blob:|\/)/i.test(value))return value;return '/'+value.replace(/^(?:\.{1,2}\/)+/,'')}function asset(src,alt=''){return `<img src="${rootAsset(src)}" alt="${alt}" loading="lazy" decoding="async">`}function sideBadge(side){return `<span class="badge ${side==='villain'?'villain':'hero'}">${side==='villain'?tr('villains'):tr('heroes')}</span>`}function roleBadge(r){const x=roles[r];return `<span class="badge ${x.cls}"><img class="roleIcon" src="${rootAsset(x.img)}" alt="${label(x)}">${label(x)}</span>`}function roleOnly(r){const x=roles[r];return `<img src="${rootAsset(x.img)}" alt="${label(x)}">`}
 const alphaBase=[['Lv.1','58','x6','x1','1s'],['Lv.2','60','x6','x1','1s'],['Lv.3','62','x6','x1','1s'],['Lv.4','66','x7','x1','1s'],['Lv.5','68','x7','x1','1s'],['Lv.6','70','x7','x1','1s'],['Lv.7','72','x7','x1','1s'],['Lv.8','74','x7','x1','1s'],['Lv.9','80','x8','x1','1s']];
 const alphaFull=[['Lv.1','100'],['Lv.2','105'],['Lv.3','110'],['Lv.4','115'],['Lv.5','120'],['Lv.6','125'],['Lv.7','130'],['Lv.8','135'],['Lv.9','140']];
 const alphaEff=[['Lv.2','Dégâts +'],['Lv.3','Dégâts +'],['Lv.4','Dégâts + • Munitions + • Taille +'],['Lv.5','Dégâts +'],['Lv.6','Dégâts +'],['Lv.7','Dégâts +'],['Lv.8','Dégâts +'],['Lv.9','Dégâts + • Munitions + • Taille +']];
@@ -2976,7 +2963,7 @@ window.__MHUR_V542_STABLE_RENDER__=true;
 </script>
 <!-- V312 : les données et le véritable accueil sont chargés avant le tout premier rendu. -->
 <script src="data/home_data.js?v=594"></script>
-<script src="js/home.js?v=559"></script>
+<script src="js/home.js?v=642"></script>
 <script src="data/local_assets_index.js?v=1785789525211026602"></script>
 <script src="data/mhur_database_assets.js?v=29000"></script>
 <script src="data/season18_sync.js?v=29000"></script>
@@ -3636,10 +3623,35 @@ if(typeof page !== 'undefined' && page === 'costumes' && typeof render === 'func
     out.forEach(x => arr.push(x));
     return arr;
   }
+  const v642CostumeArrayState = new WeakMap();
   function patchGroupArray(arr, forcedChar){
     if(!Array.isArray(arr)) return arr;
+
+    const beforeSignature = arr.map(group => {
+      const variants = Array.isArray(group && group.variants)
+        ? group.variants
+        : [];
+      return String(group && (group.group || group.name) || '')
+        + ':' + variants.length;
+    }).join('|');
+
+    if(v642CostumeArrayState.get(arr) === beforeSignature){
+      return arr;
+    }
+
     arr.forEach(group => patchGroup(group, forcedChar));
-    return dedupeGroups(arr, forcedChar);
+    dedupeGroups(arr, forcedChar);
+
+    const afterSignature = arr.map(group => {
+      const variants = Array.isArray(group && group.variants)
+        ? group.variants
+        : [];
+      return String(group && (group.group || group.name) || '')
+        + ':' + variants.length;
+    }).join('|');
+
+    v642CostumeArrayState.set(arr, afterSignature);
+    return arr;
   }
   function patchFlatCostume(charId, ct){
     if(!ct || typeof ct !== 'object') return ct;
@@ -3665,14 +3677,24 @@ if(typeof page !== 'undefined' && page === 'costumes' && typeof render === 'func
     if(window.V153_COSTUMES && typeof window.V153_COSTUMES === 'object'){
       Object.keys(window.V153_COSTUMES).forEach(ch => patchGroupArray(window.V153_COSTUMES[ch], ch));
     }
-    Object.keys(window).forEach(name => {
-      try {
-        const val = window[name];
-        if(Array.isArray(val) && val.length && val.every(x => x && typeof x === 'object' && Array.isArray(x.variants))){
-          patchGroupArray(val);
-        }
-      } catch(e){}
-    });
+    Object.keys(window)
+      .filter(name => /_COSTUMES$/i.test(name))
+      .forEach(name => {
+        try {
+          const val = window[name];
+          if(
+            Array.isArray(val) &&
+            val.length &&
+            val.every(
+              x => x &&
+              typeof x === 'object' &&
+              Array.isArray(x.variants)
+            )
+          ){
+            patchGroupArray(val);
+          }
+        } catch(e){}
+      });
   }
   if(typeof window.allCostumesForCharId === 'function'){
     const prevAll = window.allCostumesForCharId;
@@ -4555,7 +4577,7 @@ window.__V227_COSTUME_PHOTO_MAP = {"midoriya": {"Tenue de Héros": {"Original": 
     const rightCond=c.condition&&c.condition!=='Tous'?c.condition:'';
     const icon=(color,cond='')=>typeof slotIconPath==='function'?slotIconPath(color,cond):'';
     return `<button class="costumeTile ${selectedCostume===c.id?'selected':''}" data-costume-id="${c.id}" data-sp-left="${c.spLeft||''}" data-sp-right="${c.spRight||''}" data-signature="${signature(c)}" onclick="showCostumeDetail('${c.id}')">
-      <img src="${c.img}" alt="${c.variant}" loading="eager" decoding="async" fetchpriority="high">
+      <img src="${c.img}" alt="${c.variant}" loading="lazy" decoding="async">
       <div class="costumeTileRarity">${c.rarity||'C'}</div>
       <div class="costumeTileStars">${stars}</div>
       <div class="costumeTileBadge left" title="SP gauche : ${slotLabelLong(c.spLeft)}"><img class="costumeTileBadgeIcon" src="${icon(c.spLeft)}" alt=""></div>
@@ -5042,5 +5064,8 @@ window.__V227_COSTUME_PHOTO_MAP = {"midoriya": {"Tenue de Héros": {"Original": 
 
 <!-- V639 : images prioritaires sans bloquer la navigation. -->
 <script src="js/v639-direct-final.js?v=639"></script>
+
+<!-- V642 : images et animations hors écran. -->
+<script src="js/v642-global-performance.js?v=642"></script>
 </body>
 </html>

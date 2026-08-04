@@ -1,0 +1,23 @@
+MHUR NEXUS — V642
+
+CORRECTION GLOBALE DES SACCADES
+
+CAUSES TRAITÉES
+- Recalcul forcé du compteur toutes les secondes.
+- Scan de toutes les variables window à chaque rendu.
+- Retraitement répété de toutes les collections de costumes.
+- Toutes les images de costumes chargées en eager et priorité élevée.
+- Animations continuant hors écran ou dans un onglet caché.
+- Dessin permanent de longues sections très éloignées de l'écran.
+
+CORRECTIONS
+- Timer léger et suspendu lorsque l'onglet est caché.
+- Suppression des lectures offsetWidth du compteur.
+- Mémoïsation des collections de costumes.
+- Scan limité aux variables terminant par _COSTUMES.
+- Images des cartes en lazy/async.
+- Priorité élevée uniquement pour les images proches de l'écran.
+- Animations hors écran mises en pause automatiquement.
+- content-visibility sur les grosses sections hors écran.
+- Isolation de la mise en page des cartes.
+- Aucun changement du design ou du fonctionnement des pages.

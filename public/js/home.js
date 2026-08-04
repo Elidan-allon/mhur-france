@@ -255,11 +255,11 @@ function refreshMaintenanceV520(){
     if(copy)copy.textContent=active?ht('Les serveurs de My Hero Ultra Rumble sont temporairement indisponibles. Le site MHUR Nexus reste accessible.','My Hero Ultra Rumble servers are temporarily unavailable. MHUR Nexus remains accessible.'):ht('Une interruption des serveurs de My Hero Ultra Rumble est programmée.','A My Hero Ultra Rumble server interruption is scheduled.');
     if(labelNode)labelNode.textContent=active?ht('RETOUR ESTIMÉ DANS','ESTIMATED RETURN IN'):ht('DÉBUT PRÉVU DANS','EXPECTED TO START IN');
     const values=[Math.floor(n/86400000),Math.floor(n/3600000)%24,Math.floor(n/60000)%60,Math.floor(n/1000)%60];
-    ['d','h','m','s'].forEach((key,i)=>{const node=panel.querySelector(`[data-maintenance-u="${key}"]`);if(node){const next=String(values[i]).padStart(2,'0');if(node.textContent!==next){node.textContent=next;node.classList.remove('tickV334');void node.offsetWidth;node.classList.add('tickV334')}}});
+    ['d','h','m','s'].forEach((key,i)=>{const node=panel.querySelector(`[data-maintenance-u="${key}"]`);if(node){const next=String(values[i]).padStart(2,'0');if(node.textContent!==next){node.textContent=next}}});
   });
 }
 function refresh(){
-  document.querySelectorAll('[data-home-count]').forEach(el=>{const n=new Date(el.dataset.homeCount)-Date.now();el.classList.toggle('urgent',n>0&&n<=86400000);el.classList.toggle('ended',n<=0);if(n<=0){el.innerHTML=`<div class="seasonEndedV334">${ht('NOUVELLE SAISON DISPONIBLE !','NEW SEASON AVAILABLE!')}<small>${ht('Mise à jour en attente…','Waiting for update…')}</small></div>`;return;}const v=[Math.floor(n/86400000),Math.floor(n/3600000)%24,Math.floor(n/60000)%60,Math.floor(n/1000)%60];['d','h','m','s'].forEach((k,i)=>{const q=el.querySelector(`[data-u="${k}"]`);if(q){const next=String(v[i]).padStart(2,'0');if(q.textContent!==next){q.textContent=next;q.classList.remove('tickV334');void q.offsetWidth;q.classList.add('tickV334')}}})});
+  document.querySelectorAll('[data-home-count]').forEach(el=>{const n=new Date(el.dataset.homeCount)-Date.now();el.classList.toggle('urgent',n>0&&n<=86400000);el.classList.toggle('ended',n<=0);if(n<=0){el.innerHTML=`<div class="seasonEndedV334">${ht('NOUVELLE SAISON DISPONIBLE !','NEW SEASON AVAILABLE!')}<small>${ht('Mise à jour en attente…','Waiting for update…')}</small></div>`;return;}const v=[Math.floor(n/86400000),Math.floor(n/3600000)%24,Math.floor(n/60000)%60,Math.floor(n/1000)%60];['d','h','m','s'].forEach((k,i)=>{const q=el.querySelector(`[data-u="${k}"]`);if(q){const next=String(v[i]).padStart(2,'0');if(q.textContent!==next){q.textContent=next}}})});
   refreshMaintenanceV520();
 }
 
@@ -314,6 +314,46 @@ window.openPatchNoteV296=function(i){
 };
 
 window.home=function(){return window.renderHomeDashboard()};
-window.MHUR_HOME_REFRESH=refresh;setInterval(refresh,1000);
+/* MHUR_V642_HOME_TIMER
+   Un seul timer léger, arrêté dans les onglets cachés. */
+window.MHUR_HOME_REFRESH=refresh;
+let mhurHomeTimerV642=0;
+
+function scheduleHomeRefreshV642(){
+  clearTimeout(mhurHomeTimerV642);
+
+  const hasCounter=Boolean(
+    document.querySelector(
+      '[data-home-count],[data-maintenance-panel]'
+    )
+  );
+
+  const delay=hasCounter
+    ? Math.max(180,1000-(Date.now()%1000)+24)
+    : 1600;
+
+  mhurHomeTimerV642=setTimeout(()=>{
+    if(
+      !document.hidden&&
+      document.querySelector(
+        '[data-home-count],[data-maintenance-panel]'
+      )
+    ){
+      requestAnimationFrame(refresh);
+    }
+
+    scheduleHomeRefreshV642();
+  },delay);
+}
+
+refresh();
+scheduleHomeRefreshV642();
+
+document.addEventListener('visibilitychange',()=>{
+  if(!document.hidden){
+    refresh();
+    scheduleHomeRefreshV642();
+  }
+});
 document.addEventListener('keydown',e=>{if(e.key==='Escape')document.querySelectorAll('.modalV296.open').forEach(m=>closeHomeModalV296(m.id))});
 })();
