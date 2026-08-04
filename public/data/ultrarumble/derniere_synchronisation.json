@@ -1,9 +1,9 @@
 {
   "status": "mis_à_jour",
-  "updated_at": "2026-08-04T06:10:31.639944+00:00",
+  "updated_at": "2026-08-04T09:15:06.218550+00:00",
   "changed_urls": [
     "https://ultrarumble.com/"
   ],
-  "backup": "sauvegardes/sync_auto_20260804_060658",
+  "backup": "sauvegardes/sync_auto_20260804_091150",
   "message": "Le site local a été synchronisé avec UltraRumble."
 }
