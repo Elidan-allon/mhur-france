@@ -1,0 +1,167 @@
+name: MHUR V646 - Styles réellement centrés
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/mhur-v646-auto.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: mhur-v646-style-center
+  cancel-in-progress: false
+
+jobs:
+  appliquer:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Récupérer le dépôt
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Centrer les cartes de styles
+        shell: bash
+        run: |
+          set -euo pipefail
+          
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          
+          cat > /tmp/appliquer_v646.py <<'PY'
+          from pathlib import Path
+          import re
+          
+          root = Path(".")
+          index_path = root / "public" / "index.html"
+          report_path = root / "RAPPORT_V646_STYLES_CENTRES.txt"
+          
+          if not index_path.is_file():
+              raise SystemExit("[ERREUR] public/index.html introuvable.")
+          
+          html = index_path.read_text(encoding="utf-8")
+          
+          # Règle historique actuelle.
+          old_rule = (
+              ".styleGrid{display:flex;gap:26px;flex-wrap:wrap}"
+          )
+          
+          # Nouvelle règle : mêmes cartes, même largeur, seulement centrées.
+          new_rule = (
+              ".styleGrid{display:flex;gap:26px;flex-wrap:wrap;"
+              "justify-content:center;width:100%}"
+          )
+          
+          if new_rule not in html:
+              if old_rule not in html:
+                  raise SystemExit(
+                      "[ERREUR] La règle principale .styleGrid est introuvable."
+                  )
+          
+              html = html.replace(old_rule, new_rule, 1)
+          
+          # Retire les anciennes références V644 éventuelles :
+          # le centrage est désormais intégré dans la règle principale.
+          html = re.sub(
+              r'\s*<!-- V644 : styles centrés sur ordinateur\. -->\s*'
+              r'<link[^>]+v644-alter-style-center\.css[^>]*>\s*',
+              "\n",
+              html,
+              flags=re.I,
+          )
+          
+          html = re.sub(
+              r'\s*<link[^>]+v644-alter-style-center\.css[^>]*>\s*',
+              "\n",
+              html,
+              flags=re.I,
+          )
+          
+          index_path.write_text(html, encoding="utf-8")
+          
+          report_path.write_text(
+              """MHUR NEXUS — V646
+          
+          PROBLÈME
+          Le fichier v644-alter-style-center.css existait, mais index.html ne le
+          chargeait pas. La grille .styleGrid restait donc alignée à gauche.
+          
+          CORRECTION
+          - Centrage ajouté directement dans la règle principale .styleGrid.
+          - justify-content:center.
+          - width:100%.
+          - Aucun changement de largeur ou de hauteur des cartes.
+          - .styleCard reste à 360px sur ordinateur.
+          - Aucun changement des images, rôles, badges ou textes.
+          - Sur mobile, les cartes gardent leur largeur actuelle de 100 %.
+          """,
+              encoding="utf-8",
+          )
+          
+          print("[OK] V646 appliqué : cartes de styles centrées.")
+          PY
+          
+          cat > /tmp/verifier_v646.py <<'PY'
+          from pathlib import Path
+          import re
+          
+          index = Path("public/index.html").read_text(encoding="utf-8")
+          
+          expected = (
+              ".styleGrid{display:flex;gap:26px;flex-wrap:wrap;"
+              "justify-content:center;width:100%}"
+          )
+          
+          if index.count(expected) != 1:
+              raise SystemExit(
+                  "[ERREUR] La règle de centrage V646 est absente ou dupliquée."
+              )
+          
+          if ".styleCard{width:360px;text-align:center}" not in index:
+              raise SystemExit(
+                  "[ERREUR] La largeur originale des cartes de styles a changé."
+              )
+          
+          if "v644-alter-style-center.css" in index:
+              raise SystemExit(
+                  "[ERREUR] Une ancienne référence CSS V644 est encore chargée."
+              )
+          
+          print("[OK] Vérification V646 réussie.")
+          PY
+          
+          for tentative in 1 2 3 4 5; do
+            echo "===== Tentative ${tentative}/5 ====="
+          
+            git fetch origin main
+            git reset --hard origin/main
+          
+            python3 /tmp/appliquer_v646.py
+            python3 /tmp/verifier_v646.py
+          
+            git add     public/index.html     RAPPORT_V646_STYLES_CENTRES.txt
+          
+            if git diff --cached --quiet; then
+              echo "[INFO] V646 est déjà appliqué."
+              exit 0
+            fi
+          
+            git commit -m "fix: centrer réellement les cartes de styles V646"
+          
+            if git push origin HEAD:main; then
+              echo "[OK] V646 envoyé sur main."
+              exit 0
+            fi
+          
+            echo "[ATTENTE] main a changé, nouvelle tentative."
+            sleep $((tentative * 3))
+          done
+          
+          echo "[ERREUR] Impossible d'envoyer V646."
+          exit 1
