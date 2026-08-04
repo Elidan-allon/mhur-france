@@ -1,0 +1,14 @@
+MHUR NEXUS — V648
+
+PROBLÈME
+Le workflow V646 cherchait une chaîne CSS exacte dans index.html.
+Dès que cette chaîne différait, même légèrement, il s'arrêtait.
+
+CORRECTION
+- Nouveau fichier CSS indépendant et prioritaire.
+- Choix des styles centré horizontalement sur ordinateur.
+- Aucun remplacement fragile de l'ancien CSS.
+- Aucune modification de largeur ou de hauteur des cartes.
+- Les cartes restent à leur taille actuelle de 360 px sur ordinateur.
+- Aucun changement sur mobile.
+- Aucun changement des images, badges, rôles ou textes.
