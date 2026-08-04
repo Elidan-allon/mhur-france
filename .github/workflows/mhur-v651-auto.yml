@@ -1,0 +1,297 @@
+name: MHUR V651 - Sync détaillée et styles centrés
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/mhur-v651-auto.yml"
+  schedule:
+    - cron: "17 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: mhur-v651-hourly-sync
+  cancel-in-progress: false
+
+jobs:
+  synchroniser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+
+    env:
+      DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+      DISCORD_USER_ID: ${{ secrets.DISCORD_USER_ID }}
+
+    steps:
+      - name: Récupérer le dépôt
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Installer Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: mise_a_jour/requirements.txt
+
+      - name: Installer les dépendances
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install --upgrade pip
+          python -m pip install -r mise_a_jour/requirements.txt
+
+      - name: Préparer les scripts V651
+        shell: bash
+        run: |
+          set -euo pipefail
+          printf '%s' 'ZnJvbSBwYXRobGliIGltcG9ydCBQYXRoCmltcG9ydCByZQoKaW5kZXhfcGF0aCA9IFBhdGgoInB1YmxpYy9pbmRleC5odG1sIikKY3NzX3BhdGggPSBQYXRoKCJwdWJsaWMvY3NzL3Y1ODctaW1hZ2VzLW5vdGVzLXN0YWJsZS5jc3MiKQoKaWYgbm90IGluZGV4X3BhdGguaXNfZmlsZSgpOgogICAgcmFpc2UgU3lzdGVtRXhpdCgiW0VSUkVVUl0gcHVibGljL2luZGV4Lmh0bWwgaW50cm91dmFibGUuIikKCmlmIG5vdCBjc3NfcGF0aC5pc19maWxlKCk6CiAgICByYWlzZSBTeXN0ZW1FeGl0KAogICAgICAgICJbRVJSRVVSXSBwdWJsaWMvY3NzL3Y1ODctaW1hZ2VzLW5vdGVzLXN0YWJsZS5jc3MgaW50cm91dmFibGUuIgogICAgKQoKc3RhcnQgPSAiLyogPT09IE1IVVIgVjY1MSBTVFlMRSBQSUNLRVIgQ0VOVEVSIFNUQVJUID09PSAqLyIKZW5kID0gIi8qID09PSBNSFVSIFY2NTEgU1RZTEUgUElDS0VSIENFTlRFUiBFTkQgPT09ICovIgoKYmxvY2sgPSAiIiIvKiA9PT0gTUhVUiBWNjUxIFNUWUxFIFBJQ0tFUiBDRU5URVIgU1RBUlQgPT09ICovCi8qIENlbnRyZSBsZSBub20gZHUgcGVyc29ubmFnZSBldCBsZXMgY2FydGVzIGRlIHN0eWxlcy4KICAgTGVzIGRpbWVuc2lvbnMgZGVzIGNhcnRlcyBuZSBzb250IGphbWFpcyBtb2RpZmnDqWVzLiAqLwpoMS50aXRsZTpoYXMoKyAuc3R5bGVHcmlkKSB7CiAgd2lkdGg6IDEwMCUgIWltcG9ydGFudDsKICB0ZXh0LWFsaWduOiBjZW50ZXIgIWltcG9ydGFudDsKfQoKQG1lZGlhIChtaW4td2lkdGg6IDc2MXB4KSB7CiAgaHRtbCBib2R5ICNhcHAgLnN0eWxlR3JpZCwKICBodG1sIGJvZHkgLnN0eWxlR3JpZCB7CiAgICBkaXNwbGF5OiBmbGV4ICFpbXBvcnRhbnQ7CiAgICBmbGV4LXdyYXA6IHdyYXAgIWltcG9ydGFudDsKICAgIGp1c3RpZnktY29udGVudDogY2VudGVyICFpbXBvcnRhbnQ7CiAgICB3aWR0aDogMTAwJSAhaW1wb3J0YW50OwogICAgbWFyZ2luLWxlZnQ6IGF1dG8gIWltcG9ydGFudDsKICAgIG1hcmdpbi1yaWdodDogYXV0byAhaW1wb3J0YW50OwogIH0KfQovKiA9PT0gTUhVUiBWNjUxIFNUWUxFIFBJQ0tFUiBDRU5URVIgRU5EID09PSAqLyIiIgoKY3NzID0gY3NzX3BhdGgucmVhZF90ZXh0KGVuY29kaW5nPSJ1dGYtOCIpCgpmb3Igb2xkX3N0YXJ0LCBvbGRfZW5kIGluIFsKICAgICgKICAgICAgICAiLyogPT09IE1IVVIgVjY1MCBTVFlMRSBDRU5URVIgU1RBUlQgPT09ICovIiwKICAgICAgICAiLyogPT09IE1IVVIgVjY1MCBTVFlMRSBDRU5URVIgRU5EID09PSAqLyIsCiAgICApLAogICAgKHN0YXJ0LCBlbmQpLApdOgogICAgaWYgb2xkX3N0YXJ0IGluIGNzczoKICAgICAgICBiZWZvcmUsIHJlbWFpbmRlciA9IGNzcy5zcGxpdChvbGRfc3RhcnQsIDEpCgogICAgICAgIGlmIG9sZF9lbmQgbm90IGluIHJlbWFpbmRlcjoKICAgICAgICAgICAgcmFpc2UgU3lzdGVtRXhpdCgKICAgICAgICAgICAgICAgIGYiW0VSUkVVUl0gQmxvYyBDU1MgaW5jb21wbGV0IDoge29sZF9zdGFydH0iCiAgICAgICAgICAgICkKCiAgICAgICAgXywgYWZ0ZXIgPSByZW1haW5kZXIuc3BsaXQob2xkX2VuZCwgMSkKICAgICAgICBjc3MgPSBiZWZvcmUucnN0cmlwKCkgKyAiXG4iICsgYWZ0ZXIubHN0cmlwKCkKCmNzcyA9IGNzcy5yc3RyaXAoKSArICJcblxuIiArIGJsb2NrICsgIlxuIgpjc3NfcGF0aC53cml0ZV90ZXh0KGNzcywgZW5jb2Rpbmc9InV0Zi04IikKCmh0bWwgPSBpbmRleF9wYXRoLnJlYWRfdGV4dChlbmNvZGluZz0idXRmLTgiKQoKcGF0dGVybiA9IHJlLmNvbXBpbGUoCiAgICByJyg8bGlua1tePl0raHJlZj1bIlwnXWNzcy92NTg3LWltYWdlcy1ub3Rlcy1zdGFibGVcLmNzcyknCiAgICByJyg/Olw/dj1bXiJcJ10qKT8nCiAgICByJyhbIlwnXVtePl0qPiknLAogICAgZmxhZ3M9cmUuSSwKKQoKaHRtbCwgY291bnQgPSBwYXR0ZXJuLnN1Ym4oCiAgICByJ1wxP3Y9NjUxXDInLAogICAgaHRtbCwKICAgIGNvdW50PTEsCikKCmlmIGNvdW50ID09IDA6CiAgICBjbG9zaW5nID0gcmUuc2VhcmNoKHInPC9ib2R5XHMqPicsIGh0bWwsIGZsYWdzPXJlLkkpCgogICAgaWYgbm90IGNsb3Npbmc6CiAgICAgICAgcmFpc2UgU3lzdGVtRXhpdCgiW0VSUkVVUl0gQmFsaXNlIDwvYm9keT4gaW50cm91dmFibGUuIikKCiAgICB0YWcgPSAoCiAgICAgICAgJ1xuPCEtLSBNSFVSIFY2NTEgOiBjZW50cmFnZSBkdSBjaG9peCBkZXMgc3R5bGVzIC0tPlxuJwogICAgICAgICc8bGluayByZWw9InN0eWxlc2hlZXQiICcKICAgICAgICAnaHJlZj0iY3NzL3Y1ODctaW1hZ2VzLW5vdGVzLXN0YWJsZS5jc3M/dj02NTEiPlxuJwogICAgKQogICAgaHRtbCA9IGh0bWxbOmNsb3Npbmcuc3RhcnQoKV0gKyB0YWcgKyBodG1sW2Nsb3Npbmcuc3RhcnQoKTpdCgppbmRleF9wYXRoLndyaXRlX3RleHQoaHRtbCwgZW5jb2Rpbmc9InV0Zi04IikKcHJpbnQoIltPS10gTm9tIGR1IHBlcnNvbm5hZ2UgZXQgY2FydGVzIGRlIHN0eWxlcyBjZW50csOpcy4iKQ==' | base64 --decode > /tmp/mhur_v651_ui.py
+          printf '%s' 'ZnJvbSBwYXRobGliIGltcG9ydCBQYXRoCgppbmRleCA9IFBhdGgoInB1YmxpYy9pbmRleC5odG1sIikucmVhZF90ZXh0KGVuY29kaW5nPSJ1dGYtOCIpCmNzcyA9IFBhdGgoCiAgICAicHVibGljL2Nzcy92NTg3LWltYWdlcy1ub3Rlcy1zdGFibGUuY3NzIgopLnJlYWRfdGV4dChlbmNvZGluZz0idXRmLTgiKQoKc3RhcnQgPSAiLyogPT09IE1IVVIgVjY1MSBTVFlMRSBQSUNLRVIgQ0VOVEVSIFNUQVJUID09PSAqLyIKZW5kID0gIi8qID09PSBNSFVSIFY2NTEgU1RZTEUgUElDS0VSIENFTlRFUiBFTkQgPT09ICovIgoKaWYgY3NzLmNvdW50KHN0YXJ0KSAhPSAxIG9yIGNzcy5jb3VudChlbmQpICE9IDE6CiAgICByYWlzZSBTeXN0ZW1FeGl0KAogICAgICAgICJbRVJSRVVSXSBMZSBibG9jIFY2NTEgZXN0IGFic2VudCBvdSBkdXBsaXF1w6kuIgogICAgKQoKYmxvY2sgPSBjc3Muc3BsaXQoc3RhcnQsIDEpWzFdLnNwbGl0KGVuZCwgMSlbMF0KCnJlcXVpcmVkID0gWwogICAgImgxLnRpdGxlOmhhcygrIC5zdHlsZUdyaWQpIiwKICAgICJ0ZXh0LWFsaWduOiBjZW50ZXIgIWltcG9ydGFudDsiLAogICAgImh0bWwgYm9keSAjYXBwIC5zdHlsZUdyaWQiLAogICAgImp1c3RpZnktY29udGVudDogY2VudGVyICFpbXBvcnRhbnQ7IiwKICAgICJ3aWR0aDogMTAwJSAhaW1wb3J0YW50OyIsCiAgICAibWFyZ2luLWxlZnQ6IGF1dG8gIWltcG9ydGFudDsiLAogICAgIm1hcmdpbi1yaWdodDogYXV0byAhaW1wb3J0YW50OyIsCl0KCmZvciB0b2tlbiBpbiByZXF1aXJlZDoKICAgIGlmIHRva2VuIG5vdCBpbiBibG9jazoKICAgICAgICByYWlzZSBTeXN0ZW1FeGl0KAogICAgICAgICAgICBmIltFUlJFVVJdIENvcnJlY3RpZiBWNjUxIGluY29tcGxldCA6IHt0b2tlbn0iCiAgICAgICAgKQoKaWYgaW5kZXguY291bnQoCiAgICAiY3NzL3Y1ODctaW1hZ2VzLW5vdGVzLXN0YWJsZS5jc3M/dj02NTEiCikgIT0gMToKICAgIHJhaXNlIFN5c3RlbUV4aXQoCiAgICAgICAgIltFUlJFVVJdIExlIENTUyBWNjUxIG4nZXN0IHBhcyBjaGFyZ8OpIGV4YWN0ZW1lbnQgdW5lIGZvaXMuIgogICAgKQoKZm9yIGZvcmJpZGRlbiBpbiBbCiAgICAiLnN0eWxlQ2FyZCIsCiAgICAiaGVpZ2h0OiIsCiAgICAibWF4LXdpZHRoOiIsCiAgICAidHJhbnNmb3JtOiIsCiAgICAic2NhbGUoIiwKXToKICAgIGlmIGZvcmJpZGRlbiBpbiBibG9jazoKICAgICAgICByYWlzZSBTeXN0ZW1FeGl0KAogICAgICAgICAgICBmIltFUlJFVVJdIFY2NTEgbW9kaWZpZSBsZXMgZGltZW5zaW9ucyA6IHtmb3JiaWRkZW59IgogICAgICAgICkKCnByaW50KCJbT0tdIFbDqXJpZmljYXRpb24gZHUgY2VudHJhZ2UgVjY1MSByw6l1c3NpZS4iKQ==' | base64 --decode > /tmp/mhur_v651_verify.py
+          printf '%s' 'aW1wb3J0IGpzb24KaW1wb3J0IG9zCmltcG9ydCBzdWJwcm9jZXNzCmZyb20gcGF0aGxpYiBpbXBvcnQgUGF0aAoKaW1wb3J0IHJlcXVlc3RzCgoKZGVmIGdpdCgqYXJncyk6CiAgICByZXN1bHQgPSBzdWJwcm9jZXNzLnJ1bigKICAgICAgICBbImdpdCIsICphcmdzXSwKICAgICAgICBjaGVjaz1UcnVlLAogICAgICAgIGNhcHR1cmVfb3V0cHV0PVRydWUsCiAgICAgICAgdGV4dD1UcnVlLAogICAgICAgIGVuY29kaW5nPSJ1dGYtOCIsCiAgICAgICAgZXJyb3JzPSJyZXBsYWNlIiwKICAgICkKICAgIHJldHVybiByZXN1bHQuc3Rkb3V0LnN0cmlwKCkKCgpkZWYgbG9hZF9qc29uX2F0KHJldmlzaW9uLCBwYXRoKToKICAgIHJlc3VsdCA9IHN1YnByb2Nlc3MucnVuKAogICAgICAgIFsiZ2l0IiwgInNob3ciLCBmIntyZXZpc2lvbn06e3BhdGh9Il0sCiAgICAgICAgY2hlY2s9RmFsc2UsCiAgICAgICAgY2FwdHVyZV9vdXRwdXQ9VHJ1ZSwKICAgICAgICB0ZXh0PVRydWUsCiAgICAgICAgZW5jb2Rpbmc9InV0Zi04IiwKICAgICAgICBlcnJvcnM9InJlcGxhY2UiLAogICAgKQoKICAgIGlmIHJlc3VsdC5yZXR1cm5jb2RlICE9IDA6CiAgICAgICAgcmV0dXJuIE5vbmUKCiAgICB0cnk6CiAgICAgICAgcmV0dXJuIGpzb24ubG9hZHMocmVzdWx0LnN0ZG91dCkKICAgIGV4Y2VwdCBFeGNlcHRpb246CiAgICAgICAgcmV0dXJuIE5vbmUKCgpkZWYgY2hhcmFjdGVyX2tleShpdGVtKToKICAgIGlmIG5vdCBpc2luc3RhbmNlKGl0ZW0sIGRpY3QpOgogICAgICAgIHJldHVybiBOb25lCgogICAgcmV0dXJuICgKICAgICAgICBzdHIoaXRlbS5nZXQoInNvdXJjZV91cmwiKSBvciAiIikuc3RyaXAoKQogICAgICAgIG9yICJ8Ii5qb2luKAogICAgICAgICAgICBbCiAgICAgICAgICAgICAgICBzdHIoaXRlbS5nZXQoImJhc2VfbmFtZSIpIG9yICIiKS5zdHJpcCgpLAogICAgICAgICAgICAgICAgc3RyKGl0ZW0uZ2V0KCJzdHlsZV9uYW1lIikgb3IgIiIpLnN0cmlwKCksCiAgICAgICAgICAgIF0KICAgICAgICApCiAgICApCgoKZGVmIGNoYXJhY3Rlcl9sYWJlbChpdGVtKToKICAgIGJhc2UgPSBzdHIoCiAgICAgICAgaXRlbS5nZXQoImJhc2VfbmFtZSIpIG9yIGl0ZW0uZ2V0KCJuYW1lIikgb3IgIlBlcnNvbm5hZ2UiCiAgICApLnN0cmlwKCkKICAgIHN0eWxlID0gc3RyKGl0ZW0uZ2V0KCJzdHlsZV9uYW1lIikgb3IgIiIpLnN0cmlwKCkKCiAgICBpZiBzdHlsZToKICAgICAgICByZXR1cm4gZiJ7YmFzZX0g4oCUIHtzdHlsZX0iCgogICAgcmV0dXJuIGJhc2UKCgpkZWYgY2hhbmdlZF9jaGFyYWN0ZXJzKHBhcmVudCwgY29tbWl0KToKICAgIHBhdGggPSAicHVibGljL2RhdGEvdWx0cmFydW1ibGUvY2hhcmFjdGVyc19leGFjdC5qc29uIgogICAgb2xkID0gbG9hZF9qc29uX2F0KHBhcmVudCwgcGF0aCkKICAgIG5ldyA9IGxvYWRfanNvbl9hdChjb21taXQsIHBhdGgpCgogICAgaWYgbm90IGlzaW5zdGFuY2Uob2xkLCBsaXN0KSBvciBub3QgaXNpbnN0YW5jZShuZXcsIGxpc3QpOgogICAgICAgIHJldHVybiBbXQoKICAgIG9sZF9tYXAgPSB7CiAgICAgICAgY2hhcmFjdGVyX2tleShpdGVtKTogaXRlbQogICAgICAgIGZvciBpdGVtIGluIG9sZAogICAgICAgIGlmIGNoYXJhY3Rlcl9rZXkoaXRlbSkKICAgIH0KICAgIG5ld19tYXAgPSB7CiAgICAgICAgY2hhcmFjdGVyX2tleShpdGVtKTogaXRlbQogICAgICAgIGZvciBpdGVtIGluIG5ldwogICAgICAgIGlmIGNoYXJhY3Rlcl9rZXkoaXRlbSkKICAgIH0KCiAgICBmaWVsZF9sYWJlbHMgPSB7CiAgICAgICAgInN0YXRzIjogInN0YXRpc3RpcXVlcyIsCiAgICAgICAgInNraWxscyI6ICJjb21ww6l0ZW5jZXMiLAogICAgICAgICJzcGVjaWFsX2FjdGlvbiI6ICJhY3Rpb24gc3DDqWNpYWxlIiwKICAgICAgICAibm9ybWFsX3R1bmluZyI6ICJULlUuTi5JLk4uRyBub3JtYWwiLAogICAgICAgICJzcGVjaWFsX3R1bmluZyI6ICJULlUuTi5JLk4uRyBzcMOpY2lhbCIsCiAgICAgICAgImFzc2V0cyI6ICJpbWFnZXMiLAogICAgICAgICJyb2xlIjogInLDtGxlIiwKICAgIH0KCiAgICBkZXRhaWxzID0gW10KCiAgICBmb3Iga2V5IGluIHNvcnRlZChzZXQob2xkX21hcCkgfCBzZXQobmV3X21hcCkpOgogICAgICAgIGJlZm9yZSA9IG9sZF9tYXAuZ2V0KGtleSkKICAgICAgICBhZnRlciA9IG5ld19tYXAuZ2V0KGtleSkKCiAgICAgICAgaWYgYmVmb3JlIGlzIE5vbmU6CiAgICAgICAgICAgIGRldGFpbHMuYXBwZW5kKGYi4p6VIHtjaGFyYWN0ZXJfbGFiZWwoYWZ0ZXIpfSBham91dMOpIikKICAgICAgICAgICAgY29udGludWUKCiAgICAgICAgaWYgYWZ0ZXIgaXMgTm9uZToKICAgICAgICAgICAgZGV0YWlscy5hcHBlbmQoZiLinpYge2NoYXJhY3Rlcl9sYWJlbChiZWZvcmUpfSByZXRpcsOpIikKICAgICAgICAgICAgY29udGludWUKCiAgICAgICAgaWYgYmVmb3JlID09IGFmdGVyOgogICAgICAgICAgICBjb250aW51ZQoKICAgICAgICBmaWVsZHMgPSBbCiAgICAgICAgICAgIGxhYmVsCiAgICAgICAgICAgIGZvciBmaWVsZCwgbGFiZWwgaW4gZmllbGRfbGFiZWxzLml0ZW1zKCkKICAgICAgICAgICAgaWYgYmVmb3JlLmdldChmaWVsZCkgIT0gYWZ0ZXIuZ2V0KGZpZWxkKQogICAgICAgIF0KCiAgICAgICAgZGV0YWlscy5hcHBlbmQoCiAgICAgICAgICAgIGYi4oCiIHtjaGFyYWN0ZXJfbGFiZWwoYWZ0ZXIpfSA6ICIKICAgICAgICAgICAgKyAiLCAiLmpvaW4oZmllbGRzWzo0XSBvciBbImRvbm7DqWVzIl0pCiAgICAgICAgKQoKICAgIHJldHVybiBkZXRhaWxzCgoKd2ViaG9vayA9IG9zLmVudmlyb24uZ2V0KCJESVNDT1JEX1dFQkhPT0tfVVJMIiwgIiIpLnN0cmlwKCkKdXNlcl9pZCA9IG9zLmVudmlyb24uZ2V0KCJESVNDT1JEX1VTRVJfSUQiLCAiIikuc3RyaXAoKQpjb21taXQgPSBvcy5lbnZpcm9uLmdldCgiQ09NTUlUX1NIQSIsICIiKS5zdHJpcCgpCgppZiBub3Qgd2ViaG9vazoKICAgIHByaW50KCJbSU5GT10gQXVjdW4gd2ViaG9vayBEaXNjb3JkIGNvbmZpZ3Vyw6kuIikKICAgIHJhaXNlIFN5c3RlbUV4aXQoMCkKCnBhcmVudCA9IGdpdCgicmV2LXBhcnNlIiwgZiJ7Y29tbWl0fV4iKQpudW1zdGF0ID0gZ2l0KCJkaWZmIiwgIi0tbnVtc3RhdCIsIHBhcmVudCwgY29tbWl0KS5zcGxpdGxpbmVzKCkKCmZpbGVzID0gW10KYWRkZWRfdG90YWwgPSAwCmRlbGV0ZWRfdG90YWwgPSAwCgpmb3IgbGluZSBpbiBudW1zdGF0OgogICAgcGFydHMgPSBsaW5lLnNwbGl0KCJcdCIpCgogICAgaWYgbGVuKHBhcnRzKSA8IDM6CiAgICAgICAgY29udGludWUKCiAgICBhZGRlZCA9IGludChwYXJ0c1swXSkgaWYgcGFydHNbMF0uaXNkaWdpdCgpIGVsc2UgMAogICAgZGVsZXRlZCA9IGludChwYXJ0c1sxXSkgaWYgcGFydHNbMV0uaXNkaWdpdCgpIGVsc2UgMAogICAgcGF0aCA9IHBhcnRzWy0xXQoKICAgIGZpbGVzLmFwcGVuZCgocGF0aCwgYWRkZWQsIGRlbGV0ZWQpKQogICAgYWRkZWRfdG90YWwgKz0gYWRkZWQKICAgIGRlbGV0ZWRfdG90YWwgKz0gZGVsZXRlZAoKY2F0ZWdvcmllcyA9IFtdCgpkZWYgY2F0ZWdvcnkobGFiZWwpOgogICAgaWYgbGFiZWwgbm90IGluIGNhdGVnb3JpZXM6CiAgICAgICAgY2F0ZWdvcmllcy5hcHBlbmQobGFiZWwpCgpmb3IgcGF0aCwgXywgXyBpbiBmaWxlczoKICAgIGxvd2VyID0gcGF0aC5sb3dlcigpCgogICAgaWYgImNoYXJhY3RlcnNfZXhhY3QiIGluIGxvd2VyOgogICAgICAgIGNhdGVnb3J5KCJQZXJzb25uYWdlcywgc3R5bGVzIG91IGNvbXDDqXRlbmNlcyIpCiAgICBlbGlmICJjb3N0dW1lIiBpbiBsb3dlcjoKICAgICAgICBjYXRlZ29yeSgiQ29zdHVtZXMgZXQgVC5VLk4uSS5OLkcuIikKICAgIGVsaWYgImhvbWVfZGF0YSIgaW4gbG93ZXI6CiAgICAgICAgY2F0ZWdvcnkoIkFjY3VlaWwgZXQgbm91dmVhdXTDqXMiKQogICAgZWxpZiBsb3dlci5zdGFydHN3aXRoKCJwdWJsaWMvYXNzZXRzLyIpOgogICAgICAgIGNhdGVnb3J5KCJJbWFnZXMgbG9jYWxlcyIpCiAgICBlbGlmICJwYXRjaCIgaW4gbG93ZXIgb3IgIm5vdGVzIiBpbiBsb3dlcjoKICAgICAgICBjYXRlZ29yeSgiUGF0Y2ggTm90ZXMiKQogICAgZWxpZiBsb3dlci5lbmRzd2l0aCgoIi5odG1sIiwgIi5jc3MiLCAiLmpzIikpOgogICAgICAgIGNhdGVnb3J5KCJJbnRlcmZhY2UgZHUgc2l0ZSIpCiAgICBlbGlmIGxvd2VyLnN0YXJ0c3dpdGgoInB1YmxpYy9kYXRhLyIpOgogICAgICAgIGNhdGVnb3J5KCJEb25uw6llcyBkdSBzaXRlIikKCmNoYXJhY3RlcnMgPSBjaGFuZ2VkX2NoYXJhY3RlcnMocGFyZW50LCBjb21taXQpCgpzdGF0dXNfcGF0aCA9IFBhdGgoCiAgICAicHVibGljL2RhdGEvdWx0cmFydW1ibGUvZGVybmllcmVfc3luY2hyb25pc2F0aW9uLmpzb24iCikKCnRyeToKICAgIHN0YXR1cyA9IGpzb24ubG9hZHMoc3RhdHVzX3BhdGgucmVhZF90ZXh0KGVuY29kaW5nPSJ1dGYtOCIpKQpleGNlcHQgRXhjZXB0aW9uOgogICAgc3RhdHVzID0ge30KCnNvdXJjZXMgPSBbCiAgICBzdHIodXJsKS5zdHJpcCgpCiAgICBmb3IgdXJsIGluIHN0YXR1cy5nZXQoImNoYW5nZWRfdXJscyIsIFtdKQogICAgaWYgc3RyKHVybCkuc3RyaXAoKQpdCgptZW50aW9uID0gZiI8QHt1c2VyX2lkfT4gIiBpZiB1c2VyX2lkIGVsc2UgIiIKCmxpbmVzID0gWwogICAgZiJ7bWVudGlvbn3inIUgKipNSFVSIE5leHVzIGEgw6l0w6kgbWlzIMOgIGpvdXIgYXV0b21hdGlxdWVtZW50KioiLAogICAgKAogICAgICAgIGYi8J+TiiAqKntsZW4oZmlsZXMpfSBmaWNoaWVyKHMpKiog4oCUICIKICAgICAgICBmIit7YWRkZWRfdG90YWx9IC8gLXtkZWxldGVkX3RvdGFsfSBsaWduZXMiCiAgICApLApdCgppZiBjYXRlZ29yaWVzOgogICAgbGluZXMuZXh0ZW5kKFsiIiwgIioqQ2UgcXVpIGEgw6l0w6kgbW9kaWZpw6kgOioqIl0pCiAgICBsaW5lcy5leHRlbmQoZiLigKIge2l0ZW19IiBmb3IgaXRlbSBpbiBjYXRlZ29yaWVzWzo3XSkKCmlmIGNoYXJhY3RlcnM6CiAgICBsaW5lcy5leHRlbmQoWyIiLCAiKipQZXJzb25uYWdlcyBjb25jZXJuw6lzIDoqKiJdKQogICAgbGluZXMuZXh0ZW5kKGNoYXJhY3RlcnNbOjhdKQoKICAgIGlmIGxlbihjaGFyYWN0ZXJzKSA+IDg6CiAgICAgICAgbGluZXMuYXBwZW5kKGYi4oCiIOKApiBldCB7bGVuKGNoYXJhY3RlcnMpIC0gOH0gYXV0cmUocykiKQoKdmlzaWJsZV9maWxlcyA9IFsKICAgIGl0ZW0KICAgIGZvciBpdGVtIGluIGZpbGVzCiAgICBpZiBub3QgaXRlbVswXS5zdGFydHN3aXRoKAogICAgICAgICJwdWJsaWMvZGF0YS91bHRyYXJ1bWJsZS9zeW5jaHJvbmlzYXRpb25fIgogICAgKQpdCgppZiB2aXNpYmxlX2ZpbGVzOgogICAgbGluZXMuZXh0ZW5kKFsiIiwgIioqUHJpbmNpcGF1eCBmaWNoaWVycyA6KioiXSkKCiAgICBmb3IgcGF0aCwgYWRkZWQsIGRlbGV0ZWQgaW4gdmlzaWJsZV9maWxlc1s6N106CiAgICAgICAgc2hvcnQgPSBwYXRoIGlmIGxlbihwYXRoKSA8PSA3MiBlbHNlICLigKYiICsgcGF0aFstNzE6XQogICAgICAgIGxpbmVzLmFwcGVuZChmIuKAoiBge3Nob3J0fWAgKCt7YWRkZWR9Ly17ZGVsZXRlZH0pIikKCiAgICBpZiBsZW4odmlzaWJsZV9maWxlcykgPiA3OgogICAgICAgIGxpbmVzLmFwcGVuZChmIuKAoiDigKYgZXQge2xlbih2aXNpYmxlX2ZpbGVzKSAtIDd9IGF1dHJlKHMpIikKCmlmIHNvdXJjZXM6CiAgICBsaW5lcy5leHRlbmQoWyIiLCAiKipTb3VyY2UgZMOpdGVjdMOpZSA6KioiXSkKICAgIGxpbmVzLmV4dGVuZChmIuKAoiA8e3VybH0+IiBmb3IgdXJsIGluIHNvdXJjZXNbOjRdKQoKcmVwb3NpdG9yeSA9IG9zLmVudmlyb24uZ2V0KCJHSVRIVUJfUkVQT1NJVE9SWSIsICIiKQpjb21taXRfdXJsID0gKAogICAgZiJodHRwczovL2dpdGh1Yi5jb20ve3JlcG9zaXRvcnl9L2NvbW1pdC97Y29tbWl0fSIKICAgIGlmIHJlcG9zaXRvcnkKICAgIGVsc2UgIiIKKQoKaWYgY29tbWl0X3VybDoKICAgIGxpbmVzLmV4dGVuZChbIiIsIGYi8J+UlyAqKlZvaXIgbGUgZMOpdGFpbCA6KiogPHtjb21taXRfdXJsfT4iXSkKCmNvbnRlbnQgPSAiXG4iLmpvaW4obGluZXMpCgppZiBsZW4oY29udGVudCkgPiAxOTUwOgogICAgY29udGVudCA9IGNvbnRlbnRbOjE5MDBdLnJzcGxpdCgiXG4iLCAxKVswXQogICAgY29udGVudCArPSAiXG5cbvCflJcgRMOpdGFpbHMgY29tcGxldHMgZGFucyBsZSBjb21taXQgR2l0SHViLiIKCnJlc3BvbnNlID0gcmVxdWVzdHMucG9zdCgKICAgIHdlYmhvb2ssCiAgICBqc29uPXsKICAgICAgICAidXNlcm5hbWUiOiAiTUhVUiBOZXh1cyDigJQgTWlzZSDDoCBqb3VyIGTDqXRhaWxsw6llIiwKICAgICAgICAiY29udGVudCI6IGNvbnRlbnQsCiAgICAgICAgImFsbG93ZWRfbWVudGlvbnMiOiAoCiAgICAgICAgICAgIHsidXNlcnMiOiBbdXNlcl9pZF19CiAgICAgICAgICAgIGlmIHVzZXJfaWQKICAgICAgICAgICAgZWxzZSB7InBhcnNlIjogW119CiAgICAgICAgKSwKICAgIH0sCiAgICB0aW1lb3V0PTMwLAopCgpyZXNwb25zZS5yYWlzZV9mb3Jfc3RhdHVzKCkKcHJpbnQoIltPS10gTWVzc2FnZSBEaXNjb3JkIGTDqXRhaWxsw6kgZW52b3nDqS4iKQ==' | base64 --decode > /tmp/mhur_v651_discord.py
+
+      - name: Centrer le nom et les styles
+        shell: bash
+        run: |
+          set -euo pipefail
+          python /tmp/mhur_v651_ui.py
+          python /tmp/mhur_v651_verify.py
+
+      - name: Vérifier UltraRumble
+        id: verifier
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          set +e
+          python mise_a_jour/outils/surveiller_ultrarumble.py \
+            --site-root public \
+            --check-only
+          code=$?
+          set -e
+
+          case "$code" in
+            0)
+              echo "changed=false" >> "$GITHUB_OUTPUT"
+              ;;
+            10)
+              echo "changed=true" >> "$GITHUB_OUTPUT"
+              ;;
+            *)
+              echo "[ERREUR] Vérification UltraRumble : code $code"
+              exit "$code"
+              ;;
+          esac
+
+          python - <<'PY' >> "$GITHUB_OUTPUT"
+          import json
+          from pathlib import Path
+
+          path = Path(
+              "public/data/ultrarumble/derniere_synchronisation.json"
+          )
+
+          try:
+              status = json.loads(path.read_text(encoding="utf-8"))
+          except Exception:
+              status = {}
+
+          initialized = status.get("status") == "initialisé"
+          urls = status.get("changed_urls") or []
+          urls = [str(value) for value in urls if str(value).strip()]
+
+          print(f"initialized={'true' if initialized else 'false'}")
+          print(f"detected_count={len(urls)}")
+          PY
+
+      - name: Appliquer la mise à jour
+        if: steps.verifier.outputs.changed == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          python mise_a_jour/outils/surveiller_ultrarumble.py \
+            --site-root public \
+            --wait-lock 300
+
+          # Réapplique le centrage après toute reconstruction du site.
+          python /tmp/mhur_v651_ui.py
+          python /tmp/mhur_v651_verify.py
+
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          path = Path(
+              "public/data/ultrarumble/derniere_synchronisation.json"
+          )
+          status = json.loads(path.read_text(encoding="utf-8"))
+
+          if status.get("status") != "mis_à_jour":
+              raise SystemExit(
+                  "[ERREUR] La synchronisation n'a pas produit "
+                  "le statut mis_à_jour."
+              )
+          PY
+
+      - name: Publier les fichiers
+        id: publier
+        shell: bash
+        env:
+          WAS_INITIALIZED: ${{ steps.verifier.outputs.initialized }}
+          SOURCE_CHANGED: ${{ steps.verifier.outputs.changed }}
+        run: |
+          set -euo pipefail
+
+          git config user.name "github-actions[bot]"
+          git config user.email \
+            "41898282+github-actions[bot]@users.noreply.github.com"
+
+          rm -f \
+            public/data/ultrarumble/synchronisation_ultrarumble.log \
+            public/data/ultrarumble/synchronisation_en_cours.lock
+          rm -rf public/sauvegardes
+
+          # V651 remplace V647 et les anciens essais de centrage.
+          git rm -f --ignore-unmatch \
+            .github/workflows/mhur-v645-auto.yml \
+            .github/workflows/mhur-v647-auto.yml \
+            .github/workflows/mhur-v650-auto.yml \
+            .github/workflows/mhur-v649-auto.yml \
+            .github/workflows/mhur-v648-auto.yml \
+            .github/workflows/mhur-v646-auto.yml
+
+          if [ "$WAS_INITIALIZED" = "true" ]; then
+            git add -f \
+              public/data/ultrarumble/synchronisation_state.json \
+              public/data/ultrarumble/derniere_synchronisation.json
+
+            if [ -f public/data/diagnostic_data.js ]; then
+              git add public/data/diagnostic_data.js
+            fi
+
+            commit_message="chore: initialiser la surveillance UltraRumble V647"
+
+          elif [ "$SOURCE_CHANGED" = "true" ]; then
+            git add -A public
+
+            # Ces fichiers sont volontairement ignorés par .gitignore,
+            # mais doivent être conservés par l'automatisation.
+            git add -f \
+              public/data/ultrarumble/synchronisation_state.json \
+              public/data/ultrarumble/derniere_synchronisation.json
+
+            commit_message="update: synchronisation automatique UltraRumble"
+
+          else
+            # La vérification sans changement modifie seulement le diagnostic.
+            # On ne crée pas un commit inutile chaque heure.
+            git restore --staged --worktree -- \
+              public/data/ultrarumble/derniere_synchronisation.json \
+              public/data/diagnostic_data.js \
+              2>/dev/null || true
+
+            commit_message="fix: centrer le nom et les styles V651"
+          fi
+
+          # Le centrage est conservé même sans changement UltraRumble.
+          git add \
+            public/index.html \
+            public/css/v587-images-notes-stable.css
+
+          if git diff --cached --quiet; then
+            echo "committed=false" >> "$GITHUB_OUTPUT"
+            echo "updated=false" >> "$GITHUB_OUTPUT"
+            echo "[INFO] Aucun fichier à publier."
+            exit 0
+          fi
+
+          git commit -m "$commit_message"
+
+          pushed=false
+          for tentative in 1 2 3 4 5; do
+            if git pull --rebase origin main && git push origin HEAD:main; then
+              pushed=true
+              break
+            fi
+
+            echo "[ATTENTE] Nouvelle tentative de publication..."
+            sleep $((tentative * 4))
+          done
+
+          if [ "$pushed" != "true" ]; then
+            echo "[ERREUR] Impossible de publier sur main."
+            exit 1
+          fi
+
+          echo "committed=true" >> "$GITHUB_OUTPUT"
+          echo "commit_sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+          if git diff-tree --no-commit-id --name-only -r HEAD \
+            | grep -q '^public/'; then
+            echo "updated=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "updated=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Envoyer le détail sur Discord
+        if: steps.publier.outputs.updated == 'true'
+        shell: bash
+        env:
+          COMMIT_SHA: ${{ steps.publier.outputs.commit_sha }}
+        run: |
+          set -euo pipefail
+          python /tmp/mhur_v651_discord.py
+
+      - name: Signaler une erreur sur Discord
+        if: failure()
+        shell: bash
+        run: |
+          python - <<'PY'
+          import os
+          import requests
+
+          webhook = os.environ.get("DISCORD_WEBHOOK_URL", "").strip()
+          user_id = os.environ.get("DISCORD_USER_ID", "").strip()
+
+          if not webhook:
+              raise SystemExit(0)
+
+          repository = os.environ.get("GITHUB_REPOSITORY", "")
+          run_id = os.environ.get("GITHUB_RUN_ID", "")
+          run_url = (
+              f"https://github.com/{repository}/actions/runs/{run_id}"
+              if repository and run_id
+              else ""
+          )
+
+          mention = f"<@{user_id}> " if user_id else ""
+          content = (
+              f"{mention}❌ **La synchronisation MHUR V651 a échoué.**"
+          )
+
+          if run_url:
+              content += f"\nRapport : {run_url}"
+
+          try:
+              response = requests.post(
+                  webhook,
+                  json={
+                      "username": "MHUR Nexus — Erreur",
+                      "content": content,
+                      "allowed_mentions": (
+                          {"users": [user_id]}
+                          if user_id
+                          else {"parse": []}
+                      ),
+                  },
+                  timeout=30,
+              )
+              response.raise_for_status()
+          except Exception as error:
+              print(f"[AVERTISSEMENT] Discord indisponible : {error}")
+          PY
