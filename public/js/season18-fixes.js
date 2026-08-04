@@ -461,7 +461,7 @@ function translatePatch(v){
     [/No\. of Rounds|Magazine/gi,'Munitions max.'],[/Use Ammo/gi,'Consommation'],[/Ammo/gi,'Munitions'],
     [/Penalty Recharge/gi,'Pénalité de recharge'],[/Reload Speed/gi,'Vitesse de recharge'],[/Reload|Cooldown/gi,'Recharge'],
     [/Guard Break/gi,'Brise-garde'],[/Damage/gi,'Dégâts'],[/Special Action/gi,'Action spéciale'],[/Quirk Skill/gi,'Alter'],
-    [/Foot Boost/gi,'Boost du pied'],[/Hollow Point Shot/gi,'Tir à pointe creuse'],[/Airblast/gi,"Rafale d'air"],
+    [/Foot Boost/gi,'Boost du pied'],[/Hollow Point Shot/gi,'Tir à pointe creuse'],[/AP Shot Cluster/gi,'Tir AP : Cluster'],[/ExplosionFollow-up/gi,'Explosion renforcée'],[/Airblast/gi,"Rafale d'air"],
     [/Before/gi,'Avant'],[/After/gi,'Après'],[/Adjustment/gi,'Neutre'],[/No changes detected\.?/gi,'Aucun changement détecté.'],
     [/Technical/gi,'Technique'],[/Strike/gi,'Attaque'],[/Rapid/gi,'Vitesse'],[/Support/gi,'Soutien'],[/Assault/gi,'Assaut']
   ];
@@ -911,8 +911,8 @@ function groupHtml(group,sectionTitle){
 
         const title=translatePatch(
           CLEAN(
-            skill?.name||
             change?.skill_name||
+            skill?.name||
             change?.label||
             TX('Ajustement','Adjustment')
           )
