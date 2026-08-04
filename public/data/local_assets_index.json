@@ -1,553 +1,553 @@
 {
   "meta": {
     "source": "public/assets fourni par le propriétaire",
-    "version": "1785789525211026602",
+    "version": "1785817752231871139",
     "portraits_only_from_local_assets": true,
     "styles": 64
   },
   "styles": {
     "aizawa_strike": {
-      "portrait": "assets/aizawa/aizawa_strike/portrait.png?v=1785789525211026602",
-      "alpha": "assets/aizawa/aizawa_strike/alpha.webp?v=1785789525211026602",
-      "beta": "assets/aizawa/aizawa_strike/beta.webp?v=1785789525211026602",
-      "beta_hold": "assets/aizawa/aizawa_strike/beta_hold.webp?v=1785789525211026602",
-      "gamma": "assets/aizawa/aizawa_strike/gamma.webp?v=1785789525211026602",
-      "special": "assets/aizawa/aizawa_strike/special.webp?v=1785789525211026602",
-      "tuning": "assets/aizawa/aizawa_strike/tuning.webp?v=1785789525211026602"
+      "portrait": "assets/aizawa/aizawa_strike/portrait.png?v=1785817752231871139",
+      "alpha": "assets/aizawa/aizawa_strike/alpha.webp?v=1785817752231871139",
+      "beta": "assets/aizawa/aizawa_strike/beta.webp?v=1785817752231871139",
+      "beta_hold": "assets/aizawa/aizawa_strike/beta_hold.webp?v=1785817752231871139",
+      "gamma": "assets/aizawa/aizawa_strike/gamma.webp?v=1785817752231871139",
+      "special": "assets/aizawa/aizawa_strike/special.webp?v=1785817752231871139",
+      "tuning": "assets/aizawa/aizawa_strike/tuning.webp?v=1785817752231871139"
     },
     "aizawa_technical": {
-      "portrait": "assets/aizawa/aizawa_technical/portrait.png?v=1785789525211026602",
-      "alpha": "assets/aizawa/aizawa_technical/alpha.webp?v=1785789525211026602",
-      "beta": "assets/aizawa/aizawa_technical/beta.webp?v=1785789525211026602",
-      "gamma": "assets/aizawa/aizawa_technical/gamma.webp?v=1785789525211026602",
-      "special": "assets/aizawa/aizawa_technical/special.webp?v=1785789525211026602",
-      "tuning": "assets/aizawa/aizawa_technical/tuning.webp?v=1785789525211026602"
+      "portrait": "assets/aizawa/aizawa_technical/portrait.png?v=1785817752231871139",
+      "alpha": "assets/aizawa/aizawa_technical/alpha.webp?v=1785817752231871139",
+      "beta": "assets/aizawa/aizawa_technical/beta.webp?v=1785817752231871139",
+      "gamma": "assets/aizawa/aizawa_technical/gamma.webp?v=1785817752231871139",
+      "special": "assets/aizawa/aizawa_technical/special.webp?v=1785817752231871139",
+      "tuning": "assets/aizawa/aizawa_technical/tuning.webp?v=1785817752231871139"
     },
     "all_for_one_strike": {
-      "portrait": "assets/all_for_one/all_for_one_strike/portrait.png?v=1785789525211026602",
-      "alpha": "assets/all_for_one/all_for_one_strike/alpha.webp?v=1785789525211026602",
-      "beta": "assets/all_for_one/all_for_one_strike/beta.webp?v=1785789525211026602",
-      "gamma": "assets/all_for_one/all_for_one_strike/gamma.webp?v=1785789525211026602",
-      "special": "assets/all_for_one/all_for_one_strike/special.webp?v=1785789525211026602",
-      "tuning": "assets/all_for_one/all_for_one_strike/tuning.webp?v=1785789525211026602"
+      "portrait": "assets/all_for_one/all_for_one_strike/portrait.png?v=1785817752231871139",
+      "alpha": "assets/all_for_one/all_for_one_strike/alpha.webp?v=1785817752231871139",
+      "beta": "assets/all_for_one/all_for_one_strike/beta.webp?v=1785817752231871139",
+      "gamma": "assets/all_for_one/all_for_one_strike/gamma.webp?v=1785817752231871139",
+      "special": "assets/all_for_one/all_for_one_strike/special.webp?v=1785817752231871139",
+      "tuning": "assets/all_for_one/all_for_one_strike/tuning.webp?v=1785817752231871139"
     },
     "all_for_one_technical": {
-      "portrait": "assets/all_for_one/all_for_one_technical/portrait.png?v=1785789525211026602",
-      "alpha": "assets/all_for_one/all_for_one_technical/alpha.webp?v=1785789525211026602",
-      "beta": "assets/all_for_one/all_for_one_technical/beta.webp?v=1785789525211026602",
-      "gamma": "assets/all_for_one/all_for_one_technical/gamma.webp?v=1785789525211026602",
-      "special": "assets/all_for_one/all_for_one_technical/special.webp?v=1785789525211026602",
-      "tuning": "assets/all_for_one/all_for_one_technical/tuning.webp?v=1785789525211026602"
+      "portrait": "assets/all_for_one/all_for_one_technical/portrait.png?v=1785817752231871139",
+      "alpha": "assets/all_for_one/all_for_one_technical/alpha.webp?v=1785817752231871139",
+      "beta": "assets/all_for_one/all_for_one_technical/beta.webp?v=1785817752231871139",
+      "gamma": "assets/all_for_one/all_for_one_technical/gamma.webp?v=1785817752231871139",
+      "special": "assets/all_for_one/all_for_one_technical/special.webp?v=1785817752231871139",
+      "tuning": "assets/all_for_one/all_for_one_technical/tuning.webp?v=1785817752231871139"
     },
     "all_for_one_young_assault": {
-      "portrait": "assets/all_for_one_young/all_for_one_young_assault/portrait.png?v=1785789525211026602",
-      "alpha": "assets/all_for_one_young/all_for_one_young_assault/alpha.webp?v=1785789525211026602",
-      "beta": "assets/all_for_one_young/all_for_one_young_assault/beta.webp?v=1785789525211026602",
-      "beta_hold": "assets/all_for_one_young/all_for_one_young_assault/beta_hold.webp?v=1785789525211026602",
-      "gamma": "assets/all_for_one_young/all_for_one_young_assault/gamma.webp?v=1785789525211026602",
-      "gamma_hold": "assets/all_for_one_young/all_for_one_young_assault/gamma_hold.webp?v=1785789525211026602",
-      "special": "assets/all_for_one_young/all_for_one_young_assault/special.webp?v=1785789525211026602",
-      "tuning": "assets/all_for_one_young/all_for_one_young_assault/tuning.webp?v=1785789525211026602"
+      "portrait": "assets/all_for_one_young/all_for_one_young_assault/portrait.png?v=1785817752231871139",
+      "alpha": "assets/all_for_one_young/all_for_one_young_assault/alpha.webp?v=1785817752231871139",
+      "beta": "assets/all_for_one_young/all_for_one_young_assault/beta.webp?v=1785817752231871139",
+      "beta_hold": "assets/all_for_one_young/all_for_one_young_assault/beta_hold.webp?v=1785817752231871139",
+      "gamma": "assets/all_for_one_young/all_for_one_young_assault/gamma.webp?v=1785817752231871139",
+      "gamma_hold": "assets/all_for_one_young/all_for_one_young_assault/gamma_hold.webp?v=1785817752231871139",
+      "special": "assets/all_for_one_young/all_for_one_young_assault/special.webp?v=1785817752231871139",
+      "tuning": "assets/all_for_one_young/all_for_one_young_assault/tuning.webp?v=1785817752231871139"
     },
     "all_might_assault": {
-      "portrait": "assets/all_might/all_might_assault/portrait.png?v=1785789525211026602",
-      "alpha": "assets/all_might/all_might_assault/alpha.webp?v=1785789525211026602",
-      "beta": "assets/all_might/all_might_assault/beta.webp?v=1785789525211026602",
-      "gamma": "assets/all_might/all_might_assault/gamma.webp?v=1785789525211026602",
-      "special": "assets/all_might/all_might_assault/special.webp?v=1785789525211026602",
-      "tuning": "assets/all_might/all_might_assault/tuning.webp?v=1785789525211026602"
+      "portrait": "assets/all_might/all_might_assault/portrait.png?v=1785817752231871139",
+      "alpha": "assets/all_might/all_might_assault/alpha.webp?v=1785817752231871139",
+      "beta": "assets/all_might/all_might_assault/beta.webp?v=1785817752231871139",
+      "gamma": "assets/all_might/all_might_assault/gamma.webp?v=1785817752231871139",
+      "special": "assets/all_might/all_might_assault/special.webp?v=1785817752231871139",
+      "tuning": "assets/all_might/all_might_assault/tuning.webp?v=1785817752231871139"
     },
     "all_might_rapid": {
-      "portrait": "assets/all_might/all_might_rapid/portrait.png?v=1785789525211026602",
-      "alpha": "assets/all_might/all_might_rapid/alpha.webp?v=1785789525211026602",
-      "beta": "assets/all_might/all_might_rapid/beta.webp?v=1785789525211026602",
-      "gamma": "assets/all_might/all_might_rapid/gamma.webp?v=1785789525211026602",
-      "special": "assets/all_might/all_might_rapid/special.webp?v=1785789525211026602",
-      "tuning": "assets/all_might/all_might_rapid/tuning.webp?v=1785789525211026602"
+      "portrait": "assets/all_might/all_might_rapid/portrait.png?v=1785817752231871139",
+      "alpha": "assets/all_might/all_might_rapid/alpha.webp?v=1785817752231871139",
+      "beta": "assets/all_might/all_might_rapid/beta.webp?v=1785817752231871139",
+      "gamma": "assets/all_might/all_might_rapid/gamma.webp?v=1785817752231871139",
+      "special": "assets/all_might/all_might_rapid/special.webp?v=1785817752231871139",
+      "tuning": "assets/all_might/all_might_rapid/tuning.webp?v=1785817752231871139"
     },
     "armored_all_might_technical": {
-      "portrait": "assets/armored_all_might/armored_all_might_technical/portrait.png?v=1785789525211026602",
-      "alpha": "assets/armored_all_might/armored_all_might_technical/alpha.webp?v=1785789525211026602",
-      "alpha_hold": "assets/armored_all_might/armored_all_might_technical/alpha_hold.webp?v=1785789525211026602",
-      "beta": "assets/armored_all_might/armored_all_might_technical/beta.webp?v=1785789525211026602",
-      "beta_hold": "assets/armored_all_might/armored_all_might_technical/beta_hold.webp?v=1785789525211026602",
-      "gamma": "assets/armored_all_might/armored_all_might_technical/gamma.webp?v=1785789525211026602",
-      "special": "assets/armored_all_might/armored_all_might_technical/special.webp?v=1785789525211026602",
-      "tuning": "assets/armored_all_might/armored_all_might_technical/tuning.webp?v=1785789525211026602"
+      "portrait": "assets/armored_all_might/armored_all_might_technical/portrait.webp?v=1785817752231871139",
+      "alpha": "assets/armored_all_might/armored_all_might_technical/alpha.webp?v=1785817752231871139",
+      "alpha_hold": "assets/armored_all_might/armored_all_might_technical/alpha_hold.webp?v=1785817752231871139",
+      "beta": "assets/armored_all_might/armored_all_might_technical/beta.webp?v=1785817752231871139",
+      "beta_hold": "assets/armored_all_might/armored_all_might_technical/beta_hold.webp?v=1785817752231871139",
+      "gamma": "assets/armored_all_might/armored_all_might_technical/gamma.webp?v=1785817752231871139",
+      "special": "assets/armored_all_might/armored_all_might_technical/special.webp?v=1785817752231871139",
+      "tuning": "assets/armored_all_might/armored_all_might_technical/tuning.webp?v=1785817752231871139"
     },
     "bakugo_attack": {
-      "portrait": "assets/bakugo/bakugo_attack/portrait.png?v=1785789525211026602",
-      "alpha": "assets/bakugo/bakugo_attack/alpha.webp?v=1785789525211026602",
-      "beta": "assets/bakugo/bakugo_attack/beta.webp?v=1785789525211026602",
-      "gamma": "assets/bakugo/bakugo_attack/gamma.webp?v=1785789525211026602",
-      "special": "assets/bakugo/bakugo_attack/special.webp?v=1785789525211026602",
-      "tuning": "assets/bakugo/bakugo_attack/tuning.webp?v=1785789525211026602"
+      "portrait": "assets/bakugo/bakugo_attack/portrait.png?v=1785817752231871139",
+      "alpha": "assets/bakugo/bakugo_attack/alpha.webp?v=1785817752231871139",
+      "beta": "assets/bakugo/bakugo_attack/beta.webp?v=1785817752231871139",
+      "gamma": "assets/bakugo/bakugo_attack/gamma.webp?v=1785817752231871139",
+      "special": "assets/bakugo/bakugo_attack/special.webp?v=1785817752231871139",
+      "tuning": "assets/bakugo/bakugo_attack/tuning.webp?v=1785817752231871139"
     },
     "bakugo_rapid": {
-      "portrait": "assets/bakugo/bakugo_rapid/portrait.png?v=1785789525211026602",
-      "alpha": "assets/bakugo/bakugo_rapid/alpha.webp?v=1785789525211026602",
-      "beta": "assets/bakugo/bakugo_rapid/beta.webp?v=1785789525211026602",
-      "gamma": "assets/bakugo/bakugo_rapid/gamma.webp?v=1785789525211026602",
-      "special": "assets/bakugo/bakugo_rapid/special.webp?v=1785789525211026602",
-      "tuning": "assets/bakugo/bakugo_rapid/tuning.webp?v=1785789525211026602"
+      "portrait": "assets/bakugo/bakugo_rapid/portrait.png?v=1785817752231871139",
+      "alpha": "assets/bakugo/bakugo_rapid/alpha.webp?v=1785817752231871139",
+      "beta": "assets/bakugo/bakugo_rapid/beta.webp?v=1785817752231871139",
+      "gamma": "assets/bakugo/bakugo_rapid/gamma.webp?v=1785817752231871139",
+      "special": "assets/bakugo/bakugo_rapid/special.webp?v=1785817752231871139",
+      "tuning": "assets/bakugo/bakugo_rapid/tuning.webp?v=1785817752231871139"
     },
     "bakugo_technical": {
-      "portrait": "assets/bakugo/bakugo_technical/portrait.png?v=1785789525211026602",
-      "alpha": "assets/bakugo/bakugo_technical/alpha.webp?v=1785789525211026602",
-      "beta": "assets/bakugo/bakugo_technical/beta.webp?v=1785789525211026602",
-      "gamma": "assets/bakugo/bakugo_technical/gamma.webp?v=1785789525211026602",
-      "special": "assets/bakugo/bakugo_technical/special.webp?v=1785789525211026602",
-      "tuning": "assets/bakugo/bakugo_technical/tuning.webp?v=1785789525211026602"
+      "portrait": "assets/bakugo/bakugo_technical/portrait.png?v=1785817752231871139",
+      "alpha": "assets/bakugo/bakugo_technical/alpha.webp?v=1785817752231871139",
+      "beta": "assets/bakugo/bakugo_technical/beta.webp?v=1785817752231871139",
+      "gamma": "assets/bakugo/bakugo_technical/gamma.webp?v=1785817752231871139",
+      "special": "assets/bakugo/bakugo_technical/special.webp?v=1785817752231871139",
+      "tuning": "assets/bakugo/bakugo_technical/tuning.webp?v=1785817752231871139"
     },
     "cementoss_support": {
-      "portrait": "assets/cementoss/cementoss_support/portrait.png?v=1785789525211026602",
-      "alpha": "assets/cementoss/cementoss_support/alpha.webp?v=1785789525211026602",
-      "beta": "assets/cementoss/cementoss_support/beta.webp?v=1785789525211026602",
-      "gamma": "assets/cementoss/cementoss_support/gamma.webp?v=1785789525211026602",
-      "special": "assets/cementoss/cementoss_support/special.webp?v=1785789525211026602",
-      "tuning": "assets/cementoss/cementoss_support/tuning.webp?v=1785789525211026602"
+      "portrait": "assets/cementoss/cementoss_support/portrait.png?v=1785817752231871139",
+      "alpha": "assets/cementoss/cementoss_support/alpha.webp?v=1785817752231871139",
+      "beta": "assets/cementoss/cementoss_support/beta.webp?v=1785817752231871139",
+      "gamma": "assets/cementoss/cementoss_support/gamma.webp?v=1785817752231871139",
+      "special": "assets/cementoss/cementoss_support/special.webp?v=1785817752231871139",
+      "tuning": "assets/cementoss/cementoss_support/tuning.webp?v=1785817752231871139"
     },
     "dabi_strike": {
-      "portrait": "assets/dabi/dabi_strike/portrait.png?v=1785789525211026602",
-      "alpha": "assets/dabi/dabi_strike/alpha.webp?v=1785789525211026602",
-      "beta": "assets/dabi/dabi_strike/beta.webp?v=1785789525211026602",
-      "gamma": "assets/dabi/dabi_strike/gamma.webp?v=1785789525211026602",
-      "special": "assets/dabi/dabi_strike/special.webp?v=1785789525211026602",
-      "tuning": "assets/dabi/dabi_strike/tuning.webp?v=1785789525211026602"
+      "portrait": "assets/dabi/dabi_strike/portrait.png?v=1785817752231871139",
+      "alpha": "assets/dabi/dabi_strike/alpha.webp?v=1785817752231871139",
+      "beta": "assets/dabi/dabi_strike/beta.webp?v=1785817752231871139",
+      "gamma": "assets/dabi/dabi_strike/gamma.webp?v=1785817752231871139",
+      "special": "assets/dabi/dabi_strike/special.webp?v=1785817752231871139",
+      "tuning": "assets/dabi/dabi_strike/tuning.webp?v=1785817752231871139"
     },
     "dabi_technical": {
-      "portrait": "assets/dabi/dabi_technical/portrait.png?v=1785789525211026602",
-      "alpha": "assets/dabi/dabi_technical/alpha.webp?v=1785789525211026602",
-      "beta": "assets/dabi/dabi_technical/beta.webp?v=1785789525211026602",
-      "gamma": "assets/dabi/dabi_technical/gamma.webp?v=1785789525211026602",
-      "special": "assets/dabi/dabi_technical/special.webp?v=1785789525211026602",
-      "tuning": "assets/dabi/dabi_technical/tuning.webp?v=1785789525211026602"
+      "portrait": "assets/dabi/dabi_technical/portrait.png?v=1785817752231871139",
+      "alpha": "assets/dabi/dabi_technical/alpha.webp?v=1785817752231871139",
+      "beta": "assets/dabi/dabi_technical/beta.webp?v=1785817752231871139",
+      "gamma": "assets/dabi/dabi_technical/gamma.webp?v=1785817752231871139",
+      "special": "assets/dabi/dabi_technical/special.webp?v=1785817752231871139",
+      "tuning": "assets/dabi/dabi_technical/tuning.webp?v=1785817752231871139"
     },
     "endeavor_assault": {
-      "portrait": "assets/endeavor/endeavor_assault/portrait.png?v=1785789525211026602",
-      "alpha": "assets/endeavor/endeavor_assault/alpha.webp?v=1785789525211026602",
-      "beta": "assets/endeavor/endeavor_assault/beta.webp?v=1785789525211026602",
-      "beta_hold": "assets/endeavor/endeavor_assault/beta_hold.webp?v=1785789525211026602",
-      "gamma": "assets/endeavor/endeavor_assault/gamma.webp?v=1785789525211026602",
-      "special": "assets/endeavor/endeavor_assault/special.webp?v=1785789525211026602",
-      "tuning": "assets/endeavor/endeavor_assault/tuning.webp?v=1785789525211026602"
+      "portrait": "assets/endeavor/endeavor_assault/portrait.png?v=1785817752231871139",
+      "alpha": "assets/endeavor/endeavor_assault/alpha.webp?v=1785817752231871139",
+      "beta": "assets/endeavor/endeavor_assault/beta.webp?v=1785817752231871139",
+      "beta_hold": "assets/endeavor/endeavor_assault/beta_hold.webp?v=1785817752231871139",
+      "gamma": "assets/endeavor/endeavor_assault/gamma.webp?v=1785817752231871139",
+      "special": "assets/endeavor/endeavor_assault/special.webp?v=1785817752231871139",
+      "tuning": "assets/endeavor/endeavor_assault/tuning.webp?v=1785817752231871139"
     },
     "endeavor_strike": {
-      "portrait": "assets/endeavor/endeavor_strike/portrait.png?v=1785789525211026602",
-      "alpha": "assets/endeavor/endeavor_strike/alpha.webp?v=1785789525211026602",
-      "beta": "assets/endeavor/endeavor_strike/beta.webp?v=1785789525211026602",
-      "gamma": "assets/endeavor/endeavor_strike/gamma.webp?v=1785789525211026602",
-      "special": "assets/endeavor/endeavor_strike/special.webp?v=1785789525211026602",
-      "tuning": "assets/endeavor/endeavor_strike/tuning.webp?v=1785789525211026602"
+      "portrait": "assets/endeavor/endeavor_strike/portrait.png?v=1785817752231871139",
+      "alpha": "assets/endeavor/endeavor_strike/alpha.webp?v=1785817752231871139",
+      "beta": "assets/endeavor/endeavor_strike/beta.webp?v=1785817752231871139",
+      "gamma": "assets/endeavor/endeavor_strike/gamma.webp?v=1785817752231871139",
+      "special": "assets/endeavor/endeavor_strike/special.webp?v=1785817752231871139",
+      "tuning": "assets/endeavor/endeavor_strike/tuning.webp?v=1785817752231871139"
     },
     "gentle_criminal_technical": {
-      "portrait": "assets/gentle_criminal/gentle_criminal_technical/portrait.png?v=1785789525211026602",
-      "alpha": "assets/gentle_criminal/gentle_criminal_technical/alpha.png?v=1785789525211026602",
-      "beta": "assets/gentle_criminal/gentle_criminal_technical/beta.png?v=1785789525211026602",
-      "gamma": "assets/gentle_criminal/gentle_criminal_technical/gamma.png?v=1785789525211026602",
-      "portrait_v524": "assets/gentle_criminal/gentle_criminal_technical/portrait_v524.webp?v=1785789525211026602",
-      "portrait_v525": "assets/gentle_criminal/gentle_criminal_technical/portrait_v525.png?v=1785789525211026602",
-      "special": "assets/gentle_criminal/gentle_criminal_technical/special.png?v=1785789525211026602",
-      "tuning": "assets/gentle_criminal/gentle_criminal_technical/tuning.png?v=1785789525211026602"
+      "portrait": "assets/gentle_criminal/gentle_criminal_technical/portrait.png?v=1785817752231871139",
+      "alpha": "assets/gentle_criminal/gentle_criminal_technical/alpha.png?v=1785817752231871139",
+      "beta": "assets/gentle_criminal/gentle_criminal_technical/beta.png?v=1785817752231871139",
+      "gamma": "assets/gentle_criminal/gentle_criminal_technical/gamma.png?v=1785817752231871139",
+      "portrait_v524": "assets/gentle_criminal/gentle_criminal_technical/portrait_v524.webp?v=1785817752231871139",
+      "portrait_v525": "assets/gentle_criminal/gentle_criminal_technical/portrait_v525.png?v=1785817752231871139",
+      "special": "assets/gentle_criminal/gentle_criminal_technical/special.png?v=1785817752231871139",
+      "tuning": "assets/gentle_criminal/gentle_criminal_technical/tuning.png?v=1785817752231871139"
     },
     "hawks_rapid": {
-      "portrait": "assets/hawks/hawks_rapid/hawks_rapid.png?v=1785789525211026602",
-      "alpha": "assets/hawks/hawks_rapid/alpha.webp?v=1785789525211026602",
-      "beta": "assets/hawks/hawks_rapid/beta.webp?v=1785789525211026602",
-      "gamma": "assets/hawks/hawks_rapid/gamma.webp?v=1785789525211026602",
-      "special": "assets/hawks/hawks_rapid/special.webp?v=1785789525211026602",
-      "tuning": "assets/hawks/hawks_rapid/tuning.webp?v=1785789525211026602"
+      "portrait": "assets/hawks/hawks_rapid/hawks_rapid.png?v=1785817752231871139",
+      "alpha": "assets/hawks/hawks_rapid/alpha.webp?v=1785817752231871139",
+      "beta": "assets/hawks/hawks_rapid/beta.webp?v=1785817752231871139",
+      "gamma": "assets/hawks/hawks_rapid/gamma.webp?v=1785817752231871139",
+      "special": "assets/hawks/hawks_rapid/special.webp?v=1785817752231871139",
+      "tuning": "assets/hawks/hawks_rapid/tuning.webp?v=1785817752231871139"
     },
     "hawks_strike": {
-      "portrait": "assets/hawks/hawks_strike/portrait.png?v=1785789525211026602",
-      "alpha": "assets/hawks/hawks_strike/alpha.webp?v=1785789525211026602",
-      "beta": "assets/hawks/hawks_strike/beta.webp?v=1785789525211026602",
-      "gamma": "assets/hawks/hawks_strike/gamma.webp?v=1785789525211026602",
-      "special": "assets/hawks/hawks_strike/special.webp?v=1785789525211026602",
-      "tuning": "assets/hawks/hawks_strike/tuning.webp?v=1785789525211026602"
+      "portrait": "assets/hawks/hawks_strike/portrait.png?v=1785817752231871139",
+      "alpha": "assets/hawks/hawks_strike/alpha.webp?v=1785817752231871139",
+      "beta": "assets/hawks/hawks_strike/beta.webp?v=1785817752231871139",
+      "gamma": "assets/hawks/hawks_strike/gamma.webp?v=1785817752231871139",
+      "special": "assets/hawks/hawks_strike/special.webp?v=1785817752231871139",
+      "tuning": "assets/hawks/hawks_strike/tuning.webp?v=1785817752231871139"
     },
     "ibara_support": {
-      "portrait": "assets/ibara/ibara_support/portrait.png?v=1785789525211026602",
-      "alpha": "assets/ibara/ibara_support/alpha.webp?v=1785789525211026602",
-      "beta": "assets/ibara/ibara_support/beta.webp?v=1785789525211026602",
-      "gamma": "assets/ibara/ibara_support/gamma.webp?v=1785789525211026602",
-      "special": "assets/ibara/ibara_support/special.webp?v=1785789525211026602",
-      "tuning": "assets/ibara/ibara_support/tuning.webp?v=1785789525211026602"
+      "portrait": "assets/ibara/ibara_support/portrait.png?v=1785817752231871139",
+      "alpha": "assets/ibara/ibara_support/alpha.webp?v=1785817752231871139",
+      "beta": "assets/ibara/ibara_support/beta.webp?v=1785817752231871139",
+      "gamma": "assets/ibara/ibara_support/gamma.webp?v=1785817752231871139",
+      "special": "assets/ibara/ibara_support/special.webp?v=1785817752231871139",
+      "tuning": "assets/ibara/ibara_support/tuning.webp?v=1785817752231871139"
     },
     "kaminari_strike": {
-      "portrait": "assets/kaminari/kaminari_strike/portrait.png?v=1785789525211026602",
-      "alpha": "assets/kaminari/kaminari_strike/alpha.webp?v=1785789525211026602",
-      "beta": "assets/kaminari/kaminari_strike/beta.webp?v=1785789525211026602",
-      "gamma": "assets/kaminari/kaminari_strike/gamma.webp?v=1785789525211026602",
-      "special": "assets/kaminari/kaminari_strike/special.webp?v=1785789525211026602",
-      "tuning": "assets/kaminari/kaminari_strike/tuning.webp?v=1785789525211026602"
+      "portrait": "assets/kaminari/kaminari_strike/portrait.png?v=1785817752231871139",
+      "alpha": "assets/kaminari/kaminari_strike/alpha.webp?v=1785817752231871139",
+      "beta": "assets/kaminari/kaminari_strike/beta.webp?v=1785817752231871139",
+      "gamma": "assets/kaminari/kaminari_strike/gamma.webp?v=1785817752231871139",
+      "special": "assets/kaminari/kaminari_strike/special.webp?v=1785817752231871139",
+      "tuning": "assets/kaminari/kaminari_strike/tuning.webp?v=1785817752231871139"
     },
     "kaminari_technical": {
-      "portrait": "assets/kaminari/kaminari_technical/portrait.png?v=1785789525211026602",
-      "alpha": "assets/kaminari/kaminari_technical/alpha.webp?v=1785789525211026602",
-      "alpha_hold": "assets/kaminari/kaminari_technical/alpha_hold.webp?v=1785789525211026602",
-      "beta": "assets/kaminari/kaminari_technical/beta.webp?v=1785789525211026602",
-      "gamma": "assets/kaminari/kaminari_technical/gamma.webp?v=1785789525211026602",
-      "special": "assets/kaminari/kaminari_technical/special.webp?v=1785789525211026602",
-      "tuning": "assets/kaminari/kaminari_technical/tuning.webp?v=1785789525211026602"
+      "portrait": "assets/kaminari/kaminari_technical/portrait.png?v=1785817752231871139",
+      "alpha": "assets/kaminari/kaminari_technical/alpha.webp?v=1785817752231871139",
+      "alpha_hold": "assets/kaminari/kaminari_technical/alpha_hold.webp?v=1785817752231871139",
+      "beta": "assets/kaminari/kaminari_technical/beta.webp?v=1785817752231871139",
+      "gamma": "assets/kaminari/kaminari_technical/gamma.webp?v=1785817752231871139",
+      "special": "assets/kaminari/kaminari_technical/special.webp?v=1785817752231871139",
+      "tuning": "assets/kaminari/kaminari_technical/tuning.webp?v=1785817752231871139"
     },
     "kendo_assault": {
-      "portrait": "assets/kendo/kendo_assault/portrait.png?v=1785789525211026602",
-      "alpha": "assets/kendo/kendo_assault/alpha.webp?v=1785789525211026602",
-      "beta": "assets/kendo/kendo_assault/beta.webp?v=1785789525211026602",
-      "gamma": "assets/kendo/kendo_assault/gamma.webp?v=1785789525211026602",
-      "special": "assets/kendo/kendo_assault/special.webp?v=1785789525211026602",
-      "tuning": "assets/kendo/kendo_assault/tuning.webp?v=1785789525211026602"
+      "portrait": "assets/kendo/kendo_assault/portrait.png?v=1785817752231871139",
+      "alpha": "assets/kendo/kendo_assault/alpha.webp?v=1785817752231871139",
+      "beta": "assets/kendo/kendo_assault/beta.webp?v=1785817752231871139",
+      "gamma": "assets/kendo/kendo_assault/gamma.webp?v=1785817752231871139",
+      "special": "assets/kendo/kendo_assault/special.webp?v=1785817752231871139",
+      "tuning": "assets/kendo/kendo_assault/tuning.webp?v=1785817752231871139"
     },
     "kendo_strike": {
-      "portrait": "assets/kendo/kendo_strike/portrait.png?v=1785789525211026602",
-      "alpha": "assets/kendo/kendo_strike/alpha.webp?v=1785789525211026602",
-      "beta": "assets/kendo/kendo_strike/beta.webp?v=1785789525211026602",
-      "gamma": "assets/kendo/kendo_strike/gamma.webp?v=1785789525211026602",
-      "special": "assets/kendo/kendo_strike/special.webp?v=1785789525211026602",
-      "tuning": "assets/kendo/kendo_strike/tuning.webp?v=1785789525211026602"
+      "portrait": "assets/kendo/kendo_strike/portrait.png?v=1785817752231871139",
+      "alpha": "assets/kendo/kendo_strike/alpha.webp?v=1785817752231871139",
+      "beta": "assets/kendo/kendo_strike/beta.webp?v=1785817752231871139",
+      "gamma": "assets/kendo/kendo_strike/gamma.webp?v=1785817752231871139",
+      "special": "assets/kendo/kendo_strike/special.webp?v=1785817752231871139",
+      "tuning": "assets/kendo/kendo_strike/tuning.webp?v=1785817752231871139"
     },
     "kirishima_assault": {
-      "portrait": "assets/kirishima/kirishima_assault/portrait.png?v=1785789525211026602",
-      "alpha": "assets/kirishima/kirishima_assault/alpha.webp?v=1785789525211026602",
-      "beta": "assets/kirishima/kirishima_assault/beta.webp?v=1785789525211026602",
-      "gamma": "assets/kirishima/kirishima_assault/gamma.webp?v=1785789525211026602",
-      "special": "assets/kirishima/kirishima_assault/special.webp?v=1785789525211026602",
-      "tuning": "assets/kirishima/kirishima_assault/tuning.webp?v=1785789525211026602"
+      "portrait": "assets/kirishima/kirishima_assault/portrait.png?v=1785817752231871139",
+      "alpha": "assets/kirishima/kirishima_assault/alpha.webp?v=1785817752231871139",
+      "beta": "assets/kirishima/kirishima_assault/beta.webp?v=1785817752231871139",
+      "gamma": "assets/kirishima/kirishima_assault/gamma.webp?v=1785817752231871139",
+      "special": "assets/kirishima/kirishima_assault/special.webp?v=1785817752231871139",
+      "tuning": "assets/kirishima/kirishima_assault/tuning.webp?v=1785817752231871139"
     },
     "kirishima_strike": {
-      "portrait": "assets/kirishima/kirishima_strike/portrait.png?v=1785789525211026602",
-      "alpha": "assets/kirishima/kirishima_strike/alpha.webp?v=1785789525211026602",
-      "beta": "assets/kirishima/kirishima_strike/beta.webp?v=1785789525211026602",
-      "gamma": "assets/kirishima/kirishima_strike/gamma.webp?v=1785789525211026602",
-      "special": "assets/kirishima/kirishima_strike/special.webp?v=1785789525211026602",
-      "tuning": "assets/kirishima/kirishima_strike/tuning.webp?v=1785789525211026602"
+      "portrait": "assets/kirishima/kirishima_strike/portrait.png?v=1785817752231871139",
+      "alpha": "assets/kirishima/kirishima_strike/alpha.webp?v=1785817752231871139",
+      "beta": "assets/kirishima/kirishima_strike/beta.webp?v=1785817752231871139",
+      "gamma": "assets/kirishima/kirishima_strike/gamma.webp?v=1785817752231871139",
+      "special": "assets/kirishima/kirishima_strike/special.webp?v=1785817752231871139",
+      "tuning": "assets/kirishima/kirishima_strike/tuning.webp?v=1785817752231871139"
     },
     "kurogiri_support": {
-      "portrait": "assets/kurogiri/kurogiri_support/portrait.png?v=1785789525211026602",
-      "alpha": "assets/kurogiri/kurogiri_support/alpha.webp?v=1785789525211026602",
-      "beta": "assets/kurogiri/kurogiri_support/beta.webp?v=1785789525211026602",
-      "gamma": "assets/kurogiri/kurogiri_support/gamma.webp?v=1785789525211026602",
-      "gamma_hold": "assets/kurogiri/kurogiri_support/gamma_hold.webp?v=1785789525211026602",
-      "special": "assets/kurogiri/kurogiri_support/special.webp?v=1785789525211026602",
-      "tuning": "assets/kurogiri/kurogiri_support/tuning.webp?v=1785789525211026602"
+      "portrait": "assets/kurogiri/kurogiri_support/portrait.png?v=1785817752231871139",
+      "alpha": "assets/kurogiri/kurogiri_support/alpha.webp?v=1785817752231871139",
+      "beta": "assets/kurogiri/kurogiri_support/beta.webp?v=1785817752231871139",
+      "gamma": "assets/kurogiri/kurogiri_support/gamma.webp?v=1785817752231871139",
+      "gamma_hold": "assets/kurogiri/kurogiri_support/gamma_hold.webp?v=1785817752231871139",
+      "special": "assets/kurogiri/kurogiri_support/special.webp?v=1785817752231871139",
+      "tuning": "assets/kurogiri/kurogiri_support/tuning.webp?v=1785817752231871139"
     },
     "lady_nagant_strike": {
-      "portrait": "assets/lady_nagant/lady_nagant_strike/portrait.png?v=1785789525211026602",
-      "alpha": "assets/lady_nagant/lady_nagant_strike/alpha.webp?v=1785789525211026602",
-      "beta": "assets/lady_nagant/lady_nagant_strike/beta.webp?v=1785789525211026602",
-      "gamma": "assets/lady_nagant/lady_nagant_strike/gamma.webp?v=1785789525211026602",
-      "special": "assets/lady_nagant/lady_nagant_strike/special.webp?v=1785789525211026602",
-      "tuning": "assets/lady_nagant/lady_nagant_strike/tuning.webp?v=1785789525211026602"
+      "portrait": "assets/lady_nagant/lady_nagant_strike/portrait.png?v=1785817752231871139",
+      "alpha": "assets/lady_nagant/lady_nagant_strike/alpha.webp?v=1785817752231871139",
+      "beta": "assets/lady_nagant/lady_nagant_strike/beta.webp?v=1785817752231871139",
+      "gamma": "assets/lady_nagant/lady_nagant_strike/gamma.webp?v=1785817752231871139",
+      "special": "assets/lady_nagant/lady_nagant_strike/special.webp?v=1785817752231871139",
+      "tuning": "assets/lady_nagant/lady_nagant_strike/tuning.webp?v=1785817752231871139"
     },
     "midoriya_assault": {
-      "portrait": "assets/midoriya/midoriya_assault/portrait.png?v=1785789525211026602",
-      "alpha": "assets/midoriya/midoriya_assault/alpha.webp?v=1785789525211026602",
-      "alpha_fullburst": "assets/midoriya/midoriya_assault/alpha_fullburst.webp?v=1785789525211026602",
-      "beta": "assets/midoriya/midoriya_assault/beta.webp?v=1785789525211026602",
-      "gamma": "assets/midoriya/midoriya_assault/gamma.webp?v=1785789525211026602",
-      "special": "assets/midoriya/midoriya_assault/special.png?v=1785789525211026602",
-      "tuning": "assets/midoriya/midoriya_assault/tuning.png?v=1785789525211026602"
+      "portrait": "assets/midoriya/midoriya_assault/portrait.png?v=1785817752231871139",
+      "alpha": "assets/midoriya/midoriya_assault/alpha.webp?v=1785817752231871139",
+      "alpha_fullburst": "assets/midoriya/midoriya_assault/alpha_fullburst.webp?v=1785817752231871139",
+      "beta": "assets/midoriya/midoriya_assault/beta.webp?v=1785817752231871139",
+      "gamma": "assets/midoriya/midoriya_assault/gamma.webp?v=1785817752231871139",
+      "special": "assets/midoriya/midoriya_assault/special.png?v=1785817752231871139",
+      "tuning": "assets/midoriya/midoriya_assault/tuning.png?v=1785817752231871139"
     },
     "midoriya_attack": {
-      "portrait": "assets/midoriya/midoriya_attack/portrait.png?v=1785789525211026602",
-      "alpha": "assets/midoriya/midoriya_attack/alpha.webp?v=1785789525211026602",
-      "beta": "assets/midoriya/midoriya_attack/beta.webp?v=1785789525211026602",
-      "gamma": "assets/midoriya/midoriya_attack/gamma.webp?v=1785789525211026602",
-      "special": "assets/midoriya/midoriya_attack/special.png?v=1785789525211026602",
-      "tuning": "assets/midoriya/midoriya_attack/tuning.webp?v=1785789525211026602"
+      "portrait": "assets/midoriya/midoriya_attack/portrait.png?v=1785817752231871139",
+      "alpha": "assets/midoriya/midoriya_attack/alpha.webp?v=1785817752231871139",
+      "beta": "assets/midoriya/midoriya_attack/beta.webp?v=1785817752231871139",
+      "gamma": "assets/midoriya/midoriya_attack/gamma.webp?v=1785817752231871139",
+      "special": "assets/midoriya/midoriya_attack/special.png?v=1785817752231871139",
+      "tuning": "assets/midoriya/midoriya_attack/tuning.webp?v=1785817752231871139"
     },
     "midoriya_ofa": {
-      "portrait": "assets/midoriya_ofa/portrait.png?v=1785789525211026602",
-      "alpha": "assets/midoriya_ofa/alpha.webp?v=1785789525211026602",
-      "beta": "assets/midoriya_ofa/beta.webp?v=1785789525211026602",
-      "beta_hold": "assets/midoriya_ofa/beta_hold.webp?v=1785789525211026602",
-      "gamma": "assets/midoriya_ofa/gamma.webp?v=1785789525211026602",
-      "gamma_hold": "assets/midoriya_ofa/gamma_hold.webp?v=1785789525211026602",
-      "special": "assets/midoriya_ofa/special.webp?v=1785789525211026602",
-      "tuning": "assets/midoriya_ofa/tuning.webp?v=1785789525211026602"
+      "portrait": "assets/midoriya_ofa/portrait.png?v=1785817752231871139",
+      "alpha": "assets/midoriya_ofa/alpha.webp?v=1785817752231871139",
+      "beta": "assets/midoriya_ofa/beta.webp?v=1785817752231871139",
+      "beta_hold": "assets/midoriya_ofa/beta_hold.webp?v=1785817752231871139",
+      "gamma": "assets/midoriya_ofa/gamma.webp?v=1785817752231871139",
+      "gamma_hold": "assets/midoriya_ofa/gamma_hold.webp?v=1785817752231871139",
+      "special": "assets/midoriya_ofa/special.webp?v=1785817752231871139",
+      "tuning": "assets/midoriya_ofa/tuning.webp?v=1785817752231871139"
     },
     "mirio_rapid": {
-      "portrait": "assets/mirio/mirio_rapid/portrait.png?v=1785789525211026602",
-      "alpha": "assets/mirio/mirio_rapid/alpha.webp?v=1785789525211026602",
-      "alpha_hold": "assets/mirio/mirio_rapid/alpha_hold.webp?v=1785789525211026602",
-      "beta": "assets/mirio/mirio_rapid/beta.webp?v=1785789525211026602",
-      "gamma": "assets/mirio/mirio_rapid/gamma.webp?v=1785789525211026602",
-      "special": "assets/mirio/mirio_rapid/special.webp?v=1785789525211026602",
-      "tuning": "assets/mirio/mirio_rapid/tuning.webp?v=1785789525211026602"
+      "portrait": "assets/mirio/mirio_rapid/portrait.png?v=1785817752231871139",
+      "alpha": "assets/mirio/mirio_rapid/alpha.webp?v=1785817752231871139",
+      "alpha_hold": "assets/mirio/mirio_rapid/alpha_hold.webp?v=1785817752231871139",
+      "beta": "assets/mirio/mirio_rapid/beta.webp?v=1785817752231871139",
+      "gamma": "assets/mirio/mirio_rapid/gamma.webp?v=1785817752231871139",
+      "special": "assets/mirio/mirio_rapid/special.webp?v=1785817752231871139",
+      "tuning": "assets/mirio/mirio_rapid/tuning.webp?v=1785817752231871139"
     },
     "mirio_technical": {
-      "portrait": "assets/mirio/mirio_technical/portrait.png?v=1785789525211026602",
-      "alpha": "assets/mirio/mirio_technical/alpha.webp?v=1785789525211026602",
-      "beta": "assets/mirio/mirio_technical/beta.webp?v=1785789525211026602",
-      "gamma": "assets/mirio/mirio_technical/gamma.webp?v=1785789525211026602",
-      "special": "assets/mirio/mirio_technical/special.webp?v=1785789525211026602",
-      "tuning": "assets/mirio/mirio_technical/tuning.webp?v=1785789525211026602"
+      "portrait": "assets/mirio/mirio_technical/portrait.png?v=1785817752231871139",
+      "alpha": "assets/mirio/mirio_technical/alpha.webp?v=1785817752231871139",
+      "beta": "assets/mirio/mirio_technical/beta.webp?v=1785817752231871139",
+      "gamma": "assets/mirio/mirio_technical/gamma.webp?v=1785817752231871139",
+      "special": "assets/mirio/mirio_technical/special.webp?v=1785817752231871139",
+      "tuning": "assets/mirio/mirio_technical/tuning.webp?v=1785817752231871139"
     },
     "mirko_rapid": {
-      "portrait": "assets/mirko/mirko_rapid/portrait.png?v=1785789525211026602",
-      "alpha": "assets/mirko/mirko_rapid/alpha.webp?v=1785789525211026602",
-      "beta": "assets/mirko/mirko_rapid/beta.webp?v=1785789525211026602",
-      "gamma": "assets/mirko/mirko_rapid/gamma.webp?v=1785789525211026602",
-      "special": "assets/mirko/mirko_rapid/special.webp?v=1785789525211026602",
-      "tuning": "assets/mirko/mirko_rapid/tuning.webp?v=1785789525211026602"
+      "portrait": "assets/mirko/mirko_rapid/portrait.png?v=1785817752231871139",
+      "alpha": "assets/mirko/mirko_rapid/alpha.webp?v=1785817752231871139",
+      "beta": "assets/mirko/mirko_rapid/beta.webp?v=1785817752231871139",
+      "gamma": "assets/mirko/mirko_rapid/gamma.webp?v=1785817752231871139",
+      "special": "assets/mirko/mirko_rapid/special.webp?v=1785817752231871139",
+      "tuning": "assets/mirko/mirko_rapid/tuning.webp?v=1785817752231871139"
     },
     "momo_support": {
-      "portrait": "assets/momo/momo_support/portrait.png?v=1785789525211026602",
-      "alpha": "assets/momo/momo_support/alpha.webp?v=1785789525211026602",
-      "beta": "assets/momo/momo_support/beta.webp?v=1785789525211026602",
-      "gamma": "assets/momo/momo_support/gamma.webp?v=1785789525211026602",
-      "special": "assets/momo/momo_support/special.webp?v=1785789525211026602",
-      "tuning": "assets/momo/momo_support/tuning.webp?v=1785789525211026602"
+      "portrait": "assets/momo/momo_support/portrait.png?v=1785817752231871139",
+      "alpha": "assets/momo/momo_support/alpha.webp?v=1785817752231871139",
+      "beta": "assets/momo/momo_support/beta.webp?v=1785817752231871139",
+      "gamma": "assets/momo/momo_support/gamma.webp?v=1785817752231871139",
+      "special": "assets/momo/momo_support/special.webp?v=1785817752231871139",
+      "tuning": "assets/momo/momo_support/tuning.webp?v=1785817752231871139"
     },
     "monoma_technical": {
-      "portrait": "assets/monoma/monoma_technical/portrait.png?v=1785789525211026602",
-      "alpha": "assets/monoma/monoma_technical/alpha.webp?v=1785789525211026602",
-      "beta": "assets/monoma/monoma_technical/beta.webp?v=1785789525211026602",
-      "gamma": "assets/monoma/monoma_technical/gamma.webp?v=1785789525211026602",
-      "special": "assets/monoma/monoma_technical/special.webp?v=1785789525211026602",
-      "tuning": "assets/monoma/monoma_technical/tuning.webp?v=1785789525211026602"
+      "portrait": "assets/monoma/monoma_technical/portrait.png?v=1785817752231871139",
+      "alpha": "assets/monoma/monoma_technical/alpha.webp?v=1785817752231871139",
+      "beta": "assets/monoma/monoma_technical/beta.webp?v=1785817752231871139",
+      "gamma": "assets/monoma/monoma_technical/gamma.webp?v=1785817752231871139",
+      "special": "assets/monoma/monoma_technical/special.webp?v=1785817752231871139",
+      "tuning": "assets/monoma/monoma_technical/tuning.webp?v=1785817752231871139"
     },
     "mr_compress_support": {
-      "portrait": "assets/mr_compress/mr_compress_support/portrait.png?v=1785789525211026602",
-      "alpha": "assets/mr_compress/mr_compress_support/alpha.webp?v=1785789525211026602",
-      "beta": "assets/mr_compress/mr_compress_support/beta.webp?v=1785789525211026602",
-      "gamma": "assets/mr_compress/mr_compress_support/gamma.webp?v=1785789525211026602",
-      "special": "assets/mr_compress/mr_compress_support/special.webp?v=1785789525211026602",
-      "tuning": "assets/mr_compress/mr_compress_support/tuning.webp?v=1785789525211026602"
+      "portrait": "assets/mr_compress/mr_compress_support/portrait.png?v=1785817752231871139",
+      "alpha": "assets/mr_compress/mr_compress_support/alpha.webp?v=1785817752231871139",
+      "beta": "assets/mr_compress/mr_compress_support/beta.webp?v=1785817752231871139",
+      "gamma": "assets/mr_compress/mr_compress_support/gamma.webp?v=1785817752231871139",
+      "special": "assets/mr_compress/mr_compress_support/special.webp?v=1785817752231871139",
+      "tuning": "assets/mr_compress/mr_compress_support/tuning.webp?v=1785817752231871139"
     },
     "mt_lady_assault": {
-      "portrait": "assets/mt_lady/mt_lady_assault/portrait.png?v=1785789525211026602",
-      "alpha": "assets/mt_lady/mt_lady_assault/alpha.webp?v=1785789525211026602",
-      "beta": "assets/mt_lady/mt_lady_assault/beta.webp?v=1785789525211026602",
-      "gamma": "assets/mt_lady/mt_lady_assault/gamma.webp?v=1785789525211026602",
-      "special": "assets/mt_lady/mt_lady_assault/special.webp?v=1785789525211026602",
-      "tuning": "assets/mt_lady/mt_lady_assault/tuning.webp?v=1785789525211026602"
+      "portrait": "assets/mt_lady/mt_lady_assault/portrait.png?v=1785817752231871139",
+      "alpha": "assets/mt_lady/mt_lady_assault/alpha.webp?v=1785817752231871139",
+      "beta": "assets/mt_lady/mt_lady_assault/beta.webp?v=1785817752231871139",
+      "gamma": "assets/mt_lady/mt_lady_assault/gamma.webp?v=1785817752231871139",
+      "special": "assets/mt_lady/mt_lady_assault/special.webp?v=1785817752231871139",
+      "tuning": "assets/mt_lady/mt_lady_assault/tuning.webp?v=1785817752231871139"
     },
     "nejire_support": {
-      "portrait": "assets/nejire/nejire_support/portrait.png?v=1785789525211026602",
-      "alpha": "assets/nejire/nejire_support/alpha.webp?v=1785789525211026602",
-      "beta": "assets/nejire/nejire_support/beta.webp?v=1785789525211026602",
-      "gamma": "assets/nejire/nejire_support/gamma.webp?v=1785789525211026602",
-      "special": "assets/nejire/nejire_support/special.webp?v=1785789525211026602",
-      "tuning": "assets/nejire/nejire_support/tuning.webp?v=1785789525211026602"
+      "portrait": "assets/nejire/nejire_support/portrait.png?v=1785817752231871139",
+      "alpha": "assets/nejire/nejire_support/alpha.webp?v=1785817752231871139",
+      "beta": "assets/nejire/nejire_support/beta.webp?v=1785817752231871139",
+      "gamma": "assets/nejire/nejire_support/gamma.webp?v=1785817752231871139",
+      "special": "assets/nejire/nejire_support/special.webp?v=1785817752231871139",
+      "tuning": "assets/nejire/nejire_support/tuning.webp?v=1785817752231871139"
     },
     "nejire_technical": {
-      "portrait": "assets/nejire/nejire_technical/portrait.png?v=1785789525211026602",
-      "alpha": "assets/nejire/nejire_technical/alpha.webp?v=1785789525211026602",
-      "beta": "assets/nejire/nejire_technical/beta.webp?v=1785789525211026602",
-      "gamma": "assets/nejire/nejire_technical/gamma.webp?v=1785789525211026602",
-      "special": "assets/nejire/nejire_technical/special.webp?v=1785789525211026602",
-      "tuning": "assets/nejire/nejire_technical/tuning.webp?v=1785789525211026602"
+      "portrait": "assets/nejire/nejire_technical/portrait.png?v=1785817752231871139",
+      "alpha": "assets/nejire/nejire_technical/alpha.webp?v=1785817752231871139",
+      "beta": "assets/nejire/nejire_technical/beta.webp?v=1785817752231871139",
+      "gamma": "assets/nejire/nejire_technical/gamma.webp?v=1785817752231871139",
+      "special": "assets/nejire/nejire_technical/special.webp?v=1785817752231871139",
+      "tuning": "assets/nejire/nejire_technical/tuning.webp?v=1785817752231871139"
     },
     "ochaco_assault": {
-      "portrait": "assets/ochaco/ochaco_assault/portrait.png?v=1785789525211026602",
-      "alpha": "assets/ochaco/ochaco_assault/alpha.webp?v=1785789525211026602",
-      "alpha_hold": "assets/ochaco/ochaco_assault/alpha_hold.webp?v=1785789525211026602",
-      "beta": "assets/ochaco/ochaco_assault/beta.webp?v=1785789525211026602",
-      "gamma": "assets/ochaco/ochaco_assault/gamma.webp?v=1785789525211026602",
-      "gamma_hold": "assets/ochaco/ochaco_assault/gamma_hold.webp?v=1785789525211026602",
-      "special": "assets/ochaco/ochaco_assault/special.webp?v=1785789525211026602",
-      "tuning": "assets/ochaco/ochaco_assault/tuning.webp?v=1785789525211026602"
+      "portrait": "assets/ochaco/ochaco_assault/portrait.png?v=1785817752231871139",
+      "alpha": "assets/ochaco/ochaco_assault/alpha.webp?v=1785817752231871139",
+      "alpha_hold": "assets/ochaco/ochaco_assault/alpha_hold.webp?v=1785817752231871139",
+      "beta": "assets/ochaco/ochaco_assault/beta.webp?v=1785817752231871139",
+      "gamma": "assets/ochaco/ochaco_assault/gamma.webp?v=1785817752231871139",
+      "gamma_hold": "assets/ochaco/ochaco_assault/gamma_hold.webp?v=1785817752231871139",
+      "special": "assets/ochaco/ochaco_assault/special.webp?v=1785817752231871139",
+      "tuning": "assets/ochaco/ochaco_assault/tuning.webp?v=1785817752231871139"
     },
     "ochaco_rapid": {
-      "portrait": "assets/ochaco/ochaco_rapid/portrait.png?v=1785789525211026602",
-      "alpha": "assets/ochaco/ochaco_rapid/alpha.webp?v=1785789525211026602",
-      "beta": "assets/ochaco/ochaco_rapid/beta.webp?v=1785789525211026602",
-      "gamma": "assets/ochaco/ochaco_rapid/gamma.webp?v=1785789525211026602",
-      "gamma_hold": "assets/ochaco/ochaco_rapid/gamma_hold.webp?v=1785789525211026602",
-      "special": "assets/ochaco/ochaco_rapid/special.webp?v=1785789525211026602",
-      "tuning": "assets/ochaco/ochaco_rapid/tuning.webp?v=1785789525211026602"
+      "portrait": "assets/ochaco/ochaco_rapid/portrait.png?v=1785817752231871139",
+      "alpha": "assets/ochaco/ochaco_rapid/alpha.webp?v=1785817752231871139",
+      "beta": "assets/ochaco/ochaco_rapid/beta.webp?v=1785817752231871139",
+      "gamma": "assets/ochaco/ochaco_rapid/gamma.webp?v=1785817752231871139",
+      "gamma_hold": "assets/ochaco/ochaco_rapid/gamma_hold.webp?v=1785817752231871139",
+      "special": "assets/ochaco/ochaco_rapid/special.webp?v=1785817752231871139",
+      "tuning": "assets/ochaco/ochaco_rapid/tuning.webp?v=1785817752231871139"
     },
     "overhaul_assault": {
-      "portrait": "assets/overhaul/overhaul_assault/portrait.png?v=1785789525211026602",
-      "alpha": "assets/overhaul/overhaul_assault/alpha.webp?v=1785789525211026602",
-      "alpha_hold": "assets/overhaul/overhaul_assault/alpha_hold.webp?v=1785789525211026602",
-      "beta": "assets/overhaul/overhaul_assault/beta.webp?v=1785789525211026602",
-      "gamma": "assets/overhaul/overhaul_assault/gamma.webp?v=1785789525211026602",
-      "special": "assets/overhaul/overhaul_assault/special.webp?v=1785789525211026602",
-      "tuning": "assets/overhaul/overhaul_assault/tuning.webp?v=1785789525211026602"
+      "portrait": "assets/overhaul/overhaul_assault/portrait.png?v=1785817752231871139",
+      "alpha": "assets/overhaul/overhaul_assault/alpha.webp?v=1785817752231871139",
+      "alpha_hold": "assets/overhaul/overhaul_assault/alpha_hold.webp?v=1785817752231871139",
+      "beta": "assets/overhaul/overhaul_assault/beta.webp?v=1785817752231871139",
+      "gamma": "assets/overhaul/overhaul_assault/gamma.webp?v=1785817752231871139",
+      "special": "assets/overhaul/overhaul_assault/special.webp?v=1785817752231871139",
+      "tuning": "assets/overhaul/overhaul_assault/tuning.webp?v=1785817752231871139"
     },
     "overhaul_support": {
-      "portrait": "assets/overhaul/overhaul_support/portrait.png?v=1785789525211026602",
-      "alpha": "assets/overhaul/overhaul_support/alpha.webp?v=1785789525211026602",
-      "beta": "assets/overhaul/overhaul_support/beta.webp?v=1785789525211026602",
-      "gamma": "assets/overhaul/overhaul_support/gamma.webp?v=1785789525211026602",
-      "special": "assets/overhaul/overhaul_support/special.webp?v=1785789525211026602",
-      "tuning": "assets/overhaul/overhaul_support/tuning.webp?v=1785789525211026602"
+      "portrait": "assets/overhaul/overhaul_support/portrait.png?v=1785817752231871139",
+      "alpha": "assets/overhaul/overhaul_support/alpha.webp?v=1785817752231871139",
+      "beta": "assets/overhaul/overhaul_support/beta.webp?v=1785817752231871139",
+      "gamma": "assets/overhaul/overhaul_support/gamma.webp?v=1785817752231871139",
+      "special": "assets/overhaul/overhaul_support/special.webp?v=1785817752231871139",
+      "tuning": "assets/overhaul/overhaul_support/tuning.webp?v=1785817752231871139"
     },
     "present_mic_strike": {
-      "portrait": "assets/present_mic/present_mic_strike/portrait.png?v=1785789525211026602",
-      "alpha": "assets/present_mic/present_mic_strike/alpha.webp?v=1785789525211026602",
-      "beta": "assets/present_mic/present_mic_strike/beta.webp?v=1785789525211026602",
-      "beta_hold": "assets/present_mic/present_mic_strike/beta_hold.webp?v=1785789525211026602",
-      "gamma": "assets/present_mic/present_mic_strike/gamma.webp?v=1785789525211026602",
-      "special": "assets/present_mic/present_mic_strike/special.webp?v=1785789525211026602",
-      "tuning": "assets/present_mic/present_mic_strike/tuning.webp?v=1785789525211026602"
+      "portrait": "assets/present_mic/present_mic_strike/portrait.png?v=1785817752231871139",
+      "alpha": "assets/present_mic/present_mic_strike/alpha.webp?v=1785817752231871139",
+      "beta": "assets/present_mic/present_mic_strike/beta.webp?v=1785817752231871139",
+      "beta_hold": "assets/present_mic/present_mic_strike/beta_hold.webp?v=1785817752231871139",
+      "gamma": "assets/present_mic/present_mic_strike/gamma.webp?v=1785817752231871139",
+      "special": "assets/present_mic/present_mic_strike/special.webp?v=1785817752231871139",
+      "tuning": "assets/present_mic/present_mic_strike/tuning.webp?v=1785817752231871139"
     },
     "present_mic_technical": {
-      "portrait": "assets/present_mic/present_mic_technical/portrait.png?v=1785789525211026602",
-      "alpha": "assets/present_mic/present_mic_technical/alpha.webp?v=1785789525211026602",
-      "alpha_hold": "assets/present_mic/present_mic_technical/alpha_hold.webp?v=1785789525211026602",
-      "beta": "assets/present_mic/present_mic_technical/beta.webp?v=1785789525211026602",
-      "beta_hold": "assets/present_mic/present_mic_technical/beta_hold.webp?v=1785789525211026602",
-      "gamma": "assets/present_mic/present_mic_technical/gamma.webp?v=1785789525211026602",
-      "special": "assets/present_mic/present_mic_technical/special.webp?v=1785789525211026602",
-      "tuning": "assets/present_mic/present_mic_technical/tuning.webp?v=1785789525211026602"
+      "portrait": "assets/present_mic/present_mic_technical/portrait.png?v=1785817752231871139",
+      "alpha": "assets/present_mic/present_mic_technical/alpha.webp?v=1785817752231871139",
+      "alpha_hold": "assets/present_mic/present_mic_technical/alpha_hold.webp?v=1785817752231871139",
+      "beta": "assets/present_mic/present_mic_technical/beta.webp?v=1785817752231871139",
+      "beta_hold": "assets/present_mic/present_mic_technical/beta_hold.webp?v=1785817752231871139",
+      "gamma": "assets/present_mic/present_mic_technical/gamma.webp?v=1785817752231871139",
+      "special": "assets/present_mic/present_mic_technical/special.webp?v=1785817752231871139",
+      "tuning": "assets/present_mic/present_mic_technical/tuning.webp?v=1785817752231871139"
     },
     "shigaraki_assault": {
-      "portrait": "assets/shigaraki/shigaraki_assault/portrait.png?v=1785789525211026602",
-      "alpha": "assets/shigaraki/shigaraki_assault/alpha.webp?v=1785789525211026602",
-      "beta": "assets/shigaraki/shigaraki_assault/beta.webp?v=1785789525211026602",
-      "gamma": "assets/shigaraki/shigaraki_assault/gamma.webp?v=1785789525211026602",
-      "special": "assets/shigaraki/shigaraki_assault/special.webp?v=1785789525211026602",
-      "tuning": "assets/shigaraki/shigaraki_assault/tuning.webp?v=1785789525211026602"
+      "portrait": "assets/shigaraki/shigaraki_assault/portrait.png?v=1785817752231871139",
+      "alpha": "assets/shigaraki/shigaraki_assault/alpha.webp?v=1785817752231871139",
+      "beta": "assets/shigaraki/shigaraki_assault/beta.webp?v=1785817752231871139",
+      "gamma": "assets/shigaraki/shigaraki_assault/gamma.webp?v=1785817752231871139",
+      "special": "assets/shigaraki/shigaraki_assault/special.webp?v=1785817752231871139",
+      "tuning": "assets/shigaraki/shigaraki_assault/tuning.webp?v=1785817752231871139"
     },
     "shigaraki_strike": {
-      "portrait": "assets/shigaraki/shigaraki_strike/portrait.png?v=1785789525211026602",
-      "alpha": "assets/shigaraki/shigaraki_strike/alpha.webp?v=1785789525211026602",
-      "beta": "assets/shigaraki/shigaraki_strike/beta.webp?v=1785789525211026602",
-      "gamma": "assets/shigaraki/shigaraki_strike/gamma.webp?v=1785789525211026602",
-      "special": "assets/shigaraki/shigaraki_strike/special.webp?v=1785789525211026602",
-      "tuning": "assets/shigaraki/shigaraki_strike/tuning.webp?v=1785789525211026602"
+      "portrait": "assets/shigaraki/shigaraki_strike/portrait.png?v=1785817752231871139",
+      "alpha": "assets/shigaraki/shigaraki_strike/alpha.webp?v=1785817752231871139",
+      "beta": "assets/shigaraki/shigaraki_strike/beta.webp?v=1785817752231871139",
+      "gamma": "assets/shigaraki/shigaraki_strike/gamma.webp?v=1785817752231871139",
+      "special": "assets/shigaraki/shigaraki_strike/special.webp?v=1785817752231871139",
+      "tuning": "assets/shigaraki/shigaraki_strike/tuning.webp?v=1785817752231871139"
     },
     "shigaraki_technical": {
-      "portrait": "assets/shigaraki/shigaraki_technical/portrait.png?v=1785789525211026602",
-      "alpha": "assets/shigaraki/shigaraki_technical/alpha.webp?v=1785789525211026602",
-      "alpha_hold": "assets/shigaraki/shigaraki_technical/alpha_hold.webp?v=1785789525211026602",
-      "beta": "assets/shigaraki/shigaraki_technical/beta.webp?v=1785789525211026602",
-      "gamma": "assets/shigaraki/shigaraki_technical/gamma.webp?v=1785789525211026602",
-      "special": "assets/shigaraki/shigaraki_technical/special.webp?v=1785789525211026602",
-      "tuning": "assets/shigaraki/shigaraki_technical/tuning.webp?v=1785789525211026602"
+      "portrait": "assets/shigaraki/shigaraki_technical/portrait.png?v=1785817752231871139",
+      "alpha": "assets/shigaraki/shigaraki_technical/alpha.webp?v=1785817752231871139",
+      "alpha_hold": "assets/shigaraki/shigaraki_technical/alpha_hold.webp?v=1785817752231871139",
+      "beta": "assets/shigaraki/shigaraki_technical/beta.webp?v=1785817752231871139",
+      "gamma": "assets/shigaraki/shigaraki_technical/gamma.webp?v=1785817752231871139",
+      "special": "assets/shigaraki/shigaraki_technical/special.webp?v=1785817752231871139",
+      "tuning": "assets/shigaraki/shigaraki_technical/tuning.webp?v=1785817752231871139"
     },
     "shinso_strike": {
-      "portrait": "assets/shinso/shinso_strike/portrait.png?v=1785789525211026602",
-      "alpha": "assets/shinso/shinso_strike/alpha.webp?v=1785789525211026602",
-      "beta": "assets/shinso/shinso_strike/beta.webp?v=1785789525211026602",
-      "beta_hold": "assets/shinso/shinso_strike/beta_hold.webp?v=1785789525211026602",
-      "gamma": "assets/shinso/shinso_strike/gamma.webp?v=1785789525211026602",
-      "special": "assets/shinso/shinso_strike/special.webp?v=1785789525211026602",
-      "tuning": "assets/shinso/shinso_strike/tuning.webp?v=1785789525211026602"
+      "portrait": "assets/shinso/shinso_strike/portrait.png?v=1785817752231871139",
+      "alpha": "assets/shinso/shinso_strike/alpha.webp?v=1785817752231871139",
+      "beta": "assets/shinso/shinso_strike/beta.webp?v=1785817752231871139",
+      "beta_hold": "assets/shinso/shinso_strike/beta_hold.webp?v=1785817752231871139",
+      "gamma": "assets/shinso/shinso_strike/gamma.webp?v=1785817752231871139",
+      "special": "assets/shinso/shinso_strike/special.webp?v=1785817752231871139",
+      "tuning": "assets/shinso/shinso_strike/tuning.webp?v=1785817752231871139"
     },
     "shoto_attack": {
-      "portrait": "assets/shoto/shoto_attack/portrait.png?v=1785789525211026602",
-      "alpha": "assets/shoto/shoto_attack/alpha.webp?v=1785789525211026602",
-      "beta": "assets/shoto/shoto_attack/beta.webp?v=1785789525211026602",
-      "gamma": "assets/shoto/shoto_attack/gamma.webp?v=1785789525211026602",
-      "gamma_hold": "assets/shoto/shoto_attack/gamma_hold.webp?v=1785789525211026602",
-      "special": "assets/shoto/shoto_attack/special.webp?v=1785789525211026602",
-      "tuning": "assets/shoto/shoto_attack/tuning.webp?v=1785789525211026602"
+      "portrait": "assets/shoto/shoto_attack/portrait.png?v=1785817752231871139",
+      "alpha": "assets/shoto/shoto_attack/alpha.webp?v=1785817752231871139",
+      "beta": "assets/shoto/shoto_attack/beta.webp?v=1785817752231871139",
+      "gamma": "assets/shoto/shoto_attack/gamma.webp?v=1785817752231871139",
+      "gamma_hold": "assets/shoto/shoto_attack/gamma_hold.webp?v=1785817752231871139",
+      "special": "assets/shoto/shoto_attack/special.webp?v=1785817752231871139",
+      "tuning": "assets/shoto/shoto_attack/tuning.webp?v=1785817752231871139"
     },
     "shoto_technical": {
-      "portrait": "assets/shoto/shoto_technical/portrait.png?v=1785789525211026602",
-      "alpha": "assets/shoto/shoto_technical/alpha.webp?v=1785789525211026602",
-      "alpha_aim": "assets/shoto/shoto_technical/alpha_aim.webp?v=1785789525211026602",
-      "beta": "assets/shoto/shoto_technical/beta.webp?v=1785789525211026602",
-      "gamma": "assets/shoto/shoto_technical/gamma.webp?v=1785789525211026602",
-      "special": "assets/shoto/shoto_technical/special.webp?v=1785789525211026602",
-      "tuning": "assets/shoto/shoto_technical/tuning.webp?v=1785789525211026602"
+      "portrait": "assets/shoto/shoto_technical/portrait.png?v=1785817752231871139",
+      "alpha": "assets/shoto/shoto_technical/alpha.webp?v=1785817752231871139",
+      "alpha_aim": "assets/shoto/shoto_technical/alpha_aim.webp?v=1785817752231871139",
+      "beta": "assets/shoto/shoto_technical/beta.webp?v=1785817752231871139",
+      "gamma": "assets/shoto/shoto_technical/gamma.webp?v=1785817752231871139",
+      "special": "assets/shoto/shoto_technical/special.webp?v=1785817752231871139",
+      "tuning": "assets/shoto/shoto_technical/tuning.webp?v=1785817752231871139"
     },
     "star_and_stripe_strike": {
-      "portrait": "assets/star_and_stripe/star_and_stripe_strike/portrait.png?v=1785789525211026602",
-      "alpha": "assets/star_and_stripe/star_and_stripe_strike/alpha.webp?v=1785789525211026602",
-      "beta": "assets/star_and_stripe/star_and_stripe_strike/beta.webp?v=1785789525211026602",
-      "gamma": "assets/star_and_stripe/star_and_stripe_strike/gamma.webp?v=1785789525211026602",
-      "special": "assets/star_and_stripe/star_and_stripe_strike/special.webp?v=1785789525211026602",
-      "tuning": "assets/star_and_stripe/star_and_stripe_strike/tuning.webp?v=1785789525211026602"
+      "portrait": "assets/star_and_stripe/star_and_stripe_strike/portrait.png?v=1785817752231871139",
+      "alpha": "assets/star_and_stripe/star_and_stripe_strike/alpha.webp?v=1785817752231871139",
+      "beta": "assets/star_and_stripe/star_and_stripe_strike/beta.webp?v=1785817752231871139",
+      "gamma": "assets/star_and_stripe/star_and_stripe_strike/gamma.webp?v=1785817752231871139",
+      "special": "assets/star_and_stripe/star_and_stripe_strike/special.webp?v=1785817752231871139",
+      "tuning": "assets/star_and_stripe/star_and_stripe_strike/tuning.webp?v=1785817752231871139"
     },
     "tamaki_strike": {
-      "portrait": "assets/tamaki/tamaki_strike/portrait.png?v=1785789525211026602",
-      "alpha": "assets/tamaki/tamaki_strike/alpha.webp?v=1785789525211026602",
-      "alpha_hold": "assets/tamaki/tamaki_strike/alpha_hold.webp?v=1785789525211026602",
-      "beta": "assets/tamaki/tamaki_strike/beta.webp?v=1785789525211026602",
-      "gamma": "assets/tamaki/tamaki_strike/gamma.webp?v=1785789525211026602",
-      "special": "assets/tamaki/tamaki_strike/special.webp?v=1785789525211026602",
-      "tuning": "assets/tamaki/tamaki_strike/tuning.webp?v=1785789525211026602"
+      "portrait": "assets/tamaki/tamaki_strike/portrait.png?v=1785817752231871139",
+      "alpha": "assets/tamaki/tamaki_strike/alpha.webp?v=1785817752231871139",
+      "alpha_hold": "assets/tamaki/tamaki_strike/alpha_hold.webp?v=1785817752231871139",
+      "beta": "assets/tamaki/tamaki_strike/beta.webp?v=1785817752231871139",
+      "gamma": "assets/tamaki/tamaki_strike/gamma.webp?v=1785817752231871139",
+      "special": "assets/tamaki/tamaki_strike/special.webp?v=1785817752231871139",
+      "tuning": "assets/tamaki/tamaki_strike/tuning.webp?v=1785817752231871139"
     },
     "tenya_rapid": {
-      "portrait": "assets/tenya/tenya_rapid/portrait.png?v=1785789525211026602",
-      "alpha": "assets/tenya/tenya_rapid/alpha.webp?v=1785789525211026602",
-      "beta": "assets/tenya/tenya_rapid/beta.webp?v=1785789525211026602",
-      "gamma": "assets/tenya/tenya_rapid/gamma.webp?v=1785789525211026602",
-      "special": "assets/tenya/tenya_rapid/special.webp?v=1785789525211026602",
-      "tuning": "assets/tenya/tenya_rapid/tuning.webp?v=1785789525211026602"
+      "portrait": "assets/tenya/tenya_rapid/portrait.png?v=1785817752231871139",
+      "alpha": "assets/tenya/tenya_rapid/alpha.webp?v=1785817752231871139",
+      "beta": "assets/tenya/tenya_rapid/beta.webp?v=1785817752231871139",
+      "gamma": "assets/tenya/tenya_rapid/gamma.webp?v=1785817752231871139",
+      "special": "assets/tenya/tenya_rapid/special.webp?v=1785817752231871139",
+      "tuning": "assets/tenya/tenya_rapid/tuning.webp?v=1785817752231871139"
     },
     "toga_rapid": {
-      "portrait": "assets/toga/toga_rapid/portrait.png?v=1785789525211026602",
-      "alpha": "assets/toga/toga_rapid/alpha.webp?v=1785789525211026602",
-      "beta": "assets/toga/toga_rapid/beta.webp?v=1785789525211026602",
-      "gamma": "assets/toga/toga_rapid/gamma.webp?v=1785789525211026602",
-      "special": "assets/toga/toga_rapid/special.webp?v=1785789525211026602",
-      "tuning": "assets/toga/toga_rapid/tuning.webp?v=1785789525211026602"
+      "portrait": "assets/toga/toga_rapid/portrait.png?v=1785817752231871139",
+      "alpha": "assets/toga/toga_rapid/alpha.webp?v=1785817752231871139",
+      "beta": "assets/toga/toga_rapid/beta.webp?v=1785817752231871139",
+      "gamma": "assets/toga/toga_rapid/gamma.webp?v=1785817752231871139",
+      "special": "assets/toga/toga_rapid/special.webp?v=1785817752231871139",
+      "tuning": "assets/toga/toga_rapid/tuning.webp?v=1785817752231871139"
     },
     "toga_technical": {
-      "portrait": "assets/toga/toga_technical/portrait.png?v=1785789525211026602",
-      "alpha": "assets/toga/toga_technical/alpha.webp?v=1785789525211026602",
-      "beta": "assets/toga/toga_technical/beta.webp?v=1785789525211026602",
-      "gamma": "assets/toga/toga_technical/gamma.webp?v=1785789525211026602",
-      "special": "assets/toga/toga_technical/special.webp?v=1785789525211026602",
-      "tuning": "assets/toga/toga_technical/tuning.webp?v=1785789525211026602"
+      "portrait": "assets/toga/toga_technical/portrait.png?v=1785817752231871139",
+      "alpha": "assets/toga/toga_technical/alpha.webp?v=1785817752231871139",
+      "beta": "assets/toga/toga_technical/beta.webp?v=1785817752231871139",
+      "gamma": "assets/toga/toga_technical/gamma.webp?v=1785817752231871139",
+      "special": "assets/toga/toga_technical/special.webp?v=1785817752231871139",
+      "tuning": "assets/toga/toga_technical/tuning.webp?v=1785817752231871139"
     },
     "tokoyami_assault": {
-      "portrait": "assets/tokoyami/tokoyami_assault/portrait.png?v=1785789525211026602",
-      "alpha": "assets/tokoyami/tokoyami_assault/alpha.webp?v=1785789525211026602",
-      "beta": "assets/tokoyami/tokoyami_assault/beta.webp?v=1785789525211026602",
-      "gamma": "assets/tokoyami/tokoyami_assault/gamma.webp?v=1785789525211026602",
-      "special": "assets/tokoyami/tokoyami_assault/special.webp?v=1785789525211026602",
-      "tuning": "assets/tokoyami/tokoyami_assault/tuning.webp?v=1785789525211026602"
+      "portrait": "assets/tokoyami/tokoyami_assault/portrait.png?v=1785817752231871139",
+      "alpha": "assets/tokoyami/tokoyami_assault/alpha.webp?v=1785817752231871139",
+      "beta": "assets/tokoyami/tokoyami_assault/beta.webp?v=1785817752231871139",
+      "gamma": "assets/tokoyami/tokoyami_assault/gamma.webp?v=1785817752231871139",
+      "special": "assets/tokoyami/tokoyami_assault/special.webp?v=1785817752231871139",
+      "tuning": "assets/tokoyami/tokoyami_assault/tuning.webp?v=1785817752231871139"
     },
     "tsuyu_rapid": {
-      "portrait": "assets/tsuyu/tsuyu_rapid/portrait.png?v=1785789525211026602",
-      "alpha": "assets/tsuyu/tsuyu_rapid/alpha.webp?v=1785789525211026602",
-      "beta": "assets/tsuyu/tsuyu_rapid/beta.webp?v=1785789525211026602",
-      "gamma": "assets/tsuyu/tsuyu_rapid/gamma.webp?v=1785789525211026602",
-      "special": "assets/tsuyu/tsuyu_rapid/special.webp?v=1785789525211026602",
-      "tuning": "assets/tsuyu/tsuyu_rapid/tuning.webp?v=1785789525211026602"
+      "portrait": "assets/tsuyu/tsuyu_rapid/portrait.png?v=1785817752231871139",
+      "alpha": "assets/tsuyu/tsuyu_rapid/alpha.webp?v=1785817752231871139",
+      "beta": "assets/tsuyu/tsuyu_rapid/beta.webp?v=1785817752231871139",
+      "gamma": "assets/tsuyu/tsuyu_rapid/gamma.webp?v=1785817752231871139",
+      "special": "assets/tsuyu/tsuyu_rapid/special.webp?v=1785817752231871139",
+      "tuning": "assets/tsuyu/tsuyu_rapid/tuning.webp?v=1785817752231871139"
     },
     "twice_rapid": {
-      "portrait": "assets/twice/twice_rapid/portrait.png?v=1785789525211026602",
-      "alpha": "assets/twice/twice_rapid/alpha.webp?v=1785789525211026602",
-      "beta": "assets/twice/twice_rapid/beta.webp?v=1785789525211026602",
-      "gamma": "assets/twice/twice_rapid/gamma.webp?v=1785789525211026602",
-      "special": "assets/twice/twice_rapid/special.webp?v=1785789525211026602",
-      "tuning": "assets/twice/twice_rapid/tuning.webp?v=1785789525211026602"
+      "portrait": "assets/twice/twice_rapid/portrait.png?v=1785817752231871139",
+      "alpha": "assets/twice/twice_rapid/alpha.webp?v=1785817752231871139",
+      "beta": "assets/twice/twice_rapid/beta.webp?v=1785817752231871139",
+      "gamma": "assets/twice/twice_rapid/gamma.webp?v=1785817752231871139",
+      "special": "assets/twice/twice_rapid/special.webp?v=1785817752231871139",
+      "tuning": "assets/twice/twice_rapid/tuning.webp?v=1785817752231871139"
     },
     "assault": {
-      "portrait": "assets/midoriya/midoriya_assault/portrait.png?v=1785789525211026602",
-      "alpha": "assets/midoriya/midoriya_assault/alpha.webp?v=1785789525211026602",
-      "alpha_fullburst": "assets/midoriya/midoriya_assault/alpha_fullburst.webp?v=1785789525211026602",
-      "beta": "assets/midoriya/midoriya_assault/beta.webp?v=1785789525211026602",
-      "gamma": "assets/midoriya/midoriya_assault/gamma.webp?v=1785789525211026602",
-      "special": "assets/midoriya/midoriya_assault/special.png?v=1785789525211026602",
-      "tuning": "assets/midoriya/midoriya_assault/tuning.png?v=1785789525211026602"
+      "portrait": "assets/midoriya/midoriya_assault/portrait.png?v=1785817752231871139",
+      "alpha": "assets/midoriya/midoriya_assault/alpha.webp?v=1785817752231871139",
+      "alpha_fullburst": "assets/midoriya/midoriya_assault/alpha_fullburst.webp?v=1785817752231871139",
+      "beta": "assets/midoriya/midoriya_assault/beta.webp?v=1785817752231871139",
+      "gamma": "assets/midoriya/midoriya_assault/gamma.webp?v=1785817752231871139",
+      "special": "assets/midoriya/midoriya_assault/special.png?v=1785817752231871139",
+      "tuning": "assets/midoriya/midoriya_assault/tuning.png?v=1785817752231871139"
     },
     "fullbullet": {
-      "portrait": "assets/midoriya/midoriya_attack/portrait.png?v=1785789525211026602",
-      "alpha": "assets/midoriya/midoriya_attack/alpha.webp?v=1785789525211026602",
-      "beta": "assets/midoriya/midoriya_attack/beta.webp?v=1785789525211026602",
-      "gamma": "assets/midoriya/midoriya_attack/gamma.webp?v=1785789525211026602",
-      "special": "assets/midoriya/midoriya_attack/special.png?v=1785789525211026602",
-      "tuning": "assets/midoriya/midoriya_attack/tuning.webp?v=1785789525211026602"
+      "portrait": "assets/midoriya/midoriya_attack/portrait.png?v=1785817752231871139",
+      "alpha": "assets/midoriya/midoriya_attack/alpha.webp?v=1785817752231871139",
+      "beta": "assets/midoriya/midoriya_attack/beta.webp?v=1785817752231871139",
+      "gamma": "assets/midoriya/midoriya_attack/gamma.webp?v=1785817752231871139",
+      "special": "assets/midoriya/midoriya_attack/special.png?v=1785817752231871139",
+      "tuning": "assets/midoriya/midoriya_attack/tuning.webp?v=1785817752231871139"
     },
     "ofa": {
-      "portrait": "assets/midoriya_ofa/portrait.png?v=1785789525211026602",
-      "alpha": "assets/midoriya_ofa/alpha.webp?v=1785789525211026602",
-      "beta": "assets/midoriya_ofa/beta.webp?v=1785789525211026602",
-      "beta_hold": "assets/midoriya_ofa/beta_hold.webp?v=1785789525211026602",
-      "gamma": "assets/midoriya_ofa/gamma.webp?v=1785789525211026602",
-      "gamma_hold": "assets/midoriya_ofa/gamma_hold.webp?v=1785789525211026602",
-      "special": "assets/midoriya_ofa/special.webp?v=1785789525211026602",
-      "tuning": "assets/midoriya_ofa/tuning.webp?v=1785789525211026602"
+      "portrait": "assets/midoriya_ofa/portrait.png?v=1785817752231871139",
+      "alpha": "assets/midoriya_ofa/alpha.webp?v=1785817752231871139",
+      "beta": "assets/midoriya_ofa/beta.webp?v=1785817752231871139",
+      "beta_hold": "assets/midoriya_ofa/beta_hold.webp?v=1785817752231871139",
+      "gamma": "assets/midoriya_ofa/gamma.webp?v=1785817752231871139",
+      "gamma_hold": "assets/midoriya_ofa/gamma_hold.webp?v=1785817752231871139",
+      "special": "assets/midoriya_ofa/special.webp?v=1785817752231871139",
+      "tuning": "assets/midoriya_ofa/tuning.webp?v=1785817752231871139"
     },
     "gentle_criminal": {
-      "portrait": "assets/gentle_criminal/gentle_criminal_technical/portrait.png?v=1785789525211026602",
-      "alpha": "assets/gentle_criminal/gentle_criminal_technical/alpha.png?v=1785789525211026602",
-      "beta": "assets/gentle_criminal/gentle_criminal_technical/beta.png?v=1785789525211026602",
-      "gamma": "assets/gentle_criminal/gentle_criminal_technical/gamma.png?v=1785789525211026602",
-      "portrait_v524": "assets/gentle_criminal/gentle_criminal_technical/portrait_v524.webp?v=1785789525211026602",
-      "portrait_v525": "assets/gentle_criminal/gentle_criminal_technical/portrait_v525.png?v=1785789525211026602",
-      "special": "assets/gentle_criminal/gentle_criminal_technical/special.png?v=1785789525211026602",
-      "tuning": "assets/gentle_criminal/gentle_criminal_technical/tuning.png?v=1785789525211026602"
+      "portrait": "assets/gentle_criminal/gentle_criminal_technical/portrait.png?v=1785817752231871139",
+      "alpha": "assets/gentle_criminal/gentle_criminal_technical/alpha.png?v=1785817752231871139",
+      "beta": "assets/gentle_criminal/gentle_criminal_technical/beta.png?v=1785817752231871139",
+      "gamma": "assets/gentle_criminal/gentle_criminal_technical/gamma.png?v=1785817752231871139",
+      "portrait_v524": "assets/gentle_criminal/gentle_criminal_technical/portrait_v524.webp?v=1785817752231871139",
+      "portrait_v525": "assets/gentle_criminal/gentle_criminal_technical/portrait_v525.png?v=1785817752231871139",
+      "special": "assets/gentle_criminal/gentle_criminal_technical/special.png?v=1785817752231871139",
+      "tuning": "assets/gentle_criminal/gentle_criminal_technical/tuning.png?v=1785817752231871139"
     }
   },
   "aliases": {

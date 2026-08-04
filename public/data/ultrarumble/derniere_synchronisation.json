@@ -1,5 +1,9 @@
 {
-  "status": "initialisé",
-  "checked_at": "2026-08-04T02:44:35.760667+00:00",
-  "message": "Empreintes initiales enregistrées; aucun fichier local modifié."
+  "status": "mis_à_jour",
+  "updated_at": "2026-08-04T04:33:21.478100+00:00",
+  "changed_urls": [
+    "synchronisation_forcée"
+  ],
+  "backup": "sauvegardes/sync_auto_20260804_042949",
+  "message": "Le site local a été synchronisé avec UltraRumble."
 }
