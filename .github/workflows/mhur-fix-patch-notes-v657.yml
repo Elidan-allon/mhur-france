@@ -1,0 +1,704 @@
+name: MHUR - Patch Notes V657 signes et détails
+
+on:
+  workflow_run:
+    workflows:
+      - "MHUR - Synchronisation UltraRumble"
+    types:
+      - completed
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: mhur-patch-notes-v657
+  cancel-in-progress: false
+
+jobs:
+  corriger-patch-notes:
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Récupérer la dernière version de main
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Installer Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Créer le moteur V657 et corriger les données
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          python - <<'PY'
+          from __future__ import annotations
+
+          import hashlib
+          import json
+          import re
+          import unicodedata
+          from collections import Counter
+          from pathlib import Path
+
+          PATCH_ID = "1785298405"
+
+          INDEX = Path("public/index.html")
+          HOME_JSON = Path("public/data/home_data.json")
+          HOME_JS = Path("public/data/home_data.js")
+          V608 = Path("public/js/v608-patch-notes-final.js")
+          V657 = Path("public/js/v657-patch-notes-signs-details.js")
+
+          for required in (INDEX, HOME_JSON, V608):
+              if not required.is_file():
+                  raise SystemExit(
+                      f"[ERREUR] Fichier introuvable : {required}"
+                  )
+
+          def clean(value: object) -> str:
+              if isinstance(value, dict):
+                  return str(
+                      value.get("en")
+                      or value.get("fr")
+                      or next(iter(value.values()), "")
+                  ).strip()
+              return str(value or "").strip()
+
+          def norm(value: object) -> str:
+              text = unicodedata.normalize("NFD", clean(value).lower())
+              text = "".join(
+                  character
+                  for character in text
+                  if unicodedata.category(character) != "Mn"
+              )
+              return re.sub(r"[^a-z0-9]+", " ", text).strip()
+
+          def metric(value: object) -> str:
+              key = norm(value)
+              if key.startswith(("damage", "degats")):
+                  return "damage"
+              if key.startswith(("guard break", "brise garde")):
+                  return "guard"
+              if key.startswith(("ammo", "magazine", "munitions")):
+                  return "ammo"
+              if key.startswith(("reload time", "recharge")):
+                  return "reload"
+              if key.startswith(("penalty reload", "recharge penalite")):
+                  return "penalty_reload"
+              return ""
+
+          SYMBOLS = {
+              "alpha": "α",
+              "a": "α",
+              "α": "α",
+              "beta": "β",
+              "b": "β",
+              "β": "β",
+              "gamma": "γ",
+              "g": "γ",
+              "y": "γ",
+              "γ": "γ",
+          }
+
+          def existing_symbol(skill_name: object) -> str:
+              match = re.match(
+                  r"^\s*(α|β|γ|alpha|beta|gamma|a|b|g|y)"
+                  r"(?:\s*[-–—:]\s*|\s+)",
+                  clean(skill_name),
+                  flags=re.IGNORECASE,
+              )
+              if not match:
+                  return ""
+              return SYMBOLS.get(match.group(1).lower(), "")
+
+          def infer_symbol(change: dict) -> str:
+              direct = existing_symbol(change.get("skill_name"))
+              if direct:
+                  return direct
+
+              image = clean(change.get("skill_image")).lower()
+              for token, symbol in (
+                  ("alpha", "α"),
+                  ("beta", "β"),
+                  ("gamma", "γ"),
+              ):
+                  if re.search(
+                      rf"(?:^|[/_.-]){token}(?:$|[/_.-])",
+                      image,
+                  ):
+                      return symbol
+
+              value = norm(
+                  " ".join(
+                      clean(change.get(key))
+                      for key in (
+                          "skill_name",
+                          "skill_image",
+                          "label",
+                      )
+                  )
+              )
+
+              alpha_names = (
+                  "ap shot cluster",
+                  "delaware smash",
+                  "air force",
+                  "airblast",
+                  "full bullet",
+                  "electro target",
+                  "phantom smash",
+                  "ice bullet shot",
+                  "wingbeat",
+                  "hollow point shot",
+              )
+              beta_names = (
+                  "nitro cluster",
+                  "wind cross",
+                  "high angle fire",
+              )
+              gamma_names = (
+                  "howitzer impact",
+                  "big fist grip",
+                  "foot boost",
+                  "kickback shot",
+              )
+
+              if any(name in value for name in alpha_names):
+                  return "α"
+              if any(name in value for name in beta_names):
+                  return "β"
+              if any(name in value for name in gamma_names):
+                  return "γ"
+              return ""
+
+          DETAIL_TRANSLATIONS = {
+              "normal": ("Normal", "Normal"),
+              "explosion": ("Explosion", "Explosion"),
+              "explosionfollow up": (
+                  "Explosion renforcée",
+                  "Follow-up explosion",
+              ),
+              "explosion follow up": (
+                  "Explosion renforcée",
+                  "Follow-up explosion",
+              ),
+              "burn": ("Brûlure", "Burn"),
+              "homing": ("À tête chercheuse", "Homing"),
+              "melee": ("Corps à corps", "Melee"),
+              "shot": ("Tir", "Shot"),
+              "deploy": ("Déploiement", "Deploy"),
+              "deployed": ("Déployée", "Deployed"),
+          }
+
+          METRIC_TRANSLATIONS = {
+              "damage": ("Dégâts", "Damage"),
+              "guard": ("Brise-garde", "Guard Break"),
+              "ammo": ("Munitions", "Ammo"),
+              "reload": ("Recharge", "Reload Time"),
+              "penalty_reload": (
+                  "Pénalité de recharge",
+                  "Penalty Reload",
+              ),
+          }
+
+          def split_skill(change: dict) -> tuple[str, str, str]:
+              raw = clean(change.get("skill_name"))
+              symbol = infer_symbol(change)
+
+              name = re.sub(
+                  r"^\s*(?:α|β|γ|alpha|beta|gamma|a|b|g|y)"
+                  r"(?:\s*[-–—:]\s*|\s+)",
+                  "",
+                  raw,
+                  count=1,
+                  flags=re.IGNORECASE,
+              ).strip()
+
+              detail = ""
+              match = re.search(r"\s*\(([^()]*)\)\s*$", name)
+              if match:
+                  detail = match.group(1).strip()
+                  name = name[:match.start()].strip()
+
+              return symbol, name, detail
+
+          def translated_detail(detail: str) -> tuple[str, str]:
+              key = norm(detail)
+              if key in DETAIL_TRANSLATIONS:
+                  return DETAIL_TRANSLATIONS[key]
+              return detail, detail
+
+          def set_detailed_label(
+              change: dict,
+              detail_fr: str,
+              detail_en: str,
+          ) -> None:
+              kind = metric(change.get("label"))
+              if not kind:
+                  return
+
+              base_fr, base_en = METRIC_TRANSLATIONS[kind]
+              change["label"] = {
+                  "fr": (
+                      f"{base_fr} — {detail_fr}"
+                      if detail_fr
+                      else base_fr
+                  ),
+                  "en": (
+                      f"{base_en} — {detail_en}"
+                      if detail_en
+                      else base_en
+                  ),
+              }
+
+          data = json.loads(HOME_JSON.read_text(encoding="utf-8"))
+
+          patches = data.get("patch_notes")
+          if not isinstance(patches, list):
+              raise SystemExit("[ERREUR] patch_notes est absent.")
+
+          for patch in patches:
+              for section in patch.get("details") or []:
+                  for change in section.get("changes") or []:
+                      if not isinstance(change, dict):
+                          continue
+
+                      raw_name = clean(change.get("skill_name"))
+                      if not raw_name or raw_name.upper() in {"HP", "PV"}:
+                          continue
+
+                      symbol, name, detail = split_skill(change)
+
+                      if symbol and name:
+                          change["alter_symbol"] = symbol
+                          change["skill_name"] = f"{symbol} - {name}"
+
+                      if detail:
+                          detail_fr, detail_en = translated_detail(detail)
+                          change["effect_detail"] = {
+                              "fr": detail_fr,
+                              "en": detail_en,
+                          }
+                          set_detailed_label(
+                              change,
+                              detail_fr,
+                              detail_en,
+                          )
+
+          patch = next(
+              (
+                  item
+                  for item in patches
+                  if str(item.get("id")) == PATCH_ID
+              ),
+              None,
+          )
+          if patch is None:
+              raise SystemExit(
+                  f"[ERREUR] Patch {PATCH_ID} introuvable."
+              )
+
+          changes = [
+              change
+              for section in patch.get("details") or []
+              for change in section.get("changes") or []
+              if isinstance(change, dict)
+          ]
+
+          # Correction exacte des six changements de dégâts de Bakugo.
+          bakugo_count = 0
+          for change in changes:
+              if "bakugo" not in norm(change.get("character")):
+                  continue
+              if norm(change.get("style")) != "cluster":
+                  continue
+              if metric(change.get("label")) not in {
+                  "damage",
+                  "guard",
+              }:
+                  continue
+
+              image = norm(change.get("skill_image"))
+              title = norm(change.get("skill_name"))
+
+              if "ap shot cluster normal" in image or (
+                  "ap shot cluster" in title
+              ):
+                  change["alter_symbol"] = "α"
+                  change["skill_name"] = "α - AP Shot Cluster"
+                  change["effect_detail"] = {
+                      "fr": "Normal",
+                      "en": "Normal",
+                  }
+                  set_detailed_label(change, "Normal", "Normal")
+
+              elif (
+                  "explosionfollow up" in image
+                  or "explosion follow up" in image
+                  or "explosionfollow up" in title
+                  or "explosion follow up" in title
+              ):
+                  change["alter_symbol"] = "β"
+                  change["skill_name"] = "β - Nitro Cluster"
+                  change["effect_detail"] = {
+                      "fr": "Explosion renforcée",
+                      "en": "Follow-up explosion",
+                  }
+                  set_detailed_label(
+                      change,
+                      "Explosion renforcée",
+                      "Follow-up explosion",
+                  )
+
+              elif "nitro cluster explosion" in image or (
+                  "nitro cluster" in title
+              ):
+                  change["alter_symbol"] = "β"
+                  change["skill_name"] = "β - Nitro Cluster"
+                  change["effect_detail"] = {
+                      "fr": "Explosion",
+                      "en": "Explosion",
+                  }
+                  set_detailed_label(
+                      change,
+                      "Explosion",
+                      "Explosion",
+                  )
+              else:
+                  continue
+
+              bakugo_count += 1
+
+          # Armored All Might : ce n'est pas Texas Smash.
+          armored_count = 0
+          for change in changes:
+              if norm(change.get("character")) != "armored all might":
+                  continue
+              if metric(change.get("label")) not in {
+                  "damage",
+                  "guard",
+              }:
+                  continue
+
+              image = norm(change.get("skill_image"))
+              title = norm(change.get("skill_name"))
+              before = [
+                  clean(value)
+                  for value in change.get("before") or []
+              ]
+
+              if not (
+                  "ice bullet shot burn" in image
+                  or "ice bullet shot" in title
+                  or before == [
+                      "52.0", "54.0", "56.0",
+                      "58.0", "60.0", "62.0",
+                      "64.0", "66.0", "68.0",
+                  ]
+              ):
+                  continue
+
+              change["alter_symbol"] = "α"
+              change["skill_name"] = "α - Ice Bullet Shot"
+              change["effect_detail"] = {
+                  "fr": "Brûlure",
+                  "en": "Burn",
+              }
+              set_detailed_label(change, "Brûlure", "Burn")
+              armored_count += 1
+
+          if bakugo_count != 6:
+              raise SystemExit(
+                  "[ERREUR] 6 changements Bakugo attendus, "
+                  f"corrigés : {bakugo_count}"
+              )
+
+          if armored_count != 2:
+              raise SystemExit(
+                  "[ERREUR] 2 changements Armored All Might "
+                  f"attendus, corrigés : {armored_count}"
+              )
+
+          data.setdefault("meta", {})["patch_notes_renderer"] = (
+              "v657-signs-details"
+          )
+
+          HOME_JSON.write_text(
+              json.dumps(
+                  data,
+                  ensure_ascii=False,
+                  indent=2,
+              ) + "\n",
+              encoding="utf-8",
+          )
+
+          compact = json.dumps(
+              data,
+              ensure_ascii=False,
+              separators=(",", ":"),
+          ).replace("\u2028", "\\u2028").replace(
+              "\u2029",
+              "\\u2029",
+          )
+          home_js_content = (
+              f"window.MHUR_HOME_DATA = {compact};\n"
+          )
+          HOME_JS.write_text(
+              home_js_content,
+              encoding="utf-8",
+          )
+
+          # Nouveau fichier : aucun ancien cache V608 ne peut être utilisé.
+          renderer = V608.read_text(encoding="utf-8")
+
+          renderer = renderer.replace(
+              "MHUR Nexus — V608",
+              "MHUR Nexus — V657",
+              1,
+          )
+          renderer = renderer.replace(
+              "window.MHUR_V608_LOADED",
+              "window.MHUR_V657_LOADED",
+          )
+          renderer = re.sub(
+              r"const VERSION='[^']*';",
+              "const VERSION='657';",
+              renderer,
+              count=1,
+          )
+
+          old_title = """    const title=translatePatch(
+              localized(skill?.name)||
+              localized(change?.skill_name)||
+              localized(change?.label)||
+              tx('Ajustement','Adjustment')
+            );"""
+          new_title = """    const title=translatePatch(
+              localized(change?.skill_name)||
+              localized(skill?.name)||
+              localized(change?.label)||
+              tx('Ajustement','Adjustment')
+            );"""
+          renderer = renderer.replace(old_title, new_title, 1)
+
+          old_picture = """    const picture=health
+              ?''
+              :(
+                skill?.img||
+                (
+                  isMidoriya
+                    ?''
+                    :change?.skill_image
+                )||
+                ''
+              );"""
+          new_picture = """    const picture=health
+              ?''
+              :(
+                isMidoriya
+                  ?(skill?.img||change?.skill_image||'')
+                  :(change?.skill_image||skill?.img||'')
+              );"""
+          renderer = renderer.replace(
+              old_picture,
+              new_picture,
+              1,
+          )
+
+          title_block = re.search(
+              r"const title=translatePatch\((.*?)\);",
+              renderer,
+              flags=re.DOTALL,
+          )
+          if not title_block:
+              raise SystemExit(
+                  "[ERREUR] Bloc du titre introuvable."
+              )
+
+          if (
+              title_block.group(1).find("change?.skill_name")
+              > title_block.group(1).find("skill?.name")
+          ):
+              raise SystemExit(
+                  "[ERREUR] Le nom importé n'est pas prioritaire."
+              )
+
+          if (
+              ":(change?.skill_image||skill?.img||'')"
+              not in renderer
+          ):
+              raise SystemExit(
+                  "[ERREUR] L'image importée n'est pas prioritaire."
+              )
+
+          V657.write_text(renderer, encoding="utf-8")
+
+          data_hash = hashlib.sha256(
+              home_js_content.encode("utf-8")
+          ).hexdigest()[:12]
+          renderer_hash = hashlib.sha256(
+              renderer.encode("utf-8")
+          ).hexdigest()[:12]
+
+          index = INDEX.read_text(encoding="utf-8")
+
+          index, home_count = re.subn(
+              r'(<script\s+src=["\'](?:/)?data/home_data\.js)'
+              r'(?:\?v=[^"\']*)?(["\'])',
+              rf"\1?v={data_hash}\2",
+              index,
+              count=1,
+              flags=re.IGNORECASE,
+          )
+          if home_count != 1:
+              raise SystemExit(
+                  "[ERREUR] home_data.js introuvable dans index."
+              )
+
+          v657_tag = (
+              '<script src="js/'
+              f'v657-patch-notes-signs-details.js?v={renderer_hash}"'
+              '></script>'
+          )
+
+          script_pattern = re.compile(
+              r'<script\s+src=["\']js/'
+              r'(?:v608-patch-notes-final|'
+              r'v657-patch-notes-signs-details)\.js'
+              r'(?:\?v=[^"\']*)?["\']\s*></script>',
+              flags=re.IGNORECASE,
+          )
+          index, script_count = script_pattern.subn(
+              v657_tag,
+              index,
+              count=1,
+          )
+          if script_count != 1:
+              raise SystemExit(
+                  "[ERREUR] Script V608/V657 introuvable dans index."
+              )
+
+          INDEX.write_text(index, encoding="utf-8")
+
+          # Validation finale des titres et des détails.
+          final_data = json.loads(
+              HOME_JSON.read_text(encoding="utf-8")
+          )
+          final_patch = next(
+              item
+              for item in final_data["patch_notes"]
+              if str(item.get("id")) == PATCH_ID
+          )
+          final_changes = [
+              change
+              for section in final_patch.get("details") or []
+              for change in section.get("changes") or []
+              if isinstance(change, dict)
+          ]
+
+          bakugo = [
+              change
+              for change in final_changes
+              if (
+                  "bakugo" in norm(change.get("character"))
+                  and norm(change.get("style")) == "cluster"
+                  and metric(change.get("label"))
+                  in {"damage", "guard"}
+              )
+          ]
+
+          expected_titles = Counter({
+              "α - AP Shot Cluster": 2,
+              "β - Nitro Cluster": 4,
+          })
+          actual_titles = Counter(
+              change.get("skill_name")
+              for change in bakugo
+          )
+          if actual_titles != expected_titles:
+              raise SystemExit(
+                  "[ERREUR] Titres Bakugo incorrects : "
+                  f"{dict(actual_titles)}"
+              )
+
+          expected_fr_labels = Counter({
+              "Dégâts — Normal": 1,
+              "Brise-garde — Normal": 1,
+              "Dégâts — Explosion": 1,
+              "Brise-garde — Explosion": 1,
+              "Dégâts — Explosion renforcée": 1,
+              "Brise-garde — Explosion renforcée": 1,
+          })
+          actual_fr_labels = Counter(
+              change.get("label", {}).get("fr")
+              for change in bakugo
+          )
+          if actual_fr_labels != expected_fr_labels:
+              raise SystemExit(
+                  "[ERREUR] Détails Bakugo incorrects : "
+                  f"{dict(actual_fr_labels)}"
+              )
+
+          final_index = INDEX.read_text(encoding="utf-8")
+          if "v608-patch-notes-final.js" in final_index:
+              raise SystemExit(
+                  "[ERREUR] L'ancien moteur V608 est encore chargé."
+              )
+          if (
+              f"v657-patch-notes-signs-details.js"
+              f"?v={renderer_hash}"
+              not in final_index
+          ):
+              raise SystemExit(
+                  "[ERREUR] Le moteur V657 n'est pas chargé."
+              )
+
+          print("[OK] Nouveau moteur V657 créé.")
+          print("[OK] α / β / γ affichés dans les titres.")
+          print("[OK] Les détails sont affichés sous les titres.")
+          print("[OK] Bakugo et Armored All Might sont corrigés.")
+          PY
+
+      - name: Publier V657
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          git config user.name "github-actions[bot]"
+          git config user.email \
+            "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add \
+            public/index.html \
+            public/data/home_data.json \
+            public/data/home_data.js \
+            public/js/v657-patch-notes-signs-details.js
+
+          if git diff --cached --quiet; then
+            echo "[OK] V657 est déjà appliqué."
+            exit 0
+          fi
+
+          git commit -m \
+            "fix: afficher les signes et détails des Patch Notes"
+
+          for tentative in 1 2 3 4 5; do
+            if git pull --rebase origin main \
+              && git push origin HEAD:main; then
+              echo "[OK] V657 publié sur main."
+              exit 0
+            fi
+
+            echo "[ATTENTE] Nouvelle tentative..."
+            sleep $((tentative * 4))
+          done
+
+          echo "[ERREUR] Impossible de publier V657."
+          exit 1
