@@ -5,7 +5,8 @@
     "version": "v585-complete-safe-sync",
     "patch_notes_fix": "alter-symbols-details-render-v4",
     "patch_notes_renderer": "v657-signs-details",
-    "patch_1785298405_fix": "v658-final-after-all-scripts"
+    "patch_1785298405_fix": "v658-final-after-all-scripts",
+    "patch_style_resolution": "v660-cluster-style-first"
   },
   "season": {
     "number": 18,
@@ -335,7 +336,7 @@
             {
               "character": "Katsuki Bakugo",
               "style": "Original",
-              "role": "",
+              "role": "strike",
               "portrait": "https://ultrarumble.com/assets/roles/T_ui_CharacterSelect_Power_icon.webp",
               "skill_name": "γ - Howitzer Impact",
               "skill_image": "https://ultrarumble.com/assets/Character/Ch002/GUI/Skill/T_ui_Skill_Ch002_Unique3.png",
@@ -363,12 +364,13 @@
                 "1.0"
               ],
               "tone": "nerf",
-              "alter_symbol": "γ"
+              "alter_symbol": "γ",
+              "style_id": "bakugo_attack"
             },
             {
               "character": "Katsuki Bakugo",
               "style": "Original",
-              "role": "",
+              "role": "strike",
               "portrait": "https://ultrarumble.com/assets/roles/T_ui_CharacterSelect_Power_icon.webp",
               "skill_name": "γ - Howitzer Impact",
               "skill_image": "https://ultrarumble.com/assets/Character/Ch002/GUI/Skill/T_ui_Skill_Ch002_Unique3.png",
@@ -396,15 +398,16 @@
                 "1.0"
               ],
               "tone": "nerf",
-              "alter_symbol": "γ"
+              "alter_symbol": "γ",
+              "style_id": "bakugo_attack"
             },
             {
               "character": "Katsuki Bakugo",
               "style": "Cluster",
-              "role": "Technique",
-              "portrait": "assets/home/patches/1785298405/portrait_katsuki_bakugo.webp",
+              "role": "technical",
+              "portrait": "assets/bakugo/bakugo_technical/portrait.webp",
               "skill_name": "α - AP Shot Cluster (Normal)",
-              "skill_image": "assets/home/patches/1785298405/skill_katsuki_bakugo_ap_shot_cluster_normal.png",
+              "skill_image": "assets/bakugo/bakugo_technical/alpha.webp",
               "label": "Damage",
               "before": [
                 "30.0",
@@ -428,15 +431,16 @@
                 "48.0",
                 "50.0"
               ],
-              "tone": "buff"
+              "tone": "buff",
+              "style_id": "bakugo_technical"
             },
             {
               "character": "Katsuki Bakugo",
               "style": "Cluster",
-              "role": "Technique",
-              "portrait": "assets/home/patches/1785298405/portrait_katsuki_bakugo.webp",
+              "role": "technical",
+              "portrait": "assets/bakugo/bakugo_technical/portrait.webp",
               "skill_name": "α - AP Shot Cluster (Normal)",
-              "skill_image": "assets/home/patches/1785298405/skill_katsuki_bakugo_ap_shot_cluster_normal.png",
+              "skill_image": "assets/bakugo/bakugo_technical/alpha.webp",
               "label": "Guard Break",
               "before": [
                 "30.0",
@@ -460,15 +464,16 @@
                 "48.0",
                 "50.0"
               ],
-              "tone": "buff"
+              "tone": "buff",
+              "style_id": "bakugo_technical"
             },
             {
               "character": "Katsuki Bakugo",
               "style": "Cluster",
-              "role": "Technique",
-              "portrait": "assets/home/patches/1785298405/portrait_katsuki_bakugo.webp",
+              "role": "technical",
+              "portrait": "assets/bakugo/bakugo_technical/portrait.webp",
               "skill_name": "β - Nitro Cluster (Explosion)",
-              "skill_image": "assets/home/patches/1785298405/skill_katsuki_bakugo_nitro_cluster_explosion.png",
+              "skill_image": "assets/bakugo/bakugo_technical/beta.webp",
               "label": "Damage",
               "before": [
                 "30.0",
@@ -492,15 +497,16 @@
                 "43.0",
                 "45.0"
               ],
-              "tone": "buff"
+              "tone": "buff",
+              "style_id": "bakugo_technical"
             },
             {
               "character": "Katsuki Bakugo",
               "style": "Cluster",
-              "role": "Technique",
-              "portrait": "assets/home/patches/1785298405/portrait_katsuki_bakugo.webp",
+              "role": "technical",
+              "portrait": "assets/bakugo/bakugo_technical/portrait.webp",
               "skill_name": "β - Nitro Cluster (Explosion)",
-              "skill_image": "assets/home/patches/1785298405/skill_katsuki_bakugo_nitro_cluster_explosion.png",
+              "skill_image": "assets/bakugo/bakugo_technical/beta.webp",
               "label": "Guard Break",
               "before": [
                 "30.0",
@@ -524,15 +530,16 @@
                 "43.0",
                 "45.0"
               ],
-              "tone": "buff"
+              "tone": "buff",
+              "style_id": "bakugo_technical"
             },
             {
               "character": "Katsuki Bakugo",
               "style": "Cluster",
-              "role": "Technique",
-              "portrait": "assets/home/patches/1785298405/portrait_katsuki_bakugo.webp",
+              "role": "technical",
+              "portrait": "assets/bakugo/bakugo_technical/portrait.webp",
               "skill_name": "β - Nitro Cluster (ExplosionFollow-up)",
-              "skill_image": "assets/home/patches/1785298405/skill_katsuki_bakugo_nitro_cluster_explosionfollow_up.png",
+              "skill_image": "assets/bakugo/bakugo_technical/beta.webp",
               "label": "Damage",
               "before": [
                 "40.0",
@@ -556,15 +563,16 @@
                 "58.0",
                 "60.0"
               ],
-              "tone": "buff"
+              "tone": "buff",
+              "style_id": "bakugo_technical"
             },
             {
               "character": "Katsuki Bakugo",
               "style": "Cluster",
-              "role": "Technique",
-              "portrait": "assets/home/patches/1785298405/portrait_katsuki_bakugo.webp",
+              "role": "technical",
+              "portrait": "assets/bakugo/bakugo_technical/portrait.webp",
               "skill_name": "β - Nitro Cluster (ExplosionFollow-up)",
-              "skill_image": "assets/home/patches/1785298405/skill_katsuki_bakugo_nitro_cluster_explosionfollow_up.png",
+              "skill_image": "assets/bakugo/bakugo_technical/beta.webp",
               "label": "Guard Break",
               "before": [
                 "40.0",
@@ -588,7 +596,8 @@
                 "58.0",
                 "60.0"
               ],
-              "tone": "buff"
+              "tone": "buff",
+              "style_id": "bakugo_technical"
             },
             {
               "character": "Denki Kaminari",
@@ -739,7 +748,7 @@
             {
               "character": "Armored All Might",
               "style": "Technique",
-              "role": "Technique",
+              "role": "technical",
               "portrait": "assets/home/patches/1785298405/portrait_armored_all_might.webp",
               "skill_name": "α - Ice Bullet Shot (Burn)",
               "skill_image": "assets/home/patches/1785298405/skill_armored_all_might_ice_bullet_shot_burn.png",
@@ -775,12 +784,13 @@
               "effect_detail": {
                 "fr": "Brûlure",
                 "en": "Burn"
-              }
+              },
+              "style_id": "armored_all_might_technical"
             },
             {
               "character": "Armored All Might",
               "style": "Technique",
-              "role": "Technique",
+              "role": "technical",
               "portrait": "assets/home/patches/1785298405/portrait_armored_all_might.webp",
               "skill_name": "α - Ice Bullet Shot (Burn)",
               "skill_image": "assets/home/patches/1785298405/skill_armored_all_might_ice_bullet_shot_burn.png",
@@ -816,7 +826,8 @@
               "effect_detail": {
                 "fr": "Brûlure",
                 "en": "Burn"
-              }
+              },
+              "style_id": "armored_all_might_technical"
             },
             {
               "character": "Hawks",
@@ -1364,10 +1375,10 @@
             {
               "character": "Katsuki Bakugo",
               "style": "Cluster",
-              "role": "",
-              "portrait": "https://ultrarumble.com/assets/roles/T_ui_CharacterSelect_Technique_icon.webp",
+              "role": "technical",
+              "portrait": "assets/bakugo/bakugo_technical/portrait.webp",
               "skill_name": "α - AP Shot Cluster",
-              "skill_image": "https://ultrarumble.com/assets/Character/Ch002/Variation/Var02/GUI/Skill/T_ui_Skill_Ch002_Unique1.png",
+              "skill_image": "assets/bakugo/bakugo_technical/alpha.webp",
               "label": "Ammo",
               "before": [
                 "4",
@@ -1392,46 +1403,50 @@
                 "7"
               ],
               "tone": "buff",
-              "alter_symbol": "α"
+              "alter_symbol": "α",
+              "style_id": "bakugo_technical"
             },
             {
               "character": "Katsuki Bakugo",
               "style": "Cluster",
-              "role": "",
-              "portrait": "https://ultrarumble.com/assets/roles/T_ui_CharacterSelect_Technique_icon.webp",
+              "role": "technical",
+              "portrait": "assets/bakugo/bakugo_technical/portrait.webp",
               "skill_name": "γ - Howitzer Impact Cluster",
-              "skill_image": "https://ultrarumble.com/assets/Character/Ch002/Variation/Var02/GUI/Skill/T_ui_Skill_Ch002_Unique3.png",
+              "skill_image": "assets/bakugo/bakugo_technical/gamma.webp",
               "label": "Ammo",
               "before": "1",
               "after": "2",
               "tone": "buff",
-              "alter_symbol": "γ"
+              "alter_symbol": "γ",
+              "style_id": "bakugo_technical"
             },
             {
               "character": "Katsuki Bakugo",
               "style": "Cluster",
-              "role": "",
-              "portrait": "https://ultrarumble.com/assets/roles/T_ui_CharacterSelect_Technique_icon.webp",
+              "role": "technical",
+              "portrait": "assets/bakugo/bakugo_technical/portrait.webp",
               "skill_name": "γ - Howitzer Impact Cluster",
-              "skill_image": "https://ultrarumble.com/assets/Character/Ch002/Variation/Var02/GUI/Skill/T_ui_Skill_Ch002_Unique3.png",
+              "skill_image": "assets/bakugo/bakugo_technical/gamma.webp",
               "label": "Reload Time",
               "before": "7.0",
               "after": "8.0",
               "tone": "nerf",
-              "alter_symbol": "γ"
+              "alter_symbol": "γ",
+              "style_id": "bakugo_technical"
             },
             {
               "character": "Katsuki Bakugo",
               "style": "Cluster",
-              "role": "",
-              "portrait": "https://ultrarumble.com/assets/roles/T_ui_CharacterSelect_Technique_icon.webp",
+              "role": "technical",
+              "portrait": "assets/bakugo/bakugo_technical/portrait.webp",
               "skill_name": "γ - Howitzer Impact Cluster",
-              "skill_image": "https://ultrarumble.com/assets/Character/Ch002/Variation/Var02/GUI/Skill/T_ui_Skill_Ch002_Unique3.png",
+              "skill_image": "assets/bakugo/bakugo_technical/gamma.webp",
               "label": "Penalty Reload",
               "before": "7.0",
               "after": "11.0",
               "tone": "nerf",
-              "alter_symbol": "γ"
+              "alter_symbol": "γ",
+              "style_id": "bakugo_technical"
             },
             {
               "character": "Denki Kaminari",

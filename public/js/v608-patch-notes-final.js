@@ -11,7 +11,7 @@
   if(window.MHUR_V608_LOADED)return;
   window.MHUR_V608_LOADED=true;
 
-  const VERSION='patchfix-v4';
+  const VERSION='660';
 
   function clean(value){
     return String(value??'').trim();
@@ -424,6 +424,31 @@
     const character=findCharacter(change?.character);
     const ids=styleIds(character);
 
+    /*
+      V660 :
+      1. style_id explicite ;
+      2. règles Midoriya ;
+      3. nom exact du style ;
+      4. ressemblance du nom de compétence en dernier recours.
+    */
+    const explicitId=clean(
+      change?.style_id||
+      change?.styleId||
+      ''
+    );
+
+    if(
+      explicitId&&
+      ids.includes(explicitId)&&
+      map[explicitId]
+    ){
+      return {
+        character,
+        id:explicitId,
+        style:map[explicitId]
+      };
+    }
+
     const midoriyaId=midoriyaStyleId(
       change,
       character
@@ -434,6 +459,20 @@
         character,
         id:midoriyaId,
         style:map[midoriyaId]
+      };
+    }
+
+    const wanted=normal(change?.style||'Original');
+
+    const byStyle=ids.find(id=>
+      normal(localized(map[id]?.name)||'Original')===wanted
+    );
+
+    if(byStyle){
+      return {
+        character,
+        id:byStyle,
+        style:map[byStyle]
       };
     }
 
@@ -465,13 +504,7 @@
       };
     }
 
-    const wanted=normal(change?.style||'Original');
-
-    const byStyle=ids.find(id=>
-      normal(localized(map[id]?.name)||'Original')===wanted
-    );
-
-    const id=byStyle||ids[0]||'';
+    const id=ids[0]||'';
 
     return {
       character,
