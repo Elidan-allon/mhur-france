@@ -3,7 +3,8 @@
     "updated_at": "2026-08-05T04:31:00.008337+00:00",
     "source": "UltraRumble.com",
     "version": "v585-complete-safe-sync",
-    "patch_notes_fix": "alter-symbols-details-render-v4"
+    "patch_notes_fix": "alter-symbols-details-render-v4",
+    "patch_notes_renderer": "v657-signs-details"
   },
   "season": {
     "number": 18,
@@ -405,8 +406,14 @@
               "skill_slot": "α",
               "skill_name": "α - AP Shot Cluster",
               "skill_image": "assets/home/patches/1785298405/skill_katsuki_bakugo_ap_shot_cluster_normal.png",
-              "effect_detail": "Normal",
-              "label": "Dégâts — Normal",
+              "effect_detail": {
+                "fr": "Normal",
+                "en": "Normal"
+              },
+              "label": {
+                "fr": "Dégâts — Normal",
+                "en": "Damage — Normal"
+              },
               "before": [
                 "30.0",
                 "31.0",
@@ -440,8 +447,14 @@
               "skill_slot": "α",
               "skill_name": "α - AP Shot Cluster",
               "skill_image": "assets/home/patches/1785298405/skill_katsuki_bakugo_ap_shot_cluster_normal.png",
-              "effect_detail": "Normal",
-              "label": "Brise-garde — Normal",
+              "effect_detail": {
+                "fr": "Normal",
+                "en": "Normal"
+              },
+              "label": {
+                "fr": "Brise-garde — Normal",
+                "en": "Guard Break — Normal"
+              },
               "before": [
                 "30.0",
                 "31.0",
@@ -475,8 +488,14 @@
               "skill_slot": "β",
               "skill_name": "β - Nitro Cluster",
               "skill_image": "assets/home/patches/1785298405/skill_katsuki_bakugo_nitro_cluster_explosion.png",
-              "effect_detail": "Explosion",
-              "label": "Dégâts — Explosion",
+              "effect_detail": {
+                "fr": "Explosion",
+                "en": "Explosion"
+              },
+              "label": {
+                "fr": "Dégâts — Explosion",
+                "en": "Damage — Explosion"
+              },
               "before": [
                 "30.0",
                 "31.0",
@@ -510,8 +529,14 @@
               "skill_slot": "β",
               "skill_name": "β - Nitro Cluster",
               "skill_image": "assets/home/patches/1785298405/skill_katsuki_bakugo_nitro_cluster_explosion.png",
-              "effect_detail": "Explosion",
-              "label": "Brise-garde — Explosion",
+              "effect_detail": {
+                "fr": "Explosion",
+                "en": "Explosion"
+              },
+              "label": {
+                "fr": "Brise-garde — Explosion",
+                "en": "Guard Break — Explosion"
+              },
               "before": [
                 "30.0",
                 "31.0",
@@ -545,8 +570,14 @@
               "skill_slot": "β",
               "skill_name": "β - Nitro Cluster",
               "skill_image": "assets/home/patches/1785298405/skill_katsuki_bakugo_nitro_cluster_explosionfollow_up.png",
-              "effect_detail": "Explosion renforcée",
-              "label": "Dégâts — Explosion renforcée",
+              "effect_detail": {
+                "fr": "Explosion renforcée",
+                "en": "Follow-up explosion"
+              },
+              "label": {
+                "fr": "Dégâts — Explosion renforcée",
+                "en": "Damage — Follow-up explosion"
+              },
               "before": [
                 "40.0",
                 "41.0",
@@ -580,8 +611,14 @@
               "skill_slot": "β",
               "skill_name": "β - Nitro Cluster",
               "skill_image": "assets/home/patches/1785298405/skill_katsuki_bakugo_nitro_cluster_explosionfollow_up.png",
-              "effect_detail": "Explosion renforcée",
-              "label": "Brise-garde — Explosion renforcée",
+              "effect_detail": {
+                "fr": "Explosion renforcée",
+                "en": "Follow-up explosion"
+              },
+              "label": {
+                "fr": "Brise-garde — Explosion renforcée",
+                "en": "Guard Break — Follow-up explosion"
+              },
               "before": [
                 "40.0",
                 "41.0",
@@ -677,9 +714,12 @@
               "style": "Sheer Counter",
               "role": "",
               "portrait": "https://ultrarumble.com/assets/roles/T_ui_CharacterSelect_Technique_icon.webp",
-              "skill_name": "α - Phantom Smash (Shot)",
+              "skill_name": "α - Phantom Smash",
               "skill_image": "https://ultrarumble.com/assets/Character/Ch024/Variation/Var01/GUI/Skill/T_ui_Skill_Ch024_Unique1.png",
-              "label": "Damage",
+              "label": {
+                "fr": "Dégâts — Tir",
+                "en": "Damage — Shot"
+              },
               "before": [
                 "40.0",
                 "41.0",
@@ -703,16 +743,23 @@
                 "44.0"
               ],
               "tone": "nerf",
-              "alter_symbol": "α"
+              "alter_symbol": "α",
+              "effect_detail": {
+                "fr": "Tir",
+                "en": "Shot"
+              }
             },
             {
               "character": "Mirio Togata",
               "style": "Sheer Counter",
               "role": "",
               "portrait": "https://ultrarumble.com/assets/roles/T_ui_CharacterSelect_Technique_icon.webp",
-              "skill_name": "α - Phantom Smash (Shot)",
+              "skill_name": "α - Phantom Smash",
               "skill_image": "https://ultrarumble.com/assets/Character/Ch024/Variation/Var01/GUI/Skill/T_ui_Skill_Ch024_Unique1.png",
-              "label": "Guard Break",
+              "label": {
+                "fr": "Brise-garde — Tir",
+                "en": "Guard Break — Shot"
+              },
               "before": [
                 "40.0",
                 "41.0",
@@ -736,7 +783,11 @@
                 "44.0"
               ],
               "tone": "nerf",
-              "alter_symbol": "α"
+              "alter_symbol": "α",
+              "effect_detail": {
+                "fr": "Tir",
+                "en": "Shot"
+              }
             },
             {
               "character": "Armored All Might",
@@ -745,7 +796,10 @@
               "portrait": "assets/home/patches/1785298405/portrait_armored_all_might.webp",
               "skill_name": "α - Ice Bullet Shot",
               "skill_image": "assets/home/patches/1785298405/skill_armored_all_might_ice_bullet_shot_burn.png",
-              "label": "Dégâts — Brûlure (Burn)",
+              "label": {
+                "fr": "Dégâts — Brûlure",
+                "en": "Damage — Burn"
+              },
               "before": [
                 "52.0",
                 "54.0",
@@ -771,7 +825,10 @@
               "tone": "nerf",
               "alter_symbol": "α",
               "skill_slot": "α",
-              "effect_detail": "Brûlure (Burn)"
+              "effect_detail": {
+                "fr": "Brûlure",
+                "en": "Burn"
+              }
             },
             {
               "character": "Armored All Might",
@@ -780,7 +837,10 @@
               "portrait": "assets/home/patches/1785298405/portrait_armored_all_might.webp",
               "skill_name": "α - Ice Bullet Shot",
               "skill_image": "assets/home/patches/1785298405/skill_armored_all_might_ice_bullet_shot_burn.png",
-              "label": "Brise-garde — Brûlure (Burn)",
+              "label": {
+                "fr": "Brise-garde — Brûlure",
+                "en": "Guard Break — Burn"
+              },
               "before": [
                 "52.0",
                 "54.0",
@@ -806,16 +866,22 @@
               "tone": "nerf",
               "alter_symbol": "α",
               "skill_slot": "α",
-              "effect_detail": "Brûlure (Burn)"
+              "effect_detail": {
+                "fr": "Brûlure",
+                "en": "Burn"
+              }
             },
             {
               "character": "Hawks",
               "style": "Original",
               "role": "",
               "portrait": "https://ultrarumble.com/assets/roles/T_ui_CharacterSelect_Speed_icon.webp",
-              "skill_name": "α - Wingbeat (Homing)",
+              "skill_name": "α - Wingbeat",
               "skill_image": "https://ultrarumble.com/assets/Character/Ch043/GUI/Skill/T_ui_Skill_Ch043_Unique1.png",
-              "label": "Damage",
+              "label": {
+                "fr": "Dégâts — À tête chercheuse",
+                "en": "Damage — Homing"
+              },
               "before": [
                 "14.0",
                 "14.0",
@@ -833,16 +899,23 @@
                 "14.0"
               ],
               "tone": "nerf",
-              "alter_symbol": "α"
+              "alter_symbol": "α",
+              "effect_detail": {
+                "fr": "À tête chercheuse",
+                "en": "Homing"
+              }
             },
             {
               "character": "Hawks",
               "style": "Original",
               "role": "",
               "portrait": "https://ultrarumble.com/assets/roles/T_ui_CharacterSelect_Speed_icon.webp",
-              "skill_name": "α - Wingbeat (Homing)",
+              "skill_name": "α - Wingbeat",
               "skill_image": "https://ultrarumble.com/assets/Character/Ch043/GUI/Skill/T_ui_Skill_Ch043_Unique1.png",
-              "label": "Guard Break",
+              "label": {
+                "fr": "Brise-garde — À tête chercheuse",
+                "en": "Guard Break — Homing"
+              },
               "before": [
                 "14.0",
                 "14.0",
@@ -860,16 +933,23 @@
                 "14.0"
               ],
               "tone": "nerf",
-              "alter_symbol": "α"
+              "alter_symbol": "α",
+              "effect_detail": {
+                "fr": "À tête chercheuse",
+                "en": "Homing"
+              }
             },
             {
               "character": "Hawks",
               "style": "Original",
               "role": "",
               "portrait": "https://ultrarumble.com/assets/roles/T_ui_CharacterSelect_Speed_icon.webp",
-              "skill_name": "β - Wind Cross (Melee)",
+              "skill_name": "β - Wind Cross",
               "skill_image": "https://ultrarumble.com/assets/Character/Ch043/GUI/Skill/T_ui_Skill_Ch043_Unique2.png",
-              "label": "Damage",
+              "label": {
+                "fr": "Dégâts — Corps à corps",
+                "en": "Damage — Melee"
+              },
               "before": [
                 "90.0",
                 "95.0",
@@ -893,16 +973,23 @@
                 "150.0"
               ],
               "tone": "buff",
-              "alter_symbol": "β"
+              "alter_symbol": "β",
+              "effect_detail": {
+                "fr": "Corps à corps",
+                "en": "Melee"
+              }
             },
             {
               "character": "Hawks",
               "style": "Original",
               "role": "",
               "portrait": "https://ultrarumble.com/assets/roles/T_ui_CharacterSelect_Speed_icon.webp",
-              "skill_name": "β - Wind Cross (Melee)",
+              "skill_name": "β - Wind Cross",
               "skill_image": "https://ultrarumble.com/assets/Character/Ch043/GUI/Skill/T_ui_Skill_Ch043_Unique2.png",
-              "label": "Guard Break",
+              "label": {
+                "fr": "Brise-garde — Corps à corps",
+                "en": "Guard Break — Melee"
+              },
               "before": [
                 "90.0",
                 "95.0",
@@ -926,16 +1013,23 @@
                 "150.0"
               ],
               "tone": "buff",
-              "alter_symbol": "β"
+              "alter_symbol": "β",
+              "effect_detail": {
+                "fr": "Corps à corps",
+                "en": "Melee"
+              }
             },
             {
               "character": "Lady Nagant",
               "style": "Original",
               "role": "",
               "portrait": "https://ultrarumble.com/assets/roles/T_ui_CharacterSelect_Power_icon.webp",
-              "skill_name": "α - Hollow Point Shot (On-hit Shot AfterFollow-up)",
+              "skill_name": "α - Hollow Point Shot",
               "skill_image": "https://ultrarumble.com/assets/Character/Ch115/GUI/Skill/T_ui_Skill_Ch115_Unique1.png",
-              "label": "Damage",
+              "label": {
+                "fr": "Dégâts — On-hit Shot AfterFollow-up",
+                "en": "Damage — On-hit Shot AfterFollow-up"
+              },
               "before": [
                 "6.0",
                 "6.0",
@@ -959,16 +1053,23 @@
                 "5.0"
               ],
               "tone": "nerf",
-              "alter_symbol": "α"
+              "alter_symbol": "α",
+              "effect_detail": {
+                "fr": "On-hit Shot AfterFollow-up",
+                "en": "On-hit Shot AfterFollow-up"
+              }
             },
             {
               "character": "Lady Nagant",
               "style": "Original",
               "role": "",
               "portrait": "https://ultrarumble.com/assets/roles/T_ui_CharacterSelect_Power_icon.webp",
-              "skill_name": "α - Hollow Point Shot (Shooting)",
+              "skill_name": "α - Hollow Point Shot",
               "skill_image": "https://ultrarumble.com/assets/Character/Ch115/GUI/Skill/T_ui_Skill_Ch115_Unique1.png",
-              "label": "Damage",
+              "label": {
+                "fr": "Dégâts — Shooting",
+                "en": "Damage — Shooting"
+              },
               "before": [
                 "47.0",
                 "49.0",
@@ -992,16 +1093,23 @@
                 "45.0"
               ],
               "tone": "nerf",
-              "alter_symbol": "α"
+              "alter_symbol": "α",
+              "effect_detail": {
+                "fr": "Shooting",
+                "en": "Shooting"
+              }
             },
             {
               "character": "Lady Nagant",
               "style": "Original",
               "role": "",
               "portrait": "https://ultrarumble.com/assets/roles/T_ui_CharacterSelect_Power_icon.webp",
-              "skill_name": "α - Hollow Point Shot (Shooting)",
+              "skill_name": "α - Hollow Point Shot",
               "skill_image": "https://ultrarumble.com/assets/Character/Ch115/GUI/Skill/T_ui_Skill_Ch115_Unique1.png",
-              "label": "Guard Break",
+              "label": {
+                "fr": "Brise-garde — Shooting",
+                "en": "Guard Break — Shooting"
+              },
               "before": [
                 "47.0",
                 "49.0",
@@ -1025,16 +1133,23 @@
                 "45.0"
               ],
               "tone": "nerf",
-              "alter_symbol": "α"
+              "alter_symbol": "α",
+              "effect_detail": {
+                "fr": "Shooting",
+                "en": "Shooting"
+              }
             },
             {
               "character": "Lady Nagant",
               "style": "Original",
               "role": "",
               "portrait": "https://ultrarumble.com/assets/roles/T_ui_CharacterSelect_Power_icon.webp",
-              "skill_name": "β - High Angle Fire (ArcOn-hit Shot)",
+              "skill_name": "β - High Angle Fire",
               "skill_image": "https://ultrarumble.com/assets/Character/Ch115/GUI/Skill/T_ui_Skill_Ch115_Unique2.png",
-              "label": "Damage",
+              "label": {
+                "fr": "Dégâts — ArcOn-hit Shot",
+                "en": "Damage — ArcOn-hit Shot"
+              },
               "before": [
                 "25.0",
                 "26.0",
@@ -1058,16 +1173,23 @@
                 "30.0"
               ],
               "tone": "nerf",
-              "alter_symbol": "β"
+              "alter_symbol": "β",
+              "effect_detail": {
+                "fr": "ArcOn-hit Shot",
+                "en": "ArcOn-hit Shot"
+              }
             },
             {
               "character": "Lady Nagant",
               "style": "Original",
               "role": "",
               "portrait": "https://ultrarumble.com/assets/roles/T_ui_CharacterSelect_Power_icon.webp",
-              "skill_name": "β - High Angle Fire (ArcOn-hit Shot)",
+              "skill_name": "β - High Angle Fire",
               "skill_image": "https://ultrarumble.com/assets/Character/Ch115/GUI/Skill/T_ui_Skill_Ch115_Unique2.png",
-              "label": "Guard Break",
+              "label": {
+                "fr": "Brise-garde — ArcOn-hit Shot",
+                "en": "Guard Break — ArcOn-hit Shot"
+              },
               "before": [
                 "25.0",
                 "26.0",
@@ -1091,16 +1213,23 @@
                 "30.0"
               ],
               "tone": "nerf",
-              "alter_symbol": "β"
+              "alter_symbol": "β",
+              "effect_detail": {
+                "fr": "ArcOn-hit Shot",
+                "en": "ArcOn-hit Shot"
+              }
             },
             {
               "character": "Lady Nagant",
               "style": "Original",
               "role": "",
               "portrait": "https://ultrarumble.com/assets/roles/T_ui_CharacterSelect_Power_icon.webp",
-              "skill_name": "γ - Kickback Shot (Spread Shot Ground)",
+              "skill_name": "γ - Kickback Shot",
               "skill_image": "https://ultrarumble.com/assets/Character/Ch115/GUI/Skill/T_ui_Skill_Ch115_Unique3.png",
-              "label": "Damage",
+              "label": {
+                "fr": "Dégâts — Spread Shot Ground",
+                "en": "Damage — Spread Shot Ground"
+              },
               "before": [
                 "120.0",
                 "124.0",
@@ -1124,16 +1253,23 @@
                 "125.0"
               ],
               "tone": "nerf",
-              "alter_symbol": "γ"
+              "alter_symbol": "γ",
+              "effect_detail": {
+                "fr": "Spread Shot Ground",
+                "en": "Spread Shot Ground"
+              }
             },
             {
               "character": "Lady Nagant",
               "style": "Original",
               "role": "",
               "portrait": "https://ultrarumble.com/assets/roles/T_ui_CharacterSelect_Power_icon.webp",
-              "skill_name": "γ - Kickback Shot (Spread Shot Ground)",
+              "skill_name": "γ - Kickback Shot",
               "skill_image": "https://ultrarumble.com/assets/Character/Ch115/GUI/Skill/T_ui_Skill_Ch115_Unique3.png",
-              "label": "Guard Break",
+              "label": {
+                "fr": "Brise-garde — Spread Shot Ground",
+                "en": "Guard Break — Spread Shot Ground"
+              },
               "before": [
                 "120.0",
                 "124.0",
@@ -1157,7 +1293,11 @@
                 "125.0"
               ],
               "tone": "nerf",
-              "alter_symbol": "γ"
+              "alter_symbol": "γ",
+              "effect_detail": {
+                "fr": "Spread Shot Ground",
+                "en": "Spread Shot Ground"
+              }
             },
             {
               "character": "Lady Nagant",
@@ -1166,10 +1306,17 @@
               "portrait": "https://ultrarumble.com/assets/roles/T_ui_CharacterSelect_Power_icon.webp",
               "skill_name": "- Scope Mode (Action Shooting)",
               "skill_image": "https://ultrarumble.com/assets/Character/Ch115/GUI/Skill/T_ui_SpecialSkill_Ch115.png",
-              "label": "Damage",
+              "label": {
+                "fr": "Dégâts — Action Shooting",
+                "en": "Damage — Action Shooting"
+              },
               "before": "150.0",
               "after": "125.0",
-              "tone": "nerf"
+              "tone": "nerf",
+              "effect_detail": {
+                "fr": "Action Shooting",
+                "en": "Action Shooting"
+              }
             },
             {
               "character": "Lady Nagant",
@@ -1178,10 +1325,17 @@
               "portrait": "https://ultrarumble.com/assets/roles/T_ui_CharacterSelect_Power_icon.webp",
               "skill_name": "- Scope Mode (Action Shooting)",
               "skill_image": "https://ultrarumble.com/assets/Character/Ch115/GUI/Skill/T_ui_SpecialSkill_Ch115.png",
-              "label": "Guard Break",
+              "label": {
+                "fr": "Brise-garde — Action Shooting",
+                "en": "Guard Break — Action Shooting"
+              },
               "before": "150.0",
               "after": "125.0",
-              "tone": "nerf"
+              "tone": "nerf",
+              "effect_detail": {
+                "fr": "Action Shooting",
+                "en": "Action Shooting"
+              }
             },
             {
               "character": "Lady Nagant",
@@ -1190,10 +1344,17 @@
               "portrait": "https://ultrarumble.com/assets/roles/T_ui_CharacterSelect_Power_icon.webp",
               "skill_name": "- Scope Mode (Action Shooting Headshot)",
               "skill_image": "https://ultrarumble.com/assets/Character/Ch115/GUI/Skill/T_ui_SpecialSkill_Ch115.png",
-              "label": "Damage",
+              "label": {
+                "fr": "Dégâts — Action Shooting Headshot",
+                "en": "Damage — Action Shooting Headshot"
+              },
               "before": "280.0",
               "after": "230.0",
-              "tone": "nerf"
+              "tone": "nerf",
+              "effect_detail": {
+                "fr": "Action Shooting Headshot",
+                "en": "Action Shooting Headshot"
+              }
             },
             {
               "character": "Lady Nagant",
@@ -1202,10 +1363,17 @@
               "portrait": "https://ultrarumble.com/assets/roles/T_ui_CharacterSelect_Power_icon.webp",
               "skill_name": "- Scope Mode (Action Shooting Headshot)",
               "skill_image": "https://ultrarumble.com/assets/Character/Ch115/GUI/Skill/T_ui_SpecialSkill_Ch115.png",
-              "label": "Guard Break",
+              "label": {
+                "fr": "Brise-garde — Action Shooting Headshot",
+                "en": "Guard Break — Action Shooting Headshot"
+              },
               "before": "280.0",
               "after": "230.0",
-              "tone": "nerf"
+              "tone": "nerf",
+              "effect_detail": {
+                "fr": "Action Shooting Headshot",
+                "en": "Action Shooting Headshot"
+              }
             }
           ]
         },
@@ -1697,9 +1865,12 @@
               "style": "Twin Palm Strike",
               "role": "",
               "portrait": "https://ultrarumble.com/assets/roles/T_ui_CharacterSelect_Power_icon.webp",
-              "skill_name": "α - Gale Burst (Normal)",
+              "skill_name": "α - Gale Burst",
               "skill_image": "https://ultrarumble.com/assets/Character/Ch046/Variation/Var01/GUI/Skill/T_ui_Skill_Ch046_Unique1.png",
-              "label": "Damage",
+              "label": {
+                "fr": "Dégâts — Normal",
+                "en": "Damage — Normal"
+              },
               "before": [
                 "25.0",
                 "27.0",
@@ -1723,16 +1894,23 @@
                 "50.0"
               ],
               "tone": "buff",
-              "alter_symbol": "α"
+              "alter_symbol": "α",
+              "effect_detail": {
+                "fr": "Normal",
+                "en": "Normal"
+              }
             },
             {
               "character": "Itsuka Kendo",
               "style": "Twin Palm Strike",
               "role": "",
               "portrait": "https://ultrarumble.com/assets/roles/T_ui_CharacterSelect_Power_icon.webp",
-              "skill_name": "α - Gale Burst (Normal)",
+              "skill_name": "α - Gale Burst",
               "skill_image": "https://ultrarumble.com/assets/Character/Ch046/Variation/Var01/GUI/Skill/T_ui_Skill_Ch046_Unique1.png",
-              "label": "Guard Break",
+              "label": {
+                "fr": "Brise-garde — Normal",
+                "en": "Guard Break — Normal"
+              },
               "before": [
                 "25.0",
                 "27.0",
@@ -1756,16 +1934,23 @@
                 "50.0"
               ],
               "tone": "buff",
-              "alter_symbol": "α"
+              "alter_symbol": "α",
+              "effect_detail": {
+                "fr": "Normal",
+                "en": "Normal"
+              }
             },
             {
               "character": "Itsuka Kendo",
               "style": "Twin Palm Strike",
               "role": "",
               "portrait": "https://ultrarumble.com/assets/roles/T_ui_CharacterSelect_Power_icon.webp",
-              "skill_name": "γ - Whirlwind Fist (Finisher)",
+              "skill_name": "γ - Whirlwind Fist",
               "skill_image": "https://ultrarumble.com/assets/Character/Ch046/Variation/Var01/GUI/Skill/T_ui_Skill_Ch046_Unique3.png",
-              "label": "Damage",
+              "label": {
+                "fr": "Dégâts — Finisher",
+                "en": "Damage — Finisher"
+              },
               "before": [
                 "60.0",
                 "62.0",
@@ -1789,16 +1974,23 @@
                 "85.0"
               ],
               "tone": "buff",
-              "alter_symbol": "γ"
+              "alter_symbol": "γ",
+              "effect_detail": {
+                "fr": "Finisher",
+                "en": "Finisher"
+              }
             },
             {
               "character": "Itsuka Kendo",
               "style": "Twin Palm Strike",
               "role": "",
               "portrait": "https://ultrarumble.com/assets/roles/T_ui_CharacterSelect_Power_icon.webp",
-              "skill_name": "γ - Whirlwind Fist (Finisher)",
+              "skill_name": "γ - Whirlwind Fist",
               "skill_image": "https://ultrarumble.com/assets/Character/Ch046/Variation/Var01/GUI/Skill/T_ui_Skill_Ch046_Unique3.png",
-              "label": "Guard Break",
+              "label": {
+                "fr": "Brise-garde — Finisher",
+                "en": "Guard Break — Finisher"
+              },
               "before": [
                 "60.0",
                 "62.0",
@@ -1822,16 +2014,23 @@
                 "85.0"
               ],
               "tone": "buff",
-              "alter_symbol": "γ"
+              "alter_symbol": "γ",
+              "effect_detail": {
+                "fr": "Finisher",
+                "en": "Finisher"
+              }
             },
             {
               "character": "Itsuka Kendo",
               "style": "Twin Palm Strike",
               "role": "",
               "portrait": "https://ultrarumble.com/assets/roles/T_ui_CharacterSelect_Power_icon.webp",
-              "skill_name": "γ - Whirlwind Fist (Spin)",
+              "skill_name": "γ - Whirlwind Fist",
               "skill_image": "https://ultrarumble.com/assets/Character/Ch046/Variation/Var01/GUI/Skill/T_ui_Skill_Ch046_Unique3.png",
-              "label": "Damage",
+              "label": {
+                "fr": "Dégâts — Spin",
+                "en": "Damage — Spin"
+              },
               "before": [
                 "50.0",
                 "52.0",
@@ -1855,16 +2054,23 @@
                 "75.0"
               ],
               "tone": "buff",
-              "alter_symbol": "γ"
+              "alter_symbol": "γ",
+              "effect_detail": {
+                "fr": "Spin",
+                "en": "Spin"
+              }
             },
             {
               "character": "Itsuka Kendo",
               "style": "Twin Palm Strike",
               "role": "",
               "portrait": "https://ultrarumble.com/assets/roles/T_ui_CharacterSelect_Power_icon.webp",
-              "skill_name": "γ - Whirlwind Fist (Spin)",
+              "skill_name": "γ - Whirlwind Fist",
               "skill_image": "https://ultrarumble.com/assets/Character/Ch046/Variation/Var01/GUI/Skill/T_ui_Skill_Ch046_Unique3.png",
-              "label": "Guard Break",
+              "label": {
+                "fr": "Brise-garde — Spin",
+                "en": "Guard Break — Spin"
+              },
               "before": [
                 "50.0",
                 "52.0",
@@ -1888,16 +2094,23 @@
                 "75.0"
               ],
               "tone": "buff",
-              "alter_symbol": "γ"
+              "alter_symbol": "γ",
+              "effect_detail": {
+                "fr": "Spin",
+                "en": "Spin"
+              }
             },
             {
               "character": "Ibara Shiozaki",
               "style": "Original",
               "role": "",
               "portrait": "https://ultrarumble.com/assets/roles/T_ui_CharacterSelect_Support_icon.webp",
-              "skill_name": "α - Purification (Charge)",
+              "skill_name": "α - Purification",
               "skill_image": "https://ultrarumble.com/assets/Character/Ch102/GUI/Skill/T_ui_Skill_Ch102_Unique1.png",
-              "label": "Damage",
+              "label": {
+                "fr": "Dégâts — Charge",
+                "en": "Damage — Charge"
+              },
               "before": [
                 "25.0",
                 "28.0",
@@ -1921,16 +2134,23 @@
                 "45.0"
               ],
               "tone": "buff",
-              "alter_symbol": "α"
+              "alter_symbol": "α",
+              "effect_detail": {
+                "fr": "Charge",
+                "en": "Charge"
+              }
             },
             {
               "character": "Ibara Shiozaki",
               "style": "Original",
               "role": "",
               "portrait": "https://ultrarumble.com/assets/roles/T_ui_CharacterSelect_Support_icon.webp",
-              "skill_name": "α - Purification (Charge)",
+              "skill_name": "α - Purification",
               "skill_image": "https://ultrarumble.com/assets/Character/Ch102/GUI/Skill/T_ui_Skill_Ch102_Unique1.png",
-              "label": "Guard Break",
+              "label": {
+                "fr": "Brise-garde — Charge",
+                "en": "Guard Break — Charge"
+              },
               "before": [
                 "25.0",
                 "28.0",
@@ -1954,7 +2174,11 @@
                 "45.0"
               ],
               "tone": "buff",
-              "alter_symbol": "α"
+              "alter_symbol": "α",
+              "effect_detail": {
+                "fr": "Charge",
+                "en": "Charge"
+              }
             },
             {
               "character": "Tamaki Amajiki",
@@ -2027,9 +2251,12 @@
               "style": "Original",
               "role": "",
               "portrait": "https://ultrarumble.com/assets/roles/T_ui_CharacterSelect_Power_icon.webp",
-              "skill_name": "γ - Plasma Cannon (Charge)",
+              "skill_name": "γ - Plasma Cannon",
               "skill_image": "https://ultrarumble.com/assets/Character/Ch026/GUI/Skill/T_ui_Skill_Ch026_Unique3.png",
-              "label": "Damage",
+              "label": {
+                "fr": "Dégâts — Charge",
+                "en": "Damage — Charge"
+              },
               "before": [
                 "34.0",
                 "35.0",
@@ -2053,16 +2280,23 @@
                 "44.0"
               ],
               "tone": "buff",
-              "alter_symbol": "γ"
+              "alter_symbol": "γ",
+              "effect_detail": {
+                "fr": "Charge",
+                "en": "Charge"
+              }
             },
             {
               "character": "Tamaki Amajiki",
               "style": "Original",
               "role": "",
               "portrait": "https://ultrarumble.com/assets/roles/T_ui_CharacterSelect_Power_icon.webp",
-              "skill_name": "γ - Plasma Cannon (Charge)",
+              "skill_name": "γ - Plasma Cannon",
               "skill_image": "https://ultrarumble.com/assets/Character/Ch026/GUI/Skill/T_ui_Skill_Ch026_Unique3.png",
-              "label": "Guard Break",
+              "label": {
+                "fr": "Brise-garde — Charge",
+                "en": "Guard Break — Charge"
+              },
               "before": [
                 "34.0",
                 "35.0",
@@ -2086,7 +2320,11 @@
                 "44.0"
               ],
               "tone": "buff",
-              "alter_symbol": "γ"
+              "alter_symbol": "γ",
+              "effect_detail": {
+                "fr": "Charge",
+                "en": "Charge"
+              }
             },
             {
               "character": "Nejire Hado",
@@ -2225,9 +2463,12 @@
               "style": "Original",
               "role": "",
               "portrait": "https://ultrarumble.com/assets/roles/T_ui_CharacterSelect_Defense_icon.webp",
-              "skill_name": "β - Meteor Annihilation (Explosion)",
+              "skill_name": "β - Meteor Annihilation",
               "skill_image": "https://ultrarumble.com/assets/Character/Ch201/GUI/Skill/T_ui_Skill_Ch201_Unique2.png",
-              "label": "Damage",
+              "label": {
+                "fr": "Dégâts — Explosion",
+                "en": "Damage — Explosion"
+              },
               "before": [
                 "150.0",
                 "155.0",
@@ -2251,16 +2492,23 @@
                 "170.0"
               ],
               "tone": "nerf",
-              "alter_symbol": "β"
+              "alter_symbol": "β",
+              "effect_detail": {
+                "fr": "Explosion",
+                "en": "Explosion"
+              }
             },
             {
               "character": "All For One",
               "style": "Original",
               "role": "",
               "portrait": "https://ultrarumble.com/assets/roles/T_ui_CharacterSelect_Defense_icon.webp",
-              "skill_name": "β - Meteor Annihilation (Explosion)",
+              "skill_name": "β - Meteor Annihilation",
               "skill_image": "https://ultrarumble.com/assets/Character/Ch201/GUI/Skill/T_ui_Skill_Ch201_Unique2.png",
-              "label": "Guard Break",
+              "label": {
+                "fr": "Brise-garde — Explosion",
+                "en": "Guard Break — Explosion"
+              },
               "before": [
                 "150.0",
                 "155.0",
@@ -2284,7 +2532,11 @@
                 "170.0"
               ],
               "tone": "nerf",
-              "alter_symbol": "β"
+              "alter_symbol": "β",
+              "effect_detail": {
+                "fr": "Explosion",
+                "en": "Explosion"
+              }
             },
             {
               "character": "All For One",
@@ -2762,26 +3014,40 @@
               "style": "Flow Runner",
               "role": "",
               "portrait": "https://ultrarumble.com/assets/roles/T_ui_CharacterSelect_Power_icon.webp",
-              "skill_name": "α - Binding Cloth: Leap (Grab)",
+              "skill_name": "α - Binding Cloth: Leap",
               "skill_image": "https://ultrarumble.com/assets/Character/Ch013/Variation/Var01/GUI/Skill/T_ui_Skill_Ch013_Unique1.png",
-              "label": "Damage",
+              "label": {
+                "fr": "Dégâts — Grab",
+                "en": "Damage — Grab"
+              },
               "before": "10.0",
               "after": "30.0",
               "tone": "buff",
-              "alter_symbol": "α"
+              "alter_symbol": "α",
+              "effect_detail": {
+                "fr": "Grab",
+                "en": "Grab"
+              }
             },
             {
               "character": "Shota Aizawa",
               "style": "Flow Runner",
               "role": "",
               "portrait": "https://ultrarumble.com/assets/roles/T_ui_CharacterSelect_Power_icon.webp",
-              "skill_name": "α - Binding Cloth: Leap (Grab)",
+              "skill_name": "α - Binding Cloth: Leap",
               "skill_image": "https://ultrarumble.com/assets/Character/Ch013/Variation/Var01/GUI/Skill/T_ui_Skill_Ch013_Unique1.png",
-              "label": "Guard Break",
+              "label": {
+                "fr": "Brise-garde — Grab",
+                "en": "Guard Break — Grab"
+              },
               "before": "10.0",
               "after": "30.0",
               "tone": "buff",
-              "alter_symbol": "α"
+              "alter_symbol": "α",
+              "effect_detail": {
+                "fr": "Grab",
+                "en": "Grab"
+              }
             }
           ]
         },
@@ -3164,9 +3430,12 @@
               "style": "Original",
               "role": "",
               "portrait": "https://ultrarumble.com/assets/roles/T_ui_CharacterSelect_Defense_icon.webp",
-              "skill_name": "α - Delaware Smash Air Force (Charge)",
+              "skill_name": "α - Delaware Smash Air Force",
               "skill_image": "https://ultrarumble.com/assets/Character/Ch001/GUI/Skill/T_ui_Skill_Ch001_Unique1.png",
-              "label": "Damage",
+              "label": {
+                "fr": "Dégâts — Charge",
+                "en": "Damage — Charge"
+              },
               "before": [
                 "80.0",
                 "82.0",
@@ -3190,16 +3459,23 @@
                 "140.0"
               ],
               "tone": "buff",
-              "alter_symbol": "α"
+              "alter_symbol": "α",
+              "effect_detail": {
+                "fr": "Charge",
+                "en": "Charge"
+              }
             },
             {
               "character": "Izuku Midoriya",
               "style": "Original",
               "role": "",
               "portrait": "https://ultrarumble.com/assets/roles/T_ui_CharacterSelect_Defense_icon.webp",
-              "skill_name": "α - Delaware Smash Air Force (Charge)",
+              "skill_name": "α - Delaware Smash Air Force",
               "skill_image": "https://ultrarumble.com/assets/Character/Ch001/GUI/Skill/T_ui_Skill_Ch001_Unique1.png",
-              "label": "Guard Break",
+              "label": {
+                "fr": "Brise-garde — Charge",
+                "en": "Guard Break — Charge"
+              },
               "before": [
                 "80.0",
                 "82.0",
@@ -3223,7 +3499,11 @@
                 "140.0"
               ],
               "tone": "buff",
-              "alter_symbol": "α"
+              "alter_symbol": "α",
+              "effect_detail": {
+                "fr": "Charge",
+                "en": "Charge"
+              }
             },
             {
               "character": "Izuku Midoriya",
@@ -3317,9 +3597,12 @@
               "style": "Fairy",
               "role": "",
               "portrait": "https://ultrarumble.com/assets/roles/T_ui_CharacterSelect_Support_icon.webp",
-              "skill_name": "α - Spiraling Pike (Shot)",
+              "skill_name": "α - Spiraling Pike",
               "skill_image": "https://ultrarumble.com/assets/Character/Ch025/Variation/Var01/GUI/Skill/T_ui_Skill_Ch025_Unique1.png",
-              "label": "Damage",
+              "label": {
+                "fr": "Dégâts — Tir",
+                "en": "Damage — Shot"
+              },
               "before": [
                 "45.0",
                 "46.0",
@@ -3343,16 +3626,23 @@
                 "45.0"
               ],
               "tone": "nerf",
-              "alter_symbol": "α"
+              "alter_symbol": "α",
+              "effect_detail": {
+                "fr": "Tir",
+                "en": "Shot"
+              }
             },
             {
               "character": "Nejire Hado",
               "style": "Fairy",
               "role": "",
               "portrait": "https://ultrarumble.com/assets/roles/T_ui_CharacterSelect_Support_icon.webp",
-              "skill_name": "α - Spiraling Pike (Shot)",
+              "skill_name": "α - Spiraling Pike",
               "skill_image": "https://ultrarumble.com/assets/Character/Ch025/Variation/Var01/GUI/Skill/T_ui_Skill_Ch025_Unique1.png",
-              "label": "Guard Break",
+              "label": {
+                "fr": "Brise-garde — Tir",
+                "en": "Guard Break — Shot"
+              },
               "before": [
                 "45.0",
                 "46.0",
@@ -3376,16 +3666,23 @@
                 "45.0"
               ],
               "tone": "nerf",
-              "alter_symbol": "α"
+              "alter_symbol": "α",
+              "effect_detail": {
+                "fr": "Tir",
+                "en": "Shot"
+              }
             },
             {
               "character": "Nejire Hado",
               "style": "Fairy",
               "role": "",
               "portrait": "https://ultrarumble.com/assets/roles/T_ui_CharacterSelect_Support_icon.webp",
-              "skill_name": "α - Spiraling Pike (StrongShot)",
+              "skill_name": "α - Spiraling Pike",
               "skill_image": "https://ultrarumble.com/assets/Character/Ch025/Variation/Var01/GUI/Skill/T_ui_Skill_Ch025_Unique1.png",
-              "label": "Damage",
+              "label": {
+                "fr": "Dégâts — StrongShot",
+                "en": "Damage — StrongShot"
+              },
               "before": [
                 "45.0",
                 "46.0",
@@ -3409,16 +3706,23 @@
                 "45.0"
               ],
               "tone": "nerf",
-              "alter_symbol": "α"
+              "alter_symbol": "α",
+              "effect_detail": {
+                "fr": "StrongShot",
+                "en": "StrongShot"
+              }
             },
             {
               "character": "Nejire Hado",
               "style": "Fairy",
               "role": "",
               "portrait": "https://ultrarumble.com/assets/roles/T_ui_CharacterSelect_Support_icon.webp",
-              "skill_name": "α - Spiraling Pike (StrongShot)",
+              "skill_name": "α - Spiraling Pike",
               "skill_image": "https://ultrarumble.com/assets/Character/Ch025/Variation/Var01/GUI/Skill/T_ui_Skill_Ch025_Unique1.png",
-              "label": "Guard Break",
+              "label": {
+                "fr": "Brise-garde — StrongShot",
+                "en": "Guard Break — StrongShot"
+              },
               "before": [
                 "45.0",
                 "46.0",
@@ -3442,16 +3746,23 @@
                 "45.0"
               ],
               "tone": "nerf",
-              "alter_symbol": "α"
+              "alter_symbol": "α",
+              "effect_detail": {
+                "fr": "StrongShot",
+                "en": "StrongShot"
+              }
             },
             {
               "character": "Hitoshi Shinso",
               "style": "Original",
               "role": "",
               "portrait": "https://ultrarumble.com/assets/roles/T_ui_CharacterSelect_Power_icon.webp",
-              "skill_name": "α - Binding Cloth: Crushing Strike (Slam)",
+              "skill_name": "α - Binding Cloth: Crushing Strike",
               "skill_image": "https://ultrarumble.com/assets/Character/Ch105/GUI/Skill/T_ui_Skill_Ch105_Unique1.png",
-              "label": "Damage",
+              "label": {
+                "fr": "Dégâts — Slam",
+                "en": "Damage — Slam"
+              },
               "before": [
                 "30.0",
                 "33.0",
@@ -3475,16 +3786,23 @@
                 "55.0"
               ],
               "tone": "buff",
-              "alter_symbol": "α"
+              "alter_symbol": "α",
+              "effect_detail": {
+                "fr": "Slam",
+                "en": "Slam"
+              }
             },
             {
               "character": "Hitoshi Shinso",
               "style": "Original",
               "role": "",
               "portrait": "https://ultrarumble.com/assets/roles/T_ui_CharacterSelect_Power_icon.webp",
-              "skill_name": "α - Binding Cloth: Crushing Strike (Slam)",
+              "skill_name": "α - Binding Cloth: Crushing Strike",
               "skill_image": "https://ultrarumble.com/assets/Character/Ch105/GUI/Skill/T_ui_Skill_Ch105_Unique1.png",
-              "label": "Guard Break",
+              "label": {
+                "fr": "Brise-garde — Slam",
+                "en": "Guard Break — Slam"
+              },
               "before": [
                 "30.0",
                 "33.0",
@@ -3508,7 +3826,11 @@
                 "55.0"
               ],
               "tone": "buff",
-              "alter_symbol": "α"
+              "alter_symbol": "α",
+              "effect_detail": {
+                "fr": "Slam",
+                "en": "Slam"
+              }
             },
             {
               "character": "Shota Aizawa",
@@ -3581,9 +3903,12 @@
               "style": "Original",
               "role": "",
               "portrait": "https://ultrarumble.com/assets/roles/T_ui_CharacterSelect_Technique_icon.webp",
-              "skill_name": "β - Powerhouse Kick Barrage (Finisher)",
+              "skill_name": "β - Powerhouse Kick Barrage",
               "skill_image": "https://ultrarumble.com/assets/Character/Ch013/GUI/Skill/T_ui_Skill_Ch013_Unique2.png",
-              "label": "Damage",
+              "label": {
+                "fr": "Dégâts — Finisher",
+                "en": "Damage — Finisher"
+              },
               "before": [
                 "45.0",
                 "47.0",
@@ -3607,16 +3932,23 @@
                 "102.0"
               ],
               "tone": "buff",
-              "alter_symbol": "β"
+              "alter_symbol": "β",
+              "effect_detail": {
+                "fr": "Finisher",
+                "en": "Finisher"
+              }
             },
             {
               "character": "Shota Aizawa",
               "style": "Original",
               "role": "",
               "portrait": "https://ultrarumble.com/assets/roles/T_ui_CharacterSelect_Technique_icon.webp",
-              "skill_name": "β - Powerhouse Kick Barrage (Finisher)",
+              "skill_name": "β - Powerhouse Kick Barrage",
               "skill_image": "https://ultrarumble.com/assets/Character/Ch013/GUI/Skill/T_ui_Skill_Ch013_Unique2.png",
-              "label": "Guard Break",
+              "label": {
+                "fr": "Brise-garde — Finisher",
+                "en": "Guard Break — Finisher"
+              },
               "before": [
                 "45.0",
                 "47.0",
@@ -3640,7 +3972,11 @@
                 "102.0"
               ],
               "tone": "buff",
-              "alter_symbol": "β"
+              "alter_symbol": "β",
+              "effect_detail": {
+                "fr": "Finisher",
+                "en": "Finisher"
+              }
             },
             {
               "character": "Endeavor",
@@ -3709,61 +4045,92 @@
               "style": "Original",
               "role": "",
               "portrait": "https://ultrarumble.com/assets/roles/T_ui_CharacterSelect_Power_icon.webp",
-              "skill_name": "β - Searing Arrow (ShotL2)",
+              "skill_name": "β - Searing Arrow",
               "skill_image": "https://ultrarumble.com/assets/Character/Ch023/GUI/Skill/T_ui_Skill_Ch023_Unique2.png",
-              "label": "Damage",
+              "label": {
+                "fr": "Dégâts — ShotL2",
+                "en": "Damage — ShotL2"
+              },
               "before": "55.0",
               "after": "50.0",
               "tone": "nerf",
-              "alter_symbol": "β"
+              "alter_symbol": "β",
+              "effect_detail": {
+                "fr": "ShotL2",
+                "en": "ShotL2"
+              }
             },
             {
               "character": "Endeavor",
               "style": "Original",
               "role": "",
               "portrait": "https://ultrarumble.com/assets/roles/T_ui_CharacterSelect_Power_icon.webp",
-              "skill_name": "β - Searing Arrow (ShotL2)",
+              "skill_name": "β - Searing Arrow",
               "skill_image": "https://ultrarumble.com/assets/Character/Ch023/GUI/Skill/T_ui_Skill_Ch023_Unique2.png",
-              "label": "Guard Break",
+              "label": {
+                "fr": "Brise-garde — ShotL2",
+                "en": "Guard Break — ShotL2"
+              },
               "before": "55.0",
               "after": "50.0",
               "tone": "nerf",
-              "alter_symbol": "β"
+              "alter_symbol": "β",
+              "effect_detail": {
+                "fr": "ShotL2",
+                "en": "ShotL2"
+              }
             },
             {
               "character": "Endeavor",
               "style": "Original",
               "role": "",
               "portrait": "https://ultrarumble.com/assets/roles/T_ui_CharacterSelect_Power_icon.webp",
-              "skill_name": "β - Searing Arrow (ShotL3)",
+              "skill_name": "β - Searing Arrow",
               "skill_image": "https://ultrarumble.com/assets/Character/Ch023/GUI/Skill/T_ui_Skill_Ch023_Unique2.png",
-              "label": "Damage",
+              "label": {
+                "fr": "Dégâts — ShotL3",
+                "en": "Damage — ShotL3"
+              },
               "before": "65.0",
               "after": "55.0",
               "tone": "nerf",
-              "alter_symbol": "β"
+              "alter_symbol": "β",
+              "effect_detail": {
+                "fr": "ShotL3",
+                "en": "ShotL3"
+              }
             },
             {
               "character": "Endeavor",
               "style": "Original",
               "role": "",
               "portrait": "https://ultrarumble.com/assets/roles/T_ui_CharacterSelect_Power_icon.webp",
-              "skill_name": "β - Searing Arrow (ShotL3)",
+              "skill_name": "β - Searing Arrow",
               "skill_image": "https://ultrarumble.com/assets/Character/Ch023/GUI/Skill/T_ui_Skill_Ch023_Unique2.png",
-              "label": "Guard Break",
+              "label": {
+                "fr": "Brise-garde — ShotL3",
+                "en": "Guard Break — ShotL3"
+              },
               "before": "65.0",
               "after": "55.0",
               "tone": "nerf",
-              "alter_symbol": "β"
+              "alter_symbol": "β",
+              "effect_detail": {
+                "fr": "ShotL3",
+                "en": "ShotL3"
+              }
             },
             {
               "character": "Hawks",
               "style": "Original",
               "role": "",
               "portrait": "https://ultrarumble.com/assets/roles/T_ui_CharacterSelect_Speed_icon.webp",
-              "skill_name": "α - Wingbeat (Normal Shot)",
+              "skill_name": "α - Wingbeat",
               "skill_image": "https://ultrarumble.com/assets/Character/Ch043/GUI/Skill/T_ui_Skill_Ch043_Unique1.png",
-              "label": "Damage",
+              "label": {
+                "fr": "Dégâts — Normal Shot",
+                "en": "Damage — Normal Shot"
+              },
               "before": [
                 "10.0",
                 "10.0",
@@ -3787,16 +4154,23 @@
                 "20.0"
               ],
               "tone": "buff",
-              "alter_symbol": "α"
+              "alter_symbol": "α",
+              "effect_detail": {
+                "fr": "Normal Shot",
+                "en": "Normal Shot"
+              }
             },
             {
               "character": "Hawks",
               "style": "Original",
               "role": "",
               "portrait": "https://ultrarumble.com/assets/roles/T_ui_CharacterSelect_Speed_icon.webp",
-              "skill_name": "α - Wingbeat (Normal Shot)",
+              "skill_name": "α - Wingbeat",
               "skill_image": "https://ultrarumble.com/assets/Character/Ch043/GUI/Skill/T_ui_Skill_Ch043_Unique1.png",
-              "label": "Guard Break",
+              "label": {
+                "fr": "Brise-garde — Normal Shot",
+                "en": "Guard Break — Normal Shot"
+              },
               "before": [
                 "10.0",
                 "10.0",
@@ -3820,16 +4194,23 @@
                 "20.0"
               ],
               "tone": "buff",
-              "alter_symbol": "α"
+              "alter_symbol": "α",
+              "effect_detail": {
+                "fr": "Normal Shot",
+                "en": "Normal Shot"
+              }
             },
             {
               "character": "Hawks",
               "style": "Original",
               "role": "",
               "portrait": "https://ultrarumble.com/assets/roles/T_ui_CharacterSelect_Speed_icon.webp",
-              "skill_name": "γ - Storm Wings (Shot)",
+              "skill_name": "γ - Storm Wings",
               "skill_image": "https://ultrarumble.com/assets/Character/Ch043/GUI/Skill/T_ui_Skill_Ch043_Unique3.png",
-              "label": "Damage",
+              "label": {
+                "fr": "Dégâts — Tir",
+                "en": "Damage — Shot"
+              },
               "before": [
                 "70.0",
                 "74.0",
@@ -3853,16 +4234,23 @@
                 "105.0"
               ],
               "tone": "buff",
-              "alter_symbol": "γ"
+              "alter_symbol": "γ",
+              "effect_detail": {
+                "fr": "Tir",
+                "en": "Shot"
+              }
             },
             {
               "character": "Hawks",
               "style": "Original",
               "role": "",
               "portrait": "https://ultrarumble.com/assets/roles/T_ui_CharacterSelect_Speed_icon.webp",
-              "skill_name": "γ - Storm Wings (Shot)",
+              "skill_name": "γ - Storm Wings",
               "skill_image": "https://ultrarumble.com/assets/Character/Ch043/GUI/Skill/T_ui_Skill_Ch043_Unique3.png",
-              "label": "Guard Break",
+              "label": {
+                "fr": "Brise-garde — Tir",
+                "en": "Guard Break — Shot"
+              },
               "before": [
                 "70.0",
                 "74.0",
@@ -3886,7 +4274,11 @@
                 "105.0"
               ],
               "tone": "buff",
-              "alter_symbol": "γ"
+              "alter_symbol": "γ",
+              "effect_detail": {
+                "fr": "Tir",
+                "en": "Shot"
+              }
             },
             {
               "character": "Tomura Shigaraki",
@@ -3959,7 +4351,7 @@
               "style": "Catastrophe",
               "role": "",
               "portrait": "https://ultrarumble.com/assets/roles/T_ui_CharacterSelect_Defense_icon.webp",
-              "skill_name": "α - Earth Break (Collapse)",
+              "skill_name": "α - Earth Break",
               "skill_image": "https://ultrarumble.com/assets/Character/Ch015/Variation/Var01/GUI/Skill/T_ui_Skill_Ch015_Unique1.png",
               "tone": "adjust",
               "bullets": [
@@ -3973,7 +4365,11 @@
                 "Down Power: 10.0 -> 75.0",
                 "Down Power: 10.0 -> 75.0"
               ],
-              "alter_symbol": "α"
+              "alter_symbol": "α",
+              "effect_detail": {
+                "fr": "Collapse",
+                "en": "Collapse"
+              }
             },
             {
               "character": "Tomura Shigaraki",
@@ -4001,9 +4397,12 @@
               "style": "Catastrophe",
               "role": "",
               "portrait": "https://ultrarumble.com/assets/roles/T_ui_CharacterSelect_Defense_icon.webp",
-              "skill_name": "γ - Catastrophe (Collapse)",
+              "skill_name": "γ - Catastrophe",
               "skill_image": "https://ultrarumble.com/assets/Character/Ch015/Variation/Var01/GUI/Skill/T_ui_Skill_Ch015_Unique3.png",
-              "label": "Damage",
+              "label": {
+                "fr": "Dégâts — Collapse",
+                "en": "Damage — Collapse"
+              },
               "before": [
                 "50.0",
                 "55.0",
@@ -4027,16 +4426,23 @@
                 "80.0"
               ],
               "tone": "buff",
-              "alter_symbol": "γ"
+              "alter_symbol": "γ",
+              "effect_detail": {
+                "fr": "Collapse",
+                "en": "Collapse"
+              }
             },
             {
               "character": "Tomura Shigaraki",
               "style": "Catastrophe",
               "role": "",
               "portrait": "https://ultrarumble.com/assets/roles/T_ui_CharacterSelect_Defense_icon.webp",
-              "skill_name": "γ - Catastrophe (Collapse)",
+              "skill_name": "γ - Catastrophe",
               "skill_image": "https://ultrarumble.com/assets/Character/Ch015/Variation/Var01/GUI/Skill/T_ui_Skill_Ch015_Unique3.png",
-              "label": "Guard Break",
+              "label": {
+                "fr": "Brise-garde — Collapse",
+                "en": "Guard Break — Collapse"
+              },
               "before": [
                 "50.0",
                 "55.0",
@@ -4060,16 +4466,23 @@
                 "80.0"
               ],
               "tone": "buff",
-              "alter_symbol": "γ"
+              "alter_symbol": "γ",
+              "effect_detail": {
+                "fr": "Collapse",
+                "en": "Collapse"
+              }
             },
             {
               "character": "Tomura Shigaraki",
               "style": "Thousand-Hand Break",
               "role": "",
               "portrait": "https://ultrarumble.com/assets/roles/T_ui_CharacterSelect_Technique_icon.webp",
-              "skill_name": "β - Shake Heaven and Earth (BodyImpact)",
+              "skill_name": "β - Shake Heaven and Earth",
               "skill_image": "https://ultrarumble.com/assets/Character/Ch015/Variation/Var02/GUI/Skill/T_ui_Skill_Ch015_Unique2.png",
-              "label": "Damage",
+              "label": {
+                "fr": "Dégâts — BodyImpact",
+                "en": "Damage — BodyImpact"
+              },
               "before": [
                 "144.0",
                 "151.0",
@@ -4093,16 +4506,23 @@
                 "160.0"
               ],
               "tone": "nerf",
-              "alter_symbol": "β"
+              "alter_symbol": "β",
+              "effect_detail": {
+                "fr": "BodyImpact",
+                "en": "BodyImpact"
+              }
             },
             {
               "character": "Tomura Shigaraki",
               "style": "Thousand-Hand Break",
               "role": "",
               "portrait": "https://ultrarumble.com/assets/roles/T_ui_CharacterSelect_Technique_icon.webp",
-              "skill_name": "β - Shake Heaven and Earth (BodyImpact)",
+              "skill_name": "β - Shake Heaven and Earth",
               "skill_image": "https://ultrarumble.com/assets/Character/Ch015/Variation/Var02/GUI/Skill/T_ui_Skill_Ch015_Unique2.png",
-              "label": "Guard Break",
+              "label": {
+                "fr": "Brise-garde — BodyImpact",
+                "en": "Guard Break — BodyImpact"
+              },
               "before": [
                 "144.0",
                 "151.0",
@@ -4126,16 +4546,23 @@
                 "160.0"
               ],
               "tone": "nerf",
-              "alter_symbol": "β"
+              "alter_symbol": "β",
+              "effect_detail": {
+                "fr": "BodyImpact",
+                "en": "BodyImpact"
+              }
             },
             {
               "character": "Tomura Shigaraki",
               "style": "Thousand-Hand Break",
               "role": "",
               "portrait": "https://ultrarumble.com/assets/roles/T_ui_CharacterSelect_Technique_icon.webp",
-              "skill_name": "β - Shake Heaven and Earth (Hit 1 Shockwave)",
+              "skill_name": "β - Shake Heaven and Earth",
               "skill_image": "https://ultrarumble.com/assets/Character/Ch015/Variation/Var02/GUI/Skill/T_ui_Skill_Ch015_Unique2.png",
-              "label": "Damage",
+              "label": {
+                "fr": "Dégâts — Hit 1 Shockwave",
+                "en": "Damage — Hit 1 Shockwave"
+              },
               "before": [
                 "49.0",
                 "52.0",
@@ -4157,16 +4584,23 @@
                 "64.0"
               ],
               "tone": "nerf",
-              "alter_symbol": "β"
+              "alter_symbol": "β",
+              "effect_detail": {
+                "fr": "Hit 1 Shockwave",
+                "en": "Hit 1 Shockwave"
+              }
             },
             {
               "character": "Tomura Shigaraki",
               "style": "Thousand-Hand Break",
               "role": "",
               "portrait": "https://ultrarumble.com/assets/roles/T_ui_CharacterSelect_Technique_icon.webp",
-              "skill_name": "β - Shake Heaven and Earth (Hit 1 Shockwave)",
+              "skill_name": "β - Shake Heaven and Earth",
               "skill_image": "https://ultrarumble.com/assets/Character/Ch015/Variation/Var02/GUI/Skill/T_ui_Skill_Ch015_Unique2.png",
-              "label": "Guard Break",
+              "label": {
+                "fr": "Brise-garde — Hit 1 Shockwave",
+                "en": "Guard Break — Hit 1 Shockwave"
+              },
               "before": [
                 "49.0",
                 "52.0",
@@ -4188,16 +4622,23 @@
                 "64.0"
               ],
               "tone": "nerf",
-              "alter_symbol": "β"
+              "alter_symbol": "β",
+              "effect_detail": {
+                "fr": "Hit 1 Shockwave",
+                "en": "Hit 1 Shockwave"
+              }
             },
             {
               "character": "Tomura Shigaraki",
               "style": "Thousand-Hand Break",
               "role": "",
               "portrait": "https://ultrarumble.com/assets/roles/T_ui_CharacterSelect_Technique_icon.webp",
-              "skill_name": "β - Shake Heaven and Earth (Hit 2 Shockwave)",
+              "skill_name": "β - Shake Heaven and Earth",
               "skill_image": "https://ultrarumble.com/assets/Character/Ch015/Variation/Var02/GUI/Skill/T_ui_Skill_Ch015_Unique2.png",
-              "label": "Damage",
+              "label": {
+                "fr": "Dégâts — Hit 2 Shockwave",
+                "en": "Damage — Hit 2 Shockwave"
+              },
               "before": [
                 "82.0",
                 "86.0",
@@ -4219,16 +4660,23 @@
                 "96.0"
               ],
               "tone": "nerf",
-              "alter_symbol": "β"
+              "alter_symbol": "β",
+              "effect_detail": {
+                "fr": "Hit 2 Shockwave",
+                "en": "Hit 2 Shockwave"
+              }
             },
             {
               "character": "Tomura Shigaraki",
               "style": "Thousand-Hand Break",
               "role": "",
               "portrait": "https://ultrarumble.com/assets/roles/T_ui_CharacterSelect_Technique_icon.webp",
-              "skill_name": "β - Shake Heaven and Earth (Hit 2 Shockwave)",
+              "skill_name": "β - Shake Heaven and Earth",
               "skill_image": "https://ultrarumble.com/assets/Character/Ch015/Variation/Var02/GUI/Skill/T_ui_Skill_Ch015_Unique2.png",
-              "label": "Guard Break",
+              "label": {
+                "fr": "Brise-garde — Hit 2 Shockwave",
+                "en": "Guard Break — Hit 2 Shockwave"
+              },
               "before": [
                 "82.0",
                 "86.0",
@@ -4250,7 +4698,11 @@
                 "96.0"
               ],
               "tone": "nerf",
-              "alter_symbol": "β"
+              "alter_symbol": "β",
+              "effect_detail": {
+                "fr": "Hit 2 Shockwave",
+                "en": "Hit 2 Shockwave"
+              }
             },
             {
               "character": "Dabi",
@@ -4344,9 +4796,12 @@
               "style": "Crazy Torch",
               "role": "",
               "portrait": "https://ultrarumble.com/assets/roles/T_ui_CharacterSelect_Power_icon.webp",
-              "skill_name": "α - Flames of Resentment (Max Charge)",
+              "skill_name": "α - Flames of Resentment",
               "skill_image": "https://ultrarumble.com/assets/Character/Ch017/Variation/Var01/GUI/Skill/T_ui_Skill_Ch017_Unique1.png",
-              "label": "Damage",
+              "label": {
+                "fr": "Dégâts — Max Charge",
+                "en": "Damage — Max Charge"
+              },
               "before": [
                 "55.0",
                 "56.0",
@@ -4370,16 +4825,23 @@
                 "74.0"
               ],
               "tone": "buff",
-              "alter_symbol": "α"
+              "alter_symbol": "α",
+              "effect_detail": {
+                "fr": "Max Charge",
+                "en": "Max Charge"
+              }
             },
             {
               "character": "Dabi",
               "style": "Crazy Torch",
               "role": "",
               "portrait": "https://ultrarumble.com/assets/roles/T_ui_CharacterSelect_Power_icon.webp",
-              "skill_name": "α - Flames of Resentment (Max Charge)",
+              "skill_name": "α - Flames of Resentment",
               "skill_image": "https://ultrarumble.com/assets/Character/Ch017/Variation/Var01/GUI/Skill/T_ui_Skill_Ch017_Unique1.png",
-              "label": "Guard Break",
+              "label": {
+                "fr": "Brise-garde — Max Charge",
+                "en": "Guard Break — Max Charge"
+              },
               "before": [
                 "55.0",
                 "56.0",
@@ -4403,16 +4865,23 @@
                 "74.0"
               ],
               "tone": "buff",
-              "alter_symbol": "α"
+              "alter_symbol": "α",
+              "effect_detail": {
+                "fr": "Max Charge",
+                "en": "Max Charge"
+              }
             },
             {
               "character": "Dabi",
               "style": "Crazy Torch",
               "role": "",
               "portrait": "https://ultrarumble.com/assets/roles/T_ui_CharacterSelect_Power_icon.webp",
-              "skill_name": "β - Scorching Admonition (GrabRelease)",
+              "skill_name": "β - Scorching Admonition",
               "skill_image": "https://ultrarumble.com/assets/Character/Ch017/Variation/Var01/GUI/Skill/T_ui_Skill_Ch017_Unique2.png",
-              "label": "Damage",
+              "label": {
+                "fr": "Dégâts — GrabRelease",
+                "en": "Damage — GrabRelease"
+              },
               "before": [
                 "39.0",
                 "45.0",
@@ -4436,16 +4905,23 @@
                 "94.0"
               ],
               "tone": "buff",
-              "alter_symbol": "β"
+              "alter_symbol": "β",
+              "effect_detail": {
+                "fr": "GrabRelease",
+                "en": "GrabRelease"
+              }
             },
             {
               "character": "Dabi",
               "style": "Crazy Torch",
               "role": "",
               "portrait": "https://ultrarumble.com/assets/roles/T_ui_CharacterSelect_Power_icon.webp",
-              "skill_name": "β - Scorching Admonition (GrabRelease)",
+              "skill_name": "β - Scorching Admonition",
               "skill_image": "https://ultrarumble.com/assets/Character/Ch017/Variation/Var01/GUI/Skill/T_ui_Skill_Ch017_Unique2.png",
-              "label": "Guard Break",
+              "label": {
+                "fr": "Brise-garde — GrabRelease",
+                "en": "Guard Break — GrabRelease"
+              },
               "before": [
                 "39.0",
                 "45.0",
@@ -4469,7 +4945,11 @@
                 "94.0"
               ],
               "tone": "buff",
-              "alter_symbol": "β"
+              "alter_symbol": "β",
+              "effect_detail": {
+                "fr": "GrabRelease",
+                "en": "GrabRelease"
+              }
             },
             {
               "character": "Mr. Compress",
@@ -4542,9 +5022,12 @@
               "style": "Original",
               "role": "",
               "portrait": "https://ultrarumble.com/assets/roles/T_ui_CharacterSelect_Support_icon.webp",
-              "skill_name": "α - Production Magic (Shock)",
+              "skill_name": "α - Production Magic",
               "skill_image": "https://ultrarumble.com/assets/Character/Ch038/GUI/Skill/T_ui_Skill_Ch038_Unique1.png",
-              "label": "Damage",
+              "label": {
+                "fr": "Dégâts — Shock",
+                "en": "Damage — Shock"
+              },
               "before": [
                 "12.0",
                 "13.0",
@@ -4568,16 +5051,23 @@
                 "30.0"
               ],
               "tone": "buff",
-              "alter_symbol": "α"
+              "alter_symbol": "α",
+              "effect_detail": {
+                "fr": "Shock",
+                "en": "Shock"
+              }
             },
             {
               "character": "Mr. Compress",
               "style": "Original",
               "role": "",
               "portrait": "https://ultrarumble.com/assets/roles/T_ui_CharacterSelect_Support_icon.webp",
-              "skill_name": "α - Production Magic (Shock)",
+              "skill_name": "α - Production Magic",
               "skill_image": "https://ultrarumble.com/assets/Character/Ch038/GUI/Skill/T_ui_Skill_Ch038_Unique1.png",
-              "label": "Guard Break",
+              "label": {
+                "fr": "Brise-garde — Shock",
+                "en": "Guard Break — Shock"
+              },
               "before": [
                 "12.0",
                 "13.0",
@@ -4601,7 +5091,11 @@
                 "30.0"
               ],
               "tone": "buff",
-              "alter_symbol": "α"
+              "alter_symbol": "α",
+              "effect_detail": {
+                "fr": "Shock",
+                "en": "Shock"
+              }
             },
             {
               "character": "Lady Nagant",
@@ -4610,10 +5104,17 @@
               "portrait": "https://ultrarumble.com/assets/roles/T_ui_CharacterSelect_Power_icon.webp",
               "skill_name": "- Scope Mode (Action Shooting Headshot)",
               "skill_image": "https://ultrarumble.com/assets/Character/Ch115/GUI/Skill/T_ui_SpecialSkill_Ch115.png",
-              "label": "Damage",
+              "label": {
+                "fr": "Dégâts — Action Shooting Headshot",
+                "en": "Damage — Action Shooting Headshot"
+              },
               "before": "300.0",
               "after": "280.0",
-              "tone": "nerf"
+              "tone": "nerf",
+              "effect_detail": {
+                "fr": "Action Shooting Headshot",
+                "en": "Action Shooting Headshot"
+              }
             },
             {
               "character": "Lady Nagant",
@@ -4622,10 +5123,17 @@
               "portrait": "https://ultrarumble.com/assets/roles/T_ui_CharacterSelect_Power_icon.webp",
               "skill_name": "- Scope Mode (Action Shooting Headshot)",
               "skill_image": "https://ultrarumble.com/assets/Character/Ch115/GUI/Skill/T_ui_SpecialSkill_Ch115.png",
-              "label": "Guard Break",
+              "label": {
+                "fr": "Brise-garde — Action Shooting Headshot",
+                "en": "Guard Break — Action Shooting Headshot"
+              },
               "before": "300.0",
               "after": "280.0",
-              "tone": "nerf"
+              "tone": "nerf",
+              "effect_detail": {
+                "fr": "Action Shooting Headshot",
+                "en": "Action Shooting Headshot"
+              }
             }
           ]
         },
@@ -5194,7 +5702,11 @@
               "tone": "adjust",
               "bullets": [
                 "Sub Effect 1: 1.0 -> 2.0"
-              ]
+              ],
+              "effect_detail": {
+                "fr": "Unique",
+                "en": "Unique"
+              }
             }
           ]
         }
