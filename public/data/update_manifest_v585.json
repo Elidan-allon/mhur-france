@@ -1,12 +1,14 @@
 {
   "version": "v585",
-  "updated_at": "2026-08-04T20:45:02.496557+00:00",
+  "updated_at": "2026-08-05T04:31:03.201610+00:00",
   "source": "UltraRumble.com",
   "new_content": {
     "characters": [],
     "styles": [],
     "costumes": [],
-    "events": []
+    "events": [
+      "261803"
+    ]
   },
   "counts_before": {
     "costumes": 1628,
@@ -22,9 +24,9 @@
     "styles": 60,
     "active_characters": 1,
     "active_styles": 0,
-    "events": 2,
+    "events": 3,
     "latest_releases": 1,
-    "images": 4030
+    "images": 4031
   },
   "patch_note_corrections": [
     {
@@ -993,7 +995,9 @@
     }
   ],
   "images": {
-    "preserved": [],
+    "preserved": [
+      "public/assets/home/events/event_261803.webp"
+    ],
     "removed": [],
     "restored": []
   },

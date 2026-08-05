@@ -1,13 +1,13 @@
 MHUR FRANCE — RAPPORT MISE À JOUR COMPLÈTE V585
 
-Date UTC : 2026-08-04T20:45:02.496557+00:00
+Date UTC : 2026-08-05T04:31:03.201610+00:00
 Source : UltraRumble.com
 
 CONTENU NOUVEAU DÉTECTÉ
 - Personnages : aucun
 - Alters / Styles : aucun
 - Costumes : aucun
-- Événements : aucun
+- Événements : 261803
 
 SECTIONS SYNCHRONISÉES
 - Personnages jouables et personnages à venir
@@ -21,7 +21,7 @@ SECTIONS SYNCHRONISÉES
 POLITIQUE DES IMAGES
 - Conservées uniquement : nouveaux personnages / Alters, leur T.U.N.I.N.G.,
   nouveaux costumes, illustrations de sorties et événements.
-- Nouvelles images conservées : 0
+- Nouvelles images conservées : 1
 - Images inutiles refusées : 0
 - Anciennes images protégées/restaurées : 0
 
