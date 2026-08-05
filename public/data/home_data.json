@@ -5,7 +5,7 @@
     "version": "v520-maintenance-sync",
     "patch_style_resolution": "v660-cluster-style-first",
     "patch_1785298405_display": "v662-source-exact",
-    "master_version": "v664"
+    "master_version": "v667"
   },
   "season": {
     "number": 18,
