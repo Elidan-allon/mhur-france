@@ -1,0 +1,1897 @@
+name: MHUR - Master V671
+
+on:
+  workflow_dispatch:
+  workflow_run:
+    workflows:
+      - "MHUR - Synchronisation UltraRumble"
+    types:
+      - completed
+
+permissions:
+  actions: write
+  contents: write
+
+concurrency:
+  group: mhur-master-v671
+  cancel-in-progress: true
+
+jobs:
+  nettoyer-et-corriger:
+    if: >-
+      github.event_name != 'workflow_run' ||
+      github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Annuler les anciens workflows
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          KEEP_SYNC=".github/workflows/mhur-sync-ultrarumble.yml"
+          KEEP_MASTER=".github/workflows/mhur-master-v671.yml"
+
+          mapfile -t KEEP_IDS < <(
+            gh api --paginate               "repos/${GITHUB_REPOSITORY}/actions/workflows?per_page=100"               --jq ".workflows[] |
+                select(
+                  .path == \"$KEEP_SYNC\" or
+                  .path == \"$KEEP_MASTER\"
+                ) |
+                .id"
+          )
+
+          is_kept() {
+            local wanted="$1"
+            local current
+
+            for current in "${KEEP_IDS[@]:-}"; do
+              if [[ "$current" == "$wanted" ]]; then
+                return 0
+              fi
+            done
+
+            return 1
+          }
+
+          for status in queued in_progress; do
+            while IFS=$'\t' read -r run_id workflow_id run_name; do
+              [[ -z "${run_id:-}" ]] && continue
+              [[ "$run_id" == "$GITHUB_RUN_ID" ]] && continue
+
+              if is_kept "$workflow_id"; then
+                echo "[GARDÉ] $run_name — $run_id"
+                continue
+              fi
+
+              echo "[ANNULATION] $run_name — $run_id"
+
+              gh api                 --method POST                 "repos/${GITHUB_REPOSITORY}/actions/runs/$run_id/cancel"                 >/dev/null 2>&1 || true
+            done < <(
+              gh api --paginate                 "repos/${GITHUB_REPOSITORY}/actions/runs?status=$status&per_page=100"                 --jq '.workflow_runs[] |
+                  [.id, .workflow_id, .name] |
+                  @tsv'
+            )
+          done
+
+      - name: Récupérer main
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Supprimer les anciens fichiers workflows
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          find .github/workflows             -maxdepth 1             -type f             \( -name "*.yml" -o -name "*.yaml" \)             ! -name "mhur-sync-ultrarumble.yml"             ! -name "mhur-master-v671.yml"             -print             -delete
+
+          echo "[OK] Seuls Sync et Master V671 sont conservés."
+
+      - name: Installer Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Appliquer Master V671
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          python - <<'PY'
+          from __future__ import annotations
+
+          import json
+          import re
+          import subprocess
+          import unicodedata
+          from datetime import datetime, timezone
+          from pathlib import Path
+
+          PATCH_ID = "1785298405"
+
+          PUBLIC = Path("public")
+          INDEX = PUBLIC / "index.html"
+          HOME_JSON = PUBLIC / "data" / "home_data.json"
+          HOME_JS = PUBLIC / "data" / "home_data.js"
+          RENDERER = PUBLIC / "js" / "v608-patch-notes-final.js"
+          UI_CSS = PUBLIC / "css" / "v671-ui-final.css"
+          UI_JS = PUBLIC / "js" / "v671-ui-final.js"
+          LIVE_UPDATE = PUBLIC / "js" / "v36-live-site-update.js"
+          SERVICE_WORKER = PUBLIC / "service-worker.js"
+          HEADERS = PUBLIC / "_headers"
+          VERSION_JSON = PUBLIC / "version.json"
+
+          for required in (INDEX, HOME_JSON, RENDERER):
+              if not required.is_file():
+                  raise SystemExit(
+                      f"[ERREUR] Fichier introuvable : {required}"
+                  )
+
+          def clean(value: object) -> str:
+              if isinstance(value, dict):
+                  return str(
+                      value.get("en")
+                      or value.get("fr")
+                      or next(iter(value.values()), "")
+                  ).strip()
+              return str(value or "").strip()
+
+          def norm(value: object) -> str:
+              text = unicodedata.normalize(
+                  "NFD",
+                  clean(value).lower(),
+              )
+              text = "".join(
+                  char
+                  for char in text
+                  if unicodedata.category(char) != "Mn"
+              )
+              return re.sub(r"[^a-z0-9]+", " ", text).strip()
+
+          def metric(value: object) -> str:
+              label = norm(value)
+
+              if label.startswith(("damage", "degats")):
+                  return "damage"
+
+              if label.startswith(("guard break", "brise garde")):
+                  return "guard"
+
+              return ""
+
+          def infer_symbol(change: dict) -> str:
+              name = clean(change.get("skill_name"))
+
+              match = re.match(
+                  r"^\s*(α|β|γ|alpha|beta|gamma|a|b|g|y)"
+                  r"(?:\s*[-–—:]\s*|\s+)",
+                  name,
+                  flags=re.IGNORECASE,
+              )
+
+              if match:
+                  return {
+                      "α": "α",
+                      "alpha": "α",
+                      "a": "α",
+                      "β": "β",
+                      "beta": "β",
+                      "b": "β",
+                      "γ": "γ",
+                      "gamma": "γ",
+                      "g": "γ",
+                      "y": "γ",
+                  }.get(match.group(1).lower(), "")
+
+              image = clean(change.get("skill_image")).lower()
+
+              if re.search(r"(?:unique1|alpha)", image):
+                  return "α"
+
+              if re.search(r"(?:unique2|beta)", image):
+                  return "β"
+
+              if re.search(r"(?:unique3|gamma)", image):
+                  return "γ"
+
+              return ""
+
+          def strip_symbol(name: str) -> str:
+              return re.sub(
+                  r"^\s*(?:α|β|γ|alpha|beta|gamma|a|b|g|y)"
+                  r"(?:\s*[-–—:]\s*|\s+)",
+                  "",
+                  name,
+                  count=1,
+                  flags=re.IGNORECASE,
+              ).strip()
+
+          DETAIL_FR = {
+              "normal": "Normal",
+              "explosion": "Explosion",
+              "explosionfollow up": "Explosion renforcée",
+              "explosion follow up": "Explosion renforcée",
+              "burn": "Brûlure",
+              "homing": "À tête chercheuse",
+              "melee": "Corps à corps",
+              "shot": "Tir",
+              "shooting": "Tir",
+          }
+
+          def exact_display_name(change: dict) -> dict:
+              source = clean(
+                  change.get("source_skill_name")
+                  or change.get("skill_name")
+              )
+
+              symbol = infer_symbol(change)
+              body = strip_symbol(source)
+              detail_match = re.search(r"\s*\(([^()]*)\)\s*$", body)
+
+              if detail_match:
+                  detail_en = detail_match.group(1).strip()
+                  base = body[:detail_match.start()].strip()
+                  detail_fr = DETAIL_FR.get(norm(detail_en), detail_en)
+                  en_body = f"{base} ({detail_en})"
+                  fr_body = f"{base} ({detail_fr})"
+              else:
+                  en_body = body.strip()
+                  fr_body = body.strip()
+
+              if symbol:
+                  return {
+                      "fr": f"{symbol} - {fr_body}",
+                      "en": f"{symbol} - {en_body}",
+                  }
+
+              return {
+                  "fr": fr_body,
+                  "en": en_body,
+              }
+
+          # ----------------------------------------------------------------------
+          # Conserver les correctifs Patch Notes du Master précédent.
+          # ----------------------------------------------------------------------
+
+          data = json.loads(
+              HOME_JSON.read_text(encoding="utf-8")
+          )
+
+          patch = next(
+              (
+                  item
+                  for item in data.get("patch_notes", [])
+                  if str(item.get("id")) == PATCH_ID
+              ),
+              None,
+          )
+
+          if patch is None:
+              raise SystemExit(
+                  f"[ERREUR] Patch {PATCH_ID} introuvable."
+              )
+
+          changes = [
+              change
+              for section in patch.get("details", [])
+              for change in section.get("changes", [])
+              if isinstance(change, dict)
+          ]
+
+          bakugo_cluster_count = 0
+          armored_count = 0
+
+          for change in changes:
+              character = norm(change.get("character"))
+              style = norm(change.get("style"))
+
+              change["source_skill_name"] = clean(
+                  change.get("source_skill_name")
+                  or change.get("skill_name")
+              )
+
+              if character == "katsuki bakugo" and style == "cluster":
+                  change["style_id"] = "bakugo_technical"
+                  change["role"] = "technical"
+                  change["portrait"] = (
+                      "assets/bakugo/bakugo_technical/portrait.webp"
+                  )
+
+                  skill = norm(change.get("source_skill_name"))
+
+                  if "ap shot cluster" in skill:
+                      change["skill_image"] = (
+                          "assets/bakugo/bakugo_technical/alpha.webp"
+                      )
+                  elif "nitro cluster" in skill:
+                      change["skill_image"] = (
+                          "assets/bakugo/bakugo_technical/beta.webp"
+                      )
+                  elif "howitzer impact cluster" in skill:
+                      change["skill_image"] = (
+                          "assets/bakugo/bakugo_technical/gamma.webp"
+                      )
+
+                  bakugo_cluster_count += 1
+
+              if character == "katsuki bakugo" and style == "original":
+                  change["style_id"] = "bakugo_attack"
+
+              source_image_id = norm(
+                  change.get("skill_image")
+              )
+              existing_character_id = clean(
+                  change.get("character_id")
+                  or change.get("characterId")
+              )
+              existing_style_id = clean(
+                  change.get("style_id")
+                  or change.get("styleId")
+              )
+              existing_skill_id = clean(
+                  change.get("skill_id")
+                  or change.get("skillId")
+              )
+
+              # V671 : l'identité du changement repose sur les IDs locaux,
+              # jamais sur un rapprochement de noms comme Texas Smash.
+              is_armored_alpha_burn = (
+                  existing_character_id == "armored_all_might"
+                  or existing_style_id
+                  == "armored_all_might_technical"
+                  or existing_skill_id
+                  == "armored_all_might_alpha_burn"
+                  or "skill armored all might ice bullet shot burn"
+                  in source_image_id
+              )
+
+              if (
+                  is_armored_alpha_burn
+                  and metric(change.get("label")) in {"damage", "guard"}
+              ):
+                  before = [
+                      clean(value)
+                      for value in change.get("before") or []
+                  ]
+
+                  if before == [
+                      "52.0", "54.0", "56.0",
+                      "58.0", "60.0", "62.0",
+                      "64.0", "66.0", "68.0",
+                  ]:
+                      metric_id = metric(change.get("label"))
+                      change["patch_id"] = PATCH_ID
+                      change["character_id"] = "armored_all_might"
+                      change["style_id"] = (
+                          "armored_all_might_technical"
+                      )
+                      change["skill_id"] = (
+                          "armored_all_might_alpha_burn"
+                      )
+                      change["skill_slot"] = "alpha"
+                      change["change_id"] = (
+                          f"{PATCH_ID}:armored_all_might:"
+                          "armored_all_might_technical:"
+                          f"armored_all_might_alpha_burn:{metric_id}"
+                      )
+                      change["source_skill_name"] = (
+                          "α - Ice Bullet Shot (Burn)"
+                      )
+                      change["skill_name"] = (
+                          "α - Ice Bullet Shot (Burn)"
+                      )
+                      change["style"] = "Technique"
+                      change["role"] = "technical"
+                      change["portrait"] = (
+                          "assets/armored_all_might/"
+                          "armored_all_might_technical/portrait.webp"
+                      )
+                      change["skill_image"] = (
+                          "assets/armored_all_might/"
+                          "armored_all_might_technical/alpha.webp"
+                      )
+                      armored_count += 1
+
+              change["display_skill_name"] = exact_display_name(change)
+
+          if bakugo_cluster_count < 6:
+              raise SystemExit(
+                  "[ERREUR] Pas assez de changements Bakugo Cluster : "
+                  f"{bakugo_cluster_count}"
+              )
+
+          if armored_count != 2:
+              raise SystemExit(
+                  "[ERREUR] 2 changements Armored All Might attendus, "
+                  f"trouvé : {armored_count}"
+              )
+
+          for change in changes:
+              source = clean(change.get("source_skill_name"))
+              display_en = clean(
+                  (change.get("display_skill_name") or {}).get("en")
+              )
+
+              source_has_detail = bool(
+                  re.search(r"\([^()]+\)\s*$", source)
+              )
+              display_has_detail = bool(
+                  re.search(r"\([^()]+\)\s*$", display_en)
+              )
+
+              if source_has_detail != display_has_detail:
+                  raise SystemExit(
+                      "[ERREUR] Détail inventé ou supprimé : "
+                      f"{source!r} → {display_en!r}"
+                  )
+
+          data.setdefault("meta", {})[
+              "master_version"
+          ] = "v671"
+
+          HOME_JSON.write_text(
+              json.dumps(
+                  data,
+                  ensure_ascii=False,
+                  indent=2,
+              ) + "\n",
+              encoding="utf-8",
+          )
+
+          compact = json.dumps(
+              data,
+              ensure_ascii=False,
+              separators=(",", ":"),
+          ).replace("\u2028", "\\u2028").replace(
+              "\u2029",
+              "\\u2029",
+          )
+
+          HOME_JS.write_text(
+              f"window.MHUR_HOME_DATA = {compact};\n",
+              encoding="utf-8",
+          )
+
+          renderer = RENDERER.read_text(encoding="utf-8")
+
+          function_start = renderer.find(
+              "  function resolveStyle(change){"
+          )
+          function_end = renderer.find(
+              "\n  function translatePatch(value){",
+              function_start,
+          )
+
+          if function_start < 0 or function_end < 0:
+              raise SystemExit(
+                  "[ERREUR] Fonction resolveStyle introuvable."
+              )
+
+          resolve_style = """  function resolveStyle(change){
+              const map=stylesMap();
+              const explicitCharacterId=clean(
+                change?.character_id||
+                change?.characterId||
+                ''
+              );
+              const explicitStyleId=clean(
+                change?.style_id||
+                change?.styleId||
+                ''
+              );
+
+              const explicitCharacter=charactersList().find(
+                character=>
+                  clean(character?.id)===explicitCharacterId
+              )||(
+                explicitStyleId
+                  ?charactersList().find(character=>
+                    Array.isArray(character?.styles)&&
+                    character.styles.map(String).includes(
+                      explicitStyleId
+                    )
+                  )
+                  :null
+              );
+
+              const character=
+                explicitCharacter||
+                findCharacter(change?.character);
+
+              const ids=styleIds(character);
+
+              if(
+                explicitStyleId&&
+                ids.includes(explicitStyleId)&&
+                map[explicitStyleId]
+              ){
+                return {
+                  character,
+                  id:explicitStyleId,
+                  style:map[explicitStyleId]
+                };
+              }
+
+              const midoriyaId=midoriyaStyleId(
+                change,
+                character
+              );
+
+              if(midoriyaId&&map[midoriyaId]){
+                return {
+                  character,
+                  id:midoriyaId,
+                  style:map[midoriyaId]
+                };
+              }
+
+              const wanted=normal(change?.style||'Original');
+              const byStyle=ids.find(id=>
+                normal(localized(map[id]?.name)||'Original')===wanted
+              );
+
+              if(byStyle){
+                return {
+                  character,
+                  id:byStyle,
+                  style:map[byStyle]
+                };
+              }
+
+              const id=ids[0]||'';
+
+              return {
+                character,
+                id,
+                style:map[id]||null
+              };
+            }
+
+            function patchIdentity(change,group){
+              const characterId=clean(
+                change?.character_id||
+                change?.characterId||
+                group?.character?.id||
+                ''
+              );
+              const styleId=clean(
+                change?.style_id||
+                change?.styleId||
+                group?.id||
+                ''
+              );
+              const skillId=clean(
+                change?.skill_id||
+                change?.skillId||
+                ''
+              );
+
+              if(
+                characterId==='armored_all_might'&&
+                styleId==='armored_all_might_technical'&&
+                skillId==='armored_all_might_alpha_burn'
+              ){
+                return {
+                  characterId,
+                  styleId,
+                  skillId,
+                  title:{
+                    fr:'α - Ice Bullet Shot (Brûlure)',
+                    en:'α - Ice Bullet Shot (Burn)'
+                  },
+                  image:
+                    'assets/armored_all_might/'+
+                    'armored_all_might_technical/alpha.webp'
+                };
+              }
+
+              return {
+                characterId,
+                styleId,
+                skillId,
+                title:null,
+                image:''
+              };
+            }
+          """
+
+          renderer = (
+              renderer[:function_start]
+              + resolve_style
+              + renderer[function_end:]
+          )
+
+          title_pattern = re.compile(
+              r"const\s+title=translatePatch\((.*?)\);",
+              flags=re.DOTALL,
+          )
+
+          title_replacement = """const identity=patchIdentity(
+                change,
+                group
+              );
+              const title=translatePatch(
+                localized(identity?.title)||
+                localized(change?.display_skill_name)||
+                localized(change?.skill_name)||
+                localized(change?.label)||
+                tx('Ajustement','Adjustment')
+              );"""
+
+          renderer, title_count = title_pattern.subn(
+              title_replacement,
+              renderer,
+              count=1,
+          )
+
+          if title_count != 1:
+              raise SystemExit(
+                  "[ERREUR] Bloc du titre Patch Notes introuvable."
+              )
+
+          picture_pattern = re.compile(
+              r"const\s+picture=health(.*?);",
+              flags=re.DOTALL,
+          )
+
+          picture_replacement = """const picture=health
+                ?''
+                :(
+                  identity?.image||
+                  (
+                    isMidoriya
+                      ?(skill?.img||change?.skill_image||'')
+                      :(change?.skill_image||skill?.img||'')
+                  )
+                );"""
+
+          renderer, picture_count = picture_pattern.subn(
+              picture_replacement,
+              renderer,
+              count=1,
+          )
+
+          if picture_count != 1:
+              raise SystemExit(
+                  "[ERREUR] Bloc de l'image Patch Notes introuvable."
+              )
+
+          change_section_pattern = re.compile(
+              r'(data-v608-style="\$\{\s*'
+              r'escapeHtml\(group\.id\)\s*\}")'
+              r'\s*>',
+              flags=re.DOTALL,
+          )
+
+          change_section_replacement = r'''\1
+              data-v608-character-id="${escapeHtml(
+                identity?.characterId||group.character?.id||''
+              )}"
+              data-v608-skill-id="${escapeHtml(
+                identity?.skillId||change?.skill_id||''
+              )}"
+              data-v608-change-id="${escapeHtml(
+                change?.change_id||''
+              )}"
+            >'''
+
+          renderer, change_attr_count = (
+              change_section_pattern.subn(
+                  change_section_replacement,
+                  renderer,
+                  count=1,
+              )
+          )
+
+          if change_attr_count != 1:
+              raise SystemExit(
+                  "[ERREUR] Attributs ID des changements introuvables."
+              )
+
+          group_article_pattern = re.compile(
+              r'(data-v608-character="\$\{\s*'
+              r'escapeHtml\(group\.name\)\s*\}")',
+              flags=re.DOTALL,
+          )
+
+          group_article_replacement = r'''\1
+              data-v608-character-id="${escapeHtml(
+                group.character?.id||''
+              )}"'''
+
+          renderer, group_attr_count = (
+              group_article_pattern.subn(
+                  group_article_replacement,
+                  renderer,
+                  count=1,
+              )
+          )
+
+          if group_attr_count != 1:
+              raise SystemExit(
+                  "[ERREUR] Attribut ID du personnage introuvable."
+              )
+
+          renderer = re.sub(
+              r"const VERSION='[^']*';",
+              "const VERSION='671';",
+              renderer,
+              count=1,
+          )
+
+          RENDERER.write_text(
+              renderer,
+              encoding="utf-8",
+          )
+
+          # ----------------------------------------------------------------------
+          # V671 : corriger tous les Alters qui possèdent plusieurs séries
+          # de dégâts, pas seulement Bakugo Cluster.
+          # ----------------------------------------------------------------------
+
+          index_stats = INDEX.read_text(encoding="utf-8")
+
+          stats_open_match = re.search(
+              r'<script\b[^>]*\bid\s*=\s*'
+              r'["\']v253-robust-stats-patch["\'][^>]*>',
+              index_stats,
+              flags=re.IGNORECASE,
+          )
+
+          if not stats_open_match:
+              raise SystemExit(
+                  "[ERREUR] Script v253-robust-stats-patch introuvable."
+              )
+
+          stats_script_start = stats_open_match.start()
+          stats_script_end = index_stats.find(
+              "</script>",
+              stats_open_match.end(),
+          )
+
+          if stats_script_end < 0:
+              raise SystemExit(
+                  "[ERREUR] Fermeture du script v253 introuvable."
+              )
+
+          stats_block = index_stats[
+              stats_script_start:stats_script_end
+          ]
+
+          def stats_function_pattern(name: str) -> re.Pattern[str]:
+              return re.compile(
+                  rf"(?m)^[ \t]*function[ \t]+"
+                  rf"{re.escape(name)}[ \t]*"
+                  rf"\([^)]*\)[ \t]*\{{"
+              )
+
+          ANY_STATS_FUNCTION = re.compile(
+              r"(?m)^[ \t]*function[ \t]+"
+              r"[A-Za-z_$][A-Za-z0-9_$]*[ \t]*"
+              r"\([^)]*\)[ \t]*\{"
+          )
+
+          def stats_function_span(
+              source: str,
+              name: str,
+          ) -> tuple[int, int] | None:
+              """
+              Cherche une fonction JavaScript par son nom.
+
+              Les espaces et les noms des paramètres ne comptent pas.
+              La fin est le début de la fonction de premier niveau suivante.
+              """
+              match = stats_function_pattern(name).search(source)
+
+              if not match:
+                  return None
+
+              next_match = ANY_STATS_FUNCTION.search(
+                  source,
+                  match.end(),
+              )
+
+              end = (
+                  next_match.start()
+                  if next_match
+                  else len(source)
+              )
+
+              return match.start(), end
+
+          def remove_stats_function(
+              source: str,
+              name: str,
+          ) -> str:
+              span = stats_function_span(source, name)
+
+              if not span:
+                  return source
+
+              start, end = span
+
+              return source[:start] + source[end:]
+
+          def replace_or_insert_stats_function(
+              source: str,
+              name: str,
+              replacement: str,
+              before: tuple[str, ...],
+          ) -> str:
+              """
+              Remplace la fonction si elle existe.
+
+              Sinon, insère le correctif avant une fonction suivante connue.
+              Cela fonctionne avec une ancienne version, une version déjà
+              corrigée ou un formatage JavaScript différent.
+              """
+              span = stats_function_span(source, name)
+
+              if span:
+                  start, end = span
+
+                  return (
+                      source[:start]
+                      + replacement.rstrip()
+                      + "\n"
+                      + source[end:]
+                  )
+
+              for before_name in before:
+                  before_match = stats_function_pattern(
+                      before_name
+                  ).search(source)
+
+                  if before_match:
+                      return (
+                          source[:before_match.start()]
+                          + replacement.rstrip()
+                          + "\n"
+                          + source[before_match.start():]
+                      )
+
+              raise SystemExit(
+                  "[ERREUR] Impossible de placer la fonction "
+                  f"{name}. Fonctions suivantes recherchées : "
+                  + ", ".join(before)
+              )
+
+          additional_groups_v671 = '  function canonicalAdditionalType(type){\n    const raw=String(type||\'\').trim();\n    const n=norm(raw);\n    const has=(...words)=>words.every(word=>n.includes(norm(word)));\n\n    /*\n      L\'ordre est volontaire : certaines lignes UltraRumble contiennent\n      plusieurs mots, par exemple "Grab ... Small (_S_)". Elles doivent\n      appartenir au groupe Small, pas à un groupe séparé Grab.\n    */\n    if(\n      has(\'small\')||\n      has(\'short\')||\n      has(\'courte\')||\n      /(^|_)s($|_)/.test(n)\n    ) return \'small\';\n\n    if(\n      has(\'medium\')||\n      has(\'middle\')||\n      has(\'moyenne\')||\n      /(^|_)m($|_)/.test(n)\n    ) return \'medium\';\n\n    if(\n      has(\'large\')||\n      has(\'long\')||\n      has(\'longue\')||\n      /(^|_)l($|_)/.test(n)\n    ) return \'large\';\n\n    if(has(\'normal\')) return \'normal\';\n    if(has(\'ground\')||has(\'sol\')||has(\'地上\')) return \'ground\';\n    if(\n      has(\'air\')||\n      has(\'aerial\')||\n      has(\'midair\')||\n      has(\'空中\')\n    ) return \'air\';\n\n    if(has(\'quintuple\')) return \'quintuple\';\n    if(has(\'detroit\')) return \'detroit\';\n    if(has(\'contact\')) return \'contact\';\n    if(has(\'charge\')) return \'charge\';\n    if(has(\'finisher\')||has(\'finish\')||has(\'final\')) return \'finisher\';\n    if(has(\'spin\')||has(\'rotation\')||has(\'tourbillon\')) return \'spin\';\n    if(has(\'homing\')||has(\'chercheuse\')) return \'homing\';\n    if(has(\'ice\')||has(\'glace\')) return \'ice\';\n    if(has(\'burn\')||has(\'brulure\')) return \'burn\';\n\n    if(\n      has(\'explosion\',\'follow\',\'up\')||\n      has(\'explosion\',\'renforcee\')\n    ) return \'explosion_follow_up\';\n\n    if(\n      has(\'explosion\',\'deploy\')||\n      has(\'explosion\',\'deployee\')\n    ) return \'explosion_deploy\';\n\n    if(\n      has(\'explosion\',\'bullet\')||\n      has(\'balle\',\'explosive\')\n    ) return \'explosion_bullet\';\n\n    if(has(\'explosion\',\'sweat\')) return \'explosion_sweat\';\n    if(has(\'bullet\',\'sweat\')) return \'bullet_sweat\';\n    if(has(\'deploy\',\'sweat\')) return \'deploy_sweat\';\n    if(has(\'explosion\')) return \'explosion\';\n    if(has(\'rush\')) return \'rush\';\n    if(has(\'grab\')||has(\'prise\')) return \'grab\';\n    if(has(\'value\')||has(\'main\')) return \'value\';\n\n    return n||\'main\';\n  }\n\n  function remoteAdditionalGroups(remoteSkill){\n    const tbl=remoteSkill && remoteSkill.additional_values;\n    const rows=getRows(tbl);\n    const groups={};\n    const buckets={};\n\n    rows.forEach(r=>{\n      const li=levelOfRow(r);\n      if(!li) return;\n\n      const rawType=\n        r.slice(0,li.i).join(\' \').trim()||\n        \'main\';\n      const canonical=\n        canonicalAdditionalType(rawType);\n      const vals=r.slice(li.i+1);\n\n      if(!buckets[canonical]){\n        buckets[canonical]=[];\n      }\n\n      let group=buckets[canonical].find(\n        item=>!item.rows[li.lv]\n      );\n\n      if(!group){\n        const order=buckets[canonical].length;\n        const key=`${canonical}__${order+1}`;\n\n        group={\n          key,\n          type:rawType,\n          canonical,\n          order,\n          rows:{}\n        };\n\n        buckets[canonical].push(group);\n        groups[key]=group;\n      }\n\n      group.rows[li.lv]={\n        damage:vals[0],\n        down:vals[1],\n        values:vals,\n        row:r\n      };\n    });\n\n    return groups;\n  }\n'
+          pick_group_v671 = "  function pickAdditionalGroup(groups,title){\n    const arr=Object.values(groups||{})\n      .sort((a,b)=>(a.order||0)-(b.order||0));\n\n    if(!arr.length) return null;\n    if(arr.length===1) return arr[0];\n\n    const rawTitle=String(title||'');\n    const t=norm(rawTitle);\n    const hasTitle=(...words)=>\n      words.every(word=>t.includes(norm(word)));\n    const canonical=g=>\n      g?.canonical||\n      canonicalAdditionalType(g?.type||'');\n\n    const metric=(g,key)=>{\n      const values=Object.values(g?.rows||{})\n        .map(row=>\n          Number.parseFloat(\n            String(row?.[key]??'').replace(',','.')\n          )\n        )\n        .filter(Number.isFinite);\n\n      return values.length\n        ?values.reduce((sum,value)=>sum+value,0)/values.length\n        :Number.NaN;\n    };\n\n    const choose=(list,mode='first')=>{\n      if(!list.length) return null;\n\n      if(mode==='highestDown'){\n        return [...list].sort(\n          (a,b)=>(metric(b,'down')||0)-(metric(a,'down')||0)\n        )[0];\n      }\n\n      if(mode==='lowestDown'){\n        return [...list].sort((a,b)=>{\n          const av=metric(a,'down');\n          const bv=metric(b,'down');\n\n          return (\n            Number.isFinite(av)\n              ?av\n              :Number.MAX_SAFE_INTEGER\n          )-(\n            Number.isFinite(bv)\n              ?bv\n              :Number.MAX_SAFE_INTEGER\n          );\n        })[0];\n      }\n\n      return list[0];\n    };\n\n    const byCanonical=(name,mode='first')=>\n      choose(\n        arr.filter(g=>canonical(g)===name),\n        mode\n      );\n\n    if(\n      hasTitle('distance','courte')||\n      hasTitle('small')||\n      hasTitle('short')\n    ){\n      const found=byCanonical('small');\n      if(found) return found;\n    }\n\n    if(\n      hasTitle('distance','moyenne')||\n      hasTitle('medium')||\n      hasTitle('middle')\n    ){\n      const found=byCanonical('medium');\n      if(found) return found;\n    }\n\n    if(\n      hasTitle('distance','longue')||\n      hasTitle('large')||\n      hasTitle('long')\n    ){\n      const found=byCanonical('large');\n      if(found) return found;\n    }\n\n    if(\n      hasTitle('mode','visee')||\n      hasTitle('aim')||\n      hasTitle('scope')\n    ){\n      const found=\n        byCanonical('aim')||\n        byCanonical('value');\n      if(found) return found;\n    }\n\n    if(hasTitle('sol')||hasTitle('ground')){\n      const found=byCanonical('ground');\n      if(found) return found;\n    }\n\n    if(\n      hasTitle('air')||\n      hasTitle('aerien')||\n      hasTitle('midair')\n    ){\n      const found=byCanonical('air');\n      if(found) return found;\n    }\n\n    for(const [needle,groupName] of [\n      ['quintuple','quintuple'],\n      ['detroit','detroit'],\n      ['contact','contact'],\n      ['normal','normal'],\n      ['rush','rush'],\n      ['glace','ice'],\n      ['ice','ice'],\n      ['brulure','burn'],\n      ['burn','burn']\n    ]){\n      if(hasTitle(needle)){\n        const found=byCanonical(groupName);\n        if(found) return found;\n      }\n    }\n\n    if(hasTitle('charge')||hasTitle('chargee')){\n      const found=byCanonical('charge');\n      if(found) return found;\n    }\n\n    if(\n      hasTitle('finisher')||\n      hasTitle('finish')||\n      hasTitle('final')\n    ){\n      const found=byCanonical('finisher');\n      if(found) return found;\n    }\n\n    if(\n      hasTitle('spin')||\n      hasTitle('rotation')||\n      hasTitle('tourbillon')\n    ){\n      const found=byCanonical('spin');\n      if(found) return found;\n    }\n\n    if(\n      hasTitle('explosion','deployee')||\n      hasTitle('explosion','deploy')\n    ){\n      const found=byCanonical(\n        'explosion_deploy',\n        'lowestDown'\n      );\n      if(found) return found;\n    }\n\n    if(\n      hasTitle('balle','explosive')||\n      hasTitle('explosion','bullet')||\n      hasTitle('bullet','explosion')\n    ){\n      const found=byCanonical('explosion_bullet');\n      if(found) return found;\n    }\n\n    if(\n      hasTitle('explosion','sueur')||\n      hasTitle('sweat','explosion')\n    ){\n      const found=byCanonical('explosion_sweat');\n      if(found) return found;\n    }\n\n    if(\n      (\n        hasTitle('balle','sueur')||\n        hasTitle('bullet','sweat')\n      )&&\n      !hasTitle('explosion')\n    ){\n      const found=byCanonical('bullet_sweat');\n      if(found) return found;\n    }\n\n    if(\n      (\n        hasTitle('sueur','deployee')||\n        hasTitle('deploy','sweat')\n      )&&\n      !hasTitle('explosion')\n    ){\n      const found=byCanonical('deploy_sweat');\n      if(found) return found;\n    }\n\n    if(hasTitle('explosion')){\n      const reinforced=\n        /\\+|follow[ -]?up|renforc|strong/i.test(rawTitle);\n\n      if(reinforced){\n        const found=\n          byCanonical(\n            'explosion_follow_up',\n            'highestDown'\n          )||\n          byCanonical(\n            'explosion',\n            'highestDown'\n          )||\n          byCanonical(\n            'explosion_deploy',\n            'highestDown'\n          );\n\n        if(found) return found;\n      }\n\n      const found=\n        byCanonical(\n          'explosion',\n          'lowestDown'\n        )||\n        byCanonical(\n          'explosion_deploy',\n          'highestDown'\n        );\n\n      if(found) return found;\n    }\n\n    const aliases={\n      courte:'small',\n      court:'small',\n      short:'small',\n      moyenne:'medium',\n      moyen:'medium',\n      longue:'large',\n      long:'large',\n      visee:'value',\n      aim:'value',\n      sol:'ground',\n      aerien:'air',\n      air:'air',\n      finale:'finisher',\n      final:'finisher',\n      tourbillon:'spin',\n      rotation:'spin',\n      balle:'bullet',\n      projectile:'bullet',\n      sueur:'sweat',\n      deployee:'deploy',\n      deploye:'deploy',\n      deploiement:'deploy',\n      brulure:'burn',\n      glace:'ice'\n    };\n\n    const titleWords=t\n      .split('_')\n      .filter(Boolean)\n      .map(word=>aliases[word]||word);\n\n    const scored=arr\n      .map((g,index)=>{\n        const words=[\n          canonical(g),\n          norm(g?.type||'')\n        ].join('_');\n\n        const score=titleWords.reduce(\n          (total,word)=>\n            total+(\n              word.length>2&&\n              words.includes(word)\n                ?1\n                :0\n            ),\n          0\n        );\n\n        return {g,index,score};\n      })\n      .sort(\n        (a,b)=>\n          b.score-a.score||\n          a.index-b.index\n      );\n\n    return scored[0]?.g||arr[0];\n  }\n"
+          patch_table_v671 = "  function patchLocalTable(tb,remoteSkill){\n    if(\n      !tb||\n      !Array.isArray(tb.rows)||\n      !Array.isArray(tb.cols)\n    ) return false;\n\n    const title=String(tb.title||'');\n    const titleNorm=norm(title);\n\n    if(/Effets/i.test(title)) return false;\n\n    const cols=tb.cols;\n    const ti=findLocalCol(\n      cols,\n      ['Type'],\n      -1\n    );\n    const di=findLocalCol(\n      cols,\n      ['Dégâts','Degats','Damage'],\n      1\n    );\n    const ai=findLocalCol(\n      cols,\n      ['Munitions','Ammo'],\n      -1\n    );\n    const ui=findLocalCol(\n      cols,\n      ['Consommation','Use Ammo'],\n      -1\n    );\n    const ri=findLocalCol(\n      cols,\n      ['Recharge','Reload'],\n      -1\n    );\n    const dpi=findLocalCol(\n      cols,\n      ['Down Power','Down'],\n      -1\n    );\n\n    if(\n      ti>=0||\n      titleNorm.includes('supplement')||\n      titleNorm.includes('additional')\n    ){\n      return false;\n    }\n\n    const base=remoteBaseMap(remoteSkill);\n    const add=remoteAdditionalGroups(remoteSkill);\n    const hasAdditional=\n      Object.keys(add).length>0;\n    const picked=pickAdditionalGroup(\n      add,\n      title\n    );\n\n    const hasResourceColumns=\n      ai>=0||\n      ui>=0||\n      ri>=0;\n\n    const explicitBase=\n      hasResourceColumns||\n      /(^|_)base($|_)/.test(titleNorm);\n\n    const preferAdditional=\n      hasAdditional&&\n      !explicitBase&&\n      (di>=0||dpi>=0);\n\n    let changed=false;\n\n    tb.rows.forEach(row=>{\n      const lvInfo=levelOfRow(row);\n      if(!lvInfo) return;\n\n      const lv=lvInfo.lv;\n      const additionalRow=\n        picked?.rows?.[lv];\n      const baseRow=base[lv];\n\n      if(\n        preferAdditional&&\n        additionalRow\n      ){\n        if(\n          di>=0&&\n          row[di]!==undefined&&\n          additionalRow.damage!==undefined\n        ){\n          row[di]=additionalRow.damage;\n          changed=true;\n        }\n\n        if(\n          dpi>=0&&\n          row[dpi]!==undefined&&\n          additionalRow.down!==undefined\n        ){\n          row[dpi]=additionalRow.down;\n          changed=true;\n        }\n\n        return;\n      }\n\n      if(baseRow){\n        if(\n          di>=0&&\n          row[di]!==undefined&&\n          baseRow.damage!==undefined\n        ){\n          row[di]=baseRow.damage;\n          changed=true;\n        }\n\n        if(\n          ai>=0&&\n          row[ai]!==undefined&&\n          baseRow.ammo!==undefined\n        ){\n          row[ai]=baseRow.ammo;\n          changed=true;\n        }\n\n        if(\n          ui>=0&&\n          row[ui]!==undefined&&\n          baseRow.use!==undefined\n        ){\n          row[ui]=baseRow.use;\n          changed=true;\n        }\n\n        if(\n          ri>=0&&\n          row[ri]!==undefined&&\n          baseRow.reload!==undefined\n        ){\n          row[ri]=baseRow.reload;\n          changed=true;\n        }\n\n        if(\n          dpi>=0&&\n          row[dpi]!==undefined&&\n          baseRow.down!==undefined\n        ){\n          row[dpi]=baseRow.down;\n          changed=true;\n        }\n\n        return;\n      }\n\n      if(additionalRow){\n        if(\n          di>=0&&\n          row[di]!==undefined&&\n          additionalRow.damage!==undefined\n        ){\n          row[di]=additionalRow.damage;\n          changed=true;\n        }\n\n        if(\n          dpi>=0&&\n          row[dpi]!==undefined&&\n          additionalRow.down!==undefined\n        ){\n          row[dpi]=additionalRow.down;\n          changed=true;\n        }\n      }\n    });\n\n    return changed;\n  }\n"
+
+          # Le bloc ajouté contient canonicalAdditionalType.
+          # On retire d'abord une ancienne copie pour rendre les relances
+          # parfaitement idempotentes.
+          stats_block = remove_stats_function(
+              stats_block,
+              "canonicalAdditionalType",
+          )
+
+          stats_block = replace_or_insert_stats_function(
+              stats_block,
+              "remoteAdditionalGroups",
+              additional_groups_v671,
+              (
+                  "pickAdditionalGroup",
+                  "patchLocalTable",
+                  "pvFromStats",
+              ),
+          )
+
+          stats_block = replace_or_insert_stats_function(
+              stats_block,
+              "pickAdditionalGroup",
+              pick_group_v671,
+              (
+                  "patchLocalTable",
+                  "pvFromStats",
+              ),
+          )
+
+          stats_block = replace_or_insert_stats_function(
+              stats_block,
+              "patchLocalTable",
+              patch_table_v671,
+              (
+                  "pvFromStats",
+                  "patchSkill",
+                  "applyOne",
+              ),
+          )
+
+          for function_name in (
+              "canonicalAdditionalType",
+              "remoteAdditionalGroups",
+              "pickAdditionalGroup",
+              "patchLocalTable",
+          ):
+              function_count = len(
+                  stats_function_pattern(function_name).findall(
+                      stats_block
+                  )
+              )
+
+              if function_count != 1:
+                  raise SystemExit(
+                      "[ERREUR] Nombre incorrect de définitions pour "
+                      f"{function_name} : {function_count}"
+                  )
+
+          if (
+              "window.__MHUR_MULTI_DAMAGE_V671__=true;"
+              not in stats_block
+          ):
+              stats_block = stats_block.replace(
+                  "  patchAll();",
+                  "  window.__MHUR_MULTI_DAMAGE_V671__=true;\n"
+                  "  patchAll();",
+                  1,
+              )
+
+          index_stats = (
+              index_stats[:stats_script_start]
+              + stats_block
+              + index_stats[stats_script_end:]
+          )
+
+          INDEX.write_text(
+              index_stats,
+              encoding="utf-8",
+          )
+
+          patched_stats_text = INDEX.read_text(
+              encoding="utf-8"
+          )
+
+          required_stats_markers = (
+              "canonicalAdditionalType",
+              "preferAdditional",
+              "distance','courte",
+              "distance','moyenne",
+              "distance','longue",
+              "__MHUR_MULTI_DAMAGE_V671__",
+          )
+
+          for marker in required_stats_markers:
+              if marker not in patched_stats_text:
+                  raise SystemExit(
+                      "[ERREUR] Correctif dégâts multiples incomplet : "
+                      + marker
+                  )
+
+          # ----------------------------------------------------------------------
+          # Splash V671, NEW global, cache et fluidité.
+          # ----------------------------------------------------------------------
+
+          commit = subprocess.check_output(
+              ["git", "rev-parse", "--short=12", "HEAD"],
+              text=True,
+          ).strip()
+
+          build = f"671-{commit}"
+          updated_at = datetime.now(timezone.utc).replace(
+              microsecond=0
+          ).isoformat()
+
+          ui_css = '/* MHUR V671 — splash cinématique + NEW global unique */\n\n/* ==========================================================================\n   SPLASH CINÉMATIQUE\n   ========================================================================== */\n\n#mhurV671Splash {\n  position: fixed;\n  inset: 0;\n  z-index: 2147483647;\n  display: none;\n  min-height: 100vh;\n  min-height: 100dvh;\n  overflow: hidden;\n  isolation: isolate;\n  background:\n    radial-gradient(circle at 50% 46%, rgba(32, 133, 210, .18), transparent 35%),\n    linear-gradient(135deg, #02060e 0%, #061426 42%, #07111f 72%, #02050b 100%);\n  color: #fff;\n  font-family: Arial, Helvetica, sans-serif;\n}\n\nhtml.mhur-v671-booting {\n  overflow: hidden !important;\n  background: #02060e !important;\n}\n\nhtml.mhur-v671-booting body {\n  overflow: hidden !important;\n  background: #02060e !important;\n}\n\nhtml.mhur-v671-booting #mhurV671Splash {\n  display: block !important;\n  visibility: visible !important;\n}\n\nhtml.mhur-v671-booting body > :not(#mhurV671Splash) {\n  visibility: hidden !important;\n}\n\n#mhurV671Splash::before {\n  content: "";\n  position: absolute;\n  inset: -20%;\n  z-index: -4;\n  background:\n    repeating-linear-gradient(\n      120deg,\n      transparent 0 58px,\n      rgba(63, 199, 255, .035) 59px 61px,\n      transparent 62px 118px\n    ),\n    repeating-linear-gradient(\n      30deg,\n      transparent 0 76px,\n      rgba(255, 226, 0, .025) 77px 79px,\n      transparent 80px 156px\n    );\n  transform: perspective(800px) rotateX(58deg) translateY(20%);\n  transform-origin: center bottom;\n  animation: mhurV671GridMove 9s linear infinite;\n}\n\n#mhurV671Splash::after {\n  content: "";\n  position: absolute;\n  inset: 0;\n  z-index: 30;\n  pointer-events: none;\n  opacity: .17;\n  background:\n    repeating-linear-gradient(\n      180deg,\n      transparent 0 3px,\n      rgba(255, 255, 255, .05) 4px,\n      transparent 5px 8px\n    );\n  mix-blend-mode: overlay;\n}\n\n.mhurV671Aurora {\n  position: absolute;\n  inset: -35%;\n  z-index: -5;\n  background:\n    conic-gradient(\n      from 20deg,\n      rgba(255, 224, 0, .16),\n      rgba(30, 209, 238, .17),\n      rgba(185, 63, 255, .14),\n      rgba(255, 67, 88, .10),\n      rgba(255, 224, 0, .16)\n    );\n  filter: blur(80px);\n  animation: mhurV671AuroraSpin 13s linear infinite;\n}\n\n.mhurV671Beam {\n  position: absolute;\n  z-index: -2;\n  width: 58vw;\n  height: 12vh;\n  opacity: .42;\n  background: linear-gradient(\n    90deg,\n    transparent,\n    rgba(74, 214, 255, .34),\n    transparent\n  );\n  filter: blur(18px);\n  transform: rotate(-24deg);\n  animation: mhurV671BeamSweep 4.6s ease-in-out infinite;\n}\n\n.mhurV671Beam.one {\n  top: 7%;\n  left: -18%;\n}\n\n.mhurV671Beam.two {\n  right: -20%;\n  bottom: 10%;\n  animation-delay: -2.1s;\n  transform: rotate(156deg);\n}\n\n.mhurV671Hero {\n  position: absolute;\n  top: -2%;\n  bottom: 12%;\n  z-index: -1;\n  width: min(35vw, 620px);\n  opacity: .70;\n  pointer-events: none;\n  background-repeat: no-repeat;\n  background-size: contain;\n  background-position: center 8%;\n  filter:\n    saturate(1.08)\n    contrast(1.06)\n    drop-shadow(0 24px 36px rgba(0, 0, 0, .72));\n}\n\n.mhurV671Hero::after {\n  content: "";\n  position: absolute;\n  inset: 0;\n  background:\n    linear-gradient(\n      180deg,\n      rgba(2, 6, 14, .22),\n      transparent 23% 70%,\n      #02060e 97%\n    );\n}\n\n.mhurV671Hero.left {\n  left: -1.5%;\n  background-image:\n    url("../assets/home/season18/gentle_s18_banner.webp");\n  transform: translateX(-5%) translateY(-11%) rotate(-2deg);\n  animation: mhurV671HeroLeft 5.6s ease-in-out infinite;\n}\n\n.mhurV671Hero.right {\n  right: -1.5%;\n  background-image:\n    url("../assets/home/season18/twice_s18_banner.webp");\n  transform: translateX(5%) translateY(-11%) rotate(2deg);\n  animation: mhurV671HeroRight 5.6s ease-in-out infinite;\n}\n\n.mhurV671Hero.mini {\n  top: auto;\n  left: 50%;\n  bottom: -17%;\n  width: min(30vw, 460px);\n  height: 58%;\n  opacity: .32;\n  background-image:\n    url("../assets/home/season18/tsuyu_profile_nobg.png");\n  background-position: center bottom;\n  transform: translateX(-50%) translateY(-6%);\n  filter:\n    saturate(1)\n    contrast(1.08)\n    drop-shadow(0 18px 30px rgba(0, 0, 0, .8));\n}\n\n.mhurV671Stage {\n  position: relative;\n  z-index: 10;\n  width: 100%;\n  min-height: 100vh;\n  min-height: 100dvh;\n  display: grid;\n  place-items: center;\n  padding:\n    max(24px, env(safe-area-inset-top))\n    max(20px, env(safe-area-inset-right))\n    max(24px, env(safe-area-inset-bottom))\n    max(20px, env(safe-area-inset-left));\n}\n\n.mhurV671Panel {\n  position: relative;\n  width: min(92vw, 690px);\n  padding: clamp(27px, 4.2vw, 48px);\n  overflow: hidden;\n  border: 2px solid rgba(93, 194, 255, .66);\n  border-radius: 30px;\n  background:\n    linear-gradient(\n      145deg,\n      rgba(14, 34, 60, .965),\n      rgba(4, 13, 26, .985) 66%\n    );\n  box-shadow:\n    0 36px 100px rgba(0, 0, 0, .64),\n    0 0 0 1px rgba(255, 255, 255, .055) inset,\n    0 0 72px rgba(23, 194, 229, .14);\n  text-align: center;\n  transform: translateZ(0);\n}\n\n.mhurV671Panel::before {\n  content: "";\n  position: absolute;\n  inset: 0 0 auto;\n  height: 7px;\n  background:\n    linear-gradient(\n      90deg,\n      #ffe000 0%,\n      #d8f232 20%,\n      #2bd3ef 49%,\n      #6498ff 70%,\n      #d33bff 100%\n    );\n  box-shadow: 0 0 24px rgba(43, 211, 239, .48);\n}\n\n.mhurV671Panel::after {\n  content: "";\n  position: absolute;\n  inset: 12px;\n  pointer-events: none;\n  border: 1px solid rgba(123, 197, 255, .10);\n  border-radius: 21px;\n}\n\n.mhurV671Corner {\n  position: absolute;\n  width: 48px;\n  height: 48px;\n  pointer-events: none;\n}\n\n.mhurV671Corner.tl {\n  top: 15px;\n  left: 15px;\n  border-top: 3px solid #ffe000;\n  border-left: 3px solid #ffe000;\n}\n\n.mhurV671Corner.tr {\n  top: 15px;\n  right: 15px;\n  border-top: 3px solid #d33bff;\n  border-right: 3px solid #d33bff;\n}\n\n.mhurV671Corner.bl {\n  bottom: 15px;\n  left: 15px;\n  border-bottom: 3px solid #2bd3ef;\n  border-left: 3px solid #2bd3ef;\n}\n\n.mhurV671Corner.br {\n  right: 15px;\n  bottom: 15px;\n  border-right: 3px solid #6498ff;\n  border-bottom: 3px solid #6498ff;\n}\n\n.mhurV671Topline {\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  gap: 9px;\n  margin-bottom: 20px;\n}\n\n.mhurV671Live,\n.mhurV671Season {\n  min-height: 30px;\n  display: inline-flex;\n  align-items: center;\n  gap: 7px;\n  padding: 0 11px;\n  border: 1px solid rgba(92, 184, 245, .44);\n  border-radius: 999px;\n  background: rgba(3, 13, 26, .70);\n  color: #dff4ff;\n  font-size: 11px;\n  font-weight: 1000;\n  letter-spacing: .09em;\n  text-transform: uppercase;\n}\n\n.mhurV671Live::before {\n  content: "";\n  width: 8px;\n  height: 8px;\n  border-radius: 50%;\n  background: #29e26d;\n  box-shadow: 0 0 14px #29e26d;\n  animation: mhurV671LivePulse 1.1s ease-in-out infinite;\n}\n\n.mhurV671Season {\n  border-color: rgba(255, 226, 0, .42);\n  color: #ffe65c;\n}\n\n.mhurV671LogoOrbit {\n  position: relative;\n  width: 134px;\n  height: 134px;\n  margin: 0 auto 24px;\n  display: grid;\n  place-items: center;\n}\n\n.mhurV671LogoOrbit::before,\n.mhurV671LogoOrbit::after {\n  content: "";\n  position: absolute;\n  border-radius: 50%;\n}\n\n.mhurV671LogoOrbit::before {\n  inset: -9px;\n  border:\n    3px solid\n    color-mix(in srgb, #2bd3ef 60%, transparent);\n  border-top-color: #ffe000;\n  border-right-color: #d33bff;\n  animation: mhurV671Orbit 3.6s linear infinite;\n}\n\n.mhurV671LogoOrbit::after {\n  inset: -20px;\n  border: 1px dashed rgba(121, 207, 255, .30);\n  animation: mhurV671OrbitReverse 7s linear infinite;\n}\n\n.mhurV671Logo {\n  width: 118px;\n  height: 118px;\n  display: grid;\n  place-items: center;\n  border: 4px solid #02050b;\n  border-radius: 27px;\n  background:\n    radial-gradient(\n      circle at 48% 28%,\n      #fff7a8 0%,\n      #ffe000 38%,\n      #a67f00 100%\n    );\n  box-shadow:\n    0 9px 0 #010307,\n    0 0 0 3px #ffe000,\n    0 0 42px rgba(255, 224, 0, .29);\n  transform: rotate(-2deg);\n}\n\n.mhurV671Logo img {\n  width: 92px;\n  height: 92px;\n  display: block;\n  object-fit: contain;\n}\n\n.mhurV671Kicker {\n  margin: 0 0 8px;\n  color: #75ddff;\n  font-size: 12px;\n  font-weight: 1000;\n  letter-spacing: .24em;\n  text-transform: uppercase;\n}\n\n.mhurV671Title {\n  margin: 0;\n  color: #fff;\n  font-size: clamp(38px, 6vw, 66px);\n  font-weight: 1000;\n  line-height: .91;\n  letter-spacing: -.06em;\n  text-shadow:\n    0 5px 0 #02050a,\n    0 0 26px rgba(255, 255, 255, .07);\n}\n\n.mhurV671Title span {\n  color: #ffe000;\n  text-shadow:\n    0 5px 0 #4b3900,\n    0 0 25px rgba(255, 224, 0, .20);\n}\n\n.mhurV671Subtitle {\n  max-width: 490px;\n  margin: 17px auto 0;\n  color: #c8dbef;\n  font-size: clamp(14px, 1.7vw, 17px);\n  font-weight: 800;\n  line-height: 1.45;\n}\n\n.mhurV671LoadingBox {\n  margin-top: 27px;\n  padding: 14px;\n  border: 1px solid rgba(95, 179, 238, .30);\n  border-radius: 16px;\n  background: rgba(2, 11, 22, .58);\n  box-shadow: 0 0 0 1px rgba(255, 255, 255, .025) inset;\n}\n\n.mhurV671StatusRow {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  gap: 12px;\n  margin-bottom: 10px;\n}\n\n#mhurV671Status {\n  color: #e9f6ff;\n  font-size: 12px;\n  font-weight: 950;\n  letter-spacing: .035em;\n  text-align: left;\n}\n\n#mhurV671Percent {\n  min-width: 45px;\n  color: #ffe000;\n  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;\n  font-size: 13px;\n  font-weight: 1000;\n  text-align: right;\n}\n\n.mhurV671Track {\n  position: relative;\n  height: 14px;\n  overflow: hidden;\n  border: 2px solid #010307;\n  border-radius: 999px;\n  background: #06101e;\n  box-shadow:\n    0 0 0 1px rgba(78, 170, 234, .35),\n    0 0 20px rgba(20, 181, 221, .08) inset;\n}\n\n#mhurV671Fill {\n  position: absolute;\n  inset: 0 auto 0 0;\n  width: 7%;\n  border-radius: inherit;\n  background:\n    linear-gradient(\n      90deg,\n      #ffe000 0%,\n      #a9ee50 22%,\n      #2bd3ef 52%,\n      #718aff 76%,\n      #d33bff 100%\n    );\n  box-shadow:\n    0 0 21px rgba(43, 211, 239, .58);\n  transition: width .16s ease-out;\n}\n\n#mhurV671Fill::after {\n  content: "";\n  position: absolute;\n  inset: 0;\n  background:\n    linear-gradient(\n      110deg,\n      transparent 0 34%,\n      rgba(255, 255, 255, .72) 45%,\n      transparent 58%\n    );\n  transform: translateX(-120%);\n  animation: mhurV671BarShine 1.1s linear infinite;\n}\n\n.mhurV671Chips {\n  margin-top: 17px;\n  display: flex;\n  justify-content: center;\n  flex-wrap: wrap;\n  gap: 8px;\n}\n\n.mhurV671Chips span {\n  min-height: 31px;\n  display: inline-flex;\n  align-items: center;\n  padding: 0 11px;\n  border: 1px solid rgba(82, 172, 233, .36);\n  border-radius: 999px;\n  background: rgba(4, 17, 33, .72);\n  color: #d8ebfc;\n  font-size: 11px;\n  font-weight: 1000;\n  letter-spacing: .055em;\n  text-transform: uppercase;\n}\n\n.mhurV671Build {\n  margin: 16px 0 0;\n  color: #7189a4;\n  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;\n  font-size: 10px;\n  font-weight: 800;\n}\n\nhtml.mhur-v671-ready #mhurV671Splash {\n  opacity: 0;\n  pointer-events: none;\n  transition: opacity .32s ease;\n}\n\nhtml.mhur-v671-ready .mhurV671Panel {\n  transform: scale(.975);\n  transition: transform .32s ease;\n}\n\n/* ==========================================================================\n   NEW UNIQUE PARTOUT\n   ========================================================================== */\n\n.mhurNewV582 {\n  pointer-events: none !important;\n  opacity: 1 !important;\n  visibility: visible !important;\n  z-index: 160 !important;\n  background:\n    transparent\n    url("../assets/home/icons/new_badge_custom.png")\n    center / contain\n    no-repeat !important;\n  filter:\n    drop-shadow(0 4px 0 rgba(0, 0, 0, .82))\n    drop-shadow(0 0 8px rgba(255, 35, 163, .23)) !important;\n  transform-origin: center !important;\n  animation: mhurV671NewPulse .92s ease-in-out infinite !important;\n  will-change: transform !important;\n}\n\n.mhurNewV582::before,\n.mhurNewV582::after {\n  content: none !important;\n  display: none !important;\n  visibility: hidden !important;\n  opacity: 0 !important;\n  background: none !important;\n  animation: none !important;\n  transform: none !important;\n}\n\n\n/* Personnages + Alters/styles. */\n.card[data-char] > .mhurNewV582,\n.styleCard[data-style] > .mhurNewV582 {\n  top: 8px !important;\n  right: 8px !important;\n  left: auto !important;\n  width: 88px !important;\n  height: 44px !important;\n}\n\n/* Costumes : sous les étoiles. */\n.costumeTile > .mhurNewV582,\n.costumeCard > .mhurNewV582,\n.costumeResult > .mhurNewV582 {\n  top: 39px !important;\n  right: 8px !important;\n  left: auto !important;\n  width: 64px !important;\n  height: 34px !important;\n  z-index: 145 !important;\n}\n\n/*\n  Le parent marqué contient le NEW V582 canonique.\n  Tout ancien NEW frère ou descendant est masqué.\n*/\n[data-mhur-new-owner="1"] :is(\n  .s18NewBadge,\n  .s18NewBadgeV9,\n  .releaseNewBadgeV9,\n  .s18SeasonNewV10,\n  .s18PlannedNewV12,\n  [class*="NewBadge"],\n  [class*="newBadge"],\n  [class*="NewPulse"],\n  [class*="newPulse"],\n  [class*="NewSticker"],\n  [class*="newSticker"],\n  [class*="NewTag"],\n  [class*="newTag"],\n  [class*="CostumeNew"],\n  [class*="CharacterNew"],\n  [class*="StyleNew"],\n  [class*="mhurNew"]:not(.mhurNewV582),\n  [aria-label="NEW"]:not(.mhurNewV582),\n  img[src*="new_badge"]:not(.mhurNewV582)\n) {\n  display: none !important;\n  visibility: hidden !important;\n  opacity: 0 !important;\n  animation: none !important;\n  pointer-events: none !important;\n}\n\n/* Nettoyage immédiat avant que le JS marque les parents. */\n:where(\n  .card[data-char],\n  .styleCard[data-style],\n  .costumeTile,\n  .costumeCard,\n  .costumeResult\n):has(> .mhurNewV582) :is(\n  .s18NewBadge,\n  .s18NewBadgeV9,\n  .releaseNewBadgeV9,\n  .s18SeasonNewV10,\n  .s18PlannedNewV12,\n  [class*="NewBadge"],\n  [class*="newBadge"],\n  [class*="NewPulse"],\n  [class*="newPulse"],\n  [class*="mhurNew"]:not(.mhurNewV582),\n  [aria-label="NEW"]:not(.mhurNewV582),\n  img[src*="new_badge"]:not(.mhurNewV582)\n) {\n  display: none !important;\n  visibility: hidden !important;\n  opacity: 0 !important;\n  animation: none !important;\n}\n\n@keyframes mhurV671GridMove {\n  to {\n    transform:\n      perspective(800px)\n      rotateX(58deg)\n      translateY(27%);\n  }\n}\n\n@keyframes mhurV671AuroraSpin {\n  to {\n    transform: rotate(360deg);\n  }\n}\n\n@keyframes mhurV671BeamSweep {\n  0%,\n  100% {\n    opacity: .18;\n    translate: -8% 0;\n  }\n\n  50% {\n    opacity: .48;\n    translate: 22% 0;\n  }\n}\n\n@keyframes mhurV671HeroLeft {\n  0%,\n  100% {\n    transform: translateX(-5%) translateY(0) rotate(-2deg);\n  }\n\n  50% {\n    transform: translateX(-3%) translateY(-9px) rotate(-1deg);\n  }\n}\n\n@keyframes mhurV671HeroRight {\n  0%,\n  100% {\n    transform: translateX(5%) translateY(0) rotate(2deg);\n  }\n\n  50% {\n    transform: translateX(3%) translateY(-9px) rotate(1deg);\n  }\n}\n\n@keyframes mhurV671Orbit {\n  to {\n    transform: rotate(360deg);\n  }\n}\n\n@keyframes mhurV671OrbitReverse {\n  to {\n    transform: rotate(-360deg);\n  }\n}\n\n@keyframes mhurV671LivePulse {\n  0%,\n  100% {\n    opacity: .58;\n    scale: .84;\n  }\n\n  50% {\n    opacity: 1;\n    scale: 1.12;\n  }\n}\n\n@keyframes mhurV671BarShine {\n  to {\n    transform: translateX(150%);\n  }\n}\n\n@keyframes mhurV671NewPulse {\n  0%,\n  100% {\n    transform: scale(.92) rotate(-2deg);\n  }\n\n  50% {\n    transform: scale(1.10) rotate(1deg);\n  }\n}\n\n@media (max-width: 1100px) {\n  .mhurV671Hero {\n    width: 34vw;\n    opacity: .43;\n  }\n\n  .mhurV671Panel {\n    width: min(88vw, 650px);\n  }\n}\n\n@media (max-width: 760px) {\n  .mhurV671Hero {\n    display: none;\n  }\n\n  .mhurV671Stage {\n    padding: 14px;\n  }\n\n  .mhurV671Panel {\n    width: min(96vw, 560px);\n    padding: 30px 19px 25px;\n    border-radius: 22px;\n  }\n\n  .mhurV671LogoOrbit {\n    width: 108px;\n    height: 108px;\n    margin-bottom: 19px;\n  }\n\n  .mhurV671Logo {\n    width: 94px;\n    height: 94px;\n    border-radius: 22px;\n  }\n\n  .mhurV671Logo img {\n    width: 74px;\n    height: 74px;\n  }\n\n  .mhurV671Topline {\n    margin-bottom: 17px;\n  }\n\n  .mhurV671Live,\n  .mhurV671Season {\n    min-height: 27px;\n    padding: 0 8px;\n    font-size: 9px;\n  }\n\n  .mhurV671Title {\n    font-size: clamp(37px, 12vw, 52px);\n  }\n\n  .mhurV671Subtitle {\n    margin-top: 13px;\n    font-size: 13px;\n  }\n\n  .mhurV671LoadingBox {\n    margin-top: 21px;\n  }\n\n  .card[data-char] > .mhurNewV582,\n  .styleCard[data-style] > .mhurNewV582 {\n    width: 76px !important;\n    height: 38px !important;\n  }\n\n  .costumeTile > .mhurNewV582,\n  .costumeCard > .mhurNewV582,\n  .costumeResult > .mhurNewV582 {\n    top: 34px !important;\n    right: 7px !important;\n    width: 55px !important;\n    height: 29px !important;\n  }\n}\n\n@media (prefers-reduced-motion: reduce) {\n  .mhurV671Aurora,\n  .mhurV671Beam,\n  .mhurV671Hero,\n  .mhurV671LogoOrbit::before,\n  .mhurV671LogoOrbit::after,\n  .mhurV671Live::before,\n  #mhurV671Fill::after,\n  .mhurNewV582,\n  .mhurNewV582::after {\n    animation: none !important;\n  }\n}\n'
+          ui_js = '(() => {\n  \'use strict\';\n\n  const BUILD = __BUILD_JSON__;\n  const root = document.documentElement;\n  const startedAt =\n    Number(window.__MHUR_V671_STARTED_AT) ||\n    performance.now();\n\n  const OWNER_SELECTOR = [\n    \'.card[data-char]\',\n    \'.styleCard[data-style]\',\n    \'.costumeTile\',\n    \'.costumeCard\',\n    \'.costumeResult\'\n  ].join(\',\');\n\n  const LEGACY_SELECTOR = [\n    \'.s18NewBadge\',\n    \'.s18NewBadgeV9\',\n    \'.releaseNewBadgeV9\',\n    \'.s18SeasonNewV10\',\n    \'.s18PlannedNewV12\',\n    \'[class*="NewBadge"]\',\n    \'[class*="newBadge"]\',\n    \'[class*="NewPulse"]\',\n    \'[class*="newPulse"]\',\n    \'[class*="NewSticker"]\',\n    \'[class*="newSticker"]\',\n    \'[class*="NewTag"]\',\n    \'[class*="newTag"]\',\n    \'[class*="CostumeNew"]\',\n    \'[class*="CharacterNew"]\',\n    \'[class*="StyleNew"]\',\n    \'[class*="mhurNew"]:not(.mhurNewV582)\',\n    \'[aria-label="NEW"]:not(.mhurNewV582)\',\n    \'img[src*="new_badge"]:not(.mhurNewV582)\'\n  ].join(\',\');\n\n  const pendingOwners = new Set();\n  let ownerFrame = 0;\n  let revealed = false;\n  let currentProgress = 7;\n  let progressTimer = 0;\n\n  function cleanupOldSplashArtifacts() {\n    document.querySelectorAll(\n      \'[id^="mhurV66"][id$="Splash"]\'\n    ).forEach(node => {\n      if (node.id !== \'mhurV671Splash\') node.remove();\n    });\n\n    document.querySelectorAll(\n      \'[class*="mhurV66"][class*="Hero"]\'\n    ).forEach(node => {\n      if (!node.closest(\'#mhurV671Splash\')) node.remove();\n    });\n\n    document.querySelectorAll(\n      \'[id*="LeftHeroImage"],\' +\n      \'[id*="RightHeroImage"],\' +\n      \'[id*="MiniHeroImage"]\'\n    ).forEach(node => {\n      if (!node.closest(\'#mhurV671Splash\')) {\n        (node.closest(\'figure,div\') || node).remove();\n      }\n    });\n  }\n\n  function patchLanguage() {\n    try {\n      if (typeof lang !== \'undefined\' && lang === \'en\') {\n        return \'en\';\n      }\n    } catch (_error) {}\n\n    return String(document.documentElement.lang || \'\')\n      .toLowerCase()\n      .startsWith(\'en\')\n      ? \'en\'\n      : \'fr\';\n  }\n\n  function fixPatchByIds(scope = document) {\n    const selector = [\n      \'article[data-v608-character-id="armored_all_might"]\',\n      \'[data-v608-style="armored_all_might_technical"]\',\n      \'[data-v608-skill-id="armored_all_might_alpha_burn"]\'\n    ].join(\' \');\n\n    const cards = [];\n\n    if (scope instanceof Element && scope.matches(selector)) {\n      cards.push(scope);\n    }\n\n    scope.querySelectorAll?.(selector).forEach(card => {\n      cards.push(card);\n    });\n\n    cards.forEach(card => {\n      const expectedTitle = patchLanguage() === \'en\'\n        ? \'α - Ice Bullet Shot (Burn)\'\n        : \'α - Ice Bullet Shot (Brûlure)\';\n      const title = card.querySelector(\'h5\');\n\n      if (title && title.textContent.trim() !== expectedTitle) {\n        title.textContent = expectedTitle;\n      }\n\n      const image = card.querySelector(\n        \'.s18PatchImageV608 img,.s18PatchSkillV10 img\'\n      );\n      const expectedImage =\n        \'/assets/armored_all_might/\' +\n        \'armored_all_might_technical/alpha.webp\';\n\n      if (image && !image.src.endsWith(expectedImage)) {\n        image.setAttribute(\'src\', expectedImage);\n        image.setAttribute(\'alt\', expectedTitle);\n      }\n    });\n  }\n\n  function depth(node) {\n    let value = 0;\n    let cursor = node;\n\n    while (cursor?.parentElement) {\n      value += 1;\n      cursor = cursor.parentElement;\n    }\n\n    return value;\n  }\n\n  function directCanonical(owner) {\n    try {\n      return [\n        ...owner.querySelectorAll(\':scope > .mhurNewV582\')\n      ];\n    } catch (_error) {\n      return [...owner.children].filter(\n        child => child.classList?.contains(\'mhurNewV582\')\n      );\n    }\n  }\n\n  function isInsideDifferentOwner(node, owner) {\n    const marked = node.closest?.(\'[data-mhur-new-owner="1"]\');\n    return Boolean(marked && marked !== owner);\n  }\n\n  function cleanOwner(owner) {\n    if (!(owner instanceof Element)) return;\n\n    const canonical = directCanonical(owner);\n\n    if (!canonical.length) {\n      owner.removeAttribute(\'data-mhur-new-owner\');\n      return;\n    }\n\n    owner.dataset.mhurNewOwner = \'1\';\n\n    canonical.slice(1).forEach(node => node.remove());\n\n    owner.querySelectorAll(LEGACY_SELECTOR).forEach(node => {\n      if (node.classList?.contains(\'mhurNewV582\')) return;\n      if (isInsideDifferentOwner(node, owner)) return;\n\n      const parent = node.parentElement;\n      node.remove();\n\n      if (\n        parent &&\n        parent !== owner &&\n        parent.childElementCount === 0 &&\n        !String(parent.textContent || \'\').trim() &&\n        !parent.matches(\'picture,slot\')\n      ) {\n        parent.remove();\n      }\n    });\n  }\n\n  function flushOwners() {\n    ownerFrame = 0;\n\n    [...pendingOwners]\n      .sort((a, b) => depth(b) - depth(a))\n      .forEach(cleanOwner);\n\n    pendingOwners.clear();\n  }\n\n  function queueOwner(owner) {\n    if (!(owner instanceof Element)) return;\n\n    pendingOwners.add(owner);\n\n    if (!ownerFrame) {\n      ownerFrame = requestAnimationFrame(flushOwners);\n    }\n  }\n\n  function scanCanonical(scope = document) {\n    if (scope instanceof Element) {\n      if (scope.classList.contains(\'mhurNewV582\')) {\n        queueOwner(scope.parentElement);\n      }\n\n      if (scope.matches(OWNER_SELECTOR)) {\n        directCanonical(scope).forEach(() => queueOwner(scope));\n      }\n    }\n\n    scope.querySelectorAll?.(\'.mhurNewV582\').forEach(\n      badge => queueOwner(badge.parentElement)\n    );\n  }\n\n  function handleAddedNode(node) {\n    if (!(node instanceof Element)) return;\n\n    fixPatchByIds(node);\n    scanCanonical(node);\n\n    if (node.matches(LEGACY_SELECTOR)) {\n      const owner =\n        node.closest(\'[data-mhur-new-owner="1"]\') ||\n        node.closest(OWNER_SELECTOR);\n\n      if (owner?.querySelector(\':scope > .mhurNewV582\')) {\n        queueOwner(owner);\n      }\n    }\n\n    node.querySelectorAll?.(LEGACY_SELECTOR).forEach(legacy => {\n      const owner =\n        legacy.closest(\'[data-mhur-new-owner="1"]\') ||\n        legacy.closest(OWNER_SELECTOR);\n\n      if (owner?.querySelector(\':scope > .mhurNewV582\')) {\n        queueOwner(owner);\n      }\n    });\n  }\n\n  function tuneImages(scope = document) {\n    const images = scope.querySelectorAll\n      ? scope.querySelectorAll(\n          \'img:not([data-mhur-v671-image])\'\n        )\n      : [];\n\n    images.forEach((image, index) => {\n      image.dataset.mhurV671Image = \'1\';\n      image.decoding = \'async\';\n\n      if (image.closest(\'#mhurV671Splash\')) return;\n\n      const rect = image.getBoundingClientRect();\n      const visible =\n        rect.top < window.innerHeight * 1.45 &&\n        rect.bottom > -120;\n\n      if (!visible || index > 14) {\n        image.loading = \'lazy\';\n        image.fetchPriority = \'low\';\n      }\n    });\n  }\n\n  function statusFor(progress) {\n    if (progress < 24) return \'Initialisation de MHUR France…\';\n    if (progress < 44) return \'Synchronisation des personnages…\';\n    if (progress < 62) return \'Préparation des Alters et compétences…\';\n    if (progress < 79) return \'Chargement des costumes et T.U.N.I.N.G…\';\n    if (progress < 94) return \'Application des dernières données…\';\n    if (progress < 100) return \'Finalisation de l’interface…\';\n    return \'Prêt !\';\n  }\n\n  function setProgress(value) {\n    currentProgress = Math.max(\n      currentProgress,\n      Math.min(100, Math.round(value))\n    );\n\n    const fill = document.getElementById(\'mhurV671Fill\');\n    const percent = document.getElementById(\'mhurV671Percent\');\n    const status = document.getElementById(\'mhurV671Status\');\n\n    if (fill) fill.style.width = `${currentProgress}%`;\n    if (percent) percent.textContent = `${currentProgress}%`;\n    if (status) status.textContent = statusFor(currentProgress);\n  }\n\n  function beginProgress() {\n    setProgress(9);\n\n    progressTimer = window.setInterval(() => {\n      if (currentProgress >= 92) return;\n\n      const remaining = 92 - currentProgress;\n      const gain = Math.max(\n        1,\n        Math.ceil(remaining * (Math.random() * .11 + .045))\n      );\n\n      setProgress(currentProgress + gain);\n    }, 125);\n  }\n\n  function finishReveal() {\n    if (revealed) return;\n    revealed = true;\n\n    clearInterval(progressTimer);\n    scanCanonical(document);\n    tuneImages(document);\n    setProgress(100);\n\n    const elapsed = performance.now() - startedAt;\n    const wait = Math.max(230, 760 - elapsed);\n\n    setTimeout(() => {\n      requestAnimationFrame(() => {\n        requestAnimationFrame(() => {\n          root.classList.remove(\'mhur-v671-booting\');\n          root.classList.add(\'mhur-v671-ready\');\n          root.dataset.mhurBuild = BUILD;\n\n          const splash = document.getElementById(\n            \'mhurV671Splash\'\n          );\n\n          if (splash) {\n            splash.style.display = \'none\';\n            setTimeout(() => splash.remove(), 360);\n          }\n\n          window.dispatchEvent(\n            new CustomEvent(\'mhur:v671-ready\', {\n              detail: { build: BUILD }\n            })\n          );\n        });\n      });\n    }, wait);\n  }\n\n  function start() {\n    cleanupOldSplashArtifacts();\n    beginProgress();\n    fixPatchByIds(document);\n    scanCanonical(document);\n    tuneImages(document);\n\n    new MutationObserver(mutations => {\n      let patchChanged = false;\n\n      for (const mutation of mutations) {\n        mutation.addedNodes.forEach(handleAddedNode);\n        patchChanged = patchChanged ||\n          mutation.type === \'characterData\' ||\n          mutation.addedNodes.length > 0;\n      }\n\n      if (patchChanged) {\n        queueMicrotask(() => fixPatchByIds(document));\n      }\n    }).observe(document.documentElement, {\n      childList: true,\n      subtree: true,\n      characterData: true\n    });\n\n    setTimeout(() => {\n      fixPatchByIds(document);\n      scanCanonical(document);\n    }, 60);\n    setTimeout(() => {\n      fixPatchByIds(document);\n      scanCanonical(document);\n    }, 240);\n    setTimeout(() => {\n      fixPatchByIds(document);\n      scanCanonical(document);\n    }, 850);\n\n    finishReveal();\n  }\n\n  document.addEventListener(\n    \'click\',\n    () => {\n      setTimeout(() => {\n        fixPatchByIds(document);\n        scanCanonical(document);\n      }, 0);\n      setTimeout(() => {\n        fixPatchByIds(document);\n        scanCanonical(document);\n      }, 100);\n    },\n    true\n  );\n\n  window.addEventListener(\n    \'mhur:languagechange\',\n    () => {\n      fixPatchByIds(document);\n      scanCanonical(document);\n    }\n  );\n\n  if (document.readyState === \'loading\') {\n    document.addEventListener(\n      \'DOMContentLoaded\',\n      start,\n      { once: true }\n    );\n  } else {\n    start();\n  }\n\n  /* Le site ne reste jamais bloqué derrière le splash. */\n  setTimeout(finishReveal, 3800);\n\n  window.MHUR_V671 = {\n    build: BUILD,\n    refreshNew: () => scanCanonical(document),\n    fixPatchByIds: () => fixPatchByIds(document),\n    cleanOwner\n  };\n})();\n'.replace(
+              "__BUILD_JSON__",
+              json.dumps(build),
+          )
+          live_update = "(() => {\n  'use strict';\n\n  const CURRENT = __BUILD_JSON__;\n  const RELOAD_KEY = 'mhur-v671-reloaded-build';\n  let checking = false;\n\n  async function remoteBuild() {\n    const response = await fetch(\n      `/version.json?t=${Date.now()}`,\n      {\n        cache: 'no-store',\n        headers: { 'Cache-Control': 'no-cache' }\n      }\n    );\n\n    if (!response.ok) {\n      throw new Error(`version ${response.status}`);\n    }\n\n    const data = await response.json();\n    return String(data?.build || data?.version || '');\n  }\n\n  async function registerWorker() {\n    if (\n      !('serviceWorker' in navigator) ||\n      location.protocol !== 'https:'\n    ) {\n      return;\n    }\n\n    const registrations =\n      await navigator.serviceWorker.getRegistrations();\n\n    for (const registration of registrations) {\n      const script =\n        registration.active?.scriptURL ||\n        registration.waiting?.scriptURL ||\n        registration.installing?.scriptURL ||\n        '';\n\n      if (script && !script.includes('/service-worker.js')) {\n        await registration.unregister();\n      }\n    }\n\n    const registration = await navigator.serviceWorker.register(\n      `/service-worker.js?v=${encodeURIComponent(CURRENT)}`,\n      {\n        scope: '/',\n        updateViaCache: 'none'\n      }\n    );\n\n    await registration.update();\n    registration.waiting?.postMessage({ type: 'SKIP_WAITING' });\n  }\n\n  async function check() {\n    if (\n      checking ||\n      document.visibilityState === 'hidden' ||\n      !navigator.onLine\n    ) {\n      return;\n    }\n\n    checking = true;\n\n    try {\n      const remote = await remoteBuild();\n\n      if (!remote || remote === CURRENT) return;\n\n      await registerWorker();\n\n      if (sessionStorage.getItem(RELOAD_KEY) === remote) {\n        return;\n      }\n\n      sessionStorage.setItem(RELOAD_KEY, remote);\n      location.reload();\n    } catch (error) {\n      console.debug('MHUR update check:', error);\n    } finally {\n      checking = false;\n    }\n  }\n\n  addEventListener(\n    'load',\n    async () => {\n      try {\n        await registerWorker();\n      } catch (error) {\n        console.debug('MHUR service worker:', error);\n      }\n\n      check();\n      setInterval(check, 300000);\n    },\n    { once: true }\n  );\n\n  document.addEventListener('visibilitychange', () => {\n    if (document.visibilityState === 'visible') check();\n  });\n\n  addEventListener('online', check);\n})();\n".replace(
+              "__BUILD_JSON__",
+              json.dumps(build),
+          )
+          service_worker = "const RELEASE = __BUILD_JSON__;\nconst PREFIX = 'mhur-v671-';\nconst STATIC_CACHE = `${PREFIX}static-${RELEASE}`;\nconst OFFLINE_CACHE = `${PREFIX}offline-${RELEASE}`;\nconst OFFLINE_URL = '/index.html';\n\nself.addEventListener('message', event => {\n  if (event.data?.type === 'SKIP_WAITING') {\n    self.skipWaiting();\n  }\n});\n\nself.addEventListener('install', event => {\n  event.waitUntil(\n    (async () => {\n      const cache = await caches.open(OFFLINE_CACHE);\n\n      try {\n        const response = await fetch(OFFLINE_URL, {\n          cache: 'no-store'\n        });\n\n        if (response.ok) {\n          await cache.put(OFFLINE_URL, response);\n        }\n      } catch (_error) {}\n\n      await self.skipWaiting();\n    })()\n  );\n});\n\nself.addEventListener('activate', event => {\n  event.waitUntil(\n    (async () => {\n      const keys = await caches.keys();\n\n      await Promise.all(\n        keys\n          .filter(key => key !== STATIC_CACHE && key !== OFFLINE_CACHE)\n          .map(key => caches.delete(key))\n      );\n\n      await self.clients.claim();\n    })()\n  );\n});\n\nasync function networkFirst(request) {\n  try {\n    const response = await fetch(request, {\n      cache: 'no-cache'\n    });\n\n    if (response.ok) {\n      const cache = await caches.open(STATIC_CACHE);\n      await cache.put(request, response.clone());\n    }\n\n    return response;\n  } catch (error) {\n    const cached = await caches.match(request);\n    if (cached) return cached;\n    throw error;\n  }\n}\n\nasync function cacheFirst(request) {\n  const cached = await caches.match(request);\n  if (cached) return cached;\n\n  const response = await fetch(request);\n\n  if (response.ok) {\n    const cache = await caches.open(STATIC_CACHE);\n    await cache.put(request, response.clone());\n  }\n\n  return response;\n}\n\nself.addEventListener('fetch', event => {\n  const request = event.request;\n\n  if (request.method !== 'GET') return;\n\n  const url = new URL(request.url);\n\n  if (url.origin !== self.location.origin) return;\n\n  if (request.mode === 'navigate') {\n    event.respondWith(\n      (async () => {\n        try {\n          const response = await fetch(request, {\n            cache: 'no-store'\n          });\n\n          if (response.ok) {\n            const cache = await caches.open(OFFLINE_CACHE);\n            await cache.put(OFFLINE_URL, response.clone());\n          }\n\n          return response;\n        } catch (_error) {\n          return (\n            (await caches.match(OFFLINE_URL)) ||\n            new Response('Connexion indisponible.', {\n              status: 503,\n              headers: {\n                'Content-Type': 'text/plain; charset=utf-8'\n              }\n            })\n          );\n        }\n      })()\n    );\n    return;\n  }\n\n  if (\n    request.destination === 'script' ||\n    request.destination === 'style' ||\n    url.pathname.startsWith('/data/') ||\n    url.pathname === '/version.json' ||\n    url.pathname === '/service-worker.js'\n  ) {\n    event.respondWith(networkFirst(request));\n    return;\n  }\n\n  if (\n    request.destination === 'image' ||\n    request.destination === 'font' ||\n    url.pathname.startsWith('/assets/')\n  ) {\n    event.respondWith(cacheFirst(request));\n  }\n});\n".replace(
+              "__BUILD_JSON__",
+              json.dumps(build),
+          )
+          headers = '/*\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: strict-origin-when-cross-origin\n\n/\n  Cache-Control: no-store, no-cache, must-revalidate, max-age=0\n  Pragma: no-cache\n  Expires: 0\n\n/index.html\n  Cache-Control: no-store, no-cache, must-revalidate, max-age=0\n  Pragma: no-cache\n  Expires: 0\n\n/version.json\n  Cache-Control: no-store, no-cache, must-revalidate, max-age=0\n\n/service-worker.js\n  Cache-Control: no-store, no-cache, must-revalidate, max-age=0\n  Service-Worker-Allowed: /\n  Content-Type: application/javascript; charset=utf-8\n\n/css/*\n  Cache-Control: public, max-age=31536000, immutable\n\n/js/*\n  Cache-Control: public, max-age=31536000, immutable\n\n/data/*\n  Cache-Control: public, max-age=31536000, immutable\n\n/assets/*\n  Cache-Control: public, max-age=2592000, stale-while-revalidate=604800\n'
+
+          UI_CSS.parent.mkdir(
+              parents=True,
+              exist_ok=True,
+          )
+
+          UI_CSS.write_text(
+              ui_css.rstrip() + "\n",
+              encoding="utf-8",
+          )
+          UI_JS.write_text(
+              ui_js.rstrip() + "\n",
+              encoding="utf-8",
+          )
+          LIVE_UPDATE.write_text(
+              live_update.rstrip() + "\n",
+              encoding="utf-8",
+          )
+          SERVICE_WORKER.write_text(
+              service_worker.rstrip() + "\n",
+              encoding="utf-8",
+          )
+          HEADERS.write_text(
+              headers.rstrip() + "\n",
+              encoding="utf-8",
+          )
+          VERSION_JSON.write_text(
+              json.dumps(
+                  {
+                      "version": build,
+                      "build": build,
+                      "updatedAt": updated_at,
+                      "name": f"MHUR France {build}",
+                  },
+                  ensure_ascii=False,
+                  indent=2,
+              ) + "\n",
+              encoding="utf-8",
+          )
+
+          for obsolete in (
+              PUBLIC / "css" / "v661-performance.css",
+              PUBLIC / "css" / "v662-performance.css",
+              PUBLIC / "css" / "v663-ui-final.css",
+              PUBLIC / "css" / "v664-ui-final.css",
+              PUBLIC / "css" / "v665-ui-final.css",
+              PUBLIC / "css" / "v666-ui-final.css",
+              PUBLIC / "css" / "v667-ui-final.css",
+              PUBLIC / "css" / "v668-ui-final.css",
+              PUBLIC / "css" / "v669-ui-final.css",
+              PUBLIC / "css" / "v670-ui-final.css",
+              PUBLIC / "js" / "v661-performance.js",
+              PUBLIC / "js" / "v662-performance.js",
+              PUBLIC / "js" / "v663-ui-final.js",
+              PUBLIC / "js" / "v664-ui-final.js",
+              PUBLIC / "js" / "v665-ui-final.js",
+              PUBLIC / "js" / "v666-ui-final.js",
+              PUBLIC / "js" / "v667-ui-final.js",
+              PUBLIC / "js" / "v668-ui-final.js",
+              PUBLIC / "js" / "v669-ui-final.js",
+              PUBLIC / "js" / "v670-ui-final.js",
+          ):
+              if obsolete.exists():
+                  obsolete.unlink()
+
+          def remove_balanced_div(html: str, element_id: str) -> str:
+              start_match = re.search(
+                  r'<div\b[^>]*\bid=["\']'
+                  + re.escape(element_id)
+                  + r'["\'][^>]*>',
+                  html,
+                  flags=re.IGNORECASE,
+              )
+
+              if not start_match:
+                  return html
+
+              token_pattern = re.compile(
+                  r"<div\b[^>]*>|</div\s*>",
+                  flags=re.IGNORECASE,
+              )
+
+              depth = 0
+
+              for token in token_pattern.finditer(
+                  html,
+                  start_match.start(),
+              ):
+                  if token.group(0).lower().startswith("<div"):
+                      depth += 1
+                  else:
+                      depth -= 1
+
+                      if depth == 0:
+                          return (
+                              html[:start_match.start()]
+                              + "\n"
+                              + html[token.end():]
+                          )
+
+              raise SystemExit(
+                  f"[ERREUR] Splash {element_id} incomplet."
+              )
+
+          index = INDEX.read_text(encoding="utf-8")
+
+          for splash_id in (
+              "mhurV661Splash",
+              "mhurV662Splash",
+              "mhurV663Splash",
+              "mhurV664Splash",
+              "mhurV665Splash",
+              "mhurV666Splash",
+              "mhurV667Splash",
+              "mhurV671Splash",
+          ):
+              index = remove_balanced_div(index, splash_id)
+
+          index = re.sub(
+              r"\s*<(?:figure|div)\b[^>]*"
+              r"class=[\"'][^\"']*mhurV66[1-7]Hero[^\"']*[\"']"
+              r"[^>]*>.*?</(?:figure|div)>\s*",
+              "\n",
+              index,
+              flags=re.IGNORECASE | re.DOTALL,
+          )
+
+          index = re.sub(
+              r"\s*<img\b[^>]*"
+              r"id=[\"']mhurV66[1-7](?:Left|Right|Mini)HeroImage[\"']"
+              r"[^>]*>\s*",
+              "\n",
+              index,
+              flags=re.IGNORECASE,
+          )
+
+          index = re.sub(
+              r"\s*<link\b[^>]*rel=[\"']preload[\"'][^>]*"
+              r"(?:gentle_s18_banner|twice_s18_banner|tsuyu_profile(?:_nobg)?)"
+              r"[^>]*>\s*",
+              "\n",
+              index,
+              flags=re.IGNORECASE,
+          )
+
+          index = re.sub(
+              r"\s*<!-- MHUR V66[1-8] BOOT START -->.*?"
+              r"<!-- MHUR V66[1-8] BOOT END -->\s*",
+              "\n",
+              index,
+              flags=re.DOTALL,
+          )
+
+          index = re.sub(
+              r"\s*<(?:link|script)\b[^>]*"
+              r"(?:v66[1-8]-(?:performance|ui-final)\.(?:css|js))"
+              r"[^>]*(?:>\s*</script>|>)\s*",
+              "\n",
+              index,
+              flags=re.IGNORECASE,
+          )
+
+          boot_block = f"""
+          <!-- MHUR V671 BOOT START -->
+          <script>
+          window.__MHUR_V671_STARTED_AT=performance.now();
+          document.documentElement.classList.add('mhur-v671-booting');
+          setTimeout(function(){{
+            var splash=document.getElementById('mhurV671Splash');
+            if(splash)splash.style.display='none';
+            document.documentElement.classList.remove('mhur-v671-booting');
+          }},4200);
+          </script>
+          <style id="mhur-v671-critical">
+          html.mhur-v671-booting{{
+            overflow:hidden!important;
+            background:#02060e!important;
+          }}
+          html.mhur-v671-booting body{{
+            overflow:hidden!important;
+            background:#02060e!important;
+          }}
+          html.mhur-v671-booting #mhurV671Splash{{
+            display:block!important;
+            visibility:visible!important;
+          }}
+          html.mhur-v671-booting body>:not(#mhurV671Splash){{
+            visibility:hidden!important;
+          }}
+          #mhurV671Splash{{
+            position:fixed;
+            inset:0;
+            z-index:2147483647;
+            display:none!important;
+            background:#02060e;
+          }}
+          html.mhur-v671-booting #mhurV671Splash{{
+            display:block!important;
+          }}
+          </style>
+          <link
+            rel="preload"
+            as="image"
+            href="/assets/brand/mhur-france-icon.png"
+            fetchpriority="high"
+          >
+          <link
+            rel="preload"
+            as="image"
+            href="/assets/home/season18/gentle_s18_banner.webp"
+          >
+          <link
+            rel="preload"
+            as="image"
+            href="/assets/home/season18/twice_s18_banner.webp"
+          >
+          <link
+            rel="preload"
+            as="image"
+            href="/assets/home/season18/tsuyu_profile_nobg.png"
+          >
+          <!-- MHUR V671 BOOT END -->
+          """.strip()
+
+          head = re.search(
+              r"<head\b[^>]*>",
+              index,
+              flags=re.IGNORECASE,
+          )
+
+          if not head:
+              raise SystemExit(
+                  "[ERREUR] Balise <head> introuvable."
+              )
+
+          index = (
+              index[:head.end()]
+              + "\n"
+              + boot_block
+              + "\n"
+              + index[head.end():]
+          )
+
+          head_end = re.search(
+              r"</head\s*>",
+              index,
+              flags=re.IGNORECASE,
+          )
+
+          if not head_end:
+              raise SystemExit(
+                  "[ERREUR] Balise </head> introuvable."
+              )
+
+          css_tag = (
+              f'<link rel="stylesheet" '
+              f'href="/css/v671-ui-final.css?v={build}">'
+          )
+
+          index = (
+              index[:head_end.start()]
+              + css_tag
+              + "\n"
+              + index[head_end.start():]
+          )
+
+          body = re.search(
+              r"<body\b[^>]*>",
+              index,
+              flags=re.IGNORECASE,
+          )
+
+          if not body:
+              raise SystemExit(
+                  "[ERREUR] Balise <body> introuvable."
+              )
+
+          splash = f"""
+          <div id="mhurV671Splash" role="status" aria-live="polite" style="display:none">
+            <div class="mhurV671Aurora" aria-hidden="true"></div>
+            <div class="mhurV671Beam one" aria-hidden="true"></div>
+            <div class="mhurV671Beam two" aria-hidden="true"></div>
+
+            <div class="mhurV671Hero left" aria-hidden="true"></div>
+
+            <div class="mhurV671Hero right" aria-hidden="true"></div>
+
+            <div class="mhurV671Hero mini" aria-hidden="true"></div>
+
+            <main class="mhurV671Stage">
+              <section class="mhurV671Panel">
+                <i class="mhurV671Corner tl" aria-hidden="true"></i>
+                <i class="mhurV671Corner tr" aria-hidden="true"></i>
+                <i class="mhurV671Corner bl" aria-hidden="true"></i>
+                <i class="mhurV671Corner br" aria-hidden="true"></i>
+
+                <div class="mhurV671Topline">
+                  <span class="mhurV671Live">Serveurs en ligne</span>
+                  <span class="mhurV671Season">Saison 18</span>
+                </div>
+
+                <div class="mhurV671LogoOrbit">
+                  <div class="mhurV671Logo">
+                    <img
+                      src="/assets/brand/mhur-france-icon.png"
+                      alt=""
+                      width="92"
+                      height="92"
+                    >
+                  </div>
+                </div>
+
+                <p class="mhurV671Kicker">Communauté française officielle</p>
+
+                <h1 class="mhurV671Title">
+                  MHUR <span>FRANCE</span>
+                </h1>
+
+                <p class="mhurV671Subtitle">
+                  Le Nexus français de My Hero Ultra Rumble se prépare.
+                </p>
+
+                <div class="mhurV671LoadingBox">
+                  <div class="mhurV671StatusRow">
+                    <span id="mhurV671Status">
+                      Initialisation de MHUR France…
+                    </span>
+                    <strong id="mhurV671Percent">7%</strong>
+                  </div>
+
+                  <div class="mhurV671Track" aria-hidden="true">
+                    <div id="mhurV671Fill"></div>
+                  </div>
+                </div>
+
+                <div class="mhurV671Chips" aria-hidden="true">
+                  <span>Personnages</span>
+                  <span>Alters</span>
+                  <span>Patch Notes</span>
+                  <span>Costumes</span>
+                </div>
+
+                <p class="mhurV671Build">BUILD {build}</p>
+              </section>
+            </main>
+          </div>
+          """.strip()
+
+          index = (
+              index[:body.end()]
+              + "\n"
+              + splash
+              + "\n"
+              + index[body.end():]
+          )
+
+          index = re.sub(
+              r"\s*<script\b[^>]*\bsrc\s*=\s*[\"']"
+              r"(?:/)?js/v671-ui-final\.js"
+              r"(?:\?[^\"']*)?[\"'][^>]*>\s*</script>\s*",
+              "\n",
+              index,
+              flags=re.IGNORECASE,
+          )
+
+          asset_pattern = re.compile(
+              r'(?P<prefix>\b(?:src|href)\s*=\s*["\'])'
+              r'(?P<path>(?:/)?(?:css|js|data)/[^"\'?#]+)'
+              r'(?:\?[^"\']*)?'
+              r'(?P<suffix>["\'])',
+              flags=re.IGNORECASE,
+          )
+
+          index = asset_pattern.sub(
+              lambda match: (
+                  f'{match.group("prefix")}/'
+                  f'{match.group("path").lstrip("/")}'
+                  f'?v={build}'
+                  f'{match.group("suffix")}'
+              ),
+              index,
+          )
+
+          body_ends = list(
+              re.finditer(
+                  r"</body\s*>",
+                  index,
+                  flags=re.IGNORECASE,
+              )
+          )
+
+          if not body_ends:
+              raise SystemExit(
+                  "[ERREUR] Balise </body> introuvable."
+              )
+
+          body_end = body_ends[-1]
+
+          index = (
+              index[:body_end.start()]
+              + f'<script src="/js/v671-ui-final.js?v={build}"></script>\n'
+              + index[body_end.start():]
+          )
+
+          INDEX.write_text(
+              index,
+              encoding="utf-8",
+          )
+
+          # ----------------------------------------------------------------------
+          # Validations.
+          # ----------------------------------------------------------------------
+
+          saved = json.loads(
+              HOME_JSON.read_text(encoding="utf-8")
+          )
+
+          saved_patch = next(
+              item
+              for item in saved["patch_notes"]
+              if str(item.get("id")) == PATCH_ID
+          )
+
+          saved_changes = [
+              change
+              for section in saved_patch.get("details", [])
+              for change in section.get("changes", [])
+              if isinstance(change, dict)
+          ]
+
+          armored = [
+              change
+              for change in saved_changes
+              if (
+                  clean(change.get("character_id"))
+                  == "armored_all_might"
+                  and clean(change.get("style_id"))
+                  == "armored_all_might_technical"
+                  and clean(change.get("skill_id"))
+                  == "armored_all_might_alpha_burn"
+                  and clean(
+                      (
+                          change.get("display_skill_name")
+                          or {}
+                      ).get("en")
+                  )
+                  == "α - Ice Bullet Shot (Burn)"
+                  and metric(change.get("label"))
+                  in {"damage", "guard"}
+              )
+          ]
+
+          if len(armored) != 2:
+              raise SystemExit(
+                  "[ERREUR] Armored All Might reste incorrect."
+              )
+
+          if any(
+              "texas smash" in norm(
+                  (
+                      change.get("display_skill_name")
+                      or {}
+                  ).get("en")
+              )
+              for change in saved_changes
+              if clean(change.get("character_id"))
+              == "armored_all_might"
+          ):
+              raise SystemExit(
+                  "[ERREUR] Texas Smash apparaît encore "
+                  "chez Armored All Might."
+              )
+
+          final_index = INDEX.read_text(encoding="utf-8")
+          css_text = UI_CSS.read_text(encoding="utf-8")
+          js_text = UI_JS.read_text(encoding="utf-8")
+
+          if final_index.count(
+              'id="mhurV671Splash"'
+          ) != 1:
+              raise SystemExit(
+                  "[ERREUR] Splash V671 absent ou dupliqué."
+              )
+
+          if "tsuyu_profile_nobg.png" not in css_text:
+              raise SystemExit(
+                  "[ERREUR] La bonne image détourée de Tsuyu "
+                  "n'est pas utilisée."
+              )
+
+          if re.search(
+              r'<(?:figure|img)\b[^>]*mhurV671Hero',
+              final_index,
+              flags=re.IGNORECASE,
+          ):
+              raise SystemExit(
+                  "[ERREUR] Une illustration du splash est encore "
+                  "une balise image visible."
+              )
+
+          if 'style="display:none"' not in final_index:
+              raise SystemExit(
+                  "[ERREUR] Protection du splash sans CSS absente."
+              )
+
+          relative_assets = re.findall(
+              r'(?:src|href)=["\']'
+              r'((?:css|js|data)/[^"\']+)'
+              r'["\']',
+              final_index,
+              flags=re.IGNORECASE,
+          )
+
+          if relative_assets:
+              raise SystemExit(
+                  "[ERREUR] Ressources relatives encore présentes : "
+                  + ", ".join(relative_assets[:10])
+              )
+
+          if final_index.count(
+              "js/v671-ui-final.js"
+          ) != 1:
+              raise SystemExit(
+                  "[ERREUR] JS V671 absent ou dupliqué."
+              )
+
+          if final_index.count(
+              "css/v671-ui-final.css"
+          ) != 1:
+              raise SystemExit(
+                  "[ERREUR] CSS V671 absent ou dupliqué."
+              )
+
+          unversioned = re.findall(
+              r'(?:src|href)=["\']'
+              r'((?:/)?(?:css|js|data)/[^"\'?#]+)'
+              r'["\']',
+              final_index,
+              flags=re.IGNORECASE,
+          )
+
+          if unversioned:
+              raise SystemExit(
+                  "[ERREUR] Ressources sans build : "
+                  + ", ".join(unversioned[:10])
+              )
+
+          for script in (
+              RENDERER,
+              UI_JS,
+              LIVE_UPDATE,
+              SERVICE_WORKER,
+          ):
+              subprocess.run(
+                  ["node", "--check", str(script)],
+                  check=True,
+              )
+
+          required_new_targets = (
+              ".card[data-char]",
+              ".styleCard[data-style]",
+              ".costumeTile",
+              ".costumeCard",
+              ".costumeResult",
+          )
+
+          for target in required_new_targets:
+              if target not in css_text and target not in js_text:
+                  raise SystemExit(
+                      "[ERREUR] Type de carte NEW non traité : "
+                      + target
+                  )
+
+          if "data-mhur-new-owner" not in css_text:
+              raise SystemExit(
+                  "[ERREUR] Nettoyage global NEW absent."
+              )
+
+          required_patch_id_rules = (
+              "function patchIdentity(change,group)",
+              "change?.character_id",
+              "armored_all_might_alpha_burn",
+              "data-v608-character-id",
+              "data-v608-skill-id",
+          )
+
+          renderer_text = RENDERER.read_text(encoding="utf-8")
+
+          for rule in required_patch_id_rules:
+              if rule not in renderer_text:
+                  raise SystemExit(
+                      "[ERREUR] Règle ID du Patch Notes absente : "
+                      + rule
+                  )
+
+          if "function fixPatchByIds" not in js_text:
+              raise SystemExit(
+                  "[ERREUR] Garde DOM ID Armored All Might absente."
+              )
+
+          new_badge_block = css_text.split(
+              ".mhurNewV582::before,",
+              1,
+          )[-1].split(
+              "/* Personnages + Alters/styles. */",
+              1,
+          )[0]
+
+          required_no_shine = (
+              ".mhurNewV582::after {",
+              "content: none !important;",
+              "display: none !important;",
+              "animation: none !important;",
+              "background: none !important;",
+          )
+
+          for rule in required_no_shine:
+              if rule not in new_badge_block:
+                  raise SystemExit(
+                      "[ERREUR] Protection anti-barre blanche absente : "
+                      + rule
+                  )
+
+          if "@keyframes mhurV671NewShine" in css_text:
+              raise SystemExit(
+                  "[ERREUR] L'animation blanche NEW existe encore."
+              )
+
+          print(f"[OK] Master V671 : {build}")
+          print("[OK] CSS et JS chargés avant toutes les validations.")
+          print("[OK] Splash cinématique installé.")
+          print("[OK] Tsuyu utilise tsuyu_profile_nobg.png.")
+          print("[OK] Aucune bannière du splash ne fuit dans l’accueil.")
+          print("[OK] URLs CSS/JS/data absolues sur toutes les routes.")
+          print("[OK] Progression et statuts dynamiques.")
+          print("[OK] NEW unique sur personnages, Alters et costumes.")
+          print("[OK] Anciens NEW fixes supprimés derrière V582.")
+          print("[OK] Barre blanche horizontale du NEW supprimée.")
+          print("[OK] Correctifs Patch Notes conservés.")
+          print("[OK] Armored All Might résolu par character_id/style_id/skill_id.")
+          print("[OK] Texas Smash ne peut plus remplacer son alpha.")
+          print("[OK] Dégâts multiples des Alters séparés correctement.")
+          print("[OK] Cache atomique et service worker actualisés.")
+          PY
+
+      - name: Tester les dégâts multiples des Alters
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          node <<'NODE'
+          const fs=require('fs');
+
+          const html=fs.readFileSync(
+            'public/index.html',
+            'utf8'
+          );
+
+          const jsonMatch=html.match(
+            /<script id="ultrarumble-exact-data"[^>]*>([\s\S]*?)<\/script>/
+          );
+
+          if(!jsonMatch){
+            throw new Error(
+              'Données exactes UltraRumble introuvables.'
+            );
+          }
+
+          const exact=JSON.parse(jsonMatch[1]);
+          const fullBullet=
+            exact.exact_by_style?.fullbullet;
+
+          if(!fullBullet){
+            throw new Error(
+              'Style Midoriya Full Bullet introuvable.'
+            );
+          }
+
+          const statsStart=html.indexOf(
+            '<script id="v253-robust-stats-patch">'
+          );
+          const statsEnd=html.indexOf(
+            '</script>',
+            statsStart
+          );
+
+          if(statsStart<0||statsEnd<0){
+            throw new Error(
+              'Script V253 introuvable.'
+            );
+          }
+
+          const stats=html.slice(
+            statsStart,
+            statsEnd
+          );
+
+          const functionsStart=stats.indexOf(
+            '  function norm(s){'
+          );
+          const functionsEnd=stats.indexOf(
+            '\n  function pvFromStats(stats){',
+            functionsStart
+          );
+
+          if(functionsStart<0||functionsEnd<0){
+            throw new Error(
+              'Fonctions V671 non extractibles.'
+            );
+          }
+
+          eval(stats.slice(
+            functionsStart,
+            functionsEnd
+          ));
+
+          const levels=()=>Array.from(
+            {length:9},
+            (_,index)=>[`Lv.${index+1}`,'0']
+          );
+
+          const alphaBase={
+            title:'Valeurs de base α',
+            cols:[
+              'Niveau',
+              'Dégâts',
+              'Munitions',
+              'Consommation',
+              'Recharge'
+            ],
+            rows:Array.from(
+              {length:9},
+              (_,index)=>[
+                `Lv.${index+1}`,
+                '0',
+                'x0',
+                'x0',
+                '0s'
+              ]
+            )
+          };
+
+          const alphaAim={
+            title:'Valeurs mode visée α',
+            cols:['Niveau','Dégâts'],
+            rows:levels()
+          };
+
+          patchLocalTable(
+            alphaBase,
+            fullBullet.skills['α']
+          );
+          patchLocalTable(
+            alphaAim,
+            fullBullet.skills['α']
+          );
+
+          if(
+            alphaBase.rows[0][1]!=='14'||
+            alphaBase.rows[8][1]!=='22'
+          ){
+            throw new Error(
+              'Alpha de base Full Bullet incorrect.'
+            );
+          }
+
+          if(
+            alphaAim.rows[0][1]!=='62'||
+            alphaAim.rows[8][1]!=='78'
+          ){
+            throw new Error(
+              'Mode visée Full Bullet incorrect ou dupliqué.'
+            );
+          }
+
+          const betaGroups=remoteAdditionalGroups(
+            fullBullet.skills['β']
+          );
+
+          const shortGroup=pickAdditionalGroup(
+            betaGroups,
+            'Distance courte β'
+          );
+          const mediumGroup=pickAdditionalGroup(
+            betaGroups,
+            'Distance moyenne β'
+          );
+          const largeGroup=pickAdditionalGroup(
+            betaGroups,
+            'Distance longue β'
+          );
+
+          if(shortGroup?.canonical!=='small'){
+            throw new Error(
+              'Distance courte non associée à Small.'
+            );
+          }
+
+          if(mediumGroup?.canonical!=='medium'){
+            throw new Error(
+              'Distance moyenne non associée à Medium.'
+            );
+          }
+
+          if(largeGroup?.canonical!=='large'){
+            throw new Error(
+              'Distance longue non associée à Large.'
+            );
+          }
+
+          if(
+            shortGroup.rows['Lv.1']?.damage!=='60'||
+            shortGroup.rows['Lv.2']?.damage!=='65'
+          ){
+            throw new Error(
+              'Cycle Small incomplet : la Lv.1 est perdue.'
+            );
+          }
+
+          const shortTable={
+            title:'Distance courte β',
+            cols:['Niveau','Dégâts'],
+            rows:levels()
+          };
+          const mediumTable={
+            title:'Distance moyenne β',
+            cols:['Niveau','Dégâts'],
+            rows:levels()
+          };
+          const largeTable={
+            title:'Distance longue β',
+            cols:['Niveau','Dégâts'],
+            rows:levels()
+          };
+
+          patchLocalTable(
+            shortTable,
+            fullBullet.skills['β']
+          );
+          patchLocalTable(
+            mediumTable,
+            fullBullet.skills['β']
+          );
+          patchLocalTable(
+            largeTable,
+            fullBullet.skills['β']
+          );
+
+          if(
+            shortTable.rows[0][1]!=='60'||
+            mediumTable.rows[0][1]!=='140'||
+            largeTable.rows[0][1]!=='140'
+          ){
+            throw new Error(
+              'Les trois distances de Manchester Smash sont mal séparées.'
+            );
+          }
+
+          console.log(
+            '[OK] Full Bullet α : base 14 et visée 62.'
+          );
+          console.log(
+            '[OK] Manchester Smash : Small / Medium / Large séparés.'
+          );
+          console.log(
+            '[OK] Les dégâts multiples ne réutilisent plus la première série.'
+          );
+          NODE
+
+      - name: Publier Master V671
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          # Stage tous les fichiers créés, modifiés ou supprimés.
+          # Contrairement à une liste de chemins, ceci ne plante pas
+          # lorsqu'un ancien fichier V661/V662 a déjà disparu.
+          git add -A -- .github/workflows public
+
+          if git diff --cached --quiet; then
+            echo "[OK] Master V671 est déjà appliqué."
+            exit 0
+          fi
+
+          git commit -m             "fix: master V671 dégâts multiples, splash et NEW global"
+
+          for tentative in 1 2 3 4 5; do
+            if git pull --rebase origin main &&
+               git push origin HEAD:main; then
+              echo "[OK] Master V671 publié sur main."
+              exit 0
+            fi
+
+            echo "[ATTENTE] Nouvelle tentative..."
+            sleep $((tentative * 4))
+          done
+
+          echo "[ERREUR] Publication impossible."
+          exit 1
