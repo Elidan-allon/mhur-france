@@ -1,0 +1,910 @@
+name: MHUR - Master V662
+
+on:
+  workflow_dispatch:
+  workflow_run:
+    workflows:
+      - "MHUR - Synchronisation UltraRumble"
+    types:
+      - completed
+
+permissions:
+  actions: write
+  contents: write
+
+concurrency:
+  group: mhur-master-v662
+  cancel-in-progress: true
+
+jobs:
+  nettoyer-et-corriger:
+    if: >-
+      github.event_name != 'workflow_run' ||
+      github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Annuler les anciens workflows
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          KEEP_SYNC=".github/workflows/mhur-sync-ultrarumble.yml"
+          KEEP_MASTER=".github/workflows/mhur-master-v662.yml"
+
+          mapfile -t KEEP_IDS < <(
+            gh api --paginate               "repos/${GITHUB_REPOSITORY}/actions/workflows?per_page=100"               --jq ".workflows[] |
+                select(
+                  .path == \"$KEEP_SYNC\" or
+                  .path == \"$KEEP_MASTER\"
+                ) |
+                .id"
+          )
+
+          is_kept() {
+            local wanted="$1"
+            local current
+
+            for current in "${KEEP_IDS[@]:-}"; do
+              if [[ "$current" == "$wanted" ]]; then
+                return 0
+              fi
+            done
+
+            return 1
+          }
+
+          for status in queued in_progress; do
+            while IFS=$'\t' read -r run_id workflow_id run_name; do
+              [[ -z "${run_id:-}" ]] && continue
+              [[ "$run_id" == "$GITHUB_RUN_ID" ]] && continue
+
+              if is_kept "$workflow_id"; then
+                echo "[GARDÉ] $run_name — $run_id"
+                continue
+              fi
+
+              echo "[ANNULATION] $run_name — $run_id"
+              gh api                 --method POST                 "repos/${GITHUB_REPOSITORY}/actions/runs/$run_id/cancel"                 >/dev/null 2>&1 || true
+            done < <(
+              gh api --paginate                 "repos/${GITHUB_REPOSITORY}/actions/runs?status=$status&per_page=100"                 --jq '.workflow_runs[] |
+                  [.id, .workflow_id, .name] |
+                  @tsv'
+            )
+          done
+
+      - name: Récupérer main
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Supprimer les anciens fichiers workflows
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          find .github/workflows             -maxdepth 1             -type f             \( -name "*.yml" -o -name "*.yaml" \)             ! -name "mhur-sync-ultrarumble.yml"             ! -name "mhur-master-v662.yml"             -print             -delete
+
+          echo "[OK] Workflows conservés :"
+          echo " - mhur-sync-ultrarumble.yml"
+          echo " - mhur-master-v662.yml"
+
+      - name: Installer Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Corriger Patch Notes, cache et fluidité
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          python - <<'PY'
+          from __future__ import annotations
+
+          import hashlib
+          import json
+          import re
+          import subprocess
+          import unicodedata
+          from datetime import datetime, timezone
+          from pathlib import Path
+
+          PATCH_ID = "1785298405"
+
+          PUBLIC = Path("public")
+          INDEX = PUBLIC / "index.html"
+          HOME_JSON = PUBLIC / "data" / "home_data.json"
+          HOME_JS = PUBLIC / "data" / "home_data.js"
+          RENDERER = PUBLIC / "js" / "v608-patch-notes-final.js"
+          PERF_CSS = PUBLIC / "css" / "v662-performance.css"
+          PERF_JS = PUBLIC / "js" / "v662-performance.js"
+          LIVE_UPDATE = PUBLIC / "js" / "v36-live-site-update.js"
+          SERVICE_WORKER = PUBLIC / "service-worker.js"
+          HEADERS = PUBLIC / "_headers"
+          VERSION_JSON = PUBLIC / "version.json"
+
+          for required in (INDEX, HOME_JSON, RENDERER):
+              if not required.is_file():
+                  raise SystemExit(
+                      f"[ERREUR] Fichier introuvable : {required}"
+                  )
+
+          def clean(value: object) -> str:
+              if isinstance(value, dict):
+                  return str(
+                      value.get("en")
+                      or value.get("fr")
+                      or next(iter(value.values()), "")
+                  ).strip()
+              return str(value or "").strip()
+
+          def norm(value: object) -> str:
+              text = unicodedata.normalize(
+                  "NFD",
+                  clean(value).lower(),
+              )
+              text = "".join(
+                  char
+                  for char in text
+                  if unicodedata.category(char) != "Mn"
+              )
+              return re.sub(r"[^a-z0-9]+", " ", text).strip()
+
+          def metric(value: object) -> str:
+              label = norm(value)
+
+              if label.startswith(("damage", "degats")):
+                  return "damage"
+
+              if label.startswith(("guard break", "brise garde")):
+                  return "guard"
+
+              return ""
+
+          def infer_symbol(change: dict) -> str:
+              name = clean(change.get("skill_name"))
+
+              match = re.match(
+                  r"^\s*(α|β|γ|alpha|beta|gamma|a|b|g|y)"
+                  r"(?:\s*[-–—:]\s*|\s+)",
+                  name,
+                  flags=re.IGNORECASE,
+              )
+
+              if match:
+                  return {
+                      "α": "α",
+                      "alpha": "α",
+                      "a": "α",
+                      "β": "β",
+                      "beta": "β",
+                      "b": "β",
+                      "γ": "γ",
+                      "gamma": "γ",
+                      "g": "γ",
+                      "y": "γ",
+                  }.get(match.group(1).lower(), "")
+
+              image = clean(change.get("skill_image")).lower()
+
+              if re.search(r"(?:unique1|alpha)", image):
+                  return "α"
+
+              if re.search(r"(?:unique2|beta)", image):
+                  return "β"
+
+              if re.search(r"(?:unique3|gamma)", image):
+                  return "γ"
+
+              return ""
+
+          def strip_symbol(name: str) -> str:
+              return re.sub(
+                  r"^\s*(?:α|β|γ|alpha|beta|gamma|a|b|g|y)"
+                  r"(?:\s*[-–—:]\s*|\s+)",
+                  "",
+                  name,
+                  count=1,
+                  flags=re.IGNORECASE,
+              ).strip()
+
+          DETAIL_FR = {
+              "normal": "Normal",
+              "explosion": "Explosion",
+              "explosionfollow up": "Explosion renforcée",
+              "explosion follow up": "Explosion renforcée",
+              "burn": "Brûlure",
+              "homing": "À tête chercheuse",
+              "melee": "Corps à corps",
+              "shot": "Tir",
+              "shooting": "Tir",
+          }
+
+          def exact_display_name(change: dict) -> dict:
+              """
+              Le détail n'est conservé que s'il existe déjà entre
+              parenthèses dans le nom provenant d'UltraRumble.
+              """
+              source = clean(
+                  change.get("source_skill_name")
+                  or change.get("skill_name")
+              )
+
+              symbol = infer_symbol(change)
+              body = strip_symbol(source)
+
+              detail_match = re.search(r"\s*\(([^()]*)\)\s*$", body)
+
+              if detail_match:
+                  detail_en = detail_match.group(1).strip()
+                  base = body[:detail_match.start()].strip()
+                  detail_fr = DETAIL_FR.get(norm(detail_en), detail_en)
+                  en_body = f"{base} ({detail_en})"
+                  fr_body = f"{base} ({detail_fr})"
+              else:
+                  base = body.strip()
+                  en_body = base
+                  fr_body = base
+
+              if symbol:
+                  return {
+                      "fr": f"{symbol} - {fr_body}",
+                      "en": f"{symbol} - {en_body}",
+                  }
+
+              return {
+                  "fr": fr_body,
+                  "en": en_body,
+              }
+
+          data = json.loads(
+              HOME_JSON.read_text(encoding="utf-8")
+          )
+
+          patch = next(
+              (
+                  item
+                  for item in data.get("patch_notes", [])
+                  if str(item.get("id")) == PATCH_ID
+              ),
+              None,
+          )
+
+          if patch is None:
+              raise SystemExit(
+                  f"[ERREUR] Patch {PATCH_ID} introuvable."
+              )
+
+          changes = [
+              change
+              for section in patch.get("details", [])
+              for change in section.get("changes", [])
+              if isinstance(change, dict)
+          ]
+
+          bakugo_cluster_count = 0
+          armored_count = 0
+
+          for change in changes:
+              character = norm(change.get("character"))
+              style = norm(change.get("style"))
+
+              change["source_skill_name"] = clean(
+                  change.get("source_skill_name")
+                  or change.get("skill_name")
+              )
+
+              if character == "katsuki bakugo" and style == "cluster":
+                  change["style_id"] = "bakugo_technical"
+                  change["role"] = "technical"
+                  change["portrait"] = (
+                      "assets/bakugo/bakugo_technical/portrait.webp"
+                  )
+
+                  skill = norm(change.get("source_skill_name"))
+
+                  if "ap shot cluster" in skill:
+                      change["skill_image"] = (
+                          "assets/bakugo/bakugo_technical/alpha.webp"
+                      )
+                  elif "nitro cluster" in skill:
+                      change["skill_image"] = (
+                          "assets/bakugo/bakugo_technical/beta.webp"
+                      )
+                  elif "howitzer impact cluster" in skill:
+                      change["skill_image"] = (
+                          "assets/bakugo/bakugo_technical/gamma.webp"
+                      )
+
+                  bakugo_cluster_count += 1
+
+              if character == "katsuki bakugo" and style == "original":
+                  change["style_id"] = "bakugo_attack"
+
+              # La source officielle indique exactement :
+              # α - Ice Bullet Shot (Burn), jamais Texas Smash.
+              if (
+                  character == "armored all might"
+                  and metric(change.get("label")) in {"damage", "guard"}
+              ):
+                  before = [
+                      clean(value)
+                      for value in change.get("before") or []
+                  ]
+
+                  if before == [
+                      "52.0", "54.0", "56.0",
+                      "58.0", "60.0", "62.0",
+                      "64.0", "66.0", "68.0",
+                  ]:
+                      change["source_skill_name"] = (
+                          "α - Ice Bullet Shot (Burn)"
+                      )
+                      change["skill_name"] = (
+                          "α - Ice Bullet Shot (Burn)"
+                      )
+                      change["style_id"] = (
+                          "armored_all_might_technical"
+                      )
+                      change["role"] = "technical"
+                      change["portrait"] = (
+                          "assets/armored_all_might/"
+                          "armored_all_might_technical/portrait.webp"
+                      )
+                      change["skill_image"] = (
+                          "assets/armored_all_might/"
+                          "armored_all_might_technical/alpha.webp"
+                      )
+                      armored_count += 1
+
+              change["display_skill_name"] = exact_display_name(change)
+
+          if bakugo_cluster_count < 6:
+              raise SystemExit(
+                  "[ERREUR] Pas assez de changements Bakugo Cluster : "
+                  f"{bakugo_cluster_count}"
+              )
+
+          if armored_count != 2:
+              raise SystemExit(
+                  "[ERREUR] 2 changements Armored All Might attendus, "
+                  f"trouvé : {armored_count}"
+              )
+
+          # Vérification demandée :
+          # - détails présents uniquement si la source contient des parenthèses ;
+          # - aucun détail inventé dans les munitions AP Shot Cluster.
+          for change in changes:
+              source = clean(change.get("source_skill_name"))
+              display_en = clean(
+                  (change.get("display_skill_name") or {}).get("en")
+              )
+
+              source_has_detail = bool(
+                  re.search(r"\([^()]+\)\s*$", source)
+              )
+              display_has_detail = bool(
+                  re.search(r"\([^()]+\)\s*$", display_en)
+              )
+
+              if source_has_detail != display_has_detail:
+                  raise SystemExit(
+                      "[ERREUR] Détail inventé ou supprimé pour : "
+                      f"{source!r} → {display_en!r}"
+                  )
+
+          data.setdefault("meta", {})[
+              "patch_1785298405_display"
+          ] = "v662-source-exact"
+
+          HOME_JSON.write_text(
+              json.dumps(
+                  data,
+                  ensure_ascii=False,
+                  indent=2,
+              ) + "\n",
+              encoding="utf-8",
+          )
+
+          compact = json.dumps(
+              data,
+              ensure_ascii=False,
+              separators=(",", ":"),
+          ).replace("\u2028", "\\u2028").replace(
+              "\u2029",
+              "\\u2029",
+          )
+
+          home_js_content = (
+              f"window.MHUR_HOME_DATA = {compact};\n"
+          )
+
+          HOME_JS.write_text(
+              home_js_content,
+              encoding="utf-8",
+          )
+
+          renderer = RENDERER.read_text(encoding="utf-8")
+
+          # style_id choisit d'abord le personnage qui possède réellement ce style.
+          function_start = renderer.find(
+              "  function resolveStyle(change){"
+          )
+          function_end = renderer.find(
+              "\n  function translatePatch(value){",
+              function_start,
+          )
+
+          if function_start < 0 or function_end < 0:
+              raise SystemExit(
+                  "[ERREUR] Fonction resolveStyle introuvable."
+              )
+
+          resolve_style = """  function resolveStyle(change){
+              const map=stylesMap();
+              const explicitId=clean(
+                change?.style_id||
+                change?.styleId||
+                ''
+              );
+
+              const explicitCharacter=explicitId
+                ?charactersList().find(character=>
+                  Array.isArray(character?.styles)&&
+                  character.styles.map(String).includes(explicitId)
+                )
+                :null;
+
+              const character=
+                explicitCharacter||
+                findCharacter(change?.character);
+
+              const ids=styleIds(character);
+
+              if(
+                explicitId&&
+                ids.includes(explicitId)&&
+                map[explicitId]
+              ){
+                return {
+                  character,
+                  id:explicitId,
+                  style:map[explicitId]
+                };
+              }
+
+              const midoriyaId=midoriyaStyleId(
+                change,
+                character
+              );
+
+              if(midoriyaId&&map[midoriyaId]){
+                return {
+                  character,
+                  id:midoriyaId,
+                  style:map[midoriyaId]
+                };
+              }
+
+              const wanted=normal(change?.style||'Original');
+
+              const byStyle=ids.find(id=>
+                normal(localized(map[id]?.name)||'Original')===wanted
+              );
+
+              if(byStyle){
+                return {
+                  character,
+                  id:byStyle,
+                  style:map[byStyle]
+                };
+              }
+
+              const id=ids[0]||'';
+
+              return {
+                character,
+                id,
+                style:map[id]||null
+              };
+            }
+          """
+
+          renderer = (
+              renderer[:function_start]
+              + resolve_style
+              + renderer[function_end:]
+          )
+
+          # Le titre exact importé est prioritaire et ne peut pas devenir Texas Smash.
+          title_pattern = re.compile(
+              r"""const\s+title=translatePatch\(\s*
+                  localized\(change\?\.skill_name\)\|\|\s*
+                  localized\(skill\?\.name\)\|\|\s*
+                  localized\(change\?\.label\)\|\|\s*
+                  tx\('Ajustement','Adjustment'\)\s*
+                  \);""",
+              flags=re.VERBOSE,
+          )
+
+          title_replacement = """const title=translatePatch(
+                localized(change?.display_skill_name)||
+                localized(change?.skill_name)||
+                localized(change?.label)||
+                tx('Ajustement','Adjustment')
+              );"""
+
+          renderer, title_count = title_pattern.subn(
+              title_replacement,
+              renderer,
+              count=1,
+          )
+
+          if (
+              title_count != 1
+              and "localized(change?.display_skill_name)||"
+              not in renderer
+          ):
+              raise SystemExit(
+                  "[ERREUR] Bloc du titre Patch Notes introuvable."
+              )
+
+          renderer = re.sub(
+              r"const VERSION='[^']*';",
+              "const VERSION='662';",
+              renderer,
+              count=1,
+          )
+
+          RENDERER.write_text(
+              renderer,
+              encoding="utf-8",
+          )
+
+          commit = subprocess.check_output(
+              ["git", "rev-parse", "--short=12", "HEAD"],
+              text=True,
+          ).strip()
+
+          build = f"662-{commit}"
+          now = datetime.now(timezone.utc).replace(
+              microsecond=0
+          ).isoformat()
+
+          performance_css = '/* MHUR V662 — fluidité */\n@supports (content-visibility: auto) {\n  .cardsGrid .card,\n  .styleGrid .styleCard,\n  .costumeGalleryGrid .costumeTile,\n  .section,\n  .costumeGroup,\n  .gamePanel,\n  .s18PatchCharacterV10,\n  .communityCard,\n  .modCard,\n  .buildCard {\n    content-visibility: auto;\n    contain-intrinsic-size: 1px 720px;\n  }\n}\n\n.cardsGrid .card,\n.styleGrid .styleCard,\n.costumeGalleryGrid .costumeTile,\n.s18PatchChangeV10 {\n  contain: layout paint;\n}\n\n@media (max-width: 900px) {\n  .card,\n  .styleCard,\n  .costumeTile,\n  .section,\n  .gamePanel,\n  .s18PatchChangeV10 {\n    -webkit-backdrop-filter: none !important;\n    backdrop-filter: none !important;\n  }\n}\n\n@media (prefers-reduced-motion: reduce) {\n  *,\n  *::before,\n  *::after {\n    scroll-behavior: auto !important;\n    animation-duration: 0.001ms !important;\n    animation-iteration-count: 1 !important;\n    transition-duration: 0.001ms !important;\n  }\n}\n'
+          performance_js = "(() => {\n  'use strict';\n\n  const BUILD = __BUILD_JSON__;\n  const root = document.documentElement;\n  let revealed = false;\n  let scheduled = false;\n\n  function tuneImages() {\n    document\n      .querySelectorAll('img:not([data-mhur-v662-image])')\n      .forEach((image, index) => {\n        image.dataset.mhurV662Image = '1';\n        image.decoding = 'async';\n\n        const rect = image.getBoundingClientRect();\n        const visible =\n          rect.top < window.innerHeight * 1.35 &&\n          rect.bottom > -100;\n\n        if (!visible || index > 12) {\n          image.loading = 'lazy';\n          image.fetchPriority = 'low';\n        }\n      });\n  }\n\n  function scheduleScan() {\n    if (scheduled) return;\n    scheduled = true;\n\n    const run = () => {\n      scheduled = false;\n      tuneImages();\n    };\n\n    if ('requestIdleCallback' in window) {\n      requestIdleCallback(run, { timeout: 700 });\n    } else {\n      setTimeout(run, 50);\n    }\n  }\n\n  function reveal() {\n    if (revealed) return;\n    revealed = true;\n    scheduleScan();\n\n    requestAnimationFrame(() => {\n      requestAnimationFrame(() => {\n        root.classList.remove('mhur-v662-booting');\n        root.classList.add('mhur-v662-ready');\n        root.dataset.mhurBuild = BUILD;\n      });\n    });\n  }\n\n  function start() {\n    new MutationObserver(scheduleScan).observe(document.body, {\n      childList: true,\n      subtree: true\n    });\n    reveal();\n  }\n\n  if (document.readyState === 'loading') {\n    document.addEventListener('DOMContentLoaded', start, { once: true });\n  } else {\n    start();\n  }\n\n  setTimeout(reveal, 3500);\n})();\n".replace(
+              "__BUILD_JSON__",
+              json.dumps(build),
+          )
+          live_update = "(() => {\n  'use strict';\n\n  const CURRENT = __BUILD_JSON__;\n  const RELOAD_KEY = 'mhur-v662-reloaded-build';\n  let checking = false;\n\n  async function remoteBuild() {\n    const response = await fetch(`/version.json?t=${Date.now()}`, {\n      cache: 'no-store',\n      headers: { 'Cache-Control': 'no-cache' }\n    });\n\n    if (!response.ok) {\n      throw new Error(`version ${response.status}`);\n    }\n\n    const data = await response.json();\n    return String(data?.build || data?.version || '');\n  }\n\n  async function registerWorker() {\n    if (\n      !('serviceWorker' in navigator) ||\n      location.protocol !== 'https:'\n    ) {\n      return;\n    }\n\n    const registrations =\n      await navigator.serviceWorker.getRegistrations();\n\n    for (const registration of registrations) {\n      const script =\n        registration.active?.scriptURL ||\n        registration.waiting?.scriptURL ||\n        registration.installing?.scriptURL ||\n        '';\n\n      if (script && !script.includes('/service-worker.js')) {\n        await registration.unregister();\n      }\n    }\n\n    const registration = await navigator.serviceWorker.register(\n      `/service-worker.js?v=${encodeURIComponent(CURRENT)}`,\n      {\n        scope: '/',\n        updateViaCache: 'none'\n      }\n    );\n\n    await registration.update();\n    registration.waiting?.postMessage({ type: 'SKIP_WAITING' });\n  }\n\n  async function check() {\n    if (\n      checking ||\n      document.visibilityState === 'hidden' ||\n      !navigator.onLine\n    ) {\n      return;\n    }\n\n    checking = true;\n\n    try {\n      const remote = await remoteBuild();\n\n      if (!remote || remote === CURRENT) {\n        return;\n      }\n\n      await registerWorker();\n\n      if (sessionStorage.getItem(RELOAD_KEY) === remote) {\n        return;\n      }\n\n      sessionStorage.setItem(RELOAD_KEY, remote);\n      location.reload();\n    } catch (error) {\n      console.debug('MHUR update check:', error);\n    } finally {\n      checking = false;\n    }\n  }\n\n  addEventListener(\n    'load',\n    async () => {\n      try {\n        await registerWorker();\n      } catch (error) {\n        console.debug('MHUR service worker:', error);\n      }\n\n      check();\n      setInterval(check, 300000);\n    },\n    { once: true }\n  );\n\n  document.addEventListener('visibilitychange', () => {\n    if (document.visibilityState === 'visible') {\n      check();\n    }\n  });\n\n  addEventListener('online', check);\n})();\n".replace(
+              "__BUILD_JSON__",
+              json.dumps(build),
+          )
+          service_worker = "const RELEASE = __BUILD_JSON__;\nconst PREFIX = 'mhur-v662-';\nconst STATIC_CACHE = `${PREFIX}static-${RELEASE}`;\nconst OFFLINE_CACHE = `${PREFIX}offline-${RELEASE}`;\nconst OFFLINE_URL = '/index.html';\n\nself.addEventListener('message', event => {\n  if (event.data?.type === 'SKIP_WAITING') {\n    self.skipWaiting();\n  }\n});\n\nself.addEventListener('install', event => {\n  event.waitUntil(\n    (async () => {\n      const cache = await caches.open(OFFLINE_CACHE);\n\n      try {\n        const response = await fetch(OFFLINE_URL, {\n          cache: 'no-store'\n        });\n\n        if (response.ok) {\n          await cache.put(OFFLINE_URL, response);\n        }\n      } catch (_error) {}\n\n      await self.skipWaiting();\n    })()\n  );\n});\n\nself.addEventListener('activate', event => {\n  event.waitUntil(\n    (async () => {\n      const keys = await caches.keys();\n\n      await Promise.all(\n        keys\n          .filter(key => key !== STATIC_CACHE && key !== OFFLINE_CACHE)\n          .map(key => caches.delete(key))\n      );\n\n      await self.clients.claim();\n    })()\n  );\n});\n\nasync function networkFirst(request) {\n  try {\n    const response = await fetch(request, {\n      cache: 'no-cache'\n    });\n\n    if (response.ok) {\n      const cache = await caches.open(STATIC_CACHE);\n      await cache.put(request, response.clone());\n    }\n\n    return response;\n  } catch (error) {\n    const cached = await caches.match(request);\n    if (cached) return cached;\n    throw error;\n  }\n}\n\nasync function cacheFirst(request) {\n  const cached = await caches.match(request);\n  if (cached) return cached;\n\n  const response = await fetch(request);\n\n  if (response.ok) {\n    const cache = await caches.open(STATIC_CACHE);\n    await cache.put(request, response.clone());\n  }\n\n  return response;\n}\n\nself.addEventListener('fetch', event => {\n  const request = event.request;\n\n  if (request.method !== 'GET') return;\n\n  const url = new URL(request.url);\n\n  if (url.origin !== self.location.origin) return;\n\n  if (request.mode === 'navigate') {\n    event.respondWith(\n      (async () => {\n        try {\n          const response = await fetch(request, {\n            cache: 'no-store'\n          });\n\n          if (response.ok) {\n            const cache = await caches.open(OFFLINE_CACHE);\n            await cache.put(OFFLINE_URL, response.clone());\n          }\n\n          return response;\n        } catch (_error) {\n          return (\n            (await caches.match(OFFLINE_URL)) ||\n            new Response('Connexion indisponible.', {\n              status: 503,\n              headers: {\n                'Content-Type': 'text/plain; charset=utf-8'\n              }\n            })\n          );\n        }\n      })()\n    );\n    return;\n  }\n\n  if (\n    request.destination === 'script' ||\n    request.destination === 'style' ||\n    url.pathname.startsWith('/data/') ||\n    url.pathname === '/version.json' ||\n    url.pathname === '/service-worker.js'\n  ) {\n    event.respondWith(networkFirst(request));\n    return;\n  }\n\n  if (\n    request.destination === 'image' ||\n    request.destination === 'font' ||\n    url.pathname.startsWith('/assets/')\n  ) {\n    event.respondWith(cacheFirst(request));\n  }\n});\n".replace(
+              "__BUILD_JSON__",
+              json.dumps(build),
+          )
+          headers = '/*\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: strict-origin-when-cross-origin\n\n/\n  Cache-Control: no-store, no-cache, must-revalidate, max-age=0\n  Pragma: no-cache\n  Expires: 0\n\n/index.html\n  Cache-Control: no-store, no-cache, must-revalidate, max-age=0\n  Pragma: no-cache\n  Expires: 0\n\n/version.json\n  Cache-Control: no-store, no-cache, must-revalidate, max-age=0\n\n/service-worker.js\n  Cache-Control: no-store, no-cache, must-revalidate, max-age=0\n  Service-Worker-Allowed: /\n  Content-Type: application/javascript; charset=utf-8\n\n/css/*\n  Cache-Control: public, max-age=31536000, immutable\n\n/js/*\n  Cache-Control: public, max-age=31536000, immutable\n\n/data/*\n  Cache-Control: public, max-age=31536000, immutable\n\n/assets/*\n  Cache-Control: public, max-age=2592000, stale-while-revalidate=604800\n'
+
+          PERF_CSS.parent.mkdir(
+              parents=True,
+              exist_ok=True,
+          )
+
+          PERF_CSS.write_text(
+              performance_css.rstrip() + "\n",
+              encoding="utf-8",
+          )
+          PERF_JS.write_text(
+              performance_js.rstrip() + "\n",
+              encoding="utf-8",
+          )
+          LIVE_UPDATE.write_text(
+              live_update.rstrip() + "\n",
+              encoding="utf-8",
+          )
+          SERVICE_WORKER.write_text(
+              service_worker.rstrip() + "\n",
+              encoding="utf-8",
+          )
+          HEADERS.write_text(
+              headers.rstrip() + "\n",
+              encoding="utf-8",
+          )
+          VERSION_JSON.write_text(
+              json.dumps(
+                  {
+                      "version": build,
+                      "build": build,
+                      "updatedAt": now,
+                      "name": f"MHUR France {build}",
+                  },
+                  ensure_ascii=False,
+                  indent=2,
+              ) + "\n",
+              encoding="utf-8",
+          )
+
+          index = INDEX.read_text(encoding="utf-8")
+
+          # Nettoyage des anciens blocs V661/V662.
+          index = re.sub(
+              r"\s*<!-- MHUR V66[12] BOOT START -->.*?"
+              r"<!-- MHUR V66[12] BOOT END -->\s*",
+              "\n",
+              index,
+              flags=re.DOTALL,
+          )
+
+          index = re.sub(
+              r"\s*<script\b[^>]*\bsrc\s*=\s*[\"']"
+              r"(?:/)?js/v66[12]-performance\.js"
+              r"(?:\?[^\"']*)?[\"'][^>]*>\s*</script>\s*",
+              "\n",
+              index,
+              flags=re.IGNORECASE,
+          )
+
+          boot_block = f"""
+          <!-- MHUR V662 BOOT START -->
+          <script>
+          document.documentElement.classList.add('mhur-v662-booting');
+          setTimeout(function(){{
+            document.documentElement.classList.remove('mhur-v662-booting');
+          }},4000);
+          </script>
+          <style>
+          html.mhur-v662-booting{{background:#07101f!important;overflow-y:scroll}}
+          html.mhur-v662-booting body{{background:#07101f!important}}
+          html.mhur-v662-booting body>*{{visibility:hidden!important}}
+          html.mhur-v662-booting body::before{{
+            content:'MHUR FRANCE';
+            position:fixed;
+            inset:0;
+            z-index:2147483646;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            visibility:visible!important;
+            color:#fff000;
+            background:#07101f;
+            font:900 clamp(28px,6vw,58px)/1 Arial,sans-serif;
+          }}
+          </style>
+          <link rel="stylesheet" href="css/v662-performance.css?v={build}">
+          <!-- MHUR V662 BOOT END -->
+          """.strip()
+
+          head = re.search(
+              r"<head\b[^>]*>",
+              index,
+              flags=re.IGNORECASE,
+          )
+
+          if not head:
+              raise SystemExit(
+                  "[ERREUR] Balise <head> introuvable."
+              )
+
+          index = (
+              index[:head.end()]
+              + "\n"
+              + boot_block
+              + "\n"
+              + index[head.end():]
+          )
+
+          # Retirer les anciens overlays ponctuels qui pouvaient réécrire le Patch Notes.
+          index = re.sub(
+              r'\s*<script\b[^>]*\bsrc\s*=\s*["\']'
+              r'(?:/)?js/v65[7-9][^"\']*\.js'
+              r'(?:\?[^"\']*)?["\'][^>]*>\s*</script>\s*',
+              "\n",
+              index,
+              flags=re.IGNORECASE,
+          )
+
+          # Même numéro de build pour tous les CSS, JS et data.
+          asset_pattern = re.compile(
+              r'(?P<prefix>\b(?:src|href)\s*=\s*["\'])'
+              r'(?P<path>(?:/)?(?:css|js|data)/[^"\'?#]+)'
+              r'(?:\?[^"\']*)?'
+              r'(?P<suffix>["\'])',
+              flags=re.IGNORECASE,
+          )
+
+          index = asset_pattern.sub(
+              lambda match: (
+                  f'{match.group("prefix")}'
+                  f'{match.group("path")}'
+                  f'?v={build}'
+                  f'{match.group("suffix")}'
+              ),
+              index,
+          )
+
+          performance_tag = (
+              f'<script src="js/v662-performance.js?v={build}"></script>'
+          )
+
+          body_matches = list(
+              re.finditer(
+                  r"</body\s*>",
+                  index,
+                  flags=re.IGNORECASE,
+              )
+          )
+
+          if not body_matches:
+              raise SystemExit(
+                  "[ERREUR] Balise </body> introuvable."
+              )
+
+          body = body_matches[-1]
+
+          index = (
+              index[:body.start()]
+              + performance_tag
+              + "\n"
+              + index[body.start():]
+          )
+
+          INDEX.write_text(
+              index,
+              encoding="utf-8",
+          )
+
+          # Validations finales.
+          saved = json.loads(
+              HOME_JSON.read_text(encoding="utf-8")
+          )
+
+          saved_patch = next(
+              item
+              for item in saved["patch_notes"]
+              if str(item.get("id")) == PATCH_ID
+          )
+
+          saved_changes = [
+              change
+              for section in saved_patch.get("details", [])
+              for change in section.get("changes", [])
+              if isinstance(change, dict)
+          ]
+
+          armored = [
+              change
+              for change in saved_changes
+              if (
+                  norm(change.get("character"))
+                  == "armored all might"
+                  and clean(
+                      (
+                          change.get("display_skill_name")
+                          or {}
+                      ).get("en")
+                  )
+                  == "α - Ice Bullet Shot (Burn)"
+                  and metric(change.get("label"))
+                  in {"damage", "guard"}
+              )
+          ]
+
+          if len(armored) != 2:
+              raise SystemExit(
+                  "[ERREUR] Armored All Might reste incorrect."
+              )
+
+          if any(
+              "texas smash" in norm(
+                  (
+                      change.get("display_skill_name")
+                      or {}
+                  ).get("en")
+              )
+              for change in saved_changes
+              if norm(change.get("character"))
+              == "armored all might"
+          ):
+              raise SystemExit(
+                  "[ERREUR] Texas Smash apparaît encore chez Armored All Might."
+              )
+
+          # AP Shot Cluster des munitions ne doit pas recevoir (Normal).
+          ammo_ap = [
+              change
+              for change in saved_changes
+              if (
+                  norm(change.get("character")) == "katsuki bakugo"
+                  and norm(change.get("style")) == "cluster"
+                  and norm(change.get("label"))
+                  in {"ammo", "munitions", "magazine"}
+                  and "ap shot cluster" in norm(
+                      change.get("source_skill_name")
+                  )
+              )
+          ]
+
+          if any(
+              "(" in clean(
+                  (
+                      change.get("display_skill_name")
+                      or {}
+                  ).get("en")
+              )
+              for change in ammo_ap
+          ):
+              raise SystemExit(
+                  "[ERREUR] Un détail a été inventé pour les munitions AP Shot Cluster."
+              )
+
+          for script in (
+              RENDERER,
+              PERF_JS,
+              LIVE_UPDATE,
+              SERVICE_WORKER,
+          ):
+              subprocess.run(
+                  ["node", "--check", str(script)],
+                  check=True,
+              )
+
+          final_index = INDEX.read_text(encoding="utf-8")
+
+          unversioned = re.findall(
+              r'(?:src|href)=["\']'
+              r'((?:/)?(?:css|js|data)/[^"\'?#]+)'
+              r'["\']',
+              final_index,
+              flags=re.IGNORECASE,
+          )
+
+          if unversioned:
+              raise SystemExit(
+                  "[ERREUR] Ressources sans version : "
+                  + ", ".join(unversioned[:10])
+              )
+
+          print("[OK] Armored All Might : α - Ice Bullet Shot (Burn).")
+          print("[OK] Texas Smash n'est utilisé que pour All Might normal.")
+          print("[OK] Les détails sont affichés uniquement s'ils existent dans la source.")
+          print("[OK] α / β / γ sont conservés ou ajoutés depuis les données source.")
+          print(f"[OK] Build atomique : {build}.")
+          print("[OK] Cache et fluidité corrigés.")
+          PY
+
+      - name: Publier le nettoyage et les corrections
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add -A             .github/workflows             public/index.html             public/data/home_data.json             public/data/home_data.js             public/js/v608-patch-notes-final.js             public/css/v662-performance.css             public/js/v662-performance.js             public/js/v36-live-site-update.js             public/service-worker.js             public/_headers             public/version.json
+
+          if git diff --cached --quiet; then
+            echo "[OK] Master V662 déjà appliqué."
+            exit 0
+          fi
+
+          git commit -m "fix: master V662 workflows patch cache performance"
+
+          for tentative in 1 2 3 4 5; do
+            if git pull --rebase origin main &&
+               git push origin HEAD:main; then
+              echo "[OK] Master V662 publié sur main."
+              exit 0
+            fi
+
+            echo "[ATTENTE] Nouvelle tentative..."
+            sleep $((tentative * 4))
+          done
+
+          echo "[ERREUR] Publication impossible."
+          exit 1
