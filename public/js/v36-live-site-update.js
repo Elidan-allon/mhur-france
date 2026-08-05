@@ -1,11 +1,11 @@
 (() => {
   'use strict';
 
-  const CURRENT = "662-271b70d1d145";
-  const RELOAD_KEY = 'mhur-v662-reloaded-build';
+  const CURRENT = "663-db1d3bf81ac3";
+  const RELOAD_KEY = 'mhur-v663-reloaded-build';
   let checking = false;
 
-  async function remoteBuild() {
+  async function getRemoteBuild() {
     const response = await fetch(`/version.json?t=${Date.now()}`, {
       cache: 'no-store',
       headers: { 'Cache-Control': 'no-cache' }
@@ -66,11 +66,9 @@
     checking = true;
 
     try {
-      const remote = await remoteBuild();
+      const remote = await getRemoteBuild();
 
-      if (!remote || remote === CURRENT) {
-        return;
-      }
+      if (!remote || remote === CURRENT) return;
 
       await registerWorker();
 
@@ -103,9 +101,7 @@
   );
 
   document.addEventListener('visibilitychange', () => {
-    if (document.visibilityState === 'visible') {
-      check();
-    }
+    if (document.visibilityState === 'visible') check();
   });
 
   addEventListener('online', check);
