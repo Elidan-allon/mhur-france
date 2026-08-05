@@ -1,10 +1,10 @@
 (() => {
   'use strict';
 
-  const BUILD = "670-1d3b596f61ed";
+  const BUILD = "671-295e11a7e93c";
   const root = document.documentElement;
   const startedAt =
-    Number(window.__MHUR_V670_STARTED_AT) ||
+    Number(window.__MHUR_V671_STARTED_AT) ||
     performance.now();
 
   const OWNER_SELECTOR = [
@@ -47,13 +47,13 @@
     document.querySelectorAll(
       '[id^="mhurV66"][id$="Splash"]'
     ).forEach(node => {
-      if (node.id !== 'mhurV670Splash') node.remove();
+      if (node.id !== 'mhurV671Splash') node.remove();
     });
 
     document.querySelectorAll(
       '[class*="mhurV66"][class*="Hero"]'
     ).forEach(node => {
-      if (!node.closest('#mhurV670Splash')) node.remove();
+      if (!node.closest('#mhurV671Splash')) node.remove();
     });
 
     document.querySelectorAll(
@@ -61,8 +61,63 @@
       '[id*="RightHeroImage"],' +
       '[id*="MiniHeroImage"]'
     ).forEach(node => {
-      if (!node.closest('#mhurV670Splash')) {
+      if (!node.closest('#mhurV671Splash')) {
         (node.closest('figure,div') || node).remove();
+      }
+    });
+  }
+
+  function patchLanguage() {
+    try {
+      if (typeof lang !== 'undefined' && lang === 'en') {
+        return 'en';
+      }
+    } catch (_error) {}
+
+    return String(document.documentElement.lang || '')
+      .toLowerCase()
+      .startsWith('en')
+      ? 'en'
+      : 'fr';
+  }
+
+  function fixPatchByIds(scope = document) {
+    const selector = [
+      'article[data-v608-character-id="armored_all_might"]',
+      '[data-v608-style="armored_all_might_technical"]',
+      '[data-v608-skill-id="armored_all_might_alpha_burn"]'
+    ].join(' ');
+
+    const cards = [];
+
+    if (scope instanceof Element && scope.matches(selector)) {
+      cards.push(scope);
+    }
+
+    scope.querySelectorAll?.(selector).forEach(card => {
+      cards.push(card);
+    });
+
+    cards.forEach(card => {
+      const expectedTitle = patchLanguage() === 'en'
+        ? 'α - Ice Bullet Shot (Burn)'
+        : 'α - Ice Bullet Shot (Brûlure)';
+      const title = card.querySelector('h5');
+
+      if (title && title.textContent.trim() !== expectedTitle) {
+        title.textContent = expectedTitle;
+      }
+
+      const image = card.querySelector(
+        '.s18PatchImageV608 img,.s18PatchSkillV10 img'
+      );
+      const expectedImage =
+        '/assets/armored_all_might/' +
+        'armored_all_might_technical/alpha.webp';
+
+      if (image && !image.src.endsWith(expectedImage)) {
+        image.setAttribute('src', expectedImage);
+        image.setAttribute('alt', expectedTitle);
       }
     });
   }
@@ -168,6 +223,7 @@
   function handleAddedNode(node) {
     if (!(node instanceof Element)) return;
 
+    fixPatchByIds(node);
     scanCanonical(node);
 
     if (node.matches(LEGACY_SELECTOR)) {
@@ -194,15 +250,15 @@
   function tuneImages(scope = document) {
     const images = scope.querySelectorAll
       ? scope.querySelectorAll(
-          'img:not([data-mhur-v670-image])'
+          'img:not([data-mhur-v671-image])'
         )
       : [];
 
     images.forEach((image, index) => {
-      image.dataset.mhurV670Image = '1';
+      image.dataset.mhurV671Image = '1';
       image.decoding = 'async';
 
-      if (image.closest('#mhurV670Splash')) return;
+      if (image.closest('#mhurV671Splash')) return;
 
       const rect = image.getBoundingClientRect();
       const visible =
@@ -232,9 +288,9 @@
       Math.min(100, Math.round(value))
     );
 
-    const fill = document.getElementById('mhurV670Fill');
-    const percent = document.getElementById('mhurV670Percent');
-    const status = document.getElementById('mhurV670Status');
+    const fill = document.getElementById('mhurV671Fill');
+    const percent = document.getElementById('mhurV671Percent');
+    const status = document.getElementById('mhurV671Status');
 
     if (fill) fill.style.width = `${currentProgress}%`;
     if (percent) percent.textContent = `${currentProgress}%`;
@@ -272,12 +328,12 @@
     setTimeout(() => {
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
-          root.classList.remove('mhur-v670-booting');
-          root.classList.add('mhur-v670-ready');
+          root.classList.remove('mhur-v671-booting');
+          root.classList.add('mhur-v671-ready');
           root.dataset.mhurBuild = BUILD;
 
           const splash = document.getElementById(
-            'mhurV670Splash'
+            'mhurV671Splash'
           );
 
           if (splash) {
@@ -286,7 +342,7 @@
           }
 
           window.dispatchEvent(
-            new CustomEvent('mhur:v670-ready', {
+            new CustomEvent('mhur:v671-ready', {
               detail: { build: BUILD }
             })
           );
@@ -298,21 +354,41 @@
   function start() {
     cleanupOldSplashArtifacts();
     beginProgress();
+    fixPatchByIds(document);
     scanCanonical(document);
     tuneImages(document);
 
     new MutationObserver(mutations => {
+      let patchChanged = false;
+
       for (const mutation of mutations) {
         mutation.addedNodes.forEach(handleAddedNode);
+        patchChanged = patchChanged ||
+          mutation.type === 'characterData' ||
+          mutation.addedNodes.length > 0;
+      }
+
+      if (patchChanged) {
+        queueMicrotask(() => fixPatchByIds(document));
       }
     }).observe(document.documentElement, {
       childList: true,
-      subtree: true
+      subtree: true,
+      characterData: true
     });
 
-    setTimeout(() => scanCanonical(document), 60);
-    setTimeout(() => scanCanonical(document), 240);
-    setTimeout(() => scanCanonical(document), 850);
+    setTimeout(() => {
+      fixPatchByIds(document);
+      scanCanonical(document);
+    }, 60);
+    setTimeout(() => {
+      fixPatchByIds(document);
+      scanCanonical(document);
+    }, 240);
+    setTimeout(() => {
+      fixPatchByIds(document);
+      scanCanonical(document);
+    }, 850);
 
     finishReveal();
   }
@@ -320,15 +396,24 @@
   document.addEventListener(
     'click',
     () => {
-      setTimeout(() => scanCanonical(document), 0);
-      setTimeout(() => scanCanonical(document), 100);
+      setTimeout(() => {
+        fixPatchByIds(document);
+        scanCanonical(document);
+      }, 0);
+      setTimeout(() => {
+        fixPatchByIds(document);
+        scanCanonical(document);
+      }, 100);
     },
     true
   );
 
   window.addEventListener(
     'mhur:languagechange',
-    () => scanCanonical(document)
+    () => {
+      fixPatchByIds(document);
+      scanCanonical(document);
+    }
   );
 
   if (document.readyState === 'loading') {
@@ -344,9 +429,10 @@
   /* Le site ne reste jamais bloqué derrière le splash. */
   setTimeout(finishReveal, 3800);
 
-  window.MHUR_V670 = {
+  window.MHUR_V671 = {
     build: BUILD,
     refreshNew: () => scanCanonical(document),
+    fixPatchByIds: () => fixPatchByIds(document),
     cleanOwner
   };
 })();

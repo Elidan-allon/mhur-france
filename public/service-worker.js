@@ -1,5 +1,5 @@
-const RELEASE = "670-1d3b596f61ed";
-const PREFIX = 'mhur-v670-';
+const RELEASE = "671-295e11a7e93c";
+const PREFIX = 'mhur-v671-';
 const STATIC_CACHE = `${PREFIX}static-${RELEASE}`;
 const OFFLINE_CACHE = `${PREFIX}offline-${RELEASE}`;
 const OFFLINE_URL = '/index.html';

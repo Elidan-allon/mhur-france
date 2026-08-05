@@ -11,7 +11,7 @@
   if(window.MHUR_V608_LOADED)return;
   window.MHUR_V608_LOADED=true;
 
-  const VERSION='670';
+  const VERSION='671';
 
   function clean(value){
     return String(value??'').trim();
@@ -421,18 +421,30 @@
 
   function resolveStyle(change){
     const map=stylesMap();
-    const explicitId=clean(
+    const explicitCharacterId=clean(
+      change?.character_id||
+      change?.characterId||
+      ''
+    );
+    const explicitStyleId=clean(
       change?.style_id||
       change?.styleId||
       ''
     );
 
-    const explicitCharacter=explicitId
-      ?charactersList().find(character=>
-        Array.isArray(character?.styles)&&
-        character.styles.map(String).includes(explicitId)
-      )
-      :null;
+    const explicitCharacter=charactersList().find(
+      character=>
+        clean(character?.id)===explicitCharacterId
+    )||(
+      explicitStyleId
+        ?charactersList().find(character=>
+          Array.isArray(character?.styles)&&
+          character.styles.map(String).includes(
+            explicitStyleId
+          )
+        )
+        :null
+    );
 
     const character=
       explicitCharacter||
@@ -441,14 +453,14 @@
     const ids=styleIds(character);
 
     if(
-      explicitId&&
-      ids.includes(explicitId)&&
-      map[explicitId]
+      explicitStyleId&&
+      ids.includes(explicitStyleId)&&
+      map[explicitStyleId]
     ){
       return {
         character,
-        id:explicitId,
-        style:map[explicitId]
+        id:explicitStyleId,
+        style:map[explicitStyleId]
       };
     }
 
@@ -466,7 +478,6 @@
     }
 
     const wanted=normal(change?.style||'Original');
-
     const byStyle=ids.find(id=>
       normal(localized(map[id]?.name)||'Original')===wanted
     );
@@ -485,6 +496,53 @@
       character,
       id,
       style:map[id]||null
+    };
+  }
+
+  function patchIdentity(change,group){
+    const characterId=clean(
+      change?.character_id||
+      change?.characterId||
+      group?.character?.id||
+      ''
+    );
+    const styleId=clean(
+      change?.style_id||
+      change?.styleId||
+      group?.id||
+      ''
+    );
+    const skillId=clean(
+      change?.skill_id||
+      change?.skillId||
+      ''
+    );
+
+    if(
+      characterId==='armored_all_might'&&
+      styleId==='armored_all_might_technical'&&
+      skillId==='armored_all_might_alpha_burn'
+    ){
+      return {
+        characterId,
+        styleId,
+        skillId,
+        title:{
+          fr:'α - Ice Bullet Shot (Brûlure)',
+          en:'α - Ice Bullet Shot (Burn)'
+        },
+        image:
+          'assets/armored_all_might/'+
+          'armored_all_might_technical/alpha.webp'
+      };
+    }
+
+    return {
+      characterId,
+      styleId,
+      skillId,
+      title:null,
+      image:''
     };
   }
 
@@ -727,7 +785,12 @@
       ?null
       :skillFromStyle(group.style,change);
 
+    const identity=patchIdentity(
+      change,
+      group
+    );
     const title=translatePatch(
+      localized(identity?.title)||
       localized(change?.display_skill_name)||
       localized(change?.skill_name)||
       localized(change?.label)||
@@ -745,9 +808,12 @@
     const picture=health
       ?''
       :(
-        isMidoriya
-          ?(skill?.img||change?.skill_image||'')
-          :(change?.skill_image||skill?.img||'')
+        identity?.image||
+        (
+          isMidoriya
+            ?(skill?.img||change?.skill_image||'')
+            :(change?.skill_image||skill?.img||'')
+        )
       );
 
     const bullets=(
@@ -761,7 +827,16 @@
     return `<section
       class="s18PatchChangeV10 ${tone}"
       data-v608-style="${escapeHtml(group.id)}"
-    >
+    data-v608-character-id="${escapeHtml(
+      identity?.characterId||group.character?.id||''
+    )}"
+    data-v608-skill-id="${escapeHtml(
+      identity?.skillId||change?.skill_id||''
+    )}"
+    data-v608-change-id="${escapeHtml(
+      change?.change_id||''
+    )}"
+  >
       <span class="s18ToneV10 ${tone}">
         ${
           tone==='buff'
@@ -827,6 +902,9 @@
       data-v608-character="${
         escapeHtml(group.name)
       }"
+    data-v608-character-id="${escapeHtml(
+      group.character?.id||''
+    )}"
       data-v608-style="${
         escapeHtml(group.id)
       }"
