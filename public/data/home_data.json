@@ -3,7 +3,8 @@
     "updated_at": "2026-08-05T06:02:36.745054+00:00",
     "source": "UltraRumble.com",
     "version": "v520-maintenance-sync",
-    "patch_style_resolution": "v660-cluster-style-first"
+    "patch_style_resolution": "v660-cluster-style-first",
+    "patch_1785298405_display": "v662-source-exact"
   },
   "season": {
     "number": 18,
@@ -361,7 +362,12 @@
               "label": "HP",
               "before": "300",
               "after": "250",
-              "tone": "nerf"
+              "tone": "nerf",
+              "source_skill_name": "HP",
+              "display_skill_name": {
+                "fr": "HP",
+                "en": "HP"
+              }
             }
           ]
         },
@@ -400,7 +406,12 @@
                 "1.0"
               ],
               "tone": "nerf",
-              "style_id": "bakugo_attack"
+              "style_id": "bakugo_attack",
+              "source_skill_name": "γ - Howitzer Impact",
+              "display_skill_name": {
+                "fr": "γ - Howitzer Impact",
+                "en": "γ - Howitzer Impact"
+              }
             },
             {
               "character": "Katsuki Bakugo",
@@ -433,7 +444,12 @@
                 "1.0"
               ],
               "tone": "nerf",
-              "style_id": "bakugo_attack"
+              "style_id": "bakugo_attack",
+              "source_skill_name": "γ - Howitzer Impact",
+              "display_skill_name": {
+                "fr": "γ - Howitzer Impact",
+                "en": "γ - Howitzer Impact"
+              }
             },
             {
               "character": "Katsuki Bakugo",
@@ -466,7 +482,12 @@
                 "50.0"
               ],
               "tone": "buff",
-              "style_id": "bakugo_technical"
+              "style_id": "bakugo_technical",
+              "source_skill_name": "α - AP Shot Cluster (Normal)",
+              "display_skill_name": {
+                "fr": "α - AP Shot Cluster (Normal)",
+                "en": "α - AP Shot Cluster (Normal)"
+              }
             },
             {
               "character": "Katsuki Bakugo",
@@ -499,7 +520,12 @@
                 "50.0"
               ],
               "tone": "buff",
-              "style_id": "bakugo_technical"
+              "style_id": "bakugo_technical",
+              "source_skill_name": "α - AP Shot Cluster (Normal)",
+              "display_skill_name": {
+                "fr": "α - AP Shot Cluster (Normal)",
+                "en": "α - AP Shot Cluster (Normal)"
+              }
             },
             {
               "character": "Katsuki Bakugo",
@@ -532,7 +558,12 @@
                 "45.0"
               ],
               "tone": "buff",
-              "style_id": "bakugo_technical"
+              "style_id": "bakugo_technical",
+              "source_skill_name": "β - Nitro Cluster (Explosion)",
+              "display_skill_name": {
+                "fr": "β - Nitro Cluster (Explosion)",
+                "en": "β - Nitro Cluster (Explosion)"
+              }
             },
             {
               "character": "Katsuki Bakugo",
@@ -565,7 +596,12 @@
                 "45.0"
               ],
               "tone": "buff",
-              "style_id": "bakugo_technical"
+              "style_id": "bakugo_technical",
+              "source_skill_name": "β - Nitro Cluster (Explosion)",
+              "display_skill_name": {
+                "fr": "β - Nitro Cluster (Explosion)",
+                "en": "β - Nitro Cluster (Explosion)"
+              }
             },
             {
               "character": "Katsuki Bakugo",
@@ -598,7 +634,12 @@
                 "60.0"
               ],
               "tone": "buff",
-              "style_id": "bakugo_technical"
+              "style_id": "bakugo_technical",
+              "source_skill_name": "β - Nitro Cluster (ExplosionFollow-up)",
+              "display_skill_name": {
+                "fr": "β - Nitro Cluster (Explosion renforcée)",
+                "en": "β - Nitro Cluster (ExplosionFollow-up)"
+              }
             },
             {
               "character": "Katsuki Bakugo",
@@ -631,7 +672,12 @@
                 "60.0"
               ],
               "tone": "buff",
-              "style_id": "bakugo_technical"
+              "style_id": "bakugo_technical",
+              "source_skill_name": "β - Nitro Cluster (ExplosionFollow-up)",
+              "display_skill_name": {
+                "fr": "β - Nitro Cluster (Explosion renforcée)",
+                "en": "β - Nitro Cluster (ExplosionFollow-up)"
+              }
             },
             {
               "character": "Denki Kaminari",
@@ -663,7 +709,12 @@
                 "68.0",
                 "70.0"
               ],
-              "tone": "nerf"
+              "tone": "nerf",
+              "source_skill_name": "α - Electro-target",
+              "display_skill_name": {
+                "fr": "α - Electro-target",
+                "en": "α - Electro-target"
+              }
             },
             {
               "character": "Denki Kaminari",
@@ -695,7 +746,12 @@
                 "68.0",
                 "70.0"
               ],
-              "tone": "nerf"
+              "tone": "nerf",
+              "source_skill_name": "α - Electro-target",
+              "display_skill_name": {
+                "fr": "α - Electro-target",
+                "en": "α - Electro-target"
+              }
             },
             {
               "character": "Mirio Togata",
@@ -727,7 +783,12 @@
                 "43.0",
                 "44.0"
               ],
-              "tone": "nerf"
+              "tone": "nerf",
+              "source_skill_name": "α - Phantom Smash (Shot)",
+              "display_skill_name": {
+                "fr": "α - Phantom Smash (Tir)",
+                "en": "α - Phantom Smash (Shot)"
+              }
             },
             {
               "character": "Mirio Togata",
@@ -759,15 +820,20 @@
                 "43.0",
                 "44.0"
               ],
-              "tone": "nerf"
+              "tone": "nerf",
+              "source_skill_name": "α - Phantom Smash (Shot)",
+              "display_skill_name": {
+                "fr": "α - Phantom Smash (Tir)",
+                "en": "α - Phantom Smash (Shot)"
+              }
             },
             {
               "character": "Armored All Might",
               "style": "Original",
               "role": "technical",
-              "portrait": "assets/home/patches/1785298405/portrait_armored_all_might.webp",
+              "portrait": "assets/armored_all_might/armored_all_might_technical/portrait.webp",
               "skill_name": "α - Ice Bullet Shot (Burn)",
-              "skill_image": "assets/home/patches/1785298405/skill_armored_all_might_ice_bullet_shot_burn.png",
+              "skill_image": "assets/armored_all_might/armored_all_might_technical/alpha.webp",
               "label": "Damage",
               "before": [
                 "52.0",
@@ -792,15 +858,20 @@
                 "60.0"
               ],
               "tone": "nerf",
-              "style_id": "armored_all_might_technical"
+              "style_id": "armored_all_might_technical",
+              "source_skill_name": "α - Ice Bullet Shot (Burn)",
+              "display_skill_name": {
+                "fr": "α - Ice Bullet Shot (Brûlure)",
+                "en": "α - Ice Bullet Shot (Burn)"
+              }
             },
             {
               "character": "Armored All Might",
               "style": "Original",
               "role": "technical",
-              "portrait": "assets/home/patches/1785298405/portrait_armored_all_might.webp",
+              "portrait": "assets/armored_all_might/armored_all_might_technical/portrait.webp",
               "skill_name": "α - Ice Bullet Shot (Burn)",
-              "skill_image": "assets/home/patches/1785298405/skill_armored_all_might_ice_bullet_shot_burn.png",
+              "skill_image": "assets/armored_all_might/armored_all_might_technical/alpha.webp",
               "label": "Guard Break",
               "before": [
                 "52.0",
@@ -825,7 +896,12 @@
                 "60.0"
               ],
               "tone": "nerf",
-              "style_id": "armored_all_might_technical"
+              "style_id": "armored_all_might_technical",
+              "source_skill_name": "α - Ice Bullet Shot (Burn)",
+              "display_skill_name": {
+                "fr": "α - Ice Bullet Shot (Brûlure)",
+                "en": "α - Ice Bullet Shot (Burn)"
+              }
             },
             {
               "character": "Hawks",
@@ -851,7 +927,12 @@
                 "12.0",
                 "14.0"
               ],
-              "tone": "nerf"
+              "tone": "nerf",
+              "source_skill_name": "α - Wingbeat (Homing)",
+              "display_skill_name": {
+                "fr": "α - Wingbeat (À tête chercheuse)",
+                "en": "α - Wingbeat (Homing)"
+              }
             },
             {
               "character": "Hawks",
@@ -877,7 +958,12 @@
                 "12.0",
                 "14.0"
               ],
-              "tone": "nerf"
+              "tone": "nerf",
+              "source_skill_name": "α - Wingbeat (Homing)",
+              "display_skill_name": {
+                "fr": "α - Wingbeat (À tête chercheuse)",
+                "en": "α - Wingbeat (Homing)"
+              }
             },
             {
               "character": "Hawks",
@@ -909,7 +995,12 @@
                 "140.0",
                 "150.0"
               ],
-              "tone": "buff"
+              "tone": "buff",
+              "source_skill_name": "β - Wind Cross (Melee)",
+              "display_skill_name": {
+                "fr": "β - Wind Cross (Corps à corps)",
+                "en": "β - Wind Cross (Melee)"
+              }
             },
             {
               "character": "Hawks",
@@ -941,7 +1032,12 @@
                 "140.0",
                 "150.0"
               ],
-              "tone": "buff"
+              "tone": "buff",
+              "source_skill_name": "β - Wind Cross (Melee)",
+              "display_skill_name": {
+                "fr": "β - Wind Cross (Corps à corps)",
+                "en": "β - Wind Cross (Melee)"
+              }
             },
             {
               "character": "Lady Nagant",
@@ -973,7 +1069,12 @@
                 "4.0",
                 "5.0"
               ],
-              "tone": "nerf"
+              "tone": "nerf",
+              "source_skill_name": "α - Hollow Point Shot (On-hit Shot AfterFollow-up)",
+              "display_skill_name": {
+                "fr": "α - Hollow Point Shot (On-hit Shot AfterFollow-up)",
+                "en": "α - Hollow Point Shot (On-hit Shot AfterFollow-up)"
+              }
             },
             {
               "character": "Lady Nagant",
@@ -1005,7 +1106,12 @@
                 "43.0",
                 "45.0"
               ],
-              "tone": "nerf"
+              "tone": "nerf",
+              "source_skill_name": "α - Hollow Point Shot (Shooting)",
+              "display_skill_name": {
+                "fr": "α - Hollow Point Shot (Tir)",
+                "en": "α - Hollow Point Shot (Shooting)"
+              }
             },
             {
               "character": "Lady Nagant",
@@ -1037,7 +1143,12 @@
                 "43.0",
                 "45.0"
               ],
-              "tone": "nerf"
+              "tone": "nerf",
+              "source_skill_name": "α - Hollow Point Shot (Shooting)",
+              "display_skill_name": {
+                "fr": "α - Hollow Point Shot (Tir)",
+                "en": "α - Hollow Point Shot (Shooting)"
+              }
             },
             {
               "character": "Lady Nagant",
@@ -1069,7 +1180,12 @@
                 "28.0",
                 "30.0"
               ],
-              "tone": "nerf"
+              "tone": "nerf",
+              "source_skill_name": "β - High Angle Fire (ArcOn-hit Shot)",
+              "display_skill_name": {
+                "fr": "β - High Angle Fire (ArcOn-hit Shot)",
+                "en": "β - High Angle Fire (ArcOn-hit Shot)"
+              }
             },
             {
               "character": "Lady Nagant",
@@ -1101,7 +1217,12 @@
                 "28.0",
                 "30.0"
               ],
-              "tone": "nerf"
+              "tone": "nerf",
+              "source_skill_name": "β - High Angle Fire (ArcOn-hit Shot)",
+              "display_skill_name": {
+                "fr": "β - High Angle Fire (ArcOn-hit Shot)",
+                "en": "β - High Angle Fire (ArcOn-hit Shot)"
+              }
             },
             {
               "character": "Lady Nagant",
@@ -1133,7 +1254,12 @@
                 "122.0",
                 "125.0"
               ],
-              "tone": "nerf"
+              "tone": "nerf",
+              "source_skill_name": "γ - Kickback Shot (Spread Shot Ground)",
+              "display_skill_name": {
+                "fr": "γ - Kickback Shot (Spread Shot Ground)",
+                "en": "γ - Kickback Shot (Spread Shot Ground)"
+              }
             },
             {
               "character": "Lady Nagant",
@@ -1165,7 +1291,12 @@
                 "122.0",
                 "125.0"
               ],
-              "tone": "nerf"
+              "tone": "nerf",
+              "source_skill_name": "γ - Kickback Shot (Spread Shot Ground)",
+              "display_skill_name": {
+                "fr": "γ - Kickback Shot (Spread Shot Ground)",
+                "en": "γ - Kickback Shot (Spread Shot Ground)"
+              }
             },
             {
               "character": "Lady Nagant",
@@ -1177,7 +1308,12 @@
               "label": "Damage",
               "before": "150.0",
               "after": "125.0",
-              "tone": "nerf"
+              "tone": "nerf",
+              "source_skill_name": "- Scope Mode (Action Shooting)",
+              "display_skill_name": {
+                "fr": "- Scope Mode (Action Shooting)",
+                "en": "- Scope Mode (Action Shooting)"
+              }
             },
             {
               "character": "Lady Nagant",
@@ -1189,7 +1325,12 @@
               "label": "Guard Break",
               "before": "150.0",
               "after": "125.0",
-              "tone": "nerf"
+              "tone": "nerf",
+              "source_skill_name": "- Scope Mode (Action Shooting)",
+              "display_skill_name": {
+                "fr": "- Scope Mode (Action Shooting)",
+                "en": "- Scope Mode (Action Shooting)"
+              }
             },
             {
               "character": "Lady Nagant",
@@ -1201,7 +1342,12 @@
               "label": "Damage",
               "before": "280.0",
               "after": "230.0",
-              "tone": "nerf"
+              "tone": "nerf",
+              "source_skill_name": "- Scope Mode (Action Shooting Headshot)",
+              "display_skill_name": {
+                "fr": "- Scope Mode (Action Shooting Headshot)",
+                "en": "- Scope Mode (Action Shooting Headshot)"
+              }
             },
             {
               "character": "Lady Nagant",
@@ -1213,7 +1359,12 @@
               "label": "Guard Break",
               "before": "280.0",
               "after": "230.0",
-              "tone": "nerf"
+              "tone": "nerf",
+              "source_skill_name": "- Scope Mode (Action Shooting Headshot)",
+              "display_skill_name": {
+                "fr": "- Scope Mode (Action Shooting Headshot)",
+                "en": "- Scope Mode (Action Shooting Headshot)"
+              }
             }
           ]
         },
@@ -1251,7 +1402,12 @@
                 "6",
                 "7"
               ],
-              "tone": "nerf"
+              "tone": "nerf",
+              "source_skill_name": "α - Delaware Smash Airblast",
+              "display_skill_name": {
+                "fr": "α - Delaware Smash Airblast",
+                "en": "α - Delaware Smash Airblast"
+              }
             },
             {
               "character": "Katsuki Bakugo",
@@ -1284,7 +1440,12 @@
                 "7"
               ],
               "tone": "buff",
-              "style_id": "bakugo_technical"
+              "style_id": "bakugo_technical",
+              "source_skill_name": "α - AP Shot Cluster",
+              "display_skill_name": {
+                "fr": "α - AP Shot Cluster",
+                "en": "α - AP Shot Cluster"
+              }
             },
             {
               "character": "Katsuki Bakugo",
@@ -1297,7 +1458,12 @@
               "before": "1",
               "after": "2",
               "tone": "buff",
-              "style_id": "bakugo_technical"
+              "style_id": "bakugo_technical",
+              "source_skill_name": "γ - Howitzer Impact Cluster",
+              "display_skill_name": {
+                "fr": "γ - Howitzer Impact Cluster",
+                "en": "γ - Howitzer Impact Cluster"
+              }
             },
             {
               "character": "Katsuki Bakugo",
@@ -1310,7 +1476,12 @@
               "before": "7.0",
               "after": "8.0",
               "tone": "buff",
-              "style_id": "bakugo_technical"
+              "style_id": "bakugo_technical",
+              "source_skill_name": "γ - Howitzer Impact Cluster",
+              "display_skill_name": {
+                "fr": "γ - Howitzer Impact Cluster",
+                "en": "γ - Howitzer Impact Cluster"
+              }
             },
             {
               "character": "Katsuki Bakugo",
@@ -1323,7 +1494,12 @@
               "before": "7.0",
               "after": "11.0",
               "tone": "buff",
-              "style_id": "bakugo_technical"
+              "style_id": "bakugo_technical",
+              "source_skill_name": "γ - Howitzer Impact Cluster",
+              "display_skill_name": {
+                "fr": "γ - Howitzer Impact Cluster",
+                "en": "γ - Howitzer Impact Cluster"
+              }
             },
             {
               "character": "Denki Kaminari",
@@ -1335,7 +1511,12 @@
               "label": "Penalty Reload",
               "before": "14.0",
               "after": "9.0",
-              "tone": "nerf"
+              "tone": "nerf",
+              "source_skill_name": "- Electrification",
+              "display_skill_name": {
+                "fr": "- Electrification",
+                "en": "- Electrification"
+              }
             },
             {
               "character": "Itsuka Kendo",
@@ -1355,7 +1536,12 @@
                 "2.0",
                 "2.0"
               ],
-              "tone": "buff"
+              "tone": "buff",
+              "source_skill_name": "γ - Big Fist Grip",
+              "display_skill_name": {
+                "fr": "γ - Big Fist Grip",
+                "en": "γ - Big Fist Grip"
+              }
             },
             {
               "character": "Hawks",
@@ -1387,7 +1573,12 @@
                 "38",
                 "40"
               ],
-              "tone": "nerf"
+              "tone": "nerf",
+              "source_skill_name": "α - Wingbeat",
+              "display_skill_name": {
+                "fr": "α - Wingbeat",
+                "en": "α - Wingbeat"
+              }
             },
             {
               "character": "Twice",
@@ -1419,7 +1610,12 @@
                 "4.0",
                 "4.0"
               ],
-              "tone": "nerf"
+              "tone": "nerf",
+              "source_skill_name": "γ - Foot Boost",
+              "display_skill_name": {
+                "fr": "γ - Foot Boost",
+                "en": "γ - Foot Boost"
+              }
             },
             {
               "character": "Twice",
@@ -1431,7 +1627,12 @@
               "label": "Ammo",
               "before": "3",
               "after": "4",
-              "tone": "buff"
+              "tone": "buff",
+              "source_skill_name": "γ - Foot Boost",
+              "display_skill_name": {
+                "fr": "γ - Foot Boost",
+                "en": "γ - Foot Boost"
+              }
             },
             {
               "character": "Twice",
@@ -1443,7 +1644,12 @@
               "label": "Penalty Reload",
               "before": "6.0",
               "after": "8.0",
-              "tone": "buff"
+              "tone": "buff",
+              "source_skill_name": "γ - Foot Boost",
+              "display_skill_name": {
+                "fr": "γ - Foot Boost",
+                "en": "γ - Foot Boost"
+              }
             },
             {
               "character": "Lady Nagant",
@@ -1475,7 +1681,12 @@
                 "6",
                 "7"
               ],
-              "tone": "nerf"
+              "tone": "nerf",
+              "source_skill_name": "α - Hollow Point Shot",
+              "display_skill_name": {
+                "fr": "α - Hollow Point Shot",
+                "en": "α - Hollow Point Shot"
+              }
             },
             {
               "character": "Lady Nagant",
@@ -1507,7 +1718,12 @@
                 "8.0",
                 "7.0"
               ],
-              "tone": "buff"
+              "tone": "buff",
+              "source_skill_name": "γ - Kickback Shot",
+              "display_skill_name": {
+                "fr": "γ - Kickback Shot",
+                "en": "γ - Kickback Shot"
+              }
             },
             {
               "character": "Lady Nagant",
@@ -1539,7 +1755,12 @@
                 "8.0",
                 "7.0"
               ],
-              "tone": "buff"
+              "tone": "buff",
+              "source_skill_name": "γ - Kickback Shot",
+              "display_skill_name": {
+                "fr": "γ - Kickback Shot",
+                "en": "γ - Kickback Shot"
+              }
             },
             {
               "character": "Lady Nagant",
@@ -1551,7 +1772,12 @@
               "label": "Ammo",
               "before": "2",
               "after": "1",
-              "tone": "nerf"
+              "tone": "nerf",
+              "source_skill_name": "γ - Kickback Shot",
+              "display_skill_name": {
+                "fr": "γ - Kickback Shot",
+                "en": "γ - Kickback Shot"
+              }
             },
             {
               "character": "Lady Nagant",
@@ -1563,7 +1789,12 @@
               "tone": "adjust",
               "bullets": [
                 "No changes detected."
-              ]
+              ],
+              "source_skill_name": "γ - Kickback Shot",
+              "display_skill_name": {
+                "fr": "γ - Kickback Shot",
+                "en": "γ - Kickback Shot"
+              }
             },
             {
               "character": "Lady Nagant",
@@ -1575,7 +1806,12 @@
               "tone": "adjust",
               "bullets": [
                 "No changes detected."
-              ]
+              ],
+              "source_skill_name": "γ - Kickback Shot",
+              "display_skill_name": {
+                "fr": "γ - Kickback Shot",
+                "en": "γ - Kickback Shot"
+              }
             }
           ]
         }

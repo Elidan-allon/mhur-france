@@ -1,64 +1,139 @@
-const RELEASE='513';
-const CACHE_PREFIX='mhur-nexus-v';
-const CACHE=`${CACHE_PREFIX}${RELEASE}`;
-const OFFLINE='/index.html';
-const SHELL=[
-  '/',
-  '/index.html',
-  '/manifest.webmanifest',
-  '/favicon.ico',
-  '/version.json',
-  '/assets/brand/icon-192.png',
-  '/assets/brand/icon-512.png',
-  '/css/v24-ios-standalone-header.css',
-  '/css/v25-desktop-display-guard.css',
-  '/css/v28-admin-media.css',
-  '/css/v29-media-drop.css',
-  '/css/v29-user-moderation.css',
-  '/css/v30-profile-admin-fixes.css',
-  '/css/v31-header-admin-layout.css',
-  '/css/v32-moderation-top-layer.css',
-  '/js/v24-ios-standalone.js',
-  '/js/v36-live-site-update.js',
-  '/js/v370-stable-core.js?v=36',
-  '/js/v429-details.js?v=36',
-  '/js/v31-header-admin-layout.js',
-  '/js/community-auth.js',
-  '/js/v54-early-device-guard.js',
-  '/css/v54-device-session-guard.css',
-  '/css/v510-back-button-offset.css',
-  '/js/v510-back-button-offset.js',
-  '/css/v511-responsive-ui.css',
-  '/css/v512-header-first-paint.css',
-  '/js/v512-header-first-paint.js',
-  '/css/v513-header-locked-mobile.css',
-  '/js/v513-header-locked-mobile.js',
-  '/css/v514-targeted-ui-fixes.css',
-  '/js/v514-targeted-ui-fixes.js',
-  '/js/community-profiles.js',
-  '/js/community-moderation.js',
-  '/js/community-mods.js',
-  '/js/community-hub.js',
-  '/js/community-builds.js',
-  '/js/v29-user-moderation.js',
-  '/js/v30-profile-directory.js',
-  '/js/v40-community-live-sync.js',
-  '/css/v50-moderation-center.css',
-  '/css/v51-moderation-center.css',
-  '/css/v51-responsive-guard.css',
-  '/css/v52-header-sanction-lock.css',
-  '/js/v51-moderation-center.js',
-  '/js/v51-responsive-guard.js',
-  '/js/v52-sanction-lock.js'
-];
-self.addEventListener('message',event=>{if(event.data?.type==='SKIP_WAITING')self.skipWaiting()});
-self.addEventListener('install',event=>{event.waitUntil((async()=>{const cache=await caches.open(CACHE);await Promise.allSettled(SHELL.map(url=>cache.add(new Request(url,{cache:'reload'}))));await self.skipWaiting()})())});
-self.addEventListener('activate',event=>{event.waitUntil((async()=>{const keys=await caches.keys();await Promise.all(keys.filter(key=>key.startsWith(CACHE_PREFIX)&&key!==CACHE).map(key=>caches.delete(key)));await self.clients.claim()})())});
-self.addEventListener('fetch',event=>{
-  const request=event.request;if(request.method!=='GET')return;
-  const url=new URL(request.url);if(url.origin!==self.location.origin)return;
-  if(request.mode==='navigate'){
-    event.respondWith((async()=>{try{const fresh=await fetch(request,{cache:'no-store'});if(fresh.ok){const cache=await caches.open(CACHE);await cache.put(OFFLINE,fresh.clone())}return fresh}catch(_){return (await caches.match(OFFLINE))||new Response('Connexion indisponible.',{status:503,headers:{'Content-Type':'text/plain; charset=utf-8'}})}})());return;
+const RELEASE = "662-271b70d1d145";
+const PREFIX = 'mhur-v662-';
+const STATIC_CACHE = `${PREFIX}static-${RELEASE}`;
+const OFFLINE_CACHE = `${PREFIX}offline-${RELEASE}`;
+const OFFLINE_URL = '/index.html';
+
+self.addEventListener('message', event => {
+  if (event.data?.type === 'SKIP_WAITING') {
+    self.skipWaiting();
   }
-  event.respondWith((async()=>{try{const fresh=await fetch(request,{cache:'no-store'});if(fresh.ok){const cache=await caches.open(CACHE);await cache.put(request,fresh.clone())}return fresh}catch(_){return (await caches.match(request))||new Response('',{status:503})}})());
+});
+
+self.addEventListener('install', event => {
+  event.waitUntil(
+    (async () => {
+      const cache = await caches.open(OFFLINE_CACHE);
+
+      try {
+        const response = await fetch(OFFLINE_URL, {
+          cache: 'no-store'
+        });
+
+        if (response.ok) {
+          await cache.put(OFFLINE_URL, response);
+        }
+      } catch (_error) {}
+
+      await self.skipWaiting();
+    })()
+  );
+});
+
+self.addEventListener('activate', event => {
+  event.waitUntil(
+    (async () => {
+      const keys = await caches.keys();
+
+      await Promise.all(
+        keys
+          .filter(key => key !== STATIC_CACHE && key !== OFFLINE_CACHE)
+          .map(key => caches.delete(key))
+      );
+
+      await self.clients.claim();
+    })()
+  );
+});
+
+async function networkFirst(request) {
+  try {
+    const response = await fetch(request, {
+      cache: 'no-cache'
+    });
+
+    if (response.ok) {
+      const cache = await caches.open(STATIC_CACHE);
+      await cache.put(request, response.clone());
+    }
+
+    return response;
+  } catch (error) {
+    const cached = await caches.match(request);
+    if (cached) return cached;
+    throw error;
+  }
+}
+
+async function cacheFirst(request) {
+  const cached = await caches.match(request);
+  if (cached) return cached;
+
+  const response = await fetch(request);
+
+  if (response.ok) {
+    const cache = await caches.open(STATIC_CACHE);
+    await cache.put(request, response.clone());
+  }
+
+  return response;
+}
+
+self.addEventListener('fetch', event => {
+  const request = event.request;
+
+  if (request.method !== 'GET') return;
+
+  const url = new URL(request.url);
+
+  if (url.origin !== self.location.origin) return;
+
+  if (request.mode === 'navigate') {
+    event.respondWith(
+      (async () => {
+        try {
+          const response = await fetch(request, {
+            cache: 'no-store'
+          });
+
+          if (response.ok) {
+            const cache = await caches.open(OFFLINE_CACHE);
+            await cache.put(OFFLINE_URL, response.clone());
+          }
+
+          return response;
+        } catch (_error) {
+          return (
+            (await caches.match(OFFLINE_URL)) ||
+            new Response('Connexion indisponible.', {
+              status: 503,
+              headers: {
+                'Content-Type': 'text/plain; charset=utf-8'
+              }
+            })
+          );
+        }
+      })()
+    );
+    return;
+  }
+
+  if (
+    request.destination === 'script' ||
+    request.destination === 'style' ||
+    url.pathname.startsWith('/data/') ||
+    url.pathname === '/version.json' ||
+    url.pathname === '/service-worker.js'
+  ) {
+    event.respondWith(networkFirst(request));
+    return;
+  }
+
+  if (
+    request.destination === 'image' ||
+    request.destination === 'font' ||
+    url.pathname.startsWith('/assets/')
+  ) {
+    event.respondWith(cacheFirst(request));
+  }
 });

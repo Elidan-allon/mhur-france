@@ -1,74 +1,112 @@
-(()=>{
+(() => {
   'use strict';
 
-  const CURRENT='5.13';
-  const VERSION_URL='/version.json';
-  const CHECK_EVERY=15000;
-  const RELOAD_KEY='mhur-live-update-reloaded-version';
-  let checking=false;
-  let registration=null;
+  const CURRENT = "662-271b70d1d145";
+  const RELOAD_KEY = 'mhur-v662-reloaded-build';
+  let checking = false;
 
-  async function fetchVersion(){
-    const response=await fetch(`${VERSION_URL}?t=${Date.now()}`,{
-      cache:'no-store',
-      headers:{'Cache-Control':'no-cache'}
+  async function remoteBuild() {
+    const response = await fetch(`/version.json?t=${Date.now()}`, {
+      cache: 'no-store',
+      headers: { 'Cache-Control': 'no-cache' }
     });
-    if(!response.ok)throw new Error(`version ${response.status}`);
-    return response.json();
+
+    if (!response.ok) {
+      throw new Error(`version ${response.status}`);
+    }
+
+    const data = await response.json();
+    return String(data?.build || data?.version || '');
   }
 
-  async function activateWaitingWorker(){
-    if(!registration&&'serviceWorker' in navigator){
-      registration=await navigator.serviceWorker.getRegistration('/');
+  async function registerWorker() {
+    if (
+      !('serviceWorker' in navigator) ||
+      location.protocol !== 'https:'
+    ) {
+      return;
     }
-    if(registration){
-      await registration.update();
-      registration.waiting?.postMessage({type:'SKIP_WAITING'});
-    }
-  }
 
-  async function checkForSiteUpdate(){
-    if(checking||document.visibilityState==='hidden'||!navigator.onLine)return;
-    checking=true;
-    try{
-      const remote=await fetchVersion();
-      const remoteVersion=String(remote?.version||'');
-      if(!remoteVersion||remoteVersion===CURRENT)return;
+    const registrations =
+      await navigator.serviceWorker.getRegistrations();
 
-      await activateWaitingWorker();
+    for (const registration of registrations) {
+      const script =
+        registration.active?.scriptURL ||
+        registration.waiting?.scriptURL ||
+        registration.installing?.scriptURL ||
+        '';
 
-      if(sessionStorage.getItem(RELOAD_KEY)===remoteVersion)return;
-      sessionStorage.setItem(RELOAD_KEY,remoteVersion);
-
-      /* Automatic reload: the user never has to press Refresh. */
-      location.reload();
-    }catch(error){
-      console.debug('MHUR Nexus live update check:',error);
-    }finally{
-      checking=false;
-    }
-  }
-
-  addEventListener('load',async()=>{
-    if('serviceWorker' in navigator&&location.protocol==='https:'){
-      try{
-        registration=await navigator.serviceWorker.register('/service-worker.js?v=513',{
-          scope:'/',
-          updateViaCache:'none'
-        });
-        registration.waiting?.postMessage({type:'SKIP_WAITING'});
-      }catch(error){
-        console.debug('MHUR Nexus SW v513:',error);
+      if (script && !script.includes('/service-worker.js')) {
+        await registration.unregister();
       }
     }
 
-    checkForSiteUpdate();
-    setInterval(checkForSiteUpdate,CHECK_EVERY);
-  },{once:true});
+    const registration = await navigator.serviceWorker.register(
+      `/service-worker.js?v=${encodeURIComponent(CURRENT)}`,
+      {
+        scope: '/',
+        updateViaCache: 'none'
+      }
+    );
 
-  document.addEventListener('visibilitychange',()=>{
-    if(document.visibilityState==='visible')checkForSiteUpdate();
+    await registration.update();
+    registration.waiting?.postMessage({ type: 'SKIP_WAITING' });
+  }
+
+  async function check() {
+    if (
+      checking ||
+      document.visibilityState === 'hidden' ||
+      !navigator.onLine
+    ) {
+      return;
+    }
+
+    checking = true;
+
+    try {
+      const remote = await remoteBuild();
+
+      if (!remote || remote === CURRENT) {
+        return;
+      }
+
+      await registerWorker();
+
+      if (sessionStorage.getItem(RELOAD_KEY) === remote) {
+        return;
+      }
+
+      sessionStorage.setItem(RELOAD_KEY, remote);
+      location.reload();
+    } catch (error) {
+      console.debug('MHUR update check:', error);
+    } finally {
+      checking = false;
+    }
+  }
+
+  addEventListener(
+    'load',
+    async () => {
+      try {
+        await registerWorker();
+      } catch (error) {
+        console.debug('MHUR service worker:', error);
+      }
+
+      check();
+      setInterval(check, 300000);
+    },
+    { once: true }
+  );
+
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') {
+      check();
+    }
   });
-  addEventListener('focus',checkForSiteUpdate);
-  addEventListener('online',checkForSiteUpdate);
+
+  addEventListener('online', check);
 })();

@@ -11,7 +11,7 @@
   if(window.MHUR_V608_LOADED)return;
   window.MHUR_V608_LOADED=true;
 
-  const VERSION='660';
+  const VERSION='662';
 
   function clean(value){
     return String(value??'').trim();
@@ -421,21 +421,24 @@
 
   function resolveStyle(change){
     const map=stylesMap();
-    const character=findCharacter(change?.character);
-    const ids=styleIds(character);
-
-    /*
-      V660 :
-      1. style_id explicite ;
-      2. règles Midoriya ;
-      3. nom exact du style ;
-      4. ressemblance du nom de compétence en dernier recours.
-    */
     const explicitId=clean(
       change?.style_id||
       change?.styleId||
       ''
     );
+
+    const explicitCharacter=explicitId
+      ?charactersList().find(character=>
+        Array.isArray(character?.styles)&&
+        character.styles.map(String).includes(explicitId)
+      )
+      :null;
+
+    const character=
+      explicitCharacter||
+      findCharacter(change?.character);
+
+    const ids=styleIds(character);
 
     if(
       explicitId&&
@@ -473,34 +476,6 @@
         character,
         id:byStyle,
         style:map[byStyle]
-      };
-    }
-
-    const rawSkill=normal(
-      change?.skill_name||
-      change?.label
-    );
-
-    const bySkill=ids.find(id=>
-      allSkills(map[id]).some(skill=>{
-        const name=normal(localized(skill?.name));
-
-        return (
-          name&&
-          (
-            name===rawSkill||
-            name.includes(rawSkill)||
-            rawSkill.includes(name)
-          )
-        );
-      })
-    );
-
-    if(bySkill){
-      return {
-        character,
-        id:bySkill,
-        style:map[bySkill]
       };
     }
 
@@ -753,8 +728,8 @@
       :skillFromStyle(group.style,change);
 
     const title=translatePatch(
+      localized(change?.display_skill_name)||
       localized(change?.skill_name)||
-      localized(skill?.name)||
       localized(change?.label)||
       tx('Ajustement','Adjustment')
     );

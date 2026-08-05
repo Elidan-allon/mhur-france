@@ -1,88 +1,33 @@
 /*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+
+/
   Cache-Control: no-store, no-cache, must-revalidate, max-age=0
   Pragma: no-cache
   Expires: 0
-  X-Content-Type-Options: nosniff
-  Referrer-Policy: strict-origin-when-cross-origin
-  Permissions-Policy: camera=(), microphone=(), geolocation=()
 
-/service-worker.js
-  Cache-Control: no-cache, no-store, must-revalidate
-  Service-Worker-Allowed: /
-  Content-Type: application/javascript; charset=utf-8
+/index.html
+  Cache-Control: no-store, no-cache, must-revalidate, max-age=0
+  Pragma: no-cache
+  Expires: 0
 
-/manifest.webmanifest
-  Cache-Control: no-cache, no-store, must-revalidate
-  Content-Type: application/manifest+json; charset=utf-8
-
-/service-worker-v431.js
-  Cache-Control: no-cache, no-store, must-revalidate
-  Service-Worker-Allowed: /
-  Content-Type: application/javascript; charset=utf-8
-
-/service-worker-v24.js
-  Cache-Control: no-cache, no-store, must-revalidate
-  Service-Worker-Allowed: /
-  Content-Type: application/javascript; charset=utf-8
 /version.json
-  Cache-Control: no-store, no-cache, must-revalidate
+  Cache-Control: no-store, no-cache, must-revalidate, max-age=0
 
 /service-worker.js
-  Cache-Control: no-store, no-cache, must-revalidate
-
-/service-worker-v36.js
-  Cache-Control: no-store, no-cache, must-revalidate
-
-# MHUR V633C ASSET CACHE START
-/assets/*
-  Cache-Control: public, max-age=604800, stale-while-revalidate=604800
+  Cache-Control: no-store, no-cache, must-revalidate, max-age=0
+  Service-Worker-Allowed: /
+  Content-Type: application/javascript; charset=utf-8
 
 /css/*
-  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+  Cache-Control: public, max-age=31536000, immutable
 
 /js/*
-  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+  Cache-Control: public, max-age=31536000, immutable
 
 /data/*
-  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
-# MHUR V633C ASSET CACHE END
-
-# MHUR V638 FAST CACHE START
-/
-  Cache-Control: public, max-age=60, stale-while-revalidate=86400
-
-/index.html
-  Cache-Control: public, max-age=60, stale-while-revalidate=86400
+  Cache-Control: public, max-age=31536000, immutable
 
 /assets/*
   Cache-Control: public, max-age=2592000, stale-while-revalidate=604800
-
-/css/*
-  Cache-Control: public, max-age=604800, stale-while-revalidate=604800
-
-/js/*
-  Cache-Control: public, max-age=604800, stale-while-revalidate=604800
-
-/data/*
-  Cache-Control: public, max-age=604800, stale-while-revalidate=604800
-# MHUR V638 FAST CACHE END
-
-# MHUR V639 DIRECT FINAL CACHE START
-/
-  Cache-Control: no-cache
-
-/index.html
-  Cache-Control: no-cache
-
-/assets/*
-  Cache-Control: public, max-age=2592000, stale-while-revalidate=604800
-
-/css/*
-  Cache-Control: public, max-age=604800, stale-while-revalidate=604800
-
-/js/*
-  Cache-Control: public, max-age=604800, stale-while-revalidate=604800
-
-/data/*
-  Cache-Control: public, max-age=604800, stale-while-revalidate=604800
-# MHUR V639 DIRECT FINAL CACHE END
