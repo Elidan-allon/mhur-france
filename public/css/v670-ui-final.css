@@ -1,10 +1,10 @@
-/* MHUR V664 — splash cinématique + NEW global unique */
+/* MHUR V670 — splash cinématique + NEW global unique */
 
 /* ==========================================================================
    SPLASH CINÉMATIQUE
    ========================================================================== */
 
-#mhurV664Splash {
+#mhurV670Splash {
   position: fixed;
   inset: 0;
   z-index: 2147483647;
@@ -20,26 +20,26 @@
   font-family: Arial, Helvetica, sans-serif;
 }
 
-html.mhur-v664-booting {
+html.mhur-v670-booting {
   overflow: hidden !important;
   background: #02060e !important;
 }
 
-html.mhur-v664-booting body {
+html.mhur-v670-booting body {
   overflow: hidden !important;
   background: #02060e !important;
 }
 
-html.mhur-v664-booting #mhurV664Splash {
+html.mhur-v670-booting #mhurV670Splash {
   display: block !important;
   visibility: visible !important;
 }
 
-html.mhur-v664-booting body > :not(#mhurV664Splash) {
+html.mhur-v670-booting body > :not(#mhurV670Splash) {
   visibility: hidden !important;
 }
 
-#mhurV664Splash::before {
+#mhurV670Splash::before {
   content: "";
   position: absolute;
   inset: -20%;
@@ -59,10 +59,10 @@ html.mhur-v664-booting body > :not(#mhurV664Splash) {
     );
   transform: perspective(800px) rotateX(58deg) translateY(20%);
   transform-origin: center bottom;
-  animation: mhurV664GridMove 9s linear infinite;
+  animation: mhurV670GridMove 9s linear infinite;
 }
 
-#mhurV664Splash::after {
+#mhurV670Splash::after {
   content: "";
   position: absolute;
   inset: 0;
@@ -79,7 +79,7 @@ html.mhur-v664-booting body > :not(#mhurV664Splash) {
   mix-blend-mode: overlay;
 }
 
-.mhurV664Aurora {
+.mhurV670Aurora {
   position: absolute;
   inset: -35%;
   z-index: -5;
@@ -93,10 +93,10 @@ html.mhur-v664-booting body > :not(#mhurV664Splash) {
       rgba(255, 224, 0, .16)
     );
   filter: blur(80px);
-  animation: mhurV664AuroraSpin 13s linear infinite;
+  animation: mhurV670AuroraSpin 13s linear infinite;
 }
 
-.mhurV664Beam {
+.mhurV670Beam {
   position: absolute;
   z-index: -2;
   width: 58vw;
@@ -110,36 +110,39 @@ html.mhur-v664-booting body > :not(#mhurV664Splash) {
   );
   filter: blur(18px);
   transform: rotate(-24deg);
-  animation: mhurV664BeamSweep 4.6s ease-in-out infinite;
+  animation: mhurV670BeamSweep 4.6s ease-in-out infinite;
 }
 
-.mhurV664Beam.one {
+.mhurV670Beam.one {
   top: 7%;
   left: -18%;
 }
 
-.mhurV664Beam.two {
+.mhurV670Beam.two {
   right: -20%;
   bottom: 10%;
   animation-delay: -2.1s;
   transform: rotate(156deg);
 }
 
-.mhurV664Hero {
+.mhurV670Hero {
   position: absolute;
-  top: 5%;
-  bottom: 2%;
+  top: -2%;
+  bottom: 12%;
   z-index: -1;
-  width: min(34vw, 600px);
-  opacity: .66;
+  width: min(35vw, 620px);
+  opacity: .70;
   pointer-events: none;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center 8%;
   filter:
     saturate(1.08)
     contrast(1.06)
     drop-shadow(0 24px 36px rgba(0, 0, 0, .72));
 }
 
-.mhurV664Hero::after {
+.mhurV670Hero::after {
   content: "";
   position: absolute;
   inset: 0;
@@ -152,41 +155,40 @@ html.mhur-v664-booting body > :not(#mhurV664Splash) {
     );
 }
 
-.mhurV664Hero img {
-  width: 100%;
-  height: 100%;
-  display: block;
-  object-fit: contain;
-  object-position: center bottom;
-}
-
-.mhurV664Hero.left {
+.mhurV670Hero.left {
   left: -1.5%;
-  transform: translateX(-5%) rotate(-2deg);
-  animation: mhurV664HeroLeft 5.6s ease-in-out infinite;
+  background-image:
+    url("../assets/home/season18/gentle_s18_banner.webp");
+  transform: translateX(-5%) translateY(-11%) rotate(-2deg);
+  animation: mhurV670HeroLeft 5.6s ease-in-out infinite;
 }
 
-.mhurV664Hero.right {
+.mhurV670Hero.right {
   right: -1.5%;
-  transform: translateX(5%) rotate(2deg);
-  animation: mhurV664HeroRight 5.6s ease-in-out infinite;
+  background-image:
+    url("../assets/home/season18/twice_s18_banner.webp");
+  transform: translateX(5%) translateY(-11%) rotate(2deg);
+  animation: mhurV670HeroRight 5.6s ease-in-out infinite;
 }
 
-.mhurV664Hero.mini {
+.mhurV670Hero.mini {
   top: auto;
   left: 50%;
   bottom: -17%;
-  width: min(28vw, 420px);
-  height: 54%;
-  opacity: .24;
-  transform: translateX(-50%);
+  width: min(30vw, 460px);
+  height: 58%;
+  opacity: .32;
+  background-image:
+    url("../assets/home/season18/tsuyu_profile_nobg.png");
+  background-position: center bottom;
+  transform: translateX(-50%) translateY(-6%);
   filter:
-    saturate(.9)
+    saturate(1)
     contrast(1.08)
     drop-shadow(0 18px 30px rgba(0, 0, 0, .8));
 }
 
-.mhurV664Stage {
+.mhurV670Stage {
   position: relative;
   z-index: 10;
   width: 100%;
@@ -201,7 +203,7 @@ html.mhur-v664-booting body > :not(#mhurV664Splash) {
     max(20px, env(safe-area-inset-left));
 }
 
-.mhurV664Panel {
+.mhurV670Panel {
   position: relative;
   width: min(92vw, 690px);
   padding: clamp(27px, 4.2vw, 48px);
@@ -222,7 +224,7 @@ html.mhur-v664-booting body > :not(#mhurV664Splash) {
   transform: translateZ(0);
 }
 
-.mhurV664Panel::before {
+.mhurV670Panel::before {
   content: "";
   position: absolute;
   inset: 0 0 auto;
@@ -239,7 +241,7 @@ html.mhur-v664-booting body > :not(#mhurV664Splash) {
   box-shadow: 0 0 24px rgba(43, 211, 239, .48);
 }
 
-.mhurV664Panel::after {
+.mhurV670Panel::after {
   content: "";
   position: absolute;
   inset: 12px;
@@ -248,42 +250,42 @@ html.mhur-v664-booting body > :not(#mhurV664Splash) {
   border-radius: 21px;
 }
 
-.mhurV664Corner {
+.mhurV670Corner {
   position: absolute;
   width: 48px;
   height: 48px;
   pointer-events: none;
 }
 
-.mhurV664Corner.tl {
+.mhurV670Corner.tl {
   top: 15px;
   left: 15px;
   border-top: 3px solid #ffe000;
   border-left: 3px solid #ffe000;
 }
 
-.mhurV664Corner.tr {
+.mhurV670Corner.tr {
   top: 15px;
   right: 15px;
   border-top: 3px solid #d33bff;
   border-right: 3px solid #d33bff;
 }
 
-.mhurV664Corner.bl {
+.mhurV670Corner.bl {
   bottom: 15px;
   left: 15px;
   border-bottom: 3px solid #2bd3ef;
   border-left: 3px solid #2bd3ef;
 }
 
-.mhurV664Corner.br {
+.mhurV670Corner.br {
   right: 15px;
   bottom: 15px;
   border-right: 3px solid #6498ff;
   border-bottom: 3px solid #6498ff;
 }
 
-.mhurV664Topline {
+.mhurV670Topline {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -291,8 +293,8 @@ html.mhur-v664-booting body > :not(#mhurV664Splash) {
   margin-bottom: 20px;
 }
 
-.mhurV664Live,
-.mhurV664Season {
+.mhurV670Live,
+.mhurV670Season {
   min-height: 30px;
   display: inline-flex;
   align-items: center;
@@ -308,22 +310,22 @@ html.mhur-v664-booting body > :not(#mhurV664Splash) {
   text-transform: uppercase;
 }
 
-.mhurV664Live::before {
+.mhurV670Live::before {
   content: "";
   width: 8px;
   height: 8px;
   border-radius: 50%;
   background: #29e26d;
   box-shadow: 0 0 14px #29e26d;
-  animation: mhurV664LivePulse 1.1s ease-in-out infinite;
+  animation: mhurV670LivePulse 1.1s ease-in-out infinite;
 }
 
-.mhurV664Season {
+.mhurV670Season {
   border-color: rgba(255, 226, 0, .42);
   color: #ffe65c;
 }
 
-.mhurV664LogoOrbit {
+.mhurV670LogoOrbit {
   position: relative;
   width: 134px;
   height: 134px;
@@ -332,30 +334,30 @@ html.mhur-v664-booting body > :not(#mhurV664Splash) {
   place-items: center;
 }
 
-.mhurV664LogoOrbit::before,
-.mhurV664LogoOrbit::after {
+.mhurV670LogoOrbit::before,
+.mhurV670LogoOrbit::after {
   content: "";
   position: absolute;
   border-radius: 50%;
 }
 
-.mhurV664LogoOrbit::before {
+.mhurV670LogoOrbit::before {
   inset: -9px;
   border:
     3px solid
     color-mix(in srgb, #2bd3ef 60%, transparent);
   border-top-color: #ffe000;
   border-right-color: #d33bff;
-  animation: mhurV664Orbit 3.6s linear infinite;
+  animation: mhurV670Orbit 3.6s linear infinite;
 }
 
-.mhurV664LogoOrbit::after {
+.mhurV670LogoOrbit::after {
   inset: -20px;
   border: 1px dashed rgba(121, 207, 255, .30);
-  animation: mhurV664OrbitReverse 7s linear infinite;
+  animation: mhurV670OrbitReverse 7s linear infinite;
 }
 
-.mhurV664Logo {
+.mhurV670Logo {
   width: 118px;
   height: 118px;
   display: grid;
@@ -376,14 +378,14 @@ html.mhur-v664-booting body > :not(#mhurV664Splash) {
   transform: rotate(-2deg);
 }
 
-.mhurV664Logo img {
+.mhurV670Logo img {
   width: 92px;
   height: 92px;
   display: block;
   object-fit: contain;
 }
 
-.mhurV664Kicker {
+.mhurV670Kicker {
   margin: 0 0 8px;
   color: #75ddff;
   font-size: 12px;
@@ -392,7 +394,7 @@ html.mhur-v664-booting body > :not(#mhurV664Splash) {
   text-transform: uppercase;
 }
 
-.mhurV664Title {
+.mhurV670Title {
   margin: 0;
   color: #fff;
   font-size: clamp(38px, 6vw, 66px);
@@ -404,14 +406,14 @@ html.mhur-v664-booting body > :not(#mhurV664Splash) {
     0 0 26px rgba(255, 255, 255, .07);
 }
 
-.mhurV664Title span {
+.mhurV670Title span {
   color: #ffe000;
   text-shadow:
     0 5px 0 #4b3900,
     0 0 25px rgba(255, 224, 0, .20);
 }
 
-.mhurV664Subtitle {
+.mhurV670Subtitle {
   max-width: 490px;
   margin: 17px auto 0;
   color: #c8dbef;
@@ -420,7 +422,7 @@ html.mhur-v664-booting body > :not(#mhurV664Splash) {
   line-height: 1.45;
 }
 
-.mhurV664LoadingBox {
+.mhurV670LoadingBox {
   margin-top: 27px;
   padding: 14px;
   border: 1px solid rgba(95, 179, 238, .30);
@@ -429,7 +431,7 @@ html.mhur-v664-booting body > :not(#mhurV664Splash) {
   box-shadow: 0 0 0 1px rgba(255, 255, 255, .025) inset;
 }
 
-.mhurV664StatusRow {
+.mhurV670StatusRow {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -437,7 +439,7 @@ html.mhur-v664-booting body > :not(#mhurV664Splash) {
   margin-bottom: 10px;
 }
 
-#mhurV664Status {
+#mhurV670Status {
   color: #e9f6ff;
   font-size: 12px;
   font-weight: 950;
@@ -445,7 +447,7 @@ html.mhur-v664-booting body > :not(#mhurV664Splash) {
   text-align: left;
 }
 
-#mhurV664Percent {
+#mhurV670Percent {
   min-width: 45px;
   color: #ffe000;
   font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
@@ -454,7 +456,7 @@ html.mhur-v664-booting body > :not(#mhurV664Splash) {
   text-align: right;
 }
 
-.mhurV664Track {
+.mhurV670Track {
   position: relative;
   height: 14px;
   overflow: hidden;
@@ -466,7 +468,7 @@ html.mhur-v664-booting body > :not(#mhurV664Splash) {
     0 0 20px rgba(20, 181, 221, .08) inset;
 }
 
-#mhurV664Fill {
+#mhurV670Fill {
   position: absolute;
   inset: 0 auto 0 0;
   width: 7%;
@@ -485,7 +487,7 @@ html.mhur-v664-booting body > :not(#mhurV664Splash) {
   transition: width .16s ease-out;
 }
 
-#mhurV664Fill::after {
+#mhurV670Fill::after {
   content: "";
   position: absolute;
   inset: 0;
@@ -497,10 +499,10 @@ html.mhur-v664-booting body > :not(#mhurV664Splash) {
       transparent 58%
     );
   transform: translateX(-120%);
-  animation: mhurV664BarShine 1.1s linear infinite;
+  animation: mhurV670BarShine 1.1s linear infinite;
 }
 
-.mhurV664Chips {
+.mhurV670Chips {
   margin-top: 17px;
   display: flex;
   justify-content: center;
@@ -508,7 +510,7 @@ html.mhur-v664-booting body > :not(#mhurV664Splash) {
   gap: 8px;
 }
 
-.mhurV664Chips span {
+.mhurV670Chips span {
   min-height: 31px;
   display: inline-flex;
   align-items: center;
@@ -523,7 +525,7 @@ html.mhur-v664-booting body > :not(#mhurV664Splash) {
   text-transform: uppercase;
 }
 
-.mhurV664Build {
+.mhurV670Build {
   margin: 16px 0 0;
   color: #7189a4;
   font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
@@ -531,13 +533,13 @@ html.mhur-v664-booting body > :not(#mhurV664Splash) {
   font-weight: 800;
 }
 
-html.mhur-v664-ready #mhurV664Splash {
+html.mhur-v670-ready #mhurV670Splash {
   opacity: 0;
   pointer-events: none;
   transition: opacity .32s ease;
 }
 
-html.mhur-v664-ready .mhurV664Panel {
+html.mhur-v670-ready .mhurV670Panel {
   transform: scale(.975);
   transition: transform .32s ease;
 }
@@ -560,25 +562,21 @@ html.mhur-v664-ready .mhurV664Panel {
     drop-shadow(0 4px 0 rgba(0, 0, 0, .82))
     drop-shadow(0 0 8px rgba(255, 35, 163, .23)) !important;
   transform-origin: center !important;
-  animation: mhurV664NewPulse .92s ease-in-out infinite !important;
+  animation: mhurV670NewPulse .92s ease-in-out infinite !important;
   will-change: transform !important;
 }
 
+.mhurNewV582::before,
 .mhurNewV582::after {
-  content: "";
-  position: absolute;
-  inset: 5px 7px;
-  border-radius: 6px;
-  background:
-    linear-gradient(
-      115deg,
-      transparent 0 38%,
-      rgba(255, 255, 255, .58) 47%,
-      transparent 57%
-    );
-  transform: translateX(-150%);
-  animation: mhurV664NewShine 1.8s ease-in-out infinite;
+  content: none !important;
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  background: none !important;
+  animation: none !important;
+  transform: none !important;
 }
+
 
 /* Personnages + Alters/styles. */
 .card[data-char] > .mhurNewV582,
@@ -661,7 +659,7 @@ html.mhur-v664-ready .mhurV664Panel {
   animation: none !important;
 }
 
-@keyframes mhurV664GridMove {
+@keyframes mhurV670GridMove {
   to {
     transform:
       perspective(800px)
@@ -670,13 +668,13 @@ html.mhur-v664-ready .mhurV664Panel {
   }
 }
 
-@keyframes mhurV664AuroraSpin {
+@keyframes mhurV670AuroraSpin {
   to {
     transform: rotate(360deg);
   }
 }
 
-@keyframes mhurV664BeamSweep {
+@keyframes mhurV670BeamSweep {
   0%,
   100% {
     opacity: .18;
@@ -689,7 +687,7 @@ html.mhur-v664-ready .mhurV664Panel {
   }
 }
 
-@keyframes mhurV664HeroLeft {
+@keyframes mhurV670HeroLeft {
   0%,
   100% {
     transform: translateX(-5%) translateY(0) rotate(-2deg);
@@ -700,7 +698,7 @@ html.mhur-v664-ready .mhurV664Panel {
   }
 }
 
-@keyframes mhurV664HeroRight {
+@keyframes mhurV670HeroRight {
   0%,
   100% {
     transform: translateX(5%) translateY(0) rotate(2deg);
@@ -711,19 +709,19 @@ html.mhur-v664-ready .mhurV664Panel {
   }
 }
 
-@keyframes mhurV664Orbit {
+@keyframes mhurV670Orbit {
   to {
     transform: rotate(360deg);
   }
 }
 
-@keyframes mhurV664OrbitReverse {
+@keyframes mhurV670OrbitReverse {
   to {
     transform: rotate(-360deg);
   }
 }
 
-@keyframes mhurV664LivePulse {
+@keyframes mhurV670LivePulse {
   0%,
   100% {
     opacity: .58;
@@ -736,13 +734,13 @@ html.mhur-v664-ready .mhurV664Panel {
   }
 }
 
-@keyframes mhurV664BarShine {
+@keyframes mhurV670BarShine {
   to {
     transform: translateX(150%);
   }
 }
 
-@keyframes mhurV664NewPulse {
+@keyframes mhurV670NewPulse {
   0%,
   100% {
     transform: scale(.92) rotate(-2deg);
@@ -753,82 +751,70 @@ html.mhur-v664-ready .mhurV664Panel {
   }
 }
 
-@keyframes mhurV664NewShine {
-  0%,
-  55% {
-    transform: translateX(-150%);
-  }
-
-  78%,
-  100% {
-    transform: translateX(150%);
-  }
-}
-
 @media (max-width: 1100px) {
-  .mhurV664Hero {
+  .mhurV670Hero {
     width: 34vw;
     opacity: .43;
   }
 
-  .mhurV664Panel {
+  .mhurV670Panel {
     width: min(88vw, 650px);
   }
 }
 
 @media (max-width: 760px) {
-  .mhurV664Hero {
+  .mhurV670Hero {
     display: none;
   }
 
-  .mhurV664Stage {
+  .mhurV670Stage {
     padding: 14px;
   }
 
-  .mhurV664Panel {
+  .mhurV670Panel {
     width: min(96vw, 560px);
     padding: 30px 19px 25px;
     border-radius: 22px;
   }
 
-  .mhurV664LogoOrbit {
+  .mhurV670LogoOrbit {
     width: 108px;
     height: 108px;
     margin-bottom: 19px;
   }
 
-  .mhurV664Logo {
+  .mhurV670Logo {
     width: 94px;
     height: 94px;
     border-radius: 22px;
   }
 
-  .mhurV664Logo img {
+  .mhurV670Logo img {
     width: 74px;
     height: 74px;
   }
 
-  .mhurV664Topline {
+  .mhurV670Topline {
     margin-bottom: 17px;
   }
 
-  .mhurV664Live,
-  .mhurV664Season {
+  .mhurV670Live,
+  .mhurV670Season {
     min-height: 27px;
     padding: 0 8px;
     font-size: 9px;
   }
 
-  .mhurV664Title {
+  .mhurV670Title {
     font-size: clamp(37px, 12vw, 52px);
   }
 
-  .mhurV664Subtitle {
+  .mhurV670Subtitle {
     margin-top: 13px;
     font-size: 13px;
   }
 
-  .mhurV664LoadingBox {
+  .mhurV670LoadingBox {
     margin-top: 21px;
   }
 
@@ -849,13 +835,13 @@ html.mhur-v664-ready .mhurV664Panel {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .mhurV664Aurora,
-  .mhurV664Beam,
-  .mhurV664Hero,
-  .mhurV664LogoOrbit::before,
-  .mhurV664LogoOrbit::after,
-  .mhurV664Live::before,
-  #mhurV664Fill::after,
+  .mhurV670Aurora,
+  .mhurV670Beam,
+  .mhurV670Hero,
+  .mhurV670LogoOrbit::before,
+  .mhurV670LogoOrbit::after,
+  .mhurV670Live::before,
+  #mhurV670Fill::after,
   .mhurNewV582,
   .mhurNewV582::after {
     animation: none !important;

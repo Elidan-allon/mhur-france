@@ -1,10 +1,10 @@
 (() => {
   'use strict';
 
-  const BUILD = "664-f4c73d3135c7";
+  const BUILD = "670-1d3b596f61ed";
   const root = document.documentElement;
   const startedAt =
-    Number(window.__MHUR_V664_STARTED_AT) ||
+    Number(window.__MHUR_V670_STARTED_AT) ||
     performance.now();
 
   const OWNER_SELECTOR = [
@@ -42,6 +42,30 @@
   let revealed = false;
   let currentProgress = 7;
   let progressTimer = 0;
+
+  function cleanupOldSplashArtifacts() {
+    document.querySelectorAll(
+      '[id^="mhurV66"][id$="Splash"]'
+    ).forEach(node => {
+      if (node.id !== 'mhurV670Splash') node.remove();
+    });
+
+    document.querySelectorAll(
+      '[class*="mhurV66"][class*="Hero"]'
+    ).forEach(node => {
+      if (!node.closest('#mhurV670Splash')) node.remove();
+    });
+
+    document.querySelectorAll(
+      '[id*="LeftHeroImage"],' +
+      '[id*="RightHeroImage"],' +
+      '[id*="MiniHeroImage"]'
+    ).forEach(node => {
+      if (!node.closest('#mhurV670Splash')) {
+        (node.closest('figure,div') || node).remove();
+      }
+    });
+  }
 
   function depth(node) {
     let value = 0;
@@ -170,15 +194,15 @@
   function tuneImages(scope = document) {
     const images = scope.querySelectorAll
       ? scope.querySelectorAll(
-          'img:not([data-mhur-v664-image])'
+          'img:not([data-mhur-v670-image])'
         )
       : [];
 
     images.forEach((image, index) => {
-      image.dataset.mhurV664Image = '1';
+      image.dataset.mhurV670Image = '1';
       image.decoding = 'async';
 
-      if (image.closest('#mhurV664Splash')) return;
+      if (image.closest('#mhurV670Splash')) return;
 
       const rect = image.getBoundingClientRect();
       const visible =
@@ -208,9 +232,9 @@
       Math.min(100, Math.round(value))
     );
 
-    const fill = document.getElementById('mhurV664Fill');
-    const percent = document.getElementById('mhurV664Percent');
-    const status = document.getElementById('mhurV664Status');
+    const fill = document.getElementById('mhurV670Fill');
+    const percent = document.getElementById('mhurV670Percent');
+    const status = document.getElementById('mhurV670Status');
 
     if (fill) fill.style.width = `${currentProgress}%`;
     if (percent) percent.textContent = `${currentProgress}%`;
@@ -248,16 +272,21 @@
     setTimeout(() => {
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
-          root.classList.remove('mhur-v664-booting');
-          root.classList.add('mhur-v664-ready');
+          root.classList.remove('mhur-v670-booting');
+          root.classList.add('mhur-v670-ready');
           root.dataset.mhurBuild = BUILD;
 
-          setTimeout(() => {
-            document.getElementById('mhurV664Splash')?.remove();
-          }, 360);
+          const splash = document.getElementById(
+            'mhurV670Splash'
+          );
+
+          if (splash) {
+            splash.style.display = 'none';
+            setTimeout(() => splash.remove(), 360);
+          }
 
           window.dispatchEvent(
-            new CustomEvent('mhur:v664-ready', {
+            new CustomEvent('mhur:v670-ready', {
               detail: { build: BUILD }
             })
           );
@@ -267,6 +296,7 @@
   }
 
   function start() {
+    cleanupOldSplashArtifacts();
     beginProgress();
     scanCanonical(document);
     tuneImages(document);
@@ -314,7 +344,7 @@
   /* Le site ne reste jamais bloqué derrière le splash. */
   setTimeout(finishReveal, 3800);
 
-  window.MHUR_V664 = {
+  window.MHUR_V670 = {
     build: BUILD,
     refreshNew: () => scanCanonical(document),
     cleanOwner

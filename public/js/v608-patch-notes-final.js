@@ -11,7 +11,7 @@
   if(window.MHUR_V608_LOADED)return;
   window.MHUR_V608_LOADED=true;
 
-  const VERSION='667';
+  const VERSION='670';
 
   function clean(value){
     return String(value??'').trim();
