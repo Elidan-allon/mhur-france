@@ -1,15 +1,18 @@
 (() => {
   'use strict';
 
-  const CURRENT = "663-db1d3bf81ac3";
-  const RELOAD_KEY = 'mhur-v663-reloaded-build';
+  const CURRENT = "664-f4c73d3135c7";
+  const RELOAD_KEY = 'mhur-v664-reloaded-build';
   let checking = false;
 
-  async function getRemoteBuild() {
-    const response = await fetch(`/version.json?t=${Date.now()}`, {
-      cache: 'no-store',
-      headers: { 'Cache-Control': 'no-cache' }
-    });
+  async function remoteBuild() {
+    const response = await fetch(
+      `/version.json?t=${Date.now()}`,
+      {
+        cache: 'no-store',
+        headers: { 'Cache-Control': 'no-cache' }
+      }
+    );
 
     if (!response.ok) {
       throw new Error(`version ${response.status}`);
@@ -66,7 +69,7 @@
     checking = true;
 
     try {
-      const remote = await getRemoteBuild();
+      const remote = await remoteBuild();
 
       if (!remote || remote === CURRENT) return;
 

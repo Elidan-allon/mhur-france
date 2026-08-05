@@ -1,0 +1,863 @@
+/* MHUR V664 — splash cinématique + NEW global unique */
+
+/* ==========================================================================
+   SPLASH CINÉMATIQUE
+   ========================================================================== */
+
+#mhurV664Splash {
+  position: fixed;
+  inset: 0;
+  z-index: 2147483647;
+  display: none;
+  min-height: 100vh;
+  min-height: 100dvh;
+  overflow: hidden;
+  isolation: isolate;
+  background:
+    radial-gradient(circle at 50% 46%, rgba(32, 133, 210, .18), transparent 35%),
+    linear-gradient(135deg, #02060e 0%, #061426 42%, #07111f 72%, #02050b 100%);
+  color: #fff;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+html.mhur-v664-booting {
+  overflow: hidden !important;
+  background: #02060e !important;
+}
+
+html.mhur-v664-booting body {
+  overflow: hidden !important;
+  background: #02060e !important;
+}
+
+html.mhur-v664-booting #mhurV664Splash {
+  display: block !important;
+  visibility: visible !important;
+}
+
+html.mhur-v664-booting body > :not(#mhurV664Splash) {
+  visibility: hidden !important;
+}
+
+#mhurV664Splash::before {
+  content: "";
+  position: absolute;
+  inset: -20%;
+  z-index: -4;
+  background:
+    repeating-linear-gradient(
+      120deg,
+      transparent 0 58px,
+      rgba(63, 199, 255, .035) 59px 61px,
+      transparent 62px 118px
+    ),
+    repeating-linear-gradient(
+      30deg,
+      transparent 0 76px,
+      rgba(255, 226, 0, .025) 77px 79px,
+      transparent 80px 156px
+    );
+  transform: perspective(800px) rotateX(58deg) translateY(20%);
+  transform-origin: center bottom;
+  animation: mhurV664GridMove 9s linear infinite;
+}
+
+#mhurV664Splash::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  pointer-events: none;
+  opacity: .17;
+  background:
+    repeating-linear-gradient(
+      180deg,
+      transparent 0 3px,
+      rgba(255, 255, 255, .05) 4px,
+      transparent 5px 8px
+    );
+  mix-blend-mode: overlay;
+}
+
+.mhurV664Aurora {
+  position: absolute;
+  inset: -35%;
+  z-index: -5;
+  background:
+    conic-gradient(
+      from 20deg,
+      rgba(255, 224, 0, .16),
+      rgba(30, 209, 238, .17),
+      rgba(185, 63, 255, .14),
+      rgba(255, 67, 88, .10),
+      rgba(255, 224, 0, .16)
+    );
+  filter: blur(80px);
+  animation: mhurV664AuroraSpin 13s linear infinite;
+}
+
+.mhurV664Beam {
+  position: absolute;
+  z-index: -2;
+  width: 58vw;
+  height: 12vh;
+  opacity: .42;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(74, 214, 255, .34),
+    transparent
+  );
+  filter: blur(18px);
+  transform: rotate(-24deg);
+  animation: mhurV664BeamSweep 4.6s ease-in-out infinite;
+}
+
+.mhurV664Beam.one {
+  top: 7%;
+  left: -18%;
+}
+
+.mhurV664Beam.two {
+  right: -20%;
+  bottom: 10%;
+  animation-delay: -2.1s;
+  transform: rotate(156deg);
+}
+
+.mhurV664Hero {
+  position: absolute;
+  top: 5%;
+  bottom: 2%;
+  z-index: -1;
+  width: min(34vw, 600px);
+  opacity: .66;
+  pointer-events: none;
+  filter:
+    saturate(1.08)
+    contrast(1.06)
+    drop-shadow(0 24px 36px rgba(0, 0, 0, .72));
+}
+
+.mhurV664Hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(2, 6, 14, .22),
+      transparent 23% 70%,
+      #02060e 97%
+    );
+}
+
+.mhurV664Hero img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
+  object-position: center bottom;
+}
+
+.mhurV664Hero.left {
+  left: -1.5%;
+  transform: translateX(-5%) rotate(-2deg);
+  animation: mhurV664HeroLeft 5.6s ease-in-out infinite;
+}
+
+.mhurV664Hero.right {
+  right: -1.5%;
+  transform: translateX(5%) rotate(2deg);
+  animation: mhurV664HeroRight 5.6s ease-in-out infinite;
+}
+
+.mhurV664Hero.mini {
+  top: auto;
+  left: 50%;
+  bottom: -17%;
+  width: min(28vw, 420px);
+  height: 54%;
+  opacity: .24;
+  transform: translateX(-50%);
+  filter:
+    saturate(.9)
+    contrast(1.08)
+    drop-shadow(0 18px 30px rgba(0, 0, 0, .8));
+}
+
+.mhurV664Stage {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: grid;
+  place-items: center;
+  padding:
+    max(24px, env(safe-area-inset-top))
+    max(20px, env(safe-area-inset-right))
+    max(24px, env(safe-area-inset-bottom))
+    max(20px, env(safe-area-inset-left));
+}
+
+.mhurV664Panel {
+  position: relative;
+  width: min(92vw, 690px);
+  padding: clamp(27px, 4.2vw, 48px);
+  overflow: hidden;
+  border: 2px solid rgba(93, 194, 255, .66);
+  border-radius: 30px;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(14, 34, 60, .965),
+      rgba(4, 13, 26, .985) 66%
+    );
+  box-shadow:
+    0 36px 100px rgba(0, 0, 0, .64),
+    0 0 0 1px rgba(255, 255, 255, .055) inset,
+    0 0 72px rgba(23, 194, 229, .14);
+  text-align: center;
+  transform: translateZ(0);
+}
+
+.mhurV664Panel::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 7px;
+  background:
+    linear-gradient(
+      90deg,
+      #ffe000 0%,
+      #d8f232 20%,
+      #2bd3ef 49%,
+      #6498ff 70%,
+      #d33bff 100%
+    );
+  box-shadow: 0 0 24px rgba(43, 211, 239, .48);
+}
+
+.mhurV664Panel::after {
+  content: "";
+  position: absolute;
+  inset: 12px;
+  pointer-events: none;
+  border: 1px solid rgba(123, 197, 255, .10);
+  border-radius: 21px;
+}
+
+.mhurV664Corner {
+  position: absolute;
+  width: 48px;
+  height: 48px;
+  pointer-events: none;
+}
+
+.mhurV664Corner.tl {
+  top: 15px;
+  left: 15px;
+  border-top: 3px solid #ffe000;
+  border-left: 3px solid #ffe000;
+}
+
+.mhurV664Corner.tr {
+  top: 15px;
+  right: 15px;
+  border-top: 3px solid #d33bff;
+  border-right: 3px solid #d33bff;
+}
+
+.mhurV664Corner.bl {
+  bottom: 15px;
+  left: 15px;
+  border-bottom: 3px solid #2bd3ef;
+  border-left: 3px solid #2bd3ef;
+}
+
+.mhurV664Corner.br {
+  right: 15px;
+  bottom: 15px;
+  border-right: 3px solid #6498ff;
+  border-bottom: 3px solid #6498ff;
+}
+
+.mhurV664Topline {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 9px;
+  margin-bottom: 20px;
+}
+
+.mhurV664Live,
+.mhurV664Season {
+  min-height: 30px;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 0 11px;
+  border: 1px solid rgba(92, 184, 245, .44);
+  border-radius: 999px;
+  background: rgba(3, 13, 26, .70);
+  color: #dff4ff;
+  font-size: 11px;
+  font-weight: 1000;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+}
+
+.mhurV664Live::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #29e26d;
+  box-shadow: 0 0 14px #29e26d;
+  animation: mhurV664LivePulse 1.1s ease-in-out infinite;
+}
+
+.mhurV664Season {
+  border-color: rgba(255, 226, 0, .42);
+  color: #ffe65c;
+}
+
+.mhurV664LogoOrbit {
+  position: relative;
+  width: 134px;
+  height: 134px;
+  margin: 0 auto 24px;
+  display: grid;
+  place-items: center;
+}
+
+.mhurV664LogoOrbit::before,
+.mhurV664LogoOrbit::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+}
+
+.mhurV664LogoOrbit::before {
+  inset: -9px;
+  border:
+    3px solid
+    color-mix(in srgb, #2bd3ef 60%, transparent);
+  border-top-color: #ffe000;
+  border-right-color: #d33bff;
+  animation: mhurV664Orbit 3.6s linear infinite;
+}
+
+.mhurV664LogoOrbit::after {
+  inset: -20px;
+  border: 1px dashed rgba(121, 207, 255, .30);
+  animation: mhurV664OrbitReverse 7s linear infinite;
+}
+
+.mhurV664Logo {
+  width: 118px;
+  height: 118px;
+  display: grid;
+  place-items: center;
+  border: 4px solid #02050b;
+  border-radius: 27px;
+  background:
+    radial-gradient(
+      circle at 48% 28%,
+      #fff7a8 0%,
+      #ffe000 38%,
+      #a67f00 100%
+    );
+  box-shadow:
+    0 9px 0 #010307,
+    0 0 0 3px #ffe000,
+    0 0 42px rgba(255, 224, 0, .29);
+  transform: rotate(-2deg);
+}
+
+.mhurV664Logo img {
+  width: 92px;
+  height: 92px;
+  display: block;
+  object-fit: contain;
+}
+
+.mhurV664Kicker {
+  margin: 0 0 8px;
+  color: #75ddff;
+  font-size: 12px;
+  font-weight: 1000;
+  letter-spacing: .24em;
+  text-transform: uppercase;
+}
+
+.mhurV664Title {
+  margin: 0;
+  color: #fff;
+  font-size: clamp(38px, 6vw, 66px);
+  font-weight: 1000;
+  line-height: .91;
+  letter-spacing: -.06em;
+  text-shadow:
+    0 5px 0 #02050a,
+    0 0 26px rgba(255, 255, 255, .07);
+}
+
+.mhurV664Title span {
+  color: #ffe000;
+  text-shadow:
+    0 5px 0 #4b3900,
+    0 0 25px rgba(255, 224, 0, .20);
+}
+
+.mhurV664Subtitle {
+  max-width: 490px;
+  margin: 17px auto 0;
+  color: #c8dbef;
+  font-size: clamp(14px, 1.7vw, 17px);
+  font-weight: 800;
+  line-height: 1.45;
+}
+
+.mhurV664LoadingBox {
+  margin-top: 27px;
+  padding: 14px;
+  border: 1px solid rgba(95, 179, 238, .30);
+  border-radius: 16px;
+  background: rgba(2, 11, 22, .58);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, .025) inset;
+}
+
+.mhurV664StatusRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+#mhurV664Status {
+  color: #e9f6ff;
+  font-size: 12px;
+  font-weight: 950;
+  letter-spacing: .035em;
+  text-align: left;
+}
+
+#mhurV664Percent {
+  min-width: 45px;
+  color: #ffe000;
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+  font-size: 13px;
+  font-weight: 1000;
+  text-align: right;
+}
+
+.mhurV664Track {
+  position: relative;
+  height: 14px;
+  overflow: hidden;
+  border: 2px solid #010307;
+  border-radius: 999px;
+  background: #06101e;
+  box-shadow:
+    0 0 0 1px rgba(78, 170, 234, .35),
+    0 0 20px rgba(20, 181, 221, .08) inset;
+}
+
+#mhurV664Fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 7%;
+  border-radius: inherit;
+  background:
+    linear-gradient(
+      90deg,
+      #ffe000 0%,
+      #a9ee50 22%,
+      #2bd3ef 52%,
+      #718aff 76%,
+      #d33bff 100%
+    );
+  box-shadow:
+    0 0 21px rgba(43, 211, 239, .58);
+  transition: width .16s ease-out;
+}
+
+#mhurV664Fill::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      110deg,
+      transparent 0 34%,
+      rgba(255, 255, 255, .72) 45%,
+      transparent 58%
+    );
+  transform: translateX(-120%);
+  animation: mhurV664BarShine 1.1s linear infinite;
+}
+
+.mhurV664Chips {
+  margin-top: 17px;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.mhurV664Chips span {
+  min-height: 31px;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 11px;
+  border: 1px solid rgba(82, 172, 233, .36);
+  border-radius: 999px;
+  background: rgba(4, 17, 33, .72);
+  color: #d8ebfc;
+  font-size: 11px;
+  font-weight: 1000;
+  letter-spacing: .055em;
+  text-transform: uppercase;
+}
+
+.mhurV664Build {
+  margin: 16px 0 0;
+  color: #7189a4;
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+  font-size: 10px;
+  font-weight: 800;
+}
+
+html.mhur-v664-ready #mhurV664Splash {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .32s ease;
+}
+
+html.mhur-v664-ready .mhurV664Panel {
+  transform: scale(.975);
+  transition: transform .32s ease;
+}
+
+/* ==========================================================================
+   NEW UNIQUE PARTOUT
+   ========================================================================== */
+
+.mhurNewV582 {
+  pointer-events: none !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  z-index: 160 !important;
+  background:
+    transparent
+    url("../assets/home/icons/new_badge_custom.png")
+    center / contain
+    no-repeat !important;
+  filter:
+    drop-shadow(0 4px 0 rgba(0, 0, 0, .82))
+    drop-shadow(0 0 8px rgba(255, 35, 163, .23)) !important;
+  transform-origin: center !important;
+  animation: mhurV664NewPulse .92s ease-in-out infinite !important;
+  will-change: transform !important;
+}
+
+.mhurNewV582::after {
+  content: "";
+  position: absolute;
+  inset: 5px 7px;
+  border-radius: 6px;
+  background:
+    linear-gradient(
+      115deg,
+      transparent 0 38%,
+      rgba(255, 255, 255, .58) 47%,
+      transparent 57%
+    );
+  transform: translateX(-150%);
+  animation: mhurV664NewShine 1.8s ease-in-out infinite;
+}
+
+/* Personnages + Alters/styles. */
+.card[data-char] > .mhurNewV582,
+.styleCard[data-style] > .mhurNewV582 {
+  top: 8px !important;
+  right: 8px !important;
+  left: auto !important;
+  width: 88px !important;
+  height: 44px !important;
+}
+
+/* Costumes : sous les étoiles. */
+.costumeTile > .mhurNewV582,
+.costumeCard > .mhurNewV582,
+.costumeResult > .mhurNewV582 {
+  top: 39px !important;
+  right: 8px !important;
+  left: auto !important;
+  width: 64px !important;
+  height: 34px !important;
+  z-index: 145 !important;
+}
+
+/*
+  Le parent marqué contient le NEW V582 canonique.
+  Tout ancien NEW frère ou descendant est masqué.
+*/
+[data-mhur-new-owner="1"] :is(
+  .s18NewBadge,
+  .s18NewBadgeV9,
+  .releaseNewBadgeV9,
+  .s18SeasonNewV10,
+  .s18PlannedNewV12,
+  [class*="NewBadge"],
+  [class*="newBadge"],
+  [class*="NewPulse"],
+  [class*="newPulse"],
+  [class*="NewSticker"],
+  [class*="newSticker"],
+  [class*="NewTag"],
+  [class*="newTag"],
+  [class*="CostumeNew"],
+  [class*="CharacterNew"],
+  [class*="StyleNew"],
+  [class*="mhurNew"]:not(.mhurNewV582),
+  [aria-label="NEW"]:not(.mhurNewV582),
+  img[src*="new_badge"]:not(.mhurNewV582)
+) {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  animation: none !important;
+  pointer-events: none !important;
+}
+
+/* Nettoyage immédiat avant que le JS marque les parents. */
+:where(
+  .card[data-char],
+  .styleCard[data-style],
+  .costumeTile,
+  .costumeCard,
+  .costumeResult
+):has(> .mhurNewV582) :is(
+  .s18NewBadge,
+  .s18NewBadgeV9,
+  .releaseNewBadgeV9,
+  .s18SeasonNewV10,
+  .s18PlannedNewV12,
+  [class*="NewBadge"],
+  [class*="newBadge"],
+  [class*="NewPulse"],
+  [class*="newPulse"],
+  [class*="mhurNew"]:not(.mhurNewV582),
+  [aria-label="NEW"]:not(.mhurNewV582),
+  img[src*="new_badge"]:not(.mhurNewV582)
+) {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  animation: none !important;
+}
+
+@keyframes mhurV664GridMove {
+  to {
+    transform:
+      perspective(800px)
+      rotateX(58deg)
+      translateY(27%);
+  }
+}
+
+@keyframes mhurV664AuroraSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes mhurV664BeamSweep {
+  0%,
+  100% {
+    opacity: .18;
+    translate: -8% 0;
+  }
+
+  50% {
+    opacity: .48;
+    translate: 22% 0;
+  }
+}
+
+@keyframes mhurV664HeroLeft {
+  0%,
+  100% {
+    transform: translateX(-5%) translateY(0) rotate(-2deg);
+  }
+
+  50% {
+    transform: translateX(-3%) translateY(-9px) rotate(-1deg);
+  }
+}
+
+@keyframes mhurV664HeroRight {
+  0%,
+  100% {
+    transform: translateX(5%) translateY(0) rotate(2deg);
+  }
+
+  50% {
+    transform: translateX(3%) translateY(-9px) rotate(1deg);
+  }
+}
+
+@keyframes mhurV664Orbit {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes mhurV664OrbitReverse {
+  to {
+    transform: rotate(-360deg);
+  }
+}
+
+@keyframes mhurV664LivePulse {
+  0%,
+  100% {
+    opacity: .58;
+    scale: .84;
+  }
+
+  50% {
+    opacity: 1;
+    scale: 1.12;
+  }
+}
+
+@keyframes mhurV664BarShine {
+  to {
+    transform: translateX(150%);
+  }
+}
+
+@keyframes mhurV664NewPulse {
+  0%,
+  100% {
+    transform: scale(.92) rotate(-2deg);
+  }
+
+  50% {
+    transform: scale(1.10) rotate(1deg);
+  }
+}
+
+@keyframes mhurV664NewShine {
+  0%,
+  55% {
+    transform: translateX(-150%);
+  }
+
+  78%,
+  100% {
+    transform: translateX(150%);
+  }
+}
+
+@media (max-width: 1100px) {
+  .mhurV664Hero {
+    width: 34vw;
+    opacity: .43;
+  }
+
+  .mhurV664Panel {
+    width: min(88vw, 650px);
+  }
+}
+
+@media (max-width: 760px) {
+  .mhurV664Hero {
+    display: none;
+  }
+
+  .mhurV664Stage {
+    padding: 14px;
+  }
+
+  .mhurV664Panel {
+    width: min(96vw, 560px);
+    padding: 30px 19px 25px;
+    border-radius: 22px;
+  }
+
+  .mhurV664LogoOrbit {
+    width: 108px;
+    height: 108px;
+    margin-bottom: 19px;
+  }
+
+  .mhurV664Logo {
+    width: 94px;
+    height: 94px;
+    border-radius: 22px;
+  }
+
+  .mhurV664Logo img {
+    width: 74px;
+    height: 74px;
+  }
+
+  .mhurV664Topline {
+    margin-bottom: 17px;
+  }
+
+  .mhurV664Live,
+  .mhurV664Season {
+    min-height: 27px;
+    padding: 0 8px;
+    font-size: 9px;
+  }
+
+  .mhurV664Title {
+    font-size: clamp(37px, 12vw, 52px);
+  }
+
+  .mhurV664Subtitle {
+    margin-top: 13px;
+    font-size: 13px;
+  }
+
+  .mhurV664LoadingBox {
+    margin-top: 21px;
+  }
+
+  .card[data-char] > .mhurNewV582,
+  .styleCard[data-style] > .mhurNewV582 {
+    width: 76px !important;
+    height: 38px !important;
+  }
+
+  .costumeTile > .mhurNewV582,
+  .costumeCard > .mhurNewV582,
+  .costumeResult > .mhurNewV582 {
+    top: 34px !important;
+    right: 7px !important;
+    width: 55px !important;
+    height: 29px !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mhurV664Aurora,
+  .mhurV664Beam,
+  .mhurV664Hero,
+  .mhurV664LogoOrbit::before,
+  .mhurV664LogoOrbit::after,
+  .mhurV664Live::before,
+  #mhurV664Fill::after,
+  .mhurNewV582,
+  .mhurNewV582::after {
+    animation: none !important;
+  }
+}
