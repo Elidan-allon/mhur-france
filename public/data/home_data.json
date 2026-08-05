@@ -4,7 +4,8 @@
     "source": "UltraRumble.com",
     "version": "v585-complete-safe-sync",
     "patch_notes_fix": "alter-symbols-details-render-v4",
-    "patch_notes_renderer": "v657-signs-details"
+    "patch_notes_renderer": "v657-signs-details",
+    "patch_1785298405_fix": "v658-final-after-all-scripts"
   },
   "season": {
     "number": 18,
@@ -402,18 +403,9 @@
               "style": "Cluster",
               "role": "Technique",
               "portrait": "assets/home/patches/1785298405/portrait_katsuki_bakugo.webp",
-              "alter_symbol": "α",
-              "skill_slot": "α",
-              "skill_name": "α - AP Shot Cluster",
+              "skill_name": "α - AP Shot Cluster (Normal)",
               "skill_image": "assets/home/patches/1785298405/skill_katsuki_bakugo_ap_shot_cluster_normal.png",
-              "effect_detail": {
-                "fr": "Normal",
-                "en": "Normal"
-              },
-              "label": {
-                "fr": "Dégâts — Normal",
-                "en": "Damage — Normal"
-              },
+              "label": "Damage",
               "before": [
                 "30.0",
                 "31.0",
@@ -443,18 +435,9 @@
               "style": "Cluster",
               "role": "Technique",
               "portrait": "assets/home/patches/1785298405/portrait_katsuki_bakugo.webp",
-              "alter_symbol": "α",
-              "skill_slot": "α",
-              "skill_name": "α - AP Shot Cluster",
+              "skill_name": "α - AP Shot Cluster (Normal)",
               "skill_image": "assets/home/patches/1785298405/skill_katsuki_bakugo_ap_shot_cluster_normal.png",
-              "effect_detail": {
-                "fr": "Normal",
-                "en": "Normal"
-              },
-              "label": {
-                "fr": "Brise-garde — Normal",
-                "en": "Guard Break — Normal"
-              },
+              "label": "Guard Break",
               "before": [
                 "30.0",
                 "31.0",
@@ -484,18 +467,9 @@
               "style": "Cluster",
               "role": "Technique",
               "portrait": "assets/home/patches/1785298405/portrait_katsuki_bakugo.webp",
-              "alter_symbol": "β",
-              "skill_slot": "β",
-              "skill_name": "β - Nitro Cluster",
+              "skill_name": "β - Nitro Cluster (Explosion)",
               "skill_image": "assets/home/patches/1785298405/skill_katsuki_bakugo_nitro_cluster_explosion.png",
-              "effect_detail": {
-                "fr": "Explosion",
-                "en": "Explosion"
-              },
-              "label": {
-                "fr": "Dégâts — Explosion",
-                "en": "Damage — Explosion"
-              },
+              "label": "Damage",
               "before": [
                 "30.0",
                 "31.0",
@@ -525,18 +499,9 @@
               "style": "Cluster",
               "role": "Technique",
               "portrait": "assets/home/patches/1785298405/portrait_katsuki_bakugo.webp",
-              "alter_symbol": "β",
-              "skill_slot": "β",
-              "skill_name": "β - Nitro Cluster",
+              "skill_name": "β - Nitro Cluster (Explosion)",
               "skill_image": "assets/home/patches/1785298405/skill_katsuki_bakugo_nitro_cluster_explosion.png",
-              "effect_detail": {
-                "fr": "Explosion",
-                "en": "Explosion"
-              },
-              "label": {
-                "fr": "Brise-garde — Explosion",
-                "en": "Guard Break — Explosion"
-              },
+              "label": "Guard Break",
               "before": [
                 "30.0",
                 "31.0",
@@ -566,18 +531,9 @@
               "style": "Cluster",
               "role": "Technique",
               "portrait": "assets/home/patches/1785298405/portrait_katsuki_bakugo.webp",
-              "alter_symbol": "β",
-              "skill_slot": "β",
-              "skill_name": "β - Nitro Cluster",
+              "skill_name": "β - Nitro Cluster (ExplosionFollow-up)",
               "skill_image": "assets/home/patches/1785298405/skill_katsuki_bakugo_nitro_cluster_explosionfollow_up.png",
-              "effect_detail": {
-                "fr": "Explosion renforcée",
-                "en": "Follow-up explosion"
-              },
-              "label": {
-                "fr": "Dégâts — Explosion renforcée",
-                "en": "Damage — Follow-up explosion"
-              },
+              "label": "Damage",
               "before": [
                 "40.0",
                 "41.0",
@@ -607,18 +563,9 @@
               "style": "Cluster",
               "role": "Technique",
               "portrait": "assets/home/patches/1785298405/portrait_katsuki_bakugo.webp",
-              "alter_symbol": "β",
-              "skill_slot": "β",
-              "skill_name": "β - Nitro Cluster",
+              "skill_name": "β - Nitro Cluster (ExplosionFollow-up)",
               "skill_image": "assets/home/patches/1785298405/skill_katsuki_bakugo_nitro_cluster_explosionfollow_up.png",
-              "effect_detail": {
-                "fr": "Explosion renforcée",
-                "en": "Follow-up explosion"
-              },
-              "label": {
-                "fr": "Brise-garde — Explosion renforcée",
-                "en": "Guard Break — Follow-up explosion"
-              },
+              "label": "Guard Break",
               "before": [
                 "40.0",
                 "41.0",
@@ -794,7 +741,7 @@
               "style": "Technique",
               "role": "Technique",
               "portrait": "assets/home/patches/1785298405/portrait_armored_all_might.webp",
-              "skill_name": "α - Ice Bullet Shot",
+              "skill_name": "α - Ice Bullet Shot (Burn)",
               "skill_image": "assets/home/patches/1785298405/skill_armored_all_might_ice_bullet_shot_burn.png",
               "label": {
                 "fr": "Dégâts — Brûlure",
@@ -835,7 +782,7 @@
               "style": "Technique",
               "role": "Technique",
               "portrait": "assets/home/patches/1785298405/portrait_armored_all_might.webp",
-              "skill_name": "α - Ice Bullet Shot",
+              "skill_name": "α - Ice Bullet Shot (Burn)",
               "skill_image": "assets/home/patches/1785298405/skill_armored_all_might_ice_bullet_shot_burn.png",
               "label": {
                 "fr": "Brise-garde — Brûlure",
