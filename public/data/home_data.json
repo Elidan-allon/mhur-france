@@ -2,7 +2,8 @@
   "meta": {
     "updated_at": "2026-08-04T23:18:39.517091+00:00",
     "source": "UltraRumble.com",
-    "version": "v520-maintenance-sync"
+    "version": "v520-maintenance-sync",
+    "bakugo_cluster_fix": "split-workflows-v2-unicode"
   },
   "season": {
     "number": 18,
@@ -424,11 +425,11 @@
             {
               "character": "Katsuki Bakugo",
               "style": "Cluster",
-              "role": "",
+              "role": "Technique",
               "portrait": "assets/home/patches/1785298405/portrait_katsuki_bakugo.webp",
               "skill_name": "α - AP Shot Cluster (Normal)",
               "skill_image": "assets/home/patches/1785298405/skill_katsuki_bakugo_ap_shot_cluster_normal.png",
-              "label": "Damage",
+              "label": "Dégâts",
               "before": [
                 "30.0",
                 "31.0",
@@ -456,11 +457,11 @@
             {
               "character": "Katsuki Bakugo",
               "style": "Cluster",
-              "role": "",
+              "role": "Technique",
               "portrait": "assets/home/patches/1785298405/portrait_katsuki_bakugo.webp",
               "skill_name": "α - AP Shot Cluster (Normal)",
               "skill_image": "assets/home/patches/1785298405/skill_katsuki_bakugo_ap_shot_cluster_normal.png",
-              "label": "Guard Break",
+              "label": "Brise-garde",
               "before": [
                 "30.0",
                 "31.0",
@@ -488,11 +489,11 @@
             {
               "character": "Katsuki Bakugo",
               "style": "Cluster",
-              "role": "",
+              "role": "Technique",
               "portrait": "assets/home/patches/1785298405/portrait_katsuki_bakugo.webp",
               "skill_name": "β - Nitro Cluster (Explosion)",
               "skill_image": "assets/home/patches/1785298405/skill_katsuki_bakugo_nitro_cluster_explosion.png",
-              "label": "Damage",
+              "label": "Dégâts",
               "before": [
                 "30.0",
                 "31.0",
@@ -520,11 +521,11 @@
             {
               "character": "Katsuki Bakugo",
               "style": "Cluster",
-              "role": "",
+              "role": "Technique",
               "portrait": "assets/home/patches/1785298405/portrait_katsuki_bakugo.webp",
               "skill_name": "β - Nitro Cluster (Explosion)",
               "skill_image": "assets/home/patches/1785298405/skill_katsuki_bakugo_nitro_cluster_explosion.png",
-              "label": "Guard Break",
+              "label": "Brise-garde",
               "before": [
                 "30.0",
                 "31.0",
@@ -552,11 +553,11 @@
             {
               "character": "Katsuki Bakugo",
               "style": "Cluster",
-              "role": "",
+              "role": "Technique",
               "portrait": "assets/home/patches/1785298405/portrait_katsuki_bakugo.webp",
-              "skill_name": "β - Nitro Cluster (ExplosionFollow-up)",
+              "skill_name": "β - Nitro Cluster (Explosion renforcée)",
               "skill_image": "assets/home/patches/1785298405/skill_katsuki_bakugo_nitro_cluster_explosionfollow_up.png",
-              "label": "Damage",
+              "label": "Dégâts",
               "before": [
                 "40.0",
                 "41.0",
@@ -584,11 +585,11 @@
             {
               "character": "Katsuki Bakugo",
               "style": "Cluster",
-              "role": "",
+              "role": "Technique",
               "portrait": "assets/home/patches/1785298405/portrait_katsuki_bakugo.webp",
-              "skill_name": "β - Nitro Cluster (ExplosionFollow-up)",
+              "skill_name": "β - Nitro Cluster (Explosion renforcée)",
               "skill_image": "assets/home/patches/1785298405/skill_katsuki_bakugo_nitro_cluster_explosionfollow_up.png",
-              "label": "Guard Break",
+              "label": "Brise-garde",
               "before": [
                 "40.0",
                 "41.0",
