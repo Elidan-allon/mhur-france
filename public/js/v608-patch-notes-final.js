@@ -11,7 +11,7 @@
   if(window.MHUR_V608_LOADED)return;
   window.MHUR_V608_LOADED=true;
 
-  const VERSION='608';
+  const VERSION='patchfix-v4';
 
   function clean(value){
     return String(value??'').trim();
@@ -720,8 +720,8 @@
       :skillFromStyle(group.style,change);
 
     const title=translatePatch(
-      localized(skill?.name)||
       localized(change?.skill_name)||
+      localized(skill?.name)||
       localized(change?.label)||
       tx('Ajustement','Adjustment')
     );
@@ -737,13 +737,9 @@
     const picture=health
       ?''
       :(
-        skill?.img||
-        (
-          isMidoriya
-            ?''
-            :change?.skill_image
-        )||
-        ''
+        isMidoriya
+          ?(skill?.img||change?.skill_image||'')
+          :(change?.skill_image||skill?.img||'')
       );
 
     const bullets=(

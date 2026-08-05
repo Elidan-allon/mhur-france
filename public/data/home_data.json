@@ -2,7 +2,8 @@
   "meta": {
     "updated_at": "2026-08-05T04:31:00.008337+00:00",
     "source": "UltraRumble.com",
-    "version": "v585-complete-safe-sync"
+    "version": "v585-complete-safe-sync",
+    "patch_notes_fix": "alter-symbols-details-render-v4"
   },
   "season": {
     "number": 18,
@@ -359,7 +360,8 @@
                 "1.0",
                 "1.0"
               ],
-              "tone": "nerf"
+              "tone": "nerf",
+              "alter_symbol": "γ"
             },
             {
               "character": "Katsuki Bakugo",
@@ -391,16 +393,20 @@
                 "1.0",
                 "1.0"
               ],
-              "tone": "nerf"
+              "tone": "nerf",
+              "alter_symbol": "γ"
             },
             {
               "character": "Katsuki Bakugo",
               "style": "Cluster",
-              "role": "",
-              "portrait": "https://ultrarumble.com/assets/roles/T_ui_CharacterSelect_Technique_icon.webp",
-              "skill_name": "α - AP Shot Cluster (Normal)",
-              "skill_image": "https://ultrarumble.com/assets/Character/Ch002/Variation/Var02/GUI/Skill/T_ui_Skill_Ch002_Unique1.png",
-              "label": "Damage",
+              "role": "Technique",
+              "portrait": "assets/home/patches/1785298405/portrait_katsuki_bakugo.webp",
+              "alter_symbol": "α",
+              "skill_slot": "α",
+              "skill_name": "α - AP Shot Cluster",
+              "skill_image": "assets/home/patches/1785298405/skill_katsuki_bakugo_ap_shot_cluster_normal.png",
+              "effect_detail": "Normal",
+              "label": "Dégâts — Normal",
               "before": [
                 "30.0",
                 "31.0",
@@ -428,11 +434,14 @@
             {
               "character": "Katsuki Bakugo",
               "style": "Cluster",
-              "role": "",
-              "portrait": "https://ultrarumble.com/assets/roles/T_ui_CharacterSelect_Technique_icon.webp",
-              "skill_name": "α - AP Shot Cluster (Normal)",
-              "skill_image": "https://ultrarumble.com/assets/Character/Ch002/Variation/Var02/GUI/Skill/T_ui_Skill_Ch002_Unique1.png",
-              "label": "Guard Break",
+              "role": "Technique",
+              "portrait": "assets/home/patches/1785298405/portrait_katsuki_bakugo.webp",
+              "alter_symbol": "α",
+              "skill_slot": "α",
+              "skill_name": "α - AP Shot Cluster",
+              "skill_image": "assets/home/patches/1785298405/skill_katsuki_bakugo_ap_shot_cluster_normal.png",
+              "effect_detail": "Normal",
+              "label": "Brise-garde — Normal",
               "before": [
                 "30.0",
                 "31.0",
@@ -460,11 +469,14 @@
             {
               "character": "Katsuki Bakugo",
               "style": "Cluster",
-              "role": "",
-              "portrait": "https://ultrarumble.com/assets/roles/T_ui_CharacterSelect_Technique_icon.webp",
-              "skill_name": "β - Nitro Cluster (Explosion)",
-              "skill_image": "https://ultrarumble.com/assets/Character/Ch002/Variation/Var02/GUI/Skill/T_ui_Skill_Ch002_Unique2.png",
-              "label": "Damage",
+              "role": "Technique",
+              "portrait": "assets/home/patches/1785298405/portrait_katsuki_bakugo.webp",
+              "alter_symbol": "β",
+              "skill_slot": "β",
+              "skill_name": "β - Nitro Cluster",
+              "skill_image": "assets/home/patches/1785298405/skill_katsuki_bakugo_nitro_cluster_explosion.png",
+              "effect_detail": "Explosion",
+              "label": "Dégâts — Explosion",
               "before": [
                 "30.0",
                 "31.0",
@@ -492,11 +504,14 @@
             {
               "character": "Katsuki Bakugo",
               "style": "Cluster",
-              "role": "",
-              "portrait": "https://ultrarumble.com/assets/roles/T_ui_CharacterSelect_Technique_icon.webp",
-              "skill_name": "β - Nitro Cluster (Explosion)",
-              "skill_image": "https://ultrarumble.com/assets/Character/Ch002/Variation/Var02/GUI/Skill/T_ui_Skill_Ch002_Unique2.png",
-              "label": "Guard Break",
+              "role": "Technique",
+              "portrait": "assets/home/patches/1785298405/portrait_katsuki_bakugo.webp",
+              "alter_symbol": "β",
+              "skill_slot": "β",
+              "skill_name": "β - Nitro Cluster",
+              "skill_image": "assets/home/patches/1785298405/skill_katsuki_bakugo_nitro_cluster_explosion.png",
+              "effect_detail": "Explosion",
+              "label": "Brise-garde — Explosion",
               "before": [
                 "30.0",
                 "31.0",
@@ -524,11 +539,14 @@
             {
               "character": "Katsuki Bakugo",
               "style": "Cluster",
-              "role": "",
-              "portrait": "https://ultrarumble.com/assets/roles/T_ui_CharacterSelect_Technique_icon.webp",
-              "skill_name": "β - Nitro Cluster (ExplosionFollow-up)",
-              "skill_image": "https://ultrarumble.com/assets/Character/Ch002/Variation/Var02/GUI/Skill/T_ui_Skill_Ch002_Unique2.png",
-              "label": "Damage",
+              "role": "Technique",
+              "portrait": "assets/home/patches/1785298405/portrait_katsuki_bakugo.webp",
+              "alter_symbol": "β",
+              "skill_slot": "β",
+              "skill_name": "β - Nitro Cluster",
+              "skill_image": "assets/home/patches/1785298405/skill_katsuki_bakugo_nitro_cluster_explosionfollow_up.png",
+              "effect_detail": "Explosion renforcée",
+              "label": "Dégâts — Explosion renforcée",
               "before": [
                 "40.0",
                 "41.0",
@@ -556,11 +574,14 @@
             {
               "character": "Katsuki Bakugo",
               "style": "Cluster",
-              "role": "",
-              "portrait": "https://ultrarumble.com/assets/roles/T_ui_CharacterSelect_Technique_icon.webp",
-              "skill_name": "β - Nitro Cluster (ExplosionFollow-up)",
-              "skill_image": "https://ultrarumble.com/assets/Character/Ch002/Variation/Var02/GUI/Skill/T_ui_Skill_Ch002_Unique2.png",
-              "label": "Guard Break",
+              "role": "Technique",
+              "portrait": "assets/home/patches/1785298405/portrait_katsuki_bakugo.webp",
+              "alter_symbol": "β",
+              "skill_slot": "β",
+              "skill_name": "β - Nitro Cluster",
+              "skill_image": "assets/home/patches/1785298405/skill_katsuki_bakugo_nitro_cluster_explosionfollow_up.png",
+              "effect_detail": "Explosion renforcée",
+              "label": "Brise-garde — Explosion renforcée",
               "before": [
                 "40.0",
                 "41.0",
@@ -615,7 +636,8 @@
                 "68.0",
                 "70.0"
               ],
-              "tone": "nerf"
+              "tone": "nerf",
+              "alter_symbol": "α"
             },
             {
               "character": "Denki Kaminari",
@@ -647,7 +669,8 @@
                 "68.0",
                 "70.0"
               ],
-              "tone": "nerf"
+              "tone": "nerf",
+              "alter_symbol": "α"
             },
             {
               "character": "Mirio Togata",
@@ -679,7 +702,8 @@
                 "43.0",
                 "44.0"
               ],
-              "tone": "nerf"
+              "tone": "nerf",
+              "alter_symbol": "α"
             },
             {
               "character": "Mirio Togata",
@@ -711,16 +735,17 @@
                 "43.0",
                 "44.0"
               ],
-              "tone": "nerf"
+              "tone": "nerf",
+              "alter_symbol": "α"
             },
             {
               "character": "Armored All Might",
-              "style": "Original",
-              "role": "",
-              "portrait": "https://ultrarumble.com/assets/roles/T_ui_CharacterSelect_Technique_icon.webp",
-              "skill_name": "α - Ice Bullet Shot (Burn)",
-              "skill_image": "https://ultrarumble.com/assets/Character/Ch200/GUI/Skill/T_ui_Skill_Ch200_Unique1.png",
-              "label": "Damage",
+              "style": "Technique",
+              "role": "Technique",
+              "portrait": "assets/home/patches/1785298405/portrait_armored_all_might.webp",
+              "skill_name": "α - Ice Bullet Shot",
+              "skill_image": "assets/home/patches/1785298405/skill_armored_all_might_ice_bullet_shot_burn.png",
+              "label": "Dégâts — Brûlure (Burn)",
               "before": [
                 "52.0",
                 "54.0",
@@ -743,16 +768,19 @@
                 "58.0",
                 "60.0"
               ],
-              "tone": "nerf"
+              "tone": "nerf",
+              "alter_symbol": "α",
+              "skill_slot": "α",
+              "effect_detail": "Brûlure (Burn)"
             },
             {
               "character": "Armored All Might",
-              "style": "Original",
-              "role": "",
-              "portrait": "https://ultrarumble.com/assets/roles/T_ui_CharacterSelect_Technique_icon.webp",
-              "skill_name": "α - Ice Bullet Shot (Burn)",
-              "skill_image": "https://ultrarumble.com/assets/Character/Ch200/GUI/Skill/T_ui_Skill_Ch200_Unique1.png",
-              "label": "Guard Break",
+              "style": "Technique",
+              "role": "Technique",
+              "portrait": "assets/home/patches/1785298405/portrait_armored_all_might.webp",
+              "skill_name": "α - Ice Bullet Shot",
+              "skill_image": "assets/home/patches/1785298405/skill_armored_all_might_ice_bullet_shot_burn.png",
+              "label": "Brise-garde — Brûlure (Burn)",
               "before": [
                 "52.0",
                 "54.0",
@@ -775,7 +803,10 @@
                 "58.0",
                 "60.0"
               ],
-              "tone": "nerf"
+              "tone": "nerf",
+              "alter_symbol": "α",
+              "skill_slot": "α",
+              "effect_detail": "Brûlure (Burn)"
             },
             {
               "character": "Hawks",
@@ -801,7 +832,8 @@
                 "12.0",
                 "14.0"
               ],
-              "tone": "nerf"
+              "tone": "nerf",
+              "alter_symbol": "α"
             },
             {
               "character": "Hawks",
@@ -827,7 +859,8 @@
                 "12.0",
                 "14.0"
               ],
-              "tone": "nerf"
+              "tone": "nerf",
+              "alter_symbol": "α"
             },
             {
               "character": "Hawks",
@@ -859,7 +892,8 @@
                 "140.0",
                 "150.0"
               ],
-              "tone": "buff"
+              "tone": "buff",
+              "alter_symbol": "β"
             },
             {
               "character": "Hawks",
@@ -891,7 +925,8 @@
                 "140.0",
                 "150.0"
               ],
-              "tone": "buff"
+              "tone": "buff",
+              "alter_symbol": "β"
             },
             {
               "character": "Lady Nagant",
@@ -923,7 +958,8 @@
                 "4.0",
                 "5.0"
               ],
-              "tone": "nerf"
+              "tone": "nerf",
+              "alter_symbol": "α"
             },
             {
               "character": "Lady Nagant",
@@ -955,7 +991,8 @@
                 "43.0",
                 "45.0"
               ],
-              "tone": "nerf"
+              "tone": "nerf",
+              "alter_symbol": "α"
             },
             {
               "character": "Lady Nagant",
@@ -987,7 +1024,8 @@
                 "43.0",
                 "45.0"
               ],
-              "tone": "nerf"
+              "tone": "nerf",
+              "alter_symbol": "α"
             },
             {
               "character": "Lady Nagant",
@@ -1019,7 +1057,8 @@
                 "28.0",
                 "30.0"
               ],
-              "tone": "nerf"
+              "tone": "nerf",
+              "alter_symbol": "β"
             },
             {
               "character": "Lady Nagant",
@@ -1051,7 +1090,8 @@
                 "28.0",
                 "30.0"
               ],
-              "tone": "nerf"
+              "tone": "nerf",
+              "alter_symbol": "β"
             },
             {
               "character": "Lady Nagant",
@@ -1083,7 +1123,8 @@
                 "122.0",
                 "125.0"
               ],
-              "tone": "nerf"
+              "tone": "nerf",
+              "alter_symbol": "γ"
             },
             {
               "character": "Lady Nagant",
@@ -1115,7 +1156,8 @@
                 "122.0",
                 "125.0"
               ],
-              "tone": "nerf"
+              "tone": "nerf",
+              "alter_symbol": "γ"
             },
             {
               "character": "Lady Nagant",
@@ -1201,7 +1243,8 @@
                 "6",
                 "7"
               ],
-              "tone": "nerf"
+              "tone": "nerf",
+              "alter_symbol": "α"
             },
             {
               "character": "Katsuki Bakugo",
@@ -1233,7 +1276,8 @@
                 "6",
                 "7"
               ],
-              "tone": "buff"
+              "tone": "buff",
+              "alter_symbol": "α"
             },
             {
               "character": "Katsuki Bakugo",
@@ -1245,7 +1289,8 @@
               "label": "Ammo",
               "before": "1",
               "after": "2",
-              "tone": "buff"
+              "tone": "buff",
+              "alter_symbol": "γ"
             },
             {
               "character": "Katsuki Bakugo",
@@ -1257,7 +1302,8 @@
               "label": "Reload Time",
               "before": "7.0",
               "after": "8.0",
-              "tone": "nerf"
+              "tone": "nerf",
+              "alter_symbol": "γ"
             },
             {
               "character": "Katsuki Bakugo",
@@ -1269,7 +1315,8 @@
               "label": "Penalty Reload",
               "before": "7.0",
               "after": "11.0",
-              "tone": "nerf"
+              "tone": "nerf",
+              "alter_symbol": "γ"
             },
             {
               "character": "Denki Kaminari",
@@ -1301,7 +1348,8 @@
                 "2.0",
                 "2.0"
               ],
-              "tone": "buff"
+              "tone": "buff",
+              "alter_symbol": "γ"
             },
             {
               "character": "Hawks",
@@ -1333,7 +1381,8 @@
                 "38",
                 "40"
               ],
-              "tone": "nerf"
+              "tone": "nerf",
+              "alter_symbol": "α"
             },
             {
               "character": "Twice",
@@ -1365,7 +1414,8 @@
                 "4.0",
                 "4.0"
               ],
-              "tone": "buff"
+              "tone": "buff",
+              "alter_symbol": "γ"
             },
             {
               "character": "Twice",
@@ -1377,7 +1427,8 @@
               "label": "Ammo",
               "before": "3",
               "after": "4",
-              "tone": "buff"
+              "tone": "buff",
+              "alter_symbol": "γ"
             },
             {
               "character": "Twice",
@@ -1389,7 +1440,8 @@
               "label": "Penalty Reload",
               "before": "6.0",
               "after": "8.0",
-              "tone": "nerf"
+              "tone": "nerf",
+              "alter_symbol": "γ"
             },
             {
               "character": "Lady Nagant",
@@ -1421,7 +1473,8 @@
                 "6",
                 "7"
               ],
-              "tone": "nerf"
+              "tone": "nerf",
+              "alter_symbol": "α"
             },
             {
               "character": "Lady Nagant",
@@ -1453,7 +1506,8 @@
                 "8.0",
                 "7.0"
               ],
-              "tone": "nerf"
+              "tone": "nerf",
+              "alter_symbol": "γ"
             },
             {
               "character": "Lady Nagant",
@@ -1485,7 +1539,8 @@
                 "8.0",
                 "7.0"
               ],
-              "tone": "adjust"
+              "tone": "adjust",
+              "alter_symbol": "γ"
             },
             {
               "character": "Lady Nagant",
@@ -1497,7 +1552,8 @@
               "label": "Ammo",
               "before": "2",
               "after": "1",
-              "tone": "nerf"
+              "tone": "nerf",
+              "alter_symbol": "γ"
             },
             {
               "character": "Lady Nagant",
@@ -1509,7 +1565,8 @@
               "tone": "adjust",
               "bullets": [
                 "No changes detected."
-              ]
+              ],
+              "alter_symbol": "γ"
             },
             {
               "character": "Lady Nagant",
@@ -1521,7 +1578,8 @@
               "tone": "adjust",
               "bullets": [
                 "No changes detected."
-              ]
+              ],
+              "alter_symbol": "γ"
             }
           ]
         }
@@ -1598,7 +1656,8 @@
                 "95.0",
                 "100.0"
               ],
-              "tone": "nerf"
+              "tone": "nerf",
+              "alter_symbol": "γ"
             },
             {
               "character": "Eijiro Kirishima",
@@ -1630,7 +1689,8 @@
                 "95.0",
                 "100.0"
               ],
-              "tone": "nerf"
+              "tone": "nerf",
+              "alter_symbol": "γ"
             },
             {
               "character": "Itsuka Kendo",
@@ -1662,7 +1722,8 @@
                 "48.0",
                 "50.0"
               ],
-              "tone": "buff"
+              "tone": "buff",
+              "alter_symbol": "α"
             },
             {
               "character": "Itsuka Kendo",
@@ -1694,7 +1755,8 @@
                 "48.0",
                 "50.0"
               ],
-              "tone": "buff"
+              "tone": "buff",
+              "alter_symbol": "α"
             },
             {
               "character": "Itsuka Kendo",
@@ -1726,7 +1788,8 @@
                 "84.0",
                 "85.0"
               ],
-              "tone": "buff"
+              "tone": "buff",
+              "alter_symbol": "γ"
             },
             {
               "character": "Itsuka Kendo",
@@ -1758,7 +1821,8 @@
                 "84.0",
                 "85.0"
               ],
-              "tone": "buff"
+              "tone": "buff",
+              "alter_symbol": "γ"
             },
             {
               "character": "Itsuka Kendo",
@@ -1790,7 +1854,8 @@
                 "74.0",
                 "75.0"
               ],
-              "tone": "buff"
+              "tone": "buff",
+              "alter_symbol": "γ"
             },
             {
               "character": "Itsuka Kendo",
@@ -1822,7 +1887,8 @@
                 "74.0",
                 "75.0"
               ],
-              "tone": "buff"
+              "tone": "buff",
+              "alter_symbol": "γ"
             },
             {
               "character": "Ibara Shiozaki",
@@ -1854,7 +1920,8 @@
                 "43.0",
                 "45.0"
               ],
-              "tone": "buff"
+              "tone": "buff",
+              "alter_symbol": "α"
             },
             {
               "character": "Ibara Shiozaki",
@@ -1886,7 +1953,8 @@
                 "43.0",
                 "45.0"
               ],
-              "tone": "buff"
+              "tone": "buff",
+              "alter_symbol": "α"
             },
             {
               "character": "Tamaki Amajiki",
@@ -1918,7 +1986,8 @@
                 "35.0",
                 "36.0"
               ],
-              "tone": "buff"
+              "tone": "buff",
+              "alter_symbol": "γ"
             },
             {
               "character": "Tamaki Amajiki",
@@ -1950,7 +2019,8 @@
                 "35.0",
                 "36.0"
               ],
-              "tone": "buff"
+              "tone": "buff",
+              "alter_symbol": "γ"
             },
             {
               "character": "Tamaki Amajiki",
@@ -1982,7 +2052,8 @@
                 "43.0",
                 "44.0"
               ],
-              "tone": "buff"
+              "tone": "buff",
+              "alter_symbol": "γ"
             },
             {
               "character": "Tamaki Amajiki",
@@ -2014,7 +2085,8 @@
                 "43.0",
                 "44.0"
               ],
-              "tone": "buff"
+              "tone": "buff",
+              "alter_symbol": "γ"
             },
             {
               "character": "Nejire Hado",
@@ -2046,7 +2118,8 @@
                 "32.0",
                 "35.0"
               ],
-              "tone": "buff"
+              "tone": "buff",
+              "alter_symbol": "β"
             },
             {
               "character": "Nejire Hado",
@@ -2078,7 +2151,8 @@
                 "32.0",
                 "35.0"
               ],
-              "tone": "buff"
+              "tone": "buff",
+              "alter_symbol": "β"
             },
             {
               "character": "All For One",
@@ -2110,7 +2184,8 @@
                 "68.0",
                 "70.0"
               ],
-              "tone": "nerf"
+              "tone": "nerf",
+              "alter_symbol": "α"
             },
             {
               "character": "All For One",
@@ -2142,7 +2217,8 @@
                 "68.0",
                 "70.0"
               ],
-              "tone": "nerf"
+              "tone": "nerf",
+              "alter_symbol": "α"
             },
             {
               "character": "All For One",
@@ -2174,7 +2250,8 @@
                 "165.0",
                 "170.0"
               ],
-              "tone": "nerf"
+              "tone": "nerf",
+              "alter_symbol": "β"
             },
             {
               "character": "All For One",
@@ -2206,7 +2283,8 @@
                 "165.0",
                 "170.0"
               ],
-              "tone": "nerf"
+              "tone": "nerf",
+              "alter_symbol": "β"
             },
             {
               "character": "All For One",
@@ -2238,7 +2316,8 @@
                 "50.0",
                 "52.0"
               ],
-              "tone": "nerf"
+              "tone": "nerf",
+              "alter_symbol": "γ"
             },
             {
               "character": "All For One",
@@ -2270,7 +2349,8 @@
                 "50.0",
                 "52.0"
               ],
-              "tone": "nerf"
+              "tone": "nerf",
+              "alter_symbol": "γ"
             }
           ]
         },
@@ -2308,7 +2388,8 @@
                 "8.0",
                 "7.0"
               ],
-              "tone": "buff"
+              "tone": "buff",
+              "alter_symbol": "γ"
             },
             {
               "character": "Katsuki Bakugo",
@@ -2340,7 +2421,8 @@
                 "8.0",
                 "7.0"
               ],
-              "tone": "buff"
+              "tone": "buff",
+              "alter_symbol": "γ"
             },
             {
               "character": "Itsuka Kendo",
@@ -2372,7 +2454,8 @@
                 "5.0",
                 "5.0"
               ],
-              "tone": "nerf"
+              "tone": "nerf",
+              "alter_symbol": "γ"
             },
             {
               "character": "Itsuka Kendo",
@@ -2404,7 +2487,8 @@
                 "7.5",
                 "10.0"
               ],
-              "tone": "nerf"
+              "tone": "nerf",
+              "alter_symbol": "γ"
             },
             {
               "character": "Itsuka Kendo",
@@ -2424,7 +2508,8 @@
                 "1.0",
                 "1.0"
               ],
-              "tone": "nerf"
+              "tone": "nerf",
+              "alter_symbol": "γ"
             },
             {
               "character": "Itsuka Kendo",
@@ -2456,7 +2541,8 @@
                 "7.5",
                 "7.0"
               ],
-              "tone": "buff"
+              "tone": "buff",
+              "alter_symbol": "γ"
             },
             {
               "character": "Itsuka Kendo",
@@ -2488,7 +2574,8 @@
                 "11.0",
                 "9.0"
               ],
-              "tone": "buff"
+              "tone": "buff",
+              "alter_symbol": "γ"
             },
             {
               "character": "Tamaki Amajiki",
@@ -2514,7 +2601,8 @@
                 "11.0",
                 "10.0"
               ],
-              "tone": "buff"
+              "tone": "buff",
+              "alter_symbol": "γ"
             },
             {
               "character": "Cementoss",
@@ -2546,7 +2634,8 @@
                 "8.0",
                 "7.0"
               ],
-              "tone": "buff"
+              "tone": "buff",
+              "alter_symbol": "γ"
             },
             {
               "character": "Cementoss",
@@ -2578,7 +2667,8 @@
                 "10.5",
                 "9.0"
               ],
-              "tone": "buff"
+              "tone": "buff",
+              "alter_symbol": "γ"
             },
             {
               "character": "Cementoss",
@@ -2677,7 +2767,8 @@
               "label": "Damage",
               "before": "10.0",
               "after": "30.0",
-              "tone": "buff"
+              "tone": "buff",
+              "alter_symbol": "α"
             },
             {
               "character": "Shota Aizawa",
@@ -2689,7 +2780,8 @@
               "label": "Guard Break",
               "before": "10.0",
               "after": "30.0",
-              "tone": "buff"
+              "tone": "buff",
+              "alter_symbol": "α"
             }
           ]
         },
@@ -2727,7 +2819,8 @@
                 "5.0",
                 "4.0"
               ],
-              "tone": "buff"
+              "tone": "buff",
+              "alter_symbol": "β"
             },
             {
               "character": "Shota Aizawa",
@@ -2759,7 +2852,8 @@
                 "5.0",
                 "4.0"
               ],
-              "tone": "buff"
+              "tone": "buff",
+              "alter_symbol": "β"
             },
             {
               "character": "Shota Aizawa",
@@ -2791,7 +2885,8 @@
                 "7.0",
                 "6.0"
               ],
-              "tone": "buff"
+              "tone": "buff",
+              "alter_symbol": "γ"
             },
             {
               "character": "Shota Aizawa",
@@ -2823,7 +2918,8 @@
                 "7.0",
                 "6.0"
               ],
-              "tone": "buff"
+              "tone": "buff",
+              "alter_symbol": "γ"
             },
             {
               "character": "Shota Aizawa",
@@ -2835,7 +2931,8 @@
               "tone": "adjust",
               "bullets": [
                 "No changes detected."
-              ]
+              ],
+              "alter_symbol": "γ"
             },
             {
               "character": "Shota Aizawa",
@@ -2847,7 +2944,8 @@
               "tone": "adjust",
               "bullets": [
                 "No changes detected."
-              ]
+              ],
+              "alter_symbol": "γ"
             }
           ]
         }
@@ -2894,7 +2992,8 @@
                 "166.0",
                 "170.0"
               ],
-              "tone": "nerf"
+              "tone": "nerf",
+              "alter_symbol": "β"
             },
             {
               "character": "Present Mic",
@@ -2926,7 +3025,8 @@
                 "166.0",
                 "170.0"
               ],
-              "tone": "nerf"
+              "tone": "nerf",
+              "alter_symbol": "β"
             }
           ]
         },
@@ -2944,7 +3044,8 @@
               "tone": "adjust",
               "bullets": [
                 "No changes detected."
-              ]
+              ],
+              "alter_symbol": "β"
             },
             {
               "character": "Present Mic",
@@ -2956,7 +3057,8 @@
               "tone": "adjust",
               "bullets": [
                 "No changes detected."
-              ]
+              ],
+              "alter_symbol": "β"
             },
             {
               "character": "Present Mic",
@@ -2968,7 +3070,8 @@
               "tone": "adjust",
               "bullets": [
                 "No changes detected."
-              ]
+              ],
+              "alter_symbol": "β"
             }
           ]
         }
@@ -3086,7 +3189,8 @@
                 "135.0",
                 "140.0"
               ],
-              "tone": "buff"
+              "tone": "buff",
+              "alter_symbol": "α"
             },
             {
               "character": "Izuku Midoriya",
@@ -3118,7 +3222,8 @@
                 "135.0",
                 "140.0"
               ],
-              "tone": "buff"
+              "tone": "buff",
+              "alter_symbol": "α"
             },
             {
               "character": "Izuku Midoriya",
@@ -3138,7 +3243,8 @@
                 "Down Power: 25.0 -> 35.0",
                 "Down Power: 25.0 -> 35.0",
                 "Down Power: 25.0 -> 35.0"
-              ]
+              ],
+              "alter_symbol": "α"
             },
             {
               "character": "Denki Kaminari",
@@ -3170,7 +3276,8 @@
                 "78.0",
                 "80.0"
               ],
-              "tone": "nerf"
+              "tone": "nerf",
+              "alter_symbol": "α"
             },
             {
               "character": "Denki Kaminari",
@@ -3202,7 +3309,8 @@
                 "78.0",
                 "80.0"
               ],
-              "tone": "nerf"
+              "tone": "nerf",
+              "alter_symbol": "α"
             },
             {
               "character": "Nejire Hado",
@@ -3234,7 +3342,8 @@
                 "43.0",
                 "45.0"
               ],
-              "tone": "nerf"
+              "tone": "nerf",
+              "alter_symbol": "α"
             },
             {
               "character": "Nejire Hado",
@@ -3266,7 +3375,8 @@
                 "43.0",
                 "45.0"
               ],
-              "tone": "nerf"
+              "tone": "nerf",
+              "alter_symbol": "α"
             },
             {
               "character": "Nejire Hado",
@@ -3298,7 +3408,8 @@
                 "43.0",
                 "45.0"
               ],
-              "tone": "nerf"
+              "tone": "nerf",
+              "alter_symbol": "α"
             },
             {
               "character": "Nejire Hado",
@@ -3330,7 +3441,8 @@
                 "43.0",
                 "45.0"
               ],
-              "tone": "nerf"
+              "tone": "nerf",
+              "alter_symbol": "α"
             },
             {
               "character": "Hitoshi Shinso",
@@ -3362,7 +3474,8 @@
                 "53.0",
                 "55.0"
               ],
-              "tone": "buff"
+              "tone": "buff",
+              "alter_symbol": "α"
             },
             {
               "character": "Hitoshi Shinso",
@@ -3394,7 +3507,8 @@
                 "53.0",
                 "55.0"
               ],
-              "tone": "buff"
+              "tone": "buff",
+              "alter_symbol": "α"
             },
             {
               "character": "Shota Aizawa",
@@ -3426,7 +3540,8 @@
                 "5.0",
                 "5.0"
               ],
-              "tone": "nerf"
+              "tone": "nerf",
+              "alter_symbol": "β"
             },
             {
               "character": "Shota Aizawa",
@@ -3458,7 +3573,8 @@
                 "5.0",
                 "5.0"
               ],
-              "tone": "nerf"
+              "tone": "nerf",
+              "alter_symbol": "β"
             },
             {
               "character": "Shota Aizawa",
@@ -3490,7 +3606,8 @@
                 "98.0",
                 "102.0"
               ],
-              "tone": "buff"
+              "tone": "buff",
+              "alter_symbol": "β"
             },
             {
               "character": "Shota Aizawa",
@@ -3522,7 +3639,8 @@
                 "98.0",
                 "102.0"
               ],
-              "tone": "buff"
+              "tone": "buff",
+              "alter_symbol": "β"
             },
             {
               "character": "Endeavor",
@@ -3552,7 +3670,8 @@
                 "105.0",
                 "110.0"
               ],
-              "tone": "nerf"
+              "tone": "nerf",
+              "alter_symbol": "β"
             },
             {
               "character": "Endeavor",
@@ -3582,7 +3701,8 @@
                 "105.0",
                 "110.0"
               ],
-              "tone": "nerf"
+              "tone": "nerf",
+              "alter_symbol": "β"
             },
             {
               "character": "Endeavor",
@@ -3594,7 +3714,8 @@
               "label": "Damage",
               "before": "55.0",
               "after": "50.0",
-              "tone": "nerf"
+              "tone": "nerf",
+              "alter_symbol": "β"
             },
             {
               "character": "Endeavor",
@@ -3606,7 +3727,8 @@
               "label": "Guard Break",
               "before": "55.0",
               "after": "50.0",
-              "tone": "nerf"
+              "tone": "nerf",
+              "alter_symbol": "β"
             },
             {
               "character": "Endeavor",
@@ -3618,7 +3740,8 @@
               "label": "Damage",
               "before": "65.0",
               "after": "55.0",
-              "tone": "nerf"
+              "tone": "nerf",
+              "alter_symbol": "β"
             },
             {
               "character": "Endeavor",
@@ -3630,7 +3753,8 @@
               "label": "Guard Break",
               "before": "65.0",
               "after": "55.0",
-              "tone": "nerf"
+              "tone": "nerf",
+              "alter_symbol": "β"
             },
             {
               "character": "Hawks",
@@ -3662,7 +3786,8 @@
                 "16.0",
                 "20.0"
               ],
-              "tone": "buff"
+              "tone": "buff",
+              "alter_symbol": "α"
             },
             {
               "character": "Hawks",
@@ -3694,7 +3819,8 @@
                 "16.0",
                 "20.0"
               ],
-              "tone": "buff"
+              "tone": "buff",
+              "alter_symbol": "α"
             },
             {
               "character": "Hawks",
@@ -3726,7 +3852,8 @@
                 "102.0",
                 "105.0"
               ],
-              "tone": "buff"
+              "tone": "buff",
+              "alter_symbol": "γ"
             },
             {
               "character": "Hawks",
@@ -3758,7 +3885,8 @@
                 "102.0",
                 "105.0"
               ],
-              "tone": "buff"
+              "tone": "buff",
+              "alter_symbol": "γ"
             },
             {
               "character": "Tomura Shigaraki",
@@ -3790,7 +3918,8 @@
                 "70.0",
                 "72.0"
               ],
-              "tone": "buff"
+              "tone": "buff",
+              "alter_symbol": "α"
             },
             {
               "character": "Tomura Shigaraki",
@@ -3822,7 +3951,8 @@
                 "70.0",
                 "72.0"
               ],
-              "tone": "buff"
+              "tone": "buff",
+              "alter_symbol": "α"
             },
             {
               "character": "Tomura Shigaraki",
@@ -3842,7 +3972,8 @@
                 "Down Power: 10.0 -> 75.0",
                 "Down Power: 10.0 -> 75.0",
                 "Down Power: 10.0 -> 75.0"
-              ]
+              ],
+              "alter_symbol": "α"
             },
             {
               "character": "Tomura Shigaraki",
@@ -3862,7 +3993,8 @@
                 "Down Power: 10.0 -> 125.0",
                 "Down Power: 10.0 -> 125.0",
                 "Down Power: 10.0 -> 125.0"
-              ]
+              ],
+              "alter_symbol": "γ"
             },
             {
               "character": "Tomura Shigaraki",
@@ -3894,7 +4026,8 @@
                 "78.0",
                 "80.0"
               ],
-              "tone": "buff"
+              "tone": "buff",
+              "alter_symbol": "γ"
             },
             {
               "character": "Tomura Shigaraki",
@@ -3926,7 +4059,8 @@
                 "78.0",
                 "80.0"
               ],
-              "tone": "buff"
+              "tone": "buff",
+              "alter_symbol": "γ"
             },
             {
               "character": "Tomura Shigaraki",
@@ -3958,7 +4092,8 @@
                 "154.0",
                 "160.0"
               ],
-              "tone": "nerf"
+              "tone": "nerf",
+              "alter_symbol": "β"
             },
             {
               "character": "Tomura Shigaraki",
@@ -3990,7 +4125,8 @@
                 "154.0",
                 "160.0"
               ],
-              "tone": "nerf"
+              "tone": "nerf",
+              "alter_symbol": "β"
             },
             {
               "character": "Tomura Shigaraki",
@@ -4020,7 +4156,8 @@
                 "61.0",
                 "64.0"
               ],
-              "tone": "nerf"
+              "tone": "nerf",
+              "alter_symbol": "β"
             },
             {
               "character": "Tomura Shigaraki",
@@ -4050,7 +4187,8 @@
                 "61.0",
                 "64.0"
               ],
-              "tone": "nerf"
+              "tone": "nerf",
+              "alter_symbol": "β"
             },
             {
               "character": "Tomura Shigaraki",
@@ -4080,7 +4218,8 @@
                 "93.0",
                 "96.0"
               ],
-              "tone": "nerf"
+              "tone": "nerf",
+              "alter_symbol": "β"
             },
             {
               "character": "Tomura Shigaraki",
@@ -4110,7 +4249,8 @@
                 "93.0",
                 "96.0"
               ],
-              "tone": "nerf"
+              "tone": "nerf",
+              "alter_symbol": "β"
             },
             {
               "character": "Dabi",
@@ -4130,7 +4270,8 @@
                 "Down Power: 150.0 -> 65.0",
                 "Down Power: 150.0 -> 65.0",
                 "Down Power: 150.0 -> 65.0"
-              ]
+              ],
+              "alter_symbol": "β"
             },
             {
               "character": "Dabi",
@@ -4162,7 +4303,8 @@
                 "72.0",
                 "74.0"
               ],
-              "tone": "buff"
+              "tone": "buff",
+              "alter_symbol": "α"
             },
             {
               "character": "Dabi",
@@ -4194,7 +4336,8 @@
                 "72.0",
                 "74.0"
               ],
-              "tone": "buff"
+              "tone": "buff",
+              "alter_symbol": "α"
             },
             {
               "character": "Dabi",
@@ -4226,7 +4369,8 @@
                 "72.0",
                 "74.0"
               ],
-              "tone": "buff"
+              "tone": "buff",
+              "alter_symbol": "α"
             },
             {
               "character": "Dabi",
@@ -4258,7 +4402,8 @@
                 "72.0",
                 "74.0"
               ],
-              "tone": "buff"
+              "tone": "buff",
+              "alter_symbol": "α"
             },
             {
               "character": "Dabi",
@@ -4290,7 +4435,8 @@
                 "87.0",
                 "94.0"
               ],
-              "tone": "buff"
+              "tone": "buff",
+              "alter_symbol": "β"
             },
             {
               "character": "Dabi",
@@ -4322,7 +4468,8 @@
                 "87.0",
                 "94.0"
               ],
-              "tone": "buff"
+              "tone": "buff",
+              "alter_symbol": "β"
             },
             {
               "character": "Mr. Compress",
@@ -4354,7 +4501,8 @@
                 "59.0",
                 "60.0"
               ],
-              "tone": "buff"
+              "tone": "buff",
+              "alter_symbol": "α"
             },
             {
               "character": "Mr. Compress",
@@ -4386,7 +4534,8 @@
                 "59.0",
                 "60.0"
               ],
-              "tone": "buff"
+              "tone": "buff",
+              "alter_symbol": "α"
             },
             {
               "character": "Mr. Compress",
@@ -4418,7 +4567,8 @@
                 "29.0",
                 "30.0"
               ],
-              "tone": "buff"
+              "tone": "buff",
+              "alter_symbol": "α"
             },
             {
               "character": "Mr. Compress",
@@ -4450,7 +4600,8 @@
                 "29.0",
                 "30.0"
               ],
-              "tone": "buff"
+              "tone": "buff",
+              "alter_symbol": "α"
             },
             {
               "character": "Lady Nagant",
@@ -4536,7 +4687,8 @@
                 "6.0",
                 "6.0"
               ],
-              "tone": "nerf"
+              "tone": "nerf",
+              "alter_symbol": "α"
             },
             {
               "character": "Armored All Might",
@@ -4580,7 +4732,8 @@
                 "1",
                 "1"
               ],
-              "tone": "nerf"
+              "tone": "nerf",
+              "alter_symbol": "β"
             },
             {
               "character": "Shota Aizawa",
@@ -4602,7 +4755,8 @@
                 "4.0",
                 "3.5"
               ],
-              "tone": "adjust"
+              "tone": "adjust",
+              "alter_symbol": "β"
             },
             {
               "character": "Shota Aizawa",
@@ -4634,7 +4788,8 @@
                 "6.0",
                 "5.0"
               ],
-              "tone": "adjust"
+              "tone": "adjust",
+              "alter_symbol": "β"
             },
             {
               "character": "Shota Aizawa",
@@ -4678,7 +4833,8 @@
                 "4.5",
                 "4.5"
               ],
-              "tone": "buff"
+              "tone": "buff",
+              "alter_symbol": "β"
             },
             {
               "character": "Endeavor",
@@ -4710,7 +4866,8 @@
                 "5.0",
                 "8.0"
               ],
-              "tone": "buff"
+              "tone": "buff",
+              "alter_symbol": "β"
             },
             {
               "character": "Hawks",
@@ -4742,7 +4899,8 @@
                 "8.0",
                 "8.0"
               ],
-              "tone": "buff"
+              "tone": "buff",
+              "alter_symbol": "γ"
             },
             {
               "character": "Hawks",
@@ -4774,7 +4932,8 @@
                 "10.0",
                 "12.0"
               ],
-              "tone": "buff"
+              "tone": "buff",
+              "alter_symbol": "γ"
             },
             {
               "character": "Tomura Shigaraki",
@@ -4806,7 +4965,8 @@
                 "12.0",
                 "11.0"
               ],
-              "tone": "nerf"
+              "tone": "nerf",
+              "alter_symbol": "γ"
             },
             {
               "character": "Dabi",
@@ -4838,7 +4998,8 @@
                 "40",
                 "42"
               ],
-              "tone": "nerf"
+              "tone": "nerf",
+              "alter_symbol": "γ"
             },
             {
               "character": "Kurogiri",
@@ -4870,7 +5031,8 @@
                 "0.2",
                 "0.2"
               ],
-              "tone": "buff"
+              "tone": "buff",
+              "alter_symbol": "γ"
             },
             {
               "character": "Lady Nagant",
@@ -4902,7 +5064,8 @@
                 "7.0",
                 "7.0"
               ],
-              "tone": "nerf"
+              "tone": "nerf",
+              "alter_symbol": "α"
             },
             {
               "character": "Lady Nagant",
@@ -4924,7 +5087,8 @@
                 "7.0",
                 "5.0"
               ],
-              "tone": "nerf"
+              "tone": "nerf",
+              "alter_symbol": "γ"
             },
             {
               "character": "Lady Nagant",
@@ -4956,7 +5120,8 @@
                 "5.0",
                 "8.0"
               ],
-              "tone": "adjust"
+              "tone": "adjust",
+              "alter_symbol": "γ"
             },
             {
               "character": "Lady Nagant",
@@ -4980,7 +5145,8 @@
                 "1",
                 "1"
               ],
-              "tone": "nerf"
+              "tone": "nerf",
+              "alter_symbol": "γ"
             },
             {
               "character": "Lady Nagant",
