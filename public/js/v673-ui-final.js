@@ -1,10 +1,10 @@
 (() => {
   'use strict';
 
-  const BUILD = "671-295e11a7e93c";
+  const BUILD = "673-e1afcef7ed43";
   const root = document.documentElement;
   const startedAt =
-    Number(window.__MHUR_V671_STARTED_AT) ||
+    Number(window.__MHUR_V673_STARTED_AT) ||
     performance.now();
 
   const OWNER_SELECTOR = [
@@ -47,13 +47,13 @@
     document.querySelectorAll(
       '[id^="mhurV66"][id$="Splash"]'
     ).forEach(node => {
-      if (node.id !== 'mhurV671Splash') node.remove();
+      if (node.id !== 'mhurV673Splash') node.remove();
     });
 
     document.querySelectorAll(
       '[class*="mhurV66"][class*="Hero"]'
     ).forEach(node => {
-      if (!node.closest('#mhurV671Splash')) node.remove();
+      if (!node.closest('#mhurV673Splash')) node.remove();
     });
 
     document.querySelectorAll(
@@ -61,7 +61,7 @@
       '[id*="RightHeroImage"],' +
       '[id*="MiniHeroImage"]'
     ).forEach(node => {
-      if (!node.closest('#mhurV671Splash')) {
+      if (!node.closest('#mhurV673Splash')) {
         (node.closest('figure,div') || node).remove();
       }
     });
@@ -82,43 +82,127 @@
   }
 
   function fixPatchByIds(scope = document) {
-    const selector = [
-      'article[data-v608-character-id="armored_all_might"]',
-      '[data-v608-style="armored_all_might_technical"]',
-      '[data-v608-skill-id="armored_all_might_alpha_burn"]'
-    ].join(' ');
+    const articleSelector = [
+      'article.s18PatchCharacterV10',
+      '[data-v608-character-id="armored_all_might"]',
+      '[data-v608-style="armored_all_might_technical"]'
+    ].join('');
 
-    const cards = [];
+    const articles = new Set();
 
-    if (scope instanceof Element && scope.matches(selector)) {
-      cards.push(scope);
+    if (scope instanceof Element) {
+      if (scope.matches(articleSelector)) {
+        articles.add(scope);
+      }
+
+      const parent = scope.closest?.(articleSelector);
+      if (parent) articles.add(parent);
     }
 
-    scope.querySelectorAll?.(selector).forEach(card => {
-      cards.push(card);
+    scope.querySelectorAll?.(articleSelector).forEach(article => {
+      articles.add(article);
     });
 
-    cards.forEach(card => {
-      const expectedTitle = patchLanguage() === 'en'
-        ? 'α - Ice Bullet Shot (Burn)'
-        : 'α - Ice Bullet Shot (Brûlure)';
-      const title = card.querySelector('h5');
+    const expectedBefore = [
+      52, 54, 56, 58, 60, 62, 64, 66, 68
+    ];
+    const expectedAfter = [
+      48, 50, 52, 54, 55, 56, 57, 58, 60
+    ];
 
-      if (title && title.textContent.trim() !== expectedTitle) {
-        title.textContent = expectedTitle;
-      }
+    const values = (card, selector) => [
+      ...card.querySelectorAll(selector)
+    ]
+      .map(cell =>
+        Number(
+          String(cell.textContent || '')
+            .trim()
+            .replace(',', '.')
+        )
+      )
+      .filter(Number.isFinite);
 
-      const image = card.querySelector(
-        '.s18PatchImageV608 img,.s18PatchSkillV10 img'
+    const same = (left, right) =>
+      left.length === right.length &&
+      left.every(
+        (value, index) =>
+          Math.abs(value - right[index]) < 0.001
       );
-      const expectedImage =
-        '/assets/armored_all_might/' +
-        'armored_all_might_technical/alpha.webp';
 
-      if (image && !image.src.endsWith(expectedImage)) {
-        image.setAttribute('src', expectedImage);
-        image.setAttribute('alt', expectedTitle);
-      }
+    articles.forEach(article => {
+      article.querySelectorAll(
+        '.s18PatchChangeV10'
+      ).forEach(card => {
+        const skillId =
+          card.dataset.v608SkillId || '';
+
+        const isTarget =
+          skillId === 'armored_all_might_alpha_burn' ||
+          (
+            same(
+              values(card, 'tr.before td'),
+              expectedBefore
+            ) &&
+            same(
+              values(card, 'tr.after td'),
+              expectedAfter
+            )
+          );
+
+        if (!isTarget) return;
+
+        card.dataset.v608CharacterId =
+          'armored_all_might';
+        card.dataset.v608Style =
+          'armored_all_might_technical';
+        card.dataset.v608SkillId =
+          'armored_all_might_alpha_burn';
+
+        const expectedTitle =
+          patchLanguage() === 'en'
+            ? 'α - Ice Bullet Shot (Burn)'
+            : 'α - Ice Bullet Shot (Brûlure)';
+
+        const title = card.querySelector('h5');
+
+        if (title) {
+          title.textContent = expectedTitle;
+        }
+
+        const expectedImage =
+          '/assets/armored_all_might/' +
+          'armored_all_might_technical/alpha.webp';
+
+        let image = card.querySelector(
+          '.s18PatchImageV608 img,' +
+          '.s18PatchSkillV10 img'
+        );
+
+        if (!image) {
+          const skill = card.querySelector(
+            '.s18PatchSkillV10'
+          );
+
+          if (skill) {
+            const wrapper = document.createElement('div');
+            wrapper.className = 's18PatchImageV608';
+
+            image = document.createElement('img');
+            wrapper.appendChild(image);
+            skill.prepend(wrapper);
+            skill.classList.remove(
+              's18NoSkillImageV608'
+            );
+          }
+        }
+
+        if (image) {
+          image.setAttribute('src', expectedImage);
+          image.setAttribute('alt', expectedTitle);
+          image.setAttribute('loading', 'eager');
+          image.setAttribute('decoding', 'async');
+        }
+      });
     });
   }
 
@@ -250,15 +334,15 @@
   function tuneImages(scope = document) {
     const images = scope.querySelectorAll
       ? scope.querySelectorAll(
-          'img:not([data-mhur-v671-image])'
+          'img:not([data-mhur-v673-image])'
         )
       : [];
 
     images.forEach((image, index) => {
-      image.dataset.mhurV671Image = '1';
+      image.dataset.mhurV673Image = '1';
       image.decoding = 'async';
 
-      if (image.closest('#mhurV671Splash')) return;
+      if (image.closest('#mhurV673Splash')) return;
 
       const rect = image.getBoundingClientRect();
       const visible =
@@ -288,9 +372,9 @@
       Math.min(100, Math.round(value))
     );
 
-    const fill = document.getElementById('mhurV671Fill');
-    const percent = document.getElementById('mhurV671Percent');
-    const status = document.getElementById('mhurV671Status');
+    const fill = document.getElementById('mhurV673Fill');
+    const percent = document.getElementById('mhurV673Percent');
+    const status = document.getElementById('mhurV673Status');
 
     if (fill) fill.style.width = `${currentProgress}%`;
     if (percent) percent.textContent = `${currentProgress}%`;
@@ -328,12 +412,12 @@
     setTimeout(() => {
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
-          root.classList.remove('mhur-v671-booting');
-          root.classList.add('mhur-v671-ready');
+          root.classList.remove('mhur-v673-booting');
+          root.classList.add('mhur-v673-ready');
           root.dataset.mhurBuild = BUILD;
 
           const splash = document.getElementById(
-            'mhurV671Splash'
+            'mhurV673Splash'
           );
 
           if (splash) {
@@ -342,7 +426,7 @@
           }
 
           window.dispatchEvent(
-            new CustomEvent('mhur:v671-ready', {
+            new CustomEvent('mhur:v673-ready', {
               detail: { build: BUILD }
             })
           );
@@ -429,7 +513,7 @@
   /* Le site ne reste jamais bloqué derrière le splash. */
   setTimeout(finishReveal, 3800);
 
-  window.MHUR_V671 = {
+  window.MHUR_V673 = {
     build: BUILD,
     refreshNew: () => scanCanonical(document),
     fixPatchByIds: () => fixPatchByIds(document),
