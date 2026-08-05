@@ -1,10 +1,10 @@
 (() => {
   'use strict';
 
-  const BUILD = "673-e1afcef7ed43";
+  const BUILD = "674-cc3962c86624";
   const root = document.documentElement;
   const startedAt =
-    Number(window.__MHUR_V673_STARTED_AT) ||
+    Number(window.__MHUR_V674_STARTED_AT) ||
     performance.now();
 
   const OWNER_SELECTOR = [
@@ -42,18 +42,21 @@
   let revealed = false;
   let currentProgress = 7;
   let progressTimer = 0;
+  let patchFixFrame = 0;
+  let patchFixRunning = false;
+  let pendingPatchScope = null;
 
   function cleanupOldSplashArtifacts() {
     document.querySelectorAll(
       '[id^="mhurV66"][id$="Splash"]'
     ).forEach(node => {
-      if (node.id !== 'mhurV673Splash') node.remove();
+      if (node.id !== 'mhurV674Splash') node.remove();
     });
 
     document.querySelectorAll(
       '[class*="mhurV66"][class*="Hero"]'
     ).forEach(node => {
-      if (!node.closest('#mhurV673Splash')) node.remove();
+      if (!node.closest('#mhurV674Splash')) node.remove();
     });
 
     document.querySelectorAll(
@@ -61,7 +64,7 @@
       '[id*="RightHeroImage"],' +
       '[id*="MiniHeroImage"]'
     ).forEach(node => {
-      if (!node.closest('#mhurV673Splash')) {
+      if (!node.closest('#mhurV674Splash')) {
         (node.closest('figure,div') || node).remove();
       }
     });
@@ -82,128 +85,231 @@
   }
 
   function fixPatchByIds(scope = document) {
-    const articleSelector = [
-      'article.s18PatchCharacterV10',
-      '[data-v608-character-id="armored_all_might"]',
-      '[data-v608-style="armored_all_might_technical"]'
-    ].join('');
+    if (patchFixRunning) return;
 
-    const articles = new Set();
+    patchFixRunning = true;
 
-    if (scope instanceof Element) {
-      if (scope.matches(articleSelector)) {
-        articles.add(scope);
+    try {
+      const articleSelector = [
+        'article.s18PatchCharacterV10',
+        '[data-v608-character-id="armored_all_might"]',
+        '[data-v608-style="armored_all_might_technical"]'
+      ].join('');
+
+      const articles = new Set();
+
+      if (scope instanceof Element) {
+        if (scope.matches(articleSelector)) {
+          articles.add(scope);
+        }
+
+        const parent = scope.closest?.(articleSelector);
+        if (parent) articles.add(parent);
       }
 
-      const parent = scope.closest?.(articleSelector);
-      if (parent) articles.add(parent);
-    }
+      scope.querySelectorAll?.(articleSelector).forEach(article => {
+        articles.add(article);
+      });
 
-    scope.querySelectorAll?.(articleSelector).forEach(article => {
-      articles.add(article);
-    });
+      const expectedBefore = [
+        52, 54, 56, 58, 60, 62, 64, 66, 68
+      ];
+      const expectedAfter = [
+        48, 50, 52, 54, 55, 56, 57, 58, 60
+      ];
 
-    const expectedBefore = [
-      52, 54, 56, 58, 60, 62, 64, 66, 68
-    ];
-    const expectedAfter = [
-      48, 50, 52, 54, 55, 56, 57, 58, 60
-    ];
-
-    const values = (card, selector) => [
-      ...card.querySelectorAll(selector)
-    ]
-      .map(cell =>
-        Number(
-          String(cell.textContent || '')
-            .trim()
-            .replace(',', '.')
+      const values = (card, selector) => [
+        ...card.querySelectorAll(selector)
+      ]
+        .map(cell =>
+          Number(
+            String(cell.textContent || '')
+              .trim()
+              .replace(',', '.')
+          )
         )
-      )
-      .filter(Number.isFinite);
+        .filter(Number.isFinite);
 
-    const same = (left, right) =>
-      left.length === right.length &&
-      left.every(
-        (value, index) =>
-          Math.abs(value - right[index]) < 0.001
-      );
-
-    articles.forEach(article => {
-      article.querySelectorAll(
-        '.s18PatchChangeV10'
-      ).forEach(card => {
-        const skillId =
-          card.dataset.v608SkillId || '';
-
-        const isTarget =
-          skillId === 'armored_all_might_alpha_burn' ||
-          (
-            same(
-              values(card, 'tr.before td'),
-              expectedBefore
-            ) &&
-            same(
-              values(card, 'tr.after td'),
-              expectedAfter
-            )
-          );
-
-        if (!isTarget) return;
-
-        card.dataset.v608CharacterId =
-          'armored_all_might';
-        card.dataset.v608Style =
-          'armored_all_might_technical';
-        card.dataset.v608SkillId =
-          'armored_all_might_alpha_burn';
-
-        const expectedTitle =
-          patchLanguage() === 'en'
-            ? 'α - Ice Bullet Shot (Burn)'
-            : 'α - Ice Bullet Shot (Brûlure)';
-
-        const title = card.querySelector('h5');
-
-        if (title) {
-          title.textContent = expectedTitle;
-        }
-
-        const expectedImage =
-          '/assets/armored_all_might/' +
-          'armored_all_might_technical/alpha.webp';
-
-        let image = card.querySelector(
-          '.s18PatchImageV608 img,' +
-          '.s18PatchSkillV10 img'
+      const same = (left, right) =>
+        left.length === right.length &&
+        left.every(
+          (value, index) =>
+            Math.abs(value - right[index]) < 0.001
         );
 
-        if (!image) {
-          const skill = card.querySelector(
-            '.s18PatchSkillV10'
+      const setDataset = (element, key, value) => {
+        if (element.dataset[key] !== value) {
+          element.dataset[key] = value;
+        }
+      };
+
+      const sameAsset = (current, expected) => {
+        try {
+          return new URL(
+            current,
+            location.origin
+          ).pathname === expected;
+        } catch (_error) {
+          return String(current || '').split('?')[0] === expected;
+        }
+      };
+
+      articles.forEach(article => {
+        article.querySelectorAll(
+          '.s18PatchChangeV10'
+        ).forEach(card => {
+          const skillId =
+            card.dataset.v608SkillId || '';
+
+          const isTarget =
+            skillId === 'armored_all_might_alpha_burn' ||
+            (
+              same(
+                values(card, 'tr.before td'),
+                expectedBefore
+              ) &&
+              same(
+                values(card, 'tr.after td'),
+                expectedAfter
+              )
+            );
+
+          if (!isTarget) return;
+
+          setDataset(
+            card,
+            'v608CharacterId',
+            'armored_all_might'
+          );
+          setDataset(
+            card,
+            'v608Style',
+            'armored_all_might_technical'
+          );
+          setDataset(
+            card,
+            'v608SkillId',
+            'armored_all_might_alpha_burn'
           );
 
-          if (skill) {
-            const wrapper = document.createElement('div');
-            wrapper.className = 's18PatchImageV608';
+          const expectedTitle =
+            patchLanguage() === 'en'
+              ? 'α - Ice Bullet Shot (Burn)'
+              : 'α - Ice Bullet Shot (Brûlure)';
 
-            image = document.createElement('img');
-            wrapper.appendChild(image);
-            skill.prepend(wrapper);
-            skill.classList.remove(
-              's18NoSkillImageV608'
-            );
+          const title = card.querySelector('h5');
+
+          if (
+            title &&
+            String(title.textContent || '').trim() !== expectedTitle
+          ) {
+            title.textContent = expectedTitle;
           }
-        }
 
-        if (image) {
-          image.setAttribute('src', expectedImage);
-          image.setAttribute('alt', expectedTitle);
-          image.setAttribute('loading', 'eager');
-          image.setAttribute('decoding', 'async');
-        }
+          const expectedImage =
+            '/assets/armored_all_might/' +
+            'armored_all_might_technical/alpha.webp';
+
+          let image = card.querySelector(
+            '.s18PatchImageV608 img,' +
+            '.s18PatchSkillV10 img'
+          );
+
+          if (!image) {
+            const skill = card.querySelector(
+              '.s18PatchSkillV10'
+            );
+
+            if (skill) {
+              let wrapper = skill.querySelector(
+                ':scope > .s18PatchImageV608'
+              );
+
+              if (!wrapper) {
+                wrapper = document.createElement('div');
+                wrapper.className = 's18PatchImageV608';
+                skill.prepend(wrapper);
+              }
+
+              image = wrapper.querySelector('img');
+
+              if (!image) {
+                image = document.createElement('img');
+                wrapper.appendChild(image);
+              }
+
+              skill.classList.remove(
+                's18NoSkillImageV608'
+              );
+            }
+          }
+
+          if (image) {
+            if (!sameAsset(image.currentSrc || image.src, expectedImage)) {
+              image.setAttribute('src', expectedImage);
+            }
+
+            if (image.getAttribute('alt') !== expectedTitle) {
+              image.setAttribute('alt', expectedTitle);
+            }
+
+            if (image.getAttribute('loading') !== 'eager') {
+              image.setAttribute('loading', 'eager');
+            }
+
+            if (image.getAttribute('decoding') !== 'async') {
+              image.setAttribute('decoding', 'async');
+            }
+          }
+        });
       });
+    } finally {
+      patchFixRunning = false;
+    }
+  }
+
+  function schedulePatchFix(scope = document) {
+    pendingPatchScope = scope || document;
+
+    if (patchFixFrame) return;
+
+    patchFixFrame = requestAnimationFrame(() => {
+      patchFixFrame = 0;
+      const target = pendingPatchScope || document;
+      pendingPatchScope = null;
+      fixPatchByIds(target);
     });
+  }
+
+  function releaseInteractions() {
+    root.classList.remove('mhur-v674-booting');
+    root.classList.add('mhur-v674-ready');
+
+    document.documentElement.style.removeProperty(
+      'pointer-events'
+    );
+
+    document.body?.style.removeProperty(
+      'pointer-events'
+    );
+
+    const splash = document.getElementById(
+      'mhurV674Splash'
+    );
+
+    if (splash) {
+      splash.style.setProperty(
+        'pointer-events',
+        'none',
+        'important'
+      );
+      splash.style.setProperty(
+        'display',
+        'none',
+        'important'
+      );
+      splash.remove();
+    }
   }
 
   function depth(node) {
@@ -307,7 +413,7 @@
   function handleAddedNode(node) {
     if (!(node instanceof Element)) return;
 
-    fixPatchByIds(node);
+    schedulePatchFix(node);
     scanCanonical(node);
 
     if (node.matches(LEGACY_SELECTOR)) {
@@ -334,15 +440,15 @@
   function tuneImages(scope = document) {
     const images = scope.querySelectorAll
       ? scope.querySelectorAll(
-          'img:not([data-mhur-v673-image])'
+          'img:not([data-mhur-v674-image])'
         )
       : [];
 
     images.forEach((image, index) => {
-      image.dataset.mhurV673Image = '1';
+      image.dataset.mhurV674Image = '1';
       image.decoding = 'async';
 
-      if (image.closest('#mhurV673Splash')) return;
+      if (image.closest('#mhurV674Splash')) return;
 
       const rect = image.getBoundingClientRect();
       const visible =
@@ -372,9 +478,9 @@
       Math.min(100, Math.round(value))
     );
 
-    const fill = document.getElementById('mhurV673Fill');
-    const percent = document.getElementById('mhurV673Percent');
-    const status = document.getElementById('mhurV673Status');
+    const fill = document.getElementById('mhurV674Fill');
+    const percent = document.getElementById('mhurV674Percent');
+    const status = document.getElementById('mhurV674Status');
 
     if (fill) fill.style.width = `${currentProgress}%`;
     if (percent) percent.textContent = `${currentProgress}%`;
@@ -412,21 +518,14 @@
     setTimeout(() => {
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
-          root.classList.remove('mhur-v673-booting');
-          root.classList.add('mhur-v673-ready');
+          root.classList.remove('mhur-v674-booting');
+          root.classList.add('mhur-v674-ready');
           root.dataset.mhurBuild = BUILD;
 
-          const splash = document.getElementById(
-            'mhurV673Splash'
-          );
-
-          if (splash) {
-            splash.style.display = 'none';
-            setTimeout(() => splash.remove(), 360);
-          }
+          releaseInteractions();
 
           window.dispatchEvent(
-            new CustomEvent('mhur:v673-ready', {
+            new CustomEvent('mhur:v674-ready', {
               detail: { build: BUILD }
             })
           );
@@ -438,7 +537,7 @@
   function start() {
     cleanupOldSplashArtifacts();
     beginProgress();
-    fixPatchByIds(document);
+    schedulePatchFix(document);
     scanCanonical(document);
     tuneImages(document);
 
@@ -447,30 +546,31 @@
 
       for (const mutation of mutations) {
         mutation.addedNodes.forEach(handleAddedNode);
-        patchChanged = patchChanged ||
-          mutation.type === 'characterData' ||
-          mutation.addedNodes.length > 0;
+
+        if (mutation.addedNodes.length > 0) {
+          patchChanged = true;
+        }
       }
 
       if (patchChanged) {
-        queueMicrotask(() => fixPatchByIds(document));
+        schedulePatchFix(document);
       }
     }).observe(document.documentElement, {
       childList: true,
-      subtree: true,
-      characterData: true
+      subtree: true
     });
 
+
     setTimeout(() => {
-      fixPatchByIds(document);
+      schedulePatchFix(document);
       scanCanonical(document);
     }, 60);
     setTimeout(() => {
-      fixPatchByIds(document);
+      schedulePatchFix(document);
       scanCanonical(document);
     }, 240);
     setTimeout(() => {
-      fixPatchByIds(document);
+      schedulePatchFix(document);
       scanCanonical(document);
     }, 850);
 
@@ -481,11 +581,11 @@
     'click',
     () => {
       setTimeout(() => {
-        fixPatchByIds(document);
+        schedulePatchFix(document);
         scanCanonical(document);
       }, 0);
       setTimeout(() => {
-        fixPatchByIds(document);
+        schedulePatchFix(document);
         scanCanonical(document);
       }, 100);
     },
@@ -495,7 +595,7 @@
   window.addEventListener(
     'mhur:languagechange',
     () => {
-      fixPatchByIds(document);
+      schedulePatchFix(document);
       scanCanonical(document);
     }
   );
@@ -510,13 +610,20 @@
     start();
   }
 
-  /* Le site ne reste jamais bloqué derrière le splash. */
-  setTimeout(finishReveal, 3800);
+  /* Le site ne reste jamais bloqué ou non cliquable. */
+  setTimeout(() => {
+    releaseInteractions();
 
-  window.MHUR_V673 = {
+    if (!revealed) {
+      finishReveal();
+    }
+  }, 2600);
+
+  window.MHUR_V674 = {
     build: BUILD,
     refreshNew: () => scanCanonical(document),
-    fixPatchByIds: () => fixPatchByIds(document),
+    fixPatchByIds: () => schedulePatchFix(document),
+    releaseInteractions,
     cleanOwner
   };
 })();

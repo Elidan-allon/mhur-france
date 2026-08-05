@@ -1,8 +1,8 @@
 (() => {
   'use strict';
 
-  const CURRENT = "673-e1afcef7ed43";
-  const RELOAD_KEY = 'mhur-v673-reloaded-build';
+  const CURRENT = "674-cc3962c86624";
+  const RELOAD_KEY = 'mhur-v674-reloaded-build';
   let checking = false;
 
   async function remoteBuild() {

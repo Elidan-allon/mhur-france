@@ -1,14 +1,15 @@
-/* MHUR V673 — splash cinématique + NEW global unique */
+/* MHUR V674 — splash cinématique + NEW global unique */
 
 /* ==========================================================================
    SPLASH CINÉMATIQUE
    ========================================================================== */
 
-#mhurV673Splash {
+#mhurV674Splash {
   position: fixed;
   inset: 0;
   z-index: 2147483647;
   display: none;
+  pointer-events: none !important;
   min-height: 100vh;
   min-height: 100dvh;
   overflow: hidden;
@@ -20,26 +21,26 @@
   font-family: Arial, Helvetica, sans-serif;
 }
 
-html.mhur-v673-booting {
+html.mhur-v674-booting {
   overflow: hidden !important;
   background: #02060e !important;
 }
 
-html.mhur-v673-booting body {
+html.mhur-v674-booting body {
   overflow: hidden !important;
   background: #02060e !important;
 }
 
-html.mhur-v673-booting #mhurV673Splash {
+html.mhur-v674-booting #mhurV674Splash {
   display: block !important;
   visibility: visible !important;
 }
 
-html.mhur-v673-booting body > :not(#mhurV673Splash) {
+html.mhur-v674-booting body > :not(#mhurV674Splash) {
   visibility: hidden !important;
 }
 
-#mhurV673Splash::before {
+#mhurV674Splash::before {
   content: "";
   position: absolute;
   inset: -20%;
@@ -59,10 +60,10 @@ html.mhur-v673-booting body > :not(#mhurV673Splash) {
     );
   transform: perspective(800px) rotateX(58deg) translateY(20%);
   transform-origin: center bottom;
-  animation: mhurV673GridMove 9s linear infinite;
+  animation: mhurV674GridMove 9s linear infinite;
 }
 
-#mhurV673Splash::after {
+#mhurV674Splash::after {
   content: "";
   position: absolute;
   inset: 0;
@@ -79,7 +80,7 @@ html.mhur-v673-booting body > :not(#mhurV673Splash) {
   mix-blend-mode: overlay;
 }
 
-.mhurV673Aurora {
+.mhurV674Aurora {
   position: absolute;
   inset: -35%;
   z-index: -5;
@@ -93,10 +94,10 @@ html.mhur-v673-booting body > :not(#mhurV673Splash) {
       rgba(255, 224, 0, .16)
     );
   filter: blur(80px);
-  animation: mhurV673AuroraSpin 13s linear infinite;
+  animation: mhurV674AuroraSpin 13s linear infinite;
 }
 
-.mhurV673Beam {
+.mhurV674Beam {
   position: absolute;
   z-index: -2;
   width: 58vw;
@@ -110,22 +111,22 @@ html.mhur-v673-booting body > :not(#mhurV673Splash) {
   );
   filter: blur(18px);
   transform: rotate(-24deg);
-  animation: mhurV673BeamSweep 4.6s ease-in-out infinite;
+  animation: mhurV674BeamSweep 4.6s ease-in-out infinite;
 }
 
-.mhurV673Beam.one {
+.mhurV674Beam.one {
   top: 7%;
   left: -18%;
 }
 
-.mhurV673Beam.two {
+.mhurV674Beam.two {
   right: -20%;
   bottom: 10%;
   animation-delay: -2.1s;
   transform: rotate(156deg);
 }
 
-.mhurV673Hero {
+.mhurV674Hero {
   position: absolute;
   top: -2%;
   bottom: 12%;
@@ -142,7 +143,7 @@ html.mhur-v673-booting body > :not(#mhurV673Splash) {
     drop-shadow(0 24px 36px rgba(0, 0, 0, .72));
 }
 
-.mhurV673Hero::after {
+.mhurV674Hero::after {
   content: "";
   position: absolute;
   inset: 0;
@@ -155,23 +156,23 @@ html.mhur-v673-booting body > :not(#mhurV673Splash) {
     );
 }
 
-.mhurV673Hero.left {
+.mhurV674Hero.left {
   left: -1.5%;
   background-image:
     url("../assets/home/season18/gentle_s18_banner.webp");
   transform: translateX(-5%) translateY(-11%) rotate(-2deg);
-  animation: mhurV673HeroLeft 5.6s ease-in-out infinite;
+  animation: mhurV674HeroLeft 5.6s ease-in-out infinite;
 }
 
-.mhurV673Hero.right {
+.mhurV674Hero.right {
   right: -1.5%;
   background-image:
     url("../assets/home/season18/twice_s18_banner.webp");
   transform: translateX(5%) translateY(-11%) rotate(2deg);
-  animation: mhurV673HeroRight 5.6s ease-in-out infinite;
+  animation: mhurV674HeroRight 5.6s ease-in-out infinite;
 }
 
-.mhurV673Hero.mini {
+.mhurV674Hero.mini {
   top: auto;
   left: 50%;
   bottom: -17%;
@@ -188,7 +189,7 @@ html.mhur-v673-booting body > :not(#mhurV673Splash) {
     drop-shadow(0 18px 30px rgba(0, 0, 0, .8));
 }
 
-.mhurV673Stage {
+.mhurV674Stage {
   position: relative;
   z-index: 10;
   width: 100%;
@@ -203,7 +204,7 @@ html.mhur-v673-booting body > :not(#mhurV673Splash) {
     max(20px, env(safe-area-inset-left));
 }
 
-.mhurV673Panel {
+.mhurV674Panel {
   position: relative;
   width: min(92vw, 690px);
   padding: clamp(27px, 4.2vw, 48px);
@@ -224,7 +225,7 @@ html.mhur-v673-booting body > :not(#mhurV673Splash) {
   transform: translateZ(0);
 }
 
-.mhurV673Panel::before {
+.mhurV674Panel::before {
   content: "";
   position: absolute;
   inset: 0 0 auto;
@@ -241,7 +242,7 @@ html.mhur-v673-booting body > :not(#mhurV673Splash) {
   box-shadow: 0 0 24px rgba(43, 211, 239, .48);
 }
 
-.mhurV673Panel::after {
+.mhurV674Panel::after {
   content: "";
   position: absolute;
   inset: 12px;
@@ -250,42 +251,42 @@ html.mhur-v673-booting body > :not(#mhurV673Splash) {
   border-radius: 21px;
 }
 
-.mhurV673Corner {
+.mhurV674Corner {
   position: absolute;
   width: 48px;
   height: 48px;
   pointer-events: none;
 }
 
-.mhurV673Corner.tl {
+.mhurV674Corner.tl {
   top: 15px;
   left: 15px;
   border-top: 3px solid #ffe000;
   border-left: 3px solid #ffe000;
 }
 
-.mhurV673Corner.tr {
+.mhurV674Corner.tr {
   top: 15px;
   right: 15px;
   border-top: 3px solid #d33bff;
   border-right: 3px solid #d33bff;
 }
 
-.mhurV673Corner.bl {
+.mhurV674Corner.bl {
   bottom: 15px;
   left: 15px;
   border-bottom: 3px solid #2bd3ef;
   border-left: 3px solid #2bd3ef;
 }
 
-.mhurV673Corner.br {
+.mhurV674Corner.br {
   right: 15px;
   bottom: 15px;
   border-right: 3px solid #6498ff;
   border-bottom: 3px solid #6498ff;
 }
 
-.mhurV673Topline {
+.mhurV674Topline {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -293,8 +294,8 @@ html.mhur-v673-booting body > :not(#mhurV673Splash) {
   margin-bottom: 20px;
 }
 
-.mhurV673Live,
-.mhurV673Season {
+.mhurV674Live,
+.mhurV674Season {
   min-height: 30px;
   display: inline-flex;
   align-items: center;
@@ -310,22 +311,22 @@ html.mhur-v673-booting body > :not(#mhurV673Splash) {
   text-transform: uppercase;
 }
 
-.mhurV673Live::before {
+.mhurV674Live::before {
   content: "";
   width: 8px;
   height: 8px;
   border-radius: 50%;
   background: #29e26d;
   box-shadow: 0 0 14px #29e26d;
-  animation: mhurV673LivePulse 1.1s ease-in-out infinite;
+  animation: mhurV674LivePulse 1.1s ease-in-out infinite;
 }
 
-.mhurV673Season {
+.mhurV674Season {
   border-color: rgba(255, 226, 0, .42);
   color: #ffe65c;
 }
 
-.mhurV673LogoOrbit {
+.mhurV674LogoOrbit {
   position: relative;
   width: 134px;
   height: 134px;
@@ -334,30 +335,30 @@ html.mhur-v673-booting body > :not(#mhurV673Splash) {
   place-items: center;
 }
 
-.mhurV673LogoOrbit::before,
-.mhurV673LogoOrbit::after {
+.mhurV674LogoOrbit::before,
+.mhurV674LogoOrbit::after {
   content: "";
   position: absolute;
   border-radius: 50%;
 }
 
-.mhurV673LogoOrbit::before {
+.mhurV674LogoOrbit::before {
   inset: -9px;
   border:
     3px solid
     color-mix(in srgb, #2bd3ef 60%, transparent);
   border-top-color: #ffe000;
   border-right-color: #d33bff;
-  animation: mhurV673Orbit 3.6s linear infinite;
+  animation: mhurV674Orbit 3.6s linear infinite;
 }
 
-.mhurV673LogoOrbit::after {
+.mhurV674LogoOrbit::after {
   inset: -20px;
   border: 1px dashed rgba(121, 207, 255, .30);
-  animation: mhurV673OrbitReverse 7s linear infinite;
+  animation: mhurV674OrbitReverse 7s linear infinite;
 }
 
-.mhurV673Logo {
+.mhurV674Logo {
   width: 118px;
   height: 118px;
   display: grid;
@@ -378,14 +379,14 @@ html.mhur-v673-booting body > :not(#mhurV673Splash) {
   transform: rotate(-2deg);
 }
 
-.mhurV673Logo img {
+.mhurV674Logo img {
   width: 92px;
   height: 92px;
   display: block;
   object-fit: contain;
 }
 
-.mhurV673Kicker {
+.mhurV674Kicker {
   margin: 0 0 8px;
   color: #75ddff;
   font-size: 12px;
@@ -394,7 +395,7 @@ html.mhur-v673-booting body > :not(#mhurV673Splash) {
   text-transform: uppercase;
 }
 
-.mhurV673Title {
+.mhurV674Title {
   margin: 0;
   color: #fff;
   font-size: clamp(38px, 6vw, 66px);
@@ -406,14 +407,14 @@ html.mhur-v673-booting body > :not(#mhurV673Splash) {
     0 0 26px rgba(255, 255, 255, .07);
 }
 
-.mhurV673Title span {
+.mhurV674Title span {
   color: #ffe000;
   text-shadow:
     0 5px 0 #4b3900,
     0 0 25px rgba(255, 224, 0, .20);
 }
 
-.mhurV673Subtitle {
+.mhurV674Subtitle {
   max-width: 490px;
   margin: 17px auto 0;
   color: #c8dbef;
@@ -422,7 +423,7 @@ html.mhur-v673-booting body > :not(#mhurV673Splash) {
   line-height: 1.45;
 }
 
-.mhurV673LoadingBox {
+.mhurV674LoadingBox {
   margin-top: 27px;
   padding: 14px;
   border: 1px solid rgba(95, 179, 238, .30);
@@ -431,7 +432,7 @@ html.mhur-v673-booting body > :not(#mhurV673Splash) {
   box-shadow: 0 0 0 1px rgba(255, 255, 255, .025) inset;
 }
 
-.mhurV673StatusRow {
+.mhurV674StatusRow {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -439,7 +440,7 @@ html.mhur-v673-booting body > :not(#mhurV673Splash) {
   margin-bottom: 10px;
 }
 
-#mhurV673Status {
+#mhurV674Status {
   color: #e9f6ff;
   font-size: 12px;
   font-weight: 950;
@@ -447,7 +448,7 @@ html.mhur-v673-booting body > :not(#mhurV673Splash) {
   text-align: left;
 }
 
-#mhurV673Percent {
+#mhurV674Percent {
   min-width: 45px;
   color: #ffe000;
   font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
@@ -456,7 +457,7 @@ html.mhur-v673-booting body > :not(#mhurV673Splash) {
   text-align: right;
 }
 
-.mhurV673Track {
+.mhurV674Track {
   position: relative;
   height: 14px;
   overflow: hidden;
@@ -468,7 +469,7 @@ html.mhur-v673-booting body > :not(#mhurV673Splash) {
     0 0 20px rgba(20, 181, 221, .08) inset;
 }
 
-#mhurV673Fill {
+#mhurV674Fill {
   position: absolute;
   inset: 0 auto 0 0;
   width: 7%;
@@ -487,7 +488,7 @@ html.mhur-v673-booting body > :not(#mhurV673Splash) {
   transition: width .16s ease-out;
 }
 
-#mhurV673Fill::after {
+#mhurV674Fill::after {
   content: "";
   position: absolute;
   inset: 0;
@@ -499,10 +500,10 @@ html.mhur-v673-booting body > :not(#mhurV673Splash) {
       transparent 58%
     );
   transform: translateX(-120%);
-  animation: mhurV673BarShine 1.1s linear infinite;
+  animation: mhurV674BarShine 1.1s linear infinite;
 }
 
-.mhurV673Chips {
+.mhurV674Chips {
   margin-top: 17px;
   display: flex;
   justify-content: center;
@@ -510,7 +511,7 @@ html.mhur-v673-booting body > :not(#mhurV673Splash) {
   gap: 8px;
 }
 
-.mhurV673Chips span {
+.mhurV674Chips span {
   min-height: 31px;
   display: inline-flex;
   align-items: center;
@@ -525,7 +526,7 @@ html.mhur-v673-booting body > :not(#mhurV673Splash) {
   text-transform: uppercase;
 }
 
-.mhurV673Build {
+.mhurV674Build {
   margin: 16px 0 0;
   color: #7189a4;
   font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
@@ -533,13 +534,27 @@ html.mhur-v673-booting body > :not(#mhurV673Splash) {
   font-weight: 800;
 }
 
-html.mhur-v673-ready #mhurV673Splash {
-  opacity: 0;
-  pointer-events: none;
+html.mhur-v674-ready #mhurV674Splash {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
   transition: opacity .32s ease;
 }
 
-html.mhur-v673-ready .mhurV673Panel {
+html:not(.mhur-v674-booting) #mhurV674Splash {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+html.mhur-v674-ready body,
+html.mhur-v674-ready #app {
+  pointer-events: auto !important;
+}
+
+html.mhur-v674-ready .mhurV674Panel {
   transform: scale(.975);
   transition: transform .32s ease;
 }
@@ -562,7 +577,7 @@ html.mhur-v673-ready .mhurV673Panel {
     drop-shadow(0 4px 0 rgba(0, 0, 0, .82))
     drop-shadow(0 0 8px rgba(255, 35, 163, .23)) !important;
   transform-origin: center !important;
-  animation: mhurV673NewPulse .92s ease-in-out infinite !important;
+  animation: mhurV674NewPulse .92s ease-in-out infinite !important;
   will-change: transform !important;
 }
 
@@ -659,7 +674,7 @@ html.mhur-v673-ready .mhurV673Panel {
   animation: none !important;
 }
 
-@keyframes mhurV673GridMove {
+@keyframes mhurV674GridMove {
   to {
     transform:
       perspective(800px)
@@ -668,13 +683,13 @@ html.mhur-v673-ready .mhurV673Panel {
   }
 }
 
-@keyframes mhurV673AuroraSpin {
+@keyframes mhurV674AuroraSpin {
   to {
     transform: rotate(360deg);
   }
 }
 
-@keyframes mhurV673BeamSweep {
+@keyframes mhurV674BeamSweep {
   0%,
   100% {
     opacity: .18;
@@ -687,7 +702,7 @@ html.mhur-v673-ready .mhurV673Panel {
   }
 }
 
-@keyframes mhurV673HeroLeft {
+@keyframes mhurV674HeroLeft {
   0%,
   100% {
     transform: translateX(-5%) translateY(0) rotate(-2deg);
@@ -698,7 +713,7 @@ html.mhur-v673-ready .mhurV673Panel {
   }
 }
 
-@keyframes mhurV673HeroRight {
+@keyframes mhurV674HeroRight {
   0%,
   100% {
     transform: translateX(5%) translateY(0) rotate(2deg);
@@ -709,19 +724,19 @@ html.mhur-v673-ready .mhurV673Panel {
   }
 }
 
-@keyframes mhurV673Orbit {
+@keyframes mhurV674Orbit {
   to {
     transform: rotate(360deg);
   }
 }
 
-@keyframes mhurV673OrbitReverse {
+@keyframes mhurV674OrbitReverse {
   to {
     transform: rotate(-360deg);
   }
 }
 
-@keyframes mhurV673LivePulse {
+@keyframes mhurV674LivePulse {
   0%,
   100% {
     opacity: .58;
@@ -734,13 +749,13 @@ html.mhur-v673-ready .mhurV673Panel {
   }
 }
 
-@keyframes mhurV673BarShine {
+@keyframes mhurV674BarShine {
   to {
     transform: translateX(150%);
   }
 }
 
-@keyframes mhurV673NewPulse {
+@keyframes mhurV674NewPulse {
   0%,
   100% {
     transform: scale(.92) rotate(-2deg);
@@ -752,69 +767,69 @@ html.mhur-v673-ready .mhurV673Panel {
 }
 
 @media (max-width: 1100px) {
-  .mhurV673Hero {
+  .mhurV674Hero {
     width: 34vw;
     opacity: .43;
   }
 
-  .mhurV673Panel {
+  .mhurV674Panel {
     width: min(88vw, 650px);
   }
 }
 
 @media (max-width: 760px) {
-  .mhurV673Hero {
+  .mhurV674Hero {
     display: none;
   }
 
-  .mhurV673Stage {
+  .mhurV674Stage {
     padding: 14px;
   }
 
-  .mhurV673Panel {
+  .mhurV674Panel {
     width: min(96vw, 560px);
     padding: 30px 19px 25px;
     border-radius: 22px;
   }
 
-  .mhurV673LogoOrbit {
+  .mhurV674LogoOrbit {
     width: 108px;
     height: 108px;
     margin-bottom: 19px;
   }
 
-  .mhurV673Logo {
+  .mhurV674Logo {
     width: 94px;
     height: 94px;
     border-radius: 22px;
   }
 
-  .mhurV673Logo img {
+  .mhurV674Logo img {
     width: 74px;
     height: 74px;
   }
 
-  .mhurV673Topline {
+  .mhurV674Topline {
     margin-bottom: 17px;
   }
 
-  .mhurV673Live,
-  .mhurV673Season {
+  .mhurV674Live,
+  .mhurV674Season {
     min-height: 27px;
     padding: 0 8px;
     font-size: 9px;
   }
 
-  .mhurV673Title {
+  .mhurV674Title {
     font-size: clamp(37px, 12vw, 52px);
   }
 
-  .mhurV673Subtitle {
+  .mhurV674Subtitle {
     margin-top: 13px;
     font-size: 13px;
   }
 
-  .mhurV673LoadingBox {
+  .mhurV674LoadingBox {
     margin-top: 21px;
   }
 
@@ -835,13 +850,13 @@ html.mhur-v673-ready .mhurV673Panel {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .mhurV673Aurora,
-  .mhurV673Beam,
-  .mhurV673Hero,
-  .mhurV673LogoOrbit::before,
-  .mhurV673LogoOrbit::after,
-  .mhurV673Live::before,
-  #mhurV673Fill::after,
+  .mhurV674Aurora,
+  .mhurV674Beam,
+  .mhurV674Hero,
+  .mhurV674LogoOrbit::before,
+  .mhurV674LogoOrbit::after,
+  .mhurV674Live::before,
+  #mhurV674Fill::after,
   .mhurNewV582,
   .mhurNewV582::after {
     animation: none !important;

@@ -1,41 +1,67 @@
 <!doctype html>
 <html lang="fr">
 <head>
-<!-- MHUR V673 BOOT START -->
+<!-- MHUR V674 BOOT START -->
 <script>
-window.__MHUR_V673_STARTED_AT=performance.now();
-document.documentElement.classList.add('mhur-v673-booting');
+window.__MHUR_V674_STARTED_AT=performance.now();
+document.documentElement.classList.add('mhur-v674-booting');
 setTimeout(function(){
-  var splash=document.getElementById('mhurV673Splash');
-  if(splash)splash.style.display='none';
-  document.documentElement.classList.remove('mhur-v673-booting');
-},4200);
+  var root=document.documentElement;
+  var splash=document.getElementById('mhurV674Splash');
+
+  root.classList.remove('mhur-v674-booting');
+  root.classList.add('mhur-v674-ready');
+
+  if(document.body){
+    document.body.style.removeProperty('pointer-events');
+  }
+
+  if(splash){
+    splash.style.setProperty(
+      'pointer-events',
+      'none',
+      'important'
+    );
+    splash.style.setProperty(
+      'display',
+      'none',
+      'important'
+    );
+    splash.remove();
+  }
+},2600);
 </script>
-<style id="mhur-v673-critical">
-html.mhur-v673-booting{
+<style id="mhur-v674-critical">
+html.mhur-v674-booting{
   overflow:hidden!important;
   background:#02060e!important;
 }
-html.mhur-v673-booting body{
+html.mhur-v674-booting body{
   overflow:hidden!important;
   background:#02060e!important;
 }
-html.mhur-v673-booting #mhurV673Splash{
+html.mhur-v674-booting #mhurV674Splash{
   display:block!important;
   visibility:visible!important;
 }
-html.mhur-v673-booting body>:not(#mhurV673Splash){
+html.mhur-v674-booting body>:not(#mhurV674Splash){
   visibility:hidden!important;
 }
-#mhurV673Splash{
+#mhurV674Splash{
   position:fixed;
   inset:0;
   z-index:2147483647;
   display:none!important;
+  pointer-events:none!important;
   background:#02060e;
 }
-html.mhur-v673-booting #mhurV673Splash{
+html.mhur-v674-booting #mhurV674Splash{
   display:block!important;
+}
+html:not(.mhur-v674-booting) #mhurV674Splash{
+  display:none!important;
+  visibility:hidden!important;
+  pointer-events:none!important;
 }
 </style>
 <link
@@ -59,12 +85,11 @@ html.mhur-v673-booting #mhurV673Splash{
   as="image"
   href="/assets/home/season18/tsuyu_profile_nobg.png"
 >
-<!-- MHUR V673 BOOT END -->
-
+<!-- MHUR V674 BOOT END -->
 
 <meta charset="utf-8">
 <!-- MHUR V648 : styles centrés PC -->
-<link rel="stylesheet" href="/css/v648-style-grid-center.css?v=673-e1afcef7ed43">
+<link rel="stylesheet" href="/css/v648-style-grid-center.css?v=674-cc3962c86624">
 
 <base href="/">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -72,14 +97,14 @@ html.mhur-v673-booting #mhurV673Splash{
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="MHUR Nexus">
-<script src="/data/v595-local-patch-assets.js?v=673-e1afcef7ed43"></script>
+<script src="/data/v595-local-patch-assets.js?v=674-cc3962c86624"></script>
 <script>
 (()=>{const i=/iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);const s=navigator.standalone===true||matchMedia('(display-mode: standalone)').matches;if(i&&s)document.documentElement.classList.add('mhur-ios-standalone')})();
 </script>
 
 
 
-<script src="/js/v54-early-device-guard.js?v=673-e1afcef7ed43"></script>
+<script src="/js/v54-early-device-guard.js?v=674-cc3962c86624"></script>
 <link rel="apple-touch-startup-image" href="/assets/brand/apple-splash-1290x2796.png?v=19" media="(device-width:430px) and (device-height:932px) and (-webkit-device-pixel-ratio:3)">
 <link rel="apple-touch-startup-image" href="/assets/brand/apple-splash-1179x2556.png?v=19" media="(device-width:393px) and (device-height:852px) and (-webkit-device-pixel-ratio:3)">
 <link rel="apple-touch-startup-image" href="/assets/brand/apple-splash-1170x2532.png?v=19" media="(device-width:390px) and (device-height:844px) and (-webkit-device-pixel-ratio:3)">
@@ -169,7 +194,7 @@ html.mhur-v673-booting #mhurV673Splash{
 }
 </script>
 
-<link rel="stylesheet" href="/css/v432-menu-font-size.css?v=673-e1afcef7ed43">
+<link rel="stylesheet" href="/css/v432-menu-font-size.css?v=674-cc3962c86624">
 
 
 
@@ -218,9 +243,9 @@ html.mhur-v673-booting #mhurV673Splash{
 <!-- V627 : Dev Notes complètes et images immédiates CSS. -->
 
 <!-- V627 : cadrages précalculés des costumes. -->
-<script src="/data/v627-costume-bounds.js?v=673-e1afcef7ed43"></script>
+<script src="/data/v627-costume-bounds.js?v=674-cc3962c86624"></script>
 <!-- V627 : Dev Notes complètes et images immédiates JS. -->
-<script defer src="/js/v627-dev-notes-images-instant.js?v=673-e1afcef7ed43"></script>
+<script defer src="/js/v627-dev-notes-images-instant.js?v=674-cc3962c86624"></script>
 <!-- V628 : Tier NEW droite et Dev Notes complètes CSS. -->
 
 <!-- V629 : ouverture stable des Notes CSS. -->
@@ -240,33 +265,34 @@ html.mhur-v673-booting #mhurV673Splash{
 
 
 <!-- V639 : rendu final unique avant le premier affichage. -->
-<link rel="preload" href="/css/v639-direct-final.css?v=673-e1afcef7ed43" as="style" fetchpriority="high">
-<link rel="stylesheet" href="/css/v639-direct-final.css?v=673-e1afcef7ed43">
+<link rel="preload" href="/css/v639-direct-final.css?v=674-cc3962c86624" as="style" fetchpriority="high">
+<link rel="stylesheet" href="/css/v639-direct-final.css?v=674-cc3962c86624">
 
 <!-- V642 : performances globales. -->
-<link rel="stylesheet" href="/css/v642-global-performance.css?v=673-e1afcef7ed43">
+<link rel="stylesheet" href="/css/v642-global-performance.css?v=674-cc3962c86624">
 
 <!-- V643 : notifications stables CSS. -->
-<link rel="stylesheet" href="/css/v643-notifications-stable.css?v=673-e1afcef7ed43">
+<link rel="stylesheet" href="/css/v643-notifications-stable.css?v=674-cc3962c86624">
 
 <!-- V644 : styles centrés sur ordinateur. -->
-<link rel="stylesheet" href="/css/v644-alter-style-center.css?v=673-e1afcef7ed43">
-<link rel="stylesheet" href="/css/season18-fixes.css?v=673-e1afcef7ed43">
-<link rel="stylesheet" href="/css/season18-fixes.css?v=673-e1afcef7ed43">
+<link rel="stylesheet" href="/css/v644-alter-style-center.css?v=674-cc3962c86624">
+<link rel="stylesheet" href="/css/season18-fixes.css?v=674-cc3962c86624">
+<link rel="stylesheet" href="/css/season18-fixes.css?v=674-cc3962c86624">
 <link rel="preload" as="image" href="assets/home/icons/new_badge_custom.png">
-<link rel="stylesheet" href="/css/season18-fixes.css?v=673-e1afcef7ed43">
-<style id="mhur-v673-ui-inline">
-/* MHUR V673 — splash cinématique + NEW global unique */
+<link rel="stylesheet" href="/css/season18-fixes.css?v=674-cc3962c86624">
+<style id="mhur-v674-ui-inline">
+/* MHUR V674 — splash cinématique + NEW global unique */
 
 /* ==========================================================================
    SPLASH CINÉMATIQUE
    ========================================================================== */
 
-#mhurV673Splash {
+#mhurV674Splash {
   position: fixed;
   inset: 0;
   z-index: 2147483647;
   display: none;
+  pointer-events: none !important;
   min-height: 100vh;
   min-height: 100dvh;
   overflow: hidden;
@@ -278,26 +304,26 @@ html.mhur-v673-booting #mhurV673Splash{
   font-family: Arial, Helvetica, sans-serif;
 }
 
-html.mhur-v673-booting {
+html.mhur-v674-booting {
   overflow: hidden !important;
   background: #02060e !important;
 }
 
-html.mhur-v673-booting body {
+html.mhur-v674-booting body {
   overflow: hidden !important;
   background: #02060e !important;
 }
 
-html.mhur-v673-booting #mhurV673Splash {
+html.mhur-v674-booting #mhurV674Splash {
   display: block !important;
   visibility: visible !important;
 }
 
-html.mhur-v673-booting body > :not(#mhurV673Splash) {
+html.mhur-v674-booting body > :not(#mhurV674Splash) {
   visibility: hidden !important;
 }
 
-#mhurV673Splash::before {
+#mhurV674Splash::before {
   content: "";
   position: absolute;
   inset: -20%;
@@ -317,10 +343,10 @@ html.mhur-v673-booting body > :not(#mhurV673Splash) {
     );
   transform: perspective(800px) rotateX(58deg) translateY(20%);
   transform-origin: center bottom;
-  animation: mhurV673GridMove 9s linear infinite;
+  animation: mhurV674GridMove 9s linear infinite;
 }
 
-#mhurV673Splash::after {
+#mhurV674Splash::after {
   content: "";
   position: absolute;
   inset: 0;
@@ -337,7 +363,7 @@ html.mhur-v673-booting body > :not(#mhurV673Splash) {
   mix-blend-mode: overlay;
 }
 
-.mhurV673Aurora {
+.mhurV674Aurora {
   position: absolute;
   inset: -35%;
   z-index: -5;
@@ -351,10 +377,10 @@ html.mhur-v673-booting body > :not(#mhurV673Splash) {
       rgba(255, 224, 0, .16)
     );
   filter: blur(80px);
-  animation: mhurV673AuroraSpin 13s linear infinite;
+  animation: mhurV674AuroraSpin 13s linear infinite;
 }
 
-.mhurV673Beam {
+.mhurV674Beam {
   position: absolute;
   z-index: -2;
   width: 58vw;
@@ -368,22 +394,22 @@ html.mhur-v673-booting body > :not(#mhurV673Splash) {
   );
   filter: blur(18px);
   transform: rotate(-24deg);
-  animation: mhurV673BeamSweep 4.6s ease-in-out infinite;
+  animation: mhurV674BeamSweep 4.6s ease-in-out infinite;
 }
 
-.mhurV673Beam.one {
+.mhurV674Beam.one {
   top: 7%;
   left: -18%;
 }
 
-.mhurV673Beam.two {
+.mhurV674Beam.two {
   right: -20%;
   bottom: 10%;
   animation-delay: -2.1s;
   transform: rotate(156deg);
 }
 
-.mhurV673Hero {
+.mhurV674Hero {
   position: absolute;
   top: -2%;
   bottom: 12%;
@@ -400,7 +426,7 @@ html.mhur-v673-booting body > :not(#mhurV673Splash) {
     drop-shadow(0 24px 36px rgba(0, 0, 0, .72));
 }
 
-.mhurV673Hero::after {
+.mhurV674Hero::after {
   content: "";
   position: absolute;
   inset: 0;
@@ -413,23 +439,23 @@ html.mhur-v673-booting body > :not(#mhurV673Splash) {
     );
 }
 
-.mhurV673Hero.left {
+.mhurV674Hero.left {
   left: -1.5%;
   background-image:
     url("../assets/home/season18/gentle_s18_banner.webp");
   transform: translateX(-5%) translateY(-11%) rotate(-2deg);
-  animation: mhurV673HeroLeft 5.6s ease-in-out infinite;
+  animation: mhurV674HeroLeft 5.6s ease-in-out infinite;
 }
 
-.mhurV673Hero.right {
+.mhurV674Hero.right {
   right: -1.5%;
   background-image:
     url("../assets/home/season18/twice_s18_banner.webp");
   transform: translateX(5%) translateY(-11%) rotate(2deg);
-  animation: mhurV673HeroRight 5.6s ease-in-out infinite;
+  animation: mhurV674HeroRight 5.6s ease-in-out infinite;
 }
 
-.mhurV673Hero.mini {
+.mhurV674Hero.mini {
   top: auto;
   left: 50%;
   bottom: -17%;
@@ -446,7 +472,7 @@ html.mhur-v673-booting body > :not(#mhurV673Splash) {
     drop-shadow(0 18px 30px rgba(0, 0, 0, .8));
 }
 
-.mhurV673Stage {
+.mhurV674Stage {
   position: relative;
   z-index: 10;
   width: 100%;
@@ -461,7 +487,7 @@ html.mhur-v673-booting body > :not(#mhurV673Splash) {
     max(20px, env(safe-area-inset-left));
 }
 
-.mhurV673Panel {
+.mhurV674Panel {
   position: relative;
   width: min(92vw, 690px);
   padding: clamp(27px, 4.2vw, 48px);
@@ -482,7 +508,7 @@ html.mhur-v673-booting body > :not(#mhurV673Splash) {
   transform: translateZ(0);
 }
 
-.mhurV673Panel::before {
+.mhurV674Panel::before {
   content: "";
   position: absolute;
   inset: 0 0 auto;
@@ -499,7 +525,7 @@ html.mhur-v673-booting body > :not(#mhurV673Splash) {
   box-shadow: 0 0 24px rgba(43, 211, 239, .48);
 }
 
-.mhurV673Panel::after {
+.mhurV674Panel::after {
   content: "";
   position: absolute;
   inset: 12px;
@@ -508,42 +534,42 @@ html.mhur-v673-booting body > :not(#mhurV673Splash) {
   border-radius: 21px;
 }
 
-.mhurV673Corner {
+.mhurV674Corner {
   position: absolute;
   width: 48px;
   height: 48px;
   pointer-events: none;
 }
 
-.mhurV673Corner.tl {
+.mhurV674Corner.tl {
   top: 15px;
   left: 15px;
   border-top: 3px solid #ffe000;
   border-left: 3px solid #ffe000;
 }
 
-.mhurV673Corner.tr {
+.mhurV674Corner.tr {
   top: 15px;
   right: 15px;
   border-top: 3px solid #d33bff;
   border-right: 3px solid #d33bff;
 }
 
-.mhurV673Corner.bl {
+.mhurV674Corner.bl {
   bottom: 15px;
   left: 15px;
   border-bottom: 3px solid #2bd3ef;
   border-left: 3px solid #2bd3ef;
 }
 
-.mhurV673Corner.br {
+.mhurV674Corner.br {
   right: 15px;
   bottom: 15px;
   border-right: 3px solid #6498ff;
   border-bottom: 3px solid #6498ff;
 }
 
-.mhurV673Topline {
+.mhurV674Topline {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -551,8 +577,8 @@ html.mhur-v673-booting body > :not(#mhurV673Splash) {
   margin-bottom: 20px;
 }
 
-.mhurV673Live,
-.mhurV673Season {
+.mhurV674Live,
+.mhurV674Season {
   min-height: 30px;
   display: inline-flex;
   align-items: center;
@@ -568,22 +594,22 @@ html.mhur-v673-booting body > :not(#mhurV673Splash) {
   text-transform: uppercase;
 }
 
-.mhurV673Live::before {
+.mhurV674Live::before {
   content: "";
   width: 8px;
   height: 8px;
   border-radius: 50%;
   background: #29e26d;
   box-shadow: 0 0 14px #29e26d;
-  animation: mhurV673LivePulse 1.1s ease-in-out infinite;
+  animation: mhurV674LivePulse 1.1s ease-in-out infinite;
 }
 
-.mhurV673Season {
+.mhurV674Season {
   border-color: rgba(255, 226, 0, .42);
   color: #ffe65c;
 }
 
-.mhurV673LogoOrbit {
+.mhurV674LogoOrbit {
   position: relative;
   width: 134px;
   height: 134px;
@@ -592,30 +618,30 @@ html.mhur-v673-booting body > :not(#mhurV673Splash) {
   place-items: center;
 }
 
-.mhurV673LogoOrbit::before,
-.mhurV673LogoOrbit::after {
+.mhurV674LogoOrbit::before,
+.mhurV674LogoOrbit::after {
   content: "";
   position: absolute;
   border-radius: 50%;
 }
 
-.mhurV673LogoOrbit::before {
+.mhurV674LogoOrbit::before {
   inset: -9px;
   border:
     3px solid
     color-mix(in srgb, #2bd3ef 60%, transparent);
   border-top-color: #ffe000;
   border-right-color: #d33bff;
-  animation: mhurV673Orbit 3.6s linear infinite;
+  animation: mhurV674Orbit 3.6s linear infinite;
 }
 
-.mhurV673LogoOrbit::after {
+.mhurV674LogoOrbit::after {
   inset: -20px;
   border: 1px dashed rgba(121, 207, 255, .30);
-  animation: mhurV673OrbitReverse 7s linear infinite;
+  animation: mhurV674OrbitReverse 7s linear infinite;
 }
 
-.mhurV673Logo {
+.mhurV674Logo {
   width: 118px;
   height: 118px;
   display: grid;
@@ -636,14 +662,14 @@ html.mhur-v673-booting body > :not(#mhurV673Splash) {
   transform: rotate(-2deg);
 }
 
-.mhurV673Logo img {
+.mhurV674Logo img {
   width: 92px;
   height: 92px;
   display: block;
   object-fit: contain;
 }
 
-.mhurV673Kicker {
+.mhurV674Kicker {
   margin: 0 0 8px;
   color: #75ddff;
   font-size: 12px;
@@ -652,7 +678,7 @@ html.mhur-v673-booting body > :not(#mhurV673Splash) {
   text-transform: uppercase;
 }
 
-.mhurV673Title {
+.mhurV674Title {
   margin: 0;
   color: #fff;
   font-size: clamp(38px, 6vw, 66px);
@@ -664,14 +690,14 @@ html.mhur-v673-booting body > :not(#mhurV673Splash) {
     0 0 26px rgba(255, 255, 255, .07);
 }
 
-.mhurV673Title span {
+.mhurV674Title span {
   color: #ffe000;
   text-shadow:
     0 5px 0 #4b3900,
     0 0 25px rgba(255, 224, 0, .20);
 }
 
-.mhurV673Subtitle {
+.mhurV674Subtitle {
   max-width: 490px;
   margin: 17px auto 0;
   color: #c8dbef;
@@ -680,7 +706,7 @@ html.mhur-v673-booting body > :not(#mhurV673Splash) {
   line-height: 1.45;
 }
 
-.mhurV673LoadingBox {
+.mhurV674LoadingBox {
   margin-top: 27px;
   padding: 14px;
   border: 1px solid rgba(95, 179, 238, .30);
@@ -689,7 +715,7 @@ html.mhur-v673-booting body > :not(#mhurV673Splash) {
   box-shadow: 0 0 0 1px rgba(255, 255, 255, .025) inset;
 }
 
-.mhurV673StatusRow {
+.mhurV674StatusRow {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -697,7 +723,7 @@ html.mhur-v673-booting body > :not(#mhurV673Splash) {
   margin-bottom: 10px;
 }
 
-#mhurV673Status {
+#mhurV674Status {
   color: #e9f6ff;
   font-size: 12px;
   font-weight: 950;
@@ -705,7 +731,7 @@ html.mhur-v673-booting body > :not(#mhurV673Splash) {
   text-align: left;
 }
 
-#mhurV673Percent {
+#mhurV674Percent {
   min-width: 45px;
   color: #ffe000;
   font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
@@ -714,7 +740,7 @@ html.mhur-v673-booting body > :not(#mhurV673Splash) {
   text-align: right;
 }
 
-.mhurV673Track {
+.mhurV674Track {
   position: relative;
   height: 14px;
   overflow: hidden;
@@ -726,7 +752,7 @@ html.mhur-v673-booting body > :not(#mhurV673Splash) {
     0 0 20px rgba(20, 181, 221, .08) inset;
 }
 
-#mhurV673Fill {
+#mhurV674Fill {
   position: absolute;
   inset: 0 auto 0 0;
   width: 7%;
@@ -745,7 +771,7 @@ html.mhur-v673-booting body > :not(#mhurV673Splash) {
   transition: width .16s ease-out;
 }
 
-#mhurV673Fill::after {
+#mhurV674Fill::after {
   content: "";
   position: absolute;
   inset: 0;
@@ -757,10 +783,10 @@ html.mhur-v673-booting body > :not(#mhurV673Splash) {
       transparent 58%
     );
   transform: translateX(-120%);
-  animation: mhurV673BarShine 1.1s linear infinite;
+  animation: mhurV674BarShine 1.1s linear infinite;
 }
 
-.mhurV673Chips {
+.mhurV674Chips {
   margin-top: 17px;
   display: flex;
   justify-content: center;
@@ -768,7 +794,7 @@ html.mhur-v673-booting body > :not(#mhurV673Splash) {
   gap: 8px;
 }
 
-.mhurV673Chips span {
+.mhurV674Chips span {
   min-height: 31px;
   display: inline-flex;
   align-items: center;
@@ -783,7 +809,7 @@ html.mhur-v673-booting body > :not(#mhurV673Splash) {
   text-transform: uppercase;
 }
 
-.mhurV673Build {
+.mhurV674Build {
   margin: 16px 0 0;
   color: #7189a4;
   font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
@@ -791,13 +817,27 @@ html.mhur-v673-booting body > :not(#mhurV673Splash) {
   font-weight: 800;
 }
 
-html.mhur-v673-ready #mhurV673Splash {
-  opacity: 0;
-  pointer-events: none;
+html.mhur-v674-ready #mhurV674Splash {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
   transition: opacity .32s ease;
 }
 
-html.mhur-v673-ready .mhurV673Panel {
+html:not(.mhur-v674-booting) #mhurV674Splash {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+html.mhur-v674-ready body,
+html.mhur-v674-ready #app {
+  pointer-events: auto !important;
+}
+
+html.mhur-v674-ready .mhurV674Panel {
   transform: scale(.975);
   transition: transform .32s ease;
 }
@@ -820,7 +860,7 @@ html.mhur-v673-ready .mhurV673Panel {
     drop-shadow(0 4px 0 rgba(0, 0, 0, .82))
     drop-shadow(0 0 8px rgba(255, 35, 163, .23)) !important;
   transform-origin: center !important;
-  animation: mhurV673NewPulse .92s ease-in-out infinite !important;
+  animation: mhurV674NewPulse .92s ease-in-out infinite !important;
   will-change: transform !important;
 }
 
@@ -917,7 +957,7 @@ html.mhur-v673-ready .mhurV673Panel {
   animation: none !important;
 }
 
-@keyframes mhurV673GridMove {
+@keyframes mhurV674GridMove {
   to {
     transform:
       perspective(800px)
@@ -926,13 +966,13 @@ html.mhur-v673-ready .mhurV673Panel {
   }
 }
 
-@keyframes mhurV673AuroraSpin {
+@keyframes mhurV674AuroraSpin {
   to {
     transform: rotate(360deg);
   }
 }
 
-@keyframes mhurV673BeamSweep {
+@keyframes mhurV674BeamSweep {
   0%,
   100% {
     opacity: .18;
@@ -945,7 +985,7 @@ html.mhur-v673-ready .mhurV673Panel {
   }
 }
 
-@keyframes mhurV673HeroLeft {
+@keyframes mhurV674HeroLeft {
   0%,
   100% {
     transform: translateX(-5%) translateY(0) rotate(-2deg);
@@ -956,7 +996,7 @@ html.mhur-v673-ready .mhurV673Panel {
   }
 }
 
-@keyframes mhurV673HeroRight {
+@keyframes mhurV674HeroRight {
   0%,
   100% {
     transform: translateX(5%) translateY(0) rotate(2deg);
@@ -967,19 +1007,19 @@ html.mhur-v673-ready .mhurV673Panel {
   }
 }
 
-@keyframes mhurV673Orbit {
+@keyframes mhurV674Orbit {
   to {
     transform: rotate(360deg);
   }
 }
 
-@keyframes mhurV673OrbitReverse {
+@keyframes mhurV674OrbitReverse {
   to {
     transform: rotate(-360deg);
   }
 }
 
-@keyframes mhurV673LivePulse {
+@keyframes mhurV674LivePulse {
   0%,
   100% {
     opacity: .58;
@@ -992,13 +1032,13 @@ html.mhur-v673-ready .mhurV673Panel {
   }
 }
 
-@keyframes mhurV673BarShine {
+@keyframes mhurV674BarShine {
   to {
     transform: translateX(150%);
   }
 }
 
-@keyframes mhurV673NewPulse {
+@keyframes mhurV674NewPulse {
   0%,
   100% {
     transform: scale(.92) rotate(-2deg);
@@ -1010,69 +1050,69 @@ html.mhur-v673-ready .mhurV673Panel {
 }
 
 @media (max-width: 1100px) {
-  .mhurV673Hero {
+  .mhurV674Hero {
     width: 34vw;
     opacity: .43;
   }
 
-  .mhurV673Panel {
+  .mhurV674Panel {
     width: min(88vw, 650px);
   }
 }
 
 @media (max-width: 760px) {
-  .mhurV673Hero {
+  .mhurV674Hero {
     display: none;
   }
 
-  .mhurV673Stage {
+  .mhurV674Stage {
     padding: 14px;
   }
 
-  .mhurV673Panel {
+  .mhurV674Panel {
     width: min(96vw, 560px);
     padding: 30px 19px 25px;
     border-radius: 22px;
   }
 
-  .mhurV673LogoOrbit {
+  .mhurV674LogoOrbit {
     width: 108px;
     height: 108px;
     margin-bottom: 19px;
   }
 
-  .mhurV673Logo {
+  .mhurV674Logo {
     width: 94px;
     height: 94px;
     border-radius: 22px;
   }
 
-  .mhurV673Logo img {
+  .mhurV674Logo img {
     width: 74px;
     height: 74px;
   }
 
-  .mhurV673Topline {
+  .mhurV674Topline {
     margin-bottom: 17px;
   }
 
-  .mhurV673Live,
-  .mhurV673Season {
+  .mhurV674Live,
+  .mhurV674Season {
     min-height: 27px;
     padding: 0 8px;
     font-size: 9px;
   }
 
-  .mhurV673Title {
+  .mhurV674Title {
     font-size: clamp(37px, 12vw, 52px);
   }
 
-  .mhurV673Subtitle {
+  .mhurV674Subtitle {
     margin-top: 13px;
     font-size: 13px;
   }
 
-  .mhurV673LoadingBox {
+  .mhurV674LoadingBox {
     margin-top: 21px;
   }
 
@@ -1093,13 +1133,13 @@ html.mhur-v673-ready .mhurV673Panel {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .mhurV673Aurora,
-  .mhurV673Beam,
-  .mhurV673Hero,
-  .mhurV673LogoOrbit::before,
-  .mhurV673LogoOrbit::after,
-  .mhurV673Live::before,
-  #mhurV673Fill::after,
+  .mhurV674Aurora,
+  .mhurV674Beam,
+  .mhurV674Hero,
+  .mhurV674LogoOrbit::before,
+  .mhurV674LogoOrbit::after,
+  .mhurV674Live::before,
+  #mhurV674Fill::after,
   .mhurNewV582,
   .mhurNewV582::after {
     animation: none !important;
@@ -1109,31 +1149,31 @@ html.mhur-v673-ready .mhurV673Panel {
 </style>
 </head>
 <body>
-<div id="mhurV673Splash" role="status" aria-live="polite" style="display:none">
-  <div class="mhurV673Aurora" aria-hidden="true"></div>
-  <div class="mhurV673Beam one" aria-hidden="true"></div>
-  <div class="mhurV673Beam two" aria-hidden="true"></div>
+<div id="mhurV674Splash" role="status" aria-live="polite" style="display:none">
+  <div class="mhurV674Aurora" aria-hidden="true"></div>
+  <div class="mhurV674Beam one" aria-hidden="true"></div>
+  <div class="mhurV674Beam two" aria-hidden="true"></div>
 
-  <div class="mhurV673Hero left" aria-hidden="true"></div>
+  <div class="mhurV674Hero left" aria-hidden="true"></div>
 
-  <div class="mhurV673Hero right" aria-hidden="true"></div>
+  <div class="mhurV674Hero right" aria-hidden="true"></div>
 
-  <div class="mhurV673Hero mini" aria-hidden="true"></div>
+  <div class="mhurV674Hero mini" aria-hidden="true"></div>
 
-  <main class="mhurV673Stage">
-    <section class="mhurV673Panel">
-      <i class="mhurV673Corner tl" aria-hidden="true"></i>
-      <i class="mhurV673Corner tr" aria-hidden="true"></i>
-      <i class="mhurV673Corner bl" aria-hidden="true"></i>
-      <i class="mhurV673Corner br" aria-hidden="true"></i>
+  <main class="mhurV674Stage">
+    <section class="mhurV674Panel">
+      <i class="mhurV674Corner tl" aria-hidden="true"></i>
+      <i class="mhurV674Corner tr" aria-hidden="true"></i>
+      <i class="mhurV674Corner bl" aria-hidden="true"></i>
+      <i class="mhurV674Corner br" aria-hidden="true"></i>
 
-      <div class="mhurV673Topline">
-        <span class="mhurV673Live">Serveurs en ligne</span>
-        <span class="mhurV673Season">Saison 18</span>
+      <div class="mhurV674Topline">
+        <span class="mhurV674Live">Serveurs en ligne</span>
+        <span class="mhurV674Season">Saison 18</span>
       </div>
 
-      <div class="mhurV673LogoOrbit">
-        <div class="mhurV673Logo">
+      <div class="mhurV674LogoOrbit">
+        <div class="mhurV674Logo">
           <img
             src="/assets/brand/mhur-france-icon.png"
             alt=""
@@ -1143,40 +1183,43 @@ html.mhur-v673-ready .mhurV673Panel {
         </div>
       </div>
 
-      <p class="mhurV673Kicker">Communauté française officielle</p>
+      <p class="mhurV674Kicker">Communauté française officielle</p>
 
-      <h1 class="mhurV673Title">
+      <h1 class="mhurV674Title">
         MHUR <span>FRANCE</span>
       </h1>
 
-      <p class="mhurV673Subtitle">
+      <p class="mhurV674Subtitle">
         Le Nexus français de My Hero Ultra Rumble se prépare.
       </p>
 
-      <div class="mhurV673LoadingBox">
-        <div class="mhurV673StatusRow">
-          <span id="mhurV673Status">
+      <div class="mhurV674LoadingBox">
+        <div class="mhurV674StatusRow">
+          <span id="mhurV674Status">
             Initialisation de MHUR France…
           </span>
-          <strong id="mhurV673Percent">7%</strong>
+          <strong id="mhurV674Percent">7%</strong>
         </div>
 
-        <div class="mhurV673Track" aria-hidden="true">
-          <div id="mhurV673Fill"></div>
+        <div class="mhurV674Track" aria-hidden="true">
+          <div id="mhurV674Fill"></div>
         </div>
       </div>
 
-      <div class="mhurV673Chips" aria-hidden="true">
+      <div class="mhurV674Chips" aria-hidden="true">
         <span>Personnages</span>
         <span>Alters</span>
         <span>Patch Notes</span>
         <span>Costumes</span>
       </div>
 
-      <p class="mhurV673Build">BUILD 673-e1afcef7ed43</p>
+      <p class="mhurV674Build">BUILD 674-cc3962c86624</p>
     </section>
   </main>
 </div>
+
+
+
 
 
 
@@ -1214,7 +1257,7 @@ html.mhur-v673-ready .mhurV673Panel {
 <script>
 (()=>{try{const role=String(localStorage.getItem('mhur_cached_role_v512')||'').toLowerCase();const admin=['admin','administrator','moderator'].includes(role);const b=document.getElementById('mhurAdminButton');if(b){b.dataset.mhurAdmin=admin?'1':'0';b.setAttribute('aria-hidden',String(!admin));b.tabIndex=admin?0:-1}const english=(localStorage.getItem('mhur_lang')||localStorage.getItem('lang'))==='en';if(english){const s=document.querySelector('[data-nexus-menu="social"] .nexusHeaderBtnLabel');const c=document.querySelector('[data-nexus-menu="youtube"] .nexusHeaderBtnLabel');if(s)s.textContent='Social networks';if(c)c.textContent='Content creators'}}catch(_){}})();
 </script>
-<script src="/js/v513-header-locked-mobile.js?v=673-e1afcef7ed43"></script>
+<script src="/js/v513-header-locked-mobile.js?v=674-cc3962c86624"></script>
 <nav id="drawer" class="drawer"></nav>
 <main class="wrap" id="app"></main>
 <script id="mhur-clean-routes-seo">
@@ -3969,12 +4012,12 @@ function render(){
 window.__MHUR_V542_STABLE_RENDER__=true;
 </script>
 <!-- V312 : les données et le véritable accueil sont chargés avant le tout premier rendu. -->
-<script src="/data/home_data.js?v=673-e1afcef7ed43"></script>
-<script src="/js/home.js?v=673-e1afcef7ed43"></script>
-<script src="/data/local_assets_index.js?v=673-e1afcef7ed43"></script>
-<script src="/data/mhur_database_assets.js?v=673-e1afcef7ed43"></script>
-<script src="/data/season18_sync.js?v=673-e1afcef7ed43"></script>
-<script src="/js/season18-early.js?v=673-e1afcef7ed43"></script>
+<script src="/data/home_data.js?v=674-cc3962c86624"></script>
+<script src="/js/home.js?v=674-cc3962c86624"></script>
+<script src="/data/local_assets_index.js?v=674-cc3962c86624"></script>
+<script src="/data/mhur_database_assets.js?v=674-cc3962c86624"></script>
+<script src="/data/season18_sync.js?v=674-cc3962c86624"></script>
+<script src="/js/season18-early.js?v=674-cc3962c86624"></script>
 <script>
 window.MHUR_CLEAN_ROUTES?.apply?.();if(!['home','characters','tunings','costumes','builds','mods'].includes(page))page='home';updateLanguageIndicator();window.__MHUR_FINAL_LAYOUT_PENDING__=true;
 </script>
@@ -5161,17 +5204,17 @@ if(typeof page !== 'undefined' && page === 'costumes' && typeof render === 'func
 <!-- v384 fixed topbar JS disabled by V385 -->
 
 
-<script src="/js/v398-final-fixes.js?v=673-e1afcef7ed43"></script>
+<script src="/js/v398-final-fixes.js?v=674-cc3962c86624"></script>
 
 <!-- V400 targeted final polish: tutorial, menu active state and community builder. -->
 
-<script src="/js/v400-final-polish.js?v=673-e1afcef7ed43"></script>
+<script src="/js/v400-final-polish.js?v=674-cc3962c86624"></script>
 
 
 <!-- V401 MUST remain last: targeted final corrections. -->
 
-<script src="/js/v401-final-corrections.js?v=673-e1afcef7ed43"></script>
-<script src="/js/v403-tutorial-image-language.js?v=673-e1afcef7ed43"></script>
+<script src="/js/v401-final-corrections.js?v=674-cc3962c86624"></script>
+<script src="/js/v403-tutorial-image-language.js?v=674-cc3962c86624"></script>
 
 
 
@@ -5956,6 +5999,7 @@ window.__V227_COSTUME_PHOTO_MAP = {"midoriya": {"Tenue de Héros": {"Original": 
   window.__MHUR_MULTI_DAMAGE_V670__=true;
   window.__MHUR_MULTI_DAMAGE_V671__=true;
   window.__MHUR_MULTI_DAMAGE_V673__=true;
+  window.__MHUR_MULTI_DAMAGE_V674__=true;
   patchAll();
     const data=readExact();
     const st=(typeof styles!=='undefined')?styles[styleKey]:null;
@@ -6212,25 +6256,23 @@ window.__V227_COSTUME_PHOTO_MAP = {"midoriya": {"Tenue de Héros": {"Original": 
 
 
 
-<script src="/js/analytics.js?v=673-e1afcef7ed43"></script>
-<script src="/js/community-config.js?v=673-e1afcef7ed43"></script>
-<script src="/js/community-auth.js?v=673-e1afcef7ed43"></script>
-<script src="/js/community-profiles.js?v=673-e1afcef7ed43"></script>
+<script src="/js/analytics.js?v=674-cc3962c86624"></script>
+<script src="/js/community-config.js?v=674-cc3962c86624"></script>
+<script src="/js/community-auth.js?v=674-cc3962c86624"></script>
+<script src="/js/community-profiles.js?v=674-cc3962c86624"></script>
 
-<script src="/js/community-moderation.js?v=673-e1afcef7ed43"></script>
-<script src="/js/community-builds.js?v=673-e1afcef7ed43"></script>
-<script src="/js/community-hub.js?v=673-e1afcef7ed43"></script>
+<script src="/js/community-moderation.js?v=674-cc3962c86624"></script>
+<script src="/js/community-builds.js?v=674-cc3962c86624"></script>
+<script src="/js/community-hub.js?v=674-cc3962c86624"></script>
 
-<script src="/js/enhancements.js?v=673-e1afcef7ed43"></script>
-
-
+<script src="/js/enhancements.js?v=674-cc3962c86624"></script>
 
 
 
 
-<script src="/js/v345-fixes.js?v=673-e1afcef7ed43"></script>
 
 
+<script src="/js/v345-fixes.js?v=674-cc3962c86624"></script>
 
 
 
@@ -6244,10 +6286,12 @@ window.__V227_COSTUME_PHOTO_MAP = {"midoriya": {"Tenue de Héros": {"Original": 
 
 
 
-<script src="/js/v370-stable-core.js?v=673-e1afcef7ed43"></script>
-<script src="/js/v379-final-fix.js?v=673-e1afcef7ed43"></script>
-<script src="/js/v380-character-translations.js?v=673-e1afcef7ed43"></script>
-<script src="/js/v381-quirk-translations.js?v=673-e1afcef7ed43"></script>
+
+
+<script src="/js/v370-stable-core.js?v=674-cc3962c86624"></script>
+<script src="/js/v379-final-fix.js?v=674-cc3962c86624"></script>
+<script src="/js/v380-character-translations.js?v=674-cc3962c86624"></script>
+<script src="/js/v381-quirk-translations.js?v=674-cc3962c86624"></script>
 
 
 <!-- v382 navigation disabled by V383 -->
@@ -6256,17 +6300,17 @@ window.__V227_COSTUME_PHOTO_MAP = {"midoriya": {"Tenue de Héros": {"Original": 
 <!-- v383 JS disabled by V384 -->
 <!-- V385 MUST remain last: overrides all legacy header/navigation patches. -->
 
-<script src="/js/v385-scroll-navigation.js?v=673-e1afcef7ed43"></script>
+<script src="/js/v385-scroll-navigation.js?v=674-cc3962c86624"></script>
 <!-- V386 MUST remain last: menu organisation only. -->
 
 <!-- V386 JS disabled by V395 -->
 <!-- V387 Community Mods — loaded after menu organisation. -->
 
-<script src="/js/vendor/tus.min.js?v=673-e1afcef7ed43"></script>
-<script src="/js/community-mods.js?v=673-e1afcef7ed43"></script>
-<script src="/js/v29-user-moderation.js?v=673-e1afcef7ed43"></script>
+<script src="/js/vendor/tus.min.js?v=674-cc3962c86624"></script>
+<script src="/js/community-mods.js?v=674-cc3962c86624"></script>
+<script src="/js/v29-user-moderation.js?v=674-cc3962c86624"></script>
 <!-- V391 JS disabled by V395 -->
-<script src="/js/v395-stable-menu.js?v=673-e1afcef7ed43"></script>
+<script src="/js/v395-stable-menu.js?v=674-cc3962c86624"></script>
 
 
 
@@ -6276,7 +6320,7 @@ window.__V227_COSTUME_PHOTO_MAP = {"midoriya": {"Tenue de Héros": {"Original": 
 
 <!-- V411: copie/comparaison, favoris mods, réactions, tendances, historique et guides. -->
 
-<script src="/js/community-plus.js?v=673-e1afcef7ed43"></script>
+<script src="/js/community-plus.js?v=674-cc3962c86624"></script>
 
 
 
@@ -6286,42 +6330,42 @@ window.__V227_COSTUME_PHOTO_MAP = {"midoriya": {"Tenue de Héros": {"Original": 
 <!-- V416: 1 à 4 photos obligatoires, description et vidéo facultatives. -->
 
 
-<script src="/js/v412-community-quality.js?v=673-e1afcef7ed43"></script>
+<script src="/js/v412-community-quality.js?v=674-cc3962c86624"></script>
 
 
 
-<script src="/js/v429-details.js?v=673-e1afcef7ed43"></script>
-<script src="/js/v429-router.js?v=673-e1afcef7ed43"></script>
-<script src="/js/launch-v431.js?v=673-e1afcef7ed43"></script>
-<script src="/js/v431-final.js?v=673-e1afcef7ed43"></script>
+<script src="/js/v429-details.js?v=674-cc3962c86624"></script>
+<script src="/js/v429-router.js?v=674-cc3962c86624"></script>
+<script src="/js/launch-v431.js?v=674-cc3962c86624"></script>
+<script src="/js/v431-final.js?v=674-cc3962c86624"></script>
 
 <!-- MHUR Nexus: réseaux sociaux + annuaire Youtubeurs -->
 
-<script src="/js/nexus-links-data.js?v=673-e1afcef7ed43"></script>
-<script src="/js/nexus-header-links.js?v=673-e1afcef7ed43"></script>
+<script src="/js/nexus-links-data.js?v=674-cc3962c86624"></script>
+<script src="/js/nexus-header-links.js?v=674-cc3962c86624"></script>
 <!-- V1.7: correction mobile des cartes T.U.N.I.N.G -->
 
 
 
-<script src="/js/v24-ios-standalone.js?v=673-e1afcef7ed43"></script>
+<script src="/js/v24-ios-standalone.js?v=674-cc3962c86624"></script>
 
 <!-- V3.0 must remain last: profile directory and moderation layering fixes. -->
 
 
 
-<script src="/js/v30-profile-directory.js?v=673-e1afcef7ed43"></script>
+<script src="/js/v30-profile-directory.js?v=674-cc3962c86624"></script>
 <!-- V3.1 must remain last: robust right-side header actions. -->
 <!-- V3.2 must remain after every legacy modal stylesheet: native top-layer moderation dialog. -->
 
 
-<script src="/js/v31-header-admin-layout.js?v=673-e1afcef7ed43"></script>
-<script src="/js/v36-live-site-update.js?v=673-e1afcef7ed43"></script>
-<script src="/js/v40-community-live-sync.js?v=673-e1afcef7ed43"></script>
-<script src="/js/v40-ban-message.js?v=673-e1afcef7ed43"></script>
+<script src="/js/v31-header-admin-layout.js?v=674-cc3962c86624"></script>
+<script src="/js/v36-live-site-update.js?v=674-cc3962c86624"></script>
+<script src="/js/v40-community-live-sync.js?v=674-cc3962c86624"></script>
+<script src="/js/v40-ban-message.js?v=674-cc3962c86624"></script>
 <!-- V3.5: T.U.N.I.N.G language consistency + immediate moderation checks + full ban screen. -->
 
-<script src="/js/v35-tuning-language-fix.js?v=673-e1afcef7ed43"></script>
-<script src="/js/v35-live-moderation.js?v=673-e1afcef7ed43"></script>
+<script src="/js/v35-tuning-language-fix.js?v=674-cc3962c86624"></script>
+<script src="/js/v35-live-moderation.js?v=674-cc3962c86624"></script>
 <!-- V4.3: publication des mods + V4.2 mobile display corrections. -->
 
 
@@ -6329,10 +6373,10 @@ window.__V227_COSTUME_PHOTO_MAP = {"midoriya": {"Tenue de Héros": {"Original": 
 
 
 
-<script src="/js/v51-moderation-center.js?v=673-e1afcef7ed43"></script>
-<script src="/js/v51-responsive-guard.js?v=673-e1afcef7ed43"></script>
+<script src="/js/v51-moderation-center.js?v=674-cc3962c86624"></script>
+<script src="/js/v51-responsive-guard.js?v=674-cc3962c86624"></script>
 
-<script src="/js/v52-sanction-lock.js?v=673-e1afcef7ed43"></script>
+<script src="/js/v52-sanction-lock.js?v=674-cc3962c86624"></script>
 
 <!-- V5.5: header mobile sur trois lignes, boutons complets et lisibles. -->
 
@@ -6347,7 +6391,7 @@ window.__V227_COSTUME_PHOTO_MAP = {"midoriya": {"Tenue de Héros": {"Original": 
 
 <!-- V5.10: bouton Retour dans le flux et sous le bord visuel réel du header. -->
 
-<script src="/js/v510-back-button-offset.js?v=673-e1afcef7ed43"></script>
+<script src="/js/v510-back-button-offset.js?v=674-cc3962c86624"></script>
 <!-- V5.13 reste chargé en dernier : logo non coupé et boutons verrouillés. -->
 
 
@@ -6355,13 +6399,13 @@ window.__V227_COSTUME_PHOTO_MAP = {"midoriya": {"Tenue de Héros": {"Original": 
 <!-- V5.13: header mobile à géométrie fixe, sans saut pendant la restauration du compte. -->
 <!-- V5.14 : corrections ciblées profil, panneaux mobiles et alignement du header. -->
 
-<script src="/js/v514-targeted-ui-fixes.js?v=673-e1afcef7ed43"></script>
+<script src="/js/v514-targeted-ui-fixes.js?v=674-cc3962c86624"></script>
 <!-- V5.16 : header stable dès le premier rendu, panneaux sous les deux lignes du header mobile. -->
 
-<script src="/js/v516-final-targeted-fixes.js?v=673-e1afcef7ed43"></script>
+<script src="/js/v516-final-targeted-fixes.js?v=674-cc3962c86624"></script>
 <!-- V5.17 : dernier override, header ordinateur immédiat et panneaux sous les deux lignes mobiles. -->
 
-<script src="/js/v517-header-panels-final.js?v=673-e1afcef7ed43"></script>
+<script src="/js/v517-header-panels-final.js?v=674-cc3962c86624"></script>
 <!-- V5.18 : restaure le header fixe sur ordinateur sans toucher au mobile. -->
 
 
@@ -6498,65 +6542,65 @@ window.__V227_COSTUME_PHOTO_MAP = {"midoriya": {"Tenue de Héros": {"Original": 
 
 
 
-<script src="/js/v526-ui-final.js?v=673-e1afcef7ed43"></script>
-<script src="/js/v520-character-styles.js?v=673-e1afcef7ed43"></script>
-<script src="/js/v539-mobile-admin.js?v=673-e1afcef7ed43"></script>
-<script src="/js/v540-final-stability.js?v=673-e1afcef7ed43"></script>
-<script src="/js/v542-tier-notes-mobile.js?v=673-e1afcef7ed43"></script>
-<script src="/js/v543-moderation-evidence.js?v=673-e1afcef7ed43"></script>
-<script src="/js/v547-mobile-profile-roles.js?v=673-e1afcef7ed43"></script>
-<script src="/js/v559-discounts-stable.js?v=673-e1afcef7ed43"></script>
-<script src="/js/v560-discount-role-dedupe.js?v=673-e1afcef7ed43"></script>
+<script src="/js/v526-ui-final.js?v=674-cc3962c86624"></script>
+<script src="/js/v520-character-styles.js?v=674-cc3962c86624"></script>
+<script src="/js/v539-mobile-admin.js?v=674-cc3962c86624"></script>
+<script src="/js/v540-final-stability.js?v=674-cc3962c86624"></script>
+<script src="/js/v542-tier-notes-mobile.js?v=674-cc3962c86624"></script>
+<script src="/js/v543-moderation-evidence.js?v=674-cc3962c86624"></script>
+<script src="/js/v547-mobile-profile-roles.js?v=674-cc3962c86624"></script>
+<script src="/js/v559-discounts-stable.js?v=674-cc3962c86624"></script>
+<script src="/js/v560-discount-role-dedupe.js?v=674-cc3962c86624"></script>
   
 
 
 <!-- V582 doit rester après season18-v12.js. -->
 
-<script src="/js/v582-final-new.js?v=673-e1afcef7ed43"></script>
+<script src="/js/v582-final-new.js?v=674-cc3962c86624"></script>
 
 <!-- V584 est chargé après le moteur des Patch Notes. -->
-<script src="/js/v584-patch-notes-final.js?v=673-e1afcef7ed43"></script>
+<script src="/js/v584-patch-notes-final.js?v=674-cc3962c86624"></script>
 
 <!-- Season 18 v14 compatibility layer. -->
 
 <!-- Season 18 v14 compatibility layer. -->
 
 <!-- Season 18 v14 compatibility layer. -->
-<script src="/data/local_skill_assets_v589.js?v=673-e1afcef7ed43"></script>
+<script src="/data/local_skill_assets_v589.js?v=674-cc3962c86624"></script>
 <!-- V587 doit rester après season18-v12.js et tous les anciens correctifs. -->
 
 <!-- V589 : photos locales uniquement, chargé en dernier. -->
-<script src="/js/v589-local-skill-images.js?v=673-e1afcef7ed43"></script>
+<script src="/js/v589-local-skill-images.js?v=674-cc3962c86624"></script>
 
 <!-- V590 : nettoyage permanent de la flèche Mods. -->
-<script src="/js/v590-scrollbars-mods.js?v=673-e1afcef7ed43"></script>
+<script src="/js/v590-scrollbars-mods.js?v=674-cc3962c86624"></script>
 
 <!-- V592 : dernière couche interactive des Notes et du tutoriel Mods. -->
-<script src="/js/v592-notes-mods-stable.js?v=673-e1afcef7ed43"></script>
+<script src="/js/v592-notes-mods-stable.js?v=674-cc3962c86624"></script>
 
-<script src="/js/v593-patch-dev-final.js?v=673-e1afcef7ed43"></script>
+<script src="/js/v593-patch-dev-final.js?v=674-cc3962c86624"></script>
 
-<script src="/js/v594-translations-tier-patch-arrow.js?v=673-e1afcef7ed43"></script>
+<script src="/js/v594-translations-tier-patch-arrow.js?v=674-cc3962c86624"></script>
 
-<script src="/js/v595-patch-portraits-tables.js?v=673-e1afcef7ed43"></script>
+<script src="/js/v595-patch-portraits-tables.js?v=674-cc3962c86624"></script>
 
-<script src="/js/v596-tuning-mods.js?v=673-e1afcef7ed43"></script>
+<script src="/js/v596-tuning-mods.js?v=674-cc3962c86624"></script>
 
-<!-- Season 18 v14 compatibility layer. -->
-
-<!-- Season 18 v14 compatibility layer. -->
-
-<!-- Season 18 v14 compatibility layer. -->
 <!-- Season 18 v14 compatibility layer. -->
 
 <!-- Season 18 v14 compatibility layer. -->
 
 <!-- Season 18 v14 compatibility layer. -->
-<script src="/js/v601-mobile-patch-gentle.js?v=673-e1afcef7ed43"></script>
+<!-- Season 18 v14 compatibility layer. -->
 
-<script src="/js/v603-mobile-patch-fix.js?v=673-e1afcef7ed43"></script>
+<!-- Season 18 v14 compatibility layer. -->
 
-<script src="/js/v604c-shoto-beta-fix.js?v=673-e1afcef7ed43"></script>
+<!-- Season 18 v14 compatibility layer. -->
+<script src="/js/v601-mobile-patch-gentle.js?v=674-cc3962c86624"></script>
+
+<script src="/js/v603-mobile-patch-fix.js?v=674-cc3962c86624"></script>
+
+<script src="/js/v604c-shoto-beta-fix.js?v=674-cc3962c86624"></script>
 
 <!-- Season 18 v14 compatibility layer. -->
 
@@ -6564,14 +6608,14 @@ window.__V227_COSTUME_PHOTO_MAP = {"midoriya": {"Tenue de Héros": {"Original": 
 
 <!-- Season 18 v14 compatibility layer. -->
 <!-- V609 : images Alpha Midoriya dans les fiches personnages. -->
-<script src="/js/v609-midoriya-alpha-personnages.js?v=673-e1afcef7ed43"></script>
-<script src="/js/v610-patch-notes-health-no-image.js?v=673-e1afcef7ed43"></script>
-<script src="/js/v611-patch-notes-health-remove-box.js?v=673-e1afcef7ed43"></script>
+<script src="/js/v609-midoriya-alpha-personnages.js?v=674-cc3962c86624"></script>
+<script src="/js/v610-patch-notes-health-no-image.js?v=674-cc3962c86624"></script>
+<script src="/js/v611-patch-notes-health-remove-box.js?v=674-cc3962c86624"></script>
 <!-- V612 : logique mobile finale. -->
-<script src="/js/v612-mobile-ui-fixes.js?v=673-e1afcef7ed43"></script>
+<script src="/js/v612-mobile-ui-fixes.js?v=674-cc3962c86624"></script>
 <!-- V614 : photos costumes mobiles stables. -->
 <!-- V613 : derniers correctifs mobiles JS. -->
-<script src="/js/v613-mobile-last-fixes.js?v=673-e1afcef7ed43"></script>
+<script src="/js/v613-mobile-last-fixes.js?v=674-cc3962c86624"></script>
 <!-- V615.1 : costumes mobile uniformes JS. -->
 <!-- V616 : costumes mobile JS -->
 <!-- Season 18 v14 compatibility layer. -->
@@ -6580,22 +6624,22 @@ window.__V227_COSTUME_PHOTO_MAP = {"midoriya": {"Tenue de Héros": {"Original": 
 
 <!-- Season 18 v14 compatibility layer. -->
 <!-- V619 : navigation TUNING mobile JS. -->
-<script src="/js/v619-mobile-tuning-navigation.js?v=673-e1afcef7ed43"></script>
+<script src="/js/v619-mobile-tuning-navigation.js?v=674-cc3962c86624"></script>
 <!-- V621 : navigation TUNING mobile fluide. -->
-<script src="/js/v621-tuning-mobile-smooth-navigation.js?v=673-e1afcef7ed43"></script>
+<script src="/js/v621-tuning-mobile-smooth-navigation.js?v=674-cc3962c86624"></script>
 <!-- Season 18 v14 compatibility layer. -->
 
 <!-- Season 18 v14 compatibility layer. -->
 
 <!-- Season 18 v14 compatibility layer. -->
 <!-- V626 : Tier List finale. -->
-<script src="/js/v626-tier-final.js?v=673-e1afcef7ed43"></script>
+<script src="/js/v626-tier-final.js?v=674-cc3962c86624"></script>
 <!-- V628 : Tier NEW droite et Dev Notes complètes JS. -->
-<script src="/js/v628-tier-dev-final.js?v=673-e1afcef7ed43"></script>
+<script src="/js/v628-tier-dev-final.js?v=674-cc3962c86624"></script>
 <!-- V629 : ouverture stable des Notes JS. -->
-<script src="/js/v629-notes-open-stable.js?v=673-e1afcef7ed43"></script>
+<script src="/js/v629-notes-open-stable.js?v=674-cc3962c86624"></script>
 <!-- V634 : Tier List finale JS. -->
-<script src="/js/v634-tier-final.js?v=673-e1afcef7ed43"></script>
+<script src="/js/v634-tier-final.js?v=674-cc3962c86624"></script>
 
 <!-- V633C : rendu final JS. -->
 <!-- V635 : navigation instantanée JS. -->
@@ -6607,16 +6651,16 @@ window.__V227_COSTUME_PHOTO_MAP = {"midoriya": {"Tenue de Héros": {"Original": 
 <!-- V638 : affichage immédiat et priorité images. -->
 
 <!-- V639 : images prioritaires sans bloquer la navigation. -->
-<script src="/js/v639-direct-final.js?v=673-e1afcef7ed43"></script>
+<script src="/js/v639-direct-final.js?v=674-cc3962c86624"></script>
 
 <!-- V642 : images et animations hors écran. -->
-<script src="/js/v642-global-performance.js?v=673-e1afcef7ed43"></script>
+<script src="/js/v642-global-performance.js?v=674-cc3962c86624"></script>
 
 <!-- V643 : notifications stables JS. -->
-<script src="/js/v643-notifications-stable.js?v=673-e1afcef7ed43"></script>
+<script src="/js/v643-notifications-stable.js?v=674-cc3962c86624"></script>
 
 <!-- V644 : ordre des effets de montée. -->
-<script src="/js/v644-alter-style-center.js?v=673-e1afcef7ed43"></script>
+<script src="/js/v644-alter-style-center.js?v=674-cc3962c86624"></script>
 
 <!-- Season 18 v14 compatibility layer. -->
 
@@ -6666,7 +6710,7 @@ window.__V227_COSTUME_PHOTO_MAP = {"midoriya": {"Tenue de Héros": {"Original": 
 
 <!-- Season 18 v14 compatibility layer. -->
 <!-- MHUR V650 : centrage permanent des styles -->
-<link rel="stylesheet" href="/css/v587-images-notes-stable.css?v=673-e1afcef7ed43">
+<link rel="stylesheet" href="/css/v587-images-notes-stable.css?v=674-cc3962c86624">
 
 <!-- Season 18 v14 compatibility layer. -->
 
@@ -6703,7 +6747,7 @@ window.__V227_COSTUME_PHOTO_MAP = {"midoriya": {"Tenue de Héros": {"Original": 
 <!-- Season 18 v14 compatibility layer. -->
 
 <!-- Season 18 v14 compatibility layer. -->
-<script src="/js/v608-patch-notes-final.js?v=673-e1afcef7ed43"></script>
+<script src="/js/v608-patch-notes-final.js?v=674-cc3962c86624"></script>
 
 <!-- Season 18 v14 compatibility layer. -->
 
@@ -6715,8 +6759,8 @@ window.__V227_COSTUME_PHOTO_MAP = {"midoriya": {"Tenue de Héros": {"Original": 
 <!-- Season 18 v14 compatibility layer. -->
 
 <!-- Season 18 v14 compatibility layer. -->
-<script src="/js/season18-fixes.js?v=673-e1afcef7ed43"></script>
-<script src="/js/season18-v12.js?v=673-e1afcef7ed43"></script>
+<script src="/js/season18-fixes.js?v=674-cc3962c86624"></script>
+<script src="/js/season18-v12.js?v=674-cc3962c86624"></script>
 <!-- Season 18 v14 compatibility layer. -->
 <!-- Season 18 v14 compatibility layer. -->
 <!-- Season 18 v14 compatibility layer. -->
@@ -6728,35 +6772,35 @@ window.__V227_COSTUME_PHOTO_MAP = {"midoriya": {"Tenue de Héros": {"Original": 
 <!-- Season 18 v14 compatibility layer. -->
 <!-- Season 18 v14 compatibility layer. -->
 <!-- Season 18 v14 compatibility layer. -->
-<script src="/data/local_assets_index.js?v=673-e1afcef7ed43"></script>
-<script src="/data/mhur_database_assets.js?v=673-e1afcef7ed43"></script>
-<script src="/data/season18_sync.js?v=673-e1afcef7ed43"></script>
-<script src="/js/season18-early.js?v=673-e1afcef7ed43"></script>
+<script src="/data/local_assets_index.js?v=674-cc3962c86624"></script>
+<script src="/data/mhur_database_assets.js?v=674-cc3962c86624"></script>
+<script src="/data/season18_sync.js?v=674-cc3962c86624"></script>
+<script src="/js/season18-early.js?v=674-cc3962c86624"></script>
 
 <!-- Season 18 v14 compatibility layer. -->
-<script src="/js/season18-fixes.js?v=673-e1afcef7ed43"></script>
-<script src="/js/season18-v12.js?v=673-e1afcef7ed43"></script>
+<script src="/js/season18-fixes.js?v=674-cc3962c86624"></script>
+<script src="/js/season18-v12.js?v=674-cc3962c86624"></script>
 <!-- Season 18 v14 compatibility layer. -->
 <!-- Season 18 v14 compatibility layer. -->
 <!-- Season 18 v14 compatibility layer. -->
 <!-- Season 18 v14 compatibility layer. -->
 <!-- Season 18 v14 compatibility layer. -->
-<script src="/data/local_assets_index.js?v=673-e1afcef7ed43"></script>
-<script src="/data/mhur_database_assets.js?v=673-e1afcef7ed43"></script>
-<script src="/data/season18_sync.js?v=673-e1afcef7ed43"></script>
-<script src="/js/season18-early.js?v=673-e1afcef7ed43"></script>
+<script src="/data/local_assets_index.js?v=674-cc3962c86624"></script>
+<script src="/data/mhur_database_assets.js?v=674-cc3962c86624"></script>
+<script src="/data/season18_sync.js?v=674-cc3962c86624"></script>
+<script src="/js/season18-early.js?v=674-cc3962c86624"></script>
 
 <!-- Season 18 v14 compatibility layer. -->
-<script src="/js/season18-fixes.js?v=673-e1afcef7ed43"></script>
-<script src="/js/season18-v12.js?v=673-e1afcef7ed43"></script>
-<script id="mhur-v673-ui-runtime">
+<script src="/js/season18-fixes.js?v=674-cc3962c86624"></script>
+<script src="/js/season18-v12.js?v=674-cc3962c86624"></script>
+<script id="mhur-v674-ui-runtime">
 (() => {
   'use strict';
 
-  const BUILD = "673-e1afcef7ed43";
+  const BUILD = "674-cc3962c86624";
   const root = document.documentElement;
   const startedAt =
-    Number(window.__MHUR_V673_STARTED_AT) ||
+    Number(window.__MHUR_V674_STARTED_AT) ||
     performance.now();
 
   const OWNER_SELECTOR = [
@@ -6794,18 +6838,21 @@ window.__V227_COSTUME_PHOTO_MAP = {"midoriya": {"Tenue de Héros": {"Original": 
   let revealed = false;
   let currentProgress = 7;
   let progressTimer = 0;
+  let patchFixFrame = 0;
+  let patchFixRunning = false;
+  let pendingPatchScope = null;
 
   function cleanupOldSplashArtifacts() {
     document.querySelectorAll(
       '[id^="mhurV66"][id$="Splash"]'
     ).forEach(node => {
-      if (node.id !== 'mhurV673Splash') node.remove();
+      if (node.id !== 'mhurV674Splash') node.remove();
     });
 
     document.querySelectorAll(
       '[class*="mhurV66"][class*="Hero"]'
     ).forEach(node => {
-      if (!node.closest('#mhurV673Splash')) node.remove();
+      if (!node.closest('#mhurV674Splash')) node.remove();
     });
 
     document.querySelectorAll(
@@ -6813,7 +6860,7 @@ window.__V227_COSTUME_PHOTO_MAP = {"midoriya": {"Tenue de Héros": {"Original": 
       '[id*="RightHeroImage"],' +
       '[id*="MiniHeroImage"]'
     ).forEach(node => {
-      if (!node.closest('#mhurV673Splash')) {
+      if (!node.closest('#mhurV674Splash')) {
         (node.closest('figure,div') || node).remove();
       }
     });
@@ -6834,128 +6881,231 @@ window.__V227_COSTUME_PHOTO_MAP = {"midoriya": {"Tenue de Héros": {"Original": 
   }
 
   function fixPatchByIds(scope = document) {
-    const articleSelector = [
-      'article.s18PatchCharacterV10',
-      '[data-v608-character-id="armored_all_might"]',
-      '[data-v608-style="armored_all_might_technical"]'
-    ].join('');
+    if (patchFixRunning) return;
 
-    const articles = new Set();
+    patchFixRunning = true;
 
-    if (scope instanceof Element) {
-      if (scope.matches(articleSelector)) {
-        articles.add(scope);
+    try {
+      const articleSelector = [
+        'article.s18PatchCharacterV10',
+        '[data-v608-character-id="armored_all_might"]',
+        '[data-v608-style="armored_all_might_technical"]'
+      ].join('');
+
+      const articles = new Set();
+
+      if (scope instanceof Element) {
+        if (scope.matches(articleSelector)) {
+          articles.add(scope);
+        }
+
+        const parent = scope.closest?.(articleSelector);
+        if (parent) articles.add(parent);
       }
 
-      const parent = scope.closest?.(articleSelector);
-      if (parent) articles.add(parent);
-    }
+      scope.querySelectorAll?.(articleSelector).forEach(article => {
+        articles.add(article);
+      });
 
-    scope.querySelectorAll?.(articleSelector).forEach(article => {
-      articles.add(article);
-    });
+      const expectedBefore = [
+        52, 54, 56, 58, 60, 62, 64, 66, 68
+      ];
+      const expectedAfter = [
+        48, 50, 52, 54, 55, 56, 57, 58, 60
+      ];
 
-    const expectedBefore = [
-      52, 54, 56, 58, 60, 62, 64, 66, 68
-    ];
-    const expectedAfter = [
-      48, 50, 52, 54, 55, 56, 57, 58, 60
-    ];
-
-    const values = (card, selector) => [
-      ...card.querySelectorAll(selector)
-    ]
-      .map(cell =>
-        Number(
-          String(cell.textContent || '')
-            .trim()
-            .replace(',', '.')
+      const values = (card, selector) => [
+        ...card.querySelectorAll(selector)
+      ]
+        .map(cell =>
+          Number(
+            String(cell.textContent || '')
+              .trim()
+              .replace(',', '.')
+          )
         )
-      )
-      .filter(Number.isFinite);
+        .filter(Number.isFinite);
 
-    const same = (left, right) =>
-      left.length === right.length &&
-      left.every(
-        (value, index) =>
-          Math.abs(value - right[index]) < 0.001
-      );
-
-    articles.forEach(article => {
-      article.querySelectorAll(
-        '.s18PatchChangeV10'
-      ).forEach(card => {
-        const skillId =
-          card.dataset.v608SkillId || '';
-
-        const isTarget =
-          skillId === 'armored_all_might_alpha_burn' ||
-          (
-            same(
-              values(card, 'tr.before td'),
-              expectedBefore
-            ) &&
-            same(
-              values(card, 'tr.after td'),
-              expectedAfter
-            )
-          );
-
-        if (!isTarget) return;
-
-        card.dataset.v608CharacterId =
-          'armored_all_might';
-        card.dataset.v608Style =
-          'armored_all_might_technical';
-        card.dataset.v608SkillId =
-          'armored_all_might_alpha_burn';
-
-        const expectedTitle =
-          patchLanguage() === 'en'
-            ? 'α - Ice Bullet Shot (Burn)'
-            : 'α - Ice Bullet Shot (Brûlure)';
-
-        const title = card.querySelector('h5');
-
-        if (title) {
-          title.textContent = expectedTitle;
-        }
-
-        const expectedImage =
-          '/assets/armored_all_might/' +
-          'armored_all_might_technical/alpha.webp';
-
-        let image = card.querySelector(
-          '.s18PatchImageV608 img,' +
-          '.s18PatchSkillV10 img'
+      const same = (left, right) =>
+        left.length === right.length &&
+        left.every(
+          (value, index) =>
+            Math.abs(value - right[index]) < 0.001
         );
 
-        if (!image) {
-          const skill = card.querySelector(
-            '.s18PatchSkillV10'
+      const setDataset = (element, key, value) => {
+        if (element.dataset[key] !== value) {
+          element.dataset[key] = value;
+        }
+      };
+
+      const sameAsset = (current, expected) => {
+        try {
+          return new URL(
+            current,
+            location.origin
+          ).pathname === expected;
+        } catch (_error) {
+          return String(current || '').split('?')[0] === expected;
+        }
+      };
+
+      articles.forEach(article => {
+        article.querySelectorAll(
+          '.s18PatchChangeV10'
+        ).forEach(card => {
+          const skillId =
+            card.dataset.v608SkillId || '';
+
+          const isTarget =
+            skillId === 'armored_all_might_alpha_burn' ||
+            (
+              same(
+                values(card, 'tr.before td'),
+                expectedBefore
+              ) &&
+              same(
+                values(card, 'tr.after td'),
+                expectedAfter
+              )
+            );
+
+          if (!isTarget) return;
+
+          setDataset(
+            card,
+            'v608CharacterId',
+            'armored_all_might'
+          );
+          setDataset(
+            card,
+            'v608Style',
+            'armored_all_might_technical'
+          );
+          setDataset(
+            card,
+            'v608SkillId',
+            'armored_all_might_alpha_burn'
           );
 
-          if (skill) {
-            const wrapper = document.createElement('div');
-            wrapper.className = 's18PatchImageV608';
+          const expectedTitle =
+            patchLanguage() === 'en'
+              ? 'α - Ice Bullet Shot (Burn)'
+              : 'α - Ice Bullet Shot (Brûlure)';
 
-            image = document.createElement('img');
-            wrapper.appendChild(image);
-            skill.prepend(wrapper);
-            skill.classList.remove(
-              's18NoSkillImageV608'
-            );
+          const title = card.querySelector('h5');
+
+          if (
+            title &&
+            String(title.textContent || '').trim() !== expectedTitle
+          ) {
+            title.textContent = expectedTitle;
           }
-        }
 
-        if (image) {
-          image.setAttribute('src', expectedImage);
-          image.setAttribute('alt', expectedTitle);
-          image.setAttribute('loading', 'eager');
-          image.setAttribute('decoding', 'async');
-        }
+          const expectedImage =
+            '/assets/armored_all_might/' +
+            'armored_all_might_technical/alpha.webp';
+
+          let image = card.querySelector(
+            '.s18PatchImageV608 img,' +
+            '.s18PatchSkillV10 img'
+          );
+
+          if (!image) {
+            const skill = card.querySelector(
+              '.s18PatchSkillV10'
+            );
+
+            if (skill) {
+              let wrapper = skill.querySelector(
+                ':scope > .s18PatchImageV608'
+              );
+
+              if (!wrapper) {
+                wrapper = document.createElement('div');
+                wrapper.className = 's18PatchImageV608';
+                skill.prepend(wrapper);
+              }
+
+              image = wrapper.querySelector('img');
+
+              if (!image) {
+                image = document.createElement('img');
+                wrapper.appendChild(image);
+              }
+
+              skill.classList.remove(
+                's18NoSkillImageV608'
+              );
+            }
+          }
+
+          if (image) {
+            if (!sameAsset(image.currentSrc || image.src, expectedImage)) {
+              image.setAttribute('src', expectedImage);
+            }
+
+            if (image.getAttribute('alt') !== expectedTitle) {
+              image.setAttribute('alt', expectedTitle);
+            }
+
+            if (image.getAttribute('loading') !== 'eager') {
+              image.setAttribute('loading', 'eager');
+            }
+
+            if (image.getAttribute('decoding') !== 'async') {
+              image.setAttribute('decoding', 'async');
+            }
+          }
+        });
       });
+    } finally {
+      patchFixRunning = false;
+    }
+  }
+
+  function schedulePatchFix(scope = document) {
+    pendingPatchScope = scope || document;
+
+    if (patchFixFrame) return;
+
+    patchFixFrame = requestAnimationFrame(() => {
+      patchFixFrame = 0;
+      const target = pendingPatchScope || document;
+      pendingPatchScope = null;
+      fixPatchByIds(target);
     });
+  }
+
+  function releaseInteractions() {
+    root.classList.remove('mhur-v674-booting');
+    root.classList.add('mhur-v674-ready');
+
+    document.documentElement.style.removeProperty(
+      'pointer-events'
+    );
+
+    document.body?.style.removeProperty(
+      'pointer-events'
+    );
+
+    const splash = document.getElementById(
+      'mhurV674Splash'
+    );
+
+    if (splash) {
+      splash.style.setProperty(
+        'pointer-events',
+        'none',
+        'important'
+      );
+      splash.style.setProperty(
+        'display',
+        'none',
+        'important'
+      );
+      splash.remove();
+    }
   }
 
   function depth(node) {
@@ -7059,7 +7209,7 @@ window.__V227_COSTUME_PHOTO_MAP = {"midoriya": {"Tenue de Héros": {"Original": 
   function handleAddedNode(node) {
     if (!(node instanceof Element)) return;
 
-    fixPatchByIds(node);
+    schedulePatchFix(node);
     scanCanonical(node);
 
     if (node.matches(LEGACY_SELECTOR)) {
@@ -7086,15 +7236,15 @@ window.__V227_COSTUME_PHOTO_MAP = {"midoriya": {"Tenue de Héros": {"Original": 
   function tuneImages(scope = document) {
     const images = scope.querySelectorAll
       ? scope.querySelectorAll(
-          'img:not([data-mhur-v673-image])'
+          'img:not([data-mhur-v674-image])'
         )
       : [];
 
     images.forEach((image, index) => {
-      image.dataset.mhurV673Image = '1';
+      image.dataset.mhurV674Image = '1';
       image.decoding = 'async';
 
-      if (image.closest('#mhurV673Splash')) return;
+      if (image.closest('#mhurV674Splash')) return;
 
       const rect = image.getBoundingClientRect();
       const visible =
@@ -7124,9 +7274,9 @@ window.__V227_COSTUME_PHOTO_MAP = {"midoriya": {"Tenue de Héros": {"Original": 
       Math.min(100, Math.round(value))
     );
 
-    const fill = document.getElementById('mhurV673Fill');
-    const percent = document.getElementById('mhurV673Percent');
-    const status = document.getElementById('mhurV673Status');
+    const fill = document.getElementById('mhurV674Fill');
+    const percent = document.getElementById('mhurV674Percent');
+    const status = document.getElementById('mhurV674Status');
 
     if (fill) fill.style.width = `${currentProgress}%`;
     if (percent) percent.textContent = `${currentProgress}%`;
@@ -7164,21 +7314,14 @@ window.__V227_COSTUME_PHOTO_MAP = {"midoriya": {"Tenue de Héros": {"Original": 
     setTimeout(() => {
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
-          root.classList.remove('mhur-v673-booting');
-          root.classList.add('mhur-v673-ready');
+          root.classList.remove('mhur-v674-booting');
+          root.classList.add('mhur-v674-ready');
           root.dataset.mhurBuild = BUILD;
 
-          const splash = document.getElementById(
-            'mhurV673Splash'
-          );
-
-          if (splash) {
-            splash.style.display = 'none';
-            setTimeout(() => splash.remove(), 360);
-          }
+          releaseInteractions();
 
           window.dispatchEvent(
-            new CustomEvent('mhur:v673-ready', {
+            new CustomEvent('mhur:v674-ready', {
               detail: { build: BUILD }
             })
           );
@@ -7190,7 +7333,7 @@ window.__V227_COSTUME_PHOTO_MAP = {"midoriya": {"Tenue de Héros": {"Original": 
   function start() {
     cleanupOldSplashArtifacts();
     beginProgress();
-    fixPatchByIds(document);
+    schedulePatchFix(document);
     scanCanonical(document);
     tuneImages(document);
 
@@ -7199,30 +7342,31 @@ window.__V227_COSTUME_PHOTO_MAP = {"midoriya": {"Tenue de Héros": {"Original": 
 
       for (const mutation of mutations) {
         mutation.addedNodes.forEach(handleAddedNode);
-        patchChanged = patchChanged ||
-          mutation.type === 'characterData' ||
-          mutation.addedNodes.length > 0;
+
+        if (mutation.addedNodes.length > 0) {
+          patchChanged = true;
+        }
       }
 
       if (patchChanged) {
-        queueMicrotask(() => fixPatchByIds(document));
+        schedulePatchFix(document);
       }
     }).observe(document.documentElement, {
       childList: true,
-      subtree: true,
-      characterData: true
+      subtree: true
     });
 
+
     setTimeout(() => {
-      fixPatchByIds(document);
+      schedulePatchFix(document);
       scanCanonical(document);
     }, 60);
     setTimeout(() => {
-      fixPatchByIds(document);
+      schedulePatchFix(document);
       scanCanonical(document);
     }, 240);
     setTimeout(() => {
-      fixPatchByIds(document);
+      schedulePatchFix(document);
       scanCanonical(document);
     }, 850);
 
@@ -7233,11 +7377,11 @@ window.__V227_COSTUME_PHOTO_MAP = {"midoriya": {"Tenue de Héros": {"Original": 
     'click',
     () => {
       setTimeout(() => {
-        fixPatchByIds(document);
+        schedulePatchFix(document);
         scanCanonical(document);
       }, 0);
       setTimeout(() => {
-        fixPatchByIds(document);
+        schedulePatchFix(document);
         scanCanonical(document);
       }, 100);
     },
@@ -7247,7 +7391,7 @@ window.__V227_COSTUME_PHOTO_MAP = {"midoriya": {"Tenue de Héros": {"Original": 
   window.addEventListener(
     'mhur:languagechange',
     () => {
-      fixPatchByIds(document);
+      schedulePatchFix(document);
       scanCanonical(document);
     }
   );
@@ -7262,13 +7406,20 @@ window.__V227_COSTUME_PHOTO_MAP = {"midoriya": {"Tenue de Héros": {"Original": 
     start();
   }
 
-  /* Le site ne reste jamais bloqué derrière le splash. */
-  setTimeout(finishReveal, 3800);
+  /* Le site ne reste jamais bloqué ou non cliquable. */
+  setTimeout(() => {
+    releaseInteractions();
 
-  window.MHUR_V673 = {
+    if (!revealed) {
+      finishReveal();
+    }
+  }, 2600);
+
+  window.MHUR_V674 = {
     build: BUILD,
     refreshNew: () => scanCanonical(document),
-    fixPatchByIds: () => fixPatchByIds(document),
+    fixPatchByIds: () => schedulePatchFix(document),
+    releaseInteractions,
     cleanOwner
   };
 })();
