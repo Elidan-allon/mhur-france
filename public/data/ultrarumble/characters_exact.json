@@ -17040,8 +17040,18 @@
     },
     "special_action": {
       "values": {
-        "columns": [],
-        "rows": []
+        "columns": [
+          "Ammo",
+          "Use Ammo",
+          "Reload"
+        ],
+        "rows": [
+          [
+            "x1",
+            "x1",
+            "1s"
+          ]
+        ]
       }
     },
     "normal_tuning": [
@@ -24154,7 +24164,7 @@
       ]
     },
     "assets": {
-      "portrait": "assets/armored_all_might/armored_all_might_technical/portrait.webp",
+      "portrait": "assets/armored_all_might/armored_all_might_technical/portrait.png",
       "tuning": "assets/armored_all_might/armored_all_might_technical/tuning.webp",
       "alpha": "assets/armored_all_might/armored_all_might_technical/alpha.webp",
       "beta": "assets/armored_all_might/armored_all_might_technical/beta.webp",
