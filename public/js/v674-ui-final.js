@@ -1,7 +1,7 @@
 (() => {
   'use strict';
 
-  const BUILD = "674-1c7b8c0a4cd3";
+  const BUILD = "674-e8473c2adef3";
   const root = document.documentElement;
   const startedAt =
     Number(window.__MHUR_V674_STARTED_AT) ||
