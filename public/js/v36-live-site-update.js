@@ -1,7 +1,7 @@
 (() => {
   'use strict';
 
-  const CURRENT = "674-c39cc24697e6";
+  const CURRENT = "674-94da0ae103cd";
   const RELOAD_KEY = 'mhur-v674-reloaded-build';
   let checking = false;
 
