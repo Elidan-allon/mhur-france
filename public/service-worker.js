@@ -1,4 +1,4 @@
-const RELEASE = "674-e8473c2adef3";
+const RELEASE = "674-c39cc24697e6";
 const PREFIX = 'mhur-v674-';
 const STATIC_CACHE = `${PREFIX}static-${RELEASE}`;
 const OFFLINE_CACHE = `${PREFIX}offline-${RELEASE}`;
