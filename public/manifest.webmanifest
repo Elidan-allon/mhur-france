@@ -1,9 +1,9 @@
 {
   "id": "/",
-  "name": "MHUR Nexus — My Hero Ultra Rumble",
-  "short_name": "MHUR Nexus",
-  "description": "Communauté My Hero Ultra Rumble : personnages, builds, costumes, T.U.N.I.N.G, tier lists, mods et événements.",
-  "lang": "fr",
+  "name": "MHUR NEXUS — My Hero Ultra Rumble",
+  "short_name": "MHUR NEXUS",
+  "description": "My Hero Ultra Rumble community site: characters, Quirks, builds, costumes, T.U.N.I.N.G., Patch Notes and events.",
+  "lang": "en",
   "dir": "ltr",
   "start_url": "/?source=pwa#home",
   "scope": "/",
