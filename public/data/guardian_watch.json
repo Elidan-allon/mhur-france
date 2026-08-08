@@ -1,243 +1,458 @@
 {
-  "version": 1,
+  "version": 2,
   "items": [
     {
-      "id": "93a43984c4bf",
+      "id": "ee2ea2609f4c7ea3",
       "kind": "character",
-      "title": "PLUS ULTRA Character Roll: Original (S18) Gentle 2026-07-29 13:00:00 JST 2026-09-30 12:59:59",
+      "title": "108",
+      "url": "https://ultrarumble.com/character/108",
+      "source": "https://ultrarumble.com/"
+    },
+    {
+      "id": "82c7c3f3c7c9a2e5",
+      "kind": "character",
+      "title": "109",
+      "url": "https://ultrarumble.com/character/109",
+      "source": "https://ultrarumble.com/"
+    },
+    {
+      "id": "a0a81a86fcd4c06f",
+      "kind": "character",
+      "title": "111",
+      "url": "https://ultrarumble.com/character/111",
+      "source": "https://ultrarumble.com/"
+    },
+    {
+      "id": "b4db37a0970a6f24",
+      "kind": "character",
+      "title": "13",
+      "url": "https://ultrarumble.com/character/13",
+      "source": "https://ultrarumble.com/"
+    },
+    {
+      "id": "cb4c87bf3b73db8c",
+      "kind": "character",
+      "title": "Character Roll: Original (S18) Gentle",
       "url": "https://ultrarumble.com/gasha/2618001",
       "source": "https://ultrarumble.com/"
     },
     {
-      "id": "80a28c488ce3",
+      "id": "718bedc4e3c3efbd",
       "kind": "character",
-      "title": "PLUS ULTRA Character Roll: Original (S18) Tokoyami 2026-07-29 13:00:00 JST 2026-09-16 12:59:59",
+      "title": "Character Roll: Original (S18) Tokoyami",
       "url": "https://ultrarumble.com/gasha/2618002",
       "source": "https://ultrarumble.com/"
     },
     {
-      "id": "82304f2dbee6",
+      "id": "2a5fe37c69ad9680",
       "kind": "character",
-      "title": "QUIRK / SKILL Character Roll: Alternative (S18) Bakugo 2026-07-29 13:00:00 JST 2026-09-02 12:59:59",
+      "title": "Character Roll: Alternative (S18) Bakugo",
       "url": "https://ultrarumble.com/gasha/2618006",
       "source": "https://ultrarumble.com/"
     },
     {
-      "id": "493021e74082",
+      "id": "680835afd02e8a4b",
       "kind": "character",
-      "title": "QUIRK / SKILL Character Roll: Alternative (S18) Shigaraki 2026-07-29 13:00:00 JST 2026-09-02 12:59:59",
+      "title": "Character Roll: Alternative (S18) Shigaraki",
       "url": "https://ultrarumble.com/gasha/2618009",
       "source": "https://ultrarumble.com/"
     },
     {
-      "id": "8705a10b0803",
+      "id": "0950f8438c72aca8",
       "kind": "character",
-      "title": "9:59 INFO Discounted Recruit Tickets and Hero Crystals Now On Sale! For a limited time, you can purchase the following items at a discount! ・100x Roll Ticket set ・Hero Crystals Go to Shop, Premium, and Tickets & Hero Crystals to purchase. 2026-09-02 13:00:00 JST 2026-09-16 12:59:59 GASHA Character Roll: Alternative (S18) Twice Underway! ■Hot Picks [Battle",
+      "status": "Upcoming Notices",
+      "title": "Character Roll: Alternative (S18) All For One Underway!",
+      "start": "2026-09-02 13:00:00 JST",
+      "end": "2026-09-02 13:00:00 JST",
       "url": "https://ultrarumble.com/notices",
       "source": "https://ultrarumble.com/notices"
     },
     {
-      "id": "567d02e911a9",
+      "id": "5452812e83ea6594",
       "kind": "character",
-      "title": "9:59 INFO Discounted Recruit Tickets and Hero Crystals Now On Sale! For a limited time, you can purchase the following items at a discount! ・100x Roll Ticket set ・Hero Crystals Go to Shop, Premium, and Tickets & Hero Crystals to purchase. 2026-09-16 13:00:00 JST 2026-09-30 12:59:59 GASHA Character Roll: Alternative (S18) Asui Underway! ■Hot Picks [Battle S",
+      "status": "Upcoming Notices",
+      "title": "Character Roll: Alternative (S18) Asui Underway!",
+      "start": "2026-09-02 13:00:00 JST",
+      "end": "2026-09-02 13:00:00 JST",
       "url": "https://ultrarumble.com/notices",
       "source": "https://ultrarumble.com/notices"
     },
     {
-      "id": "b822705026dc",
+      "id": "62247324bada645b",
       "kind": "character",
-      "title": "you can! Roll Ticket x10 ※Contents and period are subject to change without notice. 2026-08-04 13:00:00 JST 2026-08-11 12:59:59 INFO 2026-07-29 13:00:00 JST 2026-08-19 12:59:59 Upcoming Notices GASHA Character Roll: Original (S18) Midoriya",
+      "status": "Active Notices",
+      "title": "Character Roll: Alternative (S18) Bakugo Underway!",
+      "start": "2026-07-29 13:00:00 JST",
+      "end": "2026-07-29 13:00:00 JST",
       "url": "https://ultrarumble.com/notices",
       "source": "https://ultrarumble.com/notices"
     },
     {
-      "id": "bdc04c8ee920",
+      "id": "623b5a6b05b6cd21",
+      "kind": "character",
+      "status": "Active Notices",
+      "title": "Character Roll: Alternative (S18) Shigaraki Underway!",
+      "start": "2026-07-29 13:00:00 JST",
+      "end": "2026-07-29 13:00:00 JST",
+      "url": "https://ultrarumble.com/notices",
+      "source": "https://ultrarumble.com/notices"
+    },
+    {
+      "id": "a78671d7109b2801",
+      "kind": "character",
+      "status": "Upcoming Notices",
+      "title": "Character Roll: Alternative (S18) Twice Underway!",
+      "start": "2026-08-19 13:00:00 JST",
+      "end": "2026-08-19 13:00:00 JST",
+      "url": "https://ultrarumble.com/notices",
+      "source": "https://ultrarumble.com/notices"
+    },
+    {
+      "id": "aafb77d9e282ca21",
+      "kind": "character",
+      "status": "Active Notices",
+      "title": "Character Roll: Original (S18) Gentle Criminal Underway!",
+      "start": "2026-07-29 13:00:00 JST",
+      "end": "2026-07-29 13:00:00 JST",
+      "url": "https://ultrarumble.com/notices",
+      "source": "https://ultrarumble.com/notices"
+    },
+    {
+      "id": "0aa5b53a059b3eb0",
+      "kind": "character",
+      "status": "Upcoming Notices",
+      "title": "Character Roll: Original (S18) Midoriya OFA Underway!",
+      "start": "2026-09-16 13:00:00 JST",
+      "end": "2026-09-16 13:00:00 JST",
+      "url": "https://ultrarumble.com/notices",
+      "source": "https://ultrarumble.com/notices"
+    },
+    {
+      "id": "11f52ca04e5f4eb6",
+      "kind": "character",
+      "status": "Upcoming Notices",
+      "title": "Character Roll: Original (S18) Monoma and Hado Underway!",
+      "start": "2026-09-16 13:00:00 JST",
+      "end": "2026-09-16 13:00:00 JST",
+      "url": "https://ultrarumble.com/notices",
+      "source": "https://ultrarumble.com/notices"
+    },
+    {
+      "id": "edaf581a2d23aefe",
+      "kind": "character",
+      "status": "Upcoming Notices",
+      "title": "Character Roll: Original (S18) Shinso Underway!",
+      "start": "2026-08-19 13:00:00 JST",
+      "end": "2026-08-19 13:00:00 JST",
+      "url": "https://ultrarumble.com/notices",
+      "source": "https://ultrarumble.com/notices"
+    },
+    {
+      "id": "06fbbb0e7ceafa4b",
+      "kind": "character",
+      "status": "Active Notices",
+      "title": "Character Roll: Original (S18) Tokoyami Underway!",
+      "start": "2026-07-29 13:00:00 JST",
+      "end": "2026-07-29 13:00:00 JST",
+      "url": "https://ultrarumble.com/notices",
+      "source": "https://ultrarumble.com/notices"
+    },
+    {
+      "id": "f939825a005cae64",
       "kind": "costume",
-      "title": "COSTUME Costume Pick Up Roll (S18) Vol. Disguise 2026-07-29 13:00:00 JST 2026-09-02 12:59:59",
+      "title": "Costume Pick Up Roll (S18) Vol. Disguise",
       "url": "https://ultrarumble.com/gasha/2618011",
       "source": "https://ultrarumble.com/"
     },
     {
-      "id": "632e08f038d5",
+      "id": "ddf43897a2a8f73a",
+      "kind": "costume",
+      "status": "Upcoming Notices",
+      "title": "3-Pick Battle Event Vol. 1 Underway!",
+      "start": "2026-08-25 13:00:00 JST",
+      "end": "2026-08-25 13:00:00 JST",
+      "url": "https://ultrarumble.com/notices",
+      "source": "https://ultrarumble.com/notices"
+    },
+    {
+      "id": "974bec03d31c35a9",
+      "kind": "costume",
+      "status": "Active Notices",
+      "title": "Battle Event Vol. 10 Underway!",
+      "start": "2026-07-29 13:00:00 JST",
+      "end": "2026-07-29 13:00:00 JST",
+      "url": "https://ultrarumble.com/notices",
+      "source": "https://ultrarumble.com/notices"
+    },
+    {
+      "id": "3370e602430a9158",
+      "kind": "costume",
+      "status": "Active Notices",
+      "title": "Costume Pick Up Roll (S18) Vol. Disguise Underway!",
+      "start": "2026-07-29 13:00:00 JST",
+      "end": "2026-07-29 13:00:00 JST",
+      "url": "https://ultrarumble.com/notices",
+      "source": "https://ultrarumble.com/notices"
+    },
+    {
+      "id": "a4b05b7ff8b2cf0f",
+      "kind": "costume",
+      "status": "Upcoming Notices",
+      "title": "Costume Pick Up Roll (S18) Vol. Disguise Underway!",
+      "start": "2026-09-02 13:00:00 JST",
+      "end": "2026-09-02 13:00:00 JST",
+      "url": "https://ultrarumble.com/notices",
+      "source": "https://ultrarumble.com/notices"
+    },
+    {
+      "id": "3835edf17c43040e",
       "kind": "event",
-      "title": "EVENT Beginner Mission Event 2025-09-24 13:00:00 JST 2100-01-01 00:00:00",
+      "title": "Beginner Mission Event",
       "url": "https://ultrarumble.com/event/251307",
       "source": "https://ultrarumble.com/"
     },
     {
-      "id": "6879d4b01e7b",
+      "id": "b9c82a96811db956",
       "kind": "event",
-      "title": "BATTLE Battle Event Vol. 10 2026-07-29 13:00:00 JST 2026-08-26 12:59:59",
+      "title": "Battle Event Vol. 10",
       "url": "https://ultrarumble.com/event/261801",
       "source": "https://ultrarumble.com/"
     },
     {
-      "id": "6c51951ff16d",
+      "id": "9555b19e4556d917",
       "kind": "event",
-      "title": "EVENT T.U.N.I.N.G. Mission Event Vol. 5 2026-08-05 13:00:00 JST 2026-08-19 12:59:59",
+      "title": "T.U.N.I.N.G. Mission Event Vol. 5",
       "url": "https://ultrarumble.com/event/261803",
       "source": "https://ultrarumble.com/"
     },
     {
-      "id": "dc1c5d5f4a78",
+      "id": "78717da3f0d1df7c",
+      "kind": "event",
+      "status": "Upcoming Notices",
+      "title": "License Event Vol. 4 Underway!",
+      "start": "2026-09-16 13:00:00 JST",
+      "end": "2026-09-16 13:00:00 JST",
+      "url": "https://ultrarumble.com/notices",
+      "source": "https://ultrarumble.com/notices"
+    },
+    {
+      "id": "72ef6010129f68ab",
+      "kind": "event",
+      "status": "Active Notices",
+      "title": "T.U.N.I.N.G. Mission Event Vol. 5 Underway!",
+      "start": "2026-08-05 13:00:00 JST",
+      "end": "2026-08-05 13:00:00 JST",
+      "url": "https://ultrarumble.com/notices",
+      "source": "https://ultrarumble.com/notices"
+    },
+    {
+      "id": "d479672c09264002",
+      "kind": "event",
+      "status": "Upcoming Notices",
+      "title": "T.U.N.I.N.G. Mission Event Vol. 6 Underway!",
+      "start": "2026-09-09 13:00:00 JST",
+      "end": "2026-09-09 13:00:00 JST",
+      "url": "https://ultrarumble.com/notices",
+      "source": "https://ultrarumble.com/notices"
+    },
+    {
+      "id": "6687245b759b6b4f",
       "kind": "gasha",
-      "title": "GACHA Beginner Missions Roll 2025-09-24 13:00:00 JST 2100-01-01 00:00:00",
+      "title": "Beginner Missions Roll",
       "url": "https://ultrarumble.com/gasha/2513011",
       "source": "https://ultrarumble.com/"
     },
     {
-      "id": "4409f6d503d3",
+      "id": "bece27409f1cb6e3",
       "kind": "gasha",
-      "title": ":59 NOTICE Birthday Campaign (Endeavor) Underway! Hot News! 8/8 is Endeavor's Birthday! Grab this Login Bonus while you can! Roll Ticket x10 ※Contents and period are subject to change without notice. 2026-08-01 13:00:00 JST 2026-08-08 12:59:59 NOTICE Birthday Campaign (Mt. Lady) Underway! Hot News! 8/11 is Mt. Lady's Birthday! Grab this Login Bonus while",
+      "status": "Expired Notices",
+      "title": "Birthday Campaign (Endeavor) Underway!",
+      "start": "2026-08-01 13:00:00 JST",
+      "end": "2026-08-01 13:00:00 JST",
       "url": "https://ultrarumble.com/notices",
       "source": "https://ultrarumble.com/notices"
     },
     {
-      "id": "b6f6f8962507",
+      "id": "5c6535a09f0d62d3",
       "kind": "gasha",
-      "title": "Bonus while you can! Roll Ticket x10 ※Contents and period are subject to change without notice. 2026-09-02 13:00:00 JST 2026-09-08 12:59:59 INFO Discounted Hero Crystals Now On Sale! For a limited time, the following items are available at a special pr",
+      "status": "Upcoming Notices",
+      "title": "Birthday Campaign (Gentle Criminal) Underway!",
+      "start": "2026-08-23 13:00:00 JST",
+      "end": "2026-08-23 13:00:00 JST",
       "url": "https://ultrarumble.com/notices",
       "source": "https://ultrarumble.com/notices"
     },
     {
-      "id": "4705332a5a21",
+      "id": "e7e949f3ed3cab66",
       "kind": "gasha",
-      "title": "CE Birthday Campaign (Itsuka Kendo) Underway! Hot News! 9/9 is Itsuka Kendo's birthday! Grab this Login Bonus while you can! Roll Ticket x10 ※Contents and period are subject to change without notice. 2026-09-03 13:00:00 JST 2026-09-09 12:59:59 NOTICE Birthday Campaign (Ibara Shiozaki) Underway! Hot News! 9/8 is Ibara Shiozaki's birthday! Grab this Login",
+      "status": "Expired Notices",
+      "title": "Birthday Campaign (Himiko Toga) Underway!",
+      "start": "2026-07-31 13:00:00 JST",
+      "end": "2026-07-31 13:00:00 JST",
       "url": "https://ultrarumble.com/notices",
       "source": "https://ultrarumble.com/notices"
     },
     {
-      "id": "60064e8b9a65",
+      "id": "01bd4bfb4afb84a7",
       "kind": "gasha",
-      "title": "TICE Birthday Campaign (Himiko Toga) Underway! Hot News! 8/7 is Himiko Toga's Birthday! Grab this Login Bonus while you can! Roll Ticket x10 ※Contents and period are subject to change without notice. 2026-07-31 13:00:00 JST 2026-08-07 12:59:59 INFO Discounted Recruit Tickets and Hero Crystals Now On Sale! For a limited time, you can purchase the followin",
+      "status": "Upcoming Notices",
+      "title": "Birthday Campaign (Ibara Shiozaki) Underway!",
+      "start": "2026-09-02 13:00:00 JST",
+      "end": "2026-09-02 13:00:00 JST",
       "url": "https://ultrarumble.com/notices",
       "source": "https://ultrarumble.com/notices"
     },
     {
-      "id": "af715e2e9bc4",
+      "id": "43c2f33c3b21e9b8",
       "kind": "gasha",
-      "title": "g items at a discount! ・100x Roll Ticket set ・Hero Crystals Go to Shop, Premium, and Tickets & Hero Crystals to purchase. 2026-07-29 13:00:00 JST 2026-06-10 12:59:59 UltraRumble.com v1.1.0 Privacy Policy Patreon Data Version: v1.14.0-Rc122 UltraRumble.com is n",
+      "status": "Upcoming Notices",
+      "title": "Birthday Campaign (Itsuka Kendo) Underway!",
+      "start": "2026-09-03 13:00:00 JST",
+      "end": "2026-09-03 13:00:00 JST",
       "url": "https://ultrarumble.com/notices",
       "source": "https://ultrarumble.com/notices"
     },
     {
-      "id": "46d9b60168c2",
+      "id": "72343a687ccb1bc6",
       "kind": "gasha",
-      "title": "g items at a discount! ・100x Roll Ticket set ・Hero Crystals Go to Shop, Premium, and Tickets & Hero Crystals to purchase. 2026-08-19 13:00:00 JST 2026-09-02 12:59:59 CAMPAIGN Special Login Bonus Underway! Hot News! For one week from 3/25, you will receive 10 R",
+      "status": "Active Notices",
+      "title": "Birthday Campaign (Mt. Lady) Underway!",
+      "start": "2026-08-04 13:00:00 JST",
+      "end": "2026-08-04 13:00:00 JST",
       "url": "https://ultrarumble.com/notices",
       "source": "https://ultrarumble.com/notices"
     },
     {
-      "id": "27df93b79cff",
+      "id": "27bc8d535fcbadb1",
       "kind": "gasha",
-      "title": "hday Campaign (Gentle Criminal) Underway! Hot News! 8/29 is Gentle Criminal's Birthday! Grab this Login Bonus while you can! Roll Ticket x10 ※Contents and period are subject to change without notice. 2026-08-23 13:00:00 JST 2026-08-29 12:59:59 NOTICE Birthday Campaign (Tenya Iida) Underway! Hot News! 8/22 is Tenya Iida's Birthday! Grab this Login Bonus w",
+      "status": "Upcoming Notices",
+      "title": "Birthday Campaign (Tenya Iida) Underway!",
+      "start": "2026-08-15 13:00:00 JST",
+      "end": "2026-08-15 13:00:00 JST",
       "url": "https://ultrarumble.com/notices",
       "source": "https://ultrarumble.com/notices"
     },
     {
-      "id": "f881f6fd8514",
+      "id": "df5ec9a156f0d2e1",
       "kind": "gasha",
-      "title": "hile you can! Roll Ticket x10 ※Contents and period are subject to change without notice. 2026-08-15 13:00:00 JST 2026-08-22 12:59:59 INFO Discounted Recruit Tickets and Hero Crystals Now On Sale! For a limited time, you can purchase the followin",
+      "status": "Expired Notices",
+      "title": "Discounted Recruit Tickets and Hero Crystals Now On Sale!",
+      "start": "2026-07-29 13:00:00 JST",
+      "end": "2026-07-29 13:00:00 JST",
       "url": "https://ultrarumble.com/notices",
       "source": "https://ultrarumble.com/notices"
     },
     {
-      "id": "3c9385227770",
-      "kind": "notice",
-      "title": "🇩🇪 Deutsch",
-      "url": "https://de.ultrarumble.com/notices",
-      "source": "https://ultrarumble.com/notices"
-    },
-    {
-      "id": "866f5bb59b9e",
-      "kind": "notice",
-      "title": "🇪🇸 Español",
-      "url": "https://es.ultrarumble.com/notices",
-      "source": "https://ultrarumble.com/notices"
-    },
-    {
-      "id": "7d88a6180b90",
-      "kind": "notice",
-      "title": "🇫🇷 Français",
-      "url": "https://fr.ultrarumble.com/notices",
-      "source": "https://ultrarumble.com/notices"
-    },
-    {
-      "id": "a7e72801e8dd",
-      "kind": "notice",
-      "title": "🇮🇹 Italiano",
-      "url": "https://it.ultrarumble.com/notices",
-      "source": "https://ultrarumble.com/notices"
-    },
-    {
-      "id": "aa889d0e4917",
-      "kind": "notice",
-      "title": "🇯🇵 日本語",
-      "url": "https://jp.ultrarumble.com/notices",
-      "source": "https://ultrarumble.com/notices"
-    },
-    {
-      "id": "41f06ca38667",
-      "kind": "notice",
-      "title": "Expired 2",
+      "id": "29d706178bfdd03b",
+      "kind": "gasha",
+      "status": "Upcoming Notices",
+      "title": "Discounted Recruit Tickets and Hero Crystals Now On Sale!",
+      "start": "2026-08-19 13:00:00 JST",
+      "end": "2026-08-19 13:00:00 JST",
       "url": "https://ultrarumble.com/notices",
       "source": "https://ultrarumble.com/notices"
     },
     {
-      "id": "1491c170009c",
+      "id": "2d2e976cc34c74b9",
+      "kind": "gasha",
+      "status": "Upcoming Notices",
+      "title": "Discounted Recruit Tickets and Hero Crystals Now On Sale!",
+      "start": "2026-09-02 13:00:00 JST",
+      "end": "2026-09-02 13:00:00 JST",
+      "url": "https://ultrarumble.com/notices",
+      "source": "https://ultrarumble.com/notices"
+    },
+    {
+      "id": "8dc4c9cb52ef8c73",
+      "kind": "gasha",
+      "status": "Upcoming Notices",
+      "title": "Discounted Recruit Tickets and Hero Crystals Now On Sale!",
+      "start": "2026-09-16 13:00:00 JST",
+      "end": "2026-09-16 13:00:00 JST",
+      "url": "https://ultrarumble.com/notices",
+      "source": "https://ultrarumble.com/notices"
+    },
+    {
+      "id": "5cd9312489f53679",
+      "kind": "gasha",
+      "status": "Upcoming Notices",
+      "title": "Special Login Bonus Underway!",
+      "start": "2026-08-12 13:00:00 JST",
+      "end": "2026-08-12 13:00:00 JST",
+      "url": "https://ultrarumble.com/notices",
+      "source": "https://ultrarumble.com/notices"
+    },
+    {
+      "id": "eecb0f3ecd5689e6",
+      "kind": "gasha",
+      "status": "Upcoming Notices",
+      "title": "Special Login Bonus Underway!",
+      "start": "2026-09-23 13:00:00 JST",
+      "end": "2026-09-23 13:00:00 JST",
+      "url": "https://ultrarumble.com/notices",
+      "source": "https://ultrarumble.com/notices"
+    },
+    {
+      "id": "d035cbeb7ff0002e",
       "kind": "patch",
-      "title": "1.16.2-Rc139 June 24, 2026 at 12:01 AM PATCH Data Update v1.16.1-Rc138 Patch Notes for Maintenance Update v1.16.1-Rc138 June 10, 2026 at 12:02 AM PATCH Data Update v1.16.0-Rc137 Patch Notes for Maintenance Update v1.16.0-Rc137 May 27, 2026 at 10:11 PM PATCH Data Update v1.16.0-Rc133 Patch Notes for Maintenance Update",
-      "url": "https://ultrarumble.com/",
-      "source": "https://ultrarumble.com/"
-    },
-    {
-      "id": "3358e345df98",
-      "kind": "patch",
-      "title": "ding in a battle of 24! Neo Academia: --:-- Ranked Match 3 Ppl. Recent Patch Notes PATCH Data Update v1.17.0-14.5 Patch Notes for Maintenance Update v1.17.0-14.5 July 29, 2026 at 12:13 AM PATCH Data Update v1.16.3-Rc142 Patch Notes for Maintenance Update v1.16.3-Rc142 July 8, 2026 at 3:52 AM PATCH Data Update v1.16.2-Rc139 Patch Notes for Maintenance Update v",
-      "url": "https://ultrarumble.com/",
-      "source": "https://ultrarumble.com/"
-    },
-    {
-      "id": "2939c6d62eeb",
-      "kind": "patch",
-      "title": "PATCH Data Update v1.16.0-Rc133 Patch Notes for Maintenance Update v1.16.0-Rc133 May 26, 2026 at 6:57 PM",
+      "title": "Data Update v1.16.0-Rc133",
       "url": "https://ultrarumble.com/patch/1779836241",
       "source": "https://ultrarumble.com/"
     },
     {
-      "id": "31dbebb7809e",
+      "id": "0544248d80bc4427",
       "kind": "patch",
-      "title": "PATCH Data Update v1.16.0-Rc137 Patch Notes for Maintenance Update v1.16.0-Rc137 May 27, 2026 at 10:11 PM",
+      "title": "Data Update v1.16.0-Rc137",
       "url": "https://ultrarumble.com/patch/1779934289",
       "source": "https://ultrarumble.com/"
     },
     {
-      "id": "b20ef76c2575",
+      "id": "4ab244b21b845111",
       "kind": "patch",
-      "title": "PATCH Data Update v1.16.1-Rc138 Patch Notes for Maintenance Update v1.16.1-Rc138 June 10, 2026 at 12:02 AM",
+      "title": "Data Update v1.16.1-Rc138",
       "url": "https://ultrarumble.com/patch/1781064165",
       "source": "https://ultrarumble.com/"
     },
     {
-      "id": "999adba97b9d",
+      "id": "482405db05ead59e",
       "kind": "patch",
-      "title": "PATCH Data Update v1.16.2-Rc139 Patch Notes for Maintenance Update v1.16.2-Rc139 June 24, 2026 at 12:01 AM",
+      "title": "Data Update v1.16.2-Rc139",
       "url": "https://ultrarumble.com/patch/1782273704",
       "source": "https://ultrarumble.com/"
     },
     {
-      "id": "9f1e03c45312",
+      "id": "dd31098edcc4d35d",
       "kind": "patch",
-      "title": "PATCH Data Update v1.16.3-Rc142 Patch Notes for Maintenance Update v1.16.3-Rc142 July 8, 2026 at 3:52 AM",
+      "title": "Data Update v1.16.3-Rc142",
       "url": "https://ultrarumble.com/patch/1783497169",
       "source": "https://ultrarumble.com/"
     },
     {
-      "id": "2e1e8d491763",
+      "id": "a873f4ff1484b959",
       "kind": "patch",
-      "title": "PATCH Data Update v1.17.0-14.5 Patch Notes for Maintenance Update v1.17.0-14.5 July 29, 2026 at 12:13 AM",
+      "title": "Data Update v1.17.0-14.5",
       "url": "https://ultrarumble.com/patch/1785298405",
       "source": "https://ultrarumble.com/"
+    },
+    {
+      "id": "7689b08069d44213",
+      "kind": "points",
+      "status": "Upcoming Notices",
+      "title": "Discounted Hero Crystals Now On Sale!",
+      "start": "2026-09-02 13:00:00 JST",
+      "end": "2026-09-02 13:00:00 JST",
+      "url": "https://ultrarumble.com/notices",
+      "source": "https://ultrarumble.com/notices"
+    },
+    {
+      "id": "0f8b7d972911701c",
+      "kind": "tuning",
+      "status": "Upcoming Notices",
+      "title": "Drop Event Vol. 18 Underway!",
+      "start": "2026-08-19 13:00:00 JST",
+      "end": "2026-08-19 13:00:00 JST",
+      "url": "https://ultrarumble.com/notices",
+      "source": "https://ultrarumble.com/notices"
     }
   ]
 }
