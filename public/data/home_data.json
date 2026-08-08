@@ -1,6 +1,6 @@
 {
   "meta": {
-    "updated_at": "2026-08-07T12:26:30.191948+00:00",
+    "updated_at": "2026-08-08T04:19:27.241958+00:00",
     "source": "UltraRumble.com",
     "version": "v520-maintenance-sync"
   },
@@ -170,17 +170,10 @@
     },
     {
       "type": "Anniversaire",
-      "title": "LOGIN 2000万ダウンロードログインボーナス BIRTHDAY トガヒミコ誕生日キャンペーン2026 BIRTHDAY エンデヴァー誕生日キャンペーン2026 BIRTHDAY Mt.レディ誕生日キャンペーン2026 LOGIN シーズン18-スペシャルログインボーナス-vol.1 BIRTHDAY 飯田天哉誕生日キャンペーン2026 BIRTHDAY ジェントル・クリミナル誕生日キャンペーン2026 BIRTHDAY 塩崎茨誕生日キャンペーン2026 BIRTHDAY 拳藤一佳誕生日キャンペーン2026 LOGIN シーズン18-スペシャルログインボーナス-vol.2 BIRTHDAY 八百万百誕生日キャンペーン2026",
+      "title": "LOGIN 2000万ダウンロードログインボーナス BIRTHDAY エンデヴァー誕生日キャンペーン2026 BIRTHDAY Mt.レディ誕生日キャンペーン2026 LOGIN シーズン18-スペシャルログインボーナス-vol.1 BIRTHDAY 飯田天哉誕生日キャンペーン2026 BIRTHDAY ジェントル・クリミナル誕生日キャンペーン2026 BIRTHDAY 塩崎茨誕生日キャンペーン2026 BIRTHDAY 拳藤一佳誕生日キャンペーン2026 LOGIN シーズン18-スペシャルログインボーナス-vol.2 BIRTHDAY 八百万百誕生日キャンペーン2026",
       "start": "2026-07-29T13:00:00+09:00",
       "end": "2026-09-30T12:59:59+09:00",
-      "image": "assets/home/bonuses/login_2000_birthday_2026_birthday_2026_birthday_mt_2026_login_18_vol_1.png"
-    },
-    {
-      "type": "Anniversaire",
-      "title": "BIRTHDAY トガヒミコ誕生日キャンペーン2026",
-      "start": "2026-08-07T13:00:00+09:00",
-      "end": "2026-08-08T12:59:59+09:00",
-      "image": "assets/home/bonuses/birthday_2026.png"
+      "image": "assets/home/bonuses/login_2000_birthday_2026_birthday_mt_2026_login_18_vol_1_birthday_2026.png"
     },
     {
       "type": "Anniversaire",
