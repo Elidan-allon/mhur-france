@@ -1,0 +1,1324 @@
+name: MHUR - MISE À JOUR NEXUS — OFFICIELLE V10
+
+on:
+  schedule:
+    - cron: "11 * * * *"
+    - cron: "*/5 * * * *"
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "Action à lancer"
+        required: true
+        default: scan
+        type: choice
+        options:
+          - scan
+          - approval
+          - install
+
+# Discord : V / FIX 3 = 150 / SLOT 1 = Nom / SLOT 3 = NONE
+
+permissions:
+  contents: write
+  pull-requests: write
+  actions: write
+
+concurrency:
+  # Scan et validation ne peuvent plus tourner en parallèle.
+  group: mhur-nexus-update-singleton
+  cancel-in-progress: false
+
+jobs:
+  installer:
+    if: github.event_name == 'workflow_dispatch' && inputs.mode == 'install'
+    runs-on: ubuntu-22.04
+    timeout-minutes: 15
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - name: Garder un seul updater Nexus
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          current_path="${GITHUB_WORKFLOW_REF#${GITHUB_REPOSITORY}/}"
+          current_path="${current_path%@*}"
+
+          echo "Workflow V8 à conserver : $current_path"
+
+          gh api \
+            "repos/${GITHUB_REPOSITORY}/actions/workflows?per_page=100" \
+            --paginate \
+            --jq '.workflows[] | [.id,.path,.state] | @tsv' \
+            > /tmp/workflows.tsv
+
+          disabled=0
+
+          while IFS=$'\t' read -r id path state; do
+            if [ "$path" = "$current_path" ]; then
+              continue
+            fi
+
+            if [ "$path" = ".github/workflows/mhur-nexus-branding-langue.yml" ]; then
+              continue
+            fi
+
+            case "$path" in
+              .github/workflows/mhur-mise-a-jour-guardian-officielle*.yml|\
+              .github/workflows/mhur-v*auto*.yml|\
+              .github/workflows/mhur-sync*.yml|\
+              .github/workflows/*ultrarumble*auto*.yml|\
+              .github/workflows/mhur-guardian-hourly.yml|\
+              .github/workflows/mhur-guardian-approval.yml)
+                if [ "$state" = "active" ]; then
+                  echo "Désactivation : $path"
+                  gh api \
+                    --method PUT \
+                    "repos/${GITHUB_REPOSITORY}/actions/workflows/${id}/disable"
+                  disabled=$((disabled + 1))
+                fi
+                ;;
+            esac
+          done < /tmp/workflows.tsv
+
+          echo "[OK] $disabled ancien(s) updater(s) désactivé(s)."
+          echo "[OK] Seul Guardian V10 reste updater automatique."
+
+      - name: Supprimer l'ancienne bêta
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          prs="$(
+            gh pr list \
+              --repo "$GITHUB_REPOSITORY" \
+              --head mhur-auto-beta \
+              --base main \
+              --state open \
+              --json number \
+              --jq '.[].number'
+          )"
+
+          for pr in $prs; do
+            gh pr close \
+              --repo "$GITHUB_REPOSITORY" \
+              "$pr" \
+              --comment "🧹 Ancienne bêta annulée par Guardian V10. Une bêta propre sera recréée au prochain scan." \
+              || true
+          done
+
+          gh api \
+            --method DELETE \
+            "repos/${GITHUB_REPOSITORY}/git/refs/heads/mhur-auto-beta" \
+            >/dev/null 2>&1 || true
+
+      - name: Installation terminée
+        shell: bash
+        run: |
+          echo "[OK] Guardian V10 est maintenant l'unique système de mise à jour."
+
+  scan:
+    if: >-
+      (github.event_name == 'schedule' && github.event.schedule == '11 * * * *') ||
+      (github.event_name == 'workflow_dispatch' && inputs.mode == 'scan')
+    runs-on: ubuntu-22.04
+    timeout-minutes: 55
+    env:
+      GH_TOKEN: ${{ github.token }}
+      DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_BOT_TOKEN }}
+      DISCORD_CHANNEL_ID: ${{ secrets.DISCORD_CHANNEL_ID }}
+      DISCORD_APPROVER_USER_ID: ${{ secrets.DISCORD_APPROVER_USER_ID }}
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      CLOUDFLARE_PAGES_PROJECT: ${{ secrets.CLOUDFLARE_PAGES_PROJECT }}
+
+    steps:
+      - name: Récupérer main
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          ref: main
+
+      - name: Vérifier qu'aucun ancien updater n'est actif
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          current_path="${GITHUB_WORKFLOW_REF#${GITHUB_REPOSITORY}/}"
+          current_path="${current_path%@*}"
+
+          gh api \
+            "repos/${GITHUB_REPOSITORY}/actions/workflows?per_page=100" \
+            --paginate \
+            --jq '.workflows[] | [.id,.path,.state] | @tsv' \
+            > /tmp/workflows-v8.tsv
+
+          while IFS=$'\t' read -r id path state; do
+            if [ "$path" = "$current_path" ]; then
+              continue
+            fi
+
+            case "$path" in
+              .github/workflows/mhur-mise-a-jour-guardian-officielle*.yml|\
+              .github/workflows/mhur-v*auto*.yml|\
+              .github/workflows/mhur-sync*.yml|\
+              .github/workflows/*ultrarumble*auto*.yml|\
+              .github/workflows/mhur-guardian-hourly.yml|\
+              .github/workflows/mhur-guardian-approval.yml)
+                if [ "$state" = "active" ]; then
+                  echo "Ancien updater encore actif, désactivation : $path"
+                  gh api \
+                    --method PUT \
+                    "repos/${GITHUB_REPOSITORY}/actions/workflows/${id}/disable"
+                fi
+                ;;
+            esac
+          done < /tmp/workflows-v8.tsv
+
+          echo "[OK] Updater unique V8 vérifié."
+
+      - name: Installer Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Installer le moteur indépendant
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import base64, gzip
+          from pathlib import Path
+          Path('/tmp/mhur_guardian.py').write_bytes(
+              gzip.decompress(base64.b64decode('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'))
+          )
+          Path('/tmp/browser_smoke.mjs').write_bytes(
+              gzip.decompress(base64.b64decode('H4sICHRzdWoAA2Jyb3dzZXJfc21va2UubWpzAMVWzW7bOBC+5ykmOjRUV8vYToAA6rrBNnBRoE1TxCl6MIyFLNEWsZSoJSn/IPUD7X3foC+2Q+o3idtNTwtfyOE3v99oxjwrpDJwD3GqZMbLDPawxBN4hYh2G8VXqfFeHR3FMtcGFpFmMIZCyZhpTVm+ptPrm/eTPz7ffoCvX8FLjSnC09Ph6IIO8DcMz4cXZ6dooNZXcqOZQhPRJuKmdUpFVOZxSu4hZVEi0HYIRpUM9n6jWkQr1urVdmjONp9QTu6PANacbWwuISaz4YlJQxienw8CNGmTwNtgMIB9cGRt9oxOlJJKo+nZHOVWQmVOPHtg9skLgLiDD+PXYD11WrQodUqmRvF8VYPQuHNQBerMraSRxJYucOr24XNuuAjBS2SGkRiWGyGjhCVegADDMyZLjPgMIx4ET+zZ01up7ioYORsNBl1KiulSmLZSToGtI1FGhhHS5lCB11zzhbB1JUywDMNoAQB8CeS4kQNHfJTHTC7h3d31h0kN99GhKVUOy0ho9sopVra12TnLK2auZFaUhiVTK2o99cELuUVo/UJR5Y0s8wSreiU4Sm5ZbIjN0WrUDom7QOWHJlzbhoXj8Ri8XObMgxcvHiBcrlxwU4NSniQs78E+ltmCKVKhZRHFFmqbeuj58Bqwn4cdGAOmrsvwZfRQXPWblTuhy3PvYq8Lg4HqlLmWcwhKaSLj0qX+V8nUboqFiI1UvwvRZHky48nLsTd1ut48gFmMJ40i/VRkewlr581PqghsU83pkguD+dWc+72IFkLGf6ICRtQE16AP9MX/QW8hOX4larJGtD5Ico+QMTZrztQXd3uJxF0cJqjGvauuDthjrF8g+40qKZ5JmRfNUsWWyMiiNEbmyAwqs/FJdT2Ze4cZoVrwmBEcWWeDJ/Sw5KoLoonnP1n6mcK7770rI3b+cVetx995z4f1cB2ZlGY8b1jrEfArDINaWqGirU3RmhZsaeCXHnWnMPI7ChoHu+85qJn7gQcji9pBTXrfQ8+FxY2hpbQu2FvcTp9s55FtALtHDXrchOJ0x22VsXD1Q1N2y1aE85Mg0u+e8XbZvl3SlsMnPVg7rHhdyGR3x7a4HUgbrpVdUlcS++SGludTXEsZ8bHK+cqkQZOta5ywa6H+czMIqjETtncsaUHI1rXXlvLEethSN24+Rhnze9pdn4aPBT1X+wdbslnnsZCauX60vdhbs5Wi324u/JqoW7fEs/sf3FmHuKo7JVfB9p/KlhsytLu5sl1tSdoUE36D0eD75guE41eO6zJhFJ1U2s9y8KCgP8qjQtiSWU8sj6VigBNWc/OTPtthhTsLBx/0Q+lNERx/jxQOxnUnS41x6Kphvv1jj/XA0qBRVoX87W/9jCgb20KuiDd7c3vzZTq5BfcXcg437/sG/gWchRy4mQoAAA=='))
+          )
+          PY
+          python -m py_compile /tmp/mhur_guardian.py
+          node --check /tmp/browser_smoke.mjs
+
+      - name: Installer les dépendances
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install --upgrade pip
+          if [ -f mise_a_jour/requirements.txt ]; then
+            python -m pip install -r mise_a_jour/requirements.txt
+          fi
+          python -m pip install requests beautifulsoup4 lxml pillow
+
+      - name: Configurer Git
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Vérifier les fichiers source nécessaires
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f public/index.html
+          test -f public/data/home_data.json
+          test -f mise_a_jour/outils/update_home_data.py
+          test -f mise_a_jour/outils/surveiller_ultrarumble.py
+
+      # -----------------------------------------------------------
+      # Passe automatique : uniquement accueil non sensible.
+      # Saison / persos / stats / patch / costumes / tuning exclus.
+      # -----------------------------------------------------------
+      - name: Scanner l'accueil sûr
+        id: safe_home
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          cp public/data/home_data.json /tmp/home_before.json
+
+          python mise_a_jour/outils/update_home_data.py \
+            --site-root public
+
+          cp public/data/home_data.json /tmp/home_full_candidate.json
+
+          python /tmp/mhur_guardian.py \
+            keep-safe-home \
+            --site-root public \
+            --before /tmp/home_before.json
+
+          python - <<'PY' >> "$GITHUB_OUTPUT"
+          import json
+          from pathlib import Path
+
+          before=json.loads(Path('/tmp/home_before.json').read_text(encoding='utf-8'))
+          candidate=json.loads(Path('/tmp/home_full_candidate.json').read_text(encoding='utf-8'))
+
+          safe={
+              'maintenance','gachas','events','login_bonuses',
+              'point_reductions','points','discounts','campaigns',
+              'notices','oe','meta'
+          }
+          review_hint=False
+          for key in set(before)|set(candidate):
+              if key in safe:
+                  continue
+              if before.get(key)!=candidate.get(key):
+                  review_hint=True
+                  break
+
+          old_season=int((before.get('season') or {}).get('number') or 0)
+          new_season=int((candidate.get('season') or {}).get('number') or 0)
+          season_hint=old_season!=new_season and new_season>0
+
+          print(f"home_review_hint={'true' if review_hint else 'false'}")
+          print(f"season_hint={'true' if season_hint else 'false'}")
+          print(f"candidate_season={new_season}")
+          PY
+
+      - name: Surveiller accueil + notices + points + OE
+        id: watch
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          python /tmp/mhur_guardian.py \
+            watch-home \
+            --site-root public \
+            --output /tmp/guardian_watch_candidate.json
+
+      - name: Ajouter le snapshot accueil s'il est sûr
+        if: steps.watch.outputs.review_hint != 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p public/data
+          cp /tmp/guardian_watch_candidate.json \
+            public/data/guardian_watch.json
+
+      - name: Analyser la passe automatique
+        id: safe_analysis
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          python /tmp/mhur_guardian.py \
+            analyze \
+            --base HEAD \
+            --mode safe \
+            --output /tmp/safe_report.json \
+            --markdown /tmp/safe_report.md
+
+          if [ "${{ steps.safe_analysis.outputs.requires_review }}" = "true" ]; then
+            echo "[ERREUR] Une modification sensible a essayé de passer en automatique."
+            exit 1
+          fi
+
+      - name: Tester la passe automatique
+        if: steps.safe_analysis.outputs.visible_changes == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          python /tmp/mhur_guardian.py \
+            smoke \
+            --base HEAD \
+            --site-root public
+
+      - name: Publier accueil / maintenance / événements automatiquement
+        id: safe_publish
+        if: steps.safe_analysis.outputs.visible_changes == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          git add -A -- public
+          if git diff --cached --quiet; then
+            echo "published=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          git commit -m "chore: mise à jour accueil Nexus sûre"
+          git pull --rebase origin main
+          git push origin HEAD:main
+          echo "published=true" >> "$GITHUB_OUTPUT"
+
+          python /tmp/mhur_guardian.py \
+            discord-notify \
+            --text "✅ MHUR NEXUS : accueil / maintenance / événements / timers mis à jour automatiquement." \
+            --report /tmp/safe_report.json || true
+
+      - name: Repartir du dernier main
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          git checkout -B main origin/main
+          git clean -fd -- public >/dev/null 2>&1 || true
+
+      # -----------------------------------------------------------
+      # Scan complet : UltraRumble + accueil sensible.
+      # -----------------------------------------------------------
+      - name: Vérifier si une bêta complète est nécessaire
+        id: source
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          set +e
+          python mise_a_jour/outils/surveiller_ultrarumble.py \
+            --site-root public \
+            --check-only
+          code=$?
+          set -e
+
+          monitor=false
+          case "$code" in
+            0) monitor=false ;;
+            10) monitor=true ;;
+            *) echo "[ERREUR] surveiller_ultrarumble.py : code $code"; exit "$code" ;;
+          esac
+
+          changed=false
+          if [ "$monitor" = "true" ] || \
+             [ "${{ steps.safe_home.outputs.home_review_hint }}" = "true" ] || \
+             [ "${{ steps.watch.outputs.review_hint }}" = "true" ]; then
+            changed=true
+          fi
+
+          echo "changed=$changed" >> "$GITHUB_OUTPUT"
+          echo "monitor=$monitor" >> "$GITHUB_OUTPUT"
+
+      - name: Construire la version candidate complète
+        if: steps.source.outputs.changed == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          cp public/data/home_data.json \
+            /tmp/home_before_full_sync.json
+
+          # Le synchroniseur peut reconstruire personnages, Alters, stats,
+          # costumes, tuning et Patch Notes.
+          python mise_a_jour/outils/surveiller_ultrarumble.py \
+            --site-root public \
+            --wait-lock 300
+
+          # L'accueil complet est régénéré après la synchronisation.
+          python mise_a_jour/outils/update_home_data.py \
+            --site-root public
+
+
+          # Préserve les enrichissements/corrections déjà validés sur
+          # MHUR NEXUS sans écraser les nouvelles valeurs source.
+          python /tmp/mhur_guardian.py \
+            reconcile-home \
+            --site-root public \
+            --before /tmp/home_before_full_sync.json
+
+          if [ -f /tmp/guardian_watch_candidate.json ]; then
+            cp /tmp/guardian_watch_candidate.json \
+              public/data/guardian_watch.json
+          fi
+
+          # Corrections validées manuellement auparavant.
+          python /tmp/mhur_guardian.py apply-overrides
+
+          # Roster manuel de la saison en cours, s'il existe.
+          python /tmp/mhur_guardian.py \
+            apply-saved-season \
+            --site-root public
+
+          # Branding MHUR NEXUS + anglais par défaut + saison dynamique.
+          python /tmp/mhur_guardian.py \
+            branding \
+            --site-root public
+
+          # Les dates de génération ne sont pas des changements produit.
+          python /tmp/mhur_guardian.py \
+            stabilize-metadata \
+            --base HEAD
+
+          # Guardian V10 :
+          # si le scraper remplace juste PNG -> WEBP ou change la résolution
+          # sans changer le visuel, on garde l'asset déjà validé sur main.
+          python - <<'PY'
+          import io
+          import json
+          import subprocess
+          from pathlib import Path
+          from PIL import Image, ImageChops, ImageStat
+
+          DATA = Path("public/data/ultrarumble/characters_exact.json")
+          IMAGE_EXTS = {".png", ".webp", ".jpg", ".jpeg"}
+
+          def git_bytes(path):
+              result = subprocess.run(
+                  ["git", "show", f"HEAD:{path}"],
+                  capture_output=True,
+              )
+              return result.stdout if result.returncode == 0 else None
+
+          def git_json(path):
+              raw = git_bytes(path)
+              if not raw:
+                  return None
+              return json.loads(raw.decode("utf-8"))
+
+          def equivalent(old_bytes, new_path):
+              try:
+                  old = Image.open(io.BytesIO(old_bytes)).convert("RGBA")
+                  new = Image.open(new_path).convert("RGBA")
+              except Exception:
+                  return False
+
+              if not old.height or not new.height:
+                  return False
+
+              if abs((old.width / old.height) - (new.width / new.height)) > 0.015:
+                  return False
+
+              size = (128, 128)
+              old = old.resize(size, Image.Resampling.LANCZOS)
+              new = new.resize(size, Image.Resampling.LANCZOS)
+
+              def composite(image, value):
+                  bg = Image.new("RGBA", size, (value, value, value, 255))
+                  bg.alpha_composite(image)
+                  return bg.convert("RGB")
+
+              for value in (0, 255):
+                  diff = ImageChops.difference(
+                      composite(old, value),
+                      composite(new, value),
+                  )
+                  if max(ImageStat.Stat(diff).rms) > 4.0:
+                      return False
+
+              return True
+
+          if not DATA.exists():
+              raise SystemExit(0)
+
+          old_data = git_json(str(DATA))
+          new_data = json.loads(DATA.read_text(encoding="utf-8"))
+
+          if not isinstance(old_data, list) or not isinstance(new_data, list):
+              raise SystemExit(
+                  "[GUARDIAN V10] characters_exact.json invalide."
+              )
+
+          old_by_url = {
+              str(row.get("source_url") or ""): row
+              for row in old_data
+              if isinstance(row, dict) and row.get("source_url")
+          }
+
+          replacements = 0
+
+          for row in new_data:
+              if not isinstance(row, dict):
+                  continue
+
+              source_url = str(row.get("source_url") or "")
+              previous = old_by_url.get(source_url)
+
+              # Un nouveau perso ne doit jamais être masqué.
+              if not previous:
+                  continue
+
+              old_assets = previous.get("assets")
+              new_assets = row.get("assets")
+
+              if not isinstance(old_assets, dict) or not isinstance(new_assets, dict):
+                  continue
+
+              for key in sorted(set(old_assets) & set(new_assets)):
+                  old_rel = str(old_assets.get(key) or "")
+                  new_rel = str(new_assets.get(key) or "")
+
+                  if not old_rel or not new_rel or old_rel == new_rel:
+                      continue
+
+                  if (
+                      Path(old_rel).suffix.lower() not in IMAGE_EXTS
+                      or Path(new_rel).suffix.lower() not in IMAGE_EXTS
+                  ):
+                      continue
+
+                  new_path = Path("public") / new_rel
+                  if not new_path.exists():
+                      continue
+
+                  old_repo_path = "public/" + old_rel.lstrip("/")
+                  old_bytes = git_bytes(old_repo_path)
+
+                  if not old_bytes:
+                      continue
+
+                  if not equivalent(old_bytes, new_path):
+                      # Vraie image différente => reste dans la bêta.
+                      continue
+
+                  new_assets[key] = old_rel
+
+                  old_working = Path("public") / old_rel
+                  if not old_working.exists():
+                      old_working.parent.mkdir(parents=True, exist_ok=True)
+                      old_working.write_bytes(old_bytes)
+
+                  replacements += 1
+                  print(
+                      f"[GUARDIAN V10][ASSET] {source_url} {key}: "
+                      f"{new_rel} -> {old_rel} (visuel identique)"
+                  )
+
+          if replacements:
+              DATA.write_text(
+                  json.dumps(
+                      new_data,
+                      ensure_ascii=False,
+                      indent=2,
+                  ) + "\n",
+                  encoding="utf-8",
+              )
+
+              # Supprimer uniquement les nouveaux fichiers devenus totalement
+              # inutilisés et qui n'existaient pas déjà sur main.
+              referenced = set()
+
+              for row in new_data:
+                  if not isinstance(row, dict):
+                      continue
+                  assets = row.get("assets")
+                  if not isinstance(assets, dict):
+                      continue
+                  for value in assets.values():
+                      if isinstance(value, str) and value:
+                          referenced.add(value)
+
+              status = subprocess.run(
+                  ["git", "status", "--porcelain", "--", "public/assets"],
+                  capture_output=True,
+                  text=True,
+                  check=True,
+              ).stdout.splitlines()
+
+              for line in status:
+                  if not line.startswith("?? "):
+                      continue
+
+                  path = Path(line[3:])
+                  try:
+                      rel = path.relative_to("public").as_posix()
+                  except ValueError:
+                      continue
+
+                  if rel in referenced:
+                      continue
+
+                  if path.suffix.lower() not in IMAGE_EXTS:
+                      continue
+
+                  path.unlink(missing_ok=True)
+                  print(f"[GUARDIAN V10][ASSET] fichier généré inutilisé supprimé : {path}")
+
+          print(
+              f"[GUARDIAN V10] {replacements} changement(s) "
+              "de format/résolution neutralisé(s)."
+          )
+          PY
+
+          rm -f \
+            public/data/ultrarumble/synchronisation_ultrarumble.log \
+            public/data/ultrarumble/synchronisation_en_cours.lock
+          rm -rf public/sauvegardes
+
+          if [ -f public/data/ultrarumble/derniere_synchronisation.json ]; then
+            cp public/data/ultrarumble/derniere_synchronisation.json \
+              /tmp/guardian_sync_state.json
+            git restore --source=HEAD -- \
+              public/data/ultrarumble/derniere_synchronisation.json \
+              2>/dev/null || \
+              rm -f public/data/ultrarumble/derniere_synchronisation.json
+          fi
+
+      - name: Analyser chaque changement candidat
+        id: beta_analysis
+        if: steps.source.outputs.changed == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          extra=()
+          if [ -f /tmp/guardian_sync_state.json ]; then
+            extra=(--sync-state /tmp/guardian_sync_state.json)
+          fi
+
+          python /tmp/mhur_guardian.py \
+            analyze \
+            --base HEAD \
+            --mode full \
+            "${extra[@]}" \
+            --output /tmp/beta_report.json \
+            --markdown /tmp/beta_report.md
+
+
+      - name: Fermer une ancienne bêta devenue inutile
+        if: >-
+          steps.source.outputs.changed != 'true' ||
+          steps.beta_analysis.outputs.requires_review != 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          prs="$(
+            gh pr list \
+              --repo "$GITHUB_REPOSITORY" \
+              --head mhur-auto-beta \
+              --base main \
+              --state open \
+              --json number \
+              --jq '.[].number'
+          )"
+
+          for pr in $prs; do
+            gh pr close \
+              --repo "$GITHUB_REPOSITORY" \
+              "$pr" \
+              --comment "🧹 Guardian V10 : cette ancienne bêta n'est plus pertinente." \
+              || true
+          done
+
+          gh api \
+            --method DELETE \
+            "repos/${GITHUB_REPOSITORY}/git/refs/heads/mhur-auto-beta" \
+            >/dev/null 2>&1 || true
+
+      - name: Tests structurels de la candidate
+        if: >-
+          steps.source.outputs.changed == 'true' &&
+          steps.beta_analysis.outputs.visible_changes == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          python /tmp/mhur_guardian.py \
+            smoke \
+            --base HEAD \
+            --site-root public
+
+      - name: Test Chromium anti-casse
+        if: >-
+          steps.source.outputs.changed == 'true' &&
+          steps.beta_analysis.outputs.visible_changes == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm install --no-save --ignore-scripts playwright@1.55.0
+
+          # Le module Playwright est installé dans node_modules du dépôt.
+          # Le script ne doit donc pas rester dans /tmp, sinon Node cherche
+          # "playwright" autour de /tmp et renvoie ERR_MODULE_NOT_FOUND.
+          browser_smoke="$GITHUB_WORKSPACE/.mhur-browser-smoke.mjs"
+          cp /tmp/browser_smoke.mjs "$browser_smoke"
+
+          npx playwright install chromium
+
+          python -m http.server 4173 --directory public >/tmp/mhur-http.log 2>&1 &
+          server_pid=$!
+
+          cleanup_browser_test() {
+            kill "$server_pid" 2>/dev/null || true
+            rm -f "$browser_smoke"
+          }
+          trap cleanup_browser_test EXIT
+
+          sleep 2
+
+          SMOKE_URL="http://127.0.0.1:4173/"             node "$browser_smoke"
+
+      - name: Mémoriser un changement interne sans spam supplémentaire
+        if: >-
+          steps.source.outputs.changed == 'true' &&
+          steps.beta_analysis.outputs.visible_changes != 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ ! -f /tmp/guardian_sync_state.json ]; then
+            exit 0
+          fi
+          git reset --hard HEAD
+          cp /tmp/guardian_sync_state.json \
+            public/data/ultrarumble/derniere_synchronisation.json
+          git add public/data/ultrarumble/derniere_synchronisation.json
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "chore: état de surveillance Nexus"
+          git pull --rebase origin main
+          git push origin HEAD:main
+
+      - name: Publier automatiquement si le scan complet est non sensible
+        id: full_safe_publish
+        if: >-
+          steps.source.outputs.changed == 'true' &&
+          steps.beta_analysis.outputs.visible_changes == 'true' &&
+          steps.beta_analysis.outputs.requires_review != 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ -f /tmp/guardian_sync_state.json ]; then
+            cp /tmp/guardian_sync_state.json \
+              public/data/ultrarumble/derniere_synchronisation.json
+          fi
+          git add -A -- public
+          git commit -m "chore: mise à jour Nexus automatique sûre"
+          git pull --rebase origin main
+          git push origin HEAD:main
+          echo "published=true" >> "$GITHUB_OUTPUT"
+          python /tmp/mhur_guardian.py \
+            discord-notify \
+            --text "✅ MHUR NEXUS : mise à jour sûre publiée automatiquement." \
+            --report /tmp/beta_report.json || true
+
+      # -----------------------------------------------------------
+      # Changements sensibles -> branche bêta + PR + Discord.
+      # -----------------------------------------------------------
+      - name: Créer le commit candidat sensible
+        id: candidate
+        if: >-
+          steps.source.outputs.changed == 'true' &&
+          steps.beta_analysis.outputs.requires_review == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          git checkout -b "guardian-candidate-${GITHUB_RUN_ID}"
+          git add -A -- public
+          if git diff --cached --quiet; then
+            echo "created=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          git commit -m "beta: MHUR NEXUS Guardian ${GITHUB_RUN_ID}"
+          echo "created=true" >> "$GITHUB_OUTPUT"
+          echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+      - name: Mémoriser la nouvelle empreinte source sur main
+        if: steps.candidate.outputs.created == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          git checkout -B main origin/main
+          if [ -f /tmp/guardian_sync_state.json ]; then
+            cp /tmp/guardian_sync_state.json \
+              public/data/ultrarumble/derniere_synchronisation.json
+            git add public/data/ultrarumble/derniere_synchronisation.json
+            if ! git diff --cached --quiet; then
+              git commit -m "chore: empreinte source Guardian"
+              git pull --rebase origin main
+              git push origin HEAD:main
+            fi
+          fi
+
+      - name: Mettre à jour la branche bêta unique
+        id: beta
+        if: steps.candidate.outputs.created == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          old_tree=""
+          if git ls-remote --exit-code --heads origin mhur-auto-beta >/dev/null 2>&1; then
+            git fetch origin mhur-auto-beta:refs/remotes/origin/mhur-auto-beta
+            old_tree="$(git rev-parse 'refs/remotes/origin/mhur-auto-beta^{tree}')"
+          fi
+          git checkout -B mhur-auto-beta origin/main
+          git cherry-pick "${{ steps.candidate.outputs.sha }}"
+          new_tree="$(git rev-parse 'HEAD^{tree}')"
+          echo "head_sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+          if [ -n "$old_tree" ] && [ "$old_tree" = "$new_tree" ]; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          git push --force-with-lease origin HEAD:mhur-auto-beta
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+
+      - name: Déployer la preview Cloudflare
+        id: preview
+        if: steps.beta.outputs.changed == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          preview=""
+          if [ -n "${CLOUDFLARE_API_TOKEN:-}" ] && \
+             [ -n "${CLOUDFLARE_ACCOUNT_ID:-}" ] && \
+             [ -n "${CLOUDFLARE_PAGES_PROJECT:-}" ]; then
+            npm install --no-save --ignore-scripts wrangler@4
+            set +e
+            npx wrangler pages deploy public \
+              --project-name "$CLOUDFLARE_PAGES_PROJECT" \
+              --branch mhur-auto-beta \
+              --commit-dirty=true \
+              2>&1 | tee /tmp/wrangler.log
+            code=${PIPESTATUS[0]}
+            set -e
+            if [ "$code" -eq 0 ]; then
+              preview="$(grep -Eo 'https://[A-Za-z0-9._-]+\.pages\.dev' /tmp/wrangler.log | tail -n1 || true)"
+            fi
+          fi
+          echo "url=$preview" >> "$GITHUB_OUTPUT"
+
+      - name: Créer / mettre à jour la PR bêta
+        id: pr
+        if: steps.beta.outputs.changed == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          existing="$(gh pr list --head mhur-auto-beta --base main --state open --json number --jq '.[0].number // empty')"
+          python /tmp/mhur_guardian.py \
+            make-pr-body \
+            --markdown /tmp/beta_report.md \
+            --message-id "" \
+            --preview-url "${{ steps.preview.outputs.url }}" \
+            --head-sha "${{ steps.beta.outputs.head_sha }}" \
+            --output /tmp/pr_body_pre.md
+          if [ -z "$existing" ]; then
+            url="$(gh pr create --base main --head mhur-auto-beta --title '🧪 MHUR NEXUS — Guardian V10 — validation requise' --body-file /tmp/pr_body_pre.md)"
+            number="$(gh pr view "$url" --json number --jq '.number')"
+          else
+            number="$existing"
+            gh pr edit "$number" --title "🧪 MHUR NEXUS — Guardian V10 — validation requise" --body-file /tmp/pr_body_pre.md
+            url="$(gh pr view "$number" --json url --jq '.url')"
+          fi
+          echo "number=$number" >> "$GITHUB_OUTPUT"
+          echo "url=$url" >> "$GITHUB_OUTPUT"
+
+      - name: Envoyer la bêta sur Discord
+        id: discord
+        if: steps.beta.outputs.changed == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          python /tmp/mhur_guardian.py \
+            discord-send \
+            --report /tmp/beta_report.json \
+            --pr-url "${{ steps.pr.outputs.url }}" \
+            --preview-url "${{ steps.preview.outputs.url }}"
+
+      - name: Lier Discord à la PR
+        if: steps.beta.outputs.changed == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          python /tmp/mhur_guardian.py \
+            make-pr-body \
+            --markdown /tmp/beta_report.md \
+            --message-id "${{ steps.discord.outputs.message_id }}" \
+            --preview-url "${{ steps.preview.outputs.url }}" \
+            --head-sha "${{ steps.beta.outputs.head_sha }}" \
+            --output /tmp/pr_body_final.md
+          gh pr edit "${{ steps.pr.outputs.number }}" --body-file /tmp/pr_body_final.md
+
+      - name: Notification horaire aucun changement
+        if: >-
+          always() &&
+          success() &&
+          steps.safe_analysis.outputs.visible_changes != 'true' &&
+          (
+            steps.source.outputs.changed != 'true' ||
+            steps.beta_analysis.outputs.visible_changes != 'true'
+          )
+        shell: bash
+        run: |
+          set -euo pipefail
+          python /tmp/mhur_guardian.py \
+            discord-notify \
+            --text "✅ MHUR NEXUS Guardian V10 : vérification horaire terminée — aucun changement visible détecté."
+
+  approval:
+    if: >-
+      (github.event_name == 'schedule' && github.event.schedule == '*/5 * * * *') ||
+      (github.event_name == 'workflow_dispatch' && inputs.mode == 'approval')
+    runs-on: ubuntu-22.04
+    timeout-minutes: 45
+    env:
+      GH_TOKEN: ${{ github.token }}
+      DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_BOT_TOKEN }}
+      DISCORD_CHANNEL_ID: ${{ secrets.DISCORD_CHANNEL_ID }}
+      DISCORD_APPROVER_USER_ID: ${{ secrets.DISCORD_APPROVER_USER_ID }}
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      CLOUDFLARE_PAGES_PROJECT: ${{ secrets.CLOUDFLARE_PAGES_PROJECT }}
+
+    steps:
+      - name: Récupérer main
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          ref: main
+
+      - name: Vérifier qu'aucun ancien updater n'est actif
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          current_path="${GITHUB_WORKFLOW_REF#${GITHUB_REPOSITORY}/}"
+          current_path="${current_path%@*}"
+
+          gh api \
+            "repos/${GITHUB_REPOSITORY}/actions/workflows?per_page=100" \
+            --paginate \
+            --jq '.workflows[] | [.id,.path,.state] | @tsv' \
+            > /tmp/workflows-v8.tsv
+
+          while IFS=$'\t' read -r id path state; do
+            if [ "$path" = "$current_path" ]; then
+              continue
+            fi
+
+            case "$path" in
+              .github/workflows/mhur-mise-a-jour-guardian-officielle*.yml|\
+              .github/workflows/mhur-v*auto*.yml|\
+              .github/workflows/mhur-sync*.yml|\
+              .github/workflows/*ultrarumble*auto*.yml|\
+              .github/workflows/mhur-guardian-hourly.yml|\
+              .github/workflows/mhur-guardian-approval.yml)
+                if [ "$state" = "active" ]; then
+                  echo "Ancien updater encore actif, désactivation : $path"
+                  gh api \
+                    --method PUT \
+                    "repos/${GITHUB_REPOSITORY}/actions/workflows/${id}/disable"
+                fi
+                ;;
+            esac
+          done < /tmp/workflows-v8.tsv
+
+          echo "[OK] Updater unique V8 vérifié."
+
+      - name: Installer Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Installer le moteur indépendant
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import base64, gzip
+          from pathlib import Path
+          Path('/tmp/mhur_guardian.py').write_bytes(
+              gzip.decompress(base64.b64decode('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'))
+          )
+          Path('/tmp/browser_smoke.mjs').write_bytes(
+              gzip.decompress(base64.b64decode('H4sICHRzdWoAA2Jyb3dzZXJfc21va2UubWpzAMVWzW7bOBC+5ykmOjRUV8vYToAA6rrBNnBRoE1TxCl6MIyFLNEWsZSoJSn/IPUD7X3foC+2Q+o3idtNTwtfyOE3v99oxjwrpDJwD3GqZMbLDPawxBN4hYh2G8VXqfFeHR3FMtcGFpFmMIZCyZhpTVm+ptPrm/eTPz7ffoCvX8FLjSnC09Ph6IIO8DcMz4cXZ6dooNZXcqOZQhPRJuKmdUpFVOZxSu4hZVEi0HYIRpUM9n6jWkQr1urVdmjONp9QTu6PANacbWwuISaz4YlJQxienw8CNGmTwNtgMIB9cGRt9oxOlJJKo+nZHOVWQmVOPHtg9skLgLiDD+PXYD11WrQodUqmRvF8VYPQuHNQBerMraSRxJYucOr24XNuuAjBS2SGkRiWGyGjhCVegADDMyZLjPgMIx4ET+zZ01up7ioYORsNBl1KiulSmLZSToGtI1FGhhHS5lCB11zzhbB1JUywDMNoAQB8CeS4kQNHfJTHTC7h3d31h0kN99GhKVUOy0ho9sopVra12TnLK2auZFaUhiVTK2o99cELuUVo/UJR5Y0s8wSreiU4Sm5ZbIjN0WrUDom7QOWHJlzbhoXj8Ri8XObMgxcvHiBcrlxwU4NSniQs78E+ltmCKVKhZRHFFmqbeuj58Bqwn4cdGAOmrsvwZfRQXPWblTuhy3PvYq8Lg4HqlLmWcwhKaSLj0qX+V8nUboqFiI1UvwvRZHky48nLsTd1ut48gFmMJ40i/VRkewlr581PqghsU83pkguD+dWc+72IFkLGf6ICRtQE16AP9MX/QW8hOX4larJGtD5Ico+QMTZrztQXd3uJxF0cJqjGvauuDthjrF8g+40qKZ5JmRfNUsWWyMiiNEbmyAwqs/FJdT2Ze4cZoVrwmBEcWWeDJ/Sw5KoLoonnP1n6mcK7770rI3b+cVetx995z4f1cB2ZlGY8b1jrEfArDINaWqGirU3RmhZsaeCXHnWnMPI7ChoHu+85qJn7gQcji9pBTXrfQ8+FxY2hpbQu2FvcTp9s55FtALtHDXrchOJ0x22VsXD1Q1N2y1aE85Mg0u+e8XbZvl3SlsMnPVg7rHhdyGR3x7a4HUgbrpVdUlcS++SGludTXEsZ8bHK+cqkQZOta5ywa6H+czMIqjETtncsaUHI1rXXlvLEethSN24+Rhnze9pdn4aPBT1X+wdbslnnsZCauX60vdhbs5Wi324u/JqoW7fEs/sf3FmHuKo7JVfB9p/KlhsytLu5sl1tSdoUE36D0eD75guE41eO6zJhFJ1U2s9y8KCgP8qjQtiSWU8sj6VigBNWc/OTPtthhTsLBx/0Q+lNERx/jxQOxnUnS41x6Kphvv1jj/XA0qBRVoX87W/9jCgb20KuiDd7c3vzZTq5BfcXcg437/sG/gWchRy4mQoAAA=='))
+          )
+          PY
+          python -m py_compile /tmp/mhur_guardian.py
+          node --check /tmp/browser_smoke.mjs
+
+      - name: Installer les dépendances
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install --upgrade pip
+          if [ -f mise_a_jour/requirements.txt ]; then
+            python -m pip install -r mise_a_jour/requirements.txt
+          fi
+          python -m pip install requests beautifulsoup4 lxml pillow
+
+      - name: Configurer Git
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Trouver la bêta en attente
+        id: pr
+        shell: bash
+        run: |
+          set -euo pipefail
+          json="$(gh pr list --head mhur-auto-beta --base main --state open --limit 1 --json number,url,body,headRefOid)"
+          number="$(printf '%s' "$json" | jq -r '.[0].number // empty')"
+          if [ -z "$number" ]; then
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          printf '%s' "$json" | jq -r '.[0].body' > /tmp/pr_body.md
+          echo "exists=true" >> "$GITHUB_OUTPUT"
+          echo "number=$number" >> "$GITHUB_OUTPUT"
+          echo "url=$(printf '%s' "$json" | jq -r '.[0].url')" >> "$GITHUB_OUTPUT"
+          echo "head_sha=$(printf '%s' "$json" | jq -r '.[0].headRefOid')" >> "$GITHUB_OUTPUT"
+
+      - name: Lire l'état Discord de la PR
+        id: state
+        if: steps.pr.outputs.exists == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          python /tmp/mhur_guardian.py extract-state --body /tmp/pr_body.md
+
+      - name: Lire V / FIX / SLOT / refus sur Discord
+        id: discord
+        if: >-
+          steps.pr.outputs.exists == 'true' &&
+          steps.state.outputs.message_id != ''
+        shell: bash
+        run: |
+          set -euo pipefail
+          python /tmp/mhur_guardian.py \
+            discord-check \
+            --message-id "${{ steps.state.outputs.message_id }}"
+
+      - name: Enregistrer un refus texte ou ❌
+        if: steps.discord.outputs.decision == 'reject'
+        shell: bash
+        run: |
+          set -euo pipefail
+          feedback="$(printf '%s' '${{ steps.discord.outputs.feedback }}' | base64 --decode || true)"
+          if [ -z "$feedback" ]; then feedback="Refus Discord ❌"; fi
+          gh pr comment "${{ steps.pr.outputs.number }}" --body "❌ **Bêta bloquée depuis Discord**"$'\n\n'"$feedback"
+
+      # -----------------------------------------------------------
+      # Nouvelle saison : 3 SLOT depuis Discord.
+      # -----------------------------------------------------------
+      - name: Appliquer le roster de nouvelle saison
+        id: season_apply
+        if: steps.discord.outputs.decision == 'season'
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin main mhur-auto-beta
+          git checkout -B mhur-auto-beta origin/mhur-auto-beta
+          python /tmp/mhur_guardian.py \
+            apply-season \
+            --site-root public \
+            --payload-b64 "${{ steps.discord.outputs.season_payload }}"
+          python /tmp/mhur_guardian.py branding --site-root public
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+
+      - name: Corriger une valeur FIX # depuis Discord
+        id: fix_apply
+        if: steps.discord.outputs.decision == 'fix'
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin main mhur-auto-beta
+          git checkout -B mhur-auto-beta origin/mhur-auto-beta
+          python /tmp/mhur_guardian.py \
+            analyze \
+            --base origin/main \
+            --mode full \
+            --output /tmp/current_report.json \
+            --markdown /tmp/current_report.md
+          python /tmp/mhur_guardian.py \
+            apply-fix \
+            --report /tmp/current_report.json \
+            --index "${{ steps.discord.outputs.fix_index }}" \
+            --value-b64 "${{ steps.discord.outputs.fix_value }}"
+          python /tmp/mhur_guardian.py branding --site-root public
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+
+      - name: Tester la bêta corrigée / saison configurée
+        if: >-
+          steps.season_apply.outputs.changed == 'true' ||
+          steps.fix_apply.outputs.changed == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          python /tmp/mhur_guardian.py smoke --base origin/main --site-root public
+          npm install --no-save --ignore-scripts playwright@1.55.0
+
+          # Le module Playwright est installé dans node_modules du dépôt.
+          # Le script ne doit donc pas rester dans /tmp, sinon Node cherche
+          # "playwright" autour de /tmp et renvoie ERR_MODULE_NOT_FOUND.
+          browser_smoke="$GITHUB_WORKSPACE/.mhur-browser-smoke.mjs"
+          cp /tmp/browser_smoke.mjs "$browser_smoke"
+
+          npx playwright install chromium
+
+          python -m http.server 4173 --directory public >/tmp/mhur-http.log 2>&1 &
+          server_pid=$!
+
+          cleanup_browser_test() {
+            kill "$server_pid" 2>/dev/null || true
+            rm -f "$browser_smoke"
+          }
+          trap cleanup_browser_test EXIT
+
+          sleep 2
+
+          SMOKE_URL="http://127.0.0.1:4173/"             node "$browser_smoke"
+
+      - name: Recréer le rapport après correction
+        id: corrected
+        if: >-
+          steps.season_apply.outputs.changed == 'true' ||
+          steps.fix_apply.outputs.changed == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          python /tmp/mhur_guardian.py \
+            analyze \
+            --base origin/main \
+            --mode full \
+            --output /tmp/corrected_report.json \
+            --markdown /tmp/corrected_report.md
+
+          git add -A -- public
+          git commit -m "beta: correction Discord MHUR NEXUS"
+          git push --force-with-lease origin HEAD:mhur-auto-beta
+          echo "head_sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+      - name: Redéployer la bêta corrigée
+        id: corrected_preview
+        if: steps.corrected.outputs.head_sha != ''
+        shell: bash
+        run: |
+          set -euo pipefail
+          preview="${{ steps.state.outputs.preview_url }}"
+          if [ -n "${CLOUDFLARE_API_TOKEN:-}" ] && \
+             [ -n "${CLOUDFLARE_ACCOUNT_ID:-}" ] && \
+             [ -n "${CLOUDFLARE_PAGES_PROJECT:-}" ]; then
+            npm install --no-save --ignore-scripts wrangler@4
+            set +e
+            npx wrangler pages deploy public \
+              --project-name "$CLOUDFLARE_PAGES_PROJECT" \
+              --branch mhur-auto-beta \
+              --commit-dirty=true \
+              2>&1 | tee /tmp/wrangler-corrected.log
+            code=${PIPESTATUS[0]}
+            set -e
+            if [ "$code" -eq 0 ]; then
+              found="$(grep -Eo 'https://[A-Za-z0-9._-]+\.pages\.dev' /tmp/wrangler-corrected.log | tail -n1 || true)"
+              if [ -n "$found" ]; then preview="$found"; fi
+            fi
+          fi
+          echo "url=$preview" >> "$GITHUB_OUTPUT"
+
+      - name: Envoyer la NOUVELLE bêta après correction
+        id: corrected_discord
+        if: steps.corrected.outputs.head_sha != ''
+        shell: bash
+        run: |
+          set -euo pipefail
+          python /tmp/mhur_guardian.py \
+            discord-send \
+            --report /tmp/corrected_report.json \
+            --pr-url "${{ steps.pr.outputs.url }}" \
+            --preview-url "${{ steps.corrected_preview.outputs.url }}"
+
+      - name: Mettre à jour la PR corrigée
+        if: steps.corrected.outputs.head_sha != ''
+        shell: bash
+        run: |
+          set -euo pipefail
+          python /tmp/mhur_guardian.py \
+            make-pr-body \
+            --markdown /tmp/corrected_report.md \
+            --message-id "${{ steps.corrected_discord.outputs.message_id }}" \
+            --preview-url "${{ steps.corrected_preview.outputs.url }}" \
+            --head-sha "${{ steps.corrected.outputs.head_sha }}" \
+            --output /tmp/pr_body_corrected.md
+          gh pr edit "${{ steps.pr.outputs.number }}" --body-file /tmp/pr_body_corrected.md
+
+      # -----------------------------------------------------------
+      # Validation V / ✅ : tests à nouveau, puis production.
+      # -----------------------------------------------------------
+      - name: Vérifier que V correspond à la dernière bêta
+        if: steps.discord.outputs.decision == 'approve'
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ "${{ steps.state.outputs.head_sha }}" != "${{ steps.pr.outputs.head_sha }}" ]; then
+            python /tmp/mhur_guardian.py discord-notify \
+              --text "⚠️ Validation ignorée : la bêta a changé. Valide le dernier message Discord."
+            exit 1
+          fi
+
+      - name: Récupérer la bêta validée
+        if: steps.discord.outputs.decision == 'approve'
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin main mhur-auto-beta
+          git checkout -B mhur-auto-beta origin/mhur-auto-beta
+          python /tmp/mhur_guardian.py \
+            analyze \
+            --base origin/main \
+            --mode full \
+            --output /tmp/approval_report.json \
+            --markdown /tmp/approval_report.md
+
+      - name: Vérifier la configuration de la nouvelle saison
+        id: season_ready
+        if: steps.discord.outputs.decision == 'approve'
+        shell: bash
+        run: |
+          set -euo pipefail
+          python /tmp/mhur_guardian.py \
+            validate-season \
+            --site-root public \
+            --report /tmp/approval_report.json
+
+      - name: Interdire V tant que la nouvelle saison n'est pas configurée
+        if: >-
+          steps.discord.outputs.decision == 'approve' &&
+          steps.season_ready.outputs.ready != 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          python /tmp/mhur_guardian.py discord-notify \
+            --text "🌟 Nouvelle saison : envoie d'abord SLOT 1 / SLOT 2 / SLOT 3 sur le message bêta avant de faire V."
+          exit 1
+
+      - name: Derniers tests avant production
+        if: >-
+          steps.discord.outputs.decision == 'approve' &&
+          steps.season_ready.outputs.ready == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          python /tmp/mhur_guardian.py branding --site-root public
+          python /tmp/mhur_guardian.py smoke --base origin/main --site-root public
+          npm install --no-save --ignore-scripts playwright@1.55.0
+
+          # Le module Playwright est installé dans node_modules du dépôt.
+          # Le script ne doit donc pas rester dans /tmp, sinon Node cherche
+          # "playwright" autour de /tmp et renvoie ERR_MODULE_NOT_FOUND.
+          browser_smoke="$GITHUB_WORKSPACE/.mhur-browser-smoke.mjs"
+          cp /tmp/browser_smoke.mjs "$browser_smoke"
+
+          npx playwright install chromium
+
+          python -m http.server 4173 --directory public >/tmp/mhur-http.log 2>&1 &
+          server_pid=$!
+
+          cleanup_browser_test() {
+            kill "$server_pid" 2>/dev/null || true
+            rm -f "$browser_smoke"
+          }
+          trap cleanup_browser_test EXIT
+
+          sleep 2
+
+          SMOKE_URL="http://127.0.0.1:4173/"             node "$browser_smoke"
+
+      - name: Fusionner la version validée en production
+        if: >-
+          steps.discord.outputs.decision == 'approve' &&
+          steps.season_ready.outputs.ready == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          # Le branding est déjà présent dans la branche ; si sa dernière
+          # application a créé un diff, on le commit avant la fusion.
+          git add -A -- public
+          if ! git diff --cached --quiet; then
+            git commit -m "fix: préserver MHUR NEXUS avant production"
+            git push --force-with-lease origin HEAD:mhur-auto-beta
+          fi
+          gh pr merge "${{ steps.pr.outputs.number }}" \
+            --squash \
+            --delete-branch \
+            --subject "✅ MHUR NEXUS — version validée"
+          python /tmp/mhur_guardian.py discord-notify \
+            --text "✅ MHUR NEXUS : bêta validée sur Discord et publiée en production."
