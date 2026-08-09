@@ -1,0 +1,1661 @@
+name: MHUR NEXUS — GUARDIAN UNIQUE V27
+
+on:
+  schedule:
+    # Scan UltraRumble une fois par heure.
+    - cron: "11 * * * *"
+    # Vérifie Discord toutes les 5 minutes pour V / ✅ / REFUS.
+    - cron: "*/5 * * * *"
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "Action à lancer"
+        required: true
+        default: scan
+        type: choice
+        options:
+          - scan
+          - approval
+          - deploy
+
+permissions:
+  contents: write
+  pull-requests: write
+  actions: read
+
+concurrency:
+  group: mhur-nexus-guardian-unique-v27
+  cancel-in-progress: false
+
+env:
+  BETA_BRANCH: mhur-auto-beta
+  WORKER_NAME: mhur-france
+  WORKER_COMPATIBILITY_DATE: "2026-08-09"
+
+jobs:
+  # ================================================================
+  # SCAN + SYNCHRONISATION + BÊTA + DISCORD
+  # ================================================================
+  scan:
+    if: >-
+      (github.event_name == 'schedule' && github.event.schedule == '11 * * * *') ||
+      (github.event_name == 'workflow_dispatch' && inputs.mode == 'scan')
+    runs-on: ubuntu-22.04
+    timeout-minutes: 60
+    env:
+      GH_TOKEN: ${{ github.token }}
+      DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_BOT_TOKEN }}
+      DISCORD_CHANNEL_ID: ${{ secrets.DISCORD_CHANNEL_ID }}
+      DISCORD_APPROVER_USER_ID: ${{ secrets.DISCORD_APPROVER_USER_ID }}
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+
+    steps:
+      - name: Récupérer main
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Installer Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Installer Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Installer les dépendances
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "Installer les dépendances" > /tmp/mhur_stage
+
+          python -m pip install --upgrade pip
+          if [ -f mise_a_jour/requirements.txt ]; then
+            python -m pip install -r mise_a_jour/requirements.txt
+          fi
+          python -m pip install requests beautifulsoup4 lxml pillow
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Vérifier les secrets indispensables
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "Vérifier les secrets" > /tmp/mhur_stage
+
+          missing=0
+          for name in DISCORD_BOT_TOKEN DISCORD_CHANNEL_ID DISCORD_APPROVER_USER_ID CLOUDFLARE_API_TOKEN CLOUDFLARE_ACCOUNT_ID; do
+            if [ -z "${!name:-}" ]; then
+              echo "::error::Secret absent : ${name}"
+              missing=1
+            fi
+          done
+          if [ "$missing" -ne 0 ]; then
+            exit 1
+          fi
+
+      - name: Installer les correctifs permanents dans la candidate
+        id: fixes
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "Installer les correctifs Login Bonus et dégâts" > /tmp/mhur_stage
+
+          # ----------------------------------------------------------
+          # 1. Runtime stats exactes.
+          # Il lit exact_by_style déjà généré par le site et reconstruit
+          # les tableaux avec les vraies valeurs UltraRumble.
+          # ----------------------------------------------------------
+          cat > public/js/v26-exact-stats-runtime.js <<'JS'
+          (() => {
+            'use strict';
+
+            const MARK = 'MHUR_V26_EXACT_STATS_RUNTIME';
+
+            const currentLang = () => {
+              try {
+                return (typeof lang !== 'undefined' && lang === 'en') ? 'en' : 'fr';
+              } catch (_e) {
+                return 'fr';
+              }
+            };
+
+            function pick(value, language = currentLang()) {
+              if (value && typeof value === 'object' && !Array.isArray(value)) {
+                return value[language] ?? value.fr ?? value.en ?? '';
+              }
+              return value;
+            }
+
+            function clean(value) {
+              return String(pick(value) ?? '')
+                .replace(/[\u3040-\u30ff\u3400-\u9fff\uf900-\ufaff]/g, '')
+                .replace(/\s{2,}/g, ' ')
+                .trim();
+            }
+
+            function norm(value) {
+              return clean(value)
+                .normalize('NFD')
+                .replace(/[\u0300-\u036f]/g, '')
+                .toLowerCase()
+                .replace(/[’']/g, '')
+                .replace(/[^a-z0-9]+/g, '_')
+                .replace(/^_+|_+$/g, '');
+            }
+
+            function readExact() {
+              const node = document.getElementById('ultrarumble-exact-data');
+              if (!node) return null;
+              try {
+                return JSON.parse(node.textContent || '{}');
+              } catch (_e) {
+                return null;
+              }
+            }
+
+            function columns(table) {
+              return Array.isArray(table?.columns)
+                ? table.columns.map(value => String(value ?? ''))
+                : Array.isArray(table?.cols)
+                  ? table.cols.map(value => String(value ?? ''))
+                  : [];
+            }
+
+            function rows(table) {
+              return Array.isArray(table?.rows)
+                ? table.rows
+                    .filter(Array.isArray)
+                    .map(row => row.map(value => String(value ?? '')))
+                : [];
+            }
+
+            function translateColumn(value, language) {
+              const key = norm(value);
+              const fr = {
+                type: 'Type',
+                level: 'Niveau',
+                damage: 'Dégâts',
+                ammo: 'Munitions',
+                use_ammo: 'Consommation',
+                reload: 'Recharge',
+                down_power: 'Down Power',
+                level_up_effect: 'Effet'
+              };
+              const en = {
+                type: 'Type',
+                level: 'Level',
+                damage: 'Damage',
+                ammo: 'Ammo',
+                use_ammo: 'Use Ammo',
+                reload: 'Reload',
+                down_power: 'Down Power',
+                level_up_effect: 'Effect'
+              };
+              return (language === 'fr' ? fr : en)[key] || clean(value);
+            }
+
+            function effectTable(symbol, remote, oldTables) {
+              const sourceRows = rows(remote);
+              if (!sourceRows.length) {
+                return (oldTables || []).filter(table => {
+                  const title = norm(clean(table?.title));
+                  return title.includes('effet') || title.includes('effect');
+                });
+              }
+
+              const sourceCols = columns(remote);
+              const keep = sourceCols
+                .map((col, index) => ({ col, index }))
+                .filter(item => !['down_power', 'down'].includes(norm(item.col)));
+
+              return [{
+                title: {
+                  fr: `Effets de montée ${symbol}`,
+                  en: `${symbol} level-up effects`
+                },
+                cols: {
+                  fr: keep.map(item => translateColumn(item.col, 'fr')),
+                  en: keep.map(item => translateColumn(item.col, 'en'))
+                },
+                rows: {
+                  fr: sourceRows.map(row => keep.map(item => clean(row[item.index] ?? ''))),
+                  en: sourceRows.map(row => keep.map(item => clean(row[item.index] ?? '')))
+                },
+                __v26: 'effect'
+              }];
+            }
+
+            function baseTable(symbol, remote) {
+              const sourceRows = rows(remote);
+              if (!sourceRows.length) return null;
+
+              const sourceCols = columns(remote);
+              const keep = sourceCols
+                .map((col, index) => ({ col, index }))
+                .filter(item => !['down_power', 'down'].includes(norm(item.col)));
+
+              return {
+                title: {
+                  fr: `Valeurs de base ${symbol}`,
+                  en: `Base ${symbol} values`
+                },
+                cols: {
+                  fr: keep.map(item => translateColumn(item.col, 'fr')),
+                  en: keep.map(item => translateColumn(item.col, 'en'))
+                },
+                rows: {
+                  fr: sourceRows.map(row => keep.map(item => clean(row[item.index] ?? ''))),
+                  en: sourceRows.map(row => keep.map(item => clean(row[item.index] ?? '')))
+                },
+                __v26: 'base'
+              };
+            }
+
+            function typeLabel(rawType, styleKey, symbol, groupIndex, groupCount) {
+              const original = clean(rawType) || 'Value';
+              const key = norm(original);
+
+              const mappings = [
+                [['melee_combat', 'melee'], 'Corps à corps', 'Melee Combat'],
+                [['upon_activation', 'activation'], 'Activation', 'Activation'],
+                [['shockwave'], 'Onde de choc', 'Shockwave'],
+                [['bullet', 'projectile'], 'Projectile', 'Projectile'],
+                [['rush'], 'Ruée', 'Rush'],
+                [['rebound', 'bounce'], 'Rebond', 'Rebound'],
+                [['impact'], 'Impact final', 'Impact'],
+                [['explosion'], 'Explosion', 'Explosion'],
+                [['short_range'], 'Distance courte', 'Short Range'],
+                [['middle_range', 'medium_range'], 'Distance moyenne', 'Medium Range'],
+                [['long_range', 'max_range'], 'Distance longue', 'Long Range'],
+                [['charge'], 'Charge', 'Charge'],
+                [['pull', 'grab'], 'Attraction', 'Pull'],
+                [['finish', 'finisher'], 'Finale', 'Finisher'],
+                [['normal'], 'Normal', 'Normal']
+              ];
+
+              let fr = original;
+              let en = original;
+
+              for (const [needles, frLabel, enLabel] of mappings) {
+                if (needles.some(needle => key.includes(needle))) {
+                  fr = frLabel;
+                  en = enLabel;
+                  break;
+                }
+              }
+
+              // Gentle γ : la source contient actuellement trois cycles portant
+              // le même Type "Rush". On les garde séparés dans l'ordre officiel.
+              if (
+                norm(styleKey).includes('gentle_criminal') &&
+                symbol === 'γ' &&
+                groupCount >= 3
+              ) {
+                const labels = [
+                  ['Ruée', 'Rush'],
+                  ['Rebond', 'Rebound'],
+                  ['Impact final', 'Impact']
+                ];
+                if (labels[groupIndex]) {
+                  [fr, en] = labels[groupIndex];
+                }
+              }
+
+              return { fr, en };
+            }
+
+            function additionalTables(symbol, remote, styleKey) {
+              const sourceCols = columns(remote);
+              const sourceRows = rows(remote);
+              if (!sourceRows.length) return [];
+
+              const normalized = sourceCols.map(norm);
+              let typeIndex = normalized.indexOf('type');
+              let levelIndex = normalized.indexOf('level');
+              let damageIndex = normalized.indexOf('damage');
+
+              if (typeIndex < 0) typeIndex = 0;
+              if (levelIndex < 0) levelIndex = 1;
+              if (damageIndex < 0) damageIndex = 2;
+
+              const groups = [];
+              let current = null;
+              let lastType = 'Value';
+
+              for (const source of sourceRows) {
+                const row = [...source];
+                const detectedLevel = row.findIndex(value =>
+                  /^Lv\.\d+$/i.test(String(value || '').trim())
+                );
+                const li = detectedLevel >= 0 ? detectedLevel : levelIndex;
+                const level = String(row[li] ?? '').trim();
+                if (!/^Lv\.\d+$/i.test(level)) continue;
+
+                let rawType = String(row[typeIndex] ?? '').trim();
+                if (rawType) lastType = rawType;
+                rawType = rawType || lastType || 'Value';
+
+                const key = norm(rawType) || 'value';
+                const restart = /^Lv\.1$/i.test(level) && current && current.rows.length;
+                const changedType = current && current.key !== key;
+
+                if (!current || restart || changedType) {
+                  current = { key, rawType, rows: [] };
+                  groups.push(current);
+                }
+
+                let damage = String(row[damageIndex] ?? '').trim();
+                if (!damage && li + 1 < row.length) {
+                  damage = String(row[li + 1] ?? '').trim();
+                }
+
+                current.rows.push({ level, damage });
+              }
+
+              return groups.map((group, index) => {
+                const labels = typeLabel(
+                  group.rawType,
+                  styleKey,
+                  symbol,
+                  index,
+                  groups.length
+                );
+
+                return {
+                  title: {
+                    fr: `Dégâts ${symbol} — ${labels.fr}`,
+                    en: `${symbol} Damage — ${labels.en}`
+                  },
+                  cols: {
+                    fr: ['Type', 'Niveau', 'Dégâts'],
+                    en: ['Type', 'Level', 'Damage']
+                  },
+                  rows: {
+                    fr: group.rows.map(row => [labels.fr, row.level, row.damage]),
+                    en: group.rows.map(row => [labels.en, row.level, row.damage])
+                  },
+                  __v26: 'additional'
+                };
+              });
+            }
+
+            function skillByLetter(style, symbol) {
+              const aliases = {
+                'α': ['α', 'alpha', 'a'],
+                'β': ['β', 'beta', 'b'],
+                'γ': ['γ', 'gamma', 'g']
+              }[symbol] || [symbol];
+
+              return (style?.skills || []).find(skill =>
+                aliases.includes(String(skill?.letter || '').trim().toLowerCase())
+              ) || null;
+            }
+
+            function syncSkill(localSkill, remoteSkill, styleKey, symbol) {
+              if (!localSkill || !remoteSkill) return 0;
+
+              const oldTables = Array.isArray(localSkill.tables)
+                ? localSkill.tables
+                : [];
+
+              const next = [];
+              next.push(...effectTable(symbol, remoteSkill.level_up_effects, oldTables));
+
+              const base = baseTable(symbol, remoteSkill.base_values);
+              if (base) next.push(base);
+
+              next.push(...additionalTables(
+                symbol,
+                remoteSkill.additional_values,
+                styleKey
+              ));
+
+              if (!next.length) return 0;
+
+              localSkill.tables = next;
+              return 1;
+            }
+
+            function syncAll() {
+              const data = readExact();
+
+              if (
+                typeof styles === 'undefined' ||
+                !data ||
+                !data.exact_by_style
+              ) {
+                return {
+                  loaded: false,
+                  mapped: 0,
+                  changed: 0,
+                  marker: MARK
+                };
+              }
+
+              let changed = 0;
+              let mapped = 0;
+
+              Object.entries(data.exact_by_style).forEach(([styleKey, remote]) => {
+                const local = styles[styleKey];
+                if (!local || !remote) return;
+                mapped += 1;
+
+                const hp =
+                  remote?.stats?.['Max Main Health'] ??
+                  remote?.stats?.['Max Health'] ??
+                  remote?.stats?.['Max HP'];
+
+                if (hp !== undefined && hp !== null && hp !== '') {
+                  local.pv = String(hp);
+                }
+
+                for (const symbol of ['α', 'β', 'γ']) {
+                  changed += syncSkill(
+                    skillByLetter(local, symbol),
+                    remote?.skills?.[symbol],
+                    styleKey,
+                    symbol
+                  );
+                }
+              });
+
+              const status = {
+                loaded: true,
+                mapped,
+                changed,
+                marker: MARK
+              };
+
+              window.__MHUR_V26_STATS_STATUS__ = status;
+              return status;
+            }
+
+            function hookRender() {
+              try {
+                if (typeof render !== 'function') return;
+                if (render.__mhurV26Wrapped) return;
+
+                const previous = render;
+                const wrapped = function () {
+                  try { syncAll(); } catch (_e) {}
+                  return previous.apply(this, arguments);
+                };
+                wrapped.__mhurV26Wrapped = true;
+
+                render = wrapped;
+                window.__MHUR_V26_RENDER_HOOK__ = true;
+              } catch (_e) {}
+            }
+
+            window.MHUR_V26_STATS_SYNC = syncAll;
+
+            try {
+              syncAll();
+              hookRender();
+            } catch (_e) {}
+
+            document.addEventListener('DOMContentLoaded', () => {
+              try {
+                syncAll();
+                hookRender();
+              } catch (_e) {}
+            });
+
+            setTimeout(() => {
+              try {
+                syncAll();
+                hookRender();
+                if (typeof render === 'function') render();
+              } catch (_e) {}
+            }, 0);
+
+            setTimeout(() => {
+              try { syncAll(); } catch (_e) {}
+            }, 250);
+          })();
+          JS
+
+          node --check public/js/v26-exact-stats-runtime.js
+
+          # ----------------------------------------------------------
+          # 2. Patcher permanent :
+          #    - force le refresh des Login Bonus
+          #    - garantit le chargement du runtime après chaque génération index.
+          # ----------------------------------------------------------
+          cat > /tmp/apply_v26.py <<'PY'
+          from pathlib import Path
+          import re
+          import sys
+
+          root = Path(".")
+          home = root / "mise_a_jour" / "outils" / "update_home_data.py"
+          index = root / "public" / "index.html"
+
+          if not home.exists():
+              raise SystemExit("[V26][ERREUR] update_home_data.py introuvable")
+          if not index.exists():
+              raise SystemExit("[V26][ERREUR] public/index.html introuvable")
+
+          text = home.read_text(encoding="utf-8")
+          changed = False
+
+          if "force: bool = False" not in text:
+              pattern = (
+                  r"def\s+download_asset\("
+                  r"root:\s*Path,\s*url:\s*str,\s*rel_stem:\s*str,\s*"
+                  r"retries:\s*int\s*=\s*4"
+                  r"\)\s*->\s*str:"
+              )
+              replacement = (
+                  "def download_asset(root: Path, url: str, rel_stem: str, "
+                  "retries: int = 4, force: bool = False) -> str:"
+              )
+              text, count = re.subn(pattern, replacement, text, count=1)
+              if count != 1:
+                  raise SystemExit("[V26][ERREUR] Signature download_asset introuvable")
+              changed = True
+
+          if "if cached and not force:" not in text:
+              pattern = (
+                  r"(?m)^(?P<i>\s*)cached\s*=\s*existing_asset\(root,\s*rel_stem\)\s*$"
+                  r"\n(?P=i)if\s+cached:\s*$"
+                  r"\n(?P=i)\s+return\s+cached\s*$"
+              )
+              replacement = (
+                  r"\g<i>cached = existing_asset(root, rel_stem)\n"
+                  r"\g<i>if cached and not force:\n"
+                  r"\g<i>    return cached"
+              )
+              text, count = re.subn(pattern, replacement, text, count=1)
+              if count != 1:
+                  raise SystemExit("[V26][ERREUR] Bloc cache download_asset introuvable")
+              changed = True
+
+          if not re.search(
+              r'assets/home/bonuses/\{slug\(title,\s*70\)\}.*?force=True',
+              text,
+              re.S,
+          ):
+              pattern = (
+                  r'(?P<start>local\s*=\s*download_asset\(\s*'
+                  r'root,\s*'
+                  r'remote,\s*'
+                  r'f"assets/home/bonuses/\{slug\(title,\s*70\)\}",\s*)'
+                  r'\)'
+              )
+              match = re.search(pattern, text, re.S)
+              if not match:
+                  raise SystemExit("[V26][ERREUR] Appel Login Bonus introuvable")
+              replacement = match.group("start") + "force=True,\n            )"
+              text = text[:match.start()] + replacement + text[match.end():]
+              changed = True
+
+          warning_pattern = (
+              r'(?m)^(?P<i>\s*)print\(f"\[HOME IMAGE WARNING\] \{url\}: \{exc\}", flush=True\)\s*$'
+              r'\n(?P=i)return\s+""\s*$'
+          )
+          if re.search(warning_pattern, text):
+              text = re.sub(
+                  warning_pattern,
+                  r'\g<i>print(f"[HOME IMAGE WARNING] {url}: {exc}", flush=True)\n'
+                  r'\g<i>return cached or ""',
+                  text,
+                  count=1,
+              )
+              changed = True
+
+          if changed:
+              home.write_text(text, encoding="utf-8", newline="\n")
+
+          required = [
+              "force: bool = False",
+              "if cached and not force:",
+              "force=True,",
+          ]
+          missing = [token for token in required if token not in text]
+          if missing:
+              raise SystemExit(
+                  "[V26][ERREUR] Patch Login Bonus incomplet : "
+                  + ", ".join(missing)
+              )
+
+          html = index.read_text(encoding="utf-8")
+          tag = '<script src="js/v26-exact-stats-runtime.js?v=26"></script>'
+
+          if tag not in html:
+              if "</body>" not in html:
+                  raise SystemExit("[V26][ERREUR] </body> introuvable")
+              html = html.replace(
+                  "</body>",
+                  "<!-- MHUR V26 : stats exactes + tableaux séparés -->\n"
+                  + tag
+                  + "\n</body>",
+                  1,
+              )
+              index.write_text(html, encoding="utf-8", newline="\n")
+
+          print("[V26][OK] Correctifs Login Bonus + runtime installés")
+          PY
+
+          python /tmp/apply_v26.py
+          python -m py_compile mise_a_jour/outils/update_home_data.py
+
+          if git diff --quiet -- \
+            mise_a_jour/outils/update_home_data.py \
+            public/index.html \
+            public/js/v26-exact-stats-runtime.js; then
+            echo "fix_changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "fix_changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Synchroniser UltraRumble
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "Synchroniser UltraRumble" > /tmp/mhur_stage
+
+          if [ "${{ steps.fixes.outputs.fix_changed }}" = "true" ]; then
+            echo "[V26] Correctif nouveau : synchronisation complète forcée."
+            python mise_a_jour/outils/surveiller_ultrarumble.py \
+              --site-root public \
+              --force
+          else
+            echo "[V26] Vérification normale des changements UltraRumble."
+            code=0
+            python mise_a_jour/outils/surveiller_ultrarumble.py \
+              --site-root public || code=$?
+
+            if [ "$code" -eq 4 ]; then
+              echo "::warning::Une autre synchronisation était verrouillée. Aucun changement appliqué."
+            elif [ "$code" -ne 0 ]; then
+              exit "$code"
+            fi
+          fi
+
+          # Le générateur peut réécrire index.html : on remet le runtime à la fin.
+          python /tmp/apply_v26.py
+
+          # Les sauvegardes de sécurité locales ne doivent jamais finir dans la PR.
+          rm -rf public/sauvegardes
+          rm -f public/data/ultrarumble/synchronisation_en_cours.lock
+
+          node --check public/js/v26-exact-stats-runtime.js
+          node --check public/js/season18-fixes.js
+          python -m py_compile \
+            mise_a_jour/outils/update_home_data.py \
+            mise_a_jour/outils/update_ultrarumble_data.py \
+            mise_a_jour/outils/season18_postprocess.py
+
+      - name: Détecter un vrai changement
+        id: changes
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "Analyser les changements" > /tmp/mhur_stage
+
+          # Les fichiers de diagnostic seuls ne créent pas une bêta.
+          ignored='^(public/data/ultrarumble/synchronisation_state\.json|public/data/ultrarumble/derniere_synchronisation\.json|public/data/ultrarumble/synchronisation_ultrarumble\.log|public/data/diagnostic_data\.js)$'
+
+          {
+            git diff --name-only
+            git ls-files --others --exclude-standard
+          } | sort -u > /tmp/all_changed.txt
+
+          grep -Ev "$ignored" /tmp/all_changed.txt > /tmp/substantive_changed.txt || true
+
+          echo "Fichiers détectés :"
+          cat /tmp/all_changed.txt || true
+
+          echo "Fichiers substantiels :"
+          cat /tmp/substantive_changed.txt || true
+
+          if [ ! -s /tmp/substantive_changed.txt ]; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+
+            # Nettoyage des timestamps/diagnostics non utiles.
+            git restore -- \
+              public/data/ultrarumble/synchronisation_state.json \
+              public/data/ultrarumble/derniere_synchronisation.json \
+              public/data/ultrarumble/synchronisation_ultrarumble.log \
+              public/data/diagnostic_data.js \
+              2>/dev/null || true
+
+            echo "✅ Aucun changement visible à proposer."
+            exit 0
+          fi
+
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+
+      - name: Construire le rapport détaillé
+        if: steps.changes.outputs.changed == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "Construire le rapport détaillé" > /tmp/mhur_stage
+
+          python - <<'PY'
+          import json
+          import subprocess
+          from pathlib import Path
+
+          def git_json(path):
+              try:
+                  raw = subprocess.check_output(
+                      ["git", "show", f"origin/main:{path}"],
+                      text=True,
+                      encoding="utf-8",
+                      errors="replace",
+                  )
+                  return json.loads(raw)
+              except Exception:
+                  return None
+
+          def file_json(path):
+              try:
+                  return json.loads(Path(path).read_text(encoding="utf-8"))
+              except Exception:
+                  return None
+
+          def style_key(row):
+              return (
+                  str(row.get("source_url") or ""),
+                  str(row.get("style_header") or ""),
+                  str(row.get("style_name") or ""),
+              )
+
+          def table_map(table):
+              if not isinstance(table, dict):
+                  return {}
+              cols = [str(x) for x in table.get("columns") or []]
+              rows = table.get("rows") or []
+              try:
+                  li = cols.index("Level")
+              except ValueError:
+                  li = 1 if len(cols) > 1 else 0
+              try:
+                  ti = cols.index("Type")
+              except ValueError:
+                  ti = -1
+              try:
+                  di = cols.index("Damage")
+              except ValueError:
+                  di = 1 if len(cols) > 1 else -1
+
+              out = {}
+              cycles = {}
+              for raw in rows:
+                  if not isinstance(raw, list):
+                      continue
+                  row = [str(x) for x in raw]
+                  if li >= len(row) or di < 0 or di >= len(row):
+                      continue
+                  level = row[li]
+                  if not level.startswith("Lv."):
+                      continue
+                  typ = row[ti] if ti >= 0 and ti < len(row) else "Base"
+                  cycle_key = typ
+                  if level == "Lv.1":
+                      cycles[typ] = cycles.get(typ, 0) + 1
+                  cycle = cycles.get(typ, 1)
+                  out[(typ, cycle, level)] = row[di]
+              return out
+
+          old = git_json("public/data/ultrarumble/characters_exact.json")
+          new = file_json("public/data/ultrarumble/characters_exact.json")
+
+          details = []
+
+          if isinstance(old, list) and isinstance(new, list):
+              old_by = {style_key(row): row for row in old if isinstance(row, dict)}
+              new_by = {style_key(row): row for row in new if isinstance(row, dict)}
+
+              for key in sorted(set(old_by) | set(new_by)):
+                  before = old_by.get(key)
+                  after = new_by.get(key)
+
+                  if before is None and after is not None:
+                      details.append(
+                          f"🆕 Nouveau style/personnage : {after.get('style_header') or after.get('name')}"
+                      )
+                      continue
+
+                  if after is None and before is not None:
+                      details.append(
+                          f"🗑️ Style retiré : {before.get('style_header') or before.get('name')}"
+                      )
+                      continue
+
+                  name = after.get("style_header") or after.get("name") or "Personnage"
+
+                  old_hp = (before.get("stats") or {}).get("Max Main Health")
+                  new_hp = (after.get("stats") or {}).get("Max Main Health")
+                  if old_hp != new_hp:
+                      details.append(f"❤️ {name} : PV {old_hp} → {new_hp}")
+
+                  for symbol in ("α", "β", "γ"):
+                      bs = ((before.get("skills") or {}).get(symbol) or {})
+                      ns = ((after.get("skills") or {}).get(symbol) or {})
+
+                      for field, label in (
+                          ("base_values", "base"),
+                          ("additional_values", "supplémentaires"),
+                      ):
+                          bm = table_map(bs.get(field) or {})
+                          nm = table_map(ns.get(field) or {})
+
+                          for row_key in sorted(set(bm) | set(nm)):
+                              bv = bm.get(row_key)
+                              nv = nm.get(row_key)
+                              if bv == nv:
+                                  continue
+                              typ, cycle, level = row_key
+                              type_text = "" if typ == "Base" else f" · {typ}"
+                              cycle_text = f" #{cycle}" if cycle > 1 else ""
+                              details.append(
+                                  f"⚔️ {name} {symbol}{type_text}{cycle_text} {level} : {bv or '—'} → {nv or '—'}"
+                              )
+
+          changed_files = [
+              line.strip()
+              for line in Path("/tmp/substantive_changed.txt").read_text(
+                  encoding="utf-8"
+              ).splitlines()
+              if line.strip()
+          ]
+
+          categories = []
+          joined = "\n".join(changed_files)
+
+          if "home_data" in joined or "assets/home/" in joined:
+              categories.append("🏠 Accueil / événements / Login Bonus")
+          if "characters_exact" in joined or "index.html" in joined:
+              categories.append("🥊 Personnages / dégâts / Alters")
+          if "costume" in joined:
+              categories.append("👕 Costumes")
+          if "tuning" in joined:
+              categories.append("🧩 T.U.N.I.N.G")
+          if "update_home_data.py" in joined:
+              categories.append("🖼️ Correctif permanent du cache Login Bonus")
+          if "v26-exact-stats-runtime.js" in joined:
+              categories.append("📊 Moteur de stats exactes + séparation automatique")
+
+          report = []
+          report.append("## MHUR NEXUS — Bêta Guardian Unique V27")
+          report.append("")
+          report.append("### Catégories")
+          if categories:
+              report.extend(f"- {item}" for item in categories)
+          else:
+              report.append("- Mise à jour de données du site")
+
+          report.append("")
+          report.append("### Modifications détectées")
+          if details:
+              report.extend(f"- {item}" for item in details[:80])
+              if len(details) > 80:
+                  report.append(f"- … {len(details) - 80} autre(s) modification(s)")
+          else:
+              report.append("- Les fichiers ont changé, sans variation de dégâts simple à résumer.")
+
+          report.append("")
+          report.append("### Fichiers")
+          report.extend(f"- `{path}`" for path in changed_files[:50])
+          if len(changed_files) > 50:
+              report.append(f"- … {len(changed_files) - 50} autre(s) fichier(s)")
+
+          Path("/tmp/beta_report.md").write_text(
+              "\n".join(report) + "\n",
+              encoding="utf-8",
+          )
+
+          # Version Discord compacte.
+          compact = "\n".join(report[:45])
+          Path("/tmp/beta_report_discord.txt").write_text(
+              compact[:1200],
+              encoding="utf-8",
+          )
+
+          print(Path("/tmp/beta_report.md").read_text(encoding="utf-8"))
+          PY
+
+      - name: Tester la candidate
+        if: steps.changes.outputs.changed == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "Tester la candidate" > /tmp/mhur_stage
+
+          node --check public/js/v26-exact-stats-runtime.js
+          node --check public/js/season18-fixes.js
+
+          python -m http.server 4173 --directory public >/tmp/mhur-http.log 2>&1 &
+          server_pid=$!
+          trap 'kill "$server_pid" 2>/dev/null || true' EXIT
+
+          sleep 2
+
+          curl -fsS http://127.0.0.1:4173/ >/tmp/mhur-index-test.html
+
+          grep -q "ultrarumble-exact-data" /tmp/mhur-index-test.html
+          grep -q "v26-exact-stats-runtime.js?v=26" /tmp/mhur-index-test.html
+
+          echo "✅ Tests structurels réussis."
+
+      - name: Créer la branche bêta
+        id: beta
+        if: steps.changes.outputs.changed == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "Créer la branche bêta" > /tmp/mhur_stage
+
+          git checkout -B "$BETA_BRANCH"
+
+          git add -A -- \
+            public \
+            mise_a_jour/outils/update_home_data.py
+
+          # Aucun backup/lock ne doit être versionné.
+          git reset -- \
+            public/sauvegardes \
+            public/data/ultrarumble/synchronisation_en_cours.lock \
+            2>/dev/null || true
+
+          if git diff --cached --quiet; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "Aucun diff à committer après filtrage."
+            exit 0
+          fi
+
+          git commit -m "beta: MHUR NEXUS Guardian Unique V27"
+          git push --force origin HEAD:"$BETA_BRANCH"
+
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+          echo "head_sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+      - name: Vérifier la syntaxe Wrangler CI
+        if: steps.beta.outputs.changed == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "Vérifier Wrangler CI" > /tmp/mhur_stage
+
+          npm install --no-save --ignore-scripts wrangler@4
+
+          npx wrangler versions upload --help | grep -q -- "--assets"
+          npx wrangler deploy --help | grep -q -- "--assets"
+
+          echo "✅ Wrangler accepte --assets pour Preview et production."
+
+      - name: Créer la Preview Cloudflare
+        id: preview
+        if: steps.beta.outputs.changed == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "Créer la Preview Cloudflare" > /tmp/mhur_stage
+
+          set +e
+          npx wrangler versions upload \
+            --assets ./public \
+            --name "$WORKER_NAME" \
+            --compatibility-date "$WORKER_COMPATIBILITY_DATE" \
+            --preview-alias beta \
+            --message "MHUR NEXUS Guardian Unique V27 beta ${{ steps.beta.outputs.head_sha }}" \
+            2>&1 | tee /tmp/wrangler-preview.log
+          code=${PIPESTATUS[0]}
+          set -e
+
+          if [ "$code" -ne 0 ]; then
+            echo "::error::Cloudflare Preview a échoué."
+            exit "$code"
+          fi
+
+          preview="$(
+            grep -Eo 'https://[A-Za-z0-9._-]+\.workers\.dev/?' \
+              /tmp/wrangler-preview.log \
+              | tail -n1 \
+              | sed 's:/*$::' \
+              || true
+          )"
+
+          if [ -z "$preview" ]; then
+            echo "::error::Preview créée mais URL workers.dev introuvable."
+            exit 1
+          fi
+
+          echo "url=$preview" >> "$GITHUB_OUTPUT"
+          echo "🌐 $preview"
+
+      - name: Créer ou mettre à jour la PR bêta
+        id: pr
+        if: steps.beta.outputs.changed == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "Créer la PR bêta" > /tmp/mhur_stage
+
+          {
+            cat /tmp/beta_report.md
+            echo
+            echo "<!-- MHUR_GUARDIAN_V26_STATE"
+            echo "MESSAGE_ID="
+            echo "HEAD_SHA=${{ steps.beta.outputs.head_sha }}"
+            echo "PREVIEW_URL=${{ steps.preview.outputs.url }}"
+            echo "-->"
+          } > /tmp/pr_body.md
+
+          existing="$(
+            gh pr list \
+              --head "$BETA_BRANCH" \
+              --base main \
+              --state open \
+              --limit 1 \
+              --json number \
+              --jq '.[0].number // empty'
+          )"
+
+          if [ -z "$existing" ]; then
+            url="$(
+              gh pr create \
+                --base main \
+                --head "$BETA_BRANCH" \
+                --title "🧪 MHUR NEXUS — Bêta Guardian Unique V27" \
+                --body-file /tmp/pr_body.md
+            )"
+            number="$(gh pr view "$url" --json number --jq '.number')"
+          else
+            number="$existing"
+            gh pr edit \
+              "$number" \
+              --title "🧪 MHUR NEXUS — Bêta Guardian Unique V27" \
+              --body-file /tmp/pr_body.md
+            url="$(gh pr view "$number" --json url --jq '.url')"
+          fi
+
+          echo "number=$number" >> "$GITHUB_OUTPUT"
+          echo "url=$url" >> "$GITHUB_OUTPUT"
+
+      - name: Envoyer la bêta sur Discord
+        id: discord
+        if: steps.beta.outputs.changed == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "Envoyer la bêta sur Discord" > /tmp/mhur_stage
+
+          python - <<'PY' > /tmp/discord_payload.json
+          import json
+          import os
+          from pathlib import Path
+
+          report = Path("/tmp/beta_report_discord.txt").read_text(
+              encoding="utf-8"
+          ).strip()
+
+          preview = os.environ["PREVIEW_URL"]
+          pr_url = os.environ["PR_URL"]
+
+          content = (
+              "🧪 **MHUR NEXUS — NOUVELLE BÊTA V27**\n\n"
+              f"🌐 **BÊTA :** {preview}\n"
+              f"🔎 **PR :** {pr_url}\n\n"
+              f"{report}\n\n"
+              "✅ **Pour publier :** envoie `V` dans ce salon ou mets ✅ sur ce message.\n"
+              "❌ **Pour refuser :** envoie `REFUS` suivi de la raison."
+          )
+
+          print(json.dumps({"content": content[:1990]}, ensure_ascii=False))
+          PY
+        env:
+          PREVIEW_URL: ${{ steps.preview.outputs.url }}
+          PR_URL: ${{ steps.pr.outputs.url }}
+
+      - name: Poster le message Discord
+        id: discord_post
+        if: steps.beta.outputs.changed == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "Poster le message Discord" > /tmp/mhur_stage
+
+          response="$(
+            curl -fsS \
+              -X POST \
+              -H "Authorization: Bot ${DISCORD_BOT_TOKEN}" \
+              -H "Content-Type: application/json" \
+              --data-binary @/tmp/discord_payload.json \
+              "https://discord.com/api/v10/channels/${DISCORD_CHANNEL_ID}/messages"
+          )"
+
+          message_id="$(printf '%s' "$response" | jq -r '.id // empty')"
+
+          if [ -z "$message_id" ]; then
+            echo "::error::Discord n'a pas renvoyé de message_id."
+            printf '%s\n' "$response"
+            exit 1
+          fi
+
+          echo "message_id=$message_id" >> "$GITHUB_OUTPUT"
+
+          # Le bot ajoute lui-même ✅ pour faciliter la validation.
+          curl -fsS \
+            -X PUT \
+            -H "Authorization: Bot ${DISCORD_BOT_TOKEN}" \
+            "https://discord.com/api/v10/channels/${DISCORD_CHANNEL_ID}/messages/${message_id}/reactions/%E2%9C%85/@me" \
+            >/dev/null || true
+
+      - name: Lier le message Discord à la PR
+        if: steps.beta.outputs.changed == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "Lier Discord à la PR" > /tmp/mhur_stage
+
+          {
+            cat /tmp/beta_report.md
+            echo
+            echo "<!-- MHUR_GUARDIAN_V26_STATE"
+            echo "MESSAGE_ID=${{ steps.discord_post.outputs.message_id }}"
+            echo "HEAD_SHA=${{ steps.beta.outputs.head_sha }}"
+            echo "PREVIEW_URL=${{ steps.preview.outputs.url }}"
+            echo "-->"
+          } > /tmp/pr_body_final.md
+
+          gh pr edit \
+            "${{ steps.pr.outputs.number }}" \
+            --body-file /tmp/pr_body_final.md
+
+          echo "✅ Bêta prête. En attente de V ou ✅."
+
+      - name: Diagnostic Discord si le scan échoue
+        if: failure()
+        shell: bash
+        run: |
+          set +e
+
+          stage="$(cat /tmp/mhur_stage 2>/dev/null || echo 'Étape inconnue')"
+          run_url="https://github.com/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+
+          echo "::error::Guardian V26 bloqué à : ${stage}"
+          echo "::error::${run_url}"
+
+          if [ -z "${DISCORD_BOT_TOKEN:-}" ] || [ -z "${DISCORD_CHANNEL_ID:-}" ]; then
+            exit 0
+          fi
+
+          python - "$stage" "$run_url" <<'PY' > /tmp/error_payload.json
+          import json
+          import sys
+
+          stage = sys.argv[1]
+          url = sys.argv[2]
+
+          content = (
+              "❌ **MHUR NEXUS — GUARDIAN V27 BLOQUÉ**\n\n"
+              f"**Étape en erreur :** {stage}\n"
+              f"🔎 **Détails GitHub :** {url}\n\n"
+              "Le site `main` n'est pas modifié tant que la bêta n'est pas validée. "
+              "Ouvre l'étape rouge : son message indique le fichier, le secret "
+              "ou la commande qui a échoué."
+          )
+
+          print(json.dumps({"content": content}, ensure_ascii=False))
+          PY
+
+          curl -fsS \
+            -X POST \
+            -H "Authorization: Bot ${DISCORD_BOT_TOKEN}" \
+            -H "Content-Type: application/json" \
+            --data-binary @/tmp/error_payload.json \
+            "https://discord.com/api/v10/channels/${DISCORD_CHANNEL_ID}/messages" \
+            >/dev/null || true
+
+  # ================================================================
+  # APPROVAL DISCORD + MERGE + DÉPLOIEMENT PRODUCTION
+  # ================================================================
+  approval:
+    if: >-
+      (github.event_name == 'schedule' && github.event.schedule == '*/5 * * * *') ||
+      (github.event_name == 'workflow_dispatch' && inputs.mode == 'approval')
+    runs-on: ubuntu-22.04
+    timeout-minutes: 35
+    env:
+      GH_TOKEN: ${{ github.token }}
+      DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_BOT_TOKEN }}
+      DISCORD_CHANNEL_ID: ${{ secrets.DISCORD_CHANNEL_ID }}
+      DISCORD_APPROVER_USER_ID: ${{ secrets.DISCORD_APPROVER_USER_ID }}
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+
+    steps:
+      - name: Récupérer main
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Installer Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Installer Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Configurer Git
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "Configurer la validation" > /tmp/mhur_stage
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Trouver la bêta en attente
+        id: pr
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "Trouver la bêta en attente" > /tmp/mhur_stage
+
+          json="$(
+            gh pr list \
+              --head "$BETA_BRANCH" \
+              --base main \
+              --state open \
+              --limit 1 \
+              --json number,url,body,headRefOid
+          )"
+
+          number="$(printf '%s' "$json" | jq -r '.[0].number // empty')"
+
+          if [ -z "$number" ]; then
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+            echo "Aucune bêta en attente."
+            exit 0
+          fi
+
+          printf '%s' "$json" | jq -r '.[0].body' > /tmp/pr_body.md
+
+          message_id="$(
+            sed -n 's/^MESSAGE_ID=//p' /tmp/pr_body.md | tail -n1
+          )"
+          expected_sha="$(
+            sed -n 's/^HEAD_SHA=//p' /tmp/pr_body.md | tail -n1
+          )"
+          preview_url="$(
+            sed -n 's/^PREVIEW_URL=//p' /tmp/pr_body.md | tail -n1
+          )"
+
+          if [ -z "$message_id" ] || [ -z "$expected_sha" ]; then
+            echo "::error::État Guardian absent de la PR."
+            exit 1
+          fi
+
+          echo "exists=true" >> "$GITHUB_OUTPUT"
+          echo "number=$number" >> "$GITHUB_OUTPUT"
+          echo "url=$(printf '%s' "$json" | jq -r '.[0].url')" >> "$GITHUB_OUTPUT"
+          echo "head_sha=$(printf '%s' "$json" | jq -r '.[0].headRefOid')" >> "$GITHUB_OUTPUT"
+          echo "message_id=$message_id" >> "$GITHUB_OUTPUT"
+          echo "expected_sha=$expected_sha" >> "$GITHUB_OUTPUT"
+          echo "preview_url=$preview_url" >> "$GITHUB_OUTPUT"
+
+      - name: Lire V / ✅ / REFUS sur Discord
+        id: decision
+        if: steps.pr.outputs.exists == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "Lire la décision Discord" > /tmp/mhur_stage
+
+          if [ -z "${DISCORD_BOT_TOKEN:-}" ] || \
+             [ -z "${DISCORD_CHANNEL_ID:-}" ] || \
+             [ -z "${DISCORD_APPROVER_USER_ID:-}" ]; then
+            echo "::error::Secrets Discord incomplets."
+            exit 1
+          fi
+
+          python - <<'PY'
+          import json
+          import os
+          import urllib.parse
+          import urllib.request
+
+          token = os.environ["DISCORD_BOT_TOKEN"]
+          channel = os.environ["DISCORD_CHANNEL_ID"]
+          approver = os.environ["DISCORD_APPROVER_USER_ID"]
+          message_id = os.environ["MESSAGE_ID"]
+
+          def request_json(url):
+              req = urllib.request.Request(
+                  url,
+                  headers={
+                      "Authorization": f"Bot {token}",
+                      "User-Agent": "MHUR-Nexus-Guardian-V26",
+                  },
+              )
+              with urllib.request.urlopen(req, timeout=30) as response:
+                  return json.loads(response.read().decode("utf-8"))
+
+          decision = "none"
+          feedback = ""
+
+          # 1. Réaction ✅ sur le message bêta.
+          emoji = urllib.parse.quote("✅")
+          try:
+              users = request_json(
+                  f"https://discord.com/api/v10/channels/{channel}/messages/"
+                  f"{message_id}/reactions/{emoji}?limit=100"
+              )
+              if any(str(user.get("id")) == approver for user in users):
+                  decision = "approve"
+          except Exception:
+              pass
+
+          # 2. Messages envoyés après la bêta.
+          if decision == "none":
+              messages = request_json(
+                  f"https://discord.com/api/v10/channels/{channel}/messages"
+                  f"?after={message_id}&limit=100"
+              )
+
+              # API Discord retourne du plus récent au plus ancien.
+              messages = list(reversed(messages))
+
+              for message in messages:
+                  author = message.get("author") or {}
+                  if str(author.get("id")) != approver:
+                      continue
+
+                  content = str(message.get("content") or "").strip()
+                  upper = content.upper()
+
+                  if upper in {"V", "VALIDER", "VALIDE", "VALIDÉ", "OK V"}:
+                      decision = "approve"
+                      feedback = content
+                      break
+
+                  if (
+                      upper == "N"
+                      or upper == "NON"
+                      or upper.startswith("REFUS")
+                      or upper.startswith("REJETER")
+                  ):
+                      decision = "reject"
+                      feedback = content
+                      break
+
+          output = os.environ["GITHUB_OUTPUT"]
+          with open(output, "a", encoding="utf-8") as handle:
+              handle.write(f"decision={decision}\n")
+              encoded = urllib.parse.quote(feedback, safe="")
+              handle.write(f"feedback={encoded}\n")
+
+          print(f"Décision Discord : {decision}")
+          PY
+        env:
+          MESSAGE_ID: ${{ steps.pr.outputs.message_id }}
+
+      - name: Refuser la bêta
+        if: steps.decision.outputs.decision == 'reject'
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "Refuser la bêta" > /tmp/mhur_stage
+
+          feedback="$(
+            python - <<'PY'
+          import os, urllib.parse
+          print(urllib.parse.unquote(os.environ.get("VALUE", "")))
+          PY
+          )"
+
+          gh pr comment \
+            "${{ steps.pr.outputs.number }}" \
+            --body "❌ Bêta refusée sur Discord : ${feedback:-raison non précisée}"
+
+          gh pr close "${{ steps.pr.outputs.number }}"
+
+          gh api \
+            --method DELETE \
+            "repos/${GITHUB_REPOSITORY}/git/refs/heads/${BETA_BRANCH}" \
+            >/dev/null 2>&1 || true
+
+          python - <<'PY' > /tmp/reject_payload.json
+          import json
+          print(json.dumps({
+              "content": (
+                  "❌ **MHUR NEXUS — BÊTA REFUSÉE**\n\n"
+                  "La bêta a été fermée et n'a pas été publiée sur le vrai site."
+              )
+          }, ensure_ascii=False))
+          PY
+
+          curl -fsS \
+            -X POST \
+            -H "Authorization: Bot ${DISCORD_BOT_TOKEN}" \
+            -H "Content-Type: application/json" \
+            --data-binary @/tmp/reject_payload.json \
+            "https://discord.com/api/v10/channels/${DISCORD_CHANNEL_ID}/messages" \
+            >/dev/null || true
+        env:
+          VALUE: ${{ steps.decision.outputs.feedback }}
+
+      - name: Vérifier que V correspond à la dernière bêta
+        if: steps.decision.outputs.decision == 'approve'
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "Vérifier la version validée" > /tmp/mhur_stage
+
+          if [ "${{ steps.pr.outputs.head_sha }}" != "${{ steps.pr.outputs.expected_sha }}" ]; then
+            echo "::error::La bêta a changé depuis le message Discord."
+            exit 1
+          fi
+
+      - name: Récupérer et tester la bêta validée
+        if: steps.decision.outputs.decision == 'approve'
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "Tester la bêta validée" > /tmp/mhur_stage
+
+          git fetch origin main "$BETA_BRANCH"
+          git checkout -B "$BETA_BRANCH" "origin/$BETA_BRANCH"
+
+          node --check public/js/v26-exact-stats-runtime.js
+          node --check public/js/season18-fixes.js
+
+          python -m py_compile \
+            mise_a_jour/outils/update_home_data.py \
+            mise_a_jour/outils/update_ultrarumble_data.py \
+            mise_a_jour/outils/season18_postprocess.py
+
+          python -m http.server 4173 --directory public >/tmp/mhur-http.log 2>&1 &
+          server_pid=$!
+          trap 'kill "$server_pid" 2>/dev/null || true' EXIT
+
+          sleep 2
+          curl -fsS http://127.0.0.1:4173/ >/tmp/production-candidate.html
+          grep -q "ultrarumble-exact-data" /tmp/production-candidate.html
+          grep -q "v26-exact-stats-runtime.js?v=26" /tmp/production-candidate.html
+
+          echo "✅ Bêta validée techniquement."
+
+      - name: Fusionner la bêta validée dans main
+        if: steps.decision.outputs.decision == 'approve'
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "Fusionner la bêta dans main" > /tmp/mhur_stage
+
+          gh pr merge \
+            "${{ steps.pr.outputs.number }}" \
+            --squash \
+            --delete-branch \
+            --subject "✅ MHUR NEXUS — Guardian Unique V27 validé"
+
+      - name: Déployer explicitement le vrai site Cloudflare
+        if: steps.decision.outputs.decision == 'approve'
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "Déployer Cloudflare en production" > /tmp/mhur_stage
+
+          git checkout main
+          git pull --ff-only origin main
+
+          npm install --no-save --ignore-scripts wrangler@4
+
+          # IMPORTANT : cette commande publie réellement le main validé.
+          npx wrangler deploy \
+            --assets ./public \
+            --name "$WORKER_NAME" \
+            --compatibility-date "$WORKER_COMPATIBILITY_DATE" \
+            --yes \
+            2>&1 | tee /tmp/wrangler-production.log
+
+          echo "✅ Déploiement Cloudflare terminé."
+
+      - name: Confirmer la publication sur Discord
+        if: steps.decision.outputs.decision == 'approve'
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "Confirmer la publication" > /tmp/mhur_stage
+
+          python - <<'PY' > /tmp/success_payload.json
+          import json
+
+          print(json.dumps({
+              "content": (
+                  "✅ **MHUR NEXUS — VERSION PUBLIÉE**\n\n"
+                  "Le `V` / ✅ a été accepté.\n"
+                  "• tests finaux : OK\n"
+                  "• fusion dans `main` : OK\n"
+                  "• déploiement Cloudflare production : OK\n\n"
+                  "🌐 Le vrai site utilise maintenant la version validée."
+              )
+          }, ensure_ascii=False))
+          PY
+
+          curl -fsS \
+            -X POST \
+            -H "Authorization: Bot ${DISCORD_BOT_TOKEN}" \
+            -H "Content-Type: application/json" \
+            --data-binary @/tmp/success_payload.json \
+            "https://discord.com/api/v10/channels/${DISCORD_CHANNEL_ID}/messages" \
+            >/dev/null
+
+      - name: Diagnostic Discord si la validation échoue
+        if: failure()
+        shell: bash
+        run: |
+          set +e
+
+          stage="$(cat /tmp/mhur_stage 2>/dev/null || echo 'Étape inconnue')"
+          run_url="https://github.com/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+
+          echo "::error::Guardian V26 approval bloqué à : ${stage}"
+          echo "::error::${run_url}"
+
+          if [ -z "${DISCORD_BOT_TOKEN:-}" ] || [ -z "${DISCORD_CHANNEL_ID:-}" ]; then
+            exit 0
+          fi
+
+          python - "$stage" "$run_url" <<'PY' > /tmp/approval_error_payload.json
+          import json
+          import sys
+
+          stage = sys.argv[1]
+          url = sys.argv[2]
+
+          print(json.dumps({
+              "content": (
+                  "❌ **MHUR NEXUS — VALIDATION BLOQUÉE**\n\n"
+                  f"**Étape en erreur :** {stage}\n"
+                  f"🔎 **Run GitHub :** {url}\n\n"
+                  "Si l'étape de fusion n'était pas encore passée, `main` reste inchangé. "
+                  "Si la fusion est verte mais Cloudflare est rouge, utilise le mode manuel `deploy`."
+              )
+          }, ensure_ascii=False))
+          PY
+
+          curl -fsS \
+            -X POST \
+            -H "Authorization: Bot ${DISCORD_BOT_TOKEN}" \
+            -H "Content-Type: application/json" \
+            --data-binary @/tmp/approval_error_payload.json \
+            "https://discord.com/api/v10/channels/${DISCORD_CHANNEL_ID}/messages" \
+            >/dev/null || true
+
+  # ================================================================
+  # DÉPLOIEMENT MANUEL DE SECOURS DU MAIN ACTUEL
+  # ================================================================
+  deploy:
+    if: github.event_name == 'workflow_dispatch' && inputs.mode == 'deploy'
+    runs-on: ubuntu-22.04
+    timeout-minutes: 20
+    env:
+      DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_BOT_TOKEN }}
+      DISCORD_CHANNEL_ID: ${{ secrets.DISCORD_CHANNEL_ID }}
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+
+    steps:
+      - name: Récupérer main
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Installer Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Déployer main sur Cloudflare
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if [ -z "${CLOUDFLARE_API_TOKEN:-}" ] || [ -z "${CLOUDFLARE_ACCOUNT_ID:-}" ]; then
+            echo "::error::Secrets Cloudflare absents."
+            exit 1
+          fi
+
+          npm install --no-save --ignore-scripts wrangler@4
+
+          npx wrangler deploy \
+            --assets ./public \
+            --name "$WORKER_NAME" \
+            --compatibility-date "$WORKER_COMPATIBILITY_DATE" \
+            --yes
+
+      - name: Confirmer le redéploiement
+        if: success()
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if [ -z "${DISCORD_BOT_TOKEN:-}" ] || [ -z "${DISCORD_CHANNEL_ID:-}" ]; then
+            exit 0
+          fi
+
+          curl -fsS \
+            -X POST \
+            -H "Authorization: Bot ${DISCORD_BOT_TOKEN}" \
+            -H "Content-Type: application/json" \
+            --data '{"content":"✅ **MHUR NEXUS — REDÉPLOIEMENT MANUEL OK**\nLe `main` actuel vient d’être republié sur Cloudflare production."}' \
+            "https://discord.com/api/v10/channels/${DISCORD_CHANNEL_ID}/messages" \
+            >/dev/null
