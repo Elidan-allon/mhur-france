@@ -774,6 +774,51 @@
     return groups;
   }
 
+  function frenchOfficialSkillTitle(skill,fallback){
+    if(language()!=='fr'||!skill)return fallback;
+
+    const official=localized(skill?.name);
+
+    if(!official)return fallback;
+
+    const raw=clean(fallback);
+
+    const prefix=(
+      raw.match(
+        /^(?:α|β|γ|SP)\s*[-—:]\s*/i
+      )||['']
+    )[0];
+
+    const suffixMatch=raw.match(
+      /\s*\(([^()]*)\)\s*$/
+    );
+
+    let suffix='';
+
+    if(suffixMatch){
+      const variants={
+        normal:'Normal',
+        explosion:'Explosion',
+        explosion_follow_up:'Explosion — suivi',
+        follow_up:'Suivi',
+        burn:'Brûlure',
+        melee:'Corps à corps',
+        projectile:'Projectile',
+        ground:'Sol',
+        air:'Air',
+        impact:'Impact'
+      };
+
+      const key=normal(
+        suffixMatch[1]
+      );
+
+      suffix=` (${variants[key]||suffixMatch[1]})`;
+    }
+
+    return `${prefix}${official}${suffix}`;
+  }
+
   function changeHtml(group,change,sectionTitle){
     const tone=toneFor(change,sectionTitle);
     const health=healthChange(
@@ -789,12 +834,20 @@
       change,
       group
     );
-    const title=translatePatch(
+    const sourceTitle=
       localized(identity?.title)||
       localized(change?.display_skill_name)||
       localized(change?.skill_name)||
       localized(change?.label)||
-      tx('Ajustement','Adjustment')
+      tx('Ajustement','Adjustment');
+
+    const title=translatePatch(
+      language()==='fr'
+        ?frenchOfficialSkillTitle(
+          skill,
+          sourceTitle
+        )
+        :sourceTitle
     );
 
     /*
@@ -1239,7 +1292,10 @@
     );
 
     if(main)main.scrollTop=0;
-    if(asideToo&&aside)aside.scrollTop=0;
+    if(asideToo&&aside){
+      aside.scrollTop=0;
+      aside.scrollLeft=0;
+    }
   }
 
   function notes(){
