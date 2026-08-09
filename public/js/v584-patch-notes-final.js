@@ -358,6 +358,11 @@
 
           change.__mhurV584 = {
             title,
+            sourceSkillName: clean(
+              change?.display_skill_name ||
+              change?.skill_name ||
+              ''
+            ),
             image: clean(resolved?.skill?.img || change?.skill_image || ''),
             styleId: resolved?.styleId || '',
             key: groupKey(change, resolved)
