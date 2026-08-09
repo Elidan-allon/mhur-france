@@ -1,6 +1,6 @@
 {
   "meta": {
-    "updated_at": "2026-08-08T23:26:34.733347+00:00",
+    "updated_at": "2026-08-09T01:07:33.087283+00:00",
     "updater_version": "v354_afo_young_mapped",
     "source": "https://ultrarumble.com",
     "new_styles_added": 0,
@@ -9,7 +9,7 @@
       "special_cards": 60,
       "styles_enriched": 60
     },
-    "season18_postprocess": "2026-08-08T23:26:44.360206+00:00"
+    "season18_postprocess": "2026-08-09T01:07:42.229712+00:00"
   },
   "characters": [
     {
@@ -17053,8 +17053,18 @@
       },
       "special_action": {
         "values": {
-          "columns": [],
-          "rows": []
+          "columns": [
+            "Ammo",
+            "Use Ammo",
+            "Reload"
+          ],
+          "rows": [
+            [
+              "x1",
+              "x1",
+              "1s"
+            ]
+          ]
         }
       },
       "normal_tuning": [
@@ -24167,7 +24177,7 @@
         ]
       },
       "assets": {
-        "portrait": "assets/armored_all_might/armored_all_might_technical/portrait.webp",
+        "portrait": "assets/armored_all_might/armored_all_might_technical/portrait.png",
         "tuning": "assets/armored_all_might/armored_all_might_technical/tuning.webp",
         "alpha": "assets/armored_all_might/armored_all_might_technical/alpha.webp",
         "beta": "assets/armored_all_might/armored_all_might_technical/beta.webp",
@@ -26100,7 +26110,7 @@
         ]
       },
       "assets": {
-        "portrait": "assets/armored_all_might/armored_all_might_technical/portrait.webp",
+        "portrait": "assets/armored_all_might/armored_all_might_technical/portrait.png",
         "tuning": "assets/armored_all_might/armored_all_might_technical/tuning.webp",
         "alpha": "assets/armored_all_might/armored_all_might_technical/alpha.webp",
         "beta": "assets/armored_all_might/armored_all_might_technical/beta.webp",
@@ -48066,8 +48076,18 @@
       },
       "special_action": {
         "values": {
-          "columns": [],
-          "rows": []
+          "columns": [
+            "Ammo",
+            "Use Ammo",
+            "Reload"
+          ],
+          "rows": [
+            [
+              "x1",
+              "x1",
+              "1s"
+            ]
+          ]
         }
       },
       "normal_tuning": [
