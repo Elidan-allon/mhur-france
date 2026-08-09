@@ -193,7 +193,7 @@ function gachaCard(g){
 function eventCard(e){
   return `<article class="eventCardV296">${img(e.image,e.title)}<span class="eventTypeV296">${esc(homeText(e.type||ht('ÉVÉNEMENT','EVENT')))}</span><div><b>${esc(homeText(e.title))}</b><small>${fmt(e.start,true)} → ${fmt(e.end,true)}</small><em>${remain(e.end)}</em></div></article>`;
 }
-function bonusCard(x){return `<article class="bonusCardV296">${img(x.image,x.title)}<div><span>${esc(homeText(x.type||'BONUS'))}</span><b>${esc(homeText(x.title))}</b><small>${fmt(x.start)} → ${fmt(x.end)} · ${remain(x.end)}</small></div></article>`}
+function bonusCard(x){const title=isEn()?(x.title_en||x.title_fr||x.title):(x.title_fr||x.title_en||x.title);const type=isEn()?(x.type_en||x.type_fr||x.type):(x.type_fr||x.type_en||x.type);return `<article class="bonusCardV296">${img(x.image,title)}<div><span>${esc(homeText(type||'BONUS'))}</span><b>${esc(homeText(title))}</b><small>${fmt(x.start)} → ${fmt(x.end)} · ${remain(x.end)}</small></div></article>`}
 function discountCard(x){return `<article class="discountCardV296">${img(x.image,x.name)}<b>${esc(x.name)}</b><span>${esc(x.points)} Pts.</span></article>`}
 function latestPatchCard(x){
   if(!x)return `<div class="emptyV296">${ht('Aucune note de mise à jour.','No patch note available.')}</div>`;
