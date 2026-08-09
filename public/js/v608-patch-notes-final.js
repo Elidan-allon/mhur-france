@@ -478,9 +478,23 @@
     }
 
     const wanted=normal(change?.style||'Original');
-    const byStyle=ids.find(id=>
-      normal(localized(map[id]?.name)||'Original')===wanted
-    );
+    /* MHUR_V30_MULTILINGUAL_STYLE */
+    const byStyle=ids.find(id=>{
+      const style=map[id]||{};
+      const name=style?.name;
+      const candidates=[
+        localized(name),
+        name?.fr,
+        name?.en,
+        style?.name_fr,
+        style?.name_en,
+        style?.style_name,
+        style?.styleName
+      ];
+      return candidates.some(value=>
+        normal(value||'')===wanted
+      );
+    });
 
     if(byStyle){
       return {
@@ -774,6 +788,113 @@
     return groups;
   }
 
+  /* MHUR_V30_EXACT_PATCH_DETAIL */
+  function v30SourceSkillName(change){
+    return clean(
+      change?.__mhurV584?.sourceSkillName ||
+      change?.display_skill_name ||
+      change?.skill_name ||
+      ''
+    );
+  }
+
+  function v30SkillParts(value){
+    const raw=clean(value);
+    const letterMatch=raw.match(
+      /^\s*(SP|SPECIAL|α|β|γ|A|B|G|Y|ALPHA|BETA|GAMMA)\s*[-—:]\s*/i
+    );
+    const subtypeMatch=raw.match(
+      /[（(]\s*([^()（）]+?)\s*[）)]\s*$/
+    );
+
+    let letter=letterMatch ? clean(letterMatch[1]) : '';
+    const letterKey=normal(letter);
+    if(letterKey==='a'||letterKey==='alpha')letter='α';
+    if(letterKey==='b'||letterKey==='beta')letter='β';
+    if(letterKey==='g'||letterKey==='y'||letterKey==='gamma')letter='γ';
+    if(letterKey==='sp'||letterKey==='special')letter='SP';
+
+    const base=raw
+      .replace(
+        /^\s*(SP|SPECIAL|α|β|γ|A|B|G|Y|ALPHA|BETA|GAMMA)\s*[-—:]\s*/i,
+        ''
+      )
+      .replace(/\s*[（(][^()（）]+[）)]\s*$/,'')
+      .trim();
+
+    return {
+      raw,
+      letter,
+      base,
+      subtype:subtypeMatch ? clean(subtypeMatch[1]) : ''
+    };
+  }
+
+  function v30Subtype(value){
+    const key=normal(value);
+    const values={
+      normal:{fr:'Normal',en:'Normal'},
+      explosion:{fr:'Explosion',en:'Explosion'},
+      explosionfollow_up:{fr:'Explosion suivante',en:'Explosion Follow-up'},
+      explosion_follow_up:{fr:'Explosion suivante',en:'Explosion Follow-up'},
+      follow_up:{fr:'Enchaînement',en:'Follow-up'},
+      shockwave:{fr:'Onde de choc',en:'Shockwave'},
+      bullet:{fr:'Projectile',en:'Projectile'},
+      projectile:{fr:'Projectile',en:'Projectile'},
+      rush:{fr:'Ruée',en:'Rush'},
+      rebound:{fr:'Rebond',en:'Rebound'},
+      bounce:{fr:'Rebond',en:'Rebound'},
+      impact:{fr:'Impact final',en:'Impact'},
+      melee:{fr:'Corps à corps',en:'Melee Combat'},
+      melee_combat:{fr:'Corps à corps',en:'Melee Combat'},
+      activation:{fr:'Activation',en:'Activation'},
+      burn:{fr:'Brûlure',en:'Burn'},
+      shot:{fr:'Tir',en:'Shot'},
+      strongshot:{fr:'Tir puissant',en:'Strong Shot'},
+      strong_shot:{fr:'Tir puissant',en:'Strong Shot'},
+      collapse:{fr:'Effondrement',en:'Collapse'},
+      bodyimpact:{fr:'Impact corporel',en:'Body Impact'},
+      body_impact:{fr:'Impact corporel',en:'Body Impact'},
+      normal_shot:{fr:'Tir normal',en:'Normal Shot'}
+    };
+
+    const row=values[key];
+    return row ? row[language()] : clean(value);
+  }
+
+  function v30DetailText(change,subtype){
+    const part=v30Subtype(subtype);
+    const label=normal(change?.label||'');
+
+    if(language()==='en'){
+      if(label==='damage')return 'Damage modified: '+part;
+      if(label==='guard_break'||label==='guardbreak'){
+        return 'Guard Break modified: '+part;
+      }
+      if(label==='ammo'||label==='magazine'||label==='no_of_rounds'){
+        return 'Ammo modified: '+part;
+      }
+      return 'Modified part: '+part;
+    }
+
+    if(label==='damage'||label==='degats'||label==='degat'){
+      return 'Dégâts modifiés : '+part;
+    }
+    if(label==='guard_break'||label==='guardbreak'||label==='brise_garde'){
+      return 'Brise-garde modifié : '+part;
+    }
+    if(
+      label==='ammo'||
+      label==='magazine'||
+      label==='munitions'||
+      label==='no_of_rounds'
+    ){
+      return 'Munitions modifiées : '+part;
+    }
+
+    return 'Partie modifiée : '+part;
+  }
+
   function changeHtml(group,change,sectionTitle){
     const tone=toneFor(change,sectionTitle);
     const health=healthChange(
@@ -789,12 +910,30 @@
       change,
       group
     );
-    const title=translatePatch(
+    const v30Parts=v30SkillParts(
+      v30SourceSkillName(change)
+    );
+    const v30FallbackTitle=translatePatch(
       localized(identity?.title)||
       localized(change?.display_skill_name)||
       localized(change?.skill_name)||
       localized(change?.label)||
       tx('Ajustement','Adjustment')
+    );
+    let title=v30FallbackTitle;
+    if(!health&&v30Parts.subtype){
+      const base=localized(skill?.name)||v30Parts.base;
+      const subtype=v30Subtype(v30Parts.subtype);
+      title=(
+        (v30Parts.letter?v30Parts.letter+' — ':'')+
+        base+
+        (subtype?' ('+subtype+')':'')
+      );
+    }
+    const v30Detail=(
+      !health&&v30Parts.subtype
+        ?v30DetailText(change,v30Parts.subtype)
+        :''
     );
 
     /*
@@ -860,7 +999,13 @@
 
         <main>
           <h5>${escapeHtml(title)}</h5>
-
+          ${
+            v30Detail
+              ?`<p class="mhurV28PatchSubtype mhurV30PatchExactDetail">${
+                escapeHtml(v30Detail)
+              }</p>`
+              :''
+          }
           ${
             change?.label
               ?`<p class="s18PatchLabelV10">${

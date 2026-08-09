@@ -96,11 +96,11 @@ def existing_asset(root: Path, rel_stem: str) -> str:
     return ""
 
 
-def download_asset(root: Path, url: str, rel_stem: str, retries: int = 4) -> str:
+def download_asset(root: Path, url: str, rel_stem: str, retries: int = 4, force: bool = False) -> str:
     if not url:
         return ""
     cached = existing_asset(root, rel_stem)
-    if cached:
+    if cached and not force:
         return cached
     try:
         response = get(request_session(), url, retries)
@@ -119,9 +119,7 @@ def download_asset(root: Path, url: str, rel_stem: str, retries: int = 4) -> str
         return rel.as_posix()
     except Exception as exc:
         print(f"[HOME IMAGE WARNING] {url}: {exc}", flush=True)
-        return ""
-
-
+        return cached or ""
 def section_after_heading(soup: BeautifulSoup, needle: str):
     heading = next(
         (
@@ -1087,6 +1085,7 @@ def parse_login_bonuses(root: Path, soup: BeautifulSoup, previous: list[dict] | 
                 root,
                 remote,
                 f"assets/home/bonuses/{slug(title, 70)}",
+            force=True,
             )
 
         low = title.lower()
