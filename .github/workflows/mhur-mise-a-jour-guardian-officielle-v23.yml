@@ -1,0 +1,685 @@
+name: MHUR - INSTALLATEUR CORRECTIFS NEXUS V23
+
+on:
+  workflow_dispatch:
+    inputs:
+      action:
+        description: "Action"
+        required: true
+        default: install
+        type: choice
+        options:
+          - install
+          - verify
+
+permissions:
+  contents: write
+  actions: write
+  pull-requests: write
+
+concurrency:
+  group: mhur-nexus-v23-installer
+  cancel-in-progress: false
+
+jobs:
+  install:
+    if: github.event_name == 'workflow_dispatch' && inputs.action == 'install'
+    runs-on: ubuntu-22.04
+    timeout-minutes: 30
+    env:
+      GH_TOKEN: ${{ github.token }}
+      DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_BOT_TOKEN }}
+      DISCORD_CHANNEL_ID: ${{ secrets.DISCORD_CHANNEL_ID }}
+
+    steps:
+      - name: Récupérer main
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Installer Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Installer Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Configurer Git
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Créer le correctif permanent V23
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p mise_a_jour/outils
+
+          cat > mise_a_jour/outils/mhur_v23_persistent_fixes.py <<'PY'
+          #!/usr/bin/env python3
+          # -*- coding: utf-8 -*-
+          from __future__ import annotations
+
+          import argparse
+          from pathlib import Path
+
+          INDEX_MARK = "MHUR_V23_STATS_ROUTER"
+          TABLE_MARK = "MHUR_V23_SPLIT_TABLES"
+
+          def load(path: Path) -> str:
+              if not path.exists():
+                  raise SystemExit(f"[V23][ERREUR] Fichier introuvable : {path}")
+              return path.read_text(encoding="utf-8")
+
+          def save(path: Path, text: str) -> None:
+              path.write_text(text, encoding="utf-8", newline="\n")
+
+          def patch_index_text(text: str) -> tuple[str, int]:
+              changed = 0
+
+              old = (
+                  "    const dpi=findLocalCol(cols,['Down Power','Down'],-1);\n"
+                  "    const hasBaseColumns = ai>=0 || ui>=0 || ri>=0 || "
+                  "(!/—|-|Charge|Pull|Rush|Attraction/i.test(title) && di>=0);\n"
+              )
+              new = (
+                  "    const dpi=findLocalCol(cols,['Down Power','Down'],-1);\n"
+                  "    const ti=findLocalCol(cols,['Type'],-1);\n"
+                  f"    /* {INDEX_MARK} */\n"
+                  "    const hasBaseColumns = ti<0 && (ai>=0 || ui>=0 || ri>=0 || "
+                  "(!/—|-|Charge|Pull|Rush|Attraction/i.test(title) && di>=0));\n"
+              )
+              if old in text:
+                  text = text.replace(old, new, 1)
+                  changed += 1
+                  print("[V23][PATCH] index : Type exclu des dégâts de base")
+              elif INDEX_MARK in text:
+                  print("[V23][OK] index : classification base/additional déjà corrigée")
+              else:
+                  raise SystemExit("[V23][ERREUR] Bloc hasBaseColumns introuvable dans public/index.html")
+
+              if "match(['melee combat','melee'])" not in text:
+                  anchor = "    let m=null;\n"
+                  if anchor not in text:
+                      raise SystemExit("[V23][ERREUR] Ancre let m=null introuvable dans public/index.html")
+                  rules = (
+                      "    let m=null;\n"
+                      "    if((m=match(['melee combat','melee'])) && "
+                      "(t.includes('corps_a_corps')||t.includes('melee')||t.includes('combat'))) return m;\n"
+                      "    if((m=match(['activation','upon activation'])) && t.includes('activation')) return m;\n"
+                      "    if((m=match(['shockwave'])) && "
+                      "(t.includes('onde')||t.includes('choc')||t.includes('shockwave'))) return m;\n"
+                      "    if((m=match(['bullet','projectile'])) && "
+                      "(t.includes('balle')||t.includes('bullet')||t.includes('projectile'))) return m;\n"
+                      "    if((m=match(['rebound','bounce'])) && "
+                      "(t.includes('rebond')||t.includes('rebound')||t.includes('bounce'))) return m;\n"
+                      "    if((t.includes('rebond')||t.includes('rebound')||t.includes('bounce'))){\n"
+                      "      const mains=matching(['main']);\n"
+                      "      const fallback=choose(mains,'lowestDown');\n"
+                      "      if(fallback) return fallback;\n"
+                      "    }\n"
+                      "    if((m=match(['impact'])) && t.includes('impact')) return m;\n"
+                      "    if(t.includes('impact')){\n"
+                      "      const mains=matching(['main']);\n"
+                      "      const fallback=choose(mains,'highestDown');\n"
+                      "      if(fallback) return fallback;\n"
+                      "    }\n"
+                  )
+                  text = text.replace(anchor, rules, 1)
+                  changed += 1
+                  print("[V23][PATCH] index : mapping Melee/Activation/Shockwave/Rebound/Impact")
+              else:
+                  print("[V23][OK] index : mappings additional déjà présents")
+
+              rush_old = "    if((m=match(['rush','突進'])) && t.includes('rush')) return m;"
+              rush_new = (
+                  "    if((m=match(['rush','突進'])) && "
+                  "(t.includes('rush')||t.includes('ruee'))) return m;"
+              )
+              if rush_old in text:
+                  text = text.replace(rush_old, rush_new, 1)
+                  changed += 1
+                  print("[V23][PATCH] index : Ruée -> Rush")
+              elif rush_new in text:
+                  print("[V23][OK] index : Ruée déjà reconnue")
+
+              alias_anchor = "      projectile:'bullet',\n"
+              alias_block = (
+                  "      projectile:'bullet',\n"
+                  "      corps:'melee',\n"
+                  "      combat:'melee',\n"
+                  "      activation:'activation',\n"
+                  "      ruee:'rush',\n"
+                  "      rebond:'rebound',\n"
+                  "      onde:'shockwave',\n"
+                  "      choc:'shockwave',\n"
+                  "      impact:'impact',\n"
+              )
+              if "      corps:'melee'," not in text:
+                  if alias_anchor not in text:
+                      raise SystemExit("[V23][ERREUR] Ancre aliases projectile introuvable")
+                  text = text.replace(alias_anchor, alias_block, 1)
+                  changed += 1
+                  print("[V23][PATCH] index : alias français")
+              else:
+                  print("[V23][OK] index : alias français déjà présents")
+
+              old_branch = (
+                  "      } else if(picked && picked.rows && picked.rows[lv]){\n"
+                  "        const a=picked.rows[lv];\n"
+                  "        if(di>=0 && row[di]!==undefined && a.damage!==undefined){ row[di]=a.damage; changed=true; }\n"
+                  "        if(dpi>=0 && row[dpi]!==undefined && a.down!==undefined){ row[dpi]=a.down; changed=true; }\n"
+                  "      }\n"
+              )
+              new_branch = (
+                  "      } else {\n"
+                  "        let rowPicked=picked;\n"
+                  "        if(ti>=0 && row[ti]!==undefined && String(row[ti]||'').trim()){\n"
+                  "          rowPicked=pickAdditionalGroup(add, String(row[ti]));\n"
+                  "        }\n"
+                  "        if(rowPicked && rowPicked.rows && rowPicked.rows[lv]){\n"
+                  "          const a=rowPicked.rows[lv];\n"
+                  "          if(di>=0 && row[di]!==undefined && a.damage!==undefined){ row[di]=a.damage; changed=true; }\n"
+                  "          if(dpi>=0 && row[dpi]!==undefined && a.down!==undefined){ row[dpi]=a.down; changed=true; }\n"
+                  "        }\n"
+                  "      }\n"
+              )
+              if old_branch in text:
+                  text = text.replace(old_branch, new_branch, 1)
+                  changed += 1
+                  print("[V23][PATCH] index : groupe additional choisi par ligne")
+              elif "let rowPicked=picked;" in text:
+                  print("[V23][OK] index : routage par ligne déjà présent")
+              else:
+                  raise SystemExit("[V23][ERREUR] Branche picked introuvable dans public/index.html")
+
+              return text, changed
+
+          def patch_tables_text(text: str) -> tuple[str, int]:
+              changed = 0
+
+              if TABLE_MARK not in text:
+                  anchor = "function tablesV9(list){\n"
+                  if anchor not in text:
+                      raise SystemExit("[V23][ERREUR] tablesV9 introuvable dans season18-fixes.js")
+
+                  helper = r"""/* MHUR_V23_SPLIT_TABLES
+             Sépare automatiquement toute table Type/Niveau/Dégâts.
+             Un changement de Type OU un nouveau Lv.1 crée un nouveau bloc.
+          */
+          function splitAdditionalV23(tb){
+            const cols=Array.isArray(tb?.cols)?tb.cols:[];
+            const rows=Array.isArray(tb?.rows)?tb.rows:[];
+            const typeIndex=cols.findIndex(col=>norm(col)==='type');
+            const levelIndex=cols.findIndex(col=>['niveau','level'].includes(norm(col)));
+            if(typeIndex<0||levelIndex<0||rows.length<2) return [tb];
+
+            const groups=[];
+            let current=null;
+            let lastLabel='Valeur';
+
+            rows.forEach(source=>{
+              const row=[...(source||[])];
+              const level=clean(row[levelIndex]);
+              let label=clean(row[typeIndex]);
+              if(label) lastLabel=label;
+              label=label||lastLabel||'Valeur';
+              const key=norm(label)||'value';
+
+              const restart=/^lv\.1$/i.test(level)&&current&&current.rows.length;
+              const changedType=current&&current.key!==key;
+
+              if(!current||restart||changedType){
+                current={key,label,rows:[]};
+                groups.push(current);
+              }
+              current.rows.push(row);
+            });
+
+            if(groups.length<=1) return [tb];
+
+            const totals={};
+            groups.forEach(group=>{ totals[group.key]=(totals[group.key]||0)+1; });
+            const seen={};
+
+            return groups.map(group=>{
+              seen[group.key]=(seen[group.key]||0)+1;
+              let label=group.label;
+              if(totals[group.key]>1) label+=` (${seen[group.key]})`;
+              return {
+                ...tb,
+                title:`${tb.title} — ${label}`,
+                rows:group.rows.map(row=>{
+                  const copy=[...row];
+                  copy[typeIndex]=label;
+                  return copy;
+                })
+              };
+            });
+          }
+
+          """
+                  text = text.replace(anchor, helper + anchor, 1)
+                  changed += 1
+                  print("[V23][PATCH] season18 : séparateur automatique Type/Niveau/Dégâts")
+              else:
+                  print("[V23][OK] season18 : séparateur déjà présent")
+
+              old_line = (
+                  "  const tablesList=(Array.isArray(list)?list:[]).map(filterDownPower)"
+                  ".filter(tb=>tb.cols.length&&tb.rows.length);\n"
+              )
+              new_line = (
+                  "  const tablesList=(Array.isArray(list)?list:[]).map(filterDownPower)"
+                  ".flatMap(splitAdditionalV23).filter(tb=>tb.cols.length&&tb.rows.length);\n"
+              )
+              if old_line in text:
+                  text = text.replace(old_line, new_line, 1)
+                  changed += 1
+                  print("[V23][PATCH] season18 : tablesV9 utilise le séparateur")
+              elif new_line in text:
+                  print("[V23][OK] season18 : tablesV9 déjà corrigé")
+              else:
+                  raise SystemExit("[V23][ERREUR] Ligne tablesList introuvable")
+
+              return text, changed
+
+          def self_test() -> None:
+              index_fixture = """    let m=null;
+              if((m=match(['rush','突進'])) && t.includes('rush')) return m;
+              const aliases={
+                balle:'bullet',
+                projectile:'bullet',
+                sueur:'sweat',
+              };
+              function patchLocalTable(tb, remoteSkill){
+                const dpi=findLocalCol(cols,['Down Power','Down'],-1);
+                const hasBaseColumns = ai>=0 || ui>=0 || ri>=0 || (!/—|-|Charge|Pull|Rush|Attraction/i.test(title) && di>=0);
+                const base=remoteBaseMap(remoteSkill);
+                const add=remoteAdditionalGroups(remoteSkill);
+                const picked=pickAdditionalGroup(add, title);
+                let changed=false;
+                tb.rows.forEach(row=>{
+                  const lvInfo=levelOfRow(row); if(!lvInfo) return;
+                  const lv=lvInfo.lv;
+                  if(hasBaseColumns && base[lv]){
+                  } else if(picked && picked.rows && picked.rows[lv]){
+                    const a=picked.rows[lv];
+                    if(di>=0 && row[di]!==undefined && a.damage!==undefined){ row[di]=a.damage; changed=true; }
+                    if(dpi>=0 && row[dpi]!==undefined && a.down!==undefined){ row[dpi]=a.down; changed=true; }
+                  }
+                });
+              }
+              """
+              patched, _ = patch_index_text(index_fixture)
+              assert INDEX_MARK in patched
+              assert "let rowPicked=picked;" in patched
+              assert "melee combat" in patched
+              assert "ruee" in patched
+
+              tables_fixture = """function filterDownPower(table){return table;}
+              function tablesV9(list){
+                const tablesList=(Array.isArray(list)?list:[]).map(filterDownPower).filter(tb=>tb.cols.length&&tb.rows.length);
+                return tablesList;
+              }
+              """
+              patched, _ = patch_tables_text(tables_fixture)
+              assert TABLE_MARK in patched
+              assert ".flatMap(splitAdditionalV23)" in patched
+              print("[V23][SELF-TEST] OK")
+
+          def main() -> int:
+              parser = argparse.ArgumentParser()
+              parser.add_argument("--site-root", default="public")
+              parser.add_argument("--self-test", action="store_true")
+              args = parser.parse_args()
+
+              if args.self_test:
+                  self_test()
+                  return 0
+
+              root = Path(args.site_root)
+              index = root / "index.html"
+              season = root / "js" / "season18-fixes.js"
+
+              index_text, a = patch_index_text(load(index))
+              season_text, b = patch_tables_text(load(season))
+
+              save(index, index_text)
+              save(season, season_text)
+
+              print(f"[V23][OK] Correctif permanent appliqué : index={a}, season18={b}")
+              return 0
+
+          if __name__ == "__main__":
+              raise SystemExit(main())
+          PY
+
+          python -m py_compile mise_a_jour/outils/mhur_v23_persistent_fixes.py
+          python mise_a_jour/outils/mhur_v23_persistent_fixes.py --self-test
+
+      - name: Corriger le cache des Login Bonus
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          python - <<'PY'
+          from pathlib import Path
+
+          path=Path("mise_a_jour/outils/update_home_data.py")
+          text=path.read_text(encoding="utf-8")
+
+          if "def download_asset(root: Path, url: str, rel_stem: str, retries: int = 4, force: bool = False)" not in text:
+              old="def download_asset(root: Path, url: str, rel_stem: str, retries: int = 4) -> str:\n"
+              new=(
+                  "def download_asset(root: Path, url: str, rel_stem: str, retries: int = 4, force: bool = False) -> str:\n"
+                  "    # MHUR_V23_LOGIN_CACHE : force=True remplace une ancienne image.\n"
+              )
+              if old not in text:
+                  raise SystemExit("[V23][ERREUR] Signature download_asset introuvable")
+              text=text.replace(old,new,1)
+
+          old=(
+              "    cached = existing_asset(root, rel_stem)\n"
+              "    if cached:\n"
+              "        return cached\n"
+          )
+          new=(
+              "    cached = existing_asset(root, rel_stem)\n"
+              "    if cached and not force:\n"
+              "        return cached\n"
+          )
+          if old in text:
+              text=text.replace(old,new,1)
+
+          old=(
+              '        print(f"[HOME IMAGE WARNING] {url}: {exc}", flush=True)\n'
+              '        return ""\n'
+          )
+          new=(
+              '        print(f"[HOME IMAGE WARNING] {url}: {exc}", flush=True)\n'
+              '        return cached or ""\n'
+          )
+          if old in text:
+              text=text.replace(old,new,1)
+
+          old=(
+              "            local = download_asset(\n"
+              "                root,\n"
+              "                remote,\n"
+              '                f"assets/home/bonuses/{slug(title, 70)}",\n'
+              "            )\n"
+          )
+          new=(
+              "            local = download_asset(\n"
+              "                root,\n"
+              "                remote,\n"
+              '                f"assets/home/bonuses/{slug(title, 70)}",\n'
+              "                force=True,\n"
+              "            )\n"
+          )
+          if old in text:
+              text=text.replace(old,new,1)
+
+          required=["force: bool = False","if cached and not force:","force=True,"]
+          missing=[x for x in required if x not in text]
+          if missing:
+              raise SystemExit("[V23][ERREUR] Login Bonus incomplet : "+", ".join(missing))
+
+          path.write_text(text,encoding="utf-8",newline="\n")
+          print("[V23][OK] update_home_data.py : cache Login Bonus corrigé")
+          PY
+
+          python -m py_compile mise_a_jour/outils/update_home_data.py
+
+      - name: Appliquer le moteur V23 au site actuel
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          python mise_a_jour/outils/mhur_v23_persistent_fixes.py --site-root public
+          node --check public/js/season18-fixes.js
+
+          grep -q "MHUR_V23_STATS_ROUTER" public/index.html
+          grep -q "MHUR_V23_SPLIT_TABLES" public/js/season18-fixes.js
+          grep -q "let rowPicked=picked;" public/index.html
+          grep -q "melee combat" public/index.html
+          grep -q "flatMap(splitAdditionalV23)" public/js/season18-fixes.js
+
+          echo "✅ Moteur V23 appliqué et JavaScript valide."
+
+      - name: Rendre le V19 compatible V23
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          python - <<'PY'
+          from pathlib import Path
+          import re
+
+          path=Path(".github/workflows/mhur-mise-a-jour-guardian-officielle-v19.yml")
+          if not path.exists():
+              raise SystemExit("[V23][ERREUR] Guardian V19 introuvable")
+
+          text=path.read_text(encoding="utf-8")
+
+          if 'cron: "1 * * * *"' in text:
+              text=text.replace('cron: "1 * * * *"','cron: "11 * * * *"',1)
+              print("[V23][PATCH] V19 : cron 1 -> 11")
+          elif 'cron: "11 * * * *"' in text:
+              print("[V23][OK] V19 : cron déjà à 11")
+          else:
+              raise SystemExit("[V23][ERREUR] Cron principal V19 introuvable")
+
+          pattern=(
+              r"(?m)^(?P<indent>\s*)python\s+/tmp/repair_login_bonuses_v17\.py\s*\\\s*\n"
+              r"\s*--site-root\s+public\s*$"
+          )
+          matches=list(re.finditer(pattern,text))
+          if matches:
+              def repl(match):
+                  indent=match.group("indent")
+                  return (
+                      f"{indent}# MHUR V23 : ancien repair Login Bonus désactivé.\n"
+                      f"{indent}echo \"[V23] Login Bonus gérés directement par update_home_data.py\""
+                  )
+              text,count=re.subn(pattern,repl,text)
+              print(f"[V23][PATCH] V19 : {count} appel(s) ancien repair désactivé(s)")
+          elif "ancien repair Login Bonus désactivé" in text:
+              print("[V23][OK] V19 : ancien repair déjà désactivé")
+          else:
+              raise SystemExit("[V23][ERREUR] Appels repair_login_bonuses_v17.py introuvables")
+
+          persistent_call=(
+              "          python mise_a_jour/outils/mhur_v23_persistent_fixes.py \\\n"
+              "            --site-root public\n"
+          )
+
+          if "mhur_v23_persistent_fixes.py" not in text:
+              anchor=(
+                  "          python /tmp/apply_guardian_v19_site_fixes.py \\\n"
+                  "            --site-root public\n"
+              )
+              pos=text.rfind(anchor)
+              if pos < 0:
+                  raise SystemExit("[V23][ERREUR] Ancre apply_guardian_v19_site_fixes.py introuvable")
+              insert_at=pos+len(anchor)
+              text=text[:insert_at]+"\n"+persistent_call+text[insert_at:]
+              print("[V23][PATCH] V19 : réapplication permanente V23 ajoutée")
+          else:
+              print("[V23][OK] V19 : réapplication permanente déjà présente")
+
+          path.write_text(text,encoding="utf-8",newline="\n")
+
+          final=path.read_text(encoding="utf-8")
+          if re.search(pattern,final):
+              raise SystemExit("[V23][ERREUR] Un ancien repair Login Bonus est encore actif")
+          if "mhur_v23_persistent_fixes.py" not in final:
+              raise SystemExit("[V23][ERREUR] V19 n'appelle pas le correctif permanent")
+          if 'cron: "11 * * * *"' not in final:
+              raise SystemExit("[V23][ERREUR] cron V19 incorrect")
+
+          print("[V23][OK] Guardian V19 corrigé durablement")
+          PY
+
+      - name: Vérifications finales avant commit
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          python -m py_compile \
+            mise_a_jour/outils/update_home_data.py \
+            mise_a_jour/outils/mhur_v23_persistent_fixes.py
+
+          node --check public/js/season18-fixes.js
+
+          python mise_a_jour/outils/mhur_v23_persistent_fixes.py --site-root public
+          node --check public/js/season18-fixes.js
+
+          grep -q "force=True" mise_a_jour/outils/update_home_data.py
+          grep -q "MHUR_V23_STATS_ROUTER" public/index.html
+          grep -q "MHUR_V23_SPLIT_TABLES" public/js/season18-fixes.js
+          grep -q "mhur_v23_persistent_fixes.py" .github/workflows/mhur-mise-a-jour-guardian-officielle-v19.yml
+          grep -q 'cron: "11 \* \* \* \*"' .github/workflows/mhur-mise-a-jour-guardian-officielle-v19.yml
+
+          echo "✅ V23 : tous les contrôles passent."
+
+      - name: Commit V23 sur main
+        id: commit
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          git add \
+            mise_a_jour/outils/update_home_data.py \
+            mise_a_jour/outils/mhur_v23_persistent_fixes.py \
+            public/index.html \
+            public/js/season18-fixes.js \
+            .github/workflows/mhur-mise-a-jour-guardian-officielle-v19.yml
+
+          if git diff --cached --quiet; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "[V23] Déjà installé : aucun changement."
+            exit 0
+          fi
+
+          git commit -m "fix: V23 login bonus et stats automatiques"
+          git pull --rebase origin main
+          git push origin HEAD:main
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+
+      - name: Relancer le Guardian V19 corrigé
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          gh workflow run \
+            mhur-mise-a-jour-guardian-officielle-v19.yml \
+            --ref main \
+            -f mode=scan
+
+          echo "✅ Guardian V19 corrigé relancé en scan."
+
+      - name: Discord - V23 installé
+        if: success()
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if [ -z "${DISCORD_BOT_TOKEN:-}" ] || [ -z "${DISCORD_CHANNEL_ID:-}" ]; then
+            exit 0
+          fi
+
+          python - <<'PY' > /tmp/v23-ok.json
+          import json
+          print(json.dumps({
+              "content": (
+                  "✅ **MHUR NEXUS — V23 INSTALLÉ**\n\n"
+                  "• Login Bonus : l'ancien cache peut être remplacé par la vraie image UltraRumble\n"
+                  "• Ancien repair Login Bonus V17 : désactivé dans le V19\n"
+                  "• Hawks : Melee Combat est relié à Corps à corps\n"
+                  "• Gentle : Onde de choc / Projectile / Ruée / Rebond / Impact sont séparés automatiquement\n"
+                  "• Futurs héros : toute table Type/Niveau/Dégâts est séparée automatiquement\n"
+                  "• V19 : réapplique V23 après chaque reconstruction complète\n\n"
+                  "🔄 Le scan V19 corrigé vient d'être relancé."
+              )
+          }, ensure_ascii=False))
+          PY
+
+          curl -fsS \
+            -X POST \
+            -H "Authorization: Bot ${DISCORD_BOT_TOKEN}" \
+            -H "Content-Type: application/json" \
+            --data-binary @/tmp/v23-ok.json \
+            "https://discord.com/api/v10/channels/${DISCORD_CHANNEL_ID}/messages" \
+            >/dev/null
+
+      - name: Discord - diagnostic V23 si erreur
+        if: failure()
+        shell: bash
+        run: |
+          set +e
+
+          run_url="https://github.com/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+          echo "::error::V23 bloqué : ${run_url}"
+
+          if [ -z "${DISCORD_BOT_TOKEN:-}" ] || [ -z "${DISCORD_CHANNEL_ID:-}" ]; then
+            exit 0
+          fi
+
+          python - "$run_url" <<'PY' > /tmp/v23-error.json
+          import json
+          import sys
+
+          url=sys.argv[1]
+          print(json.dumps({
+              "content": (
+                  "❌ **MHUR NEXUS — V23 BLOQUÉ**\n\n"
+                  "Le correctif s'est arrêté avant le commit si `Commit V23 sur main` n'est pas vert.\n"
+                  f"🔎 **Run :** {url}\n\n"
+                  "Ouvre l'étape rouge : `[V23][ERREUR]` donne le bloc exact qui pose problème."
+              )
+          }, ensure_ascii=False))
+          PY
+
+          curl -fsS \
+            -X POST \
+            -H "Authorization: Bot ${DISCORD_BOT_TOKEN}" \
+            -H "Content-Type: application/json" \
+            --data-binary @/tmp/v23-error.json \
+            "https://discord.com/api/v10/channels/${DISCORD_CHANNEL_ID}/messages" \
+            >/dev/null || true
+
+  verify:
+    if: github.event_name == 'workflow_dispatch' && inputs.action == 'verify'
+    runs-on: ubuntu-22.04
+    timeout-minutes: 10
+
+    steps:
+      - name: Récupérer main
+        uses: actions/checkout@v5
+        with:
+          ref: main
+
+      - name: Vérifier V23 installé
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          test -f mise_a_jour/outils/mhur_v23_persistent_fixes.py
+          grep -q "force=True" mise_a_jour/outils/update_home_data.py
+          grep -q "MHUR_V23_STATS_ROUTER" public/index.html
+          grep -q "MHUR_V23_SPLIT_TABLES" public/js/season18-fixes.js
+          grep -q "mhur_v23_persistent_fixes.py" .github/workflows/mhur-mise-a-jour-guardian-officielle-v19.yml
+          grep -q 'cron: "11 \* \* \* \*"' .github/workflows/mhur-mise-a-jour-guardian-officielle-v19.yml
+
+          python -m py_compile mise_a_jour/outils/mhur_v23_persistent_fixes.py
+          node --check public/js/season18-fixes.js
+
+          echo "✅ V23 est installé et persistant."
