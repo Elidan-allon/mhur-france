@@ -1,6 +1,6 @@
 {
   "meta": {
-    "updated_at": "2026-08-09T14:56:56.034861+00:00",
+    "updated_at": "2026-08-13T08:40:37.484472+00:00",
     "source": "UltraRumble.com",
     "version": "v520-maintenance-sync"
   },
@@ -171,17 +171,6 @@
       "start": "2026-07-29T13:00:00+09:00",
       "end": "2026-09-30T12:59:59+09:00",
       "image": "assets/home/bonuses/s18_20_million_downloads_login_bonus.png"
-    },
-    {
-      "title": "Campagne anniversaire Mt. Lady 2026",
-      "title_fr": "Campagne anniversaire Mt. Lady 2026",
-      "title_en": "Mt. Lady Birthday Campaign 2026",
-      "type": "Anniversaire",
-      "type_fr": "Anniversaire",
-      "type_en": "Birthday",
-      "start": "2026-08-11T13:00:00+09:00",
-      "end": "2026-08-12T12:59:59+09:00",
-      "image": "assets/home/bonuses/s18_mt_lady_birthday_campaign_2026.png"
     },
     {
       "title": "Bonus de connexion spécial — Saison 18 Vol. 1",

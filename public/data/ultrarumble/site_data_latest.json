@@ -1,6 +1,6 @@
 {
   "meta": {
-    "updated_at": "2026-08-09T14:59:12.578685+00:00",
+    "updated_at": "2026-08-13T08:42:54.917275+00:00",
     "updater_version": "v354_afo_young_mapped",
     "source": "https://ultrarumble.com",
     "new_styles_added": 0,
@@ -9,7 +9,7 @@
       "special_cards": 60,
       "styles_enriched": 60
     },
-    "season18_postprocess": "2026-08-09T14:59:21.015299+00:00"
+    "season18_postprocess": "2026-08-13T08:43:03.565043+00:00"
   },
   "characters": [
     {
@@ -24177,7 +24177,7 @@
         ]
       },
       "assets": {
-        "portrait": "assets/armored_all_might/armored_all_might_technical/portrait.png",
+        "portrait": "assets/armored_all_might/armored_all_might_technical/portrait.webp",
         "tuning": "assets/armored_all_might/armored_all_might_technical/tuning.webp",
         "alpha": "assets/armored_all_might/armored_all_might_technical/alpha.webp",
         "beta": "assets/armored_all_might/armored_all_might_technical/beta.webp",
@@ -26110,7 +26110,7 @@
         ]
       },
       "assets": {
-        "portrait": "assets/armored_all_might/armored_all_might_technical/portrait.png",
+        "portrait": "assets/armored_all_might/armored_all_might_technical/portrait.webp",
         "tuning": "assets/armored_all_might/armored_all_might_technical/tuning.webp",
         "alpha": "assets/armored_all_might/armored_all_might_technical/alpha.webp",
         "beta": "assets/armored_all_might/armored_all_might_technical/beta.webp",
