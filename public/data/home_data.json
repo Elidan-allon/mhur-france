@@ -1,6 +1,6 @@
 {
   "meta": {
-    "updated_at": "2026-08-17T18:24:07.261601+00:00",
+    "updated_at": "2026-08-18T06:08:57.130594+00:00",
     "source": "UltraRumble.com",
     "version": "v520-maintenance-sync"
   },
@@ -307,6 +307,118 @@
     }
   ],
   "patch_notes": [
+    {
+      "id": "1787009572",
+      "title": "Data Update v1.17.0-14.6",
+      "date": "2026-08-17T19:32:00+00:00",
+      "url": "https://ultrarumble.com/patch/1787009572",
+      "details": [],
+      "internal": true,
+      "rich_blocks": [
+        {
+          "type": "image",
+          "src": "assets/home/patches/1787009572/image_003.png",
+          "alt": ""
+        },
+        {
+          "type": "image",
+          "src": "assets/home/patches/1787009572/image_004.png",
+          "alt": ""
+        },
+        {
+          "type": "image",
+          "src": "assets/home/patches/1787009572/image_005.png",
+          "alt": ""
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "Balance Changes: Health"
+        },
+        {
+          "type": "text",
+          "text": "No changes detected."
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "Balance Changes: Damage"
+        },
+        {
+          "type": "text",
+          "text": "No changes detected."
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "Balance Changes: Magazine"
+        },
+        {
+          "type": "text",
+          "text": "No changes detected."
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "Normal TUNING Changes"
+        },
+        {
+          "type": "text",
+          "text": "No changes detected."
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "Special TUNING Changes"
+        },
+        {
+          "type": "text",
+          "text": "No changes detected."
+        },
+        {
+          "type": "image",
+          "src": "assets/home/patches/1787009572/image_006.png",
+          "alt": ""
+        },
+        {
+          "type": "image",
+          "src": "assets/home/patches/1787009572/image_007.png",
+          "alt": "DigitalOcean Referral Badge"
+        }
+      ],
+      "sections": [
+        {
+          "title": "Balance Changes: Health",
+          "items": [
+            "No changes detected."
+          ]
+        },
+        {
+          "title": "Balance Changes: Damage",
+          "items": [
+            "No changes detected."
+          ]
+        },
+        {
+          "title": "Balance Changes: Magazine",
+          "items": [
+            "No changes detected."
+          ]
+        },
+        {
+          "title": "Normal TUNING Changes",
+          "items": [
+            "No changes detected."
+          ]
+        },
+        {
+          "title": "Special TUNING Changes",
+          "items": [
+            "No changes detected."
+          ]
+        }
+      ]
+    },
     {
       "id": "1785298405",
       "title": "Data Update v1.17.0-14.5",
@@ -5042,5 +5154,10 @@
       "internal": true
     }
   ],
-  "maintenance": null
+  "maintenance": {
+    "start": "2026-08-19T12:30:00+09:00",
+    "end": "2026-08-19T18:00:00+09:00",
+    "source_status": "active",
+    "source": "https://ultrarumble.com/"
+  }
 }
