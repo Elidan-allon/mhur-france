@@ -2,10 +2,10 @@
   "meta": {
     "source": "https://ultrarumble.com",
     "description": "Assets locaux. Les portraits de personnages sont verrouillés sur le dossier assets fourni.",
-    "styles": 64,
+    "styles": 65,
     "costumes": 1629,
     "failed_this_run": 0,
-    "updated_at": "2026-08-18T06:11:47Z"
+    "updated_at": "2026-08-22T17:43:08Z"
   },
   "styles": {
     "aizawa_strike": {
@@ -75,7 +75,7 @@
       "gamma": "assets/armored_all_might/armored_all_might_technical/gamma.webp",
       "special": "assets/armored_all_might/armored_all_might_technical/special.webp",
       "tuning": "assets/armored_all_might/armored_all_might_technical/tuning.webp",
-      "portrait": "assets/armored_all_might/armored_all_might_technical/portrait.png"
+      "portrait": "assets/armored_all_might/armored_all_might_technical/portrait.webp"
     },
     "bakugo_attack": {
       "alpha": "assets/bakugo/bakugo_attack/alpha.webp",
@@ -543,6 +543,14 @@
       "gamma": "assets/gentle_criminal/gentle_criminal_technical/gamma.png",
       "special": "assets/gentle_criminal/gentle_criminal_technical/special.png",
       "tuning": "assets/gentle_criminal/gentle_criminal_technical/tuning.png"
+    },
+    "twice_sad_mans_parade": {
+      "portrait": "assets/twice/twice_sad_mans_parade/portrait.png",
+      "special": "assets/twice/twice_sad_mans_parade/special.png",
+      "tuning": "assets/twice/twice_sad_mans_parade/tuning.png",
+      "alpha": "assets/twice/twice_sad_mans_parade/alpha.png",
+      "beta": "assets/twice/twice_sad_mans_parade/beta.png",
+      "gamma": "assets/twice/twice_sad_mans_parade/gamma.png"
     }
   },
   "costumes": {

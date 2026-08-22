@@ -1,8 +1,14 @@
 {
   "meta": {
-    "updated_at": "2026-08-18T06:08:57.130594+00:00",
+    "updated_at": "2026-08-22T17:41:08.133206+00:00",
     "source": "UltraRumble.com",
-    "version": "v520-maintenance-sync"
+    "version": "v520-maintenance-sync",
+    "v44_finalized": true,
+    "v44_twice_style_id": "twice_sad_mans_parade",
+    "v44_twice_portrait": "assets/twice/twice_sad_mans_parade/portrait.png",
+    "v45_discounts_finalized": true,
+    "v45_discounts_fixed": 6,
+    "v45_discounts_unmatched": []
   },
   "season": {
     "number": 18,
@@ -10,6 +16,19 @@
     "end": "2026-09-30T12:59:59+09:00"
   },
   "latest_releases": [
+    {
+      "title": "Twice",
+      "subtitle": "Sad Man's Parade",
+      "subtitle_fr": "Parade misérable · Soutien",
+      "subtitle_en": "Sad Man's Parade · Support",
+      "character_id": "twice",
+      "style_id": "twice_sad_mans_parade",
+      "source_url": "https://ultrarumble.com/character/37#Variant-1",
+      "release_kind": "style",
+      "releaseDate": "2026-08-19T13:00:00+09:00",
+      "art": "assets/twice/twice_sad_mans_parade/portrait.png",
+      "word": "NEW!"
+    },
     {
       "title": "Gentle Criminal",
       "subtitle": "Original",
@@ -47,19 +66,6 @@
       "release_kind": "style",
       "releaseDate": "2024-10-23T13:00:00+09:00",
       "art": "assets/home/releases/s18_109_1.png",
-      "word": "NEW!"
-    },
-    {
-      "title": "Character 111",
-      "subtitle": "Personnage jouable",
-      "subtitle_fr": "Personnage jouable",
-      "subtitle_en": "Playable character",
-      "character_id": "",
-      "style_id": "",
-      "source_url": "https://ultrarumble.com/character/111",
-      "release_kind": "character",
-      "releaseDate": "2026-05-27T13:00:00+09:00",
-      "art": "assets/home/releases/s18_111_0.png",
       "word": "NEW!"
     }
   ],
@@ -123,6 +129,26 @@
       "url": "https://ultrarumble.com/gasha/2618011",
       "image": "assets/home/gachas/gasha_2618011.webp",
       "banner_source": "https://ultrarumble.com/assets/Gasha/gasha_2618011.webp"
+    },
+    {
+      "id": "2618004",
+      "title": "PLUS ULTRA Character Roll: Original (S18) Shinso",
+      "type": "Personnage",
+      "start": "2026-08-19T13:00:00+09:00",
+      "end": "2026-09-16T12:59:59+09:00",
+      "url": "https://ultrarumble.com/gasha/2618004",
+      "image": "assets/home/gachas/gasha_2618004.webp",
+      "banner_source": "https://ultrarumble.com/assets/Gasha/gasha_2618004.webp"
+    },
+    {
+      "id": "2618008",
+      "title": "QUIRK / SKILL Character Roll: Alternative (S18) Twice",
+      "type": "Alter",
+      "start": "2026-08-19T13:00:00+09:00",
+      "end": "2026-09-30T12:59:59+09:00",
+      "url": "https://ultrarumble.com/gasha/2618008",
+      "image": "assets/home/gachas/gasha_2618008.webp",
+      "banner_source": "https://ultrarumble.com/assets/Gasha/gasha_2618008.webp"
     }
   ],
   "events": [
@@ -149,14 +175,14 @@
       "official_image": true
     },
     {
-      "id": "261803",
+      "id": "261804",
       "type": "Événement",
-      "title": "EVENT T.U.N.I.N.G. Mission Event Vol. 5",
-      "start": "2026-08-05T13:00:00+09:00",
-      "end": "2026-08-19T12:59:59+09:00",
-      "url": "https://ultrarumble.com/event/261803",
-      "image": "assets/home/events/event_261803.webp",
-      "image_source": "https://ultrarumble.com/assets/Event/event_261803.webp",
+      "title": "DROP Drop Event Vol. 18",
+      "start": "2026-08-19T13:00:00+09:00",
+      "end": "2026-09-02T12:59:59+09:00",
+      "url": "https://ultrarumble.com/event/261804",
+      "image": "assets/home/events/event_261804.webp",
+      "image_source": "https://ultrarumble.com/assets/Event/event_261804.webp",
       "official_image": true
     }
   ],
@@ -171,17 +197,6 @@
       "start": "2026-07-29T13:00:00+09:00",
       "end": "2026-09-30T12:59:59+09:00",
       "image": "assets/home/bonuses/s18_20_million_downloads_login_bonus.png"
-    },
-    {
-      "title": "Bonus de connexion spécial — Saison 18 Vol. 1",
-      "title_fr": "Bonus de connexion spécial — Saison 18 Vol. 1",
-      "title_en": "Special Login Bonus — Season 18 Vol. 1",
-      "type": "Connexion",
-      "type_fr": "Connexion",
-      "type_en": "Login",
-      "start": "2026-08-12T13:00:00+09:00",
-      "end": "2026-08-19T12:59:59+09:00",
-      "image": "assets/home/bonuses/s18_special_login_bonus_season_18_vol_1.png"
     },
     {
       "title": "Campagne anniversaire Tenya Iida 2026",
@@ -252,61 +267,256 @@
   ],
   "discounts": [
     {
-      "name": "D.J. Board",
+      "name": "Parade misérable",
       "points": 100,
-      "image": "assets/home/discounts/v559/d_j_board_v559.webp?v=559",
-      "character": "Present Mic",
-      "style": "Technical",
-      "style_id": "present_mic_technical",
-      "role": "technical"
-    },
-    {
-      "name": "Flow Runner",
-      "points": 100,
-      "image": "assets/home/discounts/v559/flow_runner_v559.webp?v=559",
-      "character": "Shota Aizawa",
-      "style": "Strike",
-      "style_id": "aizawa_strike",
-      "role": "attack"
+      "image": "assets/twice/twice_sad_mans_parade/portrait.png",
+      "name_fr": "Parade misérable",
+      "name_en": "Sad Man's Parade",
+      "character": "Twice",
+      "role": "support",
+      "style": "Support",
+      "style_id": "twice_sad_mans_parade",
+      "v45_exact_portrait": true,
+      "v45_exact_role": true
     },
     {
       "name": "Gentle Criminal",
       "points": 100,
-      "image": "assets/home/discounts/v559/gentle_criminal_v559.webp?v=559",
+      "image": "assets/gentle_criminal/gentle_criminal_technical/portrait.png",
+      "role": "technical",
       "character": "Gentle Criminal",
-      "style": "Technical",
-      "style_id": "gentle_criminal",
-      "role": "technical"
-    },
-    {
-      "name": "Factor Fusion",
-      "points": 50,
-      "image": "assets/home/discounts/v559/factor_fusion_v559.webp?v=559",
-      "character": "All For One",
-      "style": "Strike",
-      "style_id": "all_for_one_strike",
-      "role": "attack"
+      "name_fr": "Gentle Criminal",
+      "name_en": "Gentle Criminal",
+      "v45_exact_portrait": true,
+      "v45_exact_role": true
     },
     {
       "name": "Cluster",
       "points": 50,
-      "image": "assets/home/discounts/v559/cluster_v559.webp?v=559",
+      "image": "assets/bakugo/bakugo_technical/portrait.png",
+      "role": "technical",
       "character": "Katsuki Bakugo",
-      "style": "Technical",
-      "style_id": "bakugo_technical",
-      "role": "technical"
+      "name_fr": "Cluster",
+      "name_en": "Cluster",
+      "v45_exact_portrait": true,
+      "v45_exact_role": true
+    },
+    {
+      "name": "D.J. Board",
+      "points": 50,
+      "image": "assets/present_mic/present_mic_technical/portrait.png",
+      "role": "technical",
+      "character": "Present Mic",
+      "name_fr": "D.J. Board",
+      "name_en": "D.J. Board",
+      "v45_exact_portrait": true,
+      "v45_exact_role": true
+    },
+    {
+      "name": "Flow Runner",
+      "points": 50,
+      "image": "assets/aizawa/aizawa_strike/portrait.png",
+      "role": "strike",
+      "character": "Shota Aizawa",
+      "name_fr": "Flow Runner",
+      "name_en": "Flow Runner",
+      "v45_exact_portrait": true,
+      "v45_exact_role": true
     },
     {
       "name": "Mirko",
       "points": 50,
-      "image": "assets/home/discounts/v559/mirko_v559.webp?v=559",
+      "image": "assets/mirko/mirko_rapid/portrait.png",
+      "role": "rapid",
       "character": "Mirko",
-      "style": "Rapid",
-      "style_id": "mirko_rapid",
-      "role": "rapid"
+      "name_fr": "Mirko",
+      "name_en": "Mirko",
+      "v45_exact_portrait": true,
+      "v45_exact_role": true
     }
   ],
   "patch_notes": [
+    {
+      "id": "1787113222",
+      "title": "Data Update v1.17.1-14.8",
+      "date": "2026-08-19T00:20:00+00:00",
+      "url": "https://ultrarumble.com/patch/1787113222",
+      "details": [],
+      "internal": true,
+      "rich_blocks": [
+        {
+          "type": "image",
+          "src": "assets/home/patches/1787113222/image_003.png",
+          "alt": ""
+        },
+        {
+          "type": "image",
+          "src": "assets/home/patches/1787113222/image_004.png",
+          "alt": ""
+        },
+        {
+          "type": "image",
+          "src": "assets/home/patches/1787113222/image_005.png",
+          "alt": ""
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "Balance Changes: Health"
+        },
+        {
+          "type": "text",
+          "text": "No changes detected."
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "Balance Changes: Damage"
+        },
+        {
+          "type": "text",
+          "text": "No changes detected."
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "Balance Changes: Magazine"
+        },
+        {
+          "type": "text",
+          "text": "No changes detected."
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "Normal TUNING Changes"
+        },
+        {
+          "type": "text",
+          "text": "No changes detected."
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "Special TUNING Changes"
+        },
+        {
+          "type": "text",
+          "text": "No changes detected."
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "New Content Added since v1.17.0-14.6"
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "Twice \"Sad Man's Parade\""
+        },
+        {
+          "type": "image",
+          "src": "assets/home/patches/1787113222/image_006.webp",
+          "alt": ""
+        },
+        {
+          "type": "text",
+          "text": "Quirk Skill α - Critical Tape Measure (Lv 1–9)"
+        },
+        {
+          "type": "text",
+          "text": "Quirk Skill α - Critical Tape Measure (クリティカル) (Lv 1–9)"
+        },
+        {
+          "type": "text",
+          "text": "Quirk Skill α - Critical Tape Measure (Lv 1–9)"
+        },
+        {
+          "type": "text",
+          "text": "Quirk Skill β - Sad Man's Parade (Melee) (Lv 1–9)"
+        },
+        {
+          "type": "text",
+          "text": "Quirk Skill β - Sad Man's Parade (Set) (Lv 1–9)"
+        },
+        {
+          "type": "text",
+          "text": "Quirk Skill β - Sad Man's Parade (Shot) (Lv 1–9)"
+        },
+        {
+          "type": "text",
+          "text": "Quirk Skill β - Sad Man's Parade (Lv 1–9)"
+        },
+        {
+          "type": "text",
+          "text": "Quirk Skill γ - Help Duplicate (BodyShot) (Lv 1–9)"
+        },
+        {
+          "type": "text",
+          "text": "Quirk Skill γ - Help Duplicate (分身Shot) (Lv 1–9)"
+        },
+        {
+          "type": "text",
+          "text": "Quirk Skill γ - Help Duplicate (Lv 1–9)"
+        },
+        {
+          "type": "image",
+          "src": "assets/home/patches/1787113222/image_007.png",
+          "alt": ""
+        },
+        {
+          "type": "image",
+          "src": "assets/home/patches/1787113222/image_008.png",
+          "alt": "DigitalOcean Referral Badge"
+        }
+      ],
+      "sections": [
+        {
+          "title": "Balance Changes: Health",
+          "items": [
+            "No changes detected."
+          ]
+        },
+        {
+          "title": "Balance Changes: Damage",
+          "items": [
+            "No changes detected."
+          ]
+        },
+        {
+          "title": "Balance Changes: Magazine",
+          "items": [
+            "No changes detected."
+          ]
+        },
+        {
+          "title": "Normal TUNING Changes",
+          "items": [
+            "No changes detected."
+          ]
+        },
+        {
+          "title": "Special TUNING Changes",
+          "items": [
+            "No changes detected."
+          ]
+        },
+        {
+          "title": "Twice \"Sad Man's Parade\"",
+          "items": [
+            "Quirk Skill α - Critical Tape Measure (Lv 1–9)",
+            "Quirk Skill α - Critical Tape Measure (クリティカル) (Lv 1–9)",
+            "Quirk Skill β - Sad Man's Parade (Melee) (Lv 1–9)",
+            "Quirk Skill β - Sad Man's Parade (Set) (Lv 1–9)",
+            "Quirk Skill β - Sad Man's Parade (Shot) (Lv 1–9)",
+            "Quirk Skill β - Sad Man's Parade (Lv 1–9)",
+            "Quirk Skill γ - Help Duplicate (BodyShot) (Lv 1–9)",
+            "Quirk Skill γ - Help Duplicate (分身Shot) (Lv 1–9)",
+            "Quirk Skill γ - Help Duplicate (Lv 1–9)"
+          ]
+        }
+      ]
+    },
     {
       "id": "1787009572",
       "title": "Data Update v1.17.0-14.6",
@@ -3094,35 +3304,6 @@
       "internal": true
     },
     {
-      "id": "1779934289",
-      "title": "Data Update v1.16.0-Rc137",
-      "date": "2026-05-27T22:11:00+00:00",
-      "url": "https://ultrarumble.com/patch/1779934289",
-      "details": [],
-      "internal": true,
-      "sections": [
-        {
-          "title": "Changes",
-          "items": [
-            "Home",
-            "Notices",
-            "Characters",
-            "Gachas",
-            "Events",
-            "Missions",
-            "Items Costumes Emotes Voice Lines Currency Nameplates Gallery Emblems Supply Items",
-            "T.U.N.I.N.G",
-            "Seasons",
-            "Guide",
-            "Tier List",
-            "Datamine",
-            "Links Hydros' Twitter Join Discord MyHeroUI DBLegends Dokkan Wiki ShonenGames",
-            "Language 🇺🇸 English 🇯🇵 日本語 🇫🇷 Français 🇪🇸 Español 🇮🇹 Italiano 🇩🇪 Deutsch"
-          ]
-        }
-      ]
-    },
-    {
       "id": "1779836241",
       "title": "Data Update v1.16.0-Rc133",
       "date": "2026-05-26T18:57:00+00:00",
@@ -5151,13 +5332,29 @@
           ]
         }
       ],
-      "internal": true
+      "internal": true,
+      "sections": [
+        {
+          "title": "Changes",
+          "items": [
+            "Home",
+            "Notices",
+            "Characters",
+            "Gachas",
+            "Events",
+            "Missions",
+            "Items Costumes Emotes Voice Lines Currency Nameplates Gallery Emblems Supply Items",
+            "T.U.N.I.N.G",
+            "Seasons",
+            "Guide",
+            "Tier List",
+            "Datamine",
+            "Links Hydros' Twitter Join Discord MyHeroUI DBLegends Dokkan Wiki ShonenGames",
+            "Language 🇺🇸 English 🇯🇵 日本語 🇫🇷 Français 🇪🇸 Español 🇮🇹 Italiano 🇩🇪 Deutsch"
+          ]
+        }
+      ]
     }
   ],
-  "maintenance": {
-    "start": "2026-08-19T12:30:00+09:00",
-    "end": "2026-08-19T18:00:00+09:00",
-    "source_status": "active",
-    "source": "https://ultrarumble.com/"
-  }
+  "maintenance": null
 }

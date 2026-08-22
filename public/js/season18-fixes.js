@@ -87,7 +87,7 @@ function newSets(){
   const hasActive=Boolean(sync.active_new_content&&typeof sync.active_new_content==='object');
   const data=hasActive?sync.active_new_content:(sync.new_content||{});
   const characters=Array.from(new Set([...((data.characters)||[]),'gentle_criminal']));
-  const stylesList=Array.from(new Set([...((data.styles)||[]),'gentle_criminal_technical']));
+  const stylesList=Array.from(new Set([...((data.styles)||[]),...latestHomeIdsV24('style','style_id'),'gentle_criminal_technical']));
   const latestCostumes=latestReleasedCostumeIdsV24(sync);
   /* V572 merge latest costume wave */
   const costumes=Array.from(new Set([...((data.costumes)||[]),...latestCostumes,'108000000']));
@@ -414,14 +414,14 @@ function seasonReleases(){
   const tsuyuStyle=findStyle(tsuyu,st=>ROLE(st?.role)==='attack')||styleIds(tsuyu)[0]||'';
   return [
     {key:'gentle',kind:'character',charId:gentle?.id||'gentle_criminal',styleId:gentleStyle,title:'Gentle Criminal',subtitle:TX('Nouveau personnage · Technique','New character · Technical'),date:TX('Disponible depuis le 29 juillet','Available since July 29'),role:'technical',art:'assets/home/season18/gentle_s18_portrait.webp'},
-    {key:'twice',kind:'style',charId:twice?.id||'twice',styleId:twiceStyle,title:'Twice',subtitle:"Sad Man's Parade · "+TX('Soutien','Support'),date:TX('Sortie le 19 août','Releases August 19'),role:'support',art:'assets/home/season18/twice_s18_portrait.webp'},
+    {key:'twice',kind:'style',charId:twice?.id||'twice',styleId:twiceStyle,title:'Twice',subtitle:TX('Parade misérable · Soutien',"Sad Man's Parade · Support"),date:Date.now()>=Date.parse('2026-08-19T13:00:00+09:00')?TX('Disponible depuis le 19 août','Available since August 19'):TX('Sortie le 19 août','Releases August 19'),role:'support',art:'assets/home/season18/twice_s18_portrait.webp'},
     {key:'tsuyu',kind:'style',charId:tsuyu?.id||'tsuyu',styleId:tsuyuStyle,title:tsuyu?.name||'Tsuyu Asui',subtitle:TX('Nouveau style · nom à venir','New style · name to be announced'),date:TX('Prévu pendant la Saison 18','Planned during Season 18'),role:'attack',art:'assets/mhur_database/characters/tsuyu_rapid/portrait.webp',black:true}
   ];
 }
 function seasonCard(item){
   const icon=item.kind==='character'?'assets/home/icons/release_character.png':'assets/home/icons/release_style.png';
   const art=item.black?`<span class="s18SeasonBlackV10">${imgHtml(item.art,item.title,'s18SeasonProfileV10')}</span>`:`<span class="s18SeasonArtV10" style="background-image:url('${ESC(item.art).replace(/'/g,'%27')}')"></span>`;
-  return `<button type="button" class="releaseCardV299 s18SeasonReleaseV10 role-${ESC(ROLE(item.role))}" data-release-char="${ESC(item.charId)}" data-release-style="${ESC(item.styleId)}" onclick="openHomeReleaseV298(this)" title="${ESC(item.title)} — ${ESC(item.subtitle)}">${art}<span class="s18SeasonShadeV10"></span><span class="releaseBadgeV299 ${item.kind}">${typeof img==='function'?img(icon,item.kind):imgHtml(icon,item.kind)}</span>${item.key==='gentle'?'<span class="s18SeasonNewV10" aria-hidden="true"></span>':''}<span class="releaseNamesV299"><b>${ESC(item.title)}</b><small>${ESC(item.subtitle)}</small><em>${ESC(item.date)}</em></span></button>`;
+  return `<button type="button" class="releaseCardV299 s18SeasonReleaseV10 role-${ESC(ROLE(item.role))}" data-release-char="${ESC(item.charId)}" data-release-style="${ESC(item.styleId)}" onclick="openHomeReleaseV298(this)" title="${ESC(item.title)} — ${ESC(item.subtitle)}">${art}<span class="s18SeasonShadeV10"></span><span class="releaseBadgeV299 ${item.kind}">${typeof img==='function'?img(icon,item.kind):imgHtml(icon,item.kind)}</span>${(item.key==='gentle'||(item.key==='twice'&&Date.now()>=Date.parse('2026-08-19T13:00:00+09:00')))?'<span class="s18SeasonNewV10" aria-hidden="true"></span>':''}<span class="releaseNamesV299"><b>${ESC(item.title)}</b><small>${ESC(item.subtitle)}</small><em>${ESC(item.date)}</em></span></button>`;
 }
 function patchHome(){
   const home=document.querySelector('.homeV296');if(!home)return;
@@ -444,7 +444,11 @@ function patchHome(){
 
 /* --------------------------- Patch / Dev Notes --------------------------- */
 function translatePatch(v){
-  let out=CLEAN(v);
+  /* MHUR_V38_PATCH_TRANSLATIONS */
+  let raw=String(PICK(v)??'')
+    .replace(/クリティカル/gi,'Critical')
+    .replace(/分身Shot/gi,'Clone Shot');
+  let out=CLEAN(raw).replace(/\(\s*\)/g,'').trim();
   if(L()==='en')return out;
   const exact={
     'HP':'PV','Foot Boost':'Boost du pied','Penalty Recharge':'Pénalité de recharge',
@@ -456,6 +460,31 @@ function translatePatch(v){
   };
   if(exact[out])return exact[out];
   const replacements=[
+    [/New Content Added/gi,'Nouveau contenu ajouté'],
+    /* MHUR_V41_PATCH_TRANSLATIONS */
+    [/Quirk Skill/gi,'Alter'],
+    [/Critical Tape Measure/gi,'Rubans critiques'],
+    [/Sad Man['’]s Parade/gi,'Parade misérable'],
+    [/Help Duplicate/gi,'Soutien-clonage'],
+    [/Mad Imitation/gi,'Folle imitation'],
+    [/\(Critical\)/gi,'(Critique)'],
+    [/\(Near\)/gi,'(Proximité)'],
+    [/\(Melee\)/gi,'(Corps à corps)'],
+    [/\(Deploy\)/gi,'(Déploiement)'],
+    [/\(Set\)/gi,'(Placement)'],
+    [/\(Body\s*Shot\)/gi,'(Tir corporel)'],
+    [/\(Clone\s*Shot\)/gi,'(Tir du clone)'],
+    [/\(Shot\)/gi,'(Tir)'],
+    [/Critical Tape Measure/gi,'Rubans critiques'],
+    [/Sad Man['’]s Parade/gi,'Parade misérable'],
+    [/Help Duplicate/gi,'Soutien-clonage'],
+    [/Mad Imitation/gi,'Folle imitation'],
+    [/\(Critical\)/gi,'(Critique)'],
+    [/\(Melee\)/gi,'(Corps à corps)'],
+    [/\(Set\)/gi,'(Placement)'],
+    [/\(Body\s*Shot\)/gi,'(Tir corporel)'],
+    [/\(Clone\s*Shot\)/gi,'(Tir du clone)'],
+    [/\(Shot\)/gi,'(Tir)'],
     [/^Data Update/i,'Mise à jour des données'],[/^Balance Changes:\s*/i,"Équilibrage : "],
     [/Maximum Main Health|Maximum HP|Max HP/gi,'PV maximum'],[/^HP$/gi,'PV'],[/Health/gi,'PV'],
     [/No\. of Rounds|Magazine/gi,'Munitions max.'],[/Use Ammo/gi,'Consommation'],[/Ammo/gi,'Munitions'],
@@ -874,9 +903,9 @@ function groupHtml(group,sectionTitle){
     <header>
       <div class="s18PatchPortraitV10">
         ${
-          group.st?.portrait
+          (group.ch?.portrait||group.st?.portrait)
             ?patchAssetV607(
-              group.st.portrait,
+              group.ch?.portrait||group.st?.portrait,
               group.character
             )
             :''
@@ -1004,7 +1033,7 @@ function patchDetailHtml(note){
   }
 
   return sections.map(section=>{
-    const title=CLEAN(section?.title||'');
+    const title=translatePatch(section?.title||'');
     const noteText=CLEAN(section?.note||'');
 
     if(section?.kind==='empty'){
@@ -1022,7 +1051,7 @@ function patchDetailHtml(note){
             <article>
               <h4>${ESC(CLEAN(entry.character))}</h4>
               <ul>
-                ${(entry.items||[]).map(item=>`<li>${ESC(CLEAN(item))}</li>`).join('')}
+                ${(entry.items||[]).map(item=>`<li>${ESC(translatePatch(item))}</li>`).join('')}
               </ul>
             </article>
           `).join('')}
@@ -1727,7 +1756,7 @@ function activeSets(){
   const homeStyles=latestHome('style','style_id');
   const latestCostumeIds=latestCostumes(sync);
   const characters=Array.from(new Set([...((source.characters)||[]),'gentle_criminal']));
-  const stylesList=Array.from(new Set([...((source.styles)||[]),'gentle_criminal_technical']));
+  const stylesList=Array.from(new Set([...((source.styles)||[]),...homeStyles,'gentle_criminal_technical']));
   /* V572 merge latest costume wave v24 */
   const costumes=Array.from(new Set([...((source.costumes)||[]),...latestCostumeIds,'108000000']));
   return {

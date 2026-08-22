@@ -1417,5 +1417,31 @@
     "source_url": "https://ultrarumble.com/character/108",
     "generated": true,
     "side": "villain"
+  },
+  {
+    "style_key": "twice_sad_mans_parade",
+    "character_id": "twice",
+    "character_name": "Twice",
+    "style_name": "Sad Man's Parade",
+    "role": "support",
+    "pv": 300,
+    "skill_names": [
+      {
+        "letter": "α",
+        "name": "Critical Tape Measure"
+      },
+      {
+        "letter": "β",
+        "name": "Sad Man's Parade"
+      },
+      {
+        "letter": "γ",
+        "name": "Help Duplicate"
+      }
+    ],
+    "special_name": "Action spéciale",
+    "source_url": "https://ultrarumble.com/character/37#Variant-1",
+    "generated": true,
+    "side": "villain"
   }
 ]
