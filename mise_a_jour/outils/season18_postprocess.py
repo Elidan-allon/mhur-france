@@ -476,6 +476,134 @@ def parse_entry_discounts(session: requests.Session, root: Path, soup: Beautiful
     return rows[:8]
 
 
+# MHUR_V38_PATCH_DEDUPE
+def v38_patch_version(note: dict[str, Any]) -> str:
+    title = clean(note.get("title") or "")
+    match = re.search(r"\bv\d+(?:\.\d+)+(?:-\d+(?:\.\d+)*)?\b", title, re.I)
+    return match.group(0).lower() if match else "id:" + clean(note.get("id") or note.get("url") or title)
+
+def v38_patch_score(note: dict[str, Any]) -> int:
+    score = 0
+    for section in note.get("details") or []:
+        if not isinstance(section, dict):
+            continue
+        score += 20
+        score += 40 * len(section.get("changes") or [])
+        score += 30 * len(section.get("entries") or [])
+        score += 4 * len(section.get("items") or [])
+        if section.get("kind") == "new_content":
+            score += 30
+    score += 5 * len(note.get("rich_blocks") or [])
+    score += 5 * len(note.get("sections") or [])
+    return score
+
+def v38_dedupe_patches(notes: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    output: list[dict[str, Any]] = []
+    positions: dict[str, int] = {}
+    for note in notes:
+        if not isinstance(note, dict):
+            continue
+        key = v38_patch_version(note)
+        if key not in positions:
+            positions[key] = len(output)
+            output.append(note)
+            continue
+        index = positions[key]
+        current = output[index]
+        winner, loser = (note, current) if v38_patch_score(note) > v38_patch_score(current) else (current, note)
+        merged = dict(winner)
+        for field in ("title","date","url","details","rich_blocks","sections"):
+            if not merged.get(field) and loser.get(field):
+                merged[field] = loser[field]
+        output[index] = merged
+    return output
+
+
+# MHUR_V42_DISCOUNT_ENRICH
+def enrich_discounts_v42(root: Path, rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    payload_path = root / "data/ultrarumble/site_data_latest.json"
+    try:
+        payload = json.loads(payload_path.read_text(encoding="utf-8"))
+    except Exception:
+        return rows
+
+    generated_styles = payload.get("generated_styles") or {}
+    exact_by_style = payload.get("exact_by_style") or {}
+    generated_characters = payload.get("generated_characters") or []
+
+    def style_names(style):
+        value = style.get("name") if isinstance(style, dict) else ""
+        if isinstance(value, dict):
+            return [clean(value.get("fr")), clean(value.get("en"))]
+        return [clean(value)]
+
+    def owner(style_id):
+        for character in generated_characters:
+            if not isinstance(character, dict):
+                continue
+            if str(style_id) in [str(x) for x in (character.get("styles") or [])]:
+                return character
+        return None
+
+    def match_style(row):
+        direct = clean(row.get("style_id"))
+        if direct and isinstance(generated_styles.get(direct), dict):
+            return direct, generated_styles[direct]
+
+        target = norm(row.get("name"))
+        for style_id, style in generated_styles.items():
+            if not isinstance(style, dict):
+                continue
+            aliases = {norm(style_id)}
+            aliases.update(norm(x) for x in style_names(style) if x)
+            if target and target in aliases:
+                return str(style_id), style
+
+        if target in {"sad_man_s_parade", "parade_miserable"}:
+            for style_id, style in generated_styles.items():
+                if not isinstance(style, dict):
+                    continue
+                remote = exact_by_style.get(style_id) or {}
+                aliases = {norm(x) for x in style_names(style) if x}
+                is_twice = (
+                    norm(remote.get("base_name") or remote.get("name")) == "twice"
+                    or "twice" in norm(style_id)
+                    or bool(aliases & {"sad_man_s_parade", "parade_miserable"})
+                )
+                if norm(style.get("role")) == "support" and is_twice:
+                    return str(style_id), style
+        return None
+
+    output = []
+    for original in rows:
+        if not isinstance(original, dict):
+            continue
+        row = dict(original)
+        found = match_style(row)
+        if found:
+            style_id, style = found
+            character = owner(style_id)
+            row["style_id"] = style_id
+            row["role"] = clean(style.get("role"))
+            names = style_names(style)
+            if names and names[0]:
+                row["name_fr"] = names[0]
+            if len(names) > 1 and names[1]:
+                row["name_en"] = names[1]
+            if character:
+                row["character"] = clean(character.get("name") or character.get("id"))
+
+            if norm(row.get("name")) in {"sad_man_s_parade", "parade_miserable"}:
+                portrait = clean(style.get("portrait"))
+                if portrait:
+                    row["image"] = portrait
+                row["name_fr"] = "Parade misérable"
+                row["name_en"] = "Sad Man's Parade"
+                row["role"] = "support"
+                row["character"] = "Twice"
+        output.append(row)
+    return output
+
 def patch_home(root: Path, session: requests.Session) -> None:
     data_path = root / "data/home_data.json"
     data = json.loads(data_path.read_text(encoding="utf-8")) if data_path.exists() else {}
@@ -486,70 +614,12 @@ def patch_home(root: Path, session: requests.Session) -> None:
 
     # V558_DISCOUNT_LOCK: ces six cartes sont validées manuellement.
     # L'actualisation automatique ne doit plus remplacer leurs portraits.
-    if not isinstance(data.get("discounts"), list) or not data.get("discounts"):
-        discounts = parse_entry_discounts(session, root, soup)
-        if discounts:
-            data["discounts"] = discounts
+    # MHUR_V38_DYNAMIC_DISCOUNTS
+    discounts = parse_entry_discounts(session, root, soup)
+    if discounts:
+        data["discounts"] = enrich_discounts_v42(root, discounts)
 
-    # V559_DISCOUNT_LOCK_BEGIN
-    # Cartes validées manuellement : les mises à jour ne remplacent plus leurs images.
-    data["discounts"] = [
-      {
-        "name": "D.J. Board",
-        "points": 100,
-        "image": "assets/home/discounts/v559/d_j_board_v559.webp?v=559",
-        "character": "Present Mic",
-        "style": "Technical",
-        "style_id": "present_mic_technical",
-        "role": "technical"
-      },
-      {
-        "name": "Flow Runner",
-        "points": 100,
-        "image": "assets/home/discounts/v559/flow_runner_v559.webp?v=559",
-        "character": "Shota Aizawa",
-        "style": "Strike",
-        "style_id": "aizawa_strike",
-        "role": "attack"
-      },
-      {
-        "name": "Gentle Criminal",
-        "points": 100,
-        "image": "assets/home/discounts/v559/gentle_criminal_v559.webp?v=559",
-        "character": "Gentle Criminal",
-        "style": "Technical",
-        "style_id": "gentle_criminal",
-        "role": "technical"
-      },
-      {
-        "name": "Factor Fusion",
-        "points": 50,
-        "image": "assets/home/discounts/v559/factor_fusion_v559.webp?v=559",
-        "character": "All For One",
-        "style": "Strike",
-        "style_id": "all_for_one_strike",
-        "role": "attack"
-      },
-      {
-        "name": "Cluster",
-        "points": 50,
-        "image": "assets/home/discounts/v559/cluster_v559.webp?v=559",
-        "character": "Katsuki Bakugo",
-        "style": "Technical",
-        "style_id": "bakugo_technical",
-        "role": "technical"
-      },
-      {
-        "name": "Mirko",
-        "points": 50,
-        "image": "assets/home/discounts/v559/mirko_v559.webp?v=559",
-        "character": "Mirko",
-        "style": "Rapid",
-        "style_id": "mirko_rapid",
-        "role": "rapid"
-      }
-    ]
-    # V559_DISCOUNT_LOCK_END
+
     links: list[str] = []
     for a in soup.find_all("a", href=True):
         href = urljoin(BASE, a.get("href", ""))
@@ -567,7 +637,7 @@ def patch_home(root: Path, session: requests.Session) -> None:
                 latest.append(old_by_id[pid])
     known = {str(x.get("id")) for x in latest}
     latest.extend(x for x in data.get("patch_notes", []) if str(x.get("id")) not in known)
-    data["patch_notes"] = latest[:12]
+    data["patch_notes"] = v38_dedupe_patches(latest[:24])[:12]
 
     data_path.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
     (root / "data/home_data.js").write_text("window.MHUR_HOME_DATA = " + json.dumps(data, ensure_ascii=False, separators=(",", ":")) + ";\n", encoding="utf-8")

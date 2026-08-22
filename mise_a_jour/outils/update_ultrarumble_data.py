@@ -175,6 +175,9 @@ def find_skill_section(txt: str, sym: str) -> tuple[str, str, str]:
         for line in lines[1:12]:
             if line == "Image":
                 continue
+            # MHUR_V41_REAL_SKILL_DESCRIPTIONS
+            if norm(line) == norm(name):
+                continue
             if line.startswith("##") or line.startswith("Skill Level") or line.startswith("Base ") or line.startswith("Additional "):
                 break
             if line.startswith("Quirk Skill") or is_fake_tuning_skill(line):
@@ -190,47 +193,174 @@ def find_skill_section(txt: str, sym: str) -> tuple[str, str, str]:
         return name, "", txt[m.start():m.start()+5000]
     return "", "", ""
 
+# MHUR_V39_FLEXIBLE_LEVEL_EFFECTS
 def parse_level_effects(section: str) -> Dict[str, Any]:
-    m = re.search(r"Skill Level Up Effects\s*Level\s+Level Up Effect\s*(.*?)(?:\n\s*##\s*Base|\n\s*Base\s*[αβγ]|\n\s*Additional|\n\s*Quirk Skill|\n\s*Special Action|$)", section, re.S | re.I)
-    if not m:
-        return {"columns": [], "rows": []}
-    body = m.group(1)
-    rows = []
-    for line in lines_from_text(body):
-        mm = re.match(r"^(Lv\.\d+)\s+(.+)$", line)
-        if mm:
-            rows.append([mm.group(1), mm.group(2)])
-    return {"columns": ["Level", "Level Up Effect"], "rows": rows}
+    # Supporte les tableaux ligne-par-ligne ET cellule-par-cellule.
+    lines = lines_from_text(section)
+    start = -1
 
+    for index, line in enumerate(lines):
+        if "skill_level_up_effects" in norm(line):
+            start = index
+            break
+
+    if start < 0:
+        for index, line in enumerate(lines):
+            if norm(line) in {"level_level_up_effect", "level_up_effect"}:
+                start = max(-1, index - 1)
+                break
+
+    if start < 0:
+        return {"columns": [], "rows": []}
+
+    body = lines[start + 1:]
+    rows: List[List[str]] = []
+
+    def is_boundary(value: str) -> bool:
+        return bool(
+            re.match(
+                r"^(?:##\s*)?(?:Base\s*[αβγ]|Additional\s*[αβγ]|Quirk Skill\s*[αβγ]|Special Action|STATS|Tuning Skills|Obtained From)\b",
+                clean(value),
+                re.I,
+            )
+        )
+
+    def is_header(value: str) -> bool:
+        return norm(value) in {
+            "",
+            "image",
+            "level",
+            "level_up_effect",
+            "level_level_up_effect",
+            "skill_level_up_effects",
+        }
+
+    index = 0
+
+    while index < len(body):
+        line = clean(body[index])
+
+        if is_boundary(line):
+            break
+
+        if is_header(line):
+            index += 1
+            continue
+
+        match = re.match(r"^(Lv\.\d+)\s+(.+)$", line, re.I)
+
+        if match:
+            effect = clean(match.group(2))
+            if effect and not is_header(effect):
+                rows.append([clean(match.group(1)), effect])
+            index += 1
+            continue
+
+        if re.fullmatch(r"Lv\.\d+", line, re.I):
+            level = line
+            next_index = index + 1
+            parts: List[str] = []
+
+            while next_index < len(body):
+                candidate = clean(body[next_index])
+
+                if is_boundary(candidate):
+                    break
+
+                if re.fullmatch(r"Lv\.\d+", candidate, re.I):
+                    break
+
+                if not is_header(candidate):
+                    parts.append(candidate)
+
+                next_index += 1
+
+            effect = clean(" ".join(parts))
+
+            if effect:
+                rows.append([level, effect])
+                index = next_index
+                continue
+
+        index += 1
+
+    return {
+        "columns": ["Level", "Level Up Effect"],
+        "rows": rows,
+    }
+
+
+# MHUR_V40_FLEXIBLE_BASE_VALUES
+# MHUR_V38_FLEXIBLE_BASE_VALUES
 def parse_base_values(section: str, sym: str) -> Dict[str, Any]:
-    # Supports both web-rendered rows and BeautifulSoup cell-per-line text.
-    rg = re.compile(rf"(?:##[^\n]*?)?Base\s*{re.escape(sym)}\s*Values[^\n]*?\s*Level\s+Damage\s+Ammo\s+Use Ammo\s+Reload\s+Down Power\s*(.*?)(?:\n\s*(?:##[^\n]*?)?(?:Additional\s*{re.escape(sym)}|Quirk Skill|Special Action|STATS|Tuning Skills)|$)", re.S | re.I)
-    m = rg.search(section)
-    if not m:
-        m = re.search(r"(?:##[^\n]*?)?Base\s*[αβγ]\s*Values[^\n]*?\s*Level\s+Damage\s+Ammo\s+Use Ammo\s+Reload\s+Down Power\s*(.*?)(?:\n\s*(?:##[^\n]*?)?(?:Additional|Quirk Skill|Special Action|STATS|Tuning Skills)|$)", section, re.S | re.I)
-    if not m:
+    lines = lines_from_text(section)
+    start = -1
+    for index, line in enumerate(lines):
+        n = norm(line)
+        if norm(f"Base {sym} Values") in n or (n.startswith("base_") and "values" in n and norm(sym) in n):
+            start = index
+            break
+    if start < 0:
         return {"columns": [], "rows": []}
-    body = m.group(1)
-    rows = []
-    cells = lines_from_text(body)
 
-    # Row-per-line format.
-    for line in cells:
-        mm = re.match(r"^(Lv\.\d+)\s+(-?\d+(?:\.\d+)?)\s+(x?\d+)\s+(x?\d+)\s+([0-9.]+s)\s+(-?\d+(?:\.\d+)?)$", line)
-        if mm:
-            rows.append([mm.group(1), mm.group(2), mm.group(3), mm.group(4), mm.group(5), mm.group(6)])
+    header_i = -1
+    columns: List[str] = []
+    tokens = [
+        ("Level", r"\bLevel\b"),
+        ("Damage", r"\bDamage\b"),
+        ("Use Ammo", r"\bUse\s+Ammo\b"),
+        ("Ammo", r"\bAmmo\b"),
+        ("Reload", r"\bReload\b"),
+        ("Down Power", r"\bDown\s+Power\b"),
+    ]
+    for index in range(start + 1, min(len(lines), start + 14)):
+        line = clean(lines[index])
+        if not re.search(r"\bLevel\b", line, re.I):
+            continue
+        found: List[Tuple[int, str]] = []
+        for label, pattern in tokens:
+            for match in re.finditer(pattern, line, re.I):
+                if label == "Ammo":
+                    prefix = line[max(0, match.start() - 5):match.start()]
+                    if re.search(r"Use\s*$", prefix, re.I):
+                        continue
+                found.append((match.start(), label))
+        found.sort(key=lambda item: item[0])
+        columns = []
+        for _, label in found:
+            if label not in columns:
+                columns.append(label)
+        if columns and columns[0] == "Level":
+            header_i = index
+            break
 
-    # Cell-per-line format.
+    if header_i < 0 or len(columns) < 2:
+        return {"columns": [], "rows": []}
+
+    width = len(columns)
+    body = lines[header_i + 1:]
+    rows: List[List[str]] = []
+
+    for line in body:
+        if re.match(r"^(?:##\s*)?(?:Additional|Quirk Skill|Special Action|STATS|Tuning Skills|Base\s*[αβγ])\b", line, re.I):
+            break
+        parts = line.split()
+        if parts and re.fullmatch(r"Lv\.\d+", parts[0], re.I) and len(parts) >= width:
+            rows.append(parts[:width])
+
     if not rows:
-        i = 0
-        while i < len(cells):
-            if re.match(r"^Lv\.\d+$", cells[i]) and i + 5 < len(cells):
-                rows.append([cells[i], cells[i+1], cells[i+2], cells[i+3], cells[i+4], cells[i+5]])
-                i += 6
-            else:
-                i += 1
+        index = 0
+        while index < len(body):
+            cell = clean(body[index])
+            if re.match(r"^(?:##\s*)?(?:Additional|Quirk Skill|Special Action|STATS|Tuning Skills|Base\s*[αβγ])\b", cell, re.I):
+                break
+            if re.fullmatch(r"Lv\.\d+", cell, re.I) and index + width - 1 < len(body):
+                rows.append([cell] + [clean(body[index + offset]) for offset in range(1, width)])
+                index += width
+                continue
+            index += 1
+    return {"columns": columns, "rows": rows}
 
-    return {"columns": ["Level", "Damage", "Ammo", "Use Ammo", "Reload", "Down Power"], "rows": rows}
 
 def parse_additional_values(section: str, sym: str) -> Dict[str, Any]:
     # Supports both row-per-line and cell-per-line text.
@@ -517,8 +647,10 @@ def character_asset_urls(url: str, html: str) -> Dict[str, str]:
         if variant:
             thumb = re.search(r"/GUI/Variation/T_ui_Thumb_[^/]*_(\d+)_L\.(?:png|webp|jpg|jpeg)$", path, re.I)
             thumb_matches = bool(thumb and int(thumb.group(1)) == code * 100 + variant)
+            # MHUR_V38_SHARED_SPECIAL_IMAGE
             if (
-                var_dir.lower() not in path.lower()
+                "specialskill" not in path.lower()
+                and var_dir.lower() not in path.lower()
                 and f"_ch{code:03d}_{variant:02d}" not in path.lower()
                 and not thumb_matches
             ):
@@ -964,7 +1096,7 @@ def candidate_locale_urls(url: str) -> List[str]:
     ids = [str(n), f"{n:03d}"]
     fragment = urlparse(url).fragment
     suffix = f"#{fragment}" if fragment else ""
-    hosts = ["https://ultrarumble.com", "https://es.ultrarumble.com", "https://de.ultrarumble.com", "https://it.ultrarumble.com"]
+    hosts = ["https://ultrarumble.com", "https://fr.ultrarumble.com", "https://es.ultrarumble.com", "https://de.ultrarumble.com", "https://it.ultrarumble.com"]
     out = []
     for host in hosts:
         for sid in ids:

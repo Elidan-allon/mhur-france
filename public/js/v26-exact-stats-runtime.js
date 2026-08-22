@@ -21,6 +21,7 @@
   function clean(value) {
     return String(pick(value) ?? '')
       .replace(/[\u3040-\u30ff\u3400-\u9fff\uf900-\ufaff]/g, '')
+      .replace(/\(\s*\)/g, '')
       .replace(/\s{2,}/g, ' ')
       .trim();
   }
@@ -86,6 +87,33 @@
     return (language === 'fr' ? fr : en)[key] || clean(value);
   }
 
+  /* MHUR_V41_FR_EFFECTS */
+  function translateEffectCell(value, language) {
+    let out=clean(value);
+    if(language!=='fr') return out;
+    const map=[
+      [/Clone Battle Time\+/gi,'Durée du clone +'],
+      [/Clone Skill Level\+/gi,'Niveau des Alters du clone +'],
+      [/No\. of Rounds\+/gi,'Munitions +'],
+      [/Reload Speed\+/gi,'Vitesse de recharge +'],
+      [/Damage Area\+/gi,'Zone de dégâts +'],
+      [/Attack Range\+/gi,"Portée d'attaque +"],
+      [/Connection Distance\+/gi,'Distance de connexion +'],
+      [/Movement Distance\+/gi,'Distance de déplacement +'],
+      [/Dash Range\+/gi,'Distance de ruée +'],
+      [/Attack Power\+/gi,"Puissance d'attaque +"],
+      [/Defense\+/gi,'Défense +'],
+      [/Damage\+/gi,'Dégâts +'],
+      [/Ammo\+/gi,'Munitions +'],
+      [/Reload\+/gi,'Recharge +'],
+      [/Range\+/gi,'Portée +'],
+      [/Size\+/gi,'Taille +'],
+      [/Speed\+/gi,'Vitesse +']
+    ];
+    map.forEach(([a,b])=>{out=out.replace(a,b);});
+    return out.replace(/\(\s*\)/g,'').replace(/\s{2,}/g,' ').trim();
+  }
+
   function effectTable(symbol, remote, oldTables) {
     const sourceRows = rows(remote);
     if (!sourceRows.length) {
@@ -110,8 +138,16 @@
         en: keep.map(item => translateColumn(item.col, 'en'))
       },
       rows: {
-        fr: sourceRows.map(row => keep.map(item => clean(row[item.index] ?? ''))),
-        en: sourceRows.map(row => keep.map(item => clean(row[item.index] ?? '')))
+        fr: sourceRows.map(row => keep.map(item =>
+          norm(item.col) === 'level_up_effect'
+            ? translateEffectCell(row[item.index] ?? '', 'fr')
+            : clean(row[item.index] ?? '')
+        )),
+        en: sourceRows.map(row => keep.map(item =>
+          norm(item.col) === 'level_up_effect'
+            ? translateEffectCell(row[item.index] ?? '', 'en')
+            : clean(row[item.index] ?? '')
+        ))
       },
       __v26: 'effect'
     }];
@@ -148,6 +184,16 @@
     const key = norm(original);
 
     const mappings = [
+      [['critical'], 'Critique', 'Critical'],
+      [['near', 'nearby'], 'Proximité', 'Near'],
+      [['deploy'], 'Déploiement', 'Deploy'],
+      [['set', 'placement'], 'Placement', 'Set'],
+      [['bodyshot', 'body_shot'], 'Tir corporel', 'Body Shot'],
+      [['clone_shot'], 'Tir du clone', 'Clone Shot'],
+      [['wide_slash'], 'Balayage', 'Wide Slash'],
+      [['thrust'], 'Estoc', 'Thrust'],
+      [['shot'], 'Tir', 'Shot'],
+      [['value'], 'Valeur', 'Value'],
       [['melee_combat', 'melee'], 'Corps à corps', 'Melee Combat'],
       [['upon_activation', 'activation'], 'Activation', 'Activation'],
       [['shockwave'], 'Onde de choc', 'Shockwave'],

@@ -109,6 +109,47 @@ function renderPage(force=false){
   lastModsHtml=html;
   bindPage();
 }
+/* MHUR_V45_MODS_LANGUAGE_RERENDER */
+function rerenderModsLanguageV45(){
+  try{
+    if(typeof page!=='undefined' && page!=='mods'){
+      return;
+    }
+
+    const tutorial=document.querySelector('.modsTutorial');
+    const wasOpen=Boolean(tutorial?.open);
+
+    renderPage(true);
+
+    const next=document.querySelector('.modsTutorial');
+
+    if(wasOpen && next){
+      next.open=true;
+    }
+
+    window.MHUR_SYNC_TUTORIAL_IMAGES?.();
+  }catch(error){
+    console.warn('[MHUR V45] rerender Mods language',error);
+  }
+}
+
+window.MHUR_MODS_RERENDER_LANGUAGE_V45=rerenderModsLanguageV45;
+
+document.addEventListener('click',event=>{
+  if(!event.target.closest('.lang')){
+    return;
+  }
+
+  setTimeout(rerenderModsLanguageV45,0);
+  setTimeout(rerenderModsLanguageV45,80);
+  setTimeout(rerenderModsLanguageV45,250);
+},true);
+
+window.addEventListener(
+  'mhur:languagechange',
+  rerenderModsLanguageV45
+);
+
 function bindPage(){
   document.querySelectorAll('.modsCopyCommand').forEach(b=>b.addEventListener('click',async()=>{
     try{
